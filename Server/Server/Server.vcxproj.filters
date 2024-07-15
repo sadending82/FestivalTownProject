@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\DB\DB.cpp" />
+    <ClCompile Include="Source\Object\Player.cpp" />
+    <ClCompile Include="Source\Room\Room.cpp" />
+    <ClCompile Include="Source\Server\Server.cpp" />
+    <ClCompile Include="Source\Network\Session\Session.cpp" />
+    <ClCompile Include="Source\Network\ExOver.cpp" />
+    <ClCompile Include="Source\Thread\WorkerThread\WorkerThread.cpp" />
+    <ClCompile Include="Source\PacketManager\PacketManager.cpp" />
+    <ClCompile Include="Source\TableManager\TableManager.cpp" />
+    <ClCompile Include="Source\Thread\TimerThread\TimerThread.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\DB\DB.h" />
+    <ClInclude Include="Source\Object\Player.h" />
+    <ClInclude Include="Source\Room\Room.h" />
+    <ClInclude Include="Source\Server\Server.h" />
+    <ClInclude Include="Source\Network\Session\Session.h" />
+    <ClInclude Include="Source\utility.h" />
+    <ClInclude Include="Source\Network\ExOver.h" />
+    <ClInclude Include="Source\Thread\WorkerThread\WorkerThread.h" />
+    <ClInclude Include="Source\PacketManager\PacketManager.h" />
+    <ClInclude Include="Source\PacketManager\test_generated.h" />
+    <ClInclude Include="Source\TableManager\Tables\ItemTable.h" />
+    <ClInclude Include="Source\TableManager\Tables\Tables.h" />
+    <ClInclude Include="Source\TableManager\TableManager.h" />
+    <ClInclude Include="Source\Thread\TimerThread\TimerThread.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Source\TableManager\ItemTable.xlsx" />
+  </ItemGroup>
+</Project>
