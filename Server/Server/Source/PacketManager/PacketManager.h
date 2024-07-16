@@ -1,9 +1,10 @@
 #pragma once
-#include "flatbuffers/flatbuffers.h"
-#include "test_generated.h"
-#include "../DB/DB.h"
+#include "PacketProcessers/PacketProcesser.h"
+#include <unordered_map>
 
 constexpr int MAXBUF = 100;
+
+constexpr int TESTKEY = 1;
 
 #pragma pack (push, 1)
 
@@ -22,9 +23,11 @@ public:
 
 	void Init();
 	void ProcessPacket(int key, int type, const uint8_t* data, const int size);
-	vector<uint8_t> MakeBuffer(char type, const uint8_t* data, const int size);
+	std::vector<uint8_t> MakeBuffer(char type, const uint8_t* data, const int size);
 
 private:
 	flatbuffers::FlatBufferBuilder builder;
+
+	std::unordered_map<int, std::unique_ptr<PacketProcesser>> PacketProcesserMap;
 };
 

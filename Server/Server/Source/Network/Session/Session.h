@@ -47,7 +47,7 @@ public:
 
 private:
 	ExOver mExOver;
-	mutex	mStateLock;
+	std::mutex	mStateLock;
 	eSessionState mState;
 	int mID;
 	SOCKET mSocket;

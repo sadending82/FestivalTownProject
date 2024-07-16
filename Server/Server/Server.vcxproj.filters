@@ -28,8 +28,15 @@
     <ClInclude Include="Source\TableManager\Tables\Tables.h" />
     <ClInclude Include="Source\TableManager\TableManager.h" />
     <ClInclude Include="Source\Thread\TimerThread\TimerThread.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessers\PacketProcesser.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessers\PacketTest.h" />
+    <ClInclude Include="Source\PacketManager\FlatBuffer\test_generated.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessers\flatbuffer\FlatBufferManager.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessers\flatbuffer\test_generated.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessers\PacketProcessers.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />
+    <None Include="GameData\ItemTable.xlsx" />
   </ItemGroup>
 </Project>

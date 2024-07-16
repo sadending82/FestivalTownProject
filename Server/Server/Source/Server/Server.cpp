@@ -75,14 +75,15 @@ void Server::Init(class PacketManager* pPacketManager, class TableManager* pTabl
     // Thread Create
     pPacketManager->Init();
 
-    WorkerThread* pWorkerThreadRef = new WorkerThread(this, pPacketManager);
     //Timer* pTimer = new Timer;
     //pTimer->Init(mHcp);
 
     SYSTEM_INFO si;
     GetSystemInfo(&si);
-    for (int i = 0; i < (int)si.dwNumberOfProcessors; ++i)
-        mWorkerThreads.emplace_back(thread(&WorkerThread::RunWorker, pWorkerThreadRef));
+    for (int i = 0; i < (int)si.dwNumberOfProcessors; ++i) {
+        WorkerThread* pWorkerThreadRef = new WorkerThread(this, pPacketManager);
+        mWorkerThreads.emplace_back(std::thread(&WorkerThread::RunWorker, pWorkerThreadRef));
+    }
     //thread timerThread = thread(&Timer::TimerMain, pTimer);
 
 

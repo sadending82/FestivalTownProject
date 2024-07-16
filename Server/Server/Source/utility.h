@@ -10,6 +10,7 @@
 #include <locale.h>
 #include <cctype>
 #include <windows.h>  
+#include <memory>
 #undef max
 #undef min
 
@@ -25,6 +26,3 @@ constexpr int MAXPLAYER = 100;
 #define DEBUGMSGNOPARAM(...)
 #define DEBUGMSGONEPARAM(...)
 #endif
-
-
-using namespace std;

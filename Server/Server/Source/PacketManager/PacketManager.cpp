@@ -1,23 +1,17 @@
 #include "PacketManager.h"
+#include "PacketProcessers/PacketProcessers.h"
 
 void PacketManager::Init()
 {
-
+	PacketProcesserMap[TESTKEY] = std::make_unique<PacketTest>(&builder);
 }
 
 void PacketManager::ProcessPacket(int key, int type, const uint8_t* data, const int size)
 {
-	/*flatbuffers::Verifier verifier(data, size);
-	if (VerifytestBuffer(verifier)) {
-
-		const test* read_test = Gettest(data);
-
-		DEBUGMSGONEPARAM("Chat -> %s\n", read_test->chat()->c_str());
-		DEBUGMSGONEPARAM("Number -> %d\n", read_test->number());
-	}*/
+	PacketProcesserMap[key]->Process(data, size);
 }
 
-vector<uint8_t> PacketManager::MakeBuffer(char type, const uint8_t* data, const int size)
+std::vector<uint8_t> PacketManager::MakeBuffer(char type, const uint8_t* data, const int size)
 {
 	HEADER h;
 	h.size = size;

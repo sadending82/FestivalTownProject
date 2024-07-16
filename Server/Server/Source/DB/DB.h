@@ -19,7 +19,7 @@ private:
     SQLHENV hEnv = NULL;
     SQLHDBC hDbc = NULL;
 
-    wstring odbc = L"PartyPeople";
-    wstring id = L"hh";
-    wstring pw = L"tjdwo104";
+    std::wstring odbc = L"PartyPeople";
+    std::wstring id = L"hh";
+    std::wstring pw = L"tjdwo104";
 };
