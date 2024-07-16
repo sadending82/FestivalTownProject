@@ -12,6 +12,7 @@
     <ClCompile Include="Source\PacketManager\PacketManager.cpp" />
     <ClCompile Include="Source\TableManager\TableManager.cpp" />
     <ClCompile Include="Source\Thread\TimerThread\TimerThread.cpp" />
+    <ClCompile Include="Source\utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DB\DB.h" />
@@ -28,12 +29,12 @@
     <ClInclude Include="Source\TableManager\Tables\Tables.h" />
     <ClInclude Include="Source\TableManager\TableManager.h" />
     <ClInclude Include="Source\Thread\TimerThread\TimerThread.h" />
-    <ClInclude Include="Source\PacketManager\PacketProcessers\PacketProcesser.h" />
-    <ClInclude Include="Source\PacketManager\PacketProcessers\PacketTest.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\PacketProcessor.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\PacketTest.h" />
     <ClInclude Include="Source\PacketManager\FlatBuffer\test_generated.h" />
-    <ClInclude Include="Source\PacketManager\PacketProcessers\flatbuffer\FlatBufferManager.h" />
-    <ClInclude Include="Source\PacketManager\PacketProcessers\flatbuffer\test_generated.h" />
-    <ClInclude Include="Source\PacketManager\PacketProcessers\PacketProcessers.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\FlatBufferManager.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\test_generated.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Processors.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

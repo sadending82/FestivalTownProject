@@ -9,10 +9,17 @@
 #include <string>
 #include <locale.h>
 #include <cctype>
-#include <windows.h>  
 #include <memory>
+
+#define _WINSOCKAPI_
+#include <windows.h>  
+#include <winsock2.h>
+#include <mswsock.h>
 #undef max
 #undef min
+
+#pragma comment (lib,"WS2_32.lib")
+#pragma comment (lib,"MSWSock.lib")
 
 constexpr int STARTKEY = 1;
 constexpr int INVALIDKEY = -1;
@@ -26,3 +33,14 @@ constexpr int MAXPLAYER = 100;
 #define DEBUGMSGNOPARAM(...)
 #define DEBUGMSGONEPARAM(...)
 #endif
+
+#pragma pack (push, 1)
+
+struct HEADER {
+public:
+	uint16_t	size;
+	uint16_t	type;
+};
+#pragma pack(pop)
+
+std::vector<uint8_t> MakeBuffer(char type, const uint8_t* data, const int size);

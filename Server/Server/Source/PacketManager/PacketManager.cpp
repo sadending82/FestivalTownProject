@@ -1,24 +1,12 @@
 #include "PacketManager.h"
-#include "PacketProcessers/PacketProcessers.h"
+#include "PacketProcessors/Processors.h"
 
 void PacketManager::Init()
 {
-	PacketProcesserMap[TESTKEY] = std::make_unique<PacketTest>(&builder);
+	PacketProcessorMap[PACKETTYPE::C2S_TEST] = std::make_unique<PacketTest>();
 }
 
-void PacketManager::ProcessPacket(int key, int type, const uint8_t* data, const int size)
+void PacketManager::ProcessPacket(Session* session, int type, const uint8_t* data, const int size)
 {
-	PacketProcesserMap[key]->Process(data, size);
-}
-
-std::vector<uint8_t> PacketManager::MakeBuffer(char type, const uint8_t* data, const int size)
-{
-	HEADER h;
-	h.size = size;
-	h.type = type;
-	std::vector<uint8_t> buf(sizeof(HEADER) + size);
-	memcpy(buf.data(), &h, sizeof(HEADER));
-	memcpy(buf.data() + sizeof(HEADER), data, size);
-
-	return buf;
+	PacketProcessorMap[type]->Process(session, data, size);
 }

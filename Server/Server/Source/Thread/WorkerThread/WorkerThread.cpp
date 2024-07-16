@@ -65,7 +65,7 @@ void WorkerThread::RunWorker()
                 if (required_data >= BUFSIZE) break;
                 if (packet_size <= 0) break;
                 unsigned char* data = packet_ptr + headerSize;
-                m_pPacketManager->ProcessPacket(key, header->type, data, header->size);
+                m_pPacketManager->ProcessPacket(m_pServer->GetSessions()[key], header->type, data, header->size);
                 required_data -= packet_size;
                 packet_ptr += packet_size;
                 packet_size = packet_ptr[0];

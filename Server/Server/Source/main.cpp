@@ -1,8 +1,5 @@
 #include "Server/Server.h";
 
-#pragma comment (lib,"WS2_32.lib")
-#pragma comment (lib,"MSWSock.lib")
-
 TableManager* gTableManager = new TableManager();
 PacketManager* gPacketManager = new PacketManager();
 Server* gServer = new Server();
