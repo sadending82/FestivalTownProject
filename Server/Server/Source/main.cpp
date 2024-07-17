@@ -12,7 +12,7 @@ int main()
 	gTableManager->ReadItemTable();
 
 	gServer->Init(gPacketManager, gTableManager, gDB);
-	gServer->ThreadRun();
+	gServer->ThreadJoin();
 
 	delete gServer;
 	delete gPacketManager;

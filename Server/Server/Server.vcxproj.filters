@@ -35,6 +35,7 @@
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\FlatBufferManager.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\test_generated.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Processors.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\EventTest.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

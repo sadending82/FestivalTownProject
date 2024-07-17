@@ -1,7 +1,7 @@
 #pragma once
 #include "Server.h"
 #include "../Thread/WorkerThread/WorkerThread.h"
-//#include "../Thread/TimerThread/TimerThread.h"
+#include "../Thread/TimerThread/TimerThread.h"
 
 int Server::SetKey()
 {
@@ -73,10 +73,10 @@ void Server::Init(class PacketManager* pPacketManager, class TableManager* pTabl
     pDB->Init();
 
     // Thread Create
-    pPacketManager->Init();
+    pPacketManager->Init(this);
 
-    //Timer* pTimer = new Timer;
-    //pTimer->Init(mHcp);
+    Timer* pTimer = new Timer;
+    pTimer->Init(mHcp);
 
     SYSTEM_INFO si;
     GetSystemInfo(&si);
@@ -84,14 +84,15 @@ void Server::Init(class PacketManager* pPacketManager, class TableManager* pTabl
         WorkerThread* pWorkerThreadRef = new WorkerThread(this, pPacketManager);
         mWorkerThreads.emplace_back(std::thread(&WorkerThread::RunWorker, pWorkerThreadRef));
     }
-    //thread timerThread = thread(&Timer::TimerMain, pTimer);
+    mTimerThread = std::thread(&Timer::Main, pTimer);
 
 
     DEBUGMSGNOPARAM("Thread Ready\n");
 }
 
-void Server::ThreadRun()
+void Server::ThreadJoin()
 {
     for (auto& th : mWorkerThreads)
         th.join();
+    mTimerThread.join();
 }

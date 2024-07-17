@@ -1,11 +1,13 @@
 #pragma once
 #include "PacketProcessor.h"
 
+class Server;
+
 class PacketTest : public PacketProcessor {
 
 public:
 
-	virtual void Process(Session* session, const uint8_t* data, const int size) {
+	virtual void Process(std::array<Session*, MAXPLAYER>& sessions, const uint8_t* data, const int size, const int key) {
 
 		mBuilder.Clear();
 
@@ -25,7 +27,7 @@ public:
 
 		std::vector<uint8_t> send_buffer = MakeBuffer(1, mBuilder.GetBufferPointer(), mBuilder.GetSize());
 
-		session->DoSend(&send_buffer);
+		sessions[key]->DoSend(&send_buffer);
 
 	}
 

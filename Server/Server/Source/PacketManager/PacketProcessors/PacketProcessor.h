@@ -9,7 +9,7 @@ public:
 	PacketProcessor() {}
 	~PacketProcessor() {}
 
-	virtual void Process(Session* session, const uint8_t* data, const int size) {}
+	virtual void Process(std::array<Session*, MAXPLAYER>& sessions, const uint8_t* data, const int size, const int key) {}
 
 private:
 	flatbuffers::FlatBufferBuilder mBuilder;

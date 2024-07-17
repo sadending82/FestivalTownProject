@@ -169,6 +169,7 @@
     <ClInclude Include="Source\PacketManager\PacketManager.h" />
     <ClInclude Include="Source\Network\ExOver.h" />
     <ClInclude Include="Source\Network\Session\Session.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\EventTest.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\FlatBufferManager.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\test_generated.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Processors.h" />

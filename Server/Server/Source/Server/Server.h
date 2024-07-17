@@ -14,7 +14,7 @@ public:
 	int SetKey();
 	void Disconnect(int key);
 	void Init(class PacketManager* pPacketManager, class TableManager* pTableManager, class DB* pDB);
-	void ThreadRun();
+	void ThreadJoin();
 
 	HANDLE GetHcp() { return mHcp; }
 	SOCKADDR_IN GetServerAddr() { return mServerAddr; }
@@ -27,6 +27,7 @@ private:
 	SOCKET mListenSocket;
 	std::array<Session*, MAXPLAYER> mSessions;
 	std::vector<std::thread> mWorkerThreads;
+	std::thread mTimerThread;
 
 	int testUID = 1;
 };
