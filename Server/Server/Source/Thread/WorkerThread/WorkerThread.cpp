@@ -81,6 +81,14 @@ void WorkerThread::RunWorker()
             delete exOver;
             break;
         }
+        case eOpType::OP_EVENT:{
+            unsigned char* data_ptr = exOver->mMessageBuf;
+            int headerSize = sizeof(EVENT_HEADER);
+            EVENT_HEADER* header = reinterpret_cast<EVENT_HEADER*>(data_ptr);
+            unsigned char* data = data_ptr + headerSize;
+            m_pPacketManager->ProcessPacket(header->type, data, header->size, key);
+            break;
+        }
         }
 
     }

@@ -86,7 +86,6 @@ void Server::Init(class PacketManager* pPacketManager, class TableManager* pTabl
     }
     mTimerThread = std::thread(&Timer::Main, pTimer);
 
-
     DEBUGMSGNOPARAM("Thread Ready\n");
 }
 

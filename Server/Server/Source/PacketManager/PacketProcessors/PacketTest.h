@@ -20,14 +20,14 @@ public:
 			DEBUGMSGONEPARAM("Number -> %d\n", read_test->number());
 		}
 
-		auto chat = mBuilder.CreateString("hi client");
+		/*auto chat = mBuilder.CreateString("hi client");
 		int number = 11;
 
 		mBuilder.Finish(Createtest(mBuilder, chat, number));
 
 		std::vector<uint8_t> send_buffer = MakeBuffer(1, mBuilder.GetBufferPointer(), mBuilder.GetSize());
 
-		sessions[key]->DoSend(&send_buffer);
+		sessions[key]->DoSend(&send_buffer);*/
 
 	}
 

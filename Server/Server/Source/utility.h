@@ -21,9 +21,10 @@
 #pragma comment (lib,"WS2_32.lib")
 #pragma comment (lib,"MSWSock.lib")
 
+constexpr int SERVERKEY = 0;
 constexpr int STARTKEY = 1;
 constexpr int INVALIDKEY = -1;
-constexpr int BUFSIZE = 200;
+constexpr int BUFSIZE = 1000;
 constexpr int MAXPLAYER = 100;
 
 #ifdef _DEBUG
@@ -41,6 +42,19 @@ public:
 	uint16_t	size;
 	uint16_t	type;
 };
+
+struct EVENT_HEADER {
+	uint16_t	size;
+	uint16_t	type;
+	std::chrono::system_clock::time_point start_time;
+
+	constexpr bool operator< (const EVENT_HEADER& other) const {
+		return start_time > other.start_time;
+	}
+};
+
 #pragma pack(pop)
 
 std::vector<uint8_t> MakeBuffer(char type, const uint8_t* data, const int size);
+
+std::vector<uint8_t> MakeEventBuffer(char type, const uint8_t* data, const int size, const int delaytime_ms);
