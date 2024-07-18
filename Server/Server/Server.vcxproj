@@ -122,8 +122,8 @@
       <AdditionalDependencies>xlntd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>xcopy /y /d "$(ProjectDir)\xlnt\xlnt_Debug\bin\xlntd.dll" "$(OutDir)"
+xcopy /y /d /e /i "$(ProjectDir)\GameData" "$(OutDir)GameData"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -142,12 +142,12 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)\xlnt\xlnt_Release\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir);$(ProjectDir)\xlnt\xlnt_Release\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>xlnt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>xcopy /y /d "$(ProjectDir)\xlnt\xlnt_Release\bin\xlnt.dll" "$(OutDir)"
+xcopy /y /d /e /i "$(ProjectDir)\GameData" "$(OutDir)GameData"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
