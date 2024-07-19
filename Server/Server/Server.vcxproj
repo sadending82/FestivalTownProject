@@ -123,7 +123,8 @@
     </Link>
     <PreBuildEvent>
       <Command>xcopy /y /d "$(ProjectDir)\xlnt\xlnt_Debug\bin\xlntd.dll" "$(OutDir)"
-xcopy /y /d /e /i "$(ProjectDir)\GameData" "$(OutDir)GameData"</Command>
+xcopy /y /d /e /i "$(ProjectDir)\GameData" "$(OutDir)GameData"
+xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -147,7 +148,8 @@ xcopy /y /d /e /i "$(ProjectDir)\GameData" "$(OutDir)GameData"</Command>
     </Link>
     <PreBuildEvent>
       <Command>xcopy /y /d "$(ProjectDir)\xlnt\xlnt_Release\bin\xlnt.dll" "$(OutDir)"
-xcopy /y /d /e /i "$(ProjectDir)\GameData" "$(OutDir)GameData"</Command>
+xcopy /y /d /e /i "$(ProjectDir)\GameData" "$(OutDir)GameData"
+xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

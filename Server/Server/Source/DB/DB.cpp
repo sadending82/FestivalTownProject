@@ -23,9 +23,40 @@ void DB::ShowError(SQLHANDLE handle, SQLSMALLINT handleType, RETCODE retcode) {
 	}
 }
 
+bool DB::ReadConfig()
+{
+	std::string txt;
+
+	std::ifstream file("Config/DBconfig.txt");
+	if (!file) return false;
+	int line = 0;
+
+	while (line < 3 && std::getline(file, txt)) {
+		if (line == 0) {
+			std::string tmp = txt.substr(6);
+			odbc.assign(tmp.begin(), tmp.end());
+		}
+		if (line == 1) {
+			std::string tmp = txt.substr(4);
+			id.assign(tmp.begin(), tmp.end());
+		}
+		if (line == 2) {
+			std::string tmp = txt.substr(4);
+			pw.assign(tmp.begin(), tmp.end());
+		}
+		line++;
+	}
+	return true;
+}
+
 int DB::Init()
 {
 	SQLRETURN retcode;
+
+	if (ReadConfig() == false) {
+		DEBUGMSGNOPARAM("Read DB Config File Fail\n");
+		return -1;
+	}
 
 	if (retcode = SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &hEnv) == SQL_ERROR) {
 
