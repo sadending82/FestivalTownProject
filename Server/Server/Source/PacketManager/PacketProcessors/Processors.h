@@ -1,5 +1,6 @@
 #pragma once
-#include "PacketTest.h"
+#include "Packet/PacketTest.h"
+#include "Event/EventTest.h"
 
 enum PACKETTYPE {
 	C2S_TEST,

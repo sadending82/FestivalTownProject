@@ -1,4 +1,7 @@
 #include "Server/Server.h";
+#include "TableManager/TableManager.h"
+#include "PacketManager/PacketManager.h"
+#include "DB/DB.h"
 
 TableManager* gTableManager = new TableManager();
 PacketManager* gPacketManager = new PacketManager();

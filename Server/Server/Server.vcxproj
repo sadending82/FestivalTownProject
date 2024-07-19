@@ -171,11 +171,11 @@ xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     <ClInclude Include="Source\PacketManager\PacketManager.h" />
     <ClInclude Include="Source\Network\ExOver.h" />
     <ClInclude Include="Source\Network\Session\Session.h" />
-    <ClInclude Include="Source\PacketManager\PacketProcessors\EventTest.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Event\EventTest.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\FlatBufferManager.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\test_generated.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Processors.h" />
-    <ClInclude Include="Source\PacketManager\PacketProcessors\PacketTest.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\PacketTest.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\PacketProcessor.h" />
     <ClInclude Include="Source\PacketManager\test_generated.h" />
     <ClInclude Include="Source\Server\Server.h" />

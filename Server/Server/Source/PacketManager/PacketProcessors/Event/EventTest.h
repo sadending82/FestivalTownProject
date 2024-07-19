@@ -1,14 +1,11 @@
 #pragma once
-#include "PacketProcessor.h"
+#include "../PacketProcessor.h"
 
-class Server;
-
-class PacketTest : public PacketProcessor {
+class EventTest : public PacketProcessor {
 
 public:
 
-	virtual void Process(std::array<Session*, MAXPLAYER>& sessions, const uint8_t* data, const int size, const int key) {
-
+	virtual void Process(Server* pServer, const uint8_t* data, const int size) {
 		mBuilder.Clear();
 
 		flatbuffers::Verifier verifier(data, size);
@@ -20,15 +17,13 @@ public:
 			DEBUGMSGONEPARAM("Number -> %d\n", read_test->number());
 		}
 
-		/*auto chat = mBuilder.CreateString("hi client");
+		auto chat = mBuilder.CreateString("Event Working");
 		int number = 11;
 
 		mBuilder.Finish(Createtest(mBuilder, chat, number));
 
-		std::vector<uint8_t> send_buffer = MakeBuffer(1, mBuilder.GetBufferPointer(), mBuilder.GetSize());
-
-		sessions[key]->DoSend(&send_buffer);*/
-
+		std::vector<uint8_t> buffer = MakeEventBuffer(0, mBuilder.GetBufferPointer(), mBuilder.GetSize(), 10000);
+		pServer->GetTimer()->PushEvent(buffer);
 	}
 
 private:

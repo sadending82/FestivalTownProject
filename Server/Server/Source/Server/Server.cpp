@@ -2,6 +2,8 @@
 #include "Server.h"
 #include "../Thread/WorkerThread/WorkerThread.h"
 #include "../Thread/TimerThread/TimerThread.h"
+#include "../TableManager/TableManager.h"
+#include "../PacketManager/PacketManager.h"
 
 int Server::SetKey()
 {
@@ -74,9 +76,8 @@ void Server::Init(class PacketManager* pPacketManager, class TableManager* pTabl
 
     // Thread Create
     pPacketManager->Init(this);
-
-    Timer* pTimer = new Timer;
-    pTimer->Init(mHcp);
+    mTimer = new Timer;
+    mTimer->Init(mHcp);
 
     SYSTEM_INFO si;
     GetSystemInfo(&si);
@@ -84,7 +85,7 @@ void Server::Init(class PacketManager* pPacketManager, class TableManager* pTabl
         WorkerThread* pWorkerThreadRef = new WorkerThread(this, pPacketManager);
         mWorkerThreads.emplace_back(std::thread(&WorkerThread::RunWorker, pWorkerThreadRef));
     }
-    mTimerThread = std::thread(&Timer::Main, pTimer);
+    mTimerThread = std::thread(&Timer::Main, mTimer);
 
     DEBUGMSGNOPARAM("Thread Ready\n");
 }

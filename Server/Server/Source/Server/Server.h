@@ -1,9 +1,11 @@
 #pragma once
 #include "../Network/Session/Session.h"
-#include "../TableManager/TableManager.h"
-#include "../PacketManager/PacketManager.h"
+
+#define SESSION_ARRAY std::array<Session*, MAXPLAYER>
 
 constexpr int SERVERPORT = 5000;
+
+class Timer;
 
 class Server
 {
@@ -19,13 +21,17 @@ public:
 	HANDLE GetHcp() { return mHcp; }
 	SOCKADDR_IN GetServerAddr() { return mServerAddr; }
 	SOCKET GetListenSocket() { return mListenSocket; }
-	std::array<Session*, MAXPLAYER>& GetSessions() { return mSessions; };
+	SESSION_ARRAY& GetSessions() { return mSessions; }
+	Timer* GetTimer() { return mTimer; }
 
 private:
 	SOCKADDR_IN mServerAddr;
 	HANDLE mHcp;
 	SOCKET mListenSocket;
-	std::array<Session*, MAXPLAYER> mSessions;
+
+	Timer* mTimer = nullptr;
+
+	SESSION_ARRAY mSessions;
 	std::vector<std::thread> mWorkerThreads;
 	std::thread mTimerThread;
 

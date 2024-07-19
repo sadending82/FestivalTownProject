@@ -2,8 +2,6 @@
 #include "PacketProcessors/PacketProcessor.h"
 #include <unordered_map>
 
-class Server;
-
 class PacketManager
 {
 public:
@@ -17,6 +15,6 @@ public:
 private:
 	std::unordered_map<int, std::unique_ptr<PacketProcessor>> PacketProcessorMap;
 	std::unordered_map<int, std::unique_ptr<PacketProcessor>> EventProcessorMap;
-	Server* pServer = nullptr;
+	class Server* pServer = nullptr;
 };
 

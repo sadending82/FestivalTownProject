@@ -1,5 +1,6 @@
 #include "WorkerThread.h"
 #include"../../Server/Server.h"
+#include "../../PacketManager/PacketManager.h"
 
 void WorkerThread::RunWorker()
 {
@@ -82,11 +83,12 @@ void WorkerThread::RunWorker()
             break;
         }
         case eOpType::OP_EVENT:{
+            std::cout <<sizeof(exOver->mMessageBuf) << std::endl;
             unsigned char* data_ptr = exOver->mMessageBuf;
             int headerSize = sizeof(EVENT_HEADER);
             EVENT_HEADER* header = reinterpret_cast<EVENT_HEADER*>(data_ptr);
             unsigned char* data = data_ptr + headerSize;
-            m_pPacketManager->ProcessPacket(header->type, data, header->size, key);
+            m_pPacketManager->ProcessEvent(header->type, data, header->size);
             break;
         }
         }
