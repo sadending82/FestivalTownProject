@@ -6,7 +6,7 @@ public class PlayerCameraController : MonoBehaviour
 {
     public float rotationSpeed = 1;
     public Transform cameraArm;
-    public Transform root;
+    public Transform pelvis;
 
     private float mouseX, mouseY;
 
@@ -24,7 +24,7 @@ public class PlayerCameraController : MonoBehaviour
 
     private void Move()
     {
-        cameraArm.position = new Vector3(root.position.x, 0, root.position.z);
+        cameraArm.position = new Vector3(pelvis.position.x, 0, pelvis.position.z);
     }
     private void LookAround()
     {

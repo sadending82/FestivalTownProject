@@ -844,11 +844,11 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: d25d0f19-1ce5-4d79-8aa6-c938cb2e1c2a
+  cloudProjectId: f01a9a95-fa2d-44d7-b908-bd1c2611cc6f
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: FestivalTown (1)
-  organizationId: studio-bluecat-neru
+  projectName: FestivalTown
+  organizationId: kds09526
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
