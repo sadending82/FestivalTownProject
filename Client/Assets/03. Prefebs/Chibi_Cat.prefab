@@ -296,6 +296,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6198538951788076256}
   - component: {fileID: 2060028266794545006}
+  - component: {fileID: 1175049497819931042}
+  - component: {fileID: 518108891077362687}
   m_Layer: 0
   m_Name: Chibi_Cat
   m_TagString: Untagged
@@ -336,6 +338,35 @@ MonoBehaviour:
   rotationSpeed: 10
   cameraArm: {fileID: 1279740868895598275}
   root: {fileID: 6864188204912551780}
+--- !u!114 &1175049497819931042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8332345205828266500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 029d63b45989f594ea30cf5436c4fbc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animatedTorso: {fileID: 7405208251401421626}
+  _physicalTorso: {fileID: 3954166900110050457}
+  _animatedAnimator: {fileID: 3006626696806638105}
+  _physicalAnimator: {fileID: 3727388786799310474}
+--- !u!114 &518108891077362687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8332345205828266500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17cec5737ab180247b556a8ea6733151, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _activeRagdoll: {fileID: 1175049497819931042}
 --- !u!1001 &122987845633645697
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -703,6 +734,16 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}
+--- !u!95 &3006626696806638105 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2886068241463164568, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}
+  m_PrefabInstance: {fileID: 122987845633645697}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7405208251401421626 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7453568849816707003, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}
+  m_PrefabInstance: {fileID: 122987845633645697}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &9176510686159730787 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9146092942837900514, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}
@@ -2944,6 +2985,11 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.03
   m_Center: {x: 0, y: -0.02, z: 0.03}
+--- !u!95 &3727388786799310474 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2886068241463164568, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}
+  m_PrefabInstance: {fileID: 1997073327046314002}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4508234592683799335 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2677232636036610869, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}
