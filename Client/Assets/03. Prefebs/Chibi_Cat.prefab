@@ -352,13 +352,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e16d72daeb0b454c8fd83c6db580610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 10
-  runSpeed: 15
-  jumpForce: 100
-  rotateSpeed: 5
   cameraArm: {fileID: 1279740868895598275}
   stabilizer: {fileID: 5743033502580215084}
   pelvisRigidbody: {fileID: 3954166900110050457}
+  walkSpeed: 10
+  runSpeed: 15
+  jumpForce: 200
+  rotateSpeed: 5
+  floorDetectionDistance: 0.03
+  leftFootRigidbody: {fileID: 4402702407388101037}
+  rightFootRigidbody: {fileID: 4128075047387393776}
   isGrounded: 0
 --- !u!114 &2060028266794545006
 MonoBehaviour:
@@ -1422,9 +1425,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8815182927425203789, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6251595488672053533}
-    - targetCorrespondingSourceObject: {fileID: 8815182927425203789, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 801454226751107889}
     - targetCorrespondingSourceObject: {fileID: 7804868593828450998, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2566950179201176225}
@@ -1452,9 +1452,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4558102227716347857, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3351715707747503843}
-    - targetCorrespondingSourceObject: {fileID: 4558102227716347857, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8513255379775977473}
   m_SourcePrefab: {fileID: 100100000, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}
 --- !u!1 &372254673894379724 stripped
 GameObject:
@@ -1720,13 +1717,13 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 4
-    positionSpring: 300
+    positionSpring: 450
     positionDamper: 0
     maximumForce: 3.4028233e+38
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
-    positionSpring: 300
+    positionSpring: 450
     positionDamper: 0
     maximumForce: 3.4028233e+38
     useAcceleration: 0
@@ -2857,19 +2854,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.03
   m_Center: {x: 0.009, y: 0, z: 0.01}
---- !u!114 &8513255379775977473
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2663499090787295171}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 212d6cab98b1449479f886e0211ca049, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerController: {fileID: 0}
 --- !u!1 &3532101582028905962 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3076957112009315832, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}
@@ -3137,13 +3121,13 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 4
-    positionSpring: 300
+    positionSpring: 450
     positionDamper: 0
     maximumForce: 3.4028233e+38
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
-    positionSpring: 300
+    positionSpring: 450
     positionDamper: 0
     maximumForce: 3.4028233e+38
     useAcceleration: 0
@@ -3449,13 +3433,13 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 4
-    positionSpring: 300
+    positionSpring: 450
     positionDamper: 0
     maximumForce: 3.4028233e+38
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
-    positionSpring: 300
+    positionSpring: 450
     positionDamper: 0
     maximumForce: 3.4028233e+38
     useAcceleration: 0
@@ -3948,13 +3932,13 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 4
-    positionSpring: 300
+    positionSpring: 450
     positionDamper: 0
     maximumForce: 3.4028233e+38
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
-    positionSpring: 300
+    positionSpring: 450
     positionDamper: 0
     maximumForce: 3.4028233e+38
     useAcceleration: 0
@@ -4103,13 +4087,13 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 4
-    positionSpring: 300
+    positionSpring: 450
     positionDamper: 0
     maximumForce: 3.4028233e+38
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
-    positionSpring: 300
+    positionSpring: 450
     positionDamper: 0
     maximumForce: 3.4028233e+38
     useAcceleration: 0
@@ -4463,19 +4447,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.03
   m_Center: {x: -0.009, y: 0, z: -0.01}
---- !u!114 &801454226751107889
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7053434947335661151}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 212d6cab98b1449479f886e0211ca049, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerController: {fileID: 0}
 --- !u!4 &7303277902820257008 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9146092942837900514, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}

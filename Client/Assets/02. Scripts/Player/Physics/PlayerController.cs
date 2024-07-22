@@ -4,14 +4,21 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("--- Physics ---")]
+    public Transform cameraArm;
+    public Transform stabilizer;
+    public Rigidbody pelvisRigidbody;
+
+    [Header("--- State ---")]
     public float walkSpeed;
     public float runSpeed;
     public float jumpForce;
     public float rotateSpeed;
-    public Transform cameraArm;
-    public Transform stabilizer;
 
-    public Rigidbody pelvisRigidbody;
+    [Header("--- JumpCheck ---")]
+    public float floorDetectionDistance;
+    public Rigidbody leftFootRigidbody;
+    public Rigidbody rightFootRigidbody;
     public bool isGrounded;
 
     private Quaternion rotationQuaternion;
@@ -28,8 +35,31 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
+        CheckIsGround();
     }
 
+    private void CheckIsGround()
+    {
+        if(isGrounded == false && pelvisRigidbody.velocity.y <= 0)
+        {
+            // ray 그리기
+            //Debug.DrawRay(leftFootRigidbody.position, Vector3.down, new Color(0, 1, 0));
+            //Debug.DrawRay(rightFootRigidbody.position, Vector3.down, new Color(0, 1, 0));
+
+            Ray rayL = new Ray(leftFootRigidbody.position, Vector3.down);
+            Ray rayR = new Ray(rightFootRigidbody.position, Vector3.down);
+
+            RaycastHit hitInfoL, hitinfoR;
+            if (Physics.Raycast(rayL, out hitInfoL, floorDetectionDistance) == true)
+            {
+                if (hitInfoL.collider.gameObject.tag == "Ground") isGrounded = true;
+            }
+            else if (Physics.Raycast(rayR, out hitinfoR, floorDetectionDistance) == true)
+            {
+                if (hitinfoR.collider.gameObject.tag == "Ground") isGrounded = true;
+            }
+        }
+    }
     private void Move()
     {
         Vector2 moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
@@ -37,12 +67,10 @@ public class PlayerController : MonoBehaviour
         Vector3 lookRight = new Vector3(cameraArm.right.x, 0f, cameraArm.right.z).normalized;
         Vector3 moveDir = lookForward * moveInput.y + lookRight * moveInput.x;
 
-        // 달린다면
         if (Input.GetKey(KeyCode.LeftShift))
         {
             pelvisRigidbody.velocity = moveDir * runSpeed;
         }
-        // 걷는다면
         else
         {
             pelvisRigidbody.velocity = moveDir * walkSpeed;
@@ -58,10 +86,7 @@ public class PlayerController : MonoBehaviour
         {
             if(isGrounded == true)
             {
-                /*
-                두 발로 그라운드인지 체크하기 때문에 두 발이 간발의 차로 땅에 닿았을때 AddForce를 두 번 하는 것을 방지하는 것을 추가해야함
-                */
-                pelvisRigidbody.AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
+                pelvisRigidbody.velocity = Vector3.up * jumpForce;
                 isGrounded = false;
             }
         }
