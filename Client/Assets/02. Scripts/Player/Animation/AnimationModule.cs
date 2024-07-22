@@ -7,7 +7,7 @@ namespace ActiveRagdoll
 
     public class AnimationModule : Module
     {
-        [Header("--- BODY ---")]
+        [Header("--- Body ---")]
         private Quaternion[] _initialJointsRotation;
         private ConfigurableJoint[] _joints;
         private Transform[] _animatedBones;

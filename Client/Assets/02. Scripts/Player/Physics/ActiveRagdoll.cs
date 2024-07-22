@@ -8,7 +8,7 @@ namespace ActiveRagdoll
 {
     public class ActiveRagdoll : MonoBehaviour 
     {
-        [Header("--- BODY ---")]
+        [Header("--- Body ---")]
         [SerializeField] private Transform _animatedTorso;
         [SerializeField] private Rigidbody _physicalTorso;
         public Transform AnimatedTorso { get { return _animatedTorso; } }
@@ -19,7 +19,7 @@ namespace ActiveRagdoll
         public ConfigurableJoint[] Joints { get; private set; }
         public Rigidbody[] Rigidbodies { get; private set; }
 
-        [Header("--- ANIMATORS ---")]
+        [Header("--- Animators ---")]
         [SerializeField] private Animator _animatedAnimator;
         [SerializeField] private Animator _physicalAnimator;
         public Animator AnimatedAnimator 
