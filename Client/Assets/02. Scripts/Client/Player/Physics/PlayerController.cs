@@ -80,7 +80,7 @@ public class PlayerController : MonoBehaviour
             isLeftShiftKeyDown = true;
         }
 
-        Vector2 moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        Vector2 moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         Vector3 lookForward = new Vector3(cameraArm.forward.x, 0f, cameraArm.forward.z).normalized;
         Vector3 lookRight = new Vector3(cameraArm.right.x, 0f, cameraArm.right.z).normalized;
         Vector3 moveDir = lookForward * moveInput.y + lookRight * moveInput.x;
@@ -104,7 +104,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-        else
+        else if(isGrounded == true)
         {
             animationController.setLowerBodyAnimationState(LowerBodyAnimationState.IDLE);
         }

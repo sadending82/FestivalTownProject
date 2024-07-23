@@ -444,9 +444,21 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3803125223905238626, guid: 8ed26ac174bfed74785e560248fb8646, type: 3}
+      propertyPath: floorDetectionDistance
+      value: 0.04
+      objectReference: {fileID: 0}
     - target: {fileID: 3975771598730950416, guid: 8ed26ac174bfed74785e560248fb8646, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4128075047387393776, guid: 8ed26ac174bfed74785e560248fb8646, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4402702407388101037, guid: 8ed26ac174bfed74785e560248fb8646, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6198538951788076256, guid: 8ed26ac174bfed74785e560248fb8646, type: 3}
       propertyPath: m_LocalPosition.x

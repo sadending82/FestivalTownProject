@@ -39,14 +39,27 @@ namespace ActiveRagdoll
 
         void FixedUpdate()
         {
-            UpdateJointTargets();
+            if (useAnimationModule == true)
+            {
+                UpdateJointTargets();
+            }
         }
 
         private void UpdateJointTargets()
         {
-            for (int i = 0; i < _joints.Length; i++)
+            if (useIK == true)
             {
-                ConfigurableJointExtensions.SetTargetRotationLocal(_joints[i], _animatedBones[i + 1].localRotation, _initialJointsRotation[i]);
+                for (int i = 20; i < _joints.Length; i++)
+                {
+                    ConfigurableJointExtensions.SetTargetRotationLocal(_joints[i], _animatedBones[i + 1].localRotation, _initialJointsRotation[i]);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < _joints.Length; i++)
+                {
+                    ConfigurableJointExtensions.SetTargetRotationLocal(_joints[i], _animatedBones[i + 1].localRotation, _initialJointsRotation[i]);
+                }
             }
         }
 
