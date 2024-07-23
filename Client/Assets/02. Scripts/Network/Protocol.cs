@@ -13,4 +13,14 @@ namespace NetworkProtocol
         [MarshalAs(UnmanagedType.U2)]
         public ushort type;
     }
+
+    enum ePacketType{
+        S2C_ADDPLAYER,
+        S2C_PLAYERMOVE,
+        S2C_PLAYERSTOP,
+
+
+        C2S_PLAYERMOVE,
+        C2S_PLAYERSTOP,
+    }
 }

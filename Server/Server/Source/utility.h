@@ -35,7 +35,7 @@ constexpr int MAXPLAYER = 100;
 #define DEBUGMSGONEPARAM(...)
 #endif
 
-enum PACKETTYPE {
+enum ePacketType {
 	S2C_ADDPLAYER,
 	S2C_PLAYERMOVE,
 	S2C_PLAYERSTOP,
