@@ -6,6 +6,9 @@ using System.Runtime.InteropServices;
 using UnityEditor.MemoryProfiler;
 using UnityEngine;
 using NetworkProtocol;
+using Google.FlatBuffers;
+using PacketTable.Player;
+using UnityEngine.UIElements;
 
 public class PacketManager
 {
@@ -47,10 +50,22 @@ public class PacketManager
         return buffer;
     }
 
-    public byte[] CreatePlayerMovePacket(byte[] data, Vector3Int pos, Vector3Int direction)
+    public byte[] CreatePlayerMovePacket(Vector3Int position, Vector3Int direction)
     {
+        var builder = new FlatBufferBuilder(1);
+        var pos = Vec3.CreateVec3(builder, position.x, position.y, position.z);
+        var dir = Vec3.CreateVec3(builder, direction.x, direction.y, direction.z);
+
+        PlayerMove.StartPlayerMove(builder);
+        PlayerMove.AddPos(builder, pos);
+        PlayerMove.AddDirection(builder, dir);
+        PlayerMove.AddKey(builder, 1);
+        var pm = PlayerMove.EndPlayerMove(builder);
+        builder.Finish(pm.Value);
+        byte[] data = builder.SizedByteArray();
+
         HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERMOVE, size = (ushort)data.Length };
-        
+
         byte[] headerdata = Serialize<HEADER>(header);
         byte[] buf = new byte[data.Length + headerdata.Length];
 
@@ -62,8 +77,20 @@ public class PacketManager
         return buf;
     }
 
-    public byte[] CreatePlayerStopPacket(byte[] data, Vector3Int pos, Vector3Int direction)
+    public byte[] CreatePlayerStopPacket(Vector3Int position, Vector3Int direction)
     {
+        var builder = new FlatBufferBuilder(1);
+        var pos = Vec3.CreateVec3(builder, position.x, position.y, position.z);
+        var dir = Vec3.CreateVec3(builder, direction.x, direction.y, direction.z);
+
+        PlayerMove.StartPlayerMove(builder);
+        PlayerMove.AddPos(builder, pos);
+        PlayerMove.AddDirection(builder, dir);
+        PlayerMove.AddKey(builder, 1);
+        var pm = PlayerMove.EndPlayerMove(builder);
+        builder.Finish(pm.Value);
+        byte[] data = builder.SizedByteArray();
+
         HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERSTOP, size = (ushort)data.Length };
 
         byte[] headerdata = Serialize<HEADER>(header);
@@ -72,9 +99,21 @@ public class PacketManager
         Buffer.BlockCopy(headerdata, 0, buf, 0, headerdata.Length);
         Buffer.BlockCopy(data, 0, buf, headerdata.Length, data.Length);
 
-        Debug.Log("Make Move Packet.");
+        Debug.Log("Make Stop Packet.");
 
         return buf;
+    }
+
+    public void ProcessPlayerMovePacket(byte[] data)
+    {
+        var recvData = new ByteBuffer(data);
+
+        var playermove = PlayerMove.GetRootAsPlayerMove(recvData);
+
+        var pos = playermove.Pos.Value;
+        var dir = playermove.Direction.Value;
+
+        Debug.Log("Recv Move x: " + pos.X + " y: " + pos.Y + " z: " + pos.Z);
     }
 
     private void Update()

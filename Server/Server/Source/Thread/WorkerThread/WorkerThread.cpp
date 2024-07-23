@@ -53,6 +53,18 @@ void WorkerThread::RunWorker()
                     DEBUGMSGONEPARAM("Accept Error: %d\n", err_num);
                 }
             }
+
+            flatbuffers::FlatBufferBuilder mBuilder;
+            auto key = mBuilder.CreateString("hi client");
+            auto pos = PacketTable::Player::CreateVec3(mBuilder, 1.0, 2.0, 3.0);
+            auto dir = PacketTable::Player::CreateVec3(mBuilder, 4.0, 5.0, 6.0);
+
+            mBuilder.Finish(PacketTable::Player::CreatePlayerMove(mBuilder, 1, pos, dir));
+
+            std::vector<uint8_t> send_buffer = MakeBuffer(1, mBuilder.GetBufferPointer(), mBuilder.GetSize());
+
+            m_pServer->GetSessions()[newKey]->DoSend(&send_buffer);
+
             break;
         }
         case eOpType::OP_RECV: {

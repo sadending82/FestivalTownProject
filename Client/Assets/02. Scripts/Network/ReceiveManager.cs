@@ -7,10 +7,11 @@ using NetworkProtocol;
 using System.Runtime.InteropServices;
 using System;
 using System.Runtime.Serialization;
+using UnityEditor;
 
 public class ReceiveManager
 {
-
+    PacketManager packetManager = new PacketManager();
 
 
     public void Init()
@@ -119,12 +120,22 @@ public class ReceiveManager
 
     void ProcessPacket(byte[] packet)
     {
-        byte[] headerData = new ArraySegment<byte>(packet, 2, 2).ToArray();
+        int HeaderSize = Marshal.SizeOf(typeof(HEADER));
+        byte[] headerData = new byte[HeaderSize];
+        byte[] data = new byte[packet.Length - HeaderSize];
+
+        Buffer.BlockCopy(packet, 0, headerData, 0, HeaderSize);
+        Buffer.BlockCopy(packet, HeaderSize, data, 0, packet.Length - HeaderSize);
 
         ushort type = BitConverter.ToUInt16(headerData, 0);
 
-        switch(type)
+        switch((ePacketType)type)
         {
+            case ePacketType.S2C_PLAYERMOVE:
+                {
+                    packetManager.ProcessPlayerMovePacket(data);
+                }
+                break;
             default:
                 break;
         }
