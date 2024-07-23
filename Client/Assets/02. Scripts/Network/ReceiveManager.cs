@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 using System;
 using System.Runtime.Serialization;
 
-public class ReceiveManager : MonoBehaviour
+public class ReceiveManager
 {
 
 
@@ -27,7 +27,6 @@ public class ReceiveManager : MonoBehaviour
 
     private static T Deserialize<T>(byte[] bytes)
     {
-        
         
         GCHandle gch = GCHandle.Alloc(bytes, GCHandleType.Pinned);
         T pBuffer = (T)Marshal.PtrToStructure(gch.AddrOfPinnedObject(), typeof(T));
@@ -85,9 +84,6 @@ public class ReceiveManager : MonoBehaviour
                 // 처리해야할 데이터의 양
                 int toProcessData = recvSize + prevSize;
 
-                // 헤더의 사이즈
-                int headerSize = Marshal.SizeOf(typeof(HEADER));
-
                 // 헤더 데이터 가져오기
                 byte[] headerData = m_Buffer.GetRange(0, 2).ToArray();
 
@@ -96,6 +92,9 @@ public class ReceiveManager : MonoBehaviour
                 while(packetSize <= toProcessData)
                 {
                     //TODO : packet 처리용 함수 ProcessPacket의 작성
+                   byte[] packetList = m_Buffer.GetRange(0, packetSize).ToArray();
+
+                    ProcessPacket(packetList);
 
                     // 처리했으므로, packetSize 만큼은 처리해야할 놈 줄여주기
                     toProcessData -= packetSize;
@@ -115,6 +114,19 @@ public class ReceiveManager : MonoBehaviour
 
                 prevSize = toProcessData;
             }
+        }
+    }
+
+    void ProcessPacket(byte[] packet)
+    {
+        byte[] headerData = new ArraySegment<byte>(packet, 2, 2).ToArray();
+
+        ushort type = BitConverter.ToUInt16(headerData, 0);
+
+        switch(type)
+        {
+            default:
+                break;
         }
     }
 }

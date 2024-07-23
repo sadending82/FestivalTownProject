@@ -7,7 +7,7 @@ using UnityEditor.MemoryProfiler;
 using UnityEngine;
 using NetworkProtocol;
 
-public class PacketManager : MonoBehaviour
+public class PacketManager
 {
 
     public void SendPacket(TcpClient Connection, Byte[] buffer)
