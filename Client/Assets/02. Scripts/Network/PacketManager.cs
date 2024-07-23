@@ -5,18 +5,10 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using UnityEditor.MemoryProfiler;
 using UnityEngine;
+using NetworkProtocol;
 
 public class PacketManager : MonoBehaviour
 {
-
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-    struct HEADER
-    {
-        [MarshalAs(UnmanagedType.U2)]
-        public ushort size;
-        [MarshalAs(UnmanagedType.U2)]
-        public ushort type;
-    }
 
     public void SendPacket(TcpClient Connection, Byte[] buffer)
     {
@@ -36,7 +28,7 @@ public class PacketManager : MonoBehaviour
         }
         catch (SocketException Exception)
         {
-            Debug.Log("Socket exception: " + Exception);
+            Debug.Log("Write exception: " + Exception);
         }
     }
 

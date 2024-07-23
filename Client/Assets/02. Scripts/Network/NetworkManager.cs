@@ -10,9 +10,11 @@ using UnityEngine;
 using System.Runtime.InteropServices;
 using PacketTable.Player;
 using Google.FlatBuffers;
+using NetworkProtocol;
 
 public class NetworkManager : MonoBehaviour
 {
+    bool isNetworkConnected = false;
 
     public static NetworkManager instance;
 
@@ -46,11 +48,12 @@ public class NetworkManager : MonoBehaviour
 
     public void Start()
     {
-        ConnectToServer();
-        recvManager.CreateRecvThread();
+        isNetworkConnected = ConnectToServer();
+
+        if(isNetworkConnected) recvManager.CreateRecvThread(Connection);
     }
 
-    private void ConnectToServer()
+    private bool ConnectToServer()
     {
         try
         {
@@ -59,46 +62,36 @@ public class NetworkManager : MonoBehaviour
         catch (Exception e)
         {
             Debug.Log("Error : " + e);
+            return false;
         }
-    }
 
-    private byte[] Serialize<T>(T packet)
-    {
-        var buffer = new byte[Marshal.SizeOf(typeof(T))];
-
-        var gch = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-        var pBuffer = gch.AddrOfPinnedObject();
-
-        Marshal.StructureToPtr(packet, pBuffer, false);
-        gch.Free();
-
-        Debug.Log("Serializing.");
-
-        return buffer;
+        return true;
     }
 
     private void Update()
     {
-        CurrentTime += Time.deltaTime;
-
-        if (CurrentTime > SendBufferInterval)
+        if (isNetworkConnected)
         {
-            CurrentTime -= SendBufferInterval;
+            CurrentTime += Time.deltaTime;
 
-            var builder = new FlatBufferBuilder(1);
+            if (CurrentTime > SendBufferInterval)
+            {
+                CurrentTime -= SendBufferInterval;
 
-            var pos = Vec3.CreateVec3(builder, 1.0f, 2.0f, 3.0f);
+                var builder = new FlatBufferBuilder(1);
 
-            PlayerMove.StartPlayerMove(builder);
-            PlayerMove.AddKey(builder, 1);
-            PlayerMove.AddPos(builder, pos);
-            PlayerMove.AddDirection(builder, pos);
-            var MoveData = PlayerMove.EndPlayerMove(builder);
-            builder.Finish(MoveData.Value);
-            var packet = builder.SizedByteArray();
+                var pos = Vec3.CreateVec3(builder, 1.0f, 2.0f, 3.0f);
 
-            packetManager.SendPacket(Connection, packetManager.CreateTestPacket(packet));
+                PlayerMove.StartPlayerMove(builder);
+                PlayerMove.AddKey(builder, 1);
+                PlayerMove.AddPos(builder, pos);
+                PlayerMove.AddDirection(builder, pos);
+                var MoveData = PlayerMove.EndPlayerMove(builder);
+                builder.Finish(MoveData.Value);
+                var packet = builder.SizedByteArray();
 
+                packetManager.SendPacket(Connection, packetManager.CreateTestPacket(packet));
+            }
         }
     }
 
