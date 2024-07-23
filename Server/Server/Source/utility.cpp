@@ -1,10 +1,11 @@
 #include "utility.h"
 
-std::vector<uint8_t> MakeBuffer(char type, const uint8_t* data, const int size)
+std::vector<uint8_t> MakeBuffer(const int type, const uint8_t* data, const int size)
 {
 	HEADER h;
 	h.size = size;
 	h.type = type;
+
 	std::vector<uint8_t> buf(sizeof(HEADER) + size);
 	memcpy(buf.data(), &h, sizeof(HEADER));
 	memcpy(buf.data() + sizeof(HEADER), data, size);
@@ -12,7 +13,7 @@ std::vector<uint8_t> MakeBuffer(char type, const uint8_t* data, const int size)
 	return buf;
 }
 
-std::vector<uint8_t> MakeEventBuffer(char type, const uint8_t* data, const int size, const int delaytime_ms)
+std::vector<uint8_t> MakeEventBuffer(const int type, const uint8_t* data, const int size, const int delaytime_ms)
 {
 	EVENT_HEADER h;
 	h.size = size;
