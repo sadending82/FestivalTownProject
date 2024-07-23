@@ -13,7 +13,7 @@ public:
 	Server() {};
 	~Server() {};
 
-	int SetKey();
+	int SetSessionKey();
 	void Disconnect(int key);
 	void Init(class PacketManager* pPacketManager, class TableManager* pTableManager, class DB* pDB);
 	void ThreadJoin();

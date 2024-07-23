@@ -12,13 +12,13 @@ public:
 		mBuilder.Clear();
 
 		flatbuffers::Verifier verifier(data, size);
-		if (VerifytestBuffer(verifier)) {
+		if (verifier.VerifyBuffer<PlayerStop>(nullptr)) {
 
 			const PlayerStop* read = flatbuffers::GetRoot<PlayerStop>(data);
 
-			DEBUGMSGONEPARAM("stop x -> %f\n", read->pos()->x());
-			DEBUGMSGONEPARAM("stop y -> %f\n", read->pos()->y());
-			DEBUGMSGONEPARAM("stop z -> %f\n", read->pos()->z());
+			std::vector<uint8_t> send_buffer = MakeBuffer(PACKETTYPE::S2C_PLAYERSTOP, data, size);
+
+			pServer->GetSessions()[key]->DoSend(&send_buffer);
 		}
 
 	}

@@ -20,7 +20,7 @@ void WorkerThread::RunWorker()
 
         switch (exOver->mOpType) {
         case eOpType::OP_ACCEPT: {
-            int newKey = m_pServer->SetKey();
+            int newKey = m_pServer->SetSessionKey();
             if (newKey != INVALIDKEY) {
                 Session* newSession = m_pServer->GetSessions()[newKey];
                 SOCKET cSocket = reinterpret_cast<SOCKET>(exOver->mWsaBuf.buf);
@@ -28,7 +28,7 @@ void WorkerThread::RunWorker()
                 newSession->GetExOver().SetmOpType(eOpType::OP_RECV);
                 newSession->SetPrevData(0);
                 newSession->SetState(eSessionState::ST_ACCEPTED);
-                newSession->SetID(newKey);
+                newSession->SetSessionID(newKey);
                 CreateIoCompletionPort((HANDLE)newSession->GetSocket(), m_pServer->GetHcp(), newKey, 0);
 
                 DEBUGMSGONEPARAM("Lobby Accept: %d\n", newKey);

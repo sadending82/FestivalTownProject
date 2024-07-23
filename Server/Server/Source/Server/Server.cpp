@@ -5,7 +5,7 @@
 #include "../TableManager/TableManager.h"
 #include "../PacketManager/PacketManager.h"
 
-int Server::SetKey()
+int Server::SetSessionKey()
 {
     for (int i = STARTKEY; i < MAXPLAYER; ++i) {
         auto session = GetSessions()[i];
@@ -27,7 +27,7 @@ void Server::Disconnect(int key)
     closesocket(session->GetSocket());
     session->SetState(eSessionState::ST_FREE);
 
-    DEBUGMSGONEPARAM("Lobby Disconnect: %d\n", key);
+    DEBUGMSGONEPARAM("Disconnect: %d\n", key);
 }
 
 void Server::Init(class PacketManager* pPacketManager, class TableManager* pTableManager, class DB* pDB)

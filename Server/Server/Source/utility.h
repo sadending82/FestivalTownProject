@@ -35,6 +35,28 @@ constexpr int MAXPLAYER = 100;
 #define DEBUGMSGONEPARAM(...)
 #endif
 
+enum PACKETTYPE {
+	S2C_ADDPLAYER,
+	S2C_PLAYERMOVE,
+	S2C_PLAYERSTOP,
+
+
+	C2S_PLAYERMOVE,
+	C2S_PLAYERSTOP,
+};
+
+enum eSessionState
+{
+	ST_FREE, ST_ACCEPTED
+};
+
+enum ePlayerState {
+	ST_IDLE,
+	ST_RUNNING,
+	ST_WALKING,
+	ST_DEAD
+};
+
 #pragma pack (push, 1)
 
 struct HEADER {

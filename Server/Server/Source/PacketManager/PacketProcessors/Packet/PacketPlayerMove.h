@@ -16,9 +16,9 @@ public:
 
 			const PlayerMove* read = flatbuffers::GetRoot<PlayerMove>(data);
 
-			DEBUGMSGONEPARAM("x -> %f\n", read->pos()->x());
-			DEBUGMSGONEPARAM("y -> %f\n", read->pos()->y());
-			DEBUGMSGONEPARAM("z -> %f\n", read->pos()->z());
+			std::vector<uint8_t> send_buffer = MakeBuffer(PACKETTYPE::S2C_PLAYERSTOP, data, size);
+
+			pServer->GetSessions()[key]->DoSend(&send_buffer);
 		}
 	}
 
