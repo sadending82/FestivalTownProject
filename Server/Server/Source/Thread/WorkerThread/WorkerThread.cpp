@@ -61,7 +61,6 @@ void WorkerThread::RunWorker()
             HEADER* header = reinterpret_cast<HEADER*>(packet_ptr);
             int required_data = Transferred + m_pServer->GetSessions()[key]->GetPrevData();
             int packet_size = header->size + headerSize;
-
             while (required_data >= packet_size) {
                 if (required_data >= BUFSIZE) break;
                 if (packet_size <= 0) break;

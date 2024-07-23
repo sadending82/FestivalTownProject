@@ -9,6 +9,8 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.Runtime.InteropServices;
+using PacketTable.Player;
+using Google.FlatBuffers;
 
 public class NetworkManager : MonoBehaviour
 {
@@ -21,7 +23,7 @@ public class NetworkManager : MonoBehaviour
     float CurrentTime = 0.0f;
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-    struct TestPacket
+    struct HEADER
     {
         [MarshalAs(UnmanagedType.U2)]
         public ushort size;
@@ -29,7 +31,6 @@ public class NetworkManager : MonoBehaviour
         public ushort type;
     }
 
-    private TestPacket t_packet = new TestPacket();
 
     void Awake()
     {
@@ -77,7 +78,7 @@ public class NetworkManager : MonoBehaviour
                 stream.Write(buffer, 0, buffer.Length);
             }
 
-            Debug.Log("Send");
+            Debug.Log("Send: " + buffer.Length);
         }
         catch(SocketException Exception)
         {
@@ -100,25 +101,42 @@ public class NetworkManager : MonoBehaviour
         return buffer;
     }
 
-    public byte[] CreateTestPacket()
+    public byte[] CreateTestPacket(byte[] data)
     {
-        t_packet.type = 0;
-        t_packet.size = (ushort)Marshal.SizeOf(typeof(TestPacket));
+        HEADER header = new HEADER { type = 3, size = (ushort)data.Length };
+
+        byte[] headerdata = Serialize<HEADER>(header);
+        byte[] buf = new byte[data.Length + headerdata.Length];
+
+        Buffer.BlockCopy(headerdata, 0, buf, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, buf, headerdata.Length, data.Length);
 
         Debug.Log("Make Test Packet.");
 
-        return Serialize<TestPacket>(t_packet);
+        return buf;
     }
 
     private void Update()
     {
         CurrentTime += Time.deltaTime;
 
-        if(CurrentTime > SendBufferInterval)
+        if (CurrentTime > SendBufferInterval)
         {
             CurrentTime -= SendBufferInterval;
 
-            SendPacket(CreateTestPacket());
+            var builder = new FlatBufferBuilder(1);
+
+            var pos = Vec3.CreateVec3(builder, 1.0f, 2.0f, 3.0f);
+
+            PlayerMove.StartPlayerMove(builder);
+            PlayerMove.AddKey(builder, 1);
+            PlayerMove.AddPos(builder, pos);
+            PlayerMove.AddDirection(builder, pos);
+            var MoveData = PlayerMove.EndPlayerMove(builder);
+            builder.Finish(MoveData.Value);
+            var packet = builder.SizedByteArray();
+
+            SendPacket(CreateTestPacket(packet));
         }
     }
 

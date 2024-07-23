@@ -166,6 +166,13 @@
       },
       "url": "https://packages.unity.com"
     },
+    "flatbuffers": {
+      "version": "https://github.com/google/flatbuffers.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "fb9afbafc7dfe226b9db54d4923bfb8839635274"
+    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,

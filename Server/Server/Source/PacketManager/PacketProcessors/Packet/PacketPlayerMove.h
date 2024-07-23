@@ -12,7 +12,7 @@ public:
 		mBuilder.Clear();
 
 		flatbuffers::Verifier verifier(data, size);
-		if (VerifytestBuffer(verifier)) {
+		if (verifier.VerifyBuffer<PlayerMove>(nullptr)) {
 
 			const PlayerMove* read = flatbuffers::GetRoot<PlayerMove>(data);
 
@@ -20,7 +20,6 @@ public:
 			DEBUGMSGONEPARAM("y -> %f\n", read->pos()->y());
 			DEBUGMSGONEPARAM("z -> %f\n", read->pos()->z());
 		}
-
 	}
 
 private:
