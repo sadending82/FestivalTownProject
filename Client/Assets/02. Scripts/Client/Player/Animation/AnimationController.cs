@@ -9,11 +9,16 @@ public class AnimationController : MonoBehaviour
     private UpperBodyAnimationState upperBodyAnimationState;
     private LowerBodyAnimationState lowerBodyAnimationState;
 
-    private CharacterStatus characterStatus;
+    private ActiveRagdoll.AnimationModule animationModule;
 
+    private void Awake()
+    {   
+        upperBodyAnimationState = UpperBodyAnimationState.NONE;
+        lowerBodyAnimationState = LowerBodyAnimationState.IDLE;
+    }
     void Start()
     {
-        characterStatus = this.GetComponent<CharacterStatus>();
+        animationModule = this.GetComponent<ActiveRagdoll.AnimationModule>();
     }
     void Update()
     {
@@ -22,12 +27,9 @@ public class AnimationController : MonoBehaviour
     // ------------------- GETTERS & SETTERS -------------------
     public void setUpperBodyAnimationState(UpperBodyAnimationState upperBodyAnimationState)
     {
-        if (upperBodyAnimationState == UpperBodyAnimationState.NONE)
-        {
-            this.upperBodyAnimationState = upperBodyAnimationState;
-            SetUseIKAndAnimationModule();
-            SetAnimation();
-        }
+        this.upperBodyAnimationState = upperBodyAnimationState;
+        SetUseIKAndAnimationModule();
+        SetAnimation();
     }
     public void setLowerBodyAnimationState(LowerBodyAnimationState lowerBodyAnimationState)
     {
@@ -50,12 +52,12 @@ public class AnimationController : MonoBehaviour
             case UpperBodyAnimationState.THROW:
             case UpperBodyAnimationState.HEADATTACK:
                 {
-                    characterStatus.SetUseIK(true);
+                    animationModule.SetUseIK(true);
                     break;
                 }
             default:
                 {
-                    characterStatus.SetUseIK(false);
+                    animationModule.SetUseIK(false);
                     break;
                 }
         }
@@ -63,19 +65,19 @@ public class AnimationController : MonoBehaviour
         {
             case LowerBodyAnimationState.JUMP:
                 {
-                    characterStatus.SetUseAnimationModule(false);
+                    animationModule.SetUseAnimationModule(false);
                     break;
                 }
             case LowerBodyAnimationState.ROLL:
             case LowerBodyAnimationState.FLYINGKICK:
                 {
-                    characterStatus.SetUseIK(false);
-                    characterStatus.SetUseAnimationModule(false);
+                    animationModule.SetUseIK(false);
+                    animationModule.SetUseAnimationModule(false);
                     break;
                 }
             default:
                 {
-                    characterStatus.SetUseAnimationModule(true);
+                    animationModule.SetUseAnimationModule(true);
                     break;
                 }
         }
