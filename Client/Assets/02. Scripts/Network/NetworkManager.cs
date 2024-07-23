@@ -50,6 +50,8 @@ public class NetworkManager : MonoBehaviour
     {
         isNetworkConnected = ConnectToServer();
 
+        Debug.Log("Network Connect : " + isNetworkConnected);
+
         if(isNetworkConnected) recvManager.CreateRecvThread(Connection);
     }
 
