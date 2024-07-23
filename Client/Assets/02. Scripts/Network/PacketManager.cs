@@ -47,9 +47,9 @@ public class PacketManager
         return buffer;
     }
 
-    public byte[] CreateTestPacket(byte[] data)
+    public byte[] CreatePlayerMovePacket(byte[] data, Vector3Int pos, Vector3Int direction)
     {
-        HEADER header = new HEADER { type = 3, size = (ushort)data.Length };
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERMOVE, size = (ushort)data.Length };
         
         byte[] headerdata = Serialize<HEADER>(header);
         byte[] buf = new byte[data.Length + headerdata.Length];
@@ -57,7 +57,22 @@ public class PacketManager
         Buffer.BlockCopy(headerdata, 0, buf, 0, headerdata.Length);
         Buffer.BlockCopy(data, 0, buf, headerdata.Length, data.Length);
 
-        Debug.Log("Make Test Packet.");
+        Debug.Log("Make Move Packet.");
+
+        return buf;
+    }
+
+    public byte[] CreatePlayerStopPacket(byte[] data, Vector3Int pos, Vector3Int direction)
+    {
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERSTOP, size = (ushort)data.Length };
+
+        byte[] headerdata = Serialize<HEADER>(header);
+        byte[] buf = new byte[data.Length + headerdata.Length];
+
+        Buffer.BlockCopy(headerdata, 0, buf, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, buf, headerdata.Length, data.Length);
+
+        Debug.Log("Make Move Packet.");
 
         return buf;
     }

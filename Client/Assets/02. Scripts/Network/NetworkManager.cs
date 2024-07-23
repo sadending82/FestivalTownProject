@@ -79,20 +79,6 @@ public class NetworkManager : MonoBehaviour
             if (CurrentTime > SendBufferInterval)
             {
                 CurrentTime -= SendBufferInterval;
-
-                var builder = new FlatBufferBuilder(1);
-
-                var pos = Vec3.CreateVec3(builder, 1.0f, 2.0f, 3.0f);
-
-                PlayerMove.StartPlayerMove(builder);
-                PlayerMove.AddKey(builder, 1);
-                PlayerMove.AddPos(builder, pos);
-                PlayerMove.AddDirection(builder, pos);
-                var MoveData = PlayerMove.EndPlayerMove(builder);
-                builder.Finish(MoveData.Value);
-                var packet = builder.SizedByteArray();
-
-                packetManager.SendPacket(Connection, packetManager.CreateTestPacket(packet));
             }
         }
     }
