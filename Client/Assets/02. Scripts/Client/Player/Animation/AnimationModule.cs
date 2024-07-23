@@ -14,9 +14,16 @@ namespace ActiveRagdoll
         public Animator Animator { get; private set; }
 
         [Header("--- AnimationControll ---")]
+        [SerializeField]
         private bool useIK;
+        [SerializeField]
         private bool useAnimationModule;
 
+        private void Awake()
+        {
+            useIK = false;
+            useAnimationModule = true;
+        }
         private void Start()
         {
             _joints = _activeRagdoll.Joints;
@@ -41,12 +48,6 @@ namespace ActiveRagdoll
             {
                 ConfigurableJointExtensions.SetTargetRotationLocal(_joints[i], _animatedBones[i + 1].localRotation, _initialJointsRotation[i]);
             }
-        }
-
-        public void PlayAnimation(string animation, float speed = 1)
-        {
-            Animator.Play(animation);
-            Animator.SetFloat("speed", speed);
         }
 
         // ------------------- GETTERS & SETTERS -------------------

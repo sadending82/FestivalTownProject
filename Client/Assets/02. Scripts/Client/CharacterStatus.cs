@@ -20,8 +20,6 @@ public class CharacterStatus : MonoBehaviour
 
     [Header("--- AnimationControll ---")]
     public bool isGroggy;
-    private bool useIK;
-    private bool useAnimationModule;
     private ActiveRagdoll.AnimationModule animationMoudule;
 
     private void Awake()
@@ -29,24 +27,10 @@ public class CharacterStatus : MonoBehaviour
     }
     private void Start()
     {
-        // 기본 스탯(ex.speed, stamina..)에 따라 세부 스탯(ex. rollSpeed, runSpeed..)들 설정
-        animationMoudule = this.GetComponent<ActiveRagdoll.AnimationModule>();
-        SetUseAnimationModule(true);
-        SetUseIK(false);
     }
     private void Update()
     {
     }
 
     // ------------------- GETTERS & SETTERS -------------------
-    public void SetUseIK(bool useIK)
-    {
-        this.useIK = useIK;
-        animationMoudule.SetUseIK(useIK);
-    }
-    public void SetUseAnimationModule(bool useAnimationModule)
-    {
-        this.useAnimationModule = useAnimationModule;
-        animationMoudule.SetUseAnimationModule(useAnimationModule);
-    }
 }
