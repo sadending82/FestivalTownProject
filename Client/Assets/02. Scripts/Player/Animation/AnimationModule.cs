@@ -13,6 +13,10 @@ namespace ActiveRagdoll
         private Transform[] _animatedBones;
         public Animator Animator { get; private set; }
 
+        [Header("--- AnimationControll ---")]
+        private bool useIK;
+        private bool useAnimationModule;
+
         private void Start()
         {
             _joints = _activeRagdoll.Joints;
@@ -43,6 +47,16 @@ namespace ActiveRagdoll
         {
             Animator.Play(animation);
             Animator.SetFloat("speed", speed);
+        }
+
+        // ------------------- GETTERS & SETTERS -------------------
+        public void SetUseIK(bool useIK)
+        {
+            this.useIK = useIK;
+        }
+        public void SetUseAnimationModule(bool useAnimationModule)
+        {
+            this.useAnimationModule = useAnimationModule;
         }
     }
 }
