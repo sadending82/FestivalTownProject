@@ -7,7 +7,6 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using UnityEngine;
-using UnityEngine.UIElements;
 using System.Runtime.InteropServices;
 using PacketTable.Player;
 using Google.FlatBuffers;
@@ -19,17 +18,11 @@ public class NetworkManager : MonoBehaviour
 
     private TcpClient Connection;
 
+    private PacketManager packetManager;
+    private ReceiveManager recvManager;
+
     float SendBufferInterval = 2.0f;
     float CurrentTime = 0.0f;
-
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-    struct HEADER
-    {
-        [MarshalAs(UnmanagedType.U2)]
-        public ushort size;
-        [MarshalAs(UnmanagedType.U2)]
-        public ushort type;
-    }
 
 
     void Awake()
@@ -43,13 +36,18 @@ public class NetworkManager : MonoBehaviour
         else if (instance != this)
         {
             Destroy(gameObject);
+            return;
         }
+
+        packetManager = new PacketManager();
+        recvManager = new ReceiveManager();
 
     }
 
     public void Start()
     {
         ConnectToServer();
+        recvManager.CreateRecvThread();
     }
 
     private void ConnectToServer()
@@ -61,28 +59,6 @@ public class NetworkManager : MonoBehaviour
         catch (Exception e)
         {
             Debug.Log("Error : " + e);
-        }
-    }
-
-    private void SendPacket(Byte[] buffer)
-    {
-        if (Connection == null)
-        {
-            return;
-        }
-        try
-        {
-            NetworkStream stream = Connection.GetStream();
-            if(stream.CanWrite)
-            {
-                stream.Write(buffer, 0, buffer.Length);
-            }
-
-            Debug.Log("Send: " + buffer.Length);
-        }
-        catch(SocketException Exception)
-        {
-            Debug.Log("Socket exception: " + Exception);
         }
     }
 
@@ -99,21 +75,6 @@ public class NetworkManager : MonoBehaviour
         Debug.Log("Serializing.");
 
         return buffer;
-    }
-
-    public byte[] CreateTestPacket(byte[] data)
-    {
-        HEADER header = new HEADER { type = 3, size = (ushort)data.Length };
-
-        byte[] headerdata = Serialize<HEADER>(header);
-        byte[] buf = new byte[data.Length + headerdata.Length];
-
-        Buffer.BlockCopy(headerdata, 0, buf, 0, headerdata.Length);
-        Buffer.BlockCopy(data, 0, buf, headerdata.Length, data.Length);
-
-        Debug.Log("Make Test Packet.");
-
-        return buf;
     }
 
     private void Update()
@@ -136,7 +97,8 @@ public class NetworkManager : MonoBehaviour
             builder.Finish(MoveData.Value);
             var packet = builder.SizedByteArray();
 
-            SendPacket(CreateTestPacket(packet));
+            packetManager.SendPacket(Connection, packetManager.CreateTestPacket(packet));
+
         }
     }
 
