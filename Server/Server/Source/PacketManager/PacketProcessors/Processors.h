@@ -1,9 +1,14 @@
 #pragma once
-#include "Packet/PacketTest.h"
+#include "Packet/PacketPlayerMove.h"
+#include "Packet/PacketPlayerStop.h"
 #include "Event/EventTest.h"
 
 enum PACKETTYPE {
-	C2S_TEST,
+	S2C_ADDPLAYER,
+	S2C_PLAYERMOVE,
+	S2C_PLAYERSTOP,
 
-	S2C_TEST
+
+	C2S_PLAYERMOVE,
+	C2S_PLAYERSTOP,
 };
