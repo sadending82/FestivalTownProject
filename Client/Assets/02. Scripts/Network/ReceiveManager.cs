@@ -23,7 +23,7 @@ public class ReceiveManager
     {
         Thread workerThread = new Thread(() => WorkThread(Connection));
         workerThread.IsBackground = true;
-        workerThread.Start(Connection);
+        workerThread.Start();
     }
 
     private static T Deserialize<T>(byte[] bytes)
