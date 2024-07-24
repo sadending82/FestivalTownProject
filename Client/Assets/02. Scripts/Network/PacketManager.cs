@@ -104,6 +104,20 @@ public class PacketManager
         return buf;
     }
 
+    public void SendPlayerMovePacket(TcpClient Connection, Vector3Int position, Vector3Int direction)
+    {
+        
+        byte[] packet = CreatePlayerMovePacket(position, direction);
+        SendPacket(Connection, packet);
+    }
+
+    public void SendPlayerStopPacket(TcpClient Connection, Vector3Int position, Vector3Int direction)
+    {
+
+        byte[] packet = CreatePlayerStopPacket(position, direction);
+        SendPacket(Connection, packet);
+    }
+
     public void ProcessPlayerMovePacket(byte[] data)
     {
         var recvData = new ByteBuffer(data);
@@ -113,8 +127,20 @@ public class PacketManager
         var pos = playermove.Pos.Value;
         var dir = playermove.Direction.Value;
 
-        Debug.Log("Recv Move x: " + pos.X + " y: " + pos.Y + " z: " + pos.Z);
     }
+
+    public void ProcessPlayerStopPacket(byte[] data)
+    {
+        var recvData = new ByteBuffer(data);
+
+        var playerstop = PlayerStop.GetRootAsPlayerStop(recvData);
+
+        var pos = playerstop.Pos.Value;
+        var dir = playerstop.Direction.Value;
+
+    }
+
+
 
     private void Update()
     {
