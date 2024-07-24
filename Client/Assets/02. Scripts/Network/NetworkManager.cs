@@ -93,4 +93,8 @@ public class NetworkManager : MonoBehaviour
         }
     }
 
+    public TcpClient GetTcpClient()
+    {
+        return Connection;
+    }
 }

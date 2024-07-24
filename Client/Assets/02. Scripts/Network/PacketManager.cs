@@ -50,7 +50,7 @@ public class PacketManager
         return buffer;
     }
 
-    public byte[] CreatePlayerMovePacket(Vector3Int position, Vector3Int direction)
+    public byte[] CreatePlayerMovePacket(Vector3 position, Vector3 direction)
     {
         var builder = new FlatBufferBuilder(1);
         var pos = Vec3.CreateVec3(builder, position.x, position.y, position.z);
@@ -77,7 +77,7 @@ public class PacketManager
         return buf;
     }
 
-    public byte[] CreatePlayerStopPacket(Vector3Int position, Vector3Int direction)
+    public byte[] CreatePlayerStopPacket(Vector3 position, Vector3 direction)
     {
         var builder = new FlatBufferBuilder(1);
         var pos = Vec3.CreateVec3(builder, position.x, position.y, position.z);
@@ -104,14 +104,14 @@ public class PacketManager
         return buf;
     }
 
-    public void SendPlayerMovePacket(TcpClient Connection, Vector3Int position, Vector3Int direction)
+    public void SendPlayerMovePacket(TcpClient Connection, Vector3 position, Vector3 direction)
     {
         
         byte[] packet = CreatePlayerMovePacket(position, direction);
         SendPacket(Connection, packet);
     }
 
-    public void SendPlayerStopPacket(TcpClient Connection, Vector3Int position, Vector3Int direction)
+    public void SendPlayerStopPacket(TcpClient Connection, Vector3 position, Vector3 direction)
     {
 
         byte[] packet = CreatePlayerStopPacket(position, direction);

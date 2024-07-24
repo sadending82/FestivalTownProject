@@ -144,12 +144,12 @@ public class ReceiveManager
         {
             case ePacketType.S2C_PLAYERMOVE:
                 {
-                    packetManager.ProcessPlayerMovePacket(data);
+                    _packetmanager.ProcessPlayerMovePacket(data);
                 }
                 break;
             case ePacketType.S2C_PLAYERSTOP:
                 {
-                    packetManager.ProcessPlayerStopPacket(data);
+                    _packetmanager.ProcessPlayerStopPacket(data);
                 }
                 break;
             default:

@@ -8,7 +8,9 @@ public class PlayerController : MonoBehaviour
     [Header("--- Physics ---")]
     public Transform cameraArm;
     public Transform stabilizer;
-    public Rigidbody pelvisRigidbody;
+    public GameObject pelvis;
+    private Rigidbody pelvisRigidbody;
+    private Transform pelvisTransform;
 
     [Header("--- State ---")]
     public float walkSpeed;
@@ -29,6 +31,11 @@ public class PlayerController : MonoBehaviour
     private bool isHold;
     private bool isLeftShiftKeyDown;
 
+    //------ Server -------
+    private NetworkManager network;
+    private PacketManager packetManager;
+    private ReceiveManager receiveManager;
+
     private void Awake()
     {
         leftMouseClickTimer = 0f;
@@ -38,6 +45,12 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         animationController = this.GetComponent<AnimationController>();
+        network = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
+        pelvisRigidbody = pelvis.GetComponent<Rigidbody>();
+        pelvisTransform = pelvis.GetComponent<Transform>();
+
+        packetManager = network.GetPacketManager();
+        receiveManager = network.GetReceiveManager();
     }
 
     private void FixedUpdate()
@@ -80,12 +93,12 @@ public class PlayerController : MonoBehaviour
             isLeftShiftKeyDown = true;
         }
 
-        Vector2 moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        Vector3 moveInput = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0);
         Vector3 lookForward = new Vector3(cameraArm.forward.x, 0f, cameraArm.forward.z).normalized;
         Vector3 lookRight = new Vector3(cameraArm.right.x, 0f, cameraArm.right.z).normalized;
         Vector3 moveDir = lookForward * moveInput.y + lookRight * moveInput.x;
 
-        if (moveInput != Vector2.zero)
+        if (moveInput != Vector3.zero)
         {
             if (isLeftShiftKeyDown)
             {
@@ -103,10 +116,15 @@ public class PlayerController : MonoBehaviour
                     animationController.setLowerBodyAnimationState(LowerBodyAnimationState.WALK);
                 }
             }
+            packetManager.SendPlayerMovePacket(network.GetTcpClient(), pelvisTransform.position, moveInput);
         }
-        else if(isGrounded == true)
+        else 
         {
-            animationController.setLowerBodyAnimationState(LowerBodyAnimationState.IDLE);
+            if (isGrounded == true)
+            {
+                animationController.setLowerBodyAnimationState(LowerBodyAnimationState.IDLE);
+            }
+            packetManager.SendPlayerStopPacket(network.GetTcpClient(), pelvisTransform.position, moveInput);
         }
 
         if (moveDir != Vector3.zero)
