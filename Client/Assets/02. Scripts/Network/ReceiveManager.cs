@@ -14,8 +14,12 @@ using System.Drawing;
 
 public class ReceiveManager
 {
-    PacketManager packetManager = new PacketManager();
+    readonly PacketManager _packetmanager;
 
+    public ReceiveManager(PacketManager packetmanager)
+    {
+        _packetmanager = packetmanager;
+    }
 
     public void Init()
     {
@@ -141,6 +145,11 @@ public class ReceiveManager
             case ePacketType.S2C_PLAYERMOVE:
                 {
                     packetManager.ProcessPlayerMovePacket(data);
+                }
+                break;
+            case ePacketType.S2C_PLAYERSTOP:
+                {
+                    packetManager.ProcessPlayerStopPacket(data);
                 }
                 break;
             default:

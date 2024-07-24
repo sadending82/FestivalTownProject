@@ -42,7 +42,7 @@ public class NetworkManager : MonoBehaviour
         }
 
         packetManager = new PacketManager();
-        recvManager = new ReceiveManager();
+        recvManager = new ReceiveManager(packetManager);
 
     }
 
