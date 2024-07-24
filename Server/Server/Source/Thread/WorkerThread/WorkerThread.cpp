@@ -60,6 +60,7 @@ void WorkerThread::RunWorker()
             unsigned char* packet_ptr = exOver->mMessageBuf;
             int headerSize = sizeof(HEADER);
             HEADER* header = reinterpret_cast<HEADER*>(packet_ptr);
+
             int required_data = Transferred + m_pServer->GetSessions()[key]->GetPrevData();
             int packet_size = header->size + headerSize;
             while (required_data >= packet_size) {

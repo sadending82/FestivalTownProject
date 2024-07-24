@@ -15,7 +15,7 @@ public:
 
 	virtual void DoRecv();
 
-	virtual void DoSend(void* packet);
+	virtual void DoSend(void* packet, const int size);
 
 	ExOver GetExOver() { return mExOver; }
 	void SetExOver(ExOver over) { mExOver = over; }

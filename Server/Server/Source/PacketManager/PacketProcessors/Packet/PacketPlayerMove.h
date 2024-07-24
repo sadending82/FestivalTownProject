@@ -16,11 +16,9 @@ public:
 
 			const PlayerMove* read = flatbuffers::GetRoot<PlayerMove>(data);
 
-			std::cout << "recv move: " << key << "pos: " << read->pos()->x() << " " << read->pos()->y() << " " << read->pos()->z() << std::endl;
-
 			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYERMOVE, data, size);
 
-			pServer->GetSessions()[key]->DoSend(send_buffer.data());
+			pServer->GetSessions()[key]->DoSend(send_buffer.data(), send_buffer.size());
 		}
 	}
 

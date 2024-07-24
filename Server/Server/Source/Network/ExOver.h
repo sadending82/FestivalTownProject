@@ -16,13 +16,14 @@ public:
 		mOpType = eOpType::OP_RECV;
 		ZeroMemory(&mOver, sizeof(mOver));
 	}
-	ExOver(unsigned char* packet)
+	ExOver(unsigned char* packet, const int size)
 	{
-		mWsaBuf.len = packet[0];
+
+		mWsaBuf.len = size;
 		mWsaBuf.buf = reinterpret_cast<char*>(mMessageBuf);
 		ZeroMemory(&mOver, sizeof(mOver));
 		mOpType = eOpType::OP_SEND;
-		memcpy(mMessageBuf, packet, packet[0]);
+		memcpy(mMessageBuf, packet, size);
 	}
 
 	~ExOver() {}

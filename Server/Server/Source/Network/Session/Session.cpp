@@ -23,8 +23,10 @@ void Session::DoRecv()
 	BOOL ret = WSARecv(mSocket, &mExOver.mWsaBuf, 1, 0, &recvFlag, &mExOver.mOver, 0);
 }
 
-void Session::DoSend(void* packet)
+void Session::DoSend(void* packet, const int size)
 {
-	ExOver* sdata = new ExOver{ reinterpret_cast<unsigned char*>(packet) };
+	ExOver* sdata = new ExOver{ reinterpret_cast<unsigned char*>(packet), size };
+
+	std:: cout << sdata->mWsaBuf.len << std::endl;
 	BOOL ret = WSASend(mSocket, &sdata->mWsaBuf, 1, 0, 0, &sdata->mOver, 0);
 }
