@@ -7,9 +7,6 @@ void PacketManager::Init(Server* server)
 {
 	pServer = server;
 
-	/*PacketProcessorMap[ePacketType::C2S_TEST] = std::make_unique<PacketTest>();
-
-	EventProcessorMap[ePacketType::C2S_TEST] = std::make_unique<EventTest>();*/
     PacketProcessorMap[ePacketType::C2S_PLAYERMOVE] = std::make_unique<PacketPlayerMove>();
     PacketProcessorMap[ePacketType::C2S_PLAYERSTOP] = std::make_unique<PacketPlayerStop>();
 }

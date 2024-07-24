@@ -8,7 +8,7 @@ public:
 	virtual void Process(Server* pServer, const uint8_t* data, const int size) {
 		mBuilder.Clear();
 
-		flatbuffers::Verifier verifier(data, size);
+		/*flatbuffers::Verifier verifier(data, size);
 		if (VerifytestBuffer(verifier)) {
 
 			const test* read_test = Gettest(data);
@@ -23,7 +23,7 @@ public:
 		mBuilder.Finish(Createtest(mBuilder, chat, number));
 
 		std::vector<uint8_t> buffer = MakeEventBuffer(0, mBuilder.GetBufferPointer(), mBuilder.GetSize(), 10000);
-		pServer->GetTimer()->PushEvent(buffer);
+		pServer->GetTimer()->PushEvent(buffer);*/
 	}
 
 private:

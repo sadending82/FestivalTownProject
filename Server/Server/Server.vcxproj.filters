@@ -30,10 +30,8 @@
     <ClInclude Include="Source\TableManager\TableManager.h" />
     <ClInclude Include="Source\Thread\TimerThread\TimerThread.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\PacketProcessor.h" />
-    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\PacketTest.h" />
     <ClInclude Include="Source\PacketManager\FlatBuffer\test_generated.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\FlatBufferManager.h" />
-    <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\test_generated.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Processors.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Event\EventTest.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\Player_generated.h" />
