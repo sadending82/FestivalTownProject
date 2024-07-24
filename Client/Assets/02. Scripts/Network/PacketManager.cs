@@ -9,9 +9,26 @@ using NetworkProtocol;
 using Google.FlatBuffers;
 using PacketTable.Player;
 using UnityEngine.UIElements;
+using Network.PacketProcessor;
+using System.Collections.Concurrent;
 
 public class PacketManager
 {
+    private Dictionary<ePacketType, PacketProcessor> processorDict { get; set; }
+
+    public PacketProcessor GetProcessor(ePacketType type)
+    {
+        return processorDict[type];
+    }
+
+    public void Init()
+    {
+        processorDict = new Dictionary<ePacketType, PacketProcessor>
+        {
+            { ePacketType.S2C_PLAYERMOVE, new PlayerMoveProcesser() },
+            { ePacketType.S2C_PLAYERSTOP, new PlayerStopProcesser() }
+        };
+    }
 
     public void SendPacket(TcpClient Connection, Byte[] buffer)
     {
@@ -102,7 +119,7 @@ public class PacketManager
 
     public void SendPlayerMovePacket(TcpClient Connection, Vector3 position, Vector3 direction)
     {
-        
+
         byte[] packet = CreatePlayerMovePacket(position, direction);
         SendPacket(Connection, packet);
     }

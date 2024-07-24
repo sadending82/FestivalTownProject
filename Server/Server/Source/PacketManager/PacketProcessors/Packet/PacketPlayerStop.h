@@ -16,7 +16,7 @@ public:
 
 			const PlayerStop* read = flatbuffers::GetRoot<PlayerStop>(data);
 
-			//std::cout << "recv stop: " << key << "pos: " << read->pos()->x() << " " << read->pos()->y() << " " << read->pos()->z() << std::endl;
+			std::cout << "recv stop: " << key << "pos: " << read->pos()->x() << " " << read->pos()->y() << " " << read->pos()->z() << std::endl;
 
 			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYERSTOP, data, size);
 

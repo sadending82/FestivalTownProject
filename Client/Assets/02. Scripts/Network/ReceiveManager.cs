@@ -71,13 +71,13 @@ public class ReceiveManager
                     break;
                 }
 
-                //// 포인터가 없으므로 실제 패킷의 포인터 위치를 바탕으로 += 해나가는 방식은 사용할 수 없음.
-                //// 따라서, 리스트(C++의 Vector와 비슷함)
-                //// 배열을 실제로 자르거나 이동하는 부분이 많으므로 매우 비효율적인 방식임.
-                //// 따라서 좋은 방법이 발견되면 개선해 나가야 함.
-                //// C# 마스터를 찾아와야 한다 ㅂㄷ
+                // 포인터가 없으므로 실제 패킷의 포인터 위치를 바탕으로 += 해나가는 방식은 사용할 수 없음.
+                // 따라서, 리스트(C++의 Vector와 비슷함)
+                // 배열을 실제로 자르거나 이동하는 부분이 많으므로 매우 비효율적인 방식임.
+                // 따라서 좋은 방법이 발견되면 개선해 나가야 함.
+                // C# 마스터를 찾아와야 한다 ㅂㄷ
 
-                //// 실제 사이즈만큼 잘라주기
+                // 실제 사이즈만큼 잘라주기
                 //byte[] ConvertedRecv = new ArraySegment<byte>(m_ReadBuffer, 0, recvSize).ToArray();
 
                 //// 해당 버퍼를 남아있던 버퍼 뒷 부분에 붙여주기
@@ -98,8 +98,8 @@ public class ReceiveManager
 
                 //// 헤더 데이터로 부터 패킷 사이즈 가져오기
                 //ushort packetSize = BitConverter.ToUInt16(headerData, 0);
-                //while(packetSize <= toProcessData)
-                //{ 
+                //while (packetSize <= toProcessData)
+                //{
                 //    //TODO : packet 처리용 함수 ProcessPacket의 작성
                 //    byte[] packetList = m_Buffer.GetRange(0, packetSize).ToArray();
 
@@ -140,20 +140,22 @@ public class ReceiveManager
         byte[] data = new byte[header.size];
         Buffer.BlockCopy(packet, HeaderSize, data, 0, data.Length);
 
-        switch ((ePacketType)header.type)
-        {
-            case ePacketType.S2C_PLAYERMOVE:
-                {
-                    _packetmanager.ProcessPlayerMovePacket(data);
-                }
-                break;
-            case ePacketType.S2C_PLAYERSTOP:
-                {
-                    _packetmanager.ProcessPlayerStopPacket(data);
-                }
-                break;
-            default:
-                break;
-        }
+        //switch ((ePacketType)header.type)
+        //{
+        //    case ePacketType.S2C_PLAYERMOVE:
+        //        {
+        //            _packetmanager.ProcessPlayerMovePacket(data);
+        //        }
+        //        break;
+        //    case ePacketType.S2C_PLAYERSTOP:
+        //        {
+        //            _packetmanager.ProcessPlayerStopPacket(data);
+        //        }
+        //        break;
+        //    default:
+        //        break;
+        //}
+
+        _packetmanager.GetProcessor((ePacketType)header.type).Process(data);
     }
 }

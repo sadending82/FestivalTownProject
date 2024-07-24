@@ -14,7 +14,7 @@ namespace NetworkProtocol
         public ushort type;
     }
 
-    enum ePacketType{
+    public enum ePacketType{
         S2C_ADDPLAYER,
         S2C_PLAYERMOVE,
         S2C_PLAYERSTOP,
