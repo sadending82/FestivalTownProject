@@ -1,4 +1,5 @@
 ﻿using Google.FlatBuffers;
+using PacketTable.Player;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,13 @@ namespace Network.PacketProcessor
         public override void Process(byte[] data)
         {
             // 여기에 처리    
-            Debug.Log("STOP 옴?");
+            var bb = new ByteBuffer(data);
+            var stopData = PlayerStop.GetRootAsPlayerStop(bb);
+
+            int key = stopData.Key; // 이거는 일단 안씀
+            Vector3 pos = new Vector3(stopData.Pos.Value.X, stopData.Pos.Value.Y, stopData.Pos.Value.Z);
+            Vector3 dir = new Vector3(stopData.Direction.Value.X, stopData.Direction.Value.Y, stopData.Direction.Value.Z);
+
         }
 
         private FlatBufferBuilder mBuilder;
