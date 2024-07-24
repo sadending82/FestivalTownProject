@@ -112,16 +112,10 @@ public class PlayerController : MonoBehaviour
             if(AxisRawH == 0 && AxisRawV == 0)
             {
                 packetManager.SendPlayerStopPacket(network.GetTcpClient(), pelvisTransform.position, moveDir);
-                testCube.GetComponent<TestReceive>().SetDirection(moveDir);
-                testCube.GetComponent<TestReceive>().SetTransform(pelvisTransform.position);
-                testCube.GetComponent<TestReceive>().SetIsMove(false);
             }
             else
             {
                 packetManager.SendPlayerMovePacket(network.GetTcpClient(), pelvisTransform.position, moveDir);
-                testCube.GetComponent<TestReceive>().SetDirection(moveDir);
-                testCube.GetComponent<TestReceive>().SetTransform(pelvisTransform.position);
-                testCube.GetComponent<TestReceive>().SetIsMove(true);
             }
         }
         beforeAxisRawH = AxisRawH;

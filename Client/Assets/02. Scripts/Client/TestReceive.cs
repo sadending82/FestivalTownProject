@@ -29,9 +29,9 @@ public class TestReceive : MonoBehaviour
         }
     }
 
-    public void SetTransform(Vector3 tranform)
+    public void SetPosition(Vector3 position)
     {
-        this.transform.position = new Vector3(tranform.x + positionXOffeset, this.transform.position.y, tranform.z + positionZOffeset);
+        this.transform.position = new Vector3(position.x + positionXOffeset, this.transform.position.y, position.z + positionZOffeset);
     }
     public void SetDirection(Vector3 direction)
     {

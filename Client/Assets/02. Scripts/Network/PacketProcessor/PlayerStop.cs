@@ -22,6 +22,11 @@ namespace Network.PacketProcessor
             Vector3 dir = new Vector3(stopData.Direction.Value.X, stopData.Direction.Value.Y, stopData.Direction.Value.Z);
 
             Debug.Log("pos: " + pos.x + " " + pos.y + " " + pos.z);
+
+            GameObject testObject = GameObject.FindWithTag("Test");
+            testObject.GetComponent<TestReceive>().SetDirection(dir);
+            testObject.GetComponent<TestReceive>().SetPosition(pos);
+            testObject.GetComponent<TestReceive>().SetIsMove(false);
         }
 
         private FlatBufferBuilder mBuilder;

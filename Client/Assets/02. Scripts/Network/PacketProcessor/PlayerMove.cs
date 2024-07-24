@@ -20,6 +20,11 @@ namespace Network.PacketProcessor
             int key = moveData.Key;// 이거는 일단 안씀
             Vector3 pos = new Vector3(moveData.Pos.Value.X, moveData.Pos.Value.Y, moveData.Pos.Value.Z);
             Vector3 dir = new Vector3(moveData.Direction.Value.X, moveData.Direction.Value.Y, moveData.Direction.Value.Z);
+
+            GameObject testObject = GameObject.FindWithTag("Test");
+            testObject.GetComponent<TestReceive>().SetDirection(dir);
+            testObject.GetComponent<TestReceive>().SetPosition(pos);
+            testObject.GetComponent<TestReceive>().SetIsMove(true);
         }
 
         private FlatBufferBuilder mBuilder;

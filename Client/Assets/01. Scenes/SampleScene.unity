@@ -175,6 +175,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Chibi_Cat_01
       objectReference: {fileID: 0}
+    - target: {fileID: 3128855014192089941, guid: 12348fc04884c514184365cc4df792af, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8556858493818309525, guid: 12348fc04884c514184365cc4df792af, type: 3}
       propertyPath: m_Controller
       value: 
@@ -462,7 +466,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 9065465006405619127, guid: 63ad0367cbff65049a6d7d2af1205027, type: 3}
+      propertyPath: m_TagString
+      value: Test
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8388108752263159191, guid: 63ad0367cbff65049a6d7d2af1205027, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -611,5 +620,5 @@ SceneRoots:
   - {fileID: 890476087}
   - {fileID: 2275531484903810073}
   - {fileID: 454294223}
-  - {fileID: 1644665127}
   - {fileID: 1225568116}
+  - {fileID: 1644665127}
