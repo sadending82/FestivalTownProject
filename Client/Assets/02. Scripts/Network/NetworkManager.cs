@@ -70,6 +70,16 @@ public class NetworkManager : MonoBehaviour
         return true;
     }
 
+    public PacketManager GetPacketManager()
+    {
+        return packetManager;
+    }
+
+    public ReceiveManager GetReceiveManager()
+    {
+        return recvManager;
+    }
+
     private void Update()
     {
         if (isNetworkConnected)
