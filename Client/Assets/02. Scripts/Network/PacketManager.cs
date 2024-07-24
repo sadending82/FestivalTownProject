@@ -72,8 +72,6 @@ public class PacketManager
         Buffer.BlockCopy(headerdata, 0, buf, 0, headerdata.Length);
         Buffer.BlockCopy(data, 0, buf, headerdata.Length, data.Length);
 
-        Debug.Log("Make Move Packet.");
-
         return buf;
     }
 
@@ -98,8 +96,6 @@ public class PacketManager
 
         Buffer.BlockCopy(headerdata, 0, buf, 0, headerdata.Length);
         Buffer.BlockCopy(data, 0, buf, headerdata.Length, data.Length);
-
-        Debug.Log("Make Stop Packet.");
 
         return buf;
     }
