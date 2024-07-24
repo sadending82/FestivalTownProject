@@ -35,12 +35,16 @@ public class PlayerController : MonoBehaviour
     private NetworkManager network;
     private PacketManager packetManager;
     private ReceiveManager receiveManager;
+    private float beforeAxisRawH, beforeAxisRawV;
+    private float AxisRawH, AxisRawV;
 
     private void Awake()
     {
         leftMouseClickTimer = 0f;
         isHold = false;
         isLeftShiftKeyDown = false;
+        beforeAxisRawH = 0;
+        beforeAxisRawV = 0;
     }
     void Start()
     {
@@ -93,10 +97,26 @@ public class PlayerController : MonoBehaviour
             isLeftShiftKeyDown = true;
         }
 
-        Vector3 moveInput = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0);
+        AxisRawH = Input.GetAxisRaw("Horizontal");
+        AxisRawV = Input.GetAxisRaw("Vertical");
+        Vector3 moveInput = new Vector3(AxisRawH, AxisRawV, 0);
         Vector3 lookForward = new Vector3(cameraArm.forward.x, 0f, cameraArm.forward.z).normalized;
         Vector3 lookRight = new Vector3(cameraArm.right.x, 0f, cameraArm.right.z).normalized;
         Vector3 moveDir = lookForward * moveInput.y + lookRight * moveInput.x;
+
+        if (AxisRawH != beforeAxisRawH || AxisRawV != beforeAxisRawV)
+        {
+            if(AxisRawH == 0 && AxisRawV == 0)
+            {
+                packetManager.SendPlayerStopPacket(network.GetTcpClient(), pelvisTransform.position, moveInput);
+            }
+            else
+            {
+                packetManager.SendPlayerMovePacket(network.GetTcpClient(), pelvisTransform.position, moveInput);
+            }
+        }
+        beforeAxisRawH = AxisRawH;
+        beforeAxisRawV = AxisRawV;
 
         if (moveInput != Vector3.zero)
         {
@@ -116,7 +136,6 @@ public class PlayerController : MonoBehaviour
                     animationController.setLowerBodyAnimationState(LowerBodyAnimationState.WALK);
                 }
             }
-            packetManager.SendPlayerMovePacket(network.GetTcpClient(), pelvisTransform.position, moveInput);
         }
         else 
         {
@@ -124,7 +143,6 @@ public class PlayerController : MonoBehaviour
             {
                 animationController.setLowerBodyAnimationState(LowerBodyAnimationState.IDLE);
             }
-            packetManager.SendPlayerStopPacket(network.GetTcpClient(), pelvisTransform.position, moveInput);
         }
 
         if (moveDir != Vector3.zero)
