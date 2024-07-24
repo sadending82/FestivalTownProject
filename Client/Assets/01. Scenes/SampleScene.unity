@@ -384,11 +384,92 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &890549873 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9065465006405619127, guid: 63ad0367cbff65049a6d7d2af1205027, type: 3}
+  m_PrefabInstance: {fileID: 1225568116}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &890549877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 890549873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2938fcdf2da410341b4fbfdfa9a20584, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  positionXOffeset: 5
+  positionZOffeset: 5
+  moveSpeed: 10
+  pelvis: {fileID: 1117158147}
 --- !u!1 &1117158147 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5756405583764509044, guid: 8ed26ac174bfed74785e560248fb8646, type: 3}
   m_PrefabInstance: {fileID: 2275531484903810073}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1225568116
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1905998655778629776, guid: 63ad0367cbff65049a6d7d2af1205027, type: 3}
+      propertyPath: m_Name
+      value: TestChibi_Cat
+      objectReference: {fileID: 0}
+    - target: {fileID: 8560864005361708829, guid: 63ad0367cbff65049a6d7d2af1205027, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.7180104
+      objectReference: {fileID: 0}
+    - target: {fileID: 8560864005361708829, guid: 63ad0367cbff65049a6d7d2af1205027, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0000009536743
+      objectReference: {fileID: 0}
+    - target: {fileID: 8560864005361708829, guid: 63ad0367cbff65049a6d7d2af1205027, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.7700045
+      objectReference: {fileID: 0}
+    - target: {fileID: 8560864005361708829, guid: 63ad0367cbff65049a6d7d2af1205027, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8560864005361708829, guid: 63ad0367cbff65049a6d7d2af1205027, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8560864005361708829, guid: 63ad0367cbff65049a6d7d2af1205027, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8560864005361708829, guid: 63ad0367cbff65049a6d7d2af1205027, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8560864005361708829, guid: 63ad0367cbff65049a6d7d2af1205027, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8560864005361708829, guid: 63ad0367cbff65049a6d7d2af1205027, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8560864005361708829, guid: 63ad0367cbff65049a6d7d2af1205027, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9065465006405619127, guid: 63ad0367cbff65049a6d7d2af1205027, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 890549877}
+  m_SourcePrefab: {fileID: 100100000, guid: 63ad0367cbff65049a6d7d2af1205027, type: 3}
 --- !u!1 &1644665125
 GameObject:
   m_ObjectHideFlags: 0
@@ -449,6 +530,10 @@ PrefabInstance:
       propertyPath: pelvis
       value: 
       objectReference: {fileID: 1117158147}
+    - target: {fileID: 3803125223905238626, guid: 8ed26ac174bfed74785e560248fb8646, type: 3}
+      propertyPath: testCube
+      value: 
+      objectReference: {fileID: 890549873}
     - target: {fileID: 3803125223905238626, guid: 8ed26ac174bfed74785e560248fb8646, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -527,3 +612,4 @@ SceneRoots:
   - {fileID: 2275531484903810073}
   - {fileID: 454294223}
   - {fileID: 1644665127}
+  - {fileID: 1225568116}
