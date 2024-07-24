@@ -384,6 +384,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1117158147 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5756405583764509044, guid: 8ed26ac174bfed74785e560248fb8646, type: 3}
+  m_PrefabInstance: {fileID: 2275531484903810073}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1644665125
 GameObject:
   m_ObjectHideFlags: 0
@@ -440,6 +445,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3803125223905238626, guid: 8ed26ac174bfed74785e560248fb8646, type: 3}
+      propertyPath: pelvis
+      value: 
+      objectReference: {fileID: 1117158147}
     - target: {fileID: 3803125223905238626, guid: 8ed26ac174bfed74785e560248fb8646, type: 3}
       propertyPath: m_Enabled
       value: 1
