@@ -16,6 +16,7 @@ using UnityEditor.Sprites;
 public class ReceiveManager
 {
     readonly PacketManager _packetmanager;
+    private GameObject testGameObject;
 
     public ReceiveManager(PacketManager packetmanager)
     {
@@ -142,6 +143,11 @@ public class ReceiveManager
         byte[] data = new byte[header.size];
         Buffer.BlockCopy(packet, HeaderSize, data, 0, data.Length);
 
-        _packetmanager.GetProcessor((ePacketType)header.type).Process(data);
+        _packetmanager.GetProcessor((ePacketType)header.type).Process(data, testGameObject);
+    }
+
+    public void SetTargetObject(GameObject testObject)
+    {
+        testGameObject = testObject;
     }
 }

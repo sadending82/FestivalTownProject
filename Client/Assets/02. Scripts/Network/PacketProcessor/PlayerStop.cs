@@ -11,7 +11,7 @@ namespace Network.PacketProcessor
 {
     public class PlayerStopProcesser : PacketProcessor
     {
-        public override void Process(byte[] data)
+        public override void Process(byte[] data, GameObject testObject)
         {
             // 여기에 처리    
             var bb = new ByteBuffer(data);
@@ -23,7 +23,6 @@ namespace Network.PacketProcessor
 
             Debug.Log("pos: " + pos.x + " " + pos.y + " " + pos.z);
 
-            GameObject testObject = GameObject.FindWithTag("Test");
             testObject.GetComponent<TestReceive>().SetDirection(dir);
             testObject.GetComponent<TestReceive>().SetPosition(pos);
             testObject.GetComponent<TestReceive>().SetIsMove(false);
