@@ -33,6 +33,11 @@ public class PacketManager
         _connection = connection;
     }
 
+    public void SetConnection(TcpClient connection)
+    {
+        _connection = connection;
+    }
+
     public void Init()
     {
         processorDict = new Dictionary<ePacketType, PacketProcessor>

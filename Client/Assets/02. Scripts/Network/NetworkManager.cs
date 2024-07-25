@@ -41,7 +41,7 @@ public class NetworkManager : MonoBehaviour
             return;
         }
 
-        packetManager = new PacketManager(Connection);
+        packetManager = new PacketManager();
         packetManager.Init();
         recvManager = new ReceiveManager(packetManager);
 
@@ -50,6 +50,7 @@ public class NetworkManager : MonoBehaviour
     public void Start()
     {
         isNetworkConnected = ConnectToServer();
+        packetManager.SetConnection(Connection);
 
         Debug.Log("Network Connect : " + isNetworkConnected);
 

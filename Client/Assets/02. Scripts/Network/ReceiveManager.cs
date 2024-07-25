@@ -142,7 +142,6 @@ public class ReceiveManager
 
         byte[] data = new byte[header.size];
         Buffer.BlockCopy(packet, HeaderSize, data, 0, data.Length);
-
         _packetmanager.GetProcessor((ePacketType)header.type).Process(data, testGameObject);
     }
 
