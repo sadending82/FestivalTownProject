@@ -1,18 +1,14 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
-using UnityEditor.MemoryProfiler;
 using UnityEngine;
 using NetworkProtocol;
 using Google.FlatBuffers;
 using PacketTable.Player;
-using UnityEngine.UIElements;
 using Network.PacketProcessor;
-using System.Collections.Concurrent;
 
-public class PacketManager
+public class PacketManager : MonoBehaviour 
 {
     private Dictionary<ePacketType, PacketProcessor> processorDict { get; set; }
 

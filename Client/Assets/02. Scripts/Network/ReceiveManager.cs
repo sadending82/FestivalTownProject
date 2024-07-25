@@ -6,26 +6,17 @@ using System.Net.Sockets;
 using NetworkProtocol;
 using System.Runtime.InteropServices;
 using System;
-using System.Runtime.Serialization;
-using UnityEditor;
-using static UnityEditor.PlayerSettings;
-using UnityEngine.XR;
-using System.Drawing;
-using UnityEditor.Sprites;
 
-public class ReceiveManager
+public class ReceiveManager : MonoBehaviour
 {
-    readonly PacketManager _packetmanager;
+    private PacketManager _packetmanager;
     private GameObject testGameObject;
 
-    public ReceiveManager(PacketManager packetmanager)
-    {
-        _packetmanager = packetmanager;
-    }
+    private Queue<Tuple<ePacketType, byte[]>> PacketQueue = new Queue<Tuple<ePacketType, byte[]>>();
 
-    public void Init()
+    public void Init(PacketManager packetManager)
     {
-
+        _packetmanager = packetManager;
     }
 
     public void CreateRecvThread(TcpClient Connection)
@@ -33,6 +24,22 @@ public class ReceiveManager
         Thread workerThread = new Thread(() => WorkThread(Connection));
         workerThread.IsBackground = true;
         workerThread.Start();
+
+        StartCoroutine(ProcessPacketQueue());
+    }
+
+    IEnumerator ProcessPacketQueue()
+    {
+        while (true)
+        {
+            
+            while (PacketQueue.Count > 0)
+            {
+                var packetData = PacketQueue.Dequeue();
+                _packetmanager.GetProcessor(packetData.Item1).Process(packetData.Item2, testGameObject);
+            }
+            yield return new WaitForFixedUpdate();
+        }
     }
 
     private static T Deserialize<T>(byte[] bytes)
@@ -142,7 +149,9 @@ public class ReceiveManager
 
         byte[] data = new byte[header.size];
         Buffer.BlockCopy(packet, HeaderSize, data, 0, data.Length);
-        _packetmanager.GetProcessor((ePacketType)header.type).Process(data, testGameObject);
+
+        PacketQueue.Enqueue(new Tuple<ePacketType, byte[]>((ePacketType)header.type, data));
+        
     }
 
     public void SetTargetObject(GameObject testObject)

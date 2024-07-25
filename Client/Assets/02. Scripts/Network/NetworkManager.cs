@@ -1,16 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using System;
-using System.IO;
-using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading;
 using UnityEngine;
-using System.Runtime.InteropServices;
-using PacketTable.Player;
-using Google.FlatBuffers;
-using NetworkProtocol;
 
 public class NetworkManager : MonoBehaviour
 {
@@ -20,7 +10,10 @@ public class NetworkManager : MonoBehaviour
 
     private TcpClient Connection;
 
+    [SerializeField, Tooltip("Packet Manager")]
     private PacketManager packetManager;
+
+    [SerializeField, Tooltip("Receive Manager")]
     private ReceiveManager recvManager;
 
     float SendBufferInterval = 2.0f;
@@ -41,9 +34,10 @@ public class NetworkManager : MonoBehaviour
             return;
         }
 
-        packetManager = new PacketManager();
+        packetManager = gameObject.AddComponent<PacketManager>();
         packetManager.Init();
-        recvManager = new ReceiveManager(packetManager);
+        recvManager = gameObject.AddComponent<ReceiveManager>();
+        recvManager.Init(packetManager);
 
     }
 
