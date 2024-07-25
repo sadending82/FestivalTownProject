@@ -41,7 +41,7 @@ public class NetworkManager : MonoBehaviour
             return;
         }
 
-        packetManager = new PacketManager();
+        packetManager = new PacketManager(Connection);
         packetManager.Init();
         recvManager = new ReceiveManager(packetManager);
 

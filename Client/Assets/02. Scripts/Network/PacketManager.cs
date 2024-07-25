@@ -21,6 +21,18 @@ public class PacketManager
         return processorDict[type];
     }
 
+    private TcpClient _connection;
+
+    public PacketManager()
+    {
+        _connection = null;
+    }
+
+    public PacketManager(TcpClient connection)
+    {
+        _connection = connection;
+    }
+
     public void Init()
     {
         processorDict = new Dictionary<ePacketType, PacketProcessor>
@@ -30,15 +42,15 @@ public class PacketManager
         };
     }
 
-    public void SendPacket(TcpClient Connection, Byte[] buffer)
+    public void SendPacket(Byte[] buffer)
     {
-        if (Connection == null)
+        if (_connection == null)
         {
             return;
         }
         try
         {
-            NetworkStream stream = Connection.GetStream();
+            NetworkStream stream = _connection.GetStream();
             if (stream.CanWrite)
             {
                 stream.Write(buffer, 0, buffer.Length);
@@ -117,18 +129,18 @@ public class PacketManager
         return buf;
     }
 
-    public void SendPlayerMovePacket(TcpClient Connection, Vector3 position, Vector3 direction)
+    public void SendPlayerMovePacket(Vector3 position, Vector3 direction)
     {
 
         byte[] packet = CreatePlayerMovePacket(position, direction);
-        SendPacket(Connection, packet);
+        SendPacket(packet);
     }
 
-    public void SendPlayerStopPacket(TcpClient Connection, Vector3 position, Vector3 direction)
+    public void SendPlayerStopPacket(Vector3 position, Vector3 direction)
     {
 
         byte[] packet = CreatePlayerStopPacket(position, direction);
-        SendPacket(Connection, packet);
+        SendPacket(packet);
     }
 
     public void ProcessPlayerMovePacket(byte[] data)
@@ -150,13 +162,6 @@ public class PacketManager
 
         var pos = playerstop.Pos.Value;
         var dir = playerstop.Direction.Value;
-
-    }
-
-
-
-    private void Update()
-    {
 
     }
 }

@@ -111,11 +111,11 @@ public class PlayerController : MonoBehaviour
         {
             if(AxisRawH == 0 && AxisRawV == 0)
             {
-                packetManager.SendPlayerStopPacket(network.GetTcpClient(), pelvisTransform.position, moveDir);
+                packetManager.SendPlayerStopPacket(pelvisTransform.position, moveDir);
             }
             else
             {
-                packetManager.SendPlayerMovePacket(network.GetTcpClient(), pelvisTransform.position, moveDir);
+                packetManager.SendPlayerMovePacket(pelvisTransform.position, moveDir);
             }
         }
         beforeAxisRawH = AxisRawH;
