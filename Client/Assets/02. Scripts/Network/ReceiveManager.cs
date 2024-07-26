@@ -14,6 +14,8 @@ public class ReceiveManager : MonoBehaviour
 
     private Queue<Tuple<ePacketType, byte[]>> PacketQueue = new Queue<Tuple<ePacketType, byte[]>>();
 
+    Mutex mutex = new Mutex(false, "QueueLock");
+
     public void Init(PacketManager packetManager)
     {
         _packetmanager = packetManager;
@@ -35,7 +37,9 @@ public class ReceiveManager : MonoBehaviour
             
             while (PacketQueue.Count > 0)
             {
+                mutex.WaitOne();
                 var packetData = PacketQueue.Dequeue();
+                mutex.ReleaseMutex();
                 _packetmanager.GetProcessor(packetData.Item1).Process(packetData.Item2, testGameObject);
             }
             yield return new WaitForFixedUpdate();
@@ -150,8 +154,11 @@ public class ReceiveManager : MonoBehaviour
         byte[] data = new byte[header.size];
         Buffer.BlockCopy(packet, HeaderSize, data, 0, data.Length);
 
-        PacketQueue.Enqueue(new Tuple<ePacketType, byte[]>((ePacketType)header.type, data));
-        
+        var packetDataToProcess = new Tuple<ePacketType, byte[]>((ePacketType)header.type, data);
+
+        mutex.WaitOne();
+        PacketQueue.Enqueue(packetDataToProcess);
+        mutex.ReleaseMutex();
     }
 
     public void SetTargetObject(GameObject testObject)
