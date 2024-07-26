@@ -37,6 +37,7 @@
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\Player_generated.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\PacketPlayerMove.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\PacketPlayerStop.h" />
+    <ClInclude Include="Source\TableManager\Tables\CharacterStat.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

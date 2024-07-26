@@ -1,7 +1,7 @@
 #pragma once
 #include "../Network/Session/Session.h"
 
-#define SESSION_ARRAY std::array<Session*, MAXPLAYER>
+#define SESSION_ARRAY std::array<Session*, MAXSESSION>
 
 constexpr int SERVERPORT = 5000;
 

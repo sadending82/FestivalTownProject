@@ -7,7 +7,7 @@
 
 int Server::SetSessionKey()
 {
-    for (int i = STARTKEY; i < MAXPLAYER; ++i) {
+    for (int i = STARTKEY; i < MAXSESSION; ++i) {
         auto session = GetSessions()[i];
         if (session == nullptr) continue;
         if (eSessionState::ST_FREE == session->GetState()) {
@@ -68,7 +68,7 @@ void Server::Init(class PacketManager* pPacketManager, class TableManager* pTabl
 
 
 
-    for (int i = 0; i < MAXPLAYER; ++i) {
+    for (int i = 0; i < MAXSESSION; ++i) {
         mSessions[i] = new Session();
     }
 

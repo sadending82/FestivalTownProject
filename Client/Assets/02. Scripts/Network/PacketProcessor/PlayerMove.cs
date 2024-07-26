@@ -21,8 +21,6 @@ namespace Network.PacketProcessor
             Vector3 pos = new Vector3(moveData.Pos.Value.X, moveData.Pos.Value.Y, moveData.Pos.Value.Z);
             Vector3 dir = new Vector3(moveData.Direction.Value.X, moveData.Direction.Value.Y, moveData.Direction.Value.Z);
 
-            Debug.Log("move pos: " + pos.x + " " + pos.y + " " + pos.z);
-
             testObject.GetComponent<TestReceive>().SetDirection(dir);
             testObject.GetComponent<TestReceive>().SetPosition(pos);
             testObject.GetComponent<TestReceive>().SetIsMove(true);

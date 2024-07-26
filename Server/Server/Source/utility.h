@@ -25,7 +25,8 @@ constexpr int SERVERKEY = 0;
 constexpr int STARTKEY = 1;
 constexpr int INVALIDKEY = -1;
 constexpr int BUFSIZE = 1000;
-constexpr int MAXPLAYER = 100;
+constexpr int MAXSESSION = 1000;
+constexpr int MAXPLAYER = 6;
 
 #ifdef _DEBUG
 #define DEBUGMSGNOPARAM(args) (printf("file: %s, line:%d ",__FILE__,__LINE__), printf(args))

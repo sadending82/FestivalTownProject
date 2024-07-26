@@ -12,7 +12,7 @@ int main()
 {
 	std::wcout.imbue(std::locale("korean"));
 
-	gTableManager->ReadItemTable();
+	gTableManager->ReadCharacterStat();
 
 	gServer->Init(gPacketManager, gTableManager, gDB);
 	gServer->ThreadJoin();
