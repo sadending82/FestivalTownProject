@@ -1,5 +1,5 @@
 ﻿using Google.FlatBuffers;
-using PacketTable.Player;
+using PacketTable.PlayerTable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +17,7 @@ namespace Network.PacketProcessor
             var bb = new ByteBuffer(data);
             var moveData = PlayerMove.GetRootAsPlayerMove(bb);
 
-            int key = moveData.Key;// 이거는 일단 안씀
+            int id = moveData.Id;// 이거는 일단 안씀
             Vector3 pos = new Vector3(moveData.Pos.Value.X, moveData.Pos.Value.Y, moveData.Pos.Value.Z);
             Vector3 dir = new Vector3(moveData.Direction.Value.X, moveData.Direction.Value.Y, moveData.Direction.Value.Z);
 

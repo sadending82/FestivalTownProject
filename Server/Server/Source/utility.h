@@ -26,6 +26,7 @@ constexpr int STARTKEY = 1;
 constexpr int INVALIDKEY = -1;
 constexpr int BUFSIZE = 1000;
 constexpr int MAXSESSION = 1000;
+constexpr int MAXROOM = 100;
 constexpr int MAXPLAYER = 6;
 
 #ifdef _DEBUG
@@ -48,7 +49,7 @@ enum ePacketType {
 
 enum eSessionState
 {
-	ST_FREE, ST_ACCEPTED
+	ST_FREE, ST_ACCEPTED, ST_INGAME
 };
 
 enum ePlayerState {

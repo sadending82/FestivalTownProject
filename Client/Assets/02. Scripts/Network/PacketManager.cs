@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using NetworkProtocol;
 using Google.FlatBuffers;
-using PacketTable.Player;
+using PacketTable.PlayerTable;
 using Network.PacketProcessor;
 
 public class PacketManager : MonoBehaviour 
@@ -89,7 +89,7 @@ public class PacketManager : MonoBehaviour
         PlayerMove.StartPlayerMove(builder);
         PlayerMove.AddPos(builder, pos);
         PlayerMove.AddDirection(builder, dir);
-        PlayerMove.AddKey(builder, 1);
+        PlayerMove.AddId(builder, 1);
         var pm = PlayerMove.EndPlayerMove(builder);
         builder.Finish(pm.Value);
         byte[] data = builder.SizedByteArray();
@@ -114,7 +114,7 @@ public class PacketManager : MonoBehaviour
         PlayerMove.StartPlayerMove(builder);
         PlayerMove.AddPos(builder, pos);
         PlayerMove.AddDirection(builder, dir);
-        PlayerMove.AddKey(builder, 1);
+        PlayerMove.AddId(builder, 1);
         var pm = PlayerMove.EndPlayerMove(builder);
         builder.Finish(pm.Value);
         byte[] data = builder.SizedByteArray();

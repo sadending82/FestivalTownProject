@@ -1,7 +1,7 @@
 #pragma once
 #include "../PacketProcessor.h"
 
-using namespace PacketTable::Player;
+using namespace PacketTable::PlayerTable;
 
 class PacketPlayerMove : public PacketProcessor {
 
@@ -18,7 +18,6 @@ public:
 
 			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYERMOVE, data, size);
 			
-
 			pServer->GetSessions()[key]->DoSend(send_buffer.data(), send_buffer.size());
 		}
 	}

@@ -71,6 +71,9 @@ void Server::Init(class PacketManager* pPacketManager, class TableManager* pTabl
     for (int i = 0; i < MAXSESSION; ++i) {
         mSessions[i] = new Session();
     }
+    for (int i = 0; i < MAXROOM; ++i) {
+        mRooms[i] = new Room();
+    }
 
     pDB->Init();
 
@@ -78,6 +81,9 @@ void Server::Init(class PacketManager* pPacketManager, class TableManager* pTabl
     pPacketManager->Init(this);
     mTimer = new Timer;
     mTimer->Init(mHcp);
+
+    // 테스트를 위해 임시 방 추가
+    mRooms[0]->Init(0);
 
     SYSTEM_INFO si;
     GetSystemInfo(&si);
