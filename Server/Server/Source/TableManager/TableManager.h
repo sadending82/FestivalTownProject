@@ -14,9 +14,12 @@ public:
 	void ClearAllTable();
 
 	void ReadItemTable();
+	void ReadCharacterStat();
 
 	std::unordered_map<int, ItemTable>& getItemInfos() { return ItemInfos; }
+	std::unordered_map<int, CharacterStat>& getCharacterStats() { return CharacterStats; }
 
 private:
 	std::unordered_map<int, ItemTable> ItemInfos;
+	std::unordered_map<int, CharacterStat> CharacterStats;
 };

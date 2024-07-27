@@ -29,6 +29,13 @@ void WorkerThread::RunWorker()
                 newSession->SetPrevData(0);
                 newSession->SetState(eSessionState::ST_ACCEPTED);
                 newSession->SetSessionID(newKey);
+
+                // 임시로 방에 플레이어 추가
+                {                
+                    Player* newplayer = reinterpret_cast<Player*>(newSession);
+                    m_pServer->GetRooms()[0]->addPlayer(newplayer);
+                }
+
                 CreateIoCompletionPort((HANDLE)newSession->GetSocket(), m_pServer->GetHcp(), newKey, 0);
 
                 DEBUGMSGONEPARAM("Lobby Accept: %d\n", newKey);

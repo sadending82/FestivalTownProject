@@ -1,7 +1,9 @@
 #pragma once
 #include "../Network/Session/Session.h"
+#include "../Room/Room.h"
 
-#define SESSION_ARRAY std::array<Session*, MAXPLAYER>
+#define SESSION_ARRAY std::array<Session*, MAXSESSION>
+#define ROOM_ARRAY std::array<Room*, MAXROOM>
 
 constexpr int SERVERPORT = 5000;
 
@@ -22,6 +24,7 @@ public:
 	SOCKADDR_IN GetServerAddr() { return mServerAddr; }
 	SOCKET GetListenSocket() { return mListenSocket; }
 	SESSION_ARRAY& GetSessions() { return mSessions; }
+	ROOM_ARRAY& GetRooms() { return mRooms; }
 	Timer* GetTimer() { return mTimer; }
 
 private:
@@ -32,6 +35,7 @@ private:
 	Timer* mTimer = nullptr;
 
 	SESSION_ARRAY mSessions;
+	ROOM_ARRAY mRooms;
 	std::vector<std::thread> mWorkerThreads;
 	std::thread mTimerThread;
 
