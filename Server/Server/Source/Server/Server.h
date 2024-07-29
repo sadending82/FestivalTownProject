@@ -1,6 +1,7 @@
 #pragma once
 #include "../Network/Session/Session.h"
 #include "../Room/Room.h"
+#include "../PacketManager/PacketProcessors/flatbuffer/FlatBufferManager.h"
 
 #define SESSION_ARRAY std::array<Session*, MAXSESSION>
 #define ROOM_ARRAY std::array<Room*, MAXROOM>
@@ -23,6 +24,9 @@ public:
 	void SendAllPlayerInRoomBySessionID(void* packet, int size, int sessionID);
 	void SendAllPlayerInRoom(void* packet, int size, int roomID);
 
+	void SendPlayerAdd(int sessionID);
+	void SendPlayerGameInfo(int sessionID);
+
 	HANDLE GetHcp() { return mHcp; }
 	SOCKADDR_IN GetServerAddr() { return mServerAddr; }
 	SOCKET GetListenSocket() { return mListenSocket; }
@@ -34,6 +38,8 @@ private:
 	SOCKADDR_IN mServerAddr;
 	HANDLE mHcp;
 	SOCKET mListenSocket;
+
+	flatbuffers::FlatBufferBuilder mBuilder;
 
 	Timer* mTimer = nullptr;
 

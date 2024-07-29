@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Network.PacketProcessor
 {
-    public class PlayerStopProcesser : PacketProcessor
+    public class PlayerStopProcessor : PacketProcessor
     {
         public override void Process(byte[] data, GameObject testObject)
         {
