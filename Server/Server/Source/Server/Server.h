@@ -20,6 +20,9 @@ public:
 	void Init(class PacketManager* pPacketManager, class TableManager* pTableManager, class DB* pDB);
 	void ThreadJoin();
 
+	void SendAllPlayerInRoomBySessionID(void* packet, int size, int sessionID);
+	void SendAllPlayerInRoom(void* packet, int size, int roomID);
+
 	HANDLE GetHcp() { return mHcp; }
 	SOCKADDR_IN GetServerAddr() { return mServerAddr; }
 	SOCKET GetListenSocket() { return mListenSocket; }

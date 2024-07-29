@@ -102,3 +102,20 @@ void Server::ThreadJoin()
         th.join();
     mTimerThread.join();
 }
+
+void Server::SendAllPlayerInRoomBySessionID(void* packet, int size, int sessionID)
+{
+    int roomID = reinterpret_cast<Player*>(GetSessions()[sessionID])->GetRoomID();
+    for (Player* p : GetRooms()[roomID]->GetPlayerList()) {
+        if (p == nullptr) continue;
+        p->DoSend(packet, size);
+    }
+}
+
+void Server::SendAllPlayerInRoom(void* packet, int size, int roomID)
+{
+    for (Player* p : GetRooms()[roomID]->GetPlayerList()) {
+        if (p == nullptr) continue;
+        p->DoSend(packet, size);
+    }
+}
