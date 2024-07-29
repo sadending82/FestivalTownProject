@@ -38,8 +38,10 @@ public class PacketManager : MonoBehaviour
     {
         processorDict = new Dictionary<ePacketType, PacketProcessor>
         {
-            { ePacketType.S2C_PLAYERMOVE, new PlayerMoveProcesser() },
-            { ePacketType.S2C_PLAYERSTOP, new PlayerStopProcesser() }
+            { ePacketType.S2C_PLAYERADD, new PlayerAddProcessor() },
+            { ePacketType.S2C_PLAYERGAMEINFO, new PlayerGameInfoProcessor() },
+            { ePacketType.S2C_PLAYERMOVE, new PlayerMoveProcessor() },
+            { ePacketType.S2C_PLAYERSTOP, new PlayerStopProcessor() }
         };
     }
 

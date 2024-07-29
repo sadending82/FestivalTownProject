@@ -15,11 +15,13 @@ namespace NetworkProtocol
     }
 
     public enum ePacketType{
-        S2C_ADDPLAYER,
+        // Server -> Client
+        S2C_PLAYERADD,
+        S2C_PLAYERGAMEINFO,
         S2C_PLAYERMOVE,
         S2C_PLAYERSTOP,
 
-
+        // Client -> Server
         C2S_PLAYERMOVE,
         C2S_PLAYERSTOP,
     }
