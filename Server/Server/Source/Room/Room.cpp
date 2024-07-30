@@ -31,4 +31,3 @@ void Room::addPlayer(Player* player)
 		mPlayerListLock.unlock();
 	}
 }
-

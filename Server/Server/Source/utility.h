@@ -69,14 +69,13 @@ public:
 	uint16_t	type;
 };
 
-struct EVENT_HEADER {
-	uint16_t	size;
-	uint16_t	type;
-	std::chrono::system_clock::time_point start_time;
+struct Vector3f {
+	float x;
+	float y;
+	float z;
 
-	constexpr bool operator< (const EVENT_HEADER& other) const {
-		return start_time > other.start_time;
-	}
+	Vector3f() : x(0), y(0), z(0) {};
+	Vector3f(float fx, float fy, float fz) : x(fx), y(fy), z(fz) {};
 };
 
 #pragma pack(pop)

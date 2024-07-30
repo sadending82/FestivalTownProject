@@ -1,5 +1,6 @@
 #include "PacketManager.h"
 #include "PacketProcessors/Processors.h"
+#include "../Event/Event.h"
 #include <sstream>
 #include <exception>
 
@@ -9,6 +10,8 @@ void PacketManager::Init(Server* server)
 
     PacketProcessorMap[ePacketType::C2S_PLAYERMOVE] = std::make_unique<PacketPlayerMove>();
     PacketProcessorMap[ePacketType::C2S_PLAYERSTOP] = std::make_unique<PacketPlayerStop>();
+
+    EventProcessorMap[eEventType::PLAYERPOSSYNC] = std::make_unique<PacketPlayerStop>();
 }
 
 void PacketManager::ProcessPacket(const int type, const uint8_t* data, const int size, const int key)
@@ -39,7 +42,7 @@ void PacketManager::ProcessPacket(const int type, const uint8_t* data, const int
 	}
 }
 
-void PacketManager::ProcessEvent(const int type, const uint8_t* data, const int size)
+void PacketManager::ProcessEvent(const eEventType type, const char* buf)
 {
-	EventProcessorMap[type]->Process(pServer, data, size, 0);
+	EventProcessorMap[type]->Process(pServer, buf);
 }

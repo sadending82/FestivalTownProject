@@ -96,12 +96,9 @@ void WorkerThread::RunWorker()
             break;
         }
         case eOpType::OP_EVENT:{
-            std::cout <<sizeof(exOver->mMessageBuf) << std::endl;
             unsigned char* data_ptr = exOver->mMessageBuf;
-            int headerSize = sizeof(EVENT_HEADER);
             EVENT_HEADER* header = reinterpret_cast<EVENT_HEADER*>(data_ptr);
-            unsigned char* data = data_ptr + headerSize;
-            m_pPacketManager->ProcessEvent(header->type, data, header->size);
+            m_pPacketManager->ProcessEvent((eEventType)header->type, header->message);
             break;
         }
         }
