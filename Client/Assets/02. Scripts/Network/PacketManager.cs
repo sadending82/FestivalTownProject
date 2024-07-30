@@ -10,6 +10,8 @@ using Network.PacketProcessor;
 
 public class PacketManager : MonoBehaviour 
 {
+    private PlayerManager playerManager;
+
     private Dictionary<ePacketType, PacketProcessor> processorDict { get; set; }
 
     public PacketProcessor GetProcessor(ePacketType type)
@@ -91,7 +93,7 @@ public class PacketManager : MonoBehaviour
         PlayerMove.StartPlayerMove(builder);
         PlayerMove.AddPos(builder, pos);
         PlayerMove.AddDirection(builder, dir);
-        PlayerMove.AddId(builder, 1);
+        PlayerMove.AddId(builder, playerManager.GetMyId());
         var pm = PlayerMove.EndPlayerMove(builder);
         builder.Finish(pm.Value);
         byte[] data = builder.SizedByteArray();
@@ -116,7 +118,7 @@ public class PacketManager : MonoBehaviour
         PlayerMove.StartPlayerMove(builder);
         PlayerMove.AddPos(builder, pos);
         PlayerMove.AddDirection(builder, dir);
-        PlayerMove.AddId(builder, 1);
+        PlayerMove.AddId(builder, playerManager.GetMyId());
         var pm = PlayerMove.EndPlayerMove(builder);
         builder.Finish(pm.Value);
         byte[] data = builder.SizedByteArray();

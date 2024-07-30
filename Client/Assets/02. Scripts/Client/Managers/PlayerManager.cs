@@ -12,6 +12,11 @@ public class PlayerManager : MonoBehaviour
         this.myId = myId;
     }
 
+    public int GetMyId()
+    {
+        return this.myId;
+    }
+
     public void AddPlayers()
     {
         for (int i = 0; i < maxPlayer; ++i)
