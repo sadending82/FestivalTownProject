@@ -10,6 +10,9 @@ public class PlayerCameraController : MonoBehaviour
 
     private float mouseX, mouseY;
 
+    private void Awake()
+    {
+    }
 
     private void Start()
     {
@@ -32,15 +35,28 @@ public class PlayerCameraController : MonoBehaviour
         Vector3 cameraAngle = cameraArm.rotation.eulerAngles;
         float x = cameraAngle.x - mouseDelta.y;
 
-        if (x < 180f)
+        if (mouseDelta != Vector2.zero)
         {
-            x = Mathf.Clamp(x, -1f, 20f);
+            if (x < 180f)
+            {
+                x = Mathf.Clamp(x, -1f, 20f);
+            }
+            else
+            {
+                x = Mathf.Clamp(x, 330f, 361f);
+            }
+            cameraArm.rotation = Quaternion.Euler(x, cameraAngle.y + mouseDelta.x, cameraAngle.z);
         }
         else
         {
-            x = Mathf.Clamp(x, 330f, 361f);
+            if(Input.GetKey(KeyCode.Q) == true)
+            {
+                cameraArm.rotation = Quaternion.Euler(x, cameraAngle.y + mouseDelta.x + rotationSpeed / 3, cameraAngle.z);
+            }
+            if (Input.GetKey(KeyCode.E) == true)
+            {
+                cameraArm.rotation = Quaternion.Euler(x, cameraAngle.y + mouseDelta.x - rotationSpeed / 3, cameraAngle.z);
+            }
         }
-
-        cameraArm.rotation = Quaternion.Euler(x, cameraAngle.y + mouseDelta.x, cameraAngle.z);
     }
 }
