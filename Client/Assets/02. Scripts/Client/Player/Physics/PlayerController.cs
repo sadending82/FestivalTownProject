@@ -56,7 +56,7 @@ public class PlayerController : MonoBehaviour
         beforeAxisRawH = 0;
         beforeAxisRawV = 0;
         amIPlayer = false;
-        isMove = false;
+        SetIsMove(false);
     }
     void Start()
     {
