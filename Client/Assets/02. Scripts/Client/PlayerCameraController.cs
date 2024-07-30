@@ -8,21 +8,27 @@ public class PlayerCameraController : MonoBehaviour
     public Transform cameraArm;
     public Transform pelvis;
 
+    private bool amIPlayer;
+
     private float mouseX, mouseY;
 
     private void Awake()
     {
+        amIPlayer = false;
     }
 
     private void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        if (amIPlayer == true) Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void FixedUpdate()
     {
-        Move();
-        LookAround();
+        if (amIPlayer == true)
+        {
+            Move();
+            LookAround();
+        }
     }
 
     private void Move()
@@ -35,28 +41,19 @@ public class PlayerCameraController : MonoBehaviour
         Vector3 cameraAngle = cameraArm.rotation.eulerAngles;
         float x = cameraAngle.x - mouseDelta.y;
 
-        if (mouseDelta != Vector2.zero)
-        {
-            if (x < 180f)
-            {
-                x = Mathf.Clamp(x, -1f, 20f);
-            }
-            else
-            {
-                x = Mathf.Clamp(x, 330f, 361f);
-            }
-            cameraArm.rotation = Quaternion.Euler(x, cameraAngle.y + mouseDelta.x, cameraAngle.z);
-        }
-        else
-        {
-            if(Input.GetKey(KeyCode.Q) == true)
-            {
-                cameraArm.rotation = Quaternion.Euler(x, cameraAngle.y + mouseDelta.x + rotationSpeed / 3, cameraAngle.z);
-            }
-            if (Input.GetKey(KeyCode.E) == true)
-            {
-                cameraArm.rotation = Quaternion.Euler(x, cameraAngle.y + mouseDelta.x - rotationSpeed / 3, cameraAngle.z);
-            }
-        }
+       if (x < 180f)
+       {
+           x = Mathf.Clamp(x, -1f, 20f);
+       }
+       else
+       {
+           x = Mathf.Clamp(x, 330f, 361f);
+       }
+       cameraArm.rotation = Quaternion.Euler(x, cameraAngle.y + mouseDelta.x, cameraAngle.z);
+    }
+
+    public void SetAmIPlayer(bool amIPlayer)
+    {
+        this.amIPlayer = amIPlayer;
     }
 }

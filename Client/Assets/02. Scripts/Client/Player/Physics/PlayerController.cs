@@ -37,9 +37,12 @@ public class PlayerController : MonoBehaviour
     private ReceiveManager receiveManager;
     private float beforeAxisRawH, beforeAxisRawV;
     private float AxisRawH, AxisRawV;
+    private bool amIPlayer;
 
-    //------ Test -------
-    public GameObject testCube;
+    //------ Not Player -------
+    private bool isMove;
+    public float moveSpeed;
+    private Vector3 moveDirection;
 
     private void Awake()
     {
@@ -62,12 +65,30 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Move();
+        if (amIPlayer == true)
+        {
+            Move();
+        }
+        else
+        {
+            if (isMove == true)
+            {
+                GetComponent<Rigidbody>().velocity = moveDirection * moveSpeed;
+            }
+            if (moveDirection != Vector3.zero)
+            {
+                rotationQuaternion = Quaternion.LookRotation(moveDirection);
+                stabilizer.rotation = rotationQuaternion;
+            }
+        }
     }
     private void Update()
     {
-        MouseInput();
-        CheckIsGround();
+        if (amIPlayer == true)
+        {
+            MouseInput();
+            CheckIsGround();
+        }
     }
 
     private void CheckIsGround()
@@ -231,5 +252,21 @@ public class PlayerController : MonoBehaviour
         {
             animationController.setUpperBodyAnimationState(UpperBodyAnimationState.THROW);
         }
+    }
+    public void SetAmIPlayer(bool amIPlayer)
+    {
+        this.amIPlayer = amIPlayer;
+    }
+    public void SetPosition(Vector3 position)
+    {
+        this.transform.position = new Vector3(position.x, this.transform.position.y, position.z);
+    }
+    public void SetDirection(Vector3 direction)
+    {
+        moveDirection = direction;
+    }
+    public void SetIsMove(bool isMove)
+    {
+        this.isMove = isMove;
     }
 }

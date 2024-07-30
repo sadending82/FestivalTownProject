@@ -5,6 +5,8 @@ using UnityEngine;
 public class CharacterStatus : MonoBehaviour
 {
     [Header("--- Status ---")]
+    [SerializeField]
+    private int id;
     public int maxHp;
     public int hp;
     public float maxStamina;
@@ -17,6 +19,8 @@ public class CharacterStatus : MonoBehaviour
     public bool isDie = false;
     public int groggyNum;
     public float groggyTime;
+    public Camera myCamera;
+    private bool amIPlayer;
 
     [Header("--- AnimationControll ---")]
     public bool isGroggy;
@@ -24,6 +28,7 @@ public class CharacterStatus : MonoBehaviour
 
     private void Awake()
     {
+        myCamera.enabled = false;
     }
     private void Start()
     {
@@ -33,4 +38,14 @@ public class CharacterStatus : MonoBehaviour
     }
 
     // ------------------- GETTERS & SETTERS -------------------
+    public void SetAmIPlayer(bool amIPlayer)
+    {
+        this.amIPlayer = amIPlayer;
+        this.GetComponent<PlayerController>().SetAmIPlayer(amIPlayer);
+        this.GetComponent<PlayerCameraController>().SetAmIPlayer(amIPlayer);
+        if(amIPlayer == true)
+        {
+            myCamera.enabled = true;
+        }
+    }
 }
