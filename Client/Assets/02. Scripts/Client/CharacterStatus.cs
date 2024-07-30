@@ -28,6 +28,7 @@ public class CharacterStatus : MonoBehaviour
 
     private void Awake()
     {
+        amIPlayer = false;
         myCamera.enabled = false;
     }
     private void Start()

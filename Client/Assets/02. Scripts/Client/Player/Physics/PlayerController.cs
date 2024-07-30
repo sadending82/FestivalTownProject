@@ -51,6 +51,7 @@ public class PlayerController : MonoBehaviour
         isLeftShiftKeyDown = false;
         beforeAxisRawH = 0;
         beforeAxisRawV = 0;
+        amIPlayer = false;
     }
     void Start()
     {
