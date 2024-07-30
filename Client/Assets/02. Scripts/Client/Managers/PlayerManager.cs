@@ -25,6 +25,7 @@ public class PlayerManager : MonoBehaviour
             if(myId == i)
             {
                 transform.GetChild(i).gameObject.GetComponent<CharacterStatus>().SetAmIPlayer(true);
+                transform.GetChild(i).gameObject.GetComponent<PlayerController>().SetMyId(myId);
             }
         }
     }

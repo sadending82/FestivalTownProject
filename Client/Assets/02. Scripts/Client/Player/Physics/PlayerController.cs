@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour
     private float beforeAxisRawH, beforeAxisRawV;
     private float AxisRawH, AxisRawV;
     private bool amIPlayer;
+    private int myId;
 
     //------ Not Player -------
     private bool isMove;
@@ -137,11 +138,11 @@ public class PlayerController : MonoBehaviour
         {
             if(AxisRawH == 0 && AxisRawV == 0)
             {
-                packetManager.SendPlayerStopPacket(pelvisTransform.position, moveDir);
+                packetManager.SendPlayerStopPacket(pelvisTransform.position, moveDir, myId);
             }
             else
             {
-                packetManager.SendPlayerMovePacket(pelvisTransform.position, moveDir);
+                packetManager.SendPlayerMovePacket(pelvisTransform.position, moveDir, myId);
             }
         }
         beforeAxisRawH = AxisRawH;
@@ -273,5 +274,9 @@ public class PlayerController : MonoBehaviour
     public void SetIsMove(bool isMove)
     {
         this.isMove = isMove;
+    }
+    public void SetMyId(int myId)
+    {
+        this.myId = myId;
     }
 }
