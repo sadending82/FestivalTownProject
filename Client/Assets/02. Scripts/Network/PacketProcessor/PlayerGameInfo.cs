@@ -11,7 +11,7 @@ namespace Network.PacketProcessor
 {
     public class PlayerGameInfoProcessor : PacketProcessor
     {
-        public override void Process(byte[] data, GameObject testObject)
+        public override void Process(byte[] data, GameObject playerManager)
         {
             // 여기에 처리    
             var bb = new ByteBuffer(data);
