@@ -13,6 +13,9 @@ public class TestReceive : MonoBehaviour
     private Transform pelvisTransform;
     private bool isMove;
 
+    private Quaternion rotationQuaternion;
+    public Transform stabilizer;
+
     private void Awake()
     {
         SetIsMove(false);
@@ -26,6 +29,11 @@ public class TestReceive : MonoBehaviour
         if(isMove == true)
         {
             GetComponent<Rigidbody>().velocity = moveDirection * moveSpeed;
+        }
+        if (moveDirection != Vector3.zero)
+        {
+            rotationQuaternion = Quaternion.LookRotation(moveDirection);
+            stabilizer.rotation = rotationQuaternion;
         }
     }
 

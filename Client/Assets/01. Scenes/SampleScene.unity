@@ -409,6 +409,7 @@ MonoBehaviour:
   positionZOffeset: 5
   moveSpeed: 10
   pelvis: {fileID: 1117158147}
+  stabilizer: {fileID: 1519780453}
 --- !u!1 &1117158147 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5756405583764509044, guid: 8ed26ac174bfed74785e560248fb8646, type: 3}
@@ -479,6 +480,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 890549877}
   m_SourcePrefab: {fileID: 100100000, guid: 63ad0367cbff65049a6d7d2af1205027, type: 3}
+--- !u!4 &1519780453 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5882317408791109440, guid: 63ad0367cbff65049a6d7d2af1205027, type: 3}
+  m_PrefabInstance: {fileID: 1225568116}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1644665125
 GameObject:
   m_ObjectHideFlags: 0
