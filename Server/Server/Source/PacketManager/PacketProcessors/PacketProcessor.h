@@ -15,7 +15,7 @@ public:
 	~PacketProcessor() {}
 
 	virtual void Process(Server* pServer, const uint8_t* data, const int size, const int key) {}
-	virtual void Process(Server* pServer, const char* buffer) {}
+	virtual void Process(Server* pServer, unsigned char* buffer) {}
 
 private:
 	flatbuffers::FlatBufferBuilder mBuilder;

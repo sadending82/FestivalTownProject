@@ -2,7 +2,7 @@
 #include "Event.h"
 #include "../Thread/TimerThread/TimerThread.h"
 
-void PushEventPlayerPosSync(Timer* pTimer, int roomID)
+bool PushEventPlayerPosSync(Timer* pTimer, int roomID)
 {
 	EV_PLAYER_POS_SYNC e;
 	e.size = sizeof(EV_PLAYER_POS_SYNC);
@@ -15,4 +15,6 @@ void PushEventPlayerPosSync(Timer* pTimer, int roomID)
 	memcpy(header.message, reinterpret_cast<char*>(&e), sizeof(EV_PLAYER_POS_SYNC));
 
 	pTimer->PushEvent(header);
+
+	return true;
 }

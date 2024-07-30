@@ -11,7 +11,7 @@ void PacketManager::Init(Server* server)
     PacketProcessorMap[ePacketType::C2S_PLAYERMOVE] = std::make_unique<PacketPlayerMove>();
     PacketProcessorMap[ePacketType::C2S_PLAYERSTOP] = std::make_unique<PacketPlayerStop>();
 
-    EventProcessorMap[eEventType::PLAYERPOSSYNC] = std::make_unique<PacketPlayerStop>();
+    EventProcessorMap[eEventType::PLAYERPOSSYNC] = std::make_unique<EventPlayerPosSync>();
 }
 
 void PacketManager::ProcessPacket(const int type, const uint8_t* data, const int size, const int key)
@@ -42,7 +42,7 @@ void PacketManager::ProcessPacket(const int type, const uint8_t* data, const int
 	}
 }
 
-void PacketManager::ProcessEvent(const eEventType type, const char* buf)
+void PacketManager::ProcessEvent(const eEventType type, unsigned char* buf)
 {
 	EventProcessorMap[type]->Process(pServer, buf);
 }

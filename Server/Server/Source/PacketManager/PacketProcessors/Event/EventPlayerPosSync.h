@@ -8,9 +8,9 @@ class EventPlayerPosSync : public PacketProcessor {
 
 public:
 
-	virtual void Process(Server* pServer, const char* buf) {
+	virtual void Process(Server* pServer, unsigned char* buf) {
 		// 방이 활성화 되어있는지 확인해야함
-		EV_PLAYER_POS_SYNC* event = reinterpret_cast<EV_PLAYER_POS_SYNC*>(&buf);
+		EV_PLAYER_POS_SYNC* event = reinterpret_cast<EV_PLAYER_POS_SYNC*>(buf);
 
 		int roomID = event->roodID;
 
@@ -28,7 +28,7 @@ public:
 
 			pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 		}
-
+		std::cout << "이벤트 성공!" << std::endl;
 		PushEventPlayerPosSync(pServer->GetTimer(), roomID);
 	}
 

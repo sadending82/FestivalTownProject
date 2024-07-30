@@ -4,6 +4,7 @@
 #include "../Thread/TimerThread/TimerThread.h"
 #include "../TableManager/TableManager.h"
 #include "../PacketManager/PacketManager.h"
+#include "../Event/Event.h"
 
 int Server::SetSessionKey()
 {
@@ -94,6 +95,8 @@ void Server::Init(class PacketManager* pPacketManager, class TableManager* pTabl
     mTimerThread = std::thread(&Timer::Main, mTimer);
 
     DEBUGMSGNOPARAM("Thread Ready\n");
+
+    PushEventPlayerPosSync(mTimer, 0);
 }
 
 void Server::ThreadJoin()

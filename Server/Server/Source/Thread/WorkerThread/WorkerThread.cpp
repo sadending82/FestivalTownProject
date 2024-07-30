@@ -96,9 +96,8 @@ void WorkerThread::RunWorker()
             break;
         }
         case eOpType::OP_EVENT:{
-            unsigned char* data_ptr = exOver->mMessageBuf;
-            EVENT_HEADER* header = reinterpret_cast<EVENT_HEADER*>(data_ptr);
-            m_pPacketManager->ProcessEvent((eEventType)header->type, header->message);
+            EVENT* event = reinterpret_cast<EVENT*>(exOver->mMessageBuf);
+            m_pPacketManager->ProcessEvent((eEventType)event->type, exOver->mMessageBuf);
             break;
         }
         }

@@ -153,6 +153,7 @@ xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Event\Event.cpp" />
     <ClCompile Include="Source\Network\ExOver.cpp" />
     <ClCompile Include="Source\Network\Session\Session.cpp" />
     <ClCompile Include="Source\PacketManager\PacketManager.cpp" />
@@ -167,11 +168,13 @@ xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     <ClCompile Include="Source\utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Event.h" />
+    <ClInclude Include="Source\Event\Event.h" />
     <ClInclude Include="Source\PacketManager\FlatBuffer\test_generated.h" />
     <ClInclude Include="Source\PacketManager\PacketManager.h" />
     <ClInclude Include="Source\Network\ExOver.h" />
     <ClInclude Include="Source\Network\Session\Session.h" />
-    <ClInclude Include="Source\PacketManager\PacketProcessors\Event\EventTest.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Event\EventPlayerPosSync.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\FlatBufferManager.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\Player_generated.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\PacketPlayerMove.h" />

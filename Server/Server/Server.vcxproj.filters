@@ -13,6 +13,7 @@
     <ClCompile Include="Source\TableManager\TableManager.cpp" />
     <ClCompile Include="Source\Thread\TimerThread\TimerThread.cpp" />
     <ClCompile Include="Source\utility.cpp" />
+    <ClCompile Include="Source\Event\Event.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DB\DB.h" />
@@ -33,11 +34,13 @@
     <ClInclude Include="Source\PacketManager\FlatBuffer\test_generated.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\FlatBufferManager.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Processors.h" />
-    <ClInclude Include="Source\PacketManager\PacketProcessors\Event\EventTest.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\PacketPlayerMove.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\PacketPlayerStop.h" />
     <ClInclude Include="Source\TableManager\Tables\CharacterStat.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\Player_generated.h" />
+    <ClInclude Include="Source\Event.h" />
+    <ClInclude Include="Source\Event\Event.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Event\EventPlayerPosSync.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

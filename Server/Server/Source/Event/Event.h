@@ -1,6 +1,8 @@
 #pragma once
 #include "../utility.h"
 
+class Timer;
+
 #pragma pack (push, 1)
 enum eEventType {
 	PLAYERPOSSYNC
@@ -27,4 +29,4 @@ struct EV_PLAYER_POS_SYNC : EVENT{
 };
 #pragma pack(pop)
 
-void PushEventPlayerPosSync(Timer* pTimer, int roomID);
+bool PushEventPlayerPosSync(Timer* pTimer, int roomID);
