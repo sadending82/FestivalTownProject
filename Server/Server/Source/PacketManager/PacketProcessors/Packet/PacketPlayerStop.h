@@ -18,7 +18,12 @@ public:
 
 			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYERSTOP, data, size);
 
-			pServer->SendAllPlayerInRoomBySessionID(send_buffer.data(), send_buffer.size(), key);
+			int roomID = reinterpret_cast<Player*>(pServer->GetSessions()[key])->GetRoomID();
+			for (Player* p : pServer->GetRooms()[roomID]->GetPlayerList()) {
+				if (p == nullptr) continue;
+				if (p->GetSessionID() == key)
+					p->DoSend(send_buffer.data(), send_buffer.size());
+			}
 		}
 	}
 
