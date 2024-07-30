@@ -73,7 +73,7 @@ public class PlayerController : MonoBehaviour
         {
             if (isMove == true)
             {
-                GetComponent<Rigidbody>().velocity = moveDirection * moveSpeed;
+                pelvis.GetComponent<Rigidbody>().velocity = moveDirection * moveSpeed;
             }
             if (moveDirection != Vector3.zero)
             {
