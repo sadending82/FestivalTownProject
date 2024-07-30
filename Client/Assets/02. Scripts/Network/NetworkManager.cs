@@ -51,6 +51,7 @@ public class NetworkManager : MonoBehaviour
         if(isNetworkConnected) recvManager.CreateRecvThread(Connection);
 
         recvManager.SetPlayerManager(GameObject.FindWithTag("PlayerManager"));
+        packetManager.SetMyID(GameObject.FindWithTag("PlayerManager").GetComponent<PlayerManager>().GetMyId());
     }
 
     private bool ConnectToServer()

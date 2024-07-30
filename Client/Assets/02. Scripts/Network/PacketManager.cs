@@ -10,7 +10,7 @@ using Network.PacketProcessor;
 
 public class PacketManager : MonoBehaviour 
 {
-    private PlayerManager playerManager;
+    private int myID;
 
     private Dictionary<ePacketType, PacketProcessor> processorDict { get; set; }
 
@@ -34,6 +34,11 @@ public class PacketManager : MonoBehaviour
     public void SetConnection(TcpClient connection)
     {
         _connection = connection;
+    }
+
+    public void SetMyID(int myID)
+    {
+        this.myID = myID;
     }
 
     public void Init()
@@ -93,7 +98,7 @@ public class PacketManager : MonoBehaviour
         PlayerMove.StartPlayerMove(builder);
         PlayerMove.AddPos(builder, pos);
         PlayerMove.AddDirection(builder, dir);
-        PlayerMove.AddId(builder, playerManager.GetMyId());
+        PlayerMove.AddId(builder, myID);
         var pm = PlayerMove.EndPlayerMove(builder);
         builder.Finish(pm.Value);
         byte[] data = builder.SizedByteArray();
@@ -118,7 +123,7 @@ public class PacketManager : MonoBehaviour
         PlayerMove.StartPlayerMove(builder);
         PlayerMove.AddPos(builder, pos);
         PlayerMove.AddDirection(builder, dir);
-        PlayerMove.AddId(builder, playerManager.GetMyId());
+        PlayerMove.AddId(builder, myID);
         var pm = PlayerMove.EndPlayerMove(builder);
         builder.Finish(pm.Value);
         byte[] data = builder.SizedByteArray();
