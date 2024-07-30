@@ -21,8 +21,8 @@ public:
 			int roomID = reinterpret_cast<Player*>(pServer->GetSessions()[key])->GetRoomID();
 			for (Player* p : pServer->GetRooms()[roomID]->GetPlayerList()) {
 				if (p == nullptr) continue;
-				if (p->GetSessionID() == key)
-					p->DoSend(send_buffer.data(), send_buffer.size());
+				if (p->GetSessionID() == key) continue;
+				p->DoSend(send_buffer.data(), send_buffer.size());
 			}
 		}
 	}
