@@ -138,9 +138,10 @@ void Server::SendPlayerGameInfo(int sessionID)
     mBuilder.Clear();
     Player* player = reinterpret_cast<Player*>(GetSessions()[sessionID]);
     int inGameID = player->GetInGameID();
+
     int roomID = player->GetRoomID();
     mBuilder.Finish(PacketTable::PlayerTable::CreatePlayerGameInfo(mBuilder, inGameID, roomID));
     std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYERGAMEINFO, mBuilder.GetBufferPointer(), mBuilder.GetSize());
 
-    SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
+    GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
 }
