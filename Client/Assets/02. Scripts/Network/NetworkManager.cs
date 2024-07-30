@@ -51,14 +51,13 @@ public class NetworkManager : MonoBehaviour
         if(isNetworkConnected) recvManager.CreateRecvThread(Connection);
 
         recvManager.SetPlayerManager(GameObject.FindWithTag("PlayerManager"));
-        packetManager.SetMyID(GameObject.FindWithTag("PlayerManager").GetComponent<PlayerManager>().GetMyId());
     }
 
     private bool ConnectToServer()
     {
         try
         {
-            Connection = new TcpClient("39.120.204.67", 5000);
+            Connection = new TcpClient("127.0.0.1", 5000);
         }
         catch (Exception e)
         {

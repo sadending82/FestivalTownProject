@@ -10,8 +10,6 @@ using Network.PacketProcessor;
 
 public class PacketManager : MonoBehaviour 
 {
-    private int myID;
-
     private Dictionary<ePacketType, PacketProcessor> processorDict { get; set; }
 
     public PacketProcessor GetProcessor(ePacketType type)
@@ -34,11 +32,6 @@ public class PacketManager : MonoBehaviour
     public void SetConnection(TcpClient connection)
     {
         _connection = connection;
-    }
-
-    public void SetMyID(int myID)
-    {
-        this.myID = myID;
     }
 
     public void Init()
@@ -89,7 +82,7 @@ public class PacketManager : MonoBehaviour
         return buffer;
     }
 
-    public byte[] CreatePlayerMovePacket(Vector3 position, Vector3 direction)
+    public byte[] CreatePlayerMovePacket(Vector3 position, Vector3 direction, int id)
     {
         var builder = new FlatBufferBuilder(1);
         var pos = Vec3.CreateVec3(builder, position.x, position.y, position.z);
@@ -98,7 +91,7 @@ public class PacketManager : MonoBehaviour
         PlayerMove.StartPlayerMove(builder);
         PlayerMove.AddPos(builder, pos);
         PlayerMove.AddDirection(builder, dir);
-        PlayerMove.AddId(builder, myID);
+        PlayerMove.AddId(builder, id);
         var pm = PlayerMove.EndPlayerMove(builder);
         builder.Finish(pm.Value);
         byte[] data = builder.SizedByteArray();
@@ -114,7 +107,7 @@ public class PacketManager : MonoBehaviour
         return buf;
     }
 
-    public byte[] CreatePlayerStopPacket(Vector3 position, Vector3 direction)
+    public byte[] CreatePlayerStopPacket(Vector3 position, Vector3 direction, int id)
     {
         var builder = new FlatBufferBuilder(1);
         var pos = Vec3.CreateVec3(builder, position.x, position.y, position.z);
@@ -123,7 +116,7 @@ public class PacketManager : MonoBehaviour
         PlayerMove.StartPlayerMove(builder);
         PlayerMove.AddPos(builder, pos);
         PlayerMove.AddDirection(builder, dir);
-        PlayerMove.AddId(builder, myID);
+        PlayerMove.AddId(builder, id);
         var pm = PlayerMove.EndPlayerMove(builder);
         builder.Finish(pm.Value);
         byte[] data = builder.SizedByteArray();
@@ -139,17 +132,17 @@ public class PacketManager : MonoBehaviour
         return buf;
     }
 
-    public void SendPlayerMovePacket(Vector3 position, Vector3 direction)
+    public void SendPlayerMovePacket(Vector3 position, Vector3 direction, int id)
     {
 
-        byte[] packet = CreatePlayerMovePacket(position, direction);
+        byte[] packet = CreatePlayerMovePacket(position, direction, id);
         SendPacket(packet);
     }
 
-    public void SendPlayerStopPacket(Vector3 position, Vector3 direction)
+    public void SendPlayerStopPacket(Vector3 position, Vector3 direction, int id)
     {
 
-        byte[] packet = CreatePlayerStopPacket(position, direction);
+        byte[] packet = CreatePlayerStopPacket(position, direction, id);
         SendPacket(packet);
     }
 
