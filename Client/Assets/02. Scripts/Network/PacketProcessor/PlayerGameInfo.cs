@@ -20,6 +20,8 @@ namespace Network.PacketProcessor
 
             int id = Data.Ingameid;
             int roomID = Data.Roomid;
+            
+            playerManager.GetComponent<PlayerManager>().SetMyId(id);
         }
 
         private FlatBufferBuilder mBuilder;
