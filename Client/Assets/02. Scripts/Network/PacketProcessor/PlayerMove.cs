@@ -11,7 +11,7 @@ namespace Network.PacketProcessor
 {
     public class PlayerMoveProcessor : PacketProcessor
     {
-        public override void Process(byte[] data, GameObject testObject) 
+        public override void Process(byte[] data, GameObject playerManager) 
         {
             // 여기에 처리    
             var bb = new ByteBuffer(data);
@@ -21,9 +21,9 @@ namespace Network.PacketProcessor
             Vector3 pos = new Vector3(moveData.Pos.Value.X, moveData.Pos.Value.Y, moveData.Pos.Value.Z);
             Vector3 dir = new Vector3(moveData.Direction.Value.X, moveData.Direction.Value.Y, moveData.Direction.Value.Z);
 
-            testObject.GetComponent<TestReceive>().SetDirection(dir);
-            testObject.GetComponent<TestReceive>().SetPosition(pos);
-            testObject.GetComponent<TestReceive>().SetIsMove(true);
+            playerManager.transform.GetChild(id).GetComponent<PlayerController>().SetDirection(dir);
+            playerManager.transform.GetChild(id).GetComponent<PlayerController>().SetPosition(pos);
+            playerManager.transform.GetChild(id).GetComponent<PlayerController>().SetIsMove(true);
         }
 
         private FlatBufferBuilder mBuilder;

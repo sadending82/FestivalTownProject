@@ -50,14 +50,14 @@ public class NetworkManager : MonoBehaviour
 
         if(isNetworkConnected) recvManager.CreateRecvThread(Connection);
 
-        recvManager.SetTargetObject(GameObject.FindWithTag("Test"));
+        recvManager.SetPlayerManager(GameObject.FindWithTag("PlayerManager"));
     }
 
     private bool ConnectToServer()
     {
         try
         {
-            Connection = new TcpClient("127.0.0.1", 5000);
+            Connection = new TcpClient("39.120.204.67", 5000);
         }
         catch (Exception e)
         {

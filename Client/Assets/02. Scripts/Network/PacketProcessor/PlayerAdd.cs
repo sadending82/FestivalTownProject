@@ -11,7 +11,7 @@ namespace Network.PacketProcessor
 {
     public class PlayerAddProcessor : PacketProcessor
     {
-        public override void Process(byte[] data, GameObject testObject)
+        public override void Process(byte[] data, GameObject playerManager)
         {
 
             Debug.Log("add 받음");
