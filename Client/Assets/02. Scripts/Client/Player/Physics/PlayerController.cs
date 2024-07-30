@@ -260,7 +260,7 @@ public class PlayerController : MonoBehaviour
     }
     public void SetPosition(Vector3 position)
     {
-        this.transform.position = new Vector3(position.x, this.transform.position.y, position.z);
+        pelvisTransform.position = new Vector3(position.x, pelvisTransform.position.y, position.z);
     }
     public void SetDirection(Vector3 direction)
     {
