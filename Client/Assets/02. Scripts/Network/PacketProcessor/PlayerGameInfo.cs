@@ -13,10 +13,13 @@ namespace Network.PacketProcessor
     {
         public override void Process(byte[] data, GameObject testObject)
         {
-            Debug.Log("GameInfo 받음");
             // 여기에 처리    
             var bb = new ByteBuffer(data);
-            
+
+            var Data = PlayerGameInfo.GetRootAsPlayerGameInfo(bb);
+
+            int id = Data.Ingameid;
+            int roomID = Data.Roomid;
         }
 
         private FlatBufferBuilder mBuilder;

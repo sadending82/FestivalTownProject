@@ -13,10 +13,14 @@ namespace Network.PacketProcessor
     {
         public override void Process(byte[] data, GameObject testObject)
         {
-
-            Debug.Log("add 받음");
             // 여기에 처리    
             var bb = new ByteBuffer(data);
+
+            var Data = PlayerAdd.GetRootAsPlayerAdd(bb);
+
+            int id = Data.Id;
+            Vector3 pos = new Vector3(Data.Pos.Value.X, Data.Pos.Value.Y, Data.Pos.Value.Z);
+            Vector3 dir = new Vector3(Data.Direction.Value.X, Data.Direction.Value.Y, Data.Direction.Value.Z);
 
         }
 
