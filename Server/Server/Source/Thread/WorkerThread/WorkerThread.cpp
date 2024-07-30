@@ -39,6 +39,7 @@ void WorkerThread::RunWorker()
                     Player* newplayer = reinterpret_cast<Player*>(newSession);
                     m_pServer->GetRooms()[0]->addPlayer(newplayer);
                     m_pServer->GetRooms()[0]->AddPlayerCnt();
+
                     m_pServer->SendPlayerGameInfo(newKey);
 
                     if (m_pServer->GetRooms()[0]->GetPlayerCnt() >= 2) {
