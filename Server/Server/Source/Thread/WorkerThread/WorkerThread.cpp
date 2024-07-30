@@ -34,14 +34,22 @@ void WorkerThread::RunWorker()
 
                 DEBUGMSGONEPARAM("Lobby Accept: %d\n", newKey);
 
-                // 임시로 방에 플레이어 추가
+                // 테스트용 임시 쓰레기 코드
                 {
                     Player* newplayer = reinterpret_cast<Player*>(newSession);
                     m_pServer->GetRooms()[0]->addPlayer(newplayer);
-
+                    m_pServer->GetRooms()[0]->AddPlayerCnt();
                     m_pServer->SendPlayerGameInfo(newKey);
 
-                    m_pServer->SendPlayerAdd(newKey);
+                    if (m_pServer->GetRooms()[0]->GetPlayerCnt() >= 2) {
+                        for (Player* a : m_pServer->GetRooms()[0]->GetPlayerList()) {
+                            if (a == nullptr) continue;
+                            for (Player* b : m_pServer->GetRooms()[0]->GetPlayerList()) {
+                                if (b == nullptr) continue;
+                                m_pServer->SendPlayerAdd(a->GetSessionID(), b->GetSessionID());
+                            }
+                        }
+                    }
                 }
 
                 newSession->DoRecv();

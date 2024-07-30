@@ -28,7 +28,6 @@ public:
 
 			pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 		}
-		std::cout << "이벤트 성공!" << std::endl;
 		PushEventPlayerPosSync(pServer->GetTimer(), roomID);
 	}
 

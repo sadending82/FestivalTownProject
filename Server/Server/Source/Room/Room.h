@@ -15,6 +15,9 @@ public:
 
 	std::array<Player*, MAXPLAYER>& GetPlayerList() { return mPlayerList; }
 	std::array<int, MAXPLAYER>& GetPlayerIDs() { return mPlayerSessionIDs; }
+	int GetPlayerCnt() { return mPlayerCnt; }
+
+	void AddPlayerCnt() { mPlayerCnt++; }
 
 private:
 
@@ -25,5 +28,6 @@ private:
 	std::array<int, MAXPLAYER> mPlayerSessionIDs;
 
 	int mRoomID;
+	int mPlayerCnt = 0;
 };
 

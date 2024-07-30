@@ -24,7 +24,7 @@ public:
 	void SendAllPlayerInRoomBySessionID(void* packet, int size, int sessionID);
 	void SendAllPlayerInRoom(void* packet, int size, int roomID);
 
-	void SendPlayerAdd(int sessionID);
+	void SendPlayerAdd(int sessionID, int destination);
 	void SendPlayerGameInfo(int sessionID);
 
 	HANDLE GetHcp() { return mHcp; }
