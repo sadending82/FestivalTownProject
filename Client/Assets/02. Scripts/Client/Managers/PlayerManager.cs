@@ -24,7 +24,6 @@ public class PlayerManager : MonoBehaviour
             transform.GetChild(i).gameObject.SetActive(true);
             if(myId == i)
             {
-                Debug.Log("I Am " + i + " Player");
                 transform.GetChild(i).gameObject.GetComponent<CharacterStatus>().SetAmIPlayer(true);
             }
         }

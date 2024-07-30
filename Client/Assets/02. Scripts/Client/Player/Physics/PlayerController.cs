@@ -89,7 +89,6 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
-        Debug.Log(testName + " player is " + amIPlayer);
         if (amIPlayer == true)
         {
             MouseInput();
