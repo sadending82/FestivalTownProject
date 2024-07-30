@@ -47,7 +47,6 @@ public class CharacterStatus : MonoBehaviour
         if(amIPlayer == true)
         {
             myCamera.enabled = true;
-            Debug.Log("Camera On!!");
         }
     }
 }

@@ -44,6 +44,9 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed;
     private Vector3 moveDirection;
 
+    //------ test -------
+    public string testName;
+
     private void Awake()
     {
         leftMouseClickTimer = 0f;
@@ -52,6 +55,7 @@ public class PlayerController : MonoBehaviour
         beforeAxisRawH = 0;
         beforeAxisRawV = 0;
         amIPlayer = false;
+        isMove = false;
     }
     void Start()
     {
@@ -74,7 +78,7 @@ public class PlayerController : MonoBehaviour
         {
             if (isMove == true)
             {
-                pelvis.GetComponent<Rigidbody>().velocity = moveDirection * moveSpeed;
+                pelvisRigidbody.velocity = moveDirection * moveSpeed;
             }
             if (moveDirection != Vector3.zero)
             {
@@ -85,6 +89,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
+        Debug.Log(testName + " player is " + amIPlayer);
         if (amIPlayer == true)
         {
             MouseInput();
