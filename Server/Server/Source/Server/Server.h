@@ -23,6 +23,7 @@ public:
 
 	void SendAllPlayerInRoomBySessionID(void* packet, int size, int sessionID);
 	void SendAllPlayerInRoom(void* packet, int size, int roomID);
+	void SendAllPlayerInRoomExceptSender(void* packet, int size, int sessionID);
 
 	void SendPlayerAdd(int sessionID, int destination);
 	void SendPlayerGameInfo(int sessionID);

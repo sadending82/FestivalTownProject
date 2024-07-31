@@ -10,6 +10,7 @@ void PacketManager::Init(Server* server)
 
     PacketProcessorMap[ePacketType::C2S_PLAYERMOVE] = std::make_unique<PacketPlayerMove>();
     PacketProcessorMap[ePacketType::C2S_PLAYERSTOP] = std::make_unique<PacketPlayerStop>();
+    PacketProcessorMap[ePacketType::C2S_PLAYERPOSSYNC] = std::make_unique<PacketPlayerPosSync>();
 
     EventProcessorMap[eEventType::PLAYERPOSSYNC] = std::make_unique<EventPlayerPosSync>();
 }
