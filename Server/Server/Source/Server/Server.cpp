@@ -70,7 +70,7 @@ void Server::Init(class PacketManager* pPacketManager, class TableManager* pTabl
 
 
     for (int i = 0; i < MAXSESSION; ++i) {
-        mSessions[i] = new Session();
+        mSessions[i] = new Player();
     }
     for (int i = 0; i < MAXROOM; ++i) {
         mRooms[i] = new Room();
@@ -106,7 +106,7 @@ void Server::ThreadJoin()
 
 void Server::SendAllPlayerInRoomBySessionID(void* packet, int size, int sessionID)
 {
-    int roomID = reinterpret_cast<Player*>(GetSessions()[sessionID])->GetRoomID();
+    int roomID = dynamic_cast<Player*>(GetSessions()[sessionID])->GetRoomID();
     for (Player* p : GetRooms()[roomID]->GetPlayerList()) {
         if (p == nullptr) continue;
         p->DoSend(packet, size);
@@ -123,12 +123,14 @@ void Server::SendAllPlayerInRoom(void* packet, int size, int roomID)
 
 void Server::SendAllPlayerInRoomExceptSender(void* packet, int size, int sessionID)
 {
-    int roomID = reinterpret_cast<Player*>(GetSessions()[sessionID])->GetRoomID();
+    Player* player = dynamic_cast<Player*>(GetSessions()[sessionID]);
+    int roomID = player->GetRoomID();
     for (Player* p : GetRooms()[roomID]->GetPlayerList()) {
         if (p == nullptr) continue;
         if (p->GetSessionID() == sessionID) continue;
         p->DoSend(packet, size);
     }
+    GetRooms()[roomID]->GetListUnlock();
 }
 
 void Server::SendPlayerAdd(int sessionID, int destination)

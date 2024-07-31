@@ -19,6 +19,11 @@ void PacketManager::ProcessPacket(const int type, const uint8_t* data, const int
 {
 	//PacketProcessorMap[type]->Process(pServer, data, size, key);
 
+    if (PacketProcessorMap[type] == nullptr) {
+        std::cout << "ÀÌ»óÇÑ°Å ¿È : " << type << std::endl;
+        return;
+    }
+
 	try {
         PacketProcessorMap[type]->Process(pServer, data, size, key);
 	}
