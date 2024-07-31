@@ -20,7 +20,9 @@ public:
 	void SetRoomID(int id) { mRoomID = id; }
 	void SetInGameID(int id) { mInGameID = id; }
 	void SetPosition(float x, float y, float z) { mPosition = Vector3f(x, y, z); }
+	void SetPosition(Vector3f v3f) { mPosition = v3f; }
 	void SetDirection(float x, float y, float z) { mDirection = Vector3f(x, y, z); }
+	void SetDirection(Vector3f v3f) { mDirection = v3f; }
 
 protected:
 	std::mutex      mPlayerStateLock;

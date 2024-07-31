@@ -161,7 +161,7 @@ public class PlayerController : MonoBehaviour
             {
                 packetManager.SendPlayerStopPacket(pelvisTransform.position, moveDir, myId);
             }
-            else if (beforeAxisRawH == 0 && beforeAxisRawV == 0)
+            else /*if (beforeAxisRawH == 0 && beforeAxisRawV == 0)*/
             {
                 packetManager.SendPlayerMovePacket(pelvisTransform.position, moveDir, myId);
             }
