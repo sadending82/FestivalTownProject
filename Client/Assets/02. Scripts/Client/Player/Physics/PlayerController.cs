@@ -48,6 +48,11 @@ public class PlayerController : MonoBehaviour
     //------ test -------
     public string testName;
 
+    //------ timer for send ------
+    private float curTime= 0.0f;
+    private float sendInterval = 1.0f;
+
+
     private void Awake()
     {
         leftMouseClickTimer = 0f;
@@ -94,7 +99,18 @@ public class PlayerController : MonoBehaviour
         {
             MouseInput();
             CheckIsGround();
+            curTime += Time.deltaTime;
+            if(curTime > sendInterval)
+            {
+                curTime -= sendInterval;
+                SendForSync();
+            }
         }
+    }
+
+    private void SendForSync()
+    {
+        packetManager.SendPlayerPosPacket(pelvisTransform.position, moveDirection, myId);
     }
 
     private void CheckIsGround()

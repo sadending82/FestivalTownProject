@@ -14,15 +14,18 @@ namespace NetworkProtocol
         public ushort type;
     }
 
-    public enum ePacketType{
+    public enum ePacketType
+    {
         // Server -> Client
         S2C_PLAYERADD,
         S2C_PLAYERGAMEINFO,
         S2C_PLAYERMOVE,
         S2C_PLAYERSTOP,
+        S2C_PLAYERPOSSYNC,
 
         // Client -> Server
         C2S_PLAYERMOVE,
         C2S_PLAYERSTOP,
-    }
+        C2S_PLAYERPOSSYNC
+    };
 }

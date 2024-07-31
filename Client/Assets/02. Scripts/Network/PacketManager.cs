@@ -132,6 +132,31 @@ public class PacketManager : MonoBehaviour
         return buf;
     }
 
+    public byte[] CreatePlayerPosPacket(Vector3 position, Vector3 direction, int id)
+    {
+        var builder = new FlatBufferBuilder(1);
+        var pos = Vec3.CreateVec3(builder, position.x, position.y, position.z);
+        var dir = Vec3.CreateVec3(builder, direction.x, direction.y, direction.z);
+
+        PlayerPos.StartPlayerPos(builder);
+        PlayerPos.AddPos(builder, pos);
+        PlayerPos.AddDirection(builder, dir);
+        PlayerPos.AddId(builder, id);
+        var pm = PlayerPos.EndPlayerPos(builder);
+        builder.Finish(pm.Value);
+        byte[] data = builder.SizedByteArray();
+
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERPOSSYNC, size = (ushort)data.Length };
+
+        byte[] headerdata = Serialize<HEADER>(header);
+        byte[] buf = new byte[data.Length + headerdata.Length];
+
+        Buffer.BlockCopy(headerdata, 0, buf, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, buf, headerdata.Length, data.Length);
+
+        return buf;
+    }
+
     public void SendPlayerMovePacket(Vector3 position, Vector3 direction, int id)
     {
 
@@ -146,25 +171,9 @@ public class PacketManager : MonoBehaviour
         SendPacket(packet);
     }
 
-    public void ProcessPlayerMovePacket(byte[] data)
+    public void SendPlayerPosPacket(Vector3 position, Vector3 direction, int id)
     {
-        var recvData = new ByteBuffer(data);
-
-        var playermove = PlayerMove.GetRootAsPlayerMove(recvData);
-
-        var pos = playermove.Pos.Value;
-        var dir = playermove.Direction.Value;
-
-    }
-
-    public void ProcessPlayerStopPacket(byte[] data)
-    {
-        var recvData = new ByteBuffer(data);
-
-        var playerstop = PlayerStop.GetRootAsPlayerStop(recvData);
-
-        var pos = playerstop.Pos.Value;
-        var dir = playerstop.Direction.Value;
-
+        byte[] packet = CreatePlayerPosPacket(position, direction, id);
+        SendPacket(packet);
     }
 }
