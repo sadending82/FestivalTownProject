@@ -99,18 +99,23 @@ public class PlayerController : MonoBehaviour
         {
             MouseInput();
             CheckIsGround();
-            curTime += Time.deltaTime;
-            if (curTime > sendInterval)
+            if (gameObject != null)
             {
-                curTime -= sendInterval;
-                SendForSync();
+                curTime += Time.deltaTime;
+                if (curTime > sendInterval)
+                {
+                    curTime -= sendInterval;
+                    SendForSync();
+                }
             }
         }
     }
 
     private void SendForSync()
     {
+
         packetManager.SendPlayerPosPacket(pelvisTransform.position, moveDirection, myId);
+
     }
 
     private void CheckIsGround()

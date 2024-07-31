@@ -21,9 +21,12 @@ namespace Network.PacketProcessor
             Vector3 pos = new Vector3(moveData.Pos.Value.X, moveData.Pos.Value.Y, moveData.Pos.Value.Z);
             Vector3 dir = new Vector3(moveData.Direction.Value.X, moveData.Direction.Value.Y, moveData.Direction.Value.Z);
 
-            playerManager.transform.GetChild(id).GetComponent<PlayerController>().SetDirection(dir);
-            playerManager.transform.GetChild(id).GetComponent<PlayerController>().SetPosition(pos);
-            playerManager.transform.GetChild(id).GetComponent<PlayerController>().SetIsMove(true);
+            if (playerManager.transform.GetChild(id) != null)
+            {
+                playerManager.transform.GetChild(id).GetComponent<PlayerController>().SetDirection(dir);
+                playerManager.transform.GetChild(id).GetComponent<PlayerController>().SetPosition(pos);
+                playerManager.transform.GetChild(id).GetComponent<PlayerController>().SetIsMove(true);
+            }
         }
 
         private FlatBufferBuilder mBuilder;

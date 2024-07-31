@@ -78,7 +78,7 @@ public class PacketManager : MonoBehaviour
         Marshal.StructureToPtr(packet, pBuffer, false);
         gch.Free();
 
-        Debug.Log("Serializing.");
+        //Debug.Log("Serializing.");
 
         return buffer;
     }

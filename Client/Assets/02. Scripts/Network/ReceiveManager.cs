@@ -14,6 +14,8 @@ public class ReceiveManager : MonoBehaviour
 
     private Queue<Tuple<ePacketType, byte[]>> PacketQueue = new Queue<Tuple<ePacketType, byte[]>>();
 
+
+    private Thread workerThread;
     Mutex mutex = new Mutex(false, "QueueLock");
 
     public void Init(PacketManager packetManager)
@@ -23,7 +25,7 @@ public class ReceiveManager : MonoBehaviour
 
     public void CreateRecvThread(TcpClient Connection)
     {
-        Thread workerThread = new Thread(() => WorkThread(Connection));
+        workerThread = new Thread(() => WorkThread(Connection));
         workerThread.IsBackground = true;
         workerThread.Start();
 
@@ -164,5 +166,10 @@ public class ReceiveManager : MonoBehaviour
     public void SetPlayerManager(GameObject playerManager)
     {
         this.playerManager = playerManager;
+    }
+
+    public void OnDestroy()
+    {
+        workerThread.Abort();
     }
 }
