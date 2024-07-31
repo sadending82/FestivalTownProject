@@ -16,8 +16,6 @@ public:
 			const PlayerStop* read = flatbuffers::GetRoot<PlayerStop>(data);
 
 			Player* player = pServer->GetSessions()[key];
-			player->SetPosition(read->pos()->x(), read->pos()->y(), read->pos()->z());
-			player->SetDirection(read->direction()->x(), read->direction()->y(), read->direction()->z());
 
 			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYERSTOP, data, size);
 

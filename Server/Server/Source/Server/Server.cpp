@@ -3,7 +3,6 @@
 #include "../Thread/WorkerThread/WorkerThread.h"
 #include "../Thread/TimerThread/TimerThread.h"
 #include "../TableManager/TableManager.h"
-#include "../PacketManager/PacketManager.h"
 #include "../Event/Event.h"
 
 int Server::SetSessionKey()
@@ -31,7 +30,7 @@ void Server::Disconnect(int key)
     DEBUGMSGONEPARAM("Disconnect: %d\n", key);
 }
 
-void Server::Init(class PacketManager* pPacketManager, class TableManager* pTableManager, class DB* pDB)
+void Server::Init(class TableManager* pTableManager, class DB* pDB)
 {
     WSADATA wsa;
     WSAStartup(MAKEWORD(2, 2), &wsa);
@@ -79,7 +78,6 @@ void Server::Init(class PacketManager* pPacketManager, class TableManager* pTabl
     pDB->Init();
 
     // Thread Create
-    pPacketManager->Init(this);
     mTimer = new Timer;
     mTimer->Init(mHcp);
 
@@ -89,7 +87,7 @@ void Server::Init(class PacketManager* pPacketManager, class TableManager* pTabl
     SYSTEM_INFO si;
     GetSystemInfo(&si);
     for (int i = 0; i < (int)si.dwNumberOfProcessors; ++i) {
-        WorkerThread* pWorkerThreadRef = new WorkerThread(this, pPacketManager);
+        WorkerThread* pWorkerThreadRef = new WorkerThread(this);
         mWorkerThreads.emplace_back(std::thread(&WorkerThread::RunWorker, pWorkerThreadRef));
     }
     mTimerThread = std::thread(&Timer::Main, mTimer);
@@ -130,7 +128,6 @@ void Server::SendAllPlayerInRoomExceptSender(void* packet, int size, int session
         if (p->GetSessionID() == sessionID) continue;
         p->DoSend(packet, size);
     }
-    GetRooms()[roomID]->GetListUnlock();
 }
 
 void Server::SendPlayerAdd(int sessionID, int destination)

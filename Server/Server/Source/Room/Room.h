@@ -17,14 +17,6 @@ public:
 	std::array<int, MAXPLAYER>& GetPlayerIDs() { return mPlayerSessionIDs; }
 	int GetPlayerCnt() { return mPlayerCnt; }
 
-	void GetListLock() {
-		mPlayerListLock.lock();
-	}
-
-	void GetListUnlock() {
-		mPlayerListLock.unlock();
-	}
-
 
 	void AddPlayerCnt() { mPlayerCnt++; }
 
