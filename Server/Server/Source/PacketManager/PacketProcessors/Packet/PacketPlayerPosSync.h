@@ -11,9 +11,9 @@ public:
 		mBuilder.Clear();
 
 		flatbuffers::Verifier verifier(data, size);
-		if (verifier.VerifyBuffer<PlayerPos>(nullptr)) {
+		if (verifier.VerifyBuffer<PlayerPosSync>(nullptr)) {
 
-			const PlayerPos* read = flatbuffers::GetRoot<PlayerPos>(data);
+			const PlayerPosSync* read = flatbuffers::GetRoot<PlayerPosSync>(data);
 
 			Player* player = pServer->GetSessions()[key];
 			

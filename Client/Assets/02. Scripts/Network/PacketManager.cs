@@ -42,7 +42,7 @@ public class PacketManager : MonoBehaviour
             { ePacketType.S2C_PLAYERGAMEINFO, new PlayerGameInfoProcessor() },
             { ePacketType.S2C_PLAYERMOVE, new PlayerMoveProcessor() },
             { ePacketType.S2C_PLAYERSTOP, new PlayerStopProcessor() },
-            { ePacketType.S2C_PLAYERPOSSYNC, new PlayerPosProcessor() }
+            { ePacketType.S2C_PLAYERPOSSYNC, new PlayerPosSyncProcessor() }
         };
     }
 
@@ -133,7 +133,7 @@ public class PacketManager : MonoBehaviour
         return buf;
     }
 
-    public byte[] CreatePlayerPosPacket(Vector3 position, Vector3 direction, int id)
+    public byte[] CreatePlayerPosSyncPacket(Vector3 position, Vector3 direction, int id)
     {
         var builder = new FlatBufferBuilder(1);
         var pos = Vec3.CreateVec3(builder, position.x, position.y, position.z);
@@ -174,7 +174,7 @@ public class PacketManager : MonoBehaviour
 
     public void SendPlayerPosPacket(Vector3 position, Vector3 direction, int id)
     {
-        byte[] packet = CreatePlayerPosPacket(position, direction, id);
+        byte[] packet = CreatePlayerPosSyncPacket(position, direction, id);
         SendPacket(packet);
     }
 }
