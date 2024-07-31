@@ -20,7 +20,8 @@ namespace Network.PacketProcessor
             int id = stopData.Id; // 이거는 일단 안씀
             Vector3 pos = new Vector3(stopData.Pos.Value.X, stopData.Pos.Value.Y, stopData.Pos.Value.Z);
             Vector3 dir = new Vector3(stopData.Direction.Value.X, stopData.Direction.Value.Y, stopData.Direction.Value.Z);
-           
+            if (playerManager != null) { return; }
+
             if (playerManager.transform.GetChild(id) != null)
             {
                 playerManager.transform.GetChild(id).GetComponent<PlayerController>().SetDirection(dir);
