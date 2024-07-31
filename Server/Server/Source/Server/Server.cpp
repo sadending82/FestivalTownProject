@@ -123,7 +123,7 @@ void Server::SendAllPlayerInRoom(void* packet, int size, int roomID)
 
 void Server::SendAllPlayerInRoomExceptSender(void* packet, int size, int sessionID)
 {
-    Player* player = dynamic_cast<Player*>(GetSessions()[sessionID]);
+    Player* player = GetSessions()[sessionID];
     int roomID = player->GetRoomID();
     for (Player* p : GetRooms()[roomID]->GetPlayerList()) {
         if (p == nullptr) continue;
@@ -136,7 +136,7 @@ void Server::SendAllPlayerInRoomExceptSender(void* packet, int size, int session
 void Server::SendPlayerAdd(int sessionID, int destination)
 {
     mBuilder.Clear();
-    Player* player = reinterpret_cast<Player*>(GetSessions()[sessionID]);
+    Player* player = GetSessions()[sessionID];
     int inGameID = player->GetInGameID();
     int roomID = player->GetRoomID();
     mBuilder.Finish(PacketTable::PlayerTable::CreatePlayerAdd(mBuilder, inGameID));
@@ -148,7 +148,7 @@ void Server::SendPlayerAdd(int sessionID, int destination)
 void Server::SendPlayerGameInfo(int sessionID)
 {
     mBuilder.Clear();
-    Player* player = reinterpret_cast<Player*>(GetSessions()[sessionID]);
+    Player* player = GetSessions()[sessionID];
     int inGameID = player->GetInGameID();
 
     int roomID = player->GetRoomID();
