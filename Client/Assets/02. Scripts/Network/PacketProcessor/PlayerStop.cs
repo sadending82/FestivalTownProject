@@ -27,7 +27,6 @@ namespace Network.PacketProcessor
                 PlayerController pController = playerManager.transform.GetChild(id).GetComponent<PlayerController>();
                 if (pController != null)
                 {
-                    pController.SetDirection(dir);
                     pController.SetPosition(pos);
                     pController.SetIsMove(false);
                 }
