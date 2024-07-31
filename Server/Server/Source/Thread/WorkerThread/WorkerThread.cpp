@@ -22,7 +22,8 @@ void WorkerThread::RunWorker()
         case eOpType::OP_ACCEPT: {
             int newKey = m_pServer->SetSessionKey();
             if (newKey != INVALIDKEY) {
-                Session* newSession = m_pServer->GetSessions()[newKey];
+                m_pServer->GetSessions()[newKey] = new Player();
+                Player* newSession = m_pServer->GetSessions()[newKey];
                 SOCKET cSocket = reinterpret_cast<SOCKET>(exOver->mWsaBuf.buf);
                 newSession->SetSocket(cSocket);
                 newSession->GetExOver().SetmOpType(eOpType::OP_RECV);
@@ -31,12 +32,18 @@ void WorkerThread::RunWorker()
                 newSession->SetSessionID(newKey);
 
                 CreateIoCompletionPort((HANDLE)newSession->GetSocket(), m_pServer->GetHcp(), newKey, 0);
-
                 DEBUGMSGONEPARAM("Lobby Accept: %d\n", newKey);
 
                 // 테스트용 임시 쓰레기 코드
                 {
-                    Player* newplayer = reinterpret_cast<Player*>(newSession);
+                    Player* newplayer = dynamic_cast<Player*>(newSession);
+
+                    if (newplayer) {
+                        std::cout << "dynamic_cast 성공" << std::endl;
+                    }
+                    else {
+                        std::cout << "dynamic_cast 실패, newSession의 실제 타입: " << typeid(*newSession).name() << std::endl;
+                    }
                     m_pServer->GetRooms()[0]->addPlayer(newplayer);
                     m_pServer->GetRooms()[0]->AddPlayerCnt();
 

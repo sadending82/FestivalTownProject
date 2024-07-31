@@ -3,7 +3,7 @@
 #include "../Room/Room.h"
 #include "../PacketManager/PacketProcessors/flatbuffer/FlatBufferManager.h"
 
-#define SESSION_ARRAY std::array<Session*, MAXSESSION>
+#define SESSION_ARRAY std::array<Player*, MAXSESSION>
 #define ROOM_ARRAY std::array<Room*, MAXROOM>
 
 constexpr int SERVERPORT = 5000;

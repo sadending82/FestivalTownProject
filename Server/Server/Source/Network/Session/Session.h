@@ -4,12 +4,13 @@
 class Session
 {
 public:
-	Session() : mState(eSessionState::ST_FREE)
+	Session() : mSocket(INVALID_SOCKET),
+		mState(eSessionState::ST_FREE)
 		, mSessionID(INVALIDKEY)
 		,mPrevData(0)
 	{
 	}
-	~Session() {}
+	virtual ~Session() {}
 
 	virtual void Disconnect();
 
@@ -34,7 +35,7 @@ public:
 	int GetPrevData() { return mPrevData; }
 	void SetPrevData(int prevData) { mPrevData = prevData; }
 
-private:
+protected:
 	ExOver mExOver;
 	std::mutex	mStateLock;
 	eSessionState mState;

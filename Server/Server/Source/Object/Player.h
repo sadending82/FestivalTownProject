@@ -8,6 +8,10 @@ public:
 	~Player() {}
 
 	
+	virtual void DoRecv() override;;
+
+	virtual void DoSend(void* packet, const int size) override;;
+
 	int GetRoomID() { return mRoomID; }
 	int GetInGameID() { return mInGameID; }
 	Vector3f GetPosition() { return mPosition; }
@@ -18,7 +22,7 @@ public:
 	void SetPosition(float x, float y, float z) { mPosition = Vector3f(x, y, z); }
 	void SetDirection(float x, float y, float z) { mDirection = Vector3f(x, y, z); }
 
-private:
+protected:
 	std::mutex      mPlayerStateLock;
 	ePlayerState	mPlayerState;
 	int				mRoomID;
