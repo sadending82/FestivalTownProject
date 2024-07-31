@@ -844,11 +844,11 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: f01a9a95-fa2d-44d7-b908-bd1c2611cc6f
+  cloudProjectId: 489fffa3-4f37-4124-b7e3-39b0d562a1ba
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
   projectName: FestivalTown
-  organizationId: kds09526
+  organizationId: gmtj_games
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
