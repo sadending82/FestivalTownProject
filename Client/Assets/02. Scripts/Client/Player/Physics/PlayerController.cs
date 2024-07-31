@@ -154,6 +154,7 @@ public class PlayerController : MonoBehaviour
         Vector3 lookForward = new Vector3(cameraArm.forward.x, 0f, cameraArm.forward.z).normalized;
         Vector3 lookRight = new Vector3(cameraArm.right.x, 0f, cameraArm.right.z).normalized;
         Vector3 moveDir = lookForward * moveInput.y + lookRight * moveInput.x;
+        moveDir = moveDir.normalized;
 
         if (AxisRawH != beforeAxisRawH || AxisRawV != beforeAxisRawV)
         {
