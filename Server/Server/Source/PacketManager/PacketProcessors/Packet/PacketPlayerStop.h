@@ -15,7 +15,7 @@ public:
 
 			const PlayerStop* read = flatbuffers::GetRoot<PlayerStop>(data);
 
-			Player* player = reinterpret_cast<Player*>(pServer->GetSessions()[key]);
+			Player* player = pServer->GetSessions()[key];
 			player->SetPosition(read->pos()->x(), read->pos()->y(), read->pos()->z());
 			player->SetDirection(read->direction()->x(), read->direction()->y(), read->direction()->z());
 

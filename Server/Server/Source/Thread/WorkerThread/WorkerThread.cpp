@@ -36,8 +36,7 @@ void WorkerThread::RunWorker()
 
                 // 테스트용 임시 쓰레기 코드
                 {
-                    Player* newplayer = dynamic_cast<Player*>(newSession);
-                    m_pServer->GetRooms()[0]->addPlayer(newplayer);
+                    m_pServer->GetRooms()[0]->addPlayer(newSession);
                     m_pServer->GetRooms()[0]->AddPlayerCnt();
 
                     m_pServer->SendPlayerGameInfo(newKey);
