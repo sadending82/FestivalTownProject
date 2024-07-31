@@ -10,13 +10,14 @@ public class PlayerController : MonoBehaviour
     public Transform stabilizer;
     public GameObject pelvis;
     private Rigidbody pelvisRigidbody;
-    private Transform pelvisTransform;
 
     [Header("--- State ---")]
     public float walkSpeed;
     public float runSpeed;
     public float jumpForce;
     public float rotateSpeed;
+    private bool isMove;
+    private Vector3 moveDirection;
 
     [Header("--- JumpCheck ---")]
     public float floorDetectionDistance;
@@ -26,6 +27,7 @@ public class PlayerController : MonoBehaviour
 
     private Quaternion rotationQuaternion;
 
+    [Header("--- Animation ---")]
     private AnimationController animationController;
     private float leftMouseClickTimer;
     private bool isHold;
@@ -39,14 +41,6 @@ public class PlayerController : MonoBehaviour
     private float AxisRawH, AxisRawV;
     private bool amIPlayer;
     private int myId;
-
-    //------ Not Player -------
-    private bool isMove;
-    public float moveSpeed;
-    private Vector3 moveDirection;
-
-    //------ test -------
-    public string testName;
 
     //------ timer for send ------
     private float curTime= 0.0f;
@@ -68,7 +62,6 @@ public class PlayerController : MonoBehaviour
         animationController = this.GetComponent<AnimationController>();
         network = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
         pelvisRigidbody = pelvis.GetComponent<Rigidbody>();
-        pelvisTransform = pelvis.GetComponent<Transform>();
 
         packetManager = network.GetPacketManager();
         receiveManager = network.GetReceiveManager();
@@ -84,7 +77,7 @@ public class PlayerController : MonoBehaviour
         {
             if (isMove == true)
             {
-                pelvisRigidbody.velocity = moveDirection * moveSpeed;
+                pelvisRigidbody.velocity = moveDirection * walkSpeed;
             }
             if (moveDirection != Vector3.zero)
             {
@@ -113,19 +106,16 @@ public class PlayerController : MonoBehaviour
 
     private void SendForSync()
     {
-        
-        packetManager.SendPlayerPosPacket(pelvisTransform.position, moveDirection, myId);
-
+        if (pelvis != null)
+        {
+            packetManager.SendPlayerPosPacket(pelvis.transform.position, moveDirection, myId);
+        }
     }
 
     private void CheckIsGround()
     {
         if(isGrounded == false && pelvisRigidbody.velocity.y <= 0)
         {
-            // ray ±×¸®±â
-            //Debug.DrawRay(leftFootRigidbody.position, Vector3.down, new Color(0, 1, 0));
-            //Debug.DrawRay(rightFootRigidbody.position, Vector3.down, new Color(0, 1, 0));
-
             Ray rayL = new Ray(leftFootRigidbody.position, Vector3.down);
             Ray rayR = new Ray(rightFootRigidbody.position, Vector3.down);
 
@@ -158,13 +148,19 @@ public class PlayerController : MonoBehaviour
 
         if (AxisRawH != beforeAxisRawH || AxisRawV != beforeAxisRawV)
         {
-            if(AxisRawH == 0 && AxisRawV == 0)
+            if (moveInput == Vector3.zero)
             {
-                packetManager.SendPlayerStopPacket(pelvisTransform.position, moveDir, myId);
+                if (pelvis != null)
+                {
+                    packetManager.SendPlayerStopPacket(pelvis.transform.position, moveDir, myId);
+                }
             }
-            else /*if (beforeAxisRawH == 0 && beforeAxisRawV == 0)*/
+            else
             {
-                packetManager.SendPlayerMovePacket(pelvisTransform.position, moveDir, myId);
+                if (pelvis != null)
+                {
+                    packetManager.SendPlayerMovePacket(pelvis.transform.position, moveDir, myId);
+                }
             }
         }
         beforeAxisRawH = AxisRawH;
@@ -288,11 +284,11 @@ public class PlayerController : MonoBehaviour
     public void SetPosition(Vector3 position)
     {
         Debug.Log(gameObject.name + "Set Position");
-        if (pelvisTransform == null) {
+        if (pelvis == null) {
             Debug.Log("pelvis Null!!!!");
             return; }
 
-        pelvisTransform.position = new Vector3(position.x, pelvisTransform.position.y, position.z);
+        pelvis.transform.position = new Vector3(position.x, pelvis.transform.position.y, position.z);
     }
     public void SetDirection(Vector3 direction)
     {
