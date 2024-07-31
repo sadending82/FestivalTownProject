@@ -153,7 +153,8 @@ PlayerSettings:
   resetResolutionOnWindowResize: 0
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
-  applicationIdentifier: {}
+  applicationIdentifier:
+    Standalone: com.GMTJ.FestivalTown
   buildNumber:
     Standalone: 0
     VisionOS: 0
@@ -844,7 +845,7 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: 489fffa3-4f37-4124-b7e3-39b0d562a1ba
+  cloudProjectId: 9045e154-7c82-467b-823a-a55ae31de1d3
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
   projectName: FestivalTown
