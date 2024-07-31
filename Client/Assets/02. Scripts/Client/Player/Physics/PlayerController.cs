@@ -113,7 +113,7 @@ public class PlayerController : MonoBehaviour
 
     private void SendForSync()
     {
-
+        
         packetManager.SendPlayerPosPacket(pelvisTransform.position, moveDirection, myId);
 
     }
@@ -286,6 +286,8 @@ public class PlayerController : MonoBehaviour
     }
     public void SetPosition(Vector3 position)
     {
+        Debug.Log(gameObject.name + "Set Position");
+        if (pelvisTransform == null) { return; }
         pelvisTransform.position = new Vector3(position.x, pelvisTransform.position.y, position.z);
     }
     public void SetDirection(Vector3 direction)
