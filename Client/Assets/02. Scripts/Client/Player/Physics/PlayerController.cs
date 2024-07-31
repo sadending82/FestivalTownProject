@@ -159,11 +159,11 @@ public class PlayerController : MonoBehaviour
         {
             if(AxisRawH == 0 && AxisRawV == 0)
             {
-                //packetManager.SendPlayerStopPacket(pelvisTransform.position, moveDir, myId);
+                packetManager.SendPlayerStopPacket(pelvisTransform.position, moveDir, myId);
             }
-            else
+            else if (beforeAxisRawH == 0 && beforeAxisRawV == 0)
             {
-                //packetManager.SendPlayerMovePacket(pelvisTransform.position, moveDir, myId);
+                packetManager.SendPlayerMovePacket(pelvisTransform.position, moveDir, myId);
             }
         }
         beforeAxisRawH = AxisRawH;
@@ -287,7 +287,10 @@ public class PlayerController : MonoBehaviour
     public void SetPosition(Vector3 position)
     {
         Debug.Log(gameObject.name + "Set Position");
-        if (pelvisTransform == null) { return; }
+        if (pelvisTransform == null) {
+            Debug.Log("pelvis Null!!!!");
+            return; }
+
         pelvisTransform.position = new Vector3(position.x, pelvisTransform.position.y, position.z);
     }
     public void SetDirection(Vector3 direction)
