@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour
 
     //------ timer for send ------
     private float curTime= 0.0f;
-    private float sendInterval = 1.0f;
+    private float sendInterval = 0.01666666666f;
 
 
     private void Awake()
@@ -99,12 +99,12 @@ public class PlayerController : MonoBehaviour
         {
             MouseInput();
             CheckIsGround();
-            SendForSync();
-            //curTime += Time.deltaTime;
-            //if(curTime > sendInterval)
-            //{
-            //    curTime -= sendInterval;               
-            //}
+            curTime += Time.deltaTime;
+            if (curTime > sendInterval)
+            {
+                curTime -= sendInterval;
+                SendForSync();
+            }
         }
     }
 
