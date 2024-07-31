@@ -37,13 +37,6 @@ void WorkerThread::RunWorker()
                 // 테스트용 임시 쓰레기 코드
                 {
                     Player* newplayer = dynamic_cast<Player*>(newSession);
-
-                    if (newplayer) {
-                        std::cout << "dynamic_cast 성공" << std::endl;
-                    }
-                    else {
-                        std::cout << "dynamic_cast 실패, newSession의 실제 타입: " << typeid(*newSession).name() << std::endl;
-                    }
                     m_pServer->GetRooms()[0]->addPlayer(newplayer);
                     m_pServer->GetRooms()[0]->AddPlayerCnt();
 
