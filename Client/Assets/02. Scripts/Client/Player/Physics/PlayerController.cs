@@ -99,12 +99,12 @@ public class PlayerController : MonoBehaviour
         {
             MouseInput();
             CheckIsGround();
-            curTime += Time.deltaTime;
-            if(curTime > sendInterval)
-            {
-                curTime -= sendInterval;
-                SendForSync();
-            }
+            SendForSync();
+            //curTime += Time.deltaTime;
+            //if(curTime > sendInterval)
+            //{
+            //    curTime -= sendInterval;               
+            //}
         }
     }
 
@@ -154,11 +154,11 @@ public class PlayerController : MonoBehaviour
         {
             if(AxisRawH == 0 && AxisRawV == 0)
             {
-                packetManager.SendPlayerStopPacket(pelvisTransform.position, moveDir, myId);
+                //packetManager.SendPlayerStopPacket(pelvisTransform.position, moveDir, myId);
             }
             else
             {
-                packetManager.SendPlayerMovePacket(pelvisTransform.position, moveDir, myId);
+                //packetManager.SendPlayerMovePacket(pelvisTransform.position, moveDir, myId);
             }
         }
         beforeAxisRawH = AxisRawH;
