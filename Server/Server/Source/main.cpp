@@ -4,7 +4,6 @@
 #include "DB/DB.h"
 
 TableManager* gTableManager = new TableManager();
-PacketManager* gPacketManager = new PacketManager();
 Server* gServer = new Server();
 DB* gDB = new DB();
 
@@ -14,11 +13,10 @@ int main()
 
 	gTableManager->ReadCharacterStat();
 
-	gServer->Init(gPacketManager, gTableManager, gDB);
+	gServer->Init(gTableManager, gDB);
 	gServer->ThreadJoin();
 
 	delete gServer;
-	delete gPacketManager;
 	delete gTableManager;
 	delete gDB;
 

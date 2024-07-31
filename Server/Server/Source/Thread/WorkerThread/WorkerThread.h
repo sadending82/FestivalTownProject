@@ -1,11 +1,12 @@
 #pragma once
+#include "../../PacketManager/PacketManager.h"
 
 class WorkerThread
 {
 public:
-	WorkerThread(class Server* pServer, class PacketManager* pPacketManager) 
-		:m_pServer(pServer)
-		, m_pPacketManager(pPacketManager)
+	WorkerThread(class Server* pServer)
+		:m_pServer(pServer),
+		m_pPacketManager(nullptr)
 	{};
 	~WorkerThread() {};
 
@@ -13,6 +14,6 @@ public:
 
 private:
 	class Server* m_pServer;
-	class PacketManager* m_pPacketManager;
+	PacketManager* m_pPacketManager;
 };
 

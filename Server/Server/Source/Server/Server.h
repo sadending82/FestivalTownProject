@@ -6,7 +6,7 @@
 #define SESSION_ARRAY std::array<Player*, MAXSESSION>
 #define ROOM_ARRAY std::array<Room*, MAXROOM>
 
-constexpr int SERVERPORT = 5000;
+constexpr int SERVERPORT = 45872;
 
 class Timer;
 
@@ -18,7 +18,7 @@ public:
 
 	int SetSessionKey();
 	void Disconnect(int key);
-	void Init(class PacketManager* pPacketManager, class TableManager* pTableManager, class DB* pDB);
+	void Init(class TableManager* pTableManager, class DB* pDB);
 	void ThreadJoin();
 
 	void SendAllPlayerInRoomBySessionID(void* packet, int size, int sessionID);

@@ -1,9 +1,11 @@
 #include "WorkerThread.h"
 #include"../../Server/Server.h"
-#include "../../PacketManager/PacketManager.h"
 
 void WorkerThread::RunWorker()
 {
+    m_pPacketManager = new PacketManager();
+    m_pPacketManager->Init(m_pServer);
+
     while (1) {
         DWORD Transferred;
         ULONG key;
