@@ -16,14 +16,13 @@ public:
 
 			const PlayerStop* read = flatbuffers::GetRoot<PlayerStop>(data);
 
+			Player* player = reinterpret_cast<Player*>(pServer->GetSessions()[key]);
+			player->SetPosition(read->pos()->x(), read->pos()->y(), read->pos()->z());
+			player->SetDirection(read->direction()->x(), read->direction()->y(), read->direction()->z());
+
 			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYERSTOP, data, size);
 
-			int roomID = reinterpret_cast<Player*>(pServer->GetSessions()[key])->GetRoomID();
-			for (Player* p : pServer->GetRooms()[roomID]->GetPlayerList()) {
-				if (p == nullptr) continue;
-				if (p->GetSessionID() == key) continue;
-				p->DoSend(send_buffer.data(), send_buffer.size());
-			}
+			pServer->SendAllPlayerInRoomExceptSender(send_buffer.data(), send_buffer.size(), key);
 		}
 	}
 

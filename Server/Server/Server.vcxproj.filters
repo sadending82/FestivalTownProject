@@ -41,6 +41,7 @@
     <ClInclude Include="Source\Event.h" />
     <ClInclude Include="Source\Event\Event.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Event\EventPlayerPosSync.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\PacketPlayerPosSync.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

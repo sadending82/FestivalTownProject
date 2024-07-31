@@ -121,6 +121,16 @@ void Server::SendAllPlayerInRoom(void* packet, int size, int roomID)
     }
 }
 
+void Server::SendAllPlayerInRoomExceptSender(void* packet, int size, int sessionID)
+{
+    int roomID = reinterpret_cast<Player*>(GetSessions()[sessionID])->GetRoomID();
+    for (Player* p : GetRooms()[roomID]->GetPlayerList()) {
+        if (p == nullptr) continue;
+        if (p->GetSessionID() == sessionID) continue;
+        p->DoSend(packet, size);
+    }
+}
+
 void Server::SendPlayerAdd(int sessionID, int destination)
 {
     mBuilder.Clear();
