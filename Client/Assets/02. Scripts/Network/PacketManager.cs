@@ -100,12 +100,20 @@ public class PacketManager : MonoBehaviour
         HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERMOVE, size = (ushort)data.Length };
 
         byte[] headerdata = Serialize<HEADER>(header);
-        byte[] buf = new byte[data.Length + headerdata.Length];
+        byte[] result = new byte[data.Length + headerdata.Length];
 
-        Buffer.BlockCopy(headerdata, 0, buf, 0, headerdata.Length);
-        Buffer.BlockCopy(data, 0, buf, headerdata.Length, data.Length);
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
 
-        return buf;
+        var buf = builder.DataBuffer;
+        var verifier = new Verifier(buf);
+        if (PlayerMoveVerify.Verify(verifier, (uint)pm.Value) == false)
+        {
+            Debug.Log("invaild buf / CreatePlayerStopPacket");
+            return null;
+        }
+
+        return result;
     }
 
     public byte[] CreatePlayerStopPacket(Vector3 position, Vector3 direction, int id)
@@ -125,12 +133,20 @@ public class PacketManager : MonoBehaviour
         HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERSTOP, size = (ushort)data.Length };
 
         byte[] headerdata = Serialize<HEADER>(header);
-        byte[] buf = new byte[data.Length + headerdata.Length];
+        byte[] result = new byte[data.Length + headerdata.Length];
 
-        Buffer.BlockCopy(headerdata, 0, buf, 0, headerdata.Length);
-        Buffer.BlockCopy(data, 0, buf, headerdata.Length, data.Length);
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
 
-        return buf;
+        var buf = builder.DataBuffer;
+        var verifier = new Verifier(buf);
+        if (PlayerStopVerify.Verify(verifier, (uint)pm.Value) == false)
+        {
+            Debug.Log("invaild buf / CreatePlayerStopPacket");
+            return null;
+        }
+
+        return result;
     }
 
     public byte[] CreatePlayerPosSyncPacket(Vector3 position, Vector3 direction, int id)
@@ -150,18 +166,27 @@ public class PacketManager : MonoBehaviour
         HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERPOSSYNC, size = (ushort)data.Length };
 
         byte[] headerdata = Serialize<HEADER>(header);
-        byte[] buf = new byte[data.Length + headerdata.Length];
+        byte[] result = new byte[data.Length + headerdata.Length];
 
-        Buffer.BlockCopy(headerdata, 0, buf, 0, headerdata.Length);
-        Buffer.BlockCopy(data, 0, buf, headerdata.Length, data.Length);
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
 
-        return buf;
+        var buf = builder.DataBuffer;
+        var verifier = new Verifier(buf);
+        if (PlayerPosSyncVerify.Verify(verifier, (uint)pm.Value) == false)
+        {
+            Debug.Log("invaild buf / CreatePlayerStopPacket");
+            return null;
+        }
+
+        return result;
     }
 
     public void SendPlayerMovePacket(Vector3 position, Vector3 direction, int id)
     {
 
         byte[] packet = CreatePlayerMovePacket(position, direction, id);
+        if (packet == null) { return; }
         SendPacket(packet);
     }
 
@@ -169,12 +194,14 @@ public class PacketManager : MonoBehaviour
     {
 
         byte[] packet = CreatePlayerStopPacket(position, direction, id);
+        if (packet == null) { return; }
         SendPacket(packet);
     }
 
     public void SendPlayerPosPacket(Vector3 position, Vector3 direction, int id)
     {
         byte[] packet = CreatePlayerPosSyncPacket(position, direction, id);
+        if (packet == null) { return; }
         SendPacket(packet);
     }
 }
