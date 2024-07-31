@@ -6,7 +6,6 @@ using namespace PacketTable::PlayerTable;
 class PacketPlayerMove : public PacketProcessor {
 
 public:
-
 	virtual void Process(Server* pServer, const uint8_t* data, const int size, const int key) {
 
 		mBuilder.Clear();

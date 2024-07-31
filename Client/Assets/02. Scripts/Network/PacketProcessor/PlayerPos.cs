@@ -18,8 +18,6 @@ namespace Network.PacketProcessor
             Vector3 pos = new Vector3(posData.Pos.Value.X, posData.Pos.Value.Y, posData.Pos.Value.Z);
             Vector3 dir = new Vector3(posData.Direction.Value.X, posData.Direction.Value.Y, posData.Direction.Value.Z);
 
-            Debug.Log(id);
-
             playerManager.transform.GetChild(id).GetComponent<PlayerController>().SetDirection(dir);
             playerManager.transform.GetChild(id).GetComponent<PlayerController>().SetPosition(pos);
 
