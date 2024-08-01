@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     public float rotateSpeed;
     private bool isMove;
     private Vector3 moveDirection;
+    private Vector3 sMoveDirection;
 
     [Header("--- JumpCheck ---")]
     public float floorDetectionDistance;
@@ -78,11 +79,11 @@ public class PlayerController : MonoBehaviour
         {
             if (isMove == true)
             {
-                pelvisRigidbody.velocity = moveDirection * walkSpeed;
+                pelvisRigidbody.velocity = sMoveDirection * walkSpeed;
             }
-            if (moveDirection != Vector3.zero)
+            if (sMoveDirection != Vector3.zero)
             {
-                rotationQuaternion = Quaternion.LookRotation(moveDirection);
+                rotationQuaternion = Quaternion.LookRotation(sMoveDirection);
                 stabilizer.rotation = rotationQuaternion;
             }
         }
@@ -110,7 +111,7 @@ public class PlayerController : MonoBehaviour
     {
         if (pelvis != null)
         {
-            packetManager.SendPlayerPosPacket(pelvis.transform.position, moveDirection, myId);
+            packetManager.SendPlayerPosPacket(pelvis.transform.position, sMoveDirection, myId);
         }
     }
 
@@ -122,11 +123,33 @@ public class PlayerController : MonoBehaviour
             Ray rayR = new Ray(rightFootRigidbody.position, Vector3.down);
 
             RaycastHit hitInfoL, hitinfoR;
-            if (Physics.Raycast(rayL, out hitInfoL, floorDetectionDistance) == true || Physics.Raycast(rayR, out hitinfoR, floorDetectionDistance) == true)
+            if (Physics.Raycast(rayL, out hitInfoL, floorDetectionDistance) == true)
             {
                 if (hitInfoL.collider.gameObject.tag == "Ground")
                 {
-                    packetManager.SendPlayerStopPacket(pelvis.transform.position, new Vector3(0,0,0), myId);
+                    if (pelvis != null)
+                    {
+                        packetManager.SendPlayerStopPacket(pelvis.transform.position, moveDirection, myId, ePlayerState.PS_JUMPSTOP);
+                    }
+                    else
+                    {
+                        Debug.Log("Not Send Jump Stop Packet, Pelvis is Null !!!");
+                    }
+                    isGrounded = true;
+                }
+            }
+            else if (Physics.Raycast(rayR, out hitinfoR, floorDetectionDistance) == true)
+            {
+                if (hitinfoR.collider.gameObject.tag == "Ground")
+                {
+                    if (pelvis != null)
+                    {
+                        packetManager.SendPlayerStopPacket(pelvis.transform.position, moveDirection, myId, ePlayerState.PS_JUMPSTOP);
+                    }
+                    else
+                    {
+                        Debug.Log("Not Send Jump Stop Packet, Pelvis is Null !!!");
+                    }
                     isGrounded = true;
                 }
             }
@@ -145,8 +168,7 @@ public class PlayerController : MonoBehaviour
         Vector3 moveInput = new Vector3(AxisRawH, AxisRawV, 0);
         Vector3 lookForward = new Vector3(cameraArm.forward.x, 0f, cameraArm.forward.z).normalized;
         Vector3 lookRight = new Vector3(cameraArm.right.x, 0f, cameraArm.right.z).normalized;
-        Vector3 moveDir = lookForward * moveInput.y + lookRight * moveInput.x;
-        moveDir = moveDir.normalized;
+        moveDirection = lookForward * moveInput.y + lookRight * moveInput.x;
 
         if (AxisRawH != beforeAxisRawH || AxisRawV != beforeAxisRawV)
         {
@@ -154,14 +176,22 @@ public class PlayerController : MonoBehaviour
             {
                 if (pelvis != null)
                 {
-                    packetManager.SendPlayerStopPacket(pelvis.transform.position, moveDir, myId);
+                    packetManager.SendPlayerStopPacket(pelvis.transform.position, moveDirection, myId, ePlayerState.PS_MOVESTOP);
+                }
+                else
+                {
+                    Debug.Log("Not Send Stop Packet, Pelvis is Null !!!");
                 }
             }
             else
             {
                 if (pelvis != null)
                 {
-                    packetManager.SendPlayerMovePacket(pelvis.transform.position, moveDir, myId, ePlayerState.PS_RUN);
+                    packetManager.SendPlayerMovePacket(pelvis.transform.position, moveDirection, myId, ePlayerState.PS_RUN);
+                }
+                else
+                {
+                    Debug.Log("Not Send Run Packet, Pelvis is Null !!!");
                 }
             }
         }
@@ -172,7 +202,7 @@ public class PlayerController : MonoBehaviour
         {
             if (isLeftShiftKeyDown)
             {
-                pelvisRigidbody.velocity = moveDir * runSpeed;
+                pelvisRigidbody.velocity = moveDirection * runSpeed;
                 if (isGrounded == true)
                 {
                     animationController.setLowerBodyAnimationState(LowerBodyAnimationState.RUN);
@@ -180,7 +210,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                pelvisRigidbody.velocity = moveDir * walkSpeed;
+                pelvisRigidbody.velocity = moveDirection * walkSpeed;
                 if (isGrounded == true)
                 {
                     animationController.setLowerBodyAnimationState(LowerBodyAnimationState.WALK);
@@ -195,9 +225,9 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (moveDir != Vector3.zero)
+        if (moveDirection != Vector3.zero)
         {
-            rotationQuaternion = Quaternion.LookRotation(moveDir);
+            rotationQuaternion = Quaternion.LookRotation(moveDirection);
             stabilizer.rotation = rotationQuaternion;
         }
 
@@ -207,7 +237,11 @@ public class PlayerController : MonoBehaviour
             {
                 if (pelvis != null)
                 {
-                    packetManager.SendPlayerMovePacket(pelvis.transform.position, moveDir, myId, ePlayerState.PS_JUMP);
+                    packetManager.SendPlayerMovePacket(pelvis.transform.position, moveDirection, myId, ePlayerState.PS_JUMP);
+                }
+                else
+                {
+                    Debug.Log("Not Send Jump Packet, Pelvis is Null !!!");
                 }
                 Jump();
             }
@@ -296,7 +330,7 @@ public class PlayerController : MonoBehaviour
     }
     public void SetDirection(Vector3 direction)
     {
-        moveDirection = direction;
+        sMoveDirection = direction;
     }
     public void SetIsMove(bool isMove)
     {
@@ -305,6 +339,7 @@ public class PlayerController : MonoBehaviour
     public void Jump()
     {
         pelvisRigidbody.velocity = Vector3.up * jumpForce;
+        Debug.Log("Velocity " + pelvisRigidbody.velocity);
         animationController.setLowerBodyAnimationState(LowerBodyAnimationState.JUMP);
         isGrounded = false;
     }

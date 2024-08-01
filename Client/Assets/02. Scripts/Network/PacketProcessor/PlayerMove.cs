@@ -12,7 +12,7 @@ namespace Network.PacketProcessor
 {
     public class PlayerMoveProcessor : PacketProcessor
     {
-        public override void Process(byte[] data, GameObject playerManager) 
+        public override void Process(byte[] data, GameObject playerManager)
         {
             // 여기에 처리    
             var bb = new ByteBuffer(data);
@@ -23,34 +23,32 @@ namespace Network.PacketProcessor
             Vector3 dir = new Vector3(moveData.Direction.Value.X, moveData.Direction.Value.Y, moveData.Direction.Value.Z);
             int state = moveData.State;
 
-            switch (state)
+            PlayerController pController = playerManager.transform.GetChild(id).GetComponent<PlayerController>();
+
+            if (pController != null)
             {
-                case (int)ePlayerState.PS_RUN:
-                    {
-                        if (playerManager.transform.GetChild(id) != null)
+                switch (state)
+                {
+                    case (int)ePlayerState.PS_RUN:
                         {
-                            playerManager.transform.GetChild(id).GetComponent<PlayerController>().SetDirection(dir);
-                            playerManager.transform.GetChild(id).GetComponent<PlayerController>().SetPosition(pos);
-                            playerManager.transform.GetChild(id).GetComponent<PlayerController>().SetIsMove(true);
+                            pController.SetDirection(dir);
+                            pController.SetPosition(pos);
+                            pController.SetIsMove(true);
                         }
+                        break;
 
-                    }
-                    break;
-
-                case (int)ePlayerState.PS_JUMP:
-                    {
-                        if (playerManager.transform.GetChild(id) != null)
+                    case (int)ePlayerState.PS_JUMP:
                         {
-                            playerManager.transform.GetChild(id).GetComponent<PlayerController>().Jump();
+                            pController.Jump();
                         }
-                    }
                         break;
 
                     default:
-                    {
+                        {
 
-                    }
-                    break;
+                        }
+                        break;
+                }
             }
         }
 

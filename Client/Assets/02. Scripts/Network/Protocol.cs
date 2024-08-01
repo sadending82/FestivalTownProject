@@ -32,6 +32,8 @@ namespace NetworkProtocol
     public enum ePlayerState
     {
         PS_RUN,
-        PS_JUMP
+        PS_JUMP,
+        PS_MOVESTOP,
+        PS_JUMPSTOP
     };
 }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using NetworkProtocol;
 
 namespace Network.PacketProcessor
 {
@@ -21,15 +22,33 @@ namespace Network.PacketProcessor
             Vector3 pos = new Vector3(stopData.Pos.Value.X, stopData.Pos.Value.Y, stopData.Pos.Value.Z);
             Vector3 dir = new Vector3(stopData.Direction.Value.X, stopData.Direction.Value.Y, stopData.Direction.Value.Z);
             int state = stopData.State;
+
             if (playerManager != null) { return; }
 
-            if (playerManager.transform.GetChild(id) != null)
+            PlayerController pController = playerManager.transform.GetChild(id).GetComponent<PlayerController>();
+
+            if (pController != null)
             {
-                PlayerController pController = playerManager.transform.GetChild(id).GetComponent<PlayerController>();
-                if (pController != null)
+                switch (state)
                 {
-                    pController.SetPosition(pos);
-                    pController.SetIsMove(false);
+                    case (int)ePlayerState.PS_MOVESTOP:
+                        {
+                            pController.SetPosition(pos);
+                            pController.SetDirection(dir);
+                            pController.SetIsMove(false);
+                        }
+                        break;
+
+                    case (int)ePlayerState.PS_JUMPSTOP:
+                        {
+                            pController.SetPosition(pos);
+                            pController.SetDirection(dir);
+                        }
+                        break;
+                    default:
+                        {
+                        }
+                        break;
                 }
             }
         }
