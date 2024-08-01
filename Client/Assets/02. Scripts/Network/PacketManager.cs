@@ -106,13 +106,13 @@ public class PacketManager : MonoBehaviour
         Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
         Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
 
-        //var buf = builder.DataBuffer;
-        //var verifier = new Verifier(buf);
-        //if (PlayerMoveVerify.Verify(verifier, (uint)pm.Value) == false)
-        //{
-        //    Debug.Log("invaild buf / CreatePlayerMovePacket");
-        //    return null;
-        //}
+        var buf = builder.DataBuffer;
+        var verifier = new Verifier(buf);
+        if (PlayerMoveVerify.Verify(verifier, (uint)pm.Value) == false)
+        {
+            Debug.Log("invaild buf / CreatePlayerMovePacket");
+            return null;
+        }
 
         return result;
     }
@@ -140,13 +140,13 @@ public class PacketManager : MonoBehaviour
         Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
         Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
 
-        //var buf = builder.DataBuffer;
-        //var verifier = new Verifier(buf);
-        //if (PlayerStopVerify.Verify(verifier, (uint)pm.Value) == false)
-        //{
-        //    Debug.Log("invaild buf / CreatePlayerStopPacket");
-        //    return null;
-        //}
+        var buf = builder.DataBuffer;
+        var verifier = new Verifier(buf);
+        if (PlayerStopVerify.Verify(verifier, (uint)pm.Value) == false)
+        {
+            Debug.Log("invaild buf / CreatePlayerStopPacket");
+            return null;
+        }
 
         return result;
     }
@@ -173,13 +173,13 @@ public class PacketManager : MonoBehaviour
         Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
         Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
 
-        //var buf = builder.DataBuffer;
-        //var verifier = new Verifier(buf);
-        //if (PlayerPosSyncVerify.Verify(verifier, (uint)pm.Value) == false)
-        //{
-        //    Debug.Log("invaild buf / CreatePlayerPosSyncPacket");
-        //    return null;
-        //}
+        var buf = builder.DataBuffer;
+        var verifier = new Verifier(buf);
+        if (PlayerPosSyncVerify.Verify(verifier, (uint)pm.Value) == false)
+        {
+            Debug.Log("invaild buf / CreatePlayerPosSyncPacket");
+            return null;
+        }
 
         return result;
     }
