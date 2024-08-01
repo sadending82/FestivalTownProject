@@ -1,4 +1,5 @@
 ﻿using Google.FlatBuffers;
+using NetworkProtocol;
 using PacketTable.PlayerTable;
 using System;
 using System.Collections.Generic;
@@ -20,12 +21,33 @@ namespace Network.PacketProcessor
             int id = moveData.Id;// 이거는 일단 안씀
             Vector3 pos = new Vector3(moveData.Pos.Value.X, moveData.Pos.Value.Y, moveData.Pos.Value.Z);
             Vector3 dir = new Vector3(moveData.Direction.Value.X, moveData.Direction.Value.Y, moveData.Direction.Value.Z);
+            int state = moveData.State;
 
-            if (playerManager.transform.GetChild(id) != null)
+            switch (state)
             {
-                playerManager.transform.GetChild(id).GetComponent<PlayerController>().SetDirection(dir);
-                playerManager.transform.GetChild(id).GetComponent<PlayerController>().SetPosition(pos);
-                playerManager.transform.GetChild(id).GetComponent<PlayerController>().SetIsMove(true);
+                case (int)ePlayerState.PS_RUN:
+                    {
+                        if (playerManager.transform.GetChild(id) != null)
+                        {
+                            playerManager.transform.GetChild(id).GetComponent<PlayerController>().SetDirection(dir);
+                            playerManager.transform.GetChild(id).GetComponent<PlayerController>().SetPosition(pos);
+                            playerManager.transform.GetChild(id).GetComponent<PlayerController>().SetIsMove(true);
+                        }
+
+                    }
+                    break;
+
+                case (int)ePlayerState.PS_JUMP:
+                    {
+                        // 여기에 점프 처리
+                    }
+                    break;
+
+                    default:
+                    {
+
+                    }
+                    break;
             }
         }
 
