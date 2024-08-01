@@ -15,7 +15,6 @@ public class ReceiveManager : MonoBehaviour
 
     private Queue<Tuple<ePacketType, byte[]>> PacketQueue = new Queue<Tuple<ePacketType, byte[]>>();
 
-    private TcpClient _Connection;
 
     private Thread workerThread;
     Mutex mutex = new Mutex(false, "QueueLock");
@@ -27,8 +26,6 @@ public class ReceiveManager : MonoBehaviour
 
     public void CreateRecvThread(TcpClient Connection)
     {
-        _Connection = Connection;
-
         workerThread = new Thread(() => WorkThread(Connection));
         workerThread.IsBackground = true;
         workerThread.Start();
@@ -180,9 +177,5 @@ public class ReceiveManager : MonoBehaviour
 
     public void OnDestroy()
     {
-        if(_Connection != null)
-        {
-            _Connection.Close();
-        }
     }
 }
