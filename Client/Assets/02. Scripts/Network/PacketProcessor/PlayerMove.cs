@@ -39,9 +39,12 @@ namespace Network.PacketProcessor
 
                 case (int)ePlayerState.PS_JUMP:
                     {
-                        // 여기에 점프 처리
+                        if (playerManager.transform.GetChild(id) != null)
+                        {
+                            playerManager.transform.GetChild(id).GetComponent<PlayerController>().Jump();
+                        }
                     }
-                    break;
+                        break;
 
                     default:
                     {

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using eAnimationState;
+using NetworkProtocol;
 
 public class PlayerController : MonoBehaviour
 {
@@ -91,7 +92,6 @@ public class PlayerController : MonoBehaviour
         if (amIPlayer == true)
         {
             MouseInput();
-            CheckIsGround();
             if (gameObject != null)
             {
                 curTime += Time.deltaTime;
@@ -102,6 +102,8 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+        
+        CheckIsGround();
     }
 
     private void SendForSync()
@@ -120,13 +122,13 @@ public class PlayerController : MonoBehaviour
             Ray rayR = new Ray(rightFootRigidbody.position, Vector3.down);
 
             RaycastHit hitInfoL, hitinfoR;
-            if (Physics.Raycast(rayL, out hitInfoL, floorDetectionDistance) == true)
+            if (Physics.Raycast(rayL, out hitInfoL, floorDetectionDistance) == true || Physics.Raycast(rayR, out hitinfoR, floorDetectionDistance) == true)
             {
-                if (hitInfoL.collider.gameObject.tag == "Ground") isGrounded = true;
-            }
-            else if (Physics.Raycast(rayR, out hitinfoR, floorDetectionDistance) == true)
-            {
-                if (hitinfoR.collider.gameObject.tag == "Ground") isGrounded = true;
+                if (hitInfoL.collider.gameObject.tag == "Ground")
+                {
+                    packetManager.SendPlayerStopPacket(pelvis.transform.position, new Vector3(0,0,0), myId);
+                    isGrounded = true;
+                }
             }
         }
     }
@@ -159,7 +161,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (pelvis != null)
                 {
-                    packetManager.SendPlayerMovePacket(pelvis.transform.position, moveDir, myId);
+                    packetManager.SendPlayerMovePacket(pelvis.transform.position, moveDir, myId, ePlayerState.PS_RUN);
                 }
             }
         }
@@ -203,9 +205,11 @@ public class PlayerController : MonoBehaviour
         {
             if(isGrounded == true)
             {
-                pelvisRigidbody.velocity = Vector3.up * jumpForce;
-                animationController.setLowerBodyAnimationState(LowerBodyAnimationState.JUMP);
-                isGrounded = false;
+                if (pelvis != null)
+                {
+                    packetManager.SendPlayerMovePacket(pelvis.transform.position, moveDir, myId, ePlayerState.PS_JUMP);
+                }
+                Jump();
             }
         }
     }
@@ -297,6 +301,12 @@ public class PlayerController : MonoBehaviour
     public void SetIsMove(bool isMove)
     {
         this.isMove = isMove;
+    }
+    public void Jump()
+    {
+        pelvisRigidbody.velocity = Vector3.up * jumpForce;
+        animationController.setLowerBodyAnimationState(LowerBodyAnimationState.JUMP);
+        isGrounded = false;
     }
     public void SetMyId(int myId)
     {
