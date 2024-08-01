@@ -21,7 +21,7 @@ public class BuildSetting
         // 타겟 경로(빌드 결과물이 여기 생성됨)
         options.locationPathName = "Build/FestivalTown.exe";
         // 빌드 타겟
-        options.target = BuildTarget.StandaloneWindows;
+        options.target = BuildTarget.StandaloneWindows64;
 
         // 빌드
         BuildPipeline.BuildPlayer(options);
