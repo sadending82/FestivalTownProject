@@ -128,7 +128,7 @@ public class PacketManager : MonoBehaviour
         PlayerStop.AddDirection(builder, dir);
         PlayerStop.AddId(builder, id);
         PlayerStop.AddState(builder, (int)state);
-        var pm = PlayerMove.EndPlayerMove(builder);
+        var pm = PlayerStop.EndPlayerStop(builder);
         builder.Finish(pm.Value);
         byte[] data = builder.SizedByteArray();
 
