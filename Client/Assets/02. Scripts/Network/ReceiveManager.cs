@@ -80,12 +80,12 @@ public class ReceiveManager : MonoBehaviour
 
         while (true)
         {
-            if(isDestroyed == false)
-            {
-                stream.Close();
-                Connection.Close();
-                break;
-            }
+            //if(isDestroyed == false)
+            //{
+            //    stream.Close();
+            //    Connection.Close();
+            //    break;
+            //}
 
             if (!Connection.Connected)
             {
