@@ -20,8 +20,6 @@ public class ReceiveManager : MonoBehaviour
     private Thread workerThread;
     Mutex mutex = new Mutex(false, "QueueLock");
 
-    private bool isDestroyed = false;
-
     public void Init(PacketManager packetManager)
     {
         _packetmanager = packetManager;
@@ -80,30 +78,15 @@ public class ReceiveManager : MonoBehaviour
 
         while (true)
         {
-            if(isDestroyed == false)
-            {
-                stream.Close();
-                Connection.Close();
-                break;
-            }
-
-            if (!Connection.Connected)
-            {
-                stream.Close();
-                break;
-            }
-
-            if (stream.CanRead)
+            if(stream.CanRead)
             {
                 try
-                {                   
+                {
                     recvSize = stream.Read(m_ReadBuffer, 0, sizeof(byte) * 1000);
                 }
                 catch(SocketException Exception)
                 {
                     Debug.Log("Recv exception: " + Exception);
-                    stream.Close();
-                    Connection.Close();
                     break;
                 }
 
@@ -162,7 +145,10 @@ public class ReceiveManager : MonoBehaviour
                 prevSize = toProcessData;
             }
 
-
+            if(!Connection.Connected)
+            {
+                break;
+            }
         }
     }
 
@@ -194,6 +180,9 @@ public class ReceiveManager : MonoBehaviour
 
     public void OnDestroy()
     {
-        isDestroyed = false;
+        if(_Connection != null)
+        {
+            _Connection.Close();
+        }
     }
 }

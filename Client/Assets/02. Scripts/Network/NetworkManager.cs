@@ -95,4 +95,9 @@ public class NetworkManager : MonoBehaviour
     {
         return Connection;
     }
+
+    private void OnApplicationQuit()
+    {
+        Connection.Close();
+    }
 }
