@@ -22,22 +22,26 @@ public struct PlayerStop : IFlatbufferObject
   public int Id { get { int o = __p.__offset(4); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
   public PacketTable.PlayerTable.Vec3? Pos { get { int o = __p.__offset(6); return o != 0 ? (PacketTable.PlayerTable.Vec3?)(new PacketTable.PlayerTable.Vec3()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
   public PacketTable.PlayerTable.Vec3? Direction { get { int o = __p.__offset(8); return o != 0 ? (PacketTable.PlayerTable.Vec3?)(new PacketTable.PlayerTable.Vec3()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
+  public int State { get { int o = __p.__offset(10); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
 
   public static Offset<PacketTable.PlayerTable.PlayerStop> CreatePlayerStop(FlatBufferBuilder builder,
       int id = 0,
       Offset<PacketTable.PlayerTable.Vec3> posOffset = default(Offset<PacketTable.PlayerTable.Vec3>),
-      Offset<PacketTable.PlayerTable.Vec3> directionOffset = default(Offset<PacketTable.PlayerTable.Vec3>)) {
-    builder.StartTable(3);
+      Offset<PacketTable.PlayerTable.Vec3> directionOffset = default(Offset<PacketTable.PlayerTable.Vec3>),
+      int state = 0) {
+    builder.StartTable(4);
+    PlayerStop.AddState(builder, state);
     PlayerStop.AddDirection(builder, directionOffset);
     PlayerStop.AddPos(builder, posOffset);
     PlayerStop.AddId(builder, id);
     return PlayerStop.EndPlayerStop(builder);
   }
 
-  public static void StartPlayerStop(FlatBufferBuilder builder) { builder.StartTable(3); }
+  public static void StartPlayerStop(FlatBufferBuilder builder) { builder.StartTable(4); }
   public static void AddId(FlatBufferBuilder builder, int id) { builder.AddInt(0, id, 0); }
   public static void AddPos(FlatBufferBuilder builder, Offset<PacketTable.PlayerTable.Vec3> posOffset) { builder.AddOffset(1, posOffset.Value, 0); }
   public static void AddDirection(FlatBufferBuilder builder, Offset<PacketTable.PlayerTable.Vec3> directionOffset) { builder.AddOffset(2, directionOffset.Value, 0); }
+  public static void AddState(FlatBufferBuilder builder, int state) { builder.AddInt(3, state, 0); }
   public static Offset<PacketTable.PlayerTable.PlayerStop> EndPlayerStop(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<PacketTable.PlayerTable.PlayerStop>(o);
@@ -53,6 +57,7 @@ static public class PlayerStopVerify
       && verifier.VerifyField(tablePos, 4 /*Id*/, 4 /*int*/, 4, false)
       && verifier.VerifyTable(tablePos, 6 /*Pos*/, PacketTable.PlayerTable.Vec3Verify.Verify, false)
       && verifier.VerifyTable(tablePos, 8 /*Direction*/, PacketTable.PlayerTable.Vec3Verify.Verify, false)
+      && verifier.VerifyField(tablePos, 10 /*State*/, 4 /*int*/, 4, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }

@@ -355,7 +355,8 @@ struct PlayerStop FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_ID = 4,
     VT_POS = 6,
-    VT_DIRECTION = 8
+    VT_DIRECTION = 8,
+    VT_STATE = 10
   };
   int32_t id() const {
     return GetField<int32_t>(VT_ID, 0);
@@ -366,6 +367,9 @@ struct PlayerStop FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   const PacketTable::PlayerTable::Vec3 *direction() const {
     return GetPointer<const PacketTable::PlayerTable::Vec3 *>(VT_DIRECTION);
   }
+  int32_t state() const {
+    return GetField<int32_t>(VT_STATE, 0);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_ID, 4) &&
@@ -373,6 +377,7 @@ struct PlayerStop FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            verifier.VerifyTable(pos()) &&
            VerifyOffset(verifier, VT_DIRECTION) &&
            verifier.VerifyTable(direction()) &&
+           VerifyField<int32_t>(verifier, VT_STATE, 4) &&
            verifier.EndTable();
   }
 };
@@ -390,6 +395,9 @@ struct PlayerStopBuilder {
   void add_direction(::flatbuffers::Offset<PacketTable::PlayerTable::Vec3> direction) {
     fbb_.AddOffset(PlayerStop::VT_DIRECTION, direction);
   }
+  void add_state(int32_t state) {
+    fbb_.AddElement<int32_t>(PlayerStop::VT_STATE, state, 0);
+  }
   explicit PlayerStopBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -405,8 +413,10 @@ inline ::flatbuffers::Offset<PlayerStop> CreatePlayerStop(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t id = 0,
     ::flatbuffers::Offset<PacketTable::PlayerTable::Vec3> pos = 0,
-    ::flatbuffers::Offset<PacketTable::PlayerTable::Vec3> direction = 0) {
+    ::flatbuffers::Offset<PacketTable::PlayerTable::Vec3> direction = 0,
+    int32_t state = 0) {
   PlayerStopBuilder builder_(_fbb);
+  builder_.add_state(state);
   builder_.add_direction(direction);
   builder_.add_pos(pos);
   builder_.add_id(id);

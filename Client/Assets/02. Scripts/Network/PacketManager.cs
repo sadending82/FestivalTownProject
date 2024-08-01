@@ -117,16 +117,17 @@ public class PacketManager : MonoBehaviour
         return result;
     }
 
-    public byte[] CreatePlayerStopPacket(Vector3 position, Vector3 direction, int id)
+    public byte[] CreatePlayerStopPacket(Vector3 position, Vector3 direction, int id, ePlayerState state)
     {
         var builder = new FlatBufferBuilder(1);
         var pos = Vec3.CreateVec3(builder, position.x, position.y, position.z);
         var dir = Vec3.CreateVec3(builder, direction.x, direction.y, direction.z);
 
-        PlayerMove.StartPlayerMove(builder);
-        PlayerMove.AddPos(builder, pos);
-        PlayerMove.AddDirection(builder, dir);
-        PlayerMove.AddId(builder, id);
+        PlayerStop.StartPlayerStop(builder);
+        PlayerStop.AddPos(builder, pos);
+        PlayerStop.AddDirection(builder, dir);
+        PlayerStop.AddId(builder, id);
+        PlayerStop.AddState(builder, (int)state);
         var pm = PlayerMove.EndPlayerMove(builder);
         builder.Finish(pm.Value);
         byte[] data = builder.SizedByteArray();
@@ -191,10 +192,10 @@ public class PacketManager : MonoBehaviour
         SendPacket(packet);
     }
 
-    public void SendPlayerStopPacket(Vector3 position, Vector3 direction, int id)
+    public void SendPlayerStopPacket(Vector3 position, Vector3 direction, int id, ePlayerState state)
     {
 
-        byte[] packet = CreatePlayerStopPacket(position, direction, id);
+        byte[] packet = CreatePlayerStopPacket(position, direction, id, state);
         if (packet == null) { return; }
         SendPacket(packet);
     }
