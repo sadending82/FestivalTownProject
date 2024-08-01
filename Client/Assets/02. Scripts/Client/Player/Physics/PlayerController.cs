@@ -339,7 +339,7 @@ public class PlayerController : MonoBehaviour
     public void Jump()
     {
         pelvisRigidbody.velocity = Vector3.up * jumpForce;
-        Debug.Log("Velocity " + pelvisRigidbody.velocity);
+        Debug.Log(gameObject.name + " is Jump vy : " + pelvisRigidbody.velocity.y);
         animationController.setLowerBodyAnimationState(LowerBodyAnimationState.JUMP);
         isGrounded = false;
     }

@@ -39,6 +39,8 @@ namespace Network.PacketProcessor
 
                     case (int)ePlayerState.PS_JUMP:
                         {
+                            pController.SetDirection(dir);
+                            pController.SetPosition(pos);
                             pController.Jump();
                         }
                         break;
