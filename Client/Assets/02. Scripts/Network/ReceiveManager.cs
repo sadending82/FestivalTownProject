@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using NetworkProtocol;
 using System.Runtime.InteropServices;
 using System;
+using UnityEditor.MemoryProfiler;
 
 public class ReceiveManager : MonoBehaviour
 {
@@ -62,6 +63,7 @@ public class ReceiveManager : MonoBehaviour
     void WorkThread(TcpClient Connection)
     {
         Debug.Log("Thread Start.");
+
 
         NetworkStream stream = Connection.GetStream();
 
@@ -139,6 +141,11 @@ public class ReceiveManager : MonoBehaviour
 
                 prevSize = toProcessData;
             }
+
+            if(!Connection.Connected)
+            {
+                break;
+            }
         }
     }
 
@@ -170,6 +177,5 @@ public class ReceiveManager : MonoBehaviour
 
     public void OnDestroy()
     {
-        workerThread.Abort();
     }
 }
