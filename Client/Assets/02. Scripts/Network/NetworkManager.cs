@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Net.Sockets;
 using UnityEngine;
 
@@ -58,6 +59,7 @@ public class NetworkManager : MonoBehaviour
         try
         {
             Connection = new TcpClient("127.0.0.1", 45872);
+            Connection.GetStream().ReadTimeout = 10;
         }
         catch (Exception e)
         {
@@ -91,8 +93,13 @@ public class NetworkManager : MonoBehaviour
         }
     }
 
-    public TcpClient GetTcpClient()
+    public ref TcpClient GetTcpClient()
     {
-        return Connection;
+        return ref Connection;
+    }
+
+    private void OnApplicationQuit()
+    {
+
     }
 }

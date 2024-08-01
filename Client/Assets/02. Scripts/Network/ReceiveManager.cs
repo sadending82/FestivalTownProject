@@ -7,6 +7,9 @@ using NetworkProtocol;
 using System.Runtime.InteropServices;
 using System;
 using UnityEditor.MemoryProfiler;
+using TMPro.EditorUtilities;
+using System.IO;
+using System.Runtime.InteropServices.ComTypes;
 
 public class ReceiveManager : MonoBehaviour
 {
@@ -16,6 +19,7 @@ public class ReceiveManager : MonoBehaviour
     private Queue<Tuple<ePacketType, byte[]>> PacketQueue = new Queue<Tuple<ePacketType, byte[]>>();
 
     private TcpClient _Connection;
+    private NetworkStream _stream;
 
     private Thread workerThread;
     Mutex mutex = new Mutex(false, "QueueLock");
@@ -31,9 +35,7 @@ public class ReceiveManager : MonoBehaviour
     {
         _Connection = Connection;
 
-        workerThread = new Thread(() => WorkThread(Connection));
-        workerThread.IsBackground = true;
-        workerThread.Start();
+        StartCoroutine(WorkThread(Connection));
 
         StartCoroutine(ProcessPacketQueue());
     }
@@ -65,48 +67,69 @@ public class ReceiveManager : MonoBehaviour
         return pBuffer;
     }
 
-    void WorkThread(TcpClient Connection)
+    IEnumerator WorkThread(TcpClient Connection)
     {
         Debug.Log("Thread Start.");
 
-
         NetworkStream stream = Connection.GetStream();
-
+        
         var m_Buffer = new List<byte>();
         byte[] m_ReadBuffer = new byte[1000];
 
         int prevSize = 0;
         int recvSize = 0;
 
+        bool isRecvException = false;
+
         while (true)
         {
-            //if(isDestroyed == false)
-            //{
-            //    stream.Close();
-            //    Connection.Close();
-            //    break;
-            //}
 
-            if (!Connection.Connected)
-            {
-                stream.Close();
-                break;
-            }
+            if (stream == null) break;
+
+            Debug.Log("isDestroyed = " + isDestroyed);
+
 
             if (stream.CanRead)
             {
+
+                Debug.Log("CanRead");
+
                 try
-                {                   
+                {
                     recvSize = stream.Read(m_ReadBuffer, 0, sizeof(byte) * 1000);
+                    Debug.Log("read");
                 }
-                catch(SocketException Exception)
+                catch (SocketException Exception)
                 {
                     Debug.Log("Recv exception: " + Exception);
                     stream.Close();
                     Connection.Close();
+                    isRecvException = true;
+                    break;
+                }
+                catch (IOException Exception)
+                {
+                    Debug.Log("TimeOut.");
+
+                    if (isDestroyed)
+                    {
+                        stream.Close();
+                        Connection.Close();
+                        break;
+                    }    
+                }
+
+                if (isRecvException)
+                {
                     break;
                 }
 
+                if(isDestroyed)
+                {
+                    stream.Close();
+                    Connection.Close();
+                    break;
+                }
                 // 포인터가 없으므로 실제 패킷의 포인터 위치를 바탕으로 += 해나가는 방식은 사용할 수 없음.
                 // 따라서, 리스트(C++의 Vector와 비슷함)
                 // 배열을 실제로 자르거나 이동하는 부분이 많으므로 매우 비효율적인 방식임.
@@ -162,7 +185,25 @@ public class ReceiveManager : MonoBehaviour
                 prevSize = toProcessData;
             }
 
+            yield return new WaitUntil(() => stream.CanRead == true);
+        }
+    }
 
+    public bool IsSocketConnected(NetworkStream stream)
+    {
+        try
+        {
+            if (stream.DataAvailable == false) return true;
+
+            return true;
+        }
+        catch (SocketException)
+        {
+            return false;
+        }
+        catch (Exception)
+        {
+            return false;
         }
     }
 
@@ -192,8 +233,13 @@ public class ReceiveManager : MonoBehaviour
         this.playerManager = playerManager;
     }
 
+    public Thread GetWorkerThread()
+    {
+        return workerThread;
+    }
+
     public void OnDestroy()
     {
-        isDestroyed = false;
+        isDestroyed = true;
     }
 }
