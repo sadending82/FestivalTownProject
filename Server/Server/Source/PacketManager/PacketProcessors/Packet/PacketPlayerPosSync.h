@@ -17,10 +17,10 @@ public:
 			
 			Player* player = pServer->GetSessions()[key];
 
-			std::cout << read->pos()->x() << " " << read->pos()->y()<< " " << read->pos()->z()<< std::endl;
+			/*std::cout << read->pos()->x() << " " << read->pos()->y()<< " " << read->pos()->z()<< std::endl;
 
 			player->SetPosition(read->pos()->x(), read->pos()->y(), read->pos()->z());
-			player->SetDirection(read->direction()->x(), read->direction()->y(), read->direction()->z());
+			player->SetDirection(read->direction()->x(), read->direction()->y(), read->direction()->z());*/
 
 			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYERPOSSYNC, data, size);
 

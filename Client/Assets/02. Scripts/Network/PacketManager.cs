@@ -83,7 +83,7 @@ public class PacketManager : MonoBehaviour
         return buffer;
     }
 
-    public byte[] CreatePlayerMovePacket(Vector3 position, Vector3 direction, int id)
+    public byte[] CreatePlayerMovePacket(Vector3 position, Vector3 direction, int id, ePlayerState state)
     {
         var builder = new FlatBufferBuilder(1);
         var pos = Vec3.CreateVec3(builder, position.x, position.y, position.z);
@@ -93,6 +93,7 @@ public class PacketManager : MonoBehaviour
         PlayerMove.AddPos(builder, pos);
         PlayerMove.AddDirection(builder, dir);
         PlayerMove.AddId(builder, id);
+        PlayerMove.AddState(builder, (int)state);
         var pm = PlayerMove.EndPlayerMove(builder);
         builder.Finish(pm.Value);
         byte[] data = builder.SizedByteArray();
@@ -105,13 +106,13 @@ public class PacketManager : MonoBehaviour
         Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
         Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
 
-        var buf = builder.DataBuffer;
-        var verifier = new Verifier(buf);
-        if (PlayerMoveVerify.Verify(verifier, (uint)pm.Value) == false)
-        {
-            Debug.Log("invaild buf / CreatePlayerStopPacket");
-            return null;
-        }
+        //var buf = builder.DataBuffer;
+        //var verifier = new Verifier(buf);
+        //if (PlayerMoveVerify.Verify(verifier, (uint)pm.Value) == false)
+        //{
+        //    Debug.Log("invaild buf / CreatePlayerMovePacket");
+        //    return null;
+        //}
 
         return result;
     }
@@ -138,13 +139,13 @@ public class PacketManager : MonoBehaviour
         Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
         Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
 
-        var buf = builder.DataBuffer;
-        var verifier = new Verifier(buf);
-        if (PlayerStopVerify.Verify(verifier, (uint)pm.Value) == false)
-        {
-            Debug.Log("invaild buf / CreatePlayerStopPacket");
-            return null;
-        }
+        //var buf = builder.DataBuffer;
+        //var verifier = new Verifier(buf);
+        //if (PlayerStopVerify.Verify(verifier, (uint)pm.Value) == false)
+        //{
+        //    Debug.Log("invaild buf / CreatePlayerStopPacket");
+        //    return null;
+        //}
 
         return result;
     }
@@ -171,21 +172,21 @@ public class PacketManager : MonoBehaviour
         Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
         Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
 
-        var buf = builder.DataBuffer;
-        var verifier = new Verifier(buf);
-        if (PlayerPosSyncVerify.Verify(verifier, (uint)pm.Value) == false)
-        {
-            Debug.Log("invaild buf / CreatePlayerStopPacket");
-            return null;
-        }
+        //var buf = builder.DataBuffer;
+        //var verifier = new Verifier(buf);
+        //if (PlayerPosSyncVerify.Verify(verifier, (uint)pm.Value) == false)
+        //{
+        //    Debug.Log("invaild buf / CreatePlayerPosSyncPacket");
+        //    return null;
+        //}
 
         return result;
     }
 
-    public void SendPlayerMovePacket(Vector3 position, Vector3 direction, int id)
+    public void SendPlayerMovePacket(Vector3 position, Vector3 direction, int id, ePlayerState state)
     {
 
-        byte[] packet = CreatePlayerMovePacket(position, direction, id);
+        byte[] packet = CreatePlayerMovePacket(position, direction, id, state);
         if (packet == null) { return; }
         SendPacket(packet);
     }

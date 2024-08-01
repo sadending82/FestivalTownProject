@@ -28,4 +28,10 @@ namespace NetworkProtocol
         C2S_PLAYERSTOP,
         C2S_PLAYERPOSSYNC
     };
+
+    public enum ePlayerState
+    {
+        PS_RUN,
+        PS_JUMP
+    };
 }
