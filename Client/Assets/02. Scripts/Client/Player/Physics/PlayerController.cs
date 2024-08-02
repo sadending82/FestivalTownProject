@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviour
         {
             if (isMove == true)
             {
-                pelvisRigidbody.velocity = sMoveDirection * walkSpeed;
+                pelvis.transform.position += sMoveDirection * walkSpeed * Time.deltaTime;
             }
             if (sMoveDirection != Vector3.zero)
             {
@@ -169,6 +169,7 @@ public class PlayerController : MonoBehaviour
         Vector3 lookForward = new Vector3(cameraArm.forward.x, 0f, cameraArm.forward.z).normalized;
         Vector3 lookRight = new Vector3(cameraArm.right.x, 0f, cameraArm.right.z).normalized;
         moveDirection = lookForward * moveInput.y + lookRight * moveInput.x;
+        moveDirection = moveDirection.normalized;
 
         if (AxisRawH != beforeAxisRawH || AxisRawV != beforeAxisRawV)
         {
@@ -202,7 +203,7 @@ public class PlayerController : MonoBehaviour
         {
             if (isLeftShiftKeyDown)
             {
-                pelvisRigidbody.velocity = moveDirection * runSpeed;
+                pelvis.transform.position += moveDirection * runSpeed * Time.deltaTime;
                 if (isGrounded == true)
                 {
                     animationController.setLowerBodyAnimationState(LowerBodyAnimationState.RUN);
@@ -210,7 +211,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                pelvisRigidbody.velocity = moveDirection * walkSpeed;
+                pelvis.transform.position += moveDirection * walkSpeed * Time.deltaTime;
                 if (isGrounded == true)
                 {
                     animationController.setLowerBodyAnimationState(LowerBodyAnimationState.WALK);
@@ -339,7 +340,7 @@ public class PlayerController : MonoBehaviour
     public void Jump()
     {
         pelvisRigidbody.velocity = Vector3.up * jumpForce;
-        Debug.Log("Velocity " + pelvisRigidbody.velocity);
+        Debug.Log(gameObject.name + " is Jump vy : " + pelvisRigidbody.velocity.y);
         animationController.setLowerBodyAnimationState(LowerBodyAnimationState.JUMP);
         isGrounded = false;
     }
