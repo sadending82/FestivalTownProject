@@ -11,10 +11,18 @@ public class AnimationController : MonoBehaviour
 
     private ActiveRagdoll.AnimationModule animationModule;
 
+    [Header("--- Animation ---")]
+    public Animator lowerBodyAnimator;
+
     private void Awake()
     {   
         upperBodyAnimationState = UpperBodyAnimationState.NONE;
         lowerBodyAnimationState = LowerBodyAnimationState.IDLE;
+
+        if(lowerBodyAnimator == null)
+        {
+            lowerBodyAnimator = GetComponentInChildren<Animator>();
+        }
     }
     void Start()
     {
@@ -82,7 +90,14 @@ public class AnimationController : MonoBehaviour
                 }
         }
     }
+    // 애니메이션 상태에 따라 한번 정리
     private void SetAnimation()
     {
+        // 여기서 한 번 정리하고 애니메이션 체인지 넣어줘
+    }
+    private void ChangeAnimation(string state)
+    {
+        lowerBodyAnimator.SetTrigger("New State");
+        lowerBodyAnimator.SetTrigger(state);
     }
 }

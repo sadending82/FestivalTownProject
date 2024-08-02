@@ -123,6 +123,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!95 &55175749 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5356388769229848889, guid: a89706a342a241f4cac54eee1406c70d, type: 3}
+  m_PrefabInstance: {fileID: 1085062075}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &454294223
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -442,6 +447,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 478767984}
     m_Modifications:
+    - target: {fileID: 567365355363773440, guid: a89706a342a241f4cac54eee1406c70d, type: 3}
+      propertyPath: lowerBodyAnimator
+      value: 
+      objectReference: {fileID: 55175749}
     - target: {fileID: 1952701481886156661, guid: a89706a342a241f4cac54eee1406c70d, type: 3}
       propertyPath: m_Name
       value: Chibi_Cat 1
@@ -458,6 +467,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5356388769229848889, guid: a89706a342a241f4cac54eee1406c70d, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 458d441197f9e9f4cb7799b55b5ad7e8, type: 2}
     - target: {fileID: 5571233571325362026, guid: a89706a342a241f4cac54eee1406c70d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -14
@@ -524,6 +537,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5571233571325362026, guid: a89706a342a241f4cac54eee1406c70d, type: 3}
   m_PrefabInstance: {fileID: 1085062075}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &1242793973 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5356388769229848889, guid: a89706a342a241f4cac54eee1406c70d, type: 3}
+  m_PrefabInstance: {fileID: 577631941739381537}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1644665125
 GameObject:
   m_ObjectHideFlags: 0
@@ -578,6 +596,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 478767984}
     m_Modifications:
+    - target: {fileID: 567365355363773440, guid: a89706a342a241f4cac54eee1406c70d, type: 3}
+      propertyPath: lowerBodyAnimator
+      value: 
+      objectReference: {fileID: 1242793973}
     - target: {fileID: 1952701481886156661, guid: a89706a342a241f4cac54eee1406c70d, type: 3}
       propertyPath: m_Name
       value: Chibi_Cat 0
@@ -590,6 +612,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5356388769229848889, guid: a89706a342a241f4cac54eee1406c70d, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 458d441197f9e9f4cb7799b55b5ad7e8, type: 2}
     - target: {fileID: 5571233571325362026, guid: a89706a342a241f4cac54eee1406c70d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 14
