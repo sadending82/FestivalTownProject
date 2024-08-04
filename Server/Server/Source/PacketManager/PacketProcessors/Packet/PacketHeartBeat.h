@@ -16,8 +16,6 @@ public:
 
 			const HeartBeat* read = flatbuffers::GetRoot<HeartBeat>(data);
 
-			std::cout << read->sessionid()  << "  heart beat ¹ŞÀ½\n";
-
 			pServer->GetSessions()[key]->SetIsHeartbeatAck(true);
 		}
 	}
