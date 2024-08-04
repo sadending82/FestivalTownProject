@@ -167,6 +167,7 @@ void Server::SendHeartBeatPacket(int sessionID)
 
 void Server::StartHeartBeat(int sessionID)
 {
+    GetSessions()[sessionID]->SetIsHeartbeatAck(false);
     SendHeartBeatPacket(sessionID);
     PushEventHeartBeat(mTimer, sessionID);
 }

@@ -17,9 +17,7 @@ public:
 			pServer->Disconnect(target);
 		}
 		else {
-			pServer->GetSessions()[target]->SetIsHeartbeatAck(false);
-			pServer->SendHeartBeatPacket(target);
-			PushEventHeartBeat(pServer->GetTimer(), target);
+			pServer->StartHeartBeat(target);
 		}
 	}
 

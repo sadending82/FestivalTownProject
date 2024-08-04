@@ -38,12 +38,12 @@ void Timer::Main()
 			}
 			else {
 				mTimerLock.unlock();
-				std::this_thread::sleep_for(100ms);
+				std::this_thread::sleep_for(1ms);
 			}
 		}
 		else {
 			mTimerLock.unlock();
-			std::this_thread::sleep_for(100ms);
+			std::this_thread::sleep_for(1ms);
 		}
 	}
 }
