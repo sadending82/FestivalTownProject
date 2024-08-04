@@ -1,3 +1,4 @@
+#pragma once
 #include "PacketManager.h"
 #include "PacketProcessors/Processors.h"
 #include "../Event/Event.h"
@@ -8,11 +9,13 @@ void PacketManager::Init(Server* server)
 {
 	pServer = server;
 
+    PacketProcessorMap[ePacketType::C2S_HEARTBEAT] = std::make_unique<PacketHeartBeat>();
     PacketProcessorMap[ePacketType::C2S_PLAYERMOVE] = std::make_unique<PacketPlayerMove>();
     PacketProcessorMap[ePacketType::C2S_PLAYERSTOP] = std::make_unique<PacketPlayerStop>();
     PacketProcessorMap[ePacketType::C2S_PLAYERPOSSYNC] = std::make_unique<PacketPlayerPosSync>();
 
     EventProcessorMap[eEventType::PLAYERPOSSYNC] = std::make_unique<EventPlayerPosSync>();
+    EventProcessorMap[eEventType::HEARTBEAT] = std::make_unique<EventHeartBeat>();
 }
 
 void PacketManager::ProcessPacket(const int type, const uint8_t* data, const int size, const int key)
@@ -20,7 +23,7 @@ void PacketManager::ProcessPacket(const int type, const uint8_t* data, const int
 	//PacketProcessorMap[type]->Process(pServer, data, size, key);
 
     if (PacketProcessorMap[type] == nullptr) {
-        std::cout << "ÀÌ»óÇÑ°Å ¿È : " << type << std::endl;
+        std::cout << "Received Invalid Packet Type : " << type << std::endl;
         return;
     }
 
@@ -50,5 +53,10 @@ void PacketManager::ProcessPacket(const int type, const uint8_t* data, const int
 
 void PacketManager::ProcessEvent(const eEventType type, unsigned char* buf)
 {
+    if (EventProcessorMap[type] == nullptr) {
+        std::cout << "Process Invalid Event Type : " << type << std::endl;
+        return;
+    }
+
 	EventProcessorMap[type]->Process(pServer, buf);
 }

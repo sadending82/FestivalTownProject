@@ -8,6 +8,7 @@ public:
 		mState(eSessionState::ST_FREE)
 		, mSessionID(INVALIDKEY)
 		,mPrevData(0)
+		,mIsHeartbeatAck(false)
 	{
 	}
 	virtual ~Session() {}
@@ -35,6 +36,9 @@ public:
 	int GetPrevData() { return mPrevData; }
 	void SetPrevData(int prevData) { mPrevData = prevData; }
 
+	bool GetIsHeartbeatAck() { return mIsHeartbeatAck; }
+	void SetIsHeartbeatAck(bool flag) { mIsHeartbeatAck = flag; }
+
 protected:
 	ExOver mExOver;
 	std::mutex	mStateLock;
@@ -42,5 +46,7 @@ protected:
 	int mSessionID;
 	SOCKET mSocket;
 	int	mPrevData;
+
+	bool mIsHeartbeatAck;
 };
 

@@ -9,7 +9,7 @@ namespace Network.PacketProcessor
 {
     public class PlayerPosSyncProcessor : PacketProcessor
     {
-        public override void Process(byte[] data, GameObject playerManager)
+        public override void Process(PacketManager packetmanager, byte[] data, GameObject playerManager)
         {
             var bb = new ByteBuffer(data);
             var posData = PlayerPosSync.GetRootAsPlayerPosSync(bb);

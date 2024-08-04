@@ -6,7 +6,6 @@ using System.Net.Sockets;
 using NetworkProtocol;
 using System.Runtime.InteropServices;
 using System;
-using UnityEditor.MemoryProfiler;
 
 public class ReceiveManager : MonoBehaviour
 {
@@ -15,12 +14,9 @@ public class ReceiveManager : MonoBehaviour
 
     private Queue<Tuple<ePacketType, byte[]>> PacketQueue = new Queue<Tuple<ePacketType, byte[]>>();
 
-    private TcpClient _Connection;
 
     private Thread workerThread;
     Mutex mutex = new Mutex(false, "QueueLock");
-
-    private bool isDestroyed = false;
 
     public void Init(PacketManager packetManager)
     {
@@ -29,8 +25,6 @@ public class ReceiveManager : MonoBehaviour
 
     public void CreateRecvThread(TcpClient Connection)
     {
-        _Connection = Connection;
-
         workerThread = new Thread(() => WorkThread(Connection));
         workerThread.IsBackground = true;
         workerThread.Start();
@@ -48,7 +42,7 @@ public class ReceiveManager : MonoBehaviour
                 mutex.WaitOne();
                 var packetData = PacketQueue.Dequeue();
                 mutex.ReleaseMutex();
-                _packetmanager.GetProcessor(packetData.Item1).Process(packetData.Item2, playerManager);
+                _packetmanager.GetProcessor(packetData.Item1).Process(_packetmanager,packetData.Item2, playerManager);
             }
             yield return new WaitForFixedUpdate();
         }
@@ -68,7 +62,6 @@ public class ReceiveManager : MonoBehaviour
     void WorkThread(TcpClient Connection)
     {
         Debug.Log("Thread Start.");
-
 
         NetworkStream stream = Connection.GetStream();
 
@@ -96,60 +89,58 @@ public class ReceiveManager : MonoBehaviour
             if (stream.CanRead)
             {
                 try
-                {                   
+                {
                     recvSize = stream.Read(m_ReadBuffer, 0, sizeof(byte) * 1000);
                 }
                 catch(SocketException Exception)
                 {
                     Debug.Log("Recv exception: " + Exception);
-                    stream.Close();
-                    Connection.Close();
                     break;
                 }
 
-                // Æ÷ÀÎÅÍ°¡ ¾øÀ¸¹Ç·Î ½ÇÁ¦ ÆÐÅ¶ÀÇ Æ÷ÀÎÅÍ À§Ä¡¸¦ ¹ÙÅÁÀ¸·Î += ÇØ³ª°¡´Â ¹æ½ÄÀº »ç¿ëÇÒ ¼ö ¾øÀ½.
-                // µû¶ó¼­, ¸®½ºÆ®(C++ÀÇ Vector¿Í ºñ½ÁÇÔ)
-                // ¹è¿­À» ½ÇÁ¦·Î ÀÚ¸£°Å³ª ÀÌµ¿ÇÏ´Â ºÎºÐÀÌ ¸¹À¸¹Ç·Î ¸Å¿ì ºñÈ¿À²ÀûÀÎ ¹æ½ÄÀÓ.
-                // µû¶ó¼­ ÁÁÀº ¹æ¹ýÀÌ ¹ß°ßµÇ¸é °³¼±ÇØ ³ª°¡¾ß ÇÔ.
-                // C# ¸¶½ºÅÍ¸¦ Ã£¾Æ¿Í¾ß ÇÑ´Ù ¤²¤§
+                // ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å¶ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ += ï¿½Ø³ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
+                // ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½Æ®(C++ï¿½ï¿½ Vectorï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½)
+                // ï¿½è¿­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ú¸ï¿½ï¿½Å³ï¿½ ï¿½Ìµï¿½ï¿½Ï´ï¿½ ï¿½Îºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ ï¿½Å¿ï¿½ ï¿½ï¿½È¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½.
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ßµÇ¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½.
+                // C# ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ Ã£ï¿½Æ¿Í¾ï¿½ ï¿½Ñ´ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-                // ½ÇÁ¦ »çÀÌÁî¸¸Å­ Àß¶óÁÖ±â
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½î¸¸Å­ ï¿½ß¶ï¿½ï¿½Ö±ï¿½
                 byte[] ConvertedRecv = new ArraySegment<byte>(m_ReadBuffer, 0, recvSize).ToArray();
 
-                // ÇØ´ç ¹öÆÛ¸¦ ³²¾ÆÀÖ´ø ¹öÆÛ µÞ ºÎºÐ¿¡ ºÙ¿©ÁÖ±â
+                // ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½Û¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ÎºÐ¿ï¿½ ï¿½Ù¿ï¿½ï¿½Ö±ï¿½
                 m_Buffer.AddRange(ConvertedRecv);
 
-                // ÀÌÀü µ¥ÀÌÅÍ - [][][][]  ÀÌÈÄ µ¥ÀÌÅÍ - [][][]
-                // ÇÕÄ£ µ¥ÀÌÅÍ - [][][][][][][]
-                // ÇÕÄ£ µ¥ÀÌÅÍ¿¡¼­, °¡Àå ¾ÕÀÚ¸®¸¦ ÀÐ°í, ÇØ´ç »çÀÌÁî¸¸Å­ process packet ÁøÇà
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ - [][][][]  ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ - [][][]
+                // ï¿½ï¿½Ä£ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ - [][][][][][][]
+                // ï¿½ï¿½Ä£ ï¿½ï¿½ï¿½ï¿½ï¿½Í¿ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¸ï¿½ï¿½ï¿½ ï¿½Ð°ï¿½, ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½î¸¸Å­ process packet ï¿½ï¿½ï¿½ï¿½
                 // Process Packet! - [][][][][] / [][]
-                // ³²Àº µ¥ÀÌÅÍ´Â ÀÌÈÄ·Î
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í´ï¿½ ï¿½ï¿½ï¿½Ä·ï¿½
                 // Remain - [][]
 
-                // Ã³¸®ÇØ¾ßÇÒ µ¥ÀÌÅÍÀÇ ¾ç
+                // Ã³ï¿½ï¿½ï¿½Ø¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
                 int toProcessData = recvSize + prevSize;
 
-                // Çì´õ µ¥ÀÌÅÍ °¡Á®¿À±â
+                // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 byte[] headerData = m_Buffer.GetRange(0, 2).ToArray();
 
                 ushort headerSize = (ushort)Marshal.SizeOf(typeof(HEADER));
 
-                // Çì´õ µ¥ÀÌÅÍ·Î ºÎÅÍ ÆÐÅ¶ »çÀÌÁî °¡Á®¿À±â
+                // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å¶ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 ushort packetSize = (ushort)(BitConverter.ToUInt16(headerData, 0) + headerSize);
                 while (packetSize <= toProcessData)
                 {
-                    //TODO : packet Ã³¸®¿ë ÇÔ¼ö ProcessPacketÀÇ ÀÛ¼º
+                    //TODO : packet Ã³ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ProcessPacketï¿½ï¿½ ï¿½Û¼ï¿½
                     byte[] packetList = m_Buffer.GetRange(0, packetSize).ToArray();
 
                     ProcessPacket(packetList);
 
-                    // Ã³¸®ÇßÀ¸¹Ç·Î, packetSize ¸¸Å­Àº Ã³¸®ÇØ¾ßÇÒ ³ð ÁÙ¿©ÁÖ±â
+                    // Ã³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½, packetSize ï¿½ï¿½Å­ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½Ø¾ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ù¿ï¿½ï¿½Ö±ï¿½
                     toProcessData -= packetSize;
 
-                    // ¹öÆÛµµ ÀÌ¹Ì »ç¿ëÇÑ ³»¿ëÀ» Áö¿öÁÖ±â
+                    // ï¿½ï¿½ï¿½Ûµï¿½ ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½
                     m_Buffer.RemoveRange(0, packetSize);
 
-                    // ¹öÆÛ Áö¿üÀ¸´Ï±î, ´ÙÀ½ ÆÐÅ¶À» Ã³¸®ÇÏ±â À§ÇØ ÆÐÅ¶ »çÀÌÁî ´Ù½Ã Ã£¾Æ¾ß ÇÔ.
+                    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å¶ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å¶ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù½ï¿½ Ã£ï¿½Æ¾ï¿½ ï¿½ï¿½.
                     if (toProcessData > 0)
                     {
                         headerData = m_Buffer.GetRange(0, 2).ToArray();
@@ -161,8 +152,6 @@ public class ReceiveManager : MonoBehaviour
 
                 prevSize = toProcessData;
             }
-
-
         }
     }
 
@@ -194,6 +183,6 @@ public class ReceiveManager : MonoBehaviour
 
     public void OnDestroy()
     {
-        isDestroyed = false;
+        workerThread.Abort();
     }
 }
