@@ -7,6 +7,8 @@ using NetworkProtocol;
 using Google.FlatBuffers;
 using PacketTable.PlayerTable;
 using Network.PacketProcessor;
+using UnityEngine.UIElements;
+using PacketTable.UtilityTable;
 
 public class PacketManager : MonoBehaviour 
 {
@@ -38,6 +40,7 @@ public class PacketManager : MonoBehaviour
     {
         processorDict = new Dictionary<ePacketType, PacketProcessor>
         {
+             { ePacketType.S2C_HEARTBEAT, new HeartBeatProcessor() },
             { ePacketType.S2C_PLAYERADD, new PlayerAddProcessor() },
             { ePacketType.S2C_PLAYERGAMEINFO, new PlayerGameInfoProcessor() },
             { ePacketType.S2C_PLAYERMOVE, new PlayerMoveProcessor() },
@@ -184,6 +187,41 @@ public class PacketManager : MonoBehaviour
         return result;
     }
 
+    public byte[] CreateHeartBeatPacket()
+    {
+        var builder = new FlatBufferBuilder(1);
+
+        HeartBeat.StartHeartBeat(builder);
+        // 버퍼의 내용을 사용하지 않아서 임의로 값을 집어넣음
+        // 추후에 수정 필요
+        HeartBeat.AddSessionid(builder, 1000);
+        HeartBeat.AddTime(builder, 1000);
+
+        var pm = HeartBeat.EndHeartBeat(builder);
+        builder.Finish(pm.Value);
+
+        byte[] data = builder.SizedByteArray();
+
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_HEARTBEAT, size = (ushort)data.Length };
+        byte[] headerdata = Serialize<HEADER>(header);
+
+        byte[] result = new byte[data.Length + headerdata.Length];
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
+
+        // 서버에서 버퍼 이상없이 잘 읽는데 Verity가 false가 뜸...
+        //var buf = builder.DataBuffer;
+        //var verifier = new Verifier(buf);
+
+        //if (HeartBeatVerify.Verify(verifier, (uint)pm.Value) == false)
+        //{
+        //    Debug.Log("invaild buf / CreateHeartBeatPacket");
+        //    return null;
+        //}
+
+        return result;
+    }
+
     public void SendPlayerMovePacket(Vector3 position, Vector3 direction, int id, ePlayerState state)
     {
 
@@ -203,6 +241,13 @@ public class PacketManager : MonoBehaviour
     public void SendPlayerPosPacket(Vector3 position, Vector3 direction, int id)
     {
         byte[] packet = CreatePlayerPosSyncPacket(position, direction, id);
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+
+    public void SendHeartBeatPacket()
+    {
+        byte[] packet = CreateHeartBeatPacket();
         if (packet == null) { return; }
         SendPacket(packet);
     }

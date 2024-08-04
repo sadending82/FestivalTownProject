@@ -17,6 +17,7 @@ namespace NetworkProtocol
     public enum ePacketType
     {
         // Server -> Client
+        S2C_HEARTBEAT,
         S2C_PLAYERADD,
         S2C_PLAYERGAMEINFO,
         S2C_PLAYERMOVE,
@@ -24,6 +25,7 @@ namespace NetworkProtocol
         S2C_PLAYERPOSSYNC,
 
         // Client -> Server
+        C2S_HEARTBEAT,
         C2S_PLAYERMOVE,
         C2S_PLAYERSTOP,
         C2S_PLAYERPOSSYNC

@@ -18,3 +18,19 @@ bool PushEventPlayerPosSync(Timer* pTimer, int roomID)
 
 	return true;
 }
+
+bool PushEventHeartBeat(Timer* pTimer, int sessionID) {
+	EV_HEART_BEAT e;
+	e.size = sizeof(EV_HEART_BEAT);
+	e.type = eEventType::HEARTBEAT;
+	e.sessionID = sessionID;
+
+	EVENT_HEADER header;
+	header.type = eEventType::PLAYERPOSSYNC;
+	header.start_time = std::chrono::system_clock::now() + std::chrono::milliseconds(HEARTBEATTIME);
+	memcpy(header.message, reinterpret_cast<char*>(&e), sizeof(EV_HEART_BEAT));
+
+	pTimer->PushEvent(header);
+
+	return true;
+}

@@ -12,7 +12,7 @@ namespace Network.PacketProcessor
 {
     public class PlayerStopProcessor : PacketProcessor
     {
-        public override void Process(byte[] data, GameObject playerManager)
+        public override void Process(PacketManager packetmanager, byte[] data, GameObject playerManager)
         {
             // 여기에 처리    
             var bb = new ByteBuffer(data);

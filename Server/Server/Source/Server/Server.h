@@ -27,6 +27,9 @@ public:
 
 	void SendPlayerAdd(int sessionID, int destination);
 	void SendPlayerGameInfo(int sessionID);
+	void SendHeartBeatPacket(int sessionID);
+
+	void StartHeartBeat(int sessionID);
 
 	HANDLE GetHcp() { return mHcp; }
 	SOCKADDR_IN GetServerAddr() { return mServerAddr; }

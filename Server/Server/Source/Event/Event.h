@@ -5,6 +5,7 @@ class Timer;
 
 #pragma pack (push, 1)
 enum eEventType {
+	HEARTBEAT,
 	PLAYERPOSSYNC
 };
 
@@ -16,6 +17,7 @@ struct EVENT_HEADER {
 		return start_time > other.start_time;
 	}
 
+	// 이벤트 세부 내용이 여기에 들어감
 	char message[BUFSIZE + 1];
 };
 
@@ -27,6 +29,11 @@ struct EVENT {
 struct EV_PLAYER_POS_SYNC : EVENT{
 	int roodID;
 };
+
+struct EV_HEART_BEAT : EVENT {
+	int sessionID;
+};
 #pragma pack(pop)
 
 bool PushEventPlayerPosSync(Timer* pTimer, int roomID);
+bool PushEventHeartBeat(Timer* pTimer, int sessionID);

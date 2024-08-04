@@ -28,6 +28,7 @@ constexpr int BUFSIZE = 1000;
 constexpr int MAXSESSION = 1000;
 constexpr int MAXROOM = 100;
 constexpr int MAXPLAYER = 6;
+constexpr int HEARTBEATTIME = 6000;
 
 #ifdef _DEBUG
 #define DEBUGMSGNOPARAM(args) (printf("file: %s, line:%d ",__FILE__,__LINE__), printf(args))
@@ -39,6 +40,7 @@ constexpr int MAXPLAYER = 6;
 
 enum ePacketType {
 	// Server -> Client
+	S2C_HEARTBEAT,
 	S2C_PLAYERADD,
 	S2C_PLAYERGAMEINFO,
 	S2C_PLAYERMOVE,
@@ -46,6 +48,7 @@ enum ePacketType {
 	S2C_PLAYERPOSSYNC,
 
 	// Client -> Server
+	C2S_HEARTBEAT,
 	C2S_PLAYERMOVE,
 	C2S_PLAYERSTOP,
 	C2S_PLAYERPOSSYNC

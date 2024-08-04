@@ -36,6 +36,9 @@ void WorkerThread::RunWorker()
                 CreateIoCompletionPort((HANDLE)newSession->GetSocket(), m_pServer->GetHcp(), newKey, 0);
                 DEBUGMSGONEPARAM("Lobby Accept: %d\n", newKey);
 
+                // 접속하자 마자 HeartBeat 이벤트 추가
+                m_pServer->StartHeartBeat(newKey);
+
                 // 테스트용 임시 쓰레기 코드
                 {
                     m_pServer->GetRooms()[0]->addPlayer(newSession);

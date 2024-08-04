@@ -42,7 +42,7 @@ public class ReceiveManager : MonoBehaviour
                 mutex.WaitOne();
                 var packetData = PacketQueue.Dequeue();
                 mutex.ReleaseMutex();
-                _packetmanager.GetProcessor(packetData.Item1).Process(packetData.Item2, playerManager);
+                _packetmanager.GetProcessor(packetData.Item1).Process(_packetmanager,packetData.Item2, playerManager);
             }
             yield return new WaitForFixedUpdate();
         }

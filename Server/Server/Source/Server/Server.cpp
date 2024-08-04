@@ -154,3 +154,19 @@ void Server::SendPlayerGameInfo(int sessionID)
 
     GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
 }
+
+void Server::SendHeartBeatPacket(int sessionID)
+{
+    mBuilder.Clear();
+    int time = 0;
+    mBuilder.Finish(PacketTable::UtilityTable::CreateHeartBeat(mBuilder, sessionID, time));
+
+    std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_HEARTBEAT, mBuilder.GetBufferPointer(), mBuilder.GetSize());
+    GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
+}
+
+void Server::StartHeartBeat(int sessionID)
+{
+    SendHeartBeatPacket(sessionID);
+    PushEventHeartBeat(mTimer, sessionID);
+}
