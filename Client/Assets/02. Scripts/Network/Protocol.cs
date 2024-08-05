@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace NetworkProtocol
 {
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
     struct HEADER
     {
         [MarshalAs(UnmanagedType.U2)]
