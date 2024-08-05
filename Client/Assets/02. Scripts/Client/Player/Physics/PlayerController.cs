@@ -113,7 +113,7 @@ public class PlayerController : MonoBehaviour
     {
         if (pelvis != null)
         {
-            packetManager.SendPlayerPosPacket(pelvis.transform.position, moveDirection, myId);
+            packetManager.SendPlayerPosPacket(pelvis.transform.position, stabillizerDirection, myId);
         }
     }
 
@@ -197,7 +197,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (pelvis != null)
                 {
-                    packetManager.SendPlayerMovePacket(pelvis.transform.position, moveDirection, myId, ePlayerState.PS_RUN);
+                    packetManager.SendPlayerMovePacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerState.PS_RUN);
                 }
                 else
                 {
@@ -241,7 +241,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (pelvis != null)
                 {
-                    packetManager.SendPlayerMovePacket(pelvis.transform.position, rotationQuaternion.eulerAngles, myId, ePlayerState.PS_JUMP);
+                    packetManager.SendPlayerMovePacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerState.PS_JUMP);
                 }
                 else
                 {
