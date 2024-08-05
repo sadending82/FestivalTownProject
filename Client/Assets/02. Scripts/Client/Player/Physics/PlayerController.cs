@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour
     public bool isGrounded;
 
     private Quaternion rotationQuaternion;
+    private Quaternion sRotationQuaternion;
 
     [Header("--- Animation ---")]
     private AnimationController animationController;
@@ -81,8 +82,6 @@ public class PlayerController : MonoBehaviour
             {
                 pelvis.transform.position += sMoveDirection * walkSpeed * Time.deltaTime;
             }
-            rotationQuaternion = Quaternion.LookRotation(sMoveDirection);
-            stabilizer.rotation = rotationQuaternion;
         }
     }
     private void Update()
@@ -126,7 +125,7 @@ public class PlayerController : MonoBehaviour
                 {
                     if (pelvis != null)
                     {
-                        packetManager.SendPlayerStopPacket(pelvis.transform.position, moveDirection, myId, ePlayerState.PS_JUMPSTOP);
+                        packetManager.SendPlayerStopPacket(pelvis.transform.position, rotationQuaternion.eulerAngles, myId, ePlayerState.PS_JUMPSTOP);
                     }
                     else
                     {
@@ -141,7 +140,7 @@ public class PlayerController : MonoBehaviour
                 {
                     if (pelvis != null)
                     {
-                        packetManager.SendPlayerStopPacket(pelvis.transform.position, moveDirection, myId, ePlayerState.PS_JUMPSTOP);
+                        packetManager.SendPlayerStopPacket(pelvis.transform.position, rotationQuaternion.eulerAngles, myId, ePlayerState.PS_JUMPSTOP);
                     }
                     else
                     {
@@ -174,7 +173,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (pelvis != null)
                 {
-                    packetManager.SendPlayerStopPacket(pelvis.transform.position, moveDirection, myId, ePlayerState.PS_MOVESTOP);
+                    packetManager.SendPlayerStopPacket(pelvis.transform.position, rotationQuaternion.eulerAngles, myId, ePlayerState.PS_MOVESTOP);
                 }
                 else
                 {
@@ -183,6 +182,8 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
+                rotationQuaternion = Quaternion.LookRotation(moveDirection);
+                stabilizer.rotation = rotationQuaternion;
                 if (pelvis != null)
                 {
                     packetManager.SendPlayerMovePacket(pelvis.transform.position, moveDirection, myId, ePlayerState.PS_RUN);
@@ -223,19 +224,13 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (moveDirection != Vector3.zero)
-        {
-            rotationQuaternion = Quaternion.LookRotation(moveDirection);
-            stabilizer.rotation = rotationQuaternion;
-        }
-
         if (Input.GetAxis("Jump") > 0)
         {
             if(isGrounded == true)
             {
                 if (pelvis != null)
                 {
-                    packetManager.SendPlayerMovePacket(pelvis.transform.position, moveDirection, myId, ePlayerState.PS_JUMP);
+                    packetManager.SendPlayerMovePacket(pelvis.transform.position, rotationQuaternion.eulerAngles, myId, ePlayerState.PS_JUMP);
                 }
                 else
                 {
@@ -319,7 +314,6 @@ public class PlayerController : MonoBehaviour
     }
     public void SetPosition(Vector3 position)
     {
-        Debug.Log(gameObject.name + "Set Position");
         if (pelvis == null) {
             Debug.Log("pelvis Null!!!!");
 
@@ -330,6 +324,8 @@ public class PlayerController : MonoBehaviour
     public void SetDirection(Vector3 direction)
     {
         sMoveDirection = direction;
+        sRotationQuaternion = Quaternion.LookRotation(sMoveDirection);
+        stabilizer.rotation = sRotationQuaternion;
     }
     public void SetIsMove(bool isMove)
     {
@@ -338,7 +334,6 @@ public class PlayerController : MonoBehaviour
     public void Jump()
     {
         pelvisRigidbody.velocity = Vector3.up * jumpForce;
-        Debug.Log(gameObject.name + " is Jump vy : " + pelvisRigidbody.velocity.y);
         animationController.setLowerBodyAnimationState(LowerBodyAnimationState.JUMP);
         isGrounded = false;
     }
