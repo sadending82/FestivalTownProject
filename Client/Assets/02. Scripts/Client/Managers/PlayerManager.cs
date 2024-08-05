@@ -10,8 +10,8 @@ public class PlayerManager : MonoBehaviour
     public void Start()
     {
         //----- Client Test -----
-        SetMyId(0);
-        AddPlayers();
+        //SetMyId(0);
+        //AddPlayers();
     }
     public void SetMyId(int myId)
     {

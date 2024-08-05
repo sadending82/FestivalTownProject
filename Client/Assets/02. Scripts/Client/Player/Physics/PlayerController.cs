@@ -19,7 +19,6 @@ public class PlayerController : MonoBehaviour
     public float rotateSpeed;
     private bool isMove;
     private Vector3 moveDirection;
-    private Vector3 sMoveDirection;
 
     [Header("--- JumpCheck ---")]
     public float floorDetectionDistance;
@@ -28,7 +27,7 @@ public class PlayerController : MonoBehaviour
     public bool isGrounded;
 
     private Quaternion rotationQuaternion;
-    private Quaternion sRotationQuaternion;
+    private Vector3 stabillizerDirection;
 
     [Header("--- Animation ---")]
     private AnimationController animationController;
@@ -59,6 +58,7 @@ public class PlayerController : MonoBehaviour
         beforeAxisRawV = 0;
         amIPlayer = false;
         SetIsMove(false);
+        stabillizerDirection = Vector3.zero;
     }
     void Start()
     {
@@ -78,9 +78,15 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            if (stabillizerDirection != moveDirection && moveDirection != Vector3.zero)
+            {
+                stabillizerDirection = moveDirection;
+                rotationQuaternion = Quaternion.LookRotation(moveDirection);
+                stabilizer.rotation = rotationQuaternion;
+            }
             if (isMove == true)
             {
-                pelvis.transform.position += sMoveDirection * walkSpeed * Time.deltaTime;
+                pelvis.transform.position += moveDirection * walkSpeed * Time.deltaTime;
             }
         }
     }
@@ -107,7 +113,7 @@ public class PlayerController : MonoBehaviour
     {
         if (pelvis != null)
         {
-            packetManager.SendPlayerPosPacket(pelvis.transform.position, sMoveDirection, myId);
+            packetManager.SendPlayerPosPacket(pelvis.transform.position, moveDirection, myId);
         }
     }
 
@@ -125,7 +131,7 @@ public class PlayerController : MonoBehaviour
                 {
                     if (pelvis != null)
                     {
-                        packetManager.SendPlayerStopPacket(pelvis.transform.position, rotationQuaternion.eulerAngles, myId, ePlayerState.PS_JUMPSTOP);
+                        packetManager.SendPlayerStopPacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerState.PS_JUMPSTOP);
                     }
                     else
                     {
@@ -140,7 +146,7 @@ public class PlayerController : MonoBehaviour
                 {
                     if (pelvis != null)
                     {
-                        packetManager.SendPlayerStopPacket(pelvis.transform.position, rotationQuaternion.eulerAngles, myId, ePlayerState.PS_JUMPSTOP);
+                        packetManager.SendPlayerStopPacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerState.PS_JUMPSTOP);
                     }
                     else
                     {
@@ -167,13 +173,20 @@ public class PlayerController : MonoBehaviour
         moveDirection = lookForward * moveInput.y + lookRight * moveInput.x;
         moveDirection = moveDirection.normalized;
 
+        if(stabillizerDirection != moveDirection && moveDirection != Vector3.zero)
+        {
+            stabillizerDirection = moveDirection;
+            rotationQuaternion = Quaternion.LookRotation(moveDirection);
+            stabilizer.rotation = rotationQuaternion;
+        }
+
         if (AxisRawH != beforeAxisRawH || AxisRawV != beforeAxisRawV)
         {
             if (moveInput == Vector3.zero)
             {
                 if (pelvis != null)
                 {
-                    packetManager.SendPlayerStopPacket(pelvis.transform.position, rotationQuaternion.eulerAngles, myId, ePlayerState.PS_MOVESTOP);
+                    packetManager.SendPlayerStopPacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerState.PS_MOVESTOP);
                 }
                 else
                 {
@@ -182,8 +195,6 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                rotationQuaternion = Quaternion.LookRotation(moveDirection);
-                stabilizer.rotation = rotationQuaternion;
                 if (pelvis != null)
                 {
                     packetManager.SendPlayerMovePacket(pelvis.transform.position, moveDirection, myId, ePlayerState.PS_RUN);
@@ -323,9 +334,7 @@ public class PlayerController : MonoBehaviour
     }
     public void SetDirection(Vector3 direction)
     {
-        sMoveDirection = direction;
-        sRotationQuaternion = Quaternion.LookRotation(sMoveDirection);
-        stabilizer.rotation = sRotationQuaternion;
+        moveDirection = direction;
     }
     public void SetIsMove(bool isMove)
     {
