@@ -22,19 +22,14 @@ struct HeartBeatBuilder;
 struct HeartBeat FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef HeartBeatBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_SESSIONID = 4,
-    VT_TIME = 6
+    VT_TIME = 4
   };
-  int32_t sessionid() const {
-    return GetField<int32_t>(VT_SESSIONID, 0);
-  }
-  int32_t time() const {
-    return GetField<int32_t>(VT_TIME, 0);
+  int64_t time() const {
+    return GetField<int64_t>(VT_TIME, 0);
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<int32_t>(verifier, VT_SESSIONID, 4) &&
-           VerifyField<int32_t>(verifier, VT_TIME, 4) &&
+           VerifyField<int64_t>(verifier, VT_TIME, 8) &&
            verifier.EndTable();
   }
 };
@@ -43,11 +38,8 @@ struct HeartBeatBuilder {
   typedef HeartBeat Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_sessionid(int32_t sessionid) {
-    fbb_.AddElement<int32_t>(HeartBeat::VT_SESSIONID, sessionid, 0);
-  }
-  void add_time(int32_t time) {
-    fbb_.AddElement<int32_t>(HeartBeat::VT_TIME, time, 0);
+  void add_time(int64_t time) {
+    fbb_.AddElement<int64_t>(HeartBeat::VT_TIME, time, 0);
   }
   explicit HeartBeatBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -62,11 +54,9 @@ struct HeartBeatBuilder {
 
 inline ::flatbuffers::Offset<HeartBeat> CreateHeartBeat(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    int32_t sessionid = 0,
-    int32_t time = 0) {
+    int64_t time = 0) {
   HeartBeatBuilder builder_(_fbb);
   builder_.add_time(time);
-  builder_.add_sessionid(sessionid);
   return builder_.Finish();
 }
 

@@ -19,21 +19,17 @@ public struct HeartBeat : IFlatbufferObject
   public void __init(int _i, ByteBuffer _bb) { __p = new Table(_i, _bb); }
   public HeartBeat __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public int Sessionid { get { int o = __p.__offset(4); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public int Time { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public long Time { get { int o = __p.__offset(4); return o != 0 ? __p.bb.GetLong(o + __p.bb_pos) : (long)0; } }
 
   public static Offset<PacketTable.UtilityTable.HeartBeat> CreateHeartBeat(FlatBufferBuilder builder,
-      int sessionid = 0,
-      int time = 0) {
-    builder.StartTable(2);
+      long time = 0) {
+    builder.StartTable(1);
     HeartBeat.AddTime(builder, time);
-    HeartBeat.AddSessionid(builder, sessionid);
     return HeartBeat.EndHeartBeat(builder);
   }
 
-  public static void StartHeartBeat(FlatBufferBuilder builder) { builder.StartTable(2); }
-  public static void AddSessionid(FlatBufferBuilder builder, int sessionid) { builder.AddInt(0, sessionid, 0); }
-  public static void AddTime(FlatBufferBuilder builder, int time) { builder.AddInt(1, time, 0); }
+  public static void StartHeartBeat(FlatBufferBuilder builder) { builder.StartTable(1); }
+  public static void AddTime(FlatBufferBuilder builder, long time) { builder.AddLong(0, time, 0); }
   public static Offset<PacketTable.UtilityTable.HeartBeat> EndHeartBeat(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<PacketTable.UtilityTable.HeartBeat>(o);
@@ -46,8 +42,7 @@ static public class HeartBeatVerify
   static public bool Verify(Google.FlatBuffers.Verifier verifier, uint tablePos)
   {
     return verifier.VerifyTableStart(tablePos)
-      && verifier.VerifyField(tablePos, 4 /*Sessionid*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 6 /*Time*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 4 /*Time*/, 8 /*long*/, 8, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }

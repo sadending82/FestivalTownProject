@@ -89,7 +89,7 @@ public class PacketManager : MonoBehaviour
         var builder = new FlatBufferBuilder(1);
         var pos = Vec3.CreateVec3(builder, position.x, position.y, position.z);
         var dir = Vec3.CreateVec3(builder, direction.x, direction.y, direction.z);
-
+        builder.Clear();
         PlayerMove.StartPlayerMove(builder);
         PlayerMove.AddPos(builder, pos);
         PlayerMove.AddDirection(builder, dir);
@@ -123,7 +123,7 @@ public class PacketManager : MonoBehaviour
         var builder = new FlatBufferBuilder(1);
         var pos = Vec3.CreateVec3(builder, position.x, position.y, position.z);
         var dir = Vec3.CreateVec3(builder, direction.x, direction.y, direction.z);
-
+        builder.Clear();
         PlayerStop.StartPlayerStop(builder);
         PlayerStop.AddPos(builder, pos);
         PlayerStop.AddDirection(builder, dir);
@@ -156,7 +156,7 @@ public class PacketManager : MonoBehaviour
         var builder = new FlatBufferBuilder(1);
         var pos = Vec3.CreateVec3(builder, position.x, position.y, position.z);
         var dir = Vec3.CreateVec3(builder, direction.x, direction.y, direction.z);
-
+        builder.Clear();
         PlayerPos.StartPlayerPos(builder);
         PlayerPos.AddPos(builder, pos);
         PlayerPos.AddDirection(builder, dir);
@@ -186,26 +186,27 @@ public class PacketManager : MonoBehaviour
 
     public byte[] CreateHeartBeatPacket()
     {
+        long currTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+
         var builder = new FlatBufferBuilder(1);
-
+        builder.Clear();
         HeartBeat.StartHeartBeat(builder);
-        // 버퍼의 내용을 사용하지 않아서 임의로 값을 집어넣음
-        // 추후에 수정 필요
-        HeartBeat.AddSessionid(builder, 1000);
-        HeartBeat.AddTime(builder, 1000);
-
+        HeartBeat.AddTime(builder, currTime);
         var pm = HeartBeat.EndHeartBeat(builder);
         builder.Finish(pm.Value);
 
         //서버에서 버퍼 이상없이 잘 읽는데 Verity가 false가 뜸...
-        //var buf = builder.DataBuffer;
-        //var verifier = new Verifier(buf);
+        var buf = builder.DataBuffer;
+        var verifier = new Verifier(buf);
+        var tmp = HeartBeat.GetRootAsHeartBeat(buf);
+        if (HeartBeatVerify.Verify(verifier, (uint)pm.Value) == false && tmp.Time != currTime)
+        {
+            Debug.Log("invaild buf / CreateHeartBeatPacket");
+            Debug.Log("time : " + currTime);
+            Debug.Log("time2 : " + tmp.Time);
 
-        //if (HeartBeatVerify.Verify(verifier, pm.Value) == false)
-        //{
-        //    Debug.Log("invaild buf / CreateHeartBeatPacket");
-        //    return null;
-        //}
+            return null;
+        }
 
         byte[] data = builder.SizedByteArray();
         HEADER header = new HEADER { type = (ushort)ePacketType.C2S_HEARTBEAT, size = (ushort)data.Length };
