@@ -160,7 +160,7 @@ void Server::SendHeartBeatPacket(int sessionID)
     mBuilder.Clear();
     long long currTime = std::chrono::duration_cast<std::chrono::milliseconds>(
         std::chrono::system_clock::now().time_since_epoch()).count();
-    mBuilder.Finish(PacketTable::UtilityTable::CreateHeartBeat(mBuilder, currTime));
+    mBuilder.Finish(PacketTable::UtilitiesTable::CreateHeartBeat(mBuilder, currTime));
 
     std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_HEARTBEAT, mBuilder.GetBufferPointer(), mBuilder.GetSize());
     GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());

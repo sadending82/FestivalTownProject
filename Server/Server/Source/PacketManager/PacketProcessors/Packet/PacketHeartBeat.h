@@ -1,7 +1,7 @@
 #pragma once
 #include "../PacketProcessor.h"
 
-using namespace PacketTable::UtilityTable;
+using namespace PacketTable::UtilitiesTable;
 
 class PacketHeartBeat : public PacketProcessor {
 

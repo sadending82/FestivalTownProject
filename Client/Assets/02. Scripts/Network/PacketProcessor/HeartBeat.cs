@@ -1,5 +1,5 @@
 ﻿using Google.FlatBuffers;
-using PacketTable.UtilityTable;
+using PacketTable.UtilitiesTable;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

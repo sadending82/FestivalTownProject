@@ -8,7 +8,7 @@ using Google.FlatBuffers;
 using PacketTable.PlayerTable;
 using Network.PacketProcessor;
 using UnityEngine.UIElements;
-using PacketTable.UtilityTable;
+using PacketTable.UtilitiesTable;
 
 public class PacketManager : MonoBehaviour 
 {
@@ -195,7 +195,7 @@ public class PacketManager : MonoBehaviour
         var buf = builder.DataBuffer;
         var verifier = new Verifier(buf);
         var timeCheck = HeartBeat.GetRootAsHeartBeat(buf).Time;
-        if (HeartBeatVerify.Verify(verifier, (uint)offset.Value) == false && timeCheck != currTime)
+        if (!HeartBeatVerify.Verify(verifier, (uint)offset.Value) && timeCheck != currTime)
         {
             Debug.Log("invaild buf / CreateHeartBeatPacket");
 
