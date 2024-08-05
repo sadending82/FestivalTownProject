@@ -40,7 +40,7 @@ public class PacketManager : MonoBehaviour
     {
         processorDict = new Dictionary<ePacketType, PacketProcessor>
         {
-             { ePacketType.S2C_HEARTBEAT, new HeartBeatProcessor() },
+            { ePacketType.S2C_HEARTBEAT, new HeartBeatProcessor() },
             { ePacketType.S2C_PLAYERADD, new PlayerAddProcessor() },
             { ePacketType.S2C_PLAYERGAMEINFO, new PlayerGameInfoProcessor() },
             { ePacketType.S2C_PLAYERMOVE, new PlayerMoveProcessor() },
@@ -62,8 +62,6 @@ public class PacketManager : MonoBehaviour
             {
                 stream.Write(buffer, 0, buffer.Length);
             }
-
-            Debug.Log("Send");
         }
         catch (SocketException Exception)
         {
@@ -99,15 +97,6 @@ public class PacketManager : MonoBehaviour
         PlayerMove.AddState(builder, (int)state);
         var pm = PlayerMove.EndPlayerMove(builder);
         builder.Finish(pm.Value);
-        byte[] data = builder.SizedByteArray();
-
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERMOVE, size = (ushort)data.Length };
-
-        byte[] headerdata = Serialize<HEADER>(header);
-        byte[] result = new byte[data.Length + headerdata.Length];
-
-        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
-        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
 
         var buf = builder.DataBuffer;
         var verifier = new Verifier(buf);
@@ -116,6 +105,15 @@ public class PacketManager : MonoBehaviour
             Debug.Log("invaild buf / CreatePlayerMovePacket");
             return null;
         }
+
+        byte[] data = builder.SizedByteArray();
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERMOVE, size = (ushort)data.Length };
+
+        byte[] headerdata = Serialize<HEADER>(header);
+        byte[] result = new byte[data.Length + headerdata.Length];
+
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
 
         return result;
     }
@@ -133,15 +131,6 @@ public class PacketManager : MonoBehaviour
         PlayerStop.AddState(builder, (int)state);
         var pm = PlayerStop.EndPlayerStop(builder);
         builder.Finish(pm.Value);
-        byte[] data = builder.SizedByteArray();
-
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERSTOP, size = (ushort)data.Length };
-
-        byte[] headerdata = Serialize<HEADER>(header);
-        byte[] result = new byte[data.Length + headerdata.Length];
-
-        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
-        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
 
         var buf = builder.DataBuffer;
         var verifier = new Verifier(buf);
@@ -150,6 +139,14 @@ public class PacketManager : MonoBehaviour
             Debug.Log("invaild buf / CreatePlayerStopPacket");
             return null;
         }
+
+        byte[] data = builder.SizedByteArray();
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERSTOP, size = (ushort)data.Length };
+        byte[] headerdata = Serialize<HEADER>(header);
+        byte[] result = new byte[data.Length + headerdata.Length];
+
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
 
         return result;
     }
@@ -166,15 +163,6 @@ public class PacketManager : MonoBehaviour
         PlayerPos.AddId(builder, id);
         var pm = PlayerPos.EndPlayerPos(builder);
         builder.Finish(pm.Value);
-        byte[] data = builder.SizedByteArray();
-
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERPOSSYNC, size = (ushort)data.Length };
-
-        byte[] headerdata = Serialize<HEADER>(header);
-        byte[] result = new byte[data.Length + headerdata.Length];
-
-        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
-        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
 
         var buf = builder.DataBuffer;
         var verifier = new Verifier(buf);
@@ -183,6 +171,15 @@ public class PacketManager : MonoBehaviour
             Debug.Log("invaild buf / CreatePlayerPosSyncPacket");
             return null;
         }
+
+        byte[] data = builder.SizedByteArray();
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERPOSSYNC, size = (ushort)data.Length };
+
+        byte[] headerdata = Serialize<HEADER>(header);
+        byte[] result = new byte[data.Length + headerdata.Length];
+
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
 
         return result;
     }
@@ -200,25 +197,23 @@ public class PacketManager : MonoBehaviour
         var pm = HeartBeat.EndHeartBeat(builder);
         builder.Finish(pm.Value);
 
-        byte[] data = builder.SizedByteArray();
+        //서버에서 버퍼 이상없이 잘 읽는데 Verity가 false가 뜸...
+        //var buf = builder.DataBuffer;
+        //var verifier = new Verifier(buf);
 
+        //if (HeartBeatVerify.Verify(verifier, pm.Value) == false)
+        //{
+        //    Debug.Log("invaild buf / CreateHeartBeatPacket");
+        //    return null;
+        //}
+
+        byte[] data = builder.SizedByteArray();
         HEADER header = new HEADER { type = (ushort)ePacketType.C2S_HEARTBEAT, size = (ushort)data.Length };
         byte[] headerdata = Serialize<HEADER>(header);
 
         byte[] result = new byte[data.Length + headerdata.Length];
         Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
         Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
-
-        // 서버에서 버퍼 이상없이 잘 읽는데 Verity가 false가 뜸...
-        //var buf = builder.DataBuffer;
-        //var verifier = new Verifier(buf);
-
-        //if (HeartBeatVerify.Verify(verifier, (uint)pm.Value) == false)
-        //{
-        //    Debug.Log("invaild buf / CreateHeartBeatPacket");
-        //    return null;
-        //}
-
         return result;
     }
 

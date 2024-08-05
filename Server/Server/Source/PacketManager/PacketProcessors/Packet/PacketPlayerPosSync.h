@@ -17,8 +17,6 @@ public:
 			
 			Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
 
-			std::cout << read->pos()->x() << " " << read->pos()->y()<< " " << read->pos()->z()<< std::endl;
-
 			player->SetPosition(read->pos()->x(), read->pos()->y(), read->pos()->z());
 			player->SetDirection(read->direction()->x(), read->direction()->y(), read->direction()->z());
 
