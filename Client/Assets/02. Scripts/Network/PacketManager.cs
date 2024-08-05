@@ -94,12 +94,12 @@ public class PacketManager : MonoBehaviour
         PlayerMove.AddDirection(builder, dir);
         PlayerMove.AddId(builder, id);
         PlayerMove.AddState(builder, (int)state);
-        var pm = PlayerMove.EndPlayerMove(builder);
-        builder.Finish(pm.Value);
+        var offset = PlayerMove.EndPlayerMove(builder);
+        builder.Finish(offset.Value);
 
         var buf = builder.DataBuffer;
         var verifier = new Verifier(buf);
-        if (PlayerMoveVerify.Verify(verifier, (uint)pm.Value) == false)
+        if (PlayerMoveVerify.Verify(verifier, (uint)offset.Value) == false)
         {
             Debug.Log("invaild buf / CreatePlayerMovePacket");
             return null;
@@ -127,12 +127,12 @@ public class PacketManager : MonoBehaviour
         PlayerStop.AddDirection(builder, dir);
         PlayerStop.AddId(builder, id);
         PlayerStop.AddState(builder, (int)state);
-        var pm = PlayerStop.EndPlayerStop(builder);
-        builder.Finish(pm.Value);
+        var offset = PlayerStop.EndPlayerStop(builder);
+        builder.Finish(offset.Value);
 
         var buf = builder.DataBuffer;
         var verifier = new Verifier(buf);
-        if (PlayerStopVerify.Verify(verifier, (uint)pm.Value) == false)
+        if (PlayerStopVerify.Verify(verifier, (uint)offset.Value) == false)
         {
             Debug.Log("invaild buf / CreatePlayerStopPacket");
             return null;
@@ -158,12 +158,12 @@ public class PacketManager : MonoBehaviour
         PlayerPos.AddPos(builder, pos);
         PlayerPos.AddDirection(builder, dir);
         PlayerPos.AddId(builder, id);
-        var pm = PlayerPos.EndPlayerPos(builder);
-        builder.Finish(pm.Value);
+        var offset = PlayerPos.EndPlayerPos(builder);
+        builder.Finish(offset.Value);
 
         var buf = builder.DataBuffer;
         var verifier = new Verifier(buf);
-        if (PlayerPosSyncVerify.Verify(verifier, (uint)pm.Value) == false)
+        if (PlayerPosSyncVerify.Verify(verifier, (uint)offset.Value) == false)
         {
             Debug.Log("invaild buf / CreatePlayerPosSyncPacket");
             return null;
@@ -188,14 +188,14 @@ public class PacketManager : MonoBehaviour
         var builder = new FlatBufferBuilder(1);
         HeartBeat.StartHeartBeat(builder);
         HeartBeat.AddTime(builder, currTime);
-        var pm = HeartBeat.EndHeartBeat(builder);
-        builder.Finish(pm.Value);
+        var offset = HeartBeat.EndHeartBeat(builder);
+        builder.Finish(offset.Value);
 
         //서버에서 버퍼 이상없이 잘 읽는데 Verity가 false가 뜸...
         var buf = builder.DataBuffer;
         var verifier = new Verifier(buf);
-        var tmp = HeartBeat.GetRootAsHeartBeat(buf);
-        if (HeartBeatVerify.Verify(verifier, (uint)pm.Value) == false && tmp.Time != currTime)
+        var timeCheck = HeartBeat.GetRootAsHeartBeat(buf).Time;
+        if (HeartBeatVerify.Verify(verifier, (uint)offset.Value) == false && timeCheck != currTime)
         {
             Debug.Log("invaild buf / CreateHeartBeatPacket");
 
