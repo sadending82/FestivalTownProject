@@ -24,8 +24,7 @@ void WorkerThread::RunWorker()
         case eOpType::OP_ACCEPT: {
             int newKey = m_pServer->SetSessionKey();
             if (newKey != INVALIDKEY) {
-                m_pServer->GetSessions()[newKey] = new Player();
-                Player* newSession = m_pServer->GetSessions()[newKey];
+                Session* newSession = m_pServer->GetSessions()[newKey] = new Player();
                 SOCKET cSocket = reinterpret_cast<SOCKET>(exOver->mWsaBuf.buf);
                 newSession->SetSocket(cSocket);
                 newSession->GetExOver().SetmOpType(eOpType::OP_RECV);
@@ -41,7 +40,8 @@ void WorkerThread::RunWorker()
 
                 // 테스트용 임시 쓰레기 코드
                 {
-                    m_pServer->GetRooms()[0]->addPlayer(newSession);
+                    Player* newPlayer = dynamic_cast<Player*>(newSession);
+                    m_pServer->GetRooms()[0]->addPlayer(newPlayer);
                     m_pServer->GetRooms()[0]->AddPlayerCnt();
 
                     m_pServer->SendPlayerGameInfo(newKey);
