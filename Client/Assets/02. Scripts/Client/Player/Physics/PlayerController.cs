@@ -81,11 +81,8 @@ public class PlayerController : MonoBehaviour
             {
                 pelvis.transform.position += sMoveDirection * walkSpeed * Time.deltaTime;
             }
-            if (sMoveDirection != Vector3.zero)
-            {
-                rotationQuaternion = Quaternion.LookRotation(sMoveDirection);
-                stabilizer.rotation = rotationQuaternion;
-            }
+            rotationQuaternion = Quaternion.LookRotation(sMoveDirection);
+            stabilizer.rotation = rotationQuaternion;
         }
     }
     private void Update()
@@ -325,6 +322,7 @@ public class PlayerController : MonoBehaviour
         Debug.Log(gameObject.name + "Set Position");
         if (pelvis == null) {
             Debug.Log("pelvis Null!!!!");
+
             return; }
 
         pelvis.transform.position = new Vector3(position.x, pelvis.transform.position.y, position.z);
