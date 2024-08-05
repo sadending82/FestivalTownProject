@@ -12,7 +12,7 @@ public class PlayerManager : MonoBehaviour
         //----- Client Test -----
         //SetMyId(0);
         //AddPlayers();
-    }
+    }   
     public void SetMyId(int myId)
     {
         this.myId = myId;
