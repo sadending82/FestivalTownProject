@@ -93,7 +93,29 @@ public class AnimationController : MonoBehaviour
     // 애니메이션 상태에 따라 한번 정리
     private void SetAnimation()
     {
-        // 여기서 한 번 정리하고 애니메이션 체인지 넣어줘
+        switch (lowerBodyAnimationState)
+        {
+            case LowerBodyAnimationState.WALK:
+                {
+                    ChangeAnimation("Walk");
+                    break;
+                }
+            case LowerBodyAnimationState.RUN:
+                {
+                    ChangeAnimation("Run");
+                    break;
+                }
+            case LowerBodyAnimationState.ROLL:
+            case LowerBodyAnimationState.FLYINGKICK:
+                {
+                    break;
+                }
+            default:
+                {
+                    ChangeAnimation("Idle");
+                    break;
+                }
+        }
     }
     private void ChangeAnimation(string state)
     {
