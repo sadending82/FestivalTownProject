@@ -15,7 +15,7 @@ public:
 
 			const PlayerPosSync* read = flatbuffers::GetRoot<PlayerPosSync>(data);
 			
-			Player* player = pServer->GetSessions()[key];
+			Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
 
 			std::cout << read->pos()->x() << " " << read->pos()->y()<< " " << read->pos()->z()<< std::endl;
 

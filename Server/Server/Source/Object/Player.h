@@ -4,7 +4,9 @@
 class Player : public Session
 {
 public:
-	Player() {}
+	Player() : mRoomID(INVALIDKEY)
+		, mInGameID(INVALIDKEY)
+	{}
 	~Player() {}
 
 	
