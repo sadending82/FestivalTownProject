@@ -89,7 +89,6 @@ public class PacketManager : MonoBehaviour
         var builder = new FlatBufferBuilder(1);
         var pos = Vec3.CreateVec3(builder, position.x, position.y, position.z);
         var dir = Vec3.CreateVec3(builder, direction.x, direction.y, direction.z);
-        builder.Clear();
         PlayerMove.StartPlayerMove(builder);
         PlayerMove.AddPos(builder, pos);
         PlayerMove.AddDirection(builder, dir);
@@ -123,7 +122,6 @@ public class PacketManager : MonoBehaviour
         var builder = new FlatBufferBuilder(1);
         var pos = Vec3.CreateVec3(builder, position.x, position.y, position.z);
         var dir = Vec3.CreateVec3(builder, direction.x, direction.y, direction.z);
-        builder.Clear();
         PlayerStop.StartPlayerStop(builder);
         PlayerStop.AddPos(builder, pos);
         PlayerStop.AddDirection(builder, dir);
@@ -156,7 +154,6 @@ public class PacketManager : MonoBehaviour
         var builder = new FlatBufferBuilder(1);
         var pos = Vec3.CreateVec3(builder, position.x, position.y, position.z);
         var dir = Vec3.CreateVec3(builder, direction.x, direction.y, direction.z);
-        builder.Clear();
         PlayerPos.StartPlayerPos(builder);
         PlayerPos.AddPos(builder, pos);
         PlayerPos.AddDirection(builder, dir);
@@ -189,7 +186,6 @@ public class PacketManager : MonoBehaviour
         long currTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
         var builder = new FlatBufferBuilder(1);
-        builder.Clear();
         HeartBeat.StartHeartBeat(builder);
         HeartBeat.AddTime(builder, currTime);
         var pm = HeartBeat.EndHeartBeat(builder);
@@ -202,8 +198,6 @@ public class PacketManager : MonoBehaviour
         if (HeartBeatVerify.Verify(verifier, (uint)pm.Value) == false && tmp.Time != currTime)
         {
             Debug.Log("invaild buf / CreateHeartBeatPacket");
-            Debug.Log("time : " + currTime);
-            Debug.Log("time2 : " + tmp.Time);
 
             return null;
         }
