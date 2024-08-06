@@ -38,20 +38,26 @@ void WorkerThread::RunWorker()
                 // 접속하자 마자 HeartBeat 이벤트 추가
                 m_pServer->StartHeartBeat(newKey);
 
-                // 테스트용 임시 쓰레기 코드
+                // Player test방에 넣는 임시 코드
                 {
                     Player* newPlayer = dynamic_cast<Player*>(newSession);
-                    m_pServer->GetRooms()[0]->addPlayer(newPlayer);
-                    m_pServer->GetRooms()[0]->AddPlayerCnt();
+                    bool addPlayerOk = m_pServer->GetRooms()[TESTROOM]->addPlayer(newPlayer);
+                    if (addPlayerOk == false) {
+                        std::cout << "AddPlayer fail: Already Player Max\n";
+                        m_pServer->Disconnect(newKey);
+                    }
+                    else {
+                        m_pServer->GetRooms()[TESTROOM]->AddPlayerCnt();
 
-                    m_pServer->SendPlayerGameInfo(newKey);
+                        m_pServer->SendPlayerGameInfo(newKey);
 
-                    if (m_pServer->GetRooms()[0]->GetPlayerCnt() >= 2) {
-                        for (Player* a : m_pServer->GetRooms()[0]->GetPlayerList()) {
-                            if (a == nullptr) continue;
-                            for (Player* b : m_pServer->GetRooms()[0]->GetPlayerList()) {
-                                if (b == nullptr) continue;
-                                m_pServer->SendPlayerAdd(a->GetSessionID(), b->GetSessionID());
+                        if (m_pServer->GetRooms()[0]->GetPlayerCnt() >= 2) {
+                            for (Player* a : m_pServer->GetRooms()[0]->GetPlayerList()) {
+                                if (a == nullptr) continue;
+                                for (Player* b : m_pServer->GetRooms()[0]->GetPlayerList()) {
+                                    if (b == nullptr) continue;
+                                    m_pServer->SendPlayerAdd(a->GetSessionID(), b->GetSessionID());
+                                }
                             }
                         }
                     }

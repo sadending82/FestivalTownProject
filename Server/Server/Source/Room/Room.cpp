@@ -8,13 +8,14 @@ Room::~Room()
 {
 }
 
-void Room::Init(int id)
+void Room::Init(int id, int playerLimit)
 {
 	mRoomID = id;
+	mPlayerLimit = playerLimit;
 	std::fill(mPlayerList.begin(), mPlayerList.end(), nullptr);
 }
 
-void Room::addPlayer(Player* player)
+bool Room::addPlayer(Player* player)
 {
 	for (int i = 0; i < MAXPLAYER; ++i) {
 		mPlayerListLock.lock();
@@ -26,8 +27,21 @@ void Room::addPlayer(Player* player)
 			player->SetState(eSessionState::ST_INGAME);
 			player->SetRoomID(mRoomID);
 			mPlayerSessionIDs[i] = player->GetSessionID();
-			return;
+			return true;
 		}
 		mPlayerListLock.unlock();
 	}
+
+	return false;
+}
+
+bool Room::DeletePlayer(int playerID)
+{
+	if (mPlayerList[playerID] == nullptr) {
+		return false;
+	}
+	mPlayerListLock.lock();
+	mPlayerList[playerID] = nullptr;
+	mPlayerListLock.unlock();
+	return true;
 }

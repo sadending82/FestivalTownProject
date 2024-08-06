@@ -20,10 +20,17 @@ int Server::SetSessionKey()
 
 void Server::Disconnect(int key)
 {
-    auto session = GetSessions()[key];
+    Player* session = dynamic_cast<Player*>(GetSessions()[key]);
     if (session->GetState() == eSessionState::ST_FREE) {
         return;
     }
+
+    // Delete Player In Room
+    int roomID;
+    if (roomID = session->GetRoomID() != INVALIDKEY) {
+        mRooms[roomID]->DeletePlayer(session->GetInGameID());
+    }
+
     closesocket(session->GetSocket());
     session->SetState(eSessionState::ST_FREE);
 
@@ -82,7 +89,7 @@ void Server::Init(class TableManager* pTableManager, class DB* pDB)
     mTimer->Init(mHcp);
 
     // 테스트를 위해 임시 방 추가
-    mRooms[0]->Init(0);
+    mRooms[TESTROOM]->Init(TESTROOM);
 
     SYSTEM_INFO si;
     GetSystemInfo(&si);

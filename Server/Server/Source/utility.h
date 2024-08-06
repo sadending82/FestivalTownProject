@@ -24,10 +24,14 @@
 constexpr int SERVERKEY = 0;
 constexpr int STARTKEY = 1;
 constexpr int INVALIDKEY = -1;
-constexpr int BUFSIZE = 1000;
+constexpr int TESTROOM = 0;
+
+constexpr int BUFSIZE = 100;
+
 constexpr int MAXSESSION = 1000;
 constexpr int MAXROOM = 100;
 constexpr int MAXPLAYER = 6;
+
 constexpr int HEARTBEATTIME = 6000;
 
 #ifdef _DEBUG

@@ -9,16 +9,18 @@ public:
 	Room();
 	~Room();
 
-	void Init(int id);
+	void Init(int id, int playerLimit = MAXPLAYER);
 
-	void addPlayer(Player* player);
+	bool addPlayer(Player* player);
+	bool DeletePlayer(int playerID);
 
 	std::array<Player*, MAXPLAYER>& GetPlayerList() { return mPlayerList; }
 	std::array<int, MAXPLAYER>& GetPlayerIDs() { return mPlayerSessionIDs; }
 	int GetPlayerCnt() { return mPlayerCnt; }
-
+	int GetPlayerLimit() { return mPlayerLimit; }
 
 	void AddPlayerCnt() { mPlayerCnt++; }
+	void SetPlayerLimit(int num) { mPlayerLimit = num; }
 
 private:
 
@@ -30,5 +32,7 @@ private:
 
 	int mRoomID;
 	int mPlayerCnt = 0;
+
+	int mPlayerLimit = 0;
 };
 
