@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour
     private float leftMouseClickTimer;
     private bool isHold;
     private bool isLeftShiftKeyDown;
+    private LowerBodyAnimationState nowLowerBodyAnimationState;
 
     //------ Server -------
     private NetworkManager network;
@@ -59,6 +60,7 @@ public class PlayerController : MonoBehaviour
         amIPlayer = false;
         SetIsMove(false);
         stabillizerDirection = Vector3.zero;
+        nowLowerBodyAnimationState = LowerBodyAnimationState.IDLE;
     }
     void Start()
     {
@@ -213,24 +215,27 @@ public class PlayerController : MonoBehaviour
             if (isLeftShiftKeyDown)
             {
                 pelvis.transform.position += moveDirection * runSpeed * Time.deltaTime;
-                if (isGrounded == true)
+                if (isGrounded == true && nowLowerBodyAnimationState != LowerBodyAnimationState.RUN)
                 {
+                    nowLowerBodyAnimationState = LowerBodyAnimationState.RUN;
                     animationController.setLowerBodyAnimationState(LowerBodyAnimationState.RUN);
                 }
             }
             else
             {
                 pelvis.transform.position += moveDirection * walkSpeed * Time.deltaTime;
-                if (isGrounded == true)
+                if (isGrounded == true && nowLowerBodyAnimationState != LowerBodyAnimationState.WALK)
                 {
+                    nowLowerBodyAnimationState = LowerBodyAnimationState.WALK;
                     animationController.setLowerBodyAnimationState(LowerBodyAnimationState.WALK);
                 }
             }
         }
         else 
         {
-            if (isGrounded == true)
+            if (isGrounded == true && nowLowerBodyAnimationState != LowerBodyAnimationState.IDLE)
             {
+                nowLowerBodyAnimationState = LowerBodyAnimationState.IDLE;
                 animationController.setLowerBodyAnimationState(LowerBodyAnimationState.IDLE);
             }
         }
@@ -342,9 +347,10 @@ public class PlayerController : MonoBehaviour
     }
     public void Jump()
     {
-        pelvisRigidbody.velocity = Vector3.up * jumpForce;
-        animationController.setLowerBodyAnimationState(LowerBodyAnimationState.JUMP);
         isGrounded = false;
+        pelvisRigidbody.velocity = Vector3.up * jumpForce;
+        nowLowerBodyAnimationState = LowerBodyAnimationState.JUMP;
+        animationController.setLowerBodyAnimationState(LowerBodyAnimationState.JUMP);
     }
     public void SetMyId(int myId)
     {
