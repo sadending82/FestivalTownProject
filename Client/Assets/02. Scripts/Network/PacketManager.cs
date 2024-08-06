@@ -97,13 +97,13 @@ public class PacketManager : MonoBehaviour
         var offset = PlayerMove.EndPlayerMove(builder);
         builder.Finish(offset.Value);
 
-        var buf = builder.DataBuffer;
-        var verifier = new Verifier(buf);
-        if (PlayerMoveVerify.Verify(verifier, (uint)offset.Value) == false)
-        {
-            Debug.Log("invaild buf / CreatePlayerMovePacket");
-            return null;
-        }
+        //var buf = builder.DataBuffer;
+        //var verifier = new Verifier(buf);
+        //if (PlayerMoveVerify.Verify(verifier, (uint)offset.Value) == false)
+        //{
+        //    Debug.Log("invaild buf / CreatePlayerMovePacket");
+        //    return null;
+        //}
 
         byte[] data = builder.SizedByteArray();
         HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERMOVE, flatBufferSize = (ushort)data.Length };
@@ -130,13 +130,13 @@ public class PacketManager : MonoBehaviour
         var offset = PlayerStop.EndPlayerStop(builder);
         builder.Finish(offset.Value);
 
-        var buf = builder.DataBuffer;
-        var verifier = new Verifier(buf);
-        if (PlayerStopVerify.Verify(verifier, (uint)offset.Value) == false)
-        {
-            Debug.Log("invaild buf / CreatePlayerStopPacket");
-            return null;
-        }
+        //var buf = builder.DataBuffer;
+        //var verifier = new Verifier(buf);
+        //if (PlayerStopVerify.Verify(verifier, (uint)offset.Value) == false)
+        //{
+        //    Debug.Log("invaild buf / CreatePlayerStopPacket");
+        //    return null;
+        //}
 
         byte[] data = builder.SizedByteArray();
         HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERSTOP, flatBufferSize = (ushort)data.Length };
@@ -161,13 +161,13 @@ public class PacketManager : MonoBehaviour
         var offset = PlayerPos.EndPlayerPos(builder);
         builder.Finish(offset.Value);
 
-        var buf = builder.DataBuffer;
-        var verifier = new Verifier(buf);
-        if (PlayerPosSyncVerify.Verify(verifier, (uint)offset.Value) == false)
-        {
-            Debug.Log("invaild buf / CreatePlayerPosSyncPacket");
-            return null;
-        }
+        //var buf = builder.DataBuffer;
+        //var verifier = new Verifier(buf);
+        //if (PlayerPosSyncVerify.Verify(verifier, (uint)offset.Value) == false)
+        //{
+        //    Debug.Log("invaild buf / CreatePlayerPosSyncPacket");
+        //    return null;
+        //}
 
         byte[] data = builder.SizedByteArray();
         HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERPOSSYNC, flatBufferSize = (ushort)data.Length };
