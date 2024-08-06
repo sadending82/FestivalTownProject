@@ -51,13 +51,11 @@ void WorkerThread::RunWorker()
 
                         m_pServer->SendPlayerGameInfo(newKey);
 
-                        if (m_pServer->GetRooms()[0]->GetPlayerCnt() >= 2) {
-                            for (Player* a : m_pServer->GetRooms()[0]->GetPlayerList()) {
-                                if (a == nullptr) continue;
-                                for (Player* b : m_pServer->GetRooms()[0]->GetPlayerList()) {
-                                    if (b == nullptr) continue;
-                                    m_pServer->SendPlayerAdd(a->GetSessionID(), b->GetSessionID());
-                                }
+                        for (Player* a : m_pServer->GetRooms()[0]->GetPlayerList()) {
+                            if (a == nullptr) continue;
+                            for (Player* b : m_pServer->GetRooms()[0]->GetPlayerList()) {
+                                if (b == nullptr) continue;
+                                m_pServer->SendPlayerAdd(a->GetSessionID(), b->GetSessionID());
                             }
                         }
                     }

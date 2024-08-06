@@ -12,9 +12,9 @@ using PacketTable.UtilitiesTable;
 
 public class PacketManager : MonoBehaviour 
 {
-    private Dictionary<ePacketType, PacketProcessor> processorDict { get; set; }
+    private Dictionary<int, PacketProcessor> processorDict { get; set; }
 
-    public PacketProcessor GetProcessor(ePacketType type)
+    public PacketProcessor GetProcessor(int type)
     {
         return processorDict[type];
     }
@@ -38,7 +38,7 @@ public class PacketManager : MonoBehaviour
 
     public void Init()
     {
-        processorDict = new Dictionary<ePacketType, PacketProcessor>
+        processorDict = new Dictionary<int, PacketProcessor>
         {
             { ePacketType.S2C_HEARTBEAT, new HeartBeatProcessor() },
             { ePacketType.S2C_PLAYERADD, new PlayerAddProcessor() },
@@ -106,7 +106,7 @@ public class PacketManager : MonoBehaviour
         }
 
         byte[] data = builder.SizedByteArray();
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERMOVE, size = (ushort)data.Length };
+        HEADER header = new HEADER { type = ePacketType.C2S_PLAYERMOVE, size = (ushort)data.Length };
 
         byte[] headerdata = Serialize<HEADER>(header);
         byte[] result = new byte[data.Length + headerdata.Length];
@@ -139,7 +139,7 @@ public class PacketManager : MonoBehaviour
         }
 
         byte[] data = builder.SizedByteArray();
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERSTOP, size = (ushort)data.Length };
+        HEADER header = new HEADER { type = ePacketType.C2S_PLAYERSTOP, size = (ushort)data.Length };
         byte[] headerdata = Serialize<HEADER>(header);
         byte[] result = new byte[data.Length + headerdata.Length];
 
@@ -170,7 +170,7 @@ public class PacketManager : MonoBehaviour
         }
 
         byte[] data = builder.SizedByteArray();
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERPOSSYNC, size = (ushort)data.Length };
+        HEADER header = new HEADER { type = ePacketType.C2S_PLAYERPOSSYNC, size = (ushort)data.Length };
 
         byte[] headerdata = Serialize<HEADER>(header);
         byte[] result = new byte[data.Length + headerdata.Length];
@@ -203,7 +203,7 @@ public class PacketManager : MonoBehaviour
         }
 
         byte[] data = builder.SizedByteArray();
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_HEARTBEAT, size = (ushort)data.Length };
+        HEADER header = new HEADER { type = ePacketType.C2S_HEARTBEAT, size = (ushort)data.Length };
         byte[] headerdata = Serialize<HEADER>(header);
 
         byte[] result = new byte[data.Length + headerdata.Length];
