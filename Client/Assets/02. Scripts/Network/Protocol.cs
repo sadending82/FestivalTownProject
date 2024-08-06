@@ -14,23 +14,22 @@ namespace NetworkProtocol
         public ushort type;
     }
 
-
-    static class ePacketType
+    public enum ePacketType
     {
         // Server -> Client
-        public const int S2C_HEARTBEAT = 0;
-        public const int S2C_PLAYERADD = 1;
-        public const int S2C_PLAYERGAMEINFO = 2;
-        public const int S2C_PLAYERMOVE = 3;
-        public const int S2C_PLAYERSTOP = 4;
-        public const int S2C_PLAYERPOSSYNC = 5;
+        S2C_HEARTBEAT,
+        S2C_PLAYERADD,
+        S2C_PLAYERGAMEINFO,
+        S2C_PLAYERMOVE,
+        S2C_PLAYERSTOP,
+        S2C_PLAYERPOSSYNC,
 
         // Client -> Server
-        public const int C2S_HEARTBEAT = 100;
-        public const int C2S_PLAYERMOVE = 101;
-        public const int C2S_PLAYERSTOP = 102;
-        public const int C2S_PLAYERPOSSYNC = 103;
-    }
+        C2S_HEARTBEAT,
+        C2S_PLAYERMOVE,
+        C2S_PLAYERSTOP,
+        C2S_PLAYERPOSSYNC
+    };
 
     public enum ePlayerState
     {

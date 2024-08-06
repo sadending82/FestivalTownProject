@@ -43,8 +43,5 @@ bool Room::DeletePlayer(int playerID)
 	mPlayerListLock.lock();
 	mPlayerList[playerID] = nullptr;
 	mPlayerListLock.unlock();
-	if (mPlayerCnt > 0) {
-		mPlayerCnt--;
-	}
 	return true;
 }
