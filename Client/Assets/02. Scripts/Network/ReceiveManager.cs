@@ -98,49 +98,49 @@ public class ReceiveManager : MonoBehaviour
                     break;
                 }
 
-                // �����Ͱ� �����Ƿ� ���� ��Ŷ�� ������ ��ġ�� �������� += �س����� ����� ����� �� ����.
-                // ����, ����Ʈ(C++�� Vector�� �����)
-                // �迭�� ������ �ڸ��ų� �̵��ϴ� �κ��� �����Ƿ� �ſ� ��ȿ������ �����.
-                // ���� ���� ����� �߰ߵǸ� ������ ������ ��.
-                // C# �����͸� ã�ƿ;� �Ѵ� ����
+                // 포인터가 없으므로 실제 패킷의 포인터 위치를 바탕으로 += 해나가는 방식은 사용할 수 없음.
+                // 따라서, 리스트(C++의 Vector와 비슷함)
+                // 배열을 실제로 자르거나 이동하는 부분이 많으므로 매우 비효율적인 방식임.
+                // 따라서 좋은 방법이 발견되면 개선해 나가야 함.
+                // C# 마스터를 찾아와야 한다 ㅂㄷ
 
-                // ���� �����ŭ �߶��ֱ�
+                // 실제 사이즈만큼 잘라주기
                 byte[] ConvertedRecv = new ArraySegment<byte>(m_ReadBuffer, 0, recvSize).ToArray();
 
-                // �ش� ���۸� �����ִ� ���� �� �κп� �ٿ��ֱ�
+                // 해당 버퍼를 남아있던 버퍼 뒷 부분에 붙여주기
                 m_Buffer.AddRange(ConvertedRecv);
 
-                // ���� ������ - [][][][]  ���� ������ - [][][]
-                // ��ģ ������ - [][][][][][][]
-                // ��ģ �����Ϳ���, ���� ���ڸ��� �а�, �ش� �����ŭ process packet ����
+                // 이전 데이터 - [][][][]  이후 데이터 - [][][]
+                // 합친 데이터 - [][][][][][][]
+                // 합친 데이터에서, 가장 앞자리를 읽고, 해당 사이즈만큼 process packet 진행
                 // Process Packet! - [][][][][] / [][]
-                // ���� �����ʹ� ���ķ�
+                // 남은 데이터는 이후로
                 // Remain - [][]
 
-                // ó���ؾ��� �������� ��
+                // 처리해야할 데이터의 양
                 int toProcessData = recvSize + prevSize;
 
-                // ��� ������ ��������
+                // 헤더 데이터 가져오기
                 byte[] headerData = m_Buffer.GetRange(0, 2).ToArray();
 
                 ushort headerSize = (ushort)Marshal.SizeOf(typeof(HEADER));
 
-                // ��� �����ͷ� ���� ��Ŷ ������ ��������
+                // 헤더 데이터로 부터 패킷 사이즈 가져오기
                 ushort packetSize = (ushort)(BitConverter.ToUInt16(headerData, 0) + headerSize);
                 while (packetSize <= toProcessData)
                 {
-                    //TODO : packet ó���� �Լ� ProcessPacket�� �ۼ�
+                    //TODO : packet 처리용 함수 ProcessPacket의 작성
                     byte[] packetList = m_Buffer.GetRange(0, packetSize).ToArray();
 
                     ProcessPacket(packetList);
 
-                    // ó�������Ƿ�, packetSize ��ŭ�� ó���ؾ��� �� �ٿ��ֱ�
+                    // 처리했으므로, packetSize 만큼은 처리해야할 놈 줄여주기
                     toProcessData -= packetSize;
 
-                    // ���۵� �̹� ����� ������ �����ֱ�
+                    // 버퍼도 이미 사용한 내용을 지워주기
                     m_Buffer.RemoveRange(0, packetSize);
 
-                    // ���� �������ϱ�, ���� ��Ŷ�� ó���ϱ� ���� ��Ŷ ������ �ٽ� ã�ƾ� ��.
+                    // 버퍼 지웠으니까, 다음 패킷을 처리하기 위해 패킷 사이즈 다시 찾아야 함.
                     if (toProcessData > 0)
                     {
                         headerData = m_Buffer.GetRange(0, 2).ToArray();

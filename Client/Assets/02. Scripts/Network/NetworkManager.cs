@@ -2,6 +2,69 @@ using System;
 using System.Net.Sockets;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+
+public class NetworkSelect : EditorWindow
+{
+    static NetworkManager _nManager;
+
+    int _networkSelected;
+    string _ipAddressText;
+
+    [MenuItem("Network/NetworkSelect %#F5")]
+
+    static void Open()
+    {
+        GetWindow<NetworkSelect>();
+        _nManager = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
+    }
+
+    private void OnGUI()
+    {
+        if (_nManager == null)
+        {
+            _nManager = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
+        }
+
+        GUIStyle labelStyle = EditorStyles.boldLabel;
+        labelStyle.alignment = TextAnchor.MiddleCenter;
+        GUILayout.Label("네트워크 설정", EditorStyles.boldLabel);
+        
+
+        _networkSelected = GUILayout.Toolbar(_networkSelected, new string[] { "로컬 네트워크로 설정", "리모트 네트워크로 설정", "IP 직접 입력" });
+
+        if (_networkSelected == 2)
+        {
+            GUILayout.Space(10);
+            GUILayout.Label("IP 주소");
+            _ipAddressText = GUILayout.TextField(_ipAddressText);
+
+        }
+
+        switch(_networkSelected)
+        {
+            case 0:
+                _nManager._ipAddress = "127.0.0.1";
+                break;
+            case 1:
+                _nManager._ipAddress = "39.120.204.67";
+                break;
+            case 2:
+                _nManager._ipAddress = _ipAddressText;
+                break;
+            default:
+                break;
+        }
+
+        labelStyle.alignment = TextAnchor.MiddleLeft;
+
+        minSize = new Vector3(480.0f, 200.0f);
+        maxSize = new Vector3(480.0f, 200.0f);
+    }
+}
+#endif
+
 public class NetworkManager : MonoBehaviour
 {
     bool isNetworkConnected = false;
@@ -19,6 +82,8 @@ public class NetworkManager : MonoBehaviour
     float SendBufferInterval = 2.0f;
     float CurrentTime = 0.0f;
 
+    [HideInInspector]
+    public string _ipAddress = "";
 
     void Awake()
     {
@@ -57,8 +122,17 @@ public class NetworkManager : MonoBehaviour
     {
         try
         {
+#if UNITY_EDITOR
+            if (_ipAddress != "")
+            {
+                Connection = new TcpClient(_ipAddress, 45872);
+            }
+            else throw new Exception("ip 설정 안 되었어요...");
+
+#elif UNITY_STANDALONE
+
             Connection = new TcpClient("39.120.204.67", 45872);
-            //Connection = new TcpClient("127.0.0.1", 45872);
+#endif
         }
         catch (Exception e)
         {
