@@ -18,11 +18,11 @@ namespace Network.PacketProcessor
 
             var Data = PlayerAdd.GetRootAsPlayerAdd(bb);
 
-            //int id = Data.Id;
+            int id = Data.Id;
             //Vector3 pos = new Vector3(Data.Pos.Value.X, Data.Pos.Value.Y, Data.Pos.Value.Z);
             //Vector3 dir = new Vector3(Data.Direction.Value.X, Data.Direction.Value.Y, Data.Direction.Value.Z);
 
-            playerManager.GetComponent<PlayerManager>().AddPlayer();
+            playerManager.GetComponent<PlayerManager>().AddPlayer(id);
         }
 
         private FlatBufferBuilder mBuilder;
