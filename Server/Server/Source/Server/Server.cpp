@@ -146,7 +146,7 @@ void Server::SendPlayerAdd(int sessionID, int destination)
     mBuilder.Finish(PacketTable::PlayerTable::CreatePlayerAdd(mBuilder, inGameID));
     std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYERADD, mBuilder.GetBufferPointer(), mBuilder.GetSize());
 
-    GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
+    GetSessions()[destination]->DoSend(send_buffer.data(), send_buffer.size());
 }
 
 void Server::SendPlayerGameInfo(int sessionID)

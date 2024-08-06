@@ -51,15 +51,19 @@ void WorkerThread::RunWorker()
 
                         m_pServer->SendPlayerGameInfo(newKey);
 
-                        if (m_pServer->GetRooms()[0]->GetPlayerCnt() >= 2) {
-                            for (Player* a : m_pServer->GetRooms()[0]->GetPlayerList()) {
-                                if (a == nullptr) continue;
-                                for (Player* b : m_pServer->GetRooms()[0]->GetPlayerList()) {
-                                    if (b == nullptr) continue;
-                                    m_pServer->SendPlayerAdd(a->GetSessionID(), b->GetSessionID());
-                                }
-                            }
+                        // 새 플레이어에게 기존 플레이어의 정보 전송
+                        for (Player* p : m_pServer->GetRooms()[TESTROOM]->GetPlayerList()) {
+                            if (p == nullptr) continue;
+                            m_pServer->SendPlayerAdd(newPlayer->GetSessionID(), p->GetSessionID());
                         }
+
+                        // 기존 플레이어들에게 새 플레이어 정보 전송
+                        for (Player* p : m_pServer->GetRooms()[TESTROOM]->GetPlayerList()) {
+                            if (p == nullptr) continue;
+                            m_pServer->SendPlayerAdd(p->GetSessionID(), newPlayer->GetSessionID());
+                        }
+
+
                     }
                 }
 
@@ -89,8 +93,10 @@ void WorkerThread::RunWorker()
         }
         case eOpType::OP_RECV: {
             unsigned char* packet_ptr = exOver->mMessageBuf;
-            int headerSize = sizeof(HEADER);
-            HEADER* header = reinterpret_cast<HEADER*>(packet_ptr);
+            const int headerSize = sizeof(HEADER);
+            char headerData[headerSize + 1];
+            std::copy(exOver->mMessageBuf, exOver->mMessageBuf + headerSize, headerData);
+            HEADER* header = reinterpret_cast<HEADER*>(headerData);
 
             int required_data = Transferred + m_pServer->GetSessions()[key]->GetPrevData();
             int packet_size = header->size + headerSize;

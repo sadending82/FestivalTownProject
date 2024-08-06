@@ -193,9 +193,8 @@ public class PacketManager : MonoBehaviour
 
         //서버에서 버퍼 이상없이 잘 읽는데 Verity가 false가 뜸...
         var buf = builder.DataBuffer;
-        var verifier = new Verifier(buf);
         var timeCheck = HeartBeat.GetRootAsHeartBeat(buf).Time;
-        if (!HeartBeatVerify.Verify(verifier, (uint)offset.Value) && timeCheck != currTime)
+        if (timeCheck != currTime)
         {
             Debug.Log("invaild buf / CreateHeartBeatPacket");
 
