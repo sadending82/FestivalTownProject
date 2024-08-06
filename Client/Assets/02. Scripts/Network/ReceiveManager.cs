@@ -166,7 +166,7 @@ public class ReceiveManager : MonoBehaviour
         HEADER header = (HEADER)Marshal.PtrToStructure(ptr, typeof(HEADER));
         Marshal.FreeHGlobal(ptr);
 
-        byte[] data = new byte[header.size];
+        byte[] data = new byte[header.flatBufferSize];
         Buffer.BlockCopy(packet, HeaderSize, data, 0, data.Length);
 
         var packetDataToProcess = new Tuple<ePacketType, byte[]>((ePacketType)header.type, data);

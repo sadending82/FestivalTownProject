@@ -62,8 +62,6 @@ void WorkerThread::RunWorker()
                             if (p == nullptr) continue;
                             m_pServer->SendPlayerAdd(p->GetSessionID(), newPlayer->GetSessionID());
                         }
-
-
                     }
                 }
 
@@ -93,21 +91,22 @@ void WorkerThread::RunWorker()
         }
         case eOpType::OP_RECV: {
             unsigned char* packet_ptr = exOver->mMessageBuf;
-            const int headerSize = sizeof(HEADER);
-            char headerData[headerSize + 1];
-            std::copy(exOver->mMessageBuf, exOver->mMessageBuf + headerSize, headerData);
-            HEADER* header = reinterpret_cast<HEADER*>(headerData);
 
+            uint16_t BufSize = 0;
+            std::memcpy(&BufSize, packet_ptr, sizeof(BufSize));
+            const int headerSize = sizeof(HEADER);
             int required_data = Transferred + m_pServer->GetSessions()[key]->GetPrevData();
-            int packet_size = header->size + headerSize;
+            int packet_size = BufSize + headerSize;
             while (required_data >= packet_size) {
                 if (required_data >= BUFSIZE) break;
                 if (packet_size <= 0) break;
-                unsigned char* data = packet_ptr + headerSize;
-                m_pPacketManager->ProcessPacket(header->type, data, header->size, key);
+                m_pPacketManager->ProcessPacket(packet_ptr, key);
                 required_data -= packet_size;
                 packet_ptr += packet_size;
-                packet_size = packet_ptr[0];
+
+                uint16_t nextBufSize = 0;
+                std::memcpy(&nextBufSize, packet_ptr, sizeof(uint16_t));
+                packet_size = nextBufSize + headerSize;
             }
             packet_size = 0;
             m_pServer->GetSessions()[key]->SetPrevData(0);

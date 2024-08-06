@@ -9,7 +9,7 @@ public:
 	~PacketManager() {};
 
 	void Init(Server* server);
-	void ProcessPacket(const int type, const uint8_t* data, const int size, const int key);
+	void ProcessPacket(unsigned char* data, const int key);
 	void ProcessEvent(const eEventType type, unsigned char* buf);
 
 private:

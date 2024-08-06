@@ -3,7 +3,7 @@
 std::vector<uint8_t> MakeBuffer(const int type, const uint8_t* data, const int size)
 {
 	HEADER h;
-	h.size = size;
+	h.flatBufferSize = size;
 	h.type = type;
 
 	std::vector<uint8_t> buf(sizeof(HEADER) + size);

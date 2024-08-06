@@ -18,17 +18,23 @@ void PacketManager::Init(Server* server)
     EventProcessorMap[eEventType::HEARTBEAT] = std::make_unique<EventHeartBeat>();
 }
 
-void PacketManager::ProcessPacket(const int type, const uint8_t* data, const int size, const int key)
+void PacketManager::ProcessPacket(unsigned char* data, const int key)
 {
 	//PacketProcessorMap[type]->Process(pServer, data, size, key);
 
-    if (PacketProcessorMap[type] == nullptr) {
+    HEADER* header = reinterpret_cast<HEADER*>(data);
+    int type = header->type;
+    int flatBufSize = header->flatBufferSize;
+    int headerSize = sizeof(HEADER);
+    std::vector<uint8_t> flatBuf(data + headerSize, data + header->flatBufferSize);
+
+    if (PacketProcessorMap[header->type] == nullptr) {
         std::cout << "Received Invalid Packet Type : " << type << std::endl;
         return;
     }
 
 	try {
-        PacketProcessorMap[type]->Process(pServer, data, size, key);
+        PacketProcessorMap[type]->Process(pServer, flatBuf.data(), header->flatBufferSize, key);
 	}
 	catch (const std::exception& e) {
         std::cerr << "[ERROR] : " << e.what() << " Type : " << type << " KEY : " << key << std::endl;

@@ -106,7 +106,7 @@ public class PacketManager : MonoBehaviour
         }
 
         byte[] data = builder.SizedByteArray();
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERMOVE, size = (ushort)data.Length };
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERMOVE, flatBufferSize = (ushort)data.Length };
 
         byte[] headerdata = Serialize<HEADER>(header);
         byte[] result = new byte[data.Length + headerdata.Length];
@@ -139,7 +139,7 @@ public class PacketManager : MonoBehaviour
         }
 
         byte[] data = builder.SizedByteArray();
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERSTOP, size = (ushort)data.Length };
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERSTOP, flatBufferSize = (ushort)data.Length };
         byte[] headerdata = Serialize<HEADER>(header);
         byte[] result = new byte[data.Length + headerdata.Length];
 
@@ -170,7 +170,7 @@ public class PacketManager : MonoBehaviour
         }
 
         byte[] data = builder.SizedByteArray();
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERPOSSYNC, size = (ushort)data.Length };
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERPOSSYNC, flatBufferSize = (ushort)data.Length };
 
         byte[] headerdata = Serialize<HEADER>(header);
         byte[] result = new byte[data.Length + headerdata.Length];
@@ -202,7 +202,7 @@ public class PacketManager : MonoBehaviour
         }
 
         byte[] data = builder.SizedByteArray();
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_HEARTBEAT, size = (ushort)data.Length };
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_HEARTBEAT, flatBufferSize = (ushort)data.Length };
         byte[] headerdata = Serialize<HEADER>(header);
 
         byte[] result = new byte[data.Length + headerdata.Length];

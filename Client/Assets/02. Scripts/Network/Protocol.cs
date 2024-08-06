@@ -9,7 +9,7 @@ namespace NetworkProtocol
     struct HEADER
     {
         [MarshalAs(UnmanagedType.U2)]
-        public ushort size;
+        public ushort flatBufferSize;
         [MarshalAs(UnmanagedType.U2)]
         public ushort type;
     }

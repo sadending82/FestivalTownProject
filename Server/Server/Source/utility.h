@@ -26,7 +26,7 @@ constexpr int STARTKEY = 1;
 constexpr int INVALIDKEY = -1;
 constexpr int TESTROOM = 0;
 
-constexpr int BUFSIZE = 100;
+constexpr int BUFSIZE = 1000;
 
 constexpr int MAXSESSION = 1000;
 constexpr int MAXROOM = 100;
@@ -74,7 +74,7 @@ enum ePlayerState {
 
 struct HEADER {
 public:
-	uint16_t	size;
+	uint16_t	flatBufferSize;
 	uint16_t	type;
 };
 
