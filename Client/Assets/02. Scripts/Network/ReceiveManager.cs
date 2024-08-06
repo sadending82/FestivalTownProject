@@ -12,7 +12,7 @@ public class ReceiveManager : MonoBehaviour
     private PacketManager _packetmanager;
     private GameObject playerManager;
 
-    private Queue<Tuple<int, byte[]>> PacketQueue = new Queue<Tuple<int, byte[]>>();
+    private Queue<Tuple<ePacketType, byte[]>> PacketQueue = new Queue<Tuple<ePacketType, byte[]>>();
 
 
     private Thread workerThread;
@@ -169,7 +169,7 @@ public class ReceiveManager : MonoBehaviour
         byte[] data = new byte[header.size];
         Buffer.BlockCopy(packet, HeaderSize, data, 0, data.Length);
 
-        var packetDataToProcess = new Tuple<int, byte[]>(header.type, data);
+        var packetDataToProcess = new Tuple<ePacketType, byte[]>((ePacketType)header.type, data);
 
         mutex.WaitOne();
         PacketQueue.Enqueue(packetDataToProcess);
