@@ -57,8 +57,8 @@ public class NetworkManager : MonoBehaviour
     {
         try
         {
-            //Connection = new TcpClient("39.120.204.67", 45872);
-            Connection = new TcpClient("127.0.0.1", 45872);
+            Connection = new TcpClient("39.120.204.67", 45872);
+            //Connection = new TcpClient("127.0.0.1", 45872);
         }
         catch (Exception e)
         {
