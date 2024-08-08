@@ -92,7 +92,7 @@ void WorkerThread::RunWorker()
         case eOpType::OP_RECV: {
             unsigned char* packet_ptr = exOver->mMessageBuf;
             uint16_t BufSize = 0;
-            std::memcpy(&BufSize, packet_ptr, sizeof(BufSize));
+            std::memcpy(&BufSize, packet_ptr, sizeof(uint16_t));
             const int headerSize = sizeof(HEADER);
             int required_data = Transferred + m_pServer->GetSessions()[key]->GetPrevData();
             int packet_size = BufSize + headerSize;
