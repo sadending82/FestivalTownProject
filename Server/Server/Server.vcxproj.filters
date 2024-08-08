@@ -40,11 +40,12 @@
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\Player_generated.h" />
     <ClInclude Include="Source\Event.h" />
     <ClInclude Include="Source\Event\Event.h" />
-    <ClInclude Include="Source\PacketManager\PacketProcessors\Event\EventPlayerPosSync.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Event\EventObjectDrop.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\PacketPlayerPosSync.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Event\EventHeartBeat.h" />
-    <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\utility_generated.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\PacketHeartBeat.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\Utilities_generated.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\Object_generated.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

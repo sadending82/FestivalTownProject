@@ -1,4 +1,5 @@
 #pragma once
+#include <random>
 #include "Server.h"
 #include "../Thread/WorkerThread/WorkerThread.h"
 #include "../Thread/TimerThread/TimerThread.h"
@@ -90,6 +91,8 @@ void Server::Init(class TableManager* pTableManager, class DB* pDB)
 
     // 테스트를 위해 임시 방 추가
     mRooms[TESTROOM]->Init(TESTROOM);
+    // 이벤트 테스트
+    PushEventObjectDrop(mTimer, TESTROOM);
 
     SYSTEM_INFO si;
     GetSystemInfo(&si);
@@ -171,6 +174,27 @@ void Server::SendHeartBeatPacket(int sessionID)
 
     std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_HEARTBEAT, mBuilder.GetBufferPointer(), mBuilder.GetSize());
     GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
+}
+
+void Server::SendObjectDropPacket(int roomID)
+{
+    // 임시 (게임 데이터 연동안함)
+
+    mBuilder.Clear();
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+
+    std::uniform_int_distribution<> x_distrib(0, 19);
+    std::uniform_int_distribution<> y_distrib(0, 9);
+    std::uniform_int_distribution<> id_distrib(0, 9);
+
+    auto pos = PacketTable::ObjectTable::CreateVec2(mBuilder, x_distrib(gen), y_distrib(gen));
+    mBuilder.Finish(PacketTable::ObjectTable::CreateObjectDrop(mBuilder, pos, id_distrib(gen)));
+
+    std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_OBJECTDROP, mBuilder.GetBufferPointer(), mBuilder.GetSize());
+
+    SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
 
 void Server::StartHeartBeat(int sessionID)

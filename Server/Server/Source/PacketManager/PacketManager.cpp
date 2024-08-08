@@ -14,8 +14,8 @@ void PacketManager::Init(Server* server)
     PacketProcessorMap[ePacketType::C2S_PLAYERSTOP] = std::make_unique<PacketPlayerStop>();
     PacketProcessorMap[ePacketType::C2S_PLAYERPOSSYNC] = std::make_unique<PacketPlayerPosSync>();
 
-    EventProcessorMap[eEventType::PLAYERPOSSYNC] = std::make_unique<EventPlayerPosSync>();
     EventProcessorMap[eEventType::HEARTBEAT] = std::make_unique<EventHeartBeat>();
+    EventProcessorMap[eEventType::OBJECTDROP] = std::make_unique<EventObjectDrop>();
 }
 
 void PacketManager::ProcessPacket(unsigned char* data, const int key)

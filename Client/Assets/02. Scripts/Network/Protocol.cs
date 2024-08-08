@@ -24,6 +24,8 @@ namespace NetworkProtocol
         S2C_PLAYERSTOP,
         S2C_PLAYERPOSSYNC,
 
+        S2C_OBJECTDROP,
+
         // Client -> Server
         C2S_HEARTBEAT,
         C2S_PLAYERMOVE,

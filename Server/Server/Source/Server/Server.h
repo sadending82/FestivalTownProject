@@ -28,6 +28,7 @@ public:
 	void SendPlayerAdd(int sessionID, int destination);
 	void SendPlayerGameInfo(int sessionID);
 	void SendHeartBeatPacket(int sessionID);
+	void SendObjectDropPacket(int roomID);
 
 	void StartHeartBeat(int sessionID);
 

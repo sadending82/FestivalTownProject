@@ -1,16 +1,21 @@
 #pragma once
 #include "../utility.h"
 
+constexpr int HEARTBEATTIME = 6000;
+
+constexpr int OBJECTDROPTIME = 10000;
+
 class Timer;
 
 #pragma pack (push, 1)
 enum eEventType {
 	HEARTBEAT,
-	PLAYERPOSSYNC
+	
+	// InGmae Event
+	OBJECTDROP
 };
 
 struct EVENT_HEADER {
-	char type;
 	std::chrono::system_clock::time_point start_time;
 
 	constexpr bool operator< (const EVENT_HEADER& other) const {
@@ -26,14 +31,17 @@ struct EVENT {
 	char type;
 };
 
-struct EV_PLAYER_POS_SYNC : EVENT{
-	int roodID;
-};
 
 struct EV_HEART_BEAT : EVENT {
 	int sessionID;
 };
+
+struct EV_OBJECT_DROP : EVENT {
+	int roomID;
+};
+
 #pragma pack(pop)
 
-bool PushEventPlayerPosSync(Timer* pTimer, int roomID);
 bool PushEventHeartBeat(Timer* pTimer, int sessionID);
+
+bool PushEventObjectDrop(Timer* pTimer, int roomID);
