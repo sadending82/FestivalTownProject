@@ -9,7 +9,7 @@ namespace Network.PacketProcessor
 {
     public class ObjectDropProcessor : PacketProcessor
     {
-        public override void Process(PacketManager packetmanager, byte[] data, GameObject playerManager)
+        public override void Process(PacketManager packetmanager, byte[] data)
         {
             var bb = new ByteBuffer(data);
             var Data = ObjectDrop.GetRootAsObjectDrop(bb);

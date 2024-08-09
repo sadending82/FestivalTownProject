@@ -12,7 +12,7 @@ namespace Network.PacketProcessor
 {
     public class PlayerMoveProcessor : PacketProcessor
     {
-        public override void Process(PacketManager packetmanager, byte[] data, GameObject playerManager)
+        public override void Process(PacketManager packetmanager, byte[] data)
         {
             // 여기에 처리    
             var bb = new ByteBuffer(data);
@@ -23,7 +23,7 @@ namespace Network.PacketProcessor
             Vector3 dir = new Vector3(moveData.Direction.Value.X, moveData.Direction.Value.Y, moveData.Direction.Value.Z);
             int state = moveData.State;
 
-            PlayerController pController = playerManager.transform.GetChild(id).GetComponent<PlayerController>();
+            PlayerController pController = Managers.Player.transform.GetChild(id).GetComponent<PlayerController>();
 
             if (pController != null)
             {

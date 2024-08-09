@@ -12,7 +12,7 @@ namespace Network.PacketProcessor
 {
     public class PlayerStopProcessor : PacketProcessor
     {
-        public override void Process(PacketManager packetmanager, byte[] data, GameObject playerManager)
+        public override void Process(PacketManager packetmanager, byte[] data)
         {
             // 여기에 처리    
             var bb = new ByteBuffer(data);
@@ -23,9 +23,9 @@ namespace Network.PacketProcessor
             Vector3 dir = new Vector3(stopData.Direction.Value.X, stopData.Direction.Value.Y, stopData.Direction.Value.Z);
             int state = stopData.State;
 
-            if (playerManager != null) { return; }
+            if (Managers.Player != null) { return; }
 
-            PlayerController pController = playerManager.transform.GetChild(id).GetComponent<PlayerController>();
+            PlayerController pController = Managers.Player.transform.GetChild(id).GetComponent<PlayerController>();
 
             if (pController != null)
             {

@@ -9,7 +9,7 @@ namespace Network.PacketProcessor
 {
     public class PlayerPosSyncProcessor : PacketProcessor
     {
-        public override void Process(PacketManager packetmanager, byte[] data, GameObject playerManager)
+        public override void Process(PacketManager packetmanager, byte[] data)
         {
             var bb = new ByteBuffer(data);
             var posData = PlayerPosSync.GetRootAsPlayerPosSync(bb);
@@ -20,10 +20,10 @@ namespace Network.PacketProcessor
 
             Debug.Log("Player ID : " + id + ", PlayerPosSyncPacket");
 
-            if (playerManager.transform.GetChild(id) != null)
+            if (Managers.Player.transform.GetChild(id) != null)
             {
-                playerManager.transform.GetChild(id).GetComponent<PlayerController>().SetDirection(dir);
-                playerManager.transform.GetChild(id).GetComponent<PlayerController>().SetPosition(pos);
+                Managers.Player.transform.GetChild(id).GetComponent<PlayerController>().SetDirection(dir);
+                Managers.Player.transform.GetChild(id).GetComponent<PlayerController>().SetPosition(pos);
             }
         }
 

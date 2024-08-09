@@ -9,7 +9,7 @@ namespace Network.PacketProcessor
 {
     public class HeartBeatProcessor : PacketProcessor
     {
-        public override void Process(PacketManager packetmanager, byte[] data, GameObject playerManager)
+        public override void Process(PacketManager packetmanager, byte[] data)
         {
             var bb = new ByteBuffer(data);
             var Data = HeartBeat.GetRootAsHeartBeat(bb);

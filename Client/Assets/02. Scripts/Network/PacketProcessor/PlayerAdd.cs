@@ -11,7 +11,7 @@ namespace Network.PacketProcessor
 {
     public class PlayerAddProcessor : PacketProcessor
     {
-        public override void Process(PacketManager packetmanager, byte[] data, GameObject playerManager)
+        public override void Process(PacketManager packetmanager, byte[] data)
         {
             // 여기에 처리    
             var bb = new ByteBuffer(data);
@@ -22,7 +22,7 @@ namespace Network.PacketProcessor
             //Vector3 pos = new Vector3(Data.Pos.Value.X, Data.Pos.Value.Y, Data.Pos.Value.Z);
             //Vector3 dir = new Vector3(Data.Direction.Value.X, Data.Direction.Value.Y, Data.Direction.Value.Z);
 
-            playerManager.GetComponent<PlayerManager>().AddPlayer(id);
+            Managers.Player.GetComponent<PlayerManager>().AddPlayer(id);
         }
 
         private FlatBufferBuilder mBuilder;
