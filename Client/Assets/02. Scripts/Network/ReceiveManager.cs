@@ -11,7 +11,6 @@ using System.IO;
 public class ReceiveManager : MonoBehaviour
 {
     private PacketManager _packetmanager;
-    private GameObject playerManager;
 
     private Queue<Tuple<ePacketType, byte[]>> PacketQueue = new Queue<Tuple<ePacketType, byte[]>>();
 
@@ -43,7 +42,7 @@ public class ReceiveManager : MonoBehaviour
                 mutex.WaitOne();
                 var packetData = PacketQueue.Dequeue();
                 mutex.ReleaseMutex();
-                _packetmanager.GetProcessor(packetData.Item1).Process(_packetmanager,packetData.Item2, playerManager);
+                _packetmanager.GetProcessor(packetData.Item1).Process(_packetmanager,packetData.Item2);
             }
             yield return new WaitForFixedUpdate();
         }
@@ -180,11 +179,6 @@ public class ReceiveManager : MonoBehaviour
         mutex.WaitOne();
         PacketQueue.Enqueue(packetDataToProcess);
         mutex.ReleaseMutex();
-    }
-
-    public void SetPlayerManager(GameObject playerManager)
-    {
-        this.playerManager = playerManager;
     }
 
     public void OnDestroy()
