@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using NetworkProtocol;
 using System.Runtime.InteropServices;
 using System;
+using System.IO;
 
 public class ReceiveManager : MonoBehaviour
 {
@@ -92,9 +93,14 @@ public class ReceiveManager : MonoBehaviour
                 {
                     recvSize = stream.Read(m_ReadBuffer, 0, sizeof(byte) * 1000);
                 }
-                catch(SocketException Exception)
+                catch (SocketException Exception)
                 {
                     Debug.Log("Recv exception: " + Exception);
+                    break;
+                }
+                catch (IOException e)
+                {
+                    Debug.Log($"Thread Aborting: {e}");
                     break;
                 }
 

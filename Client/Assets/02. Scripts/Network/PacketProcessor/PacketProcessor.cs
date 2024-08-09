@@ -12,7 +12,7 @@ namespace Network.PacketProcessor
 {
     public class PacketProcessor
     { 
-        public virtual void Process(PacketManager packetmanager, byte[] data, GameObject playerManager) { }
+        public virtual void Process(PacketManager packetmanager, byte[] data) { }
 
         private FlatBufferBuilder mBuilder;
     }

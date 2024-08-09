@@ -11,7 +11,7 @@ namespace Network.PacketProcessor
 {
     public class PlayerGameInfoProcessor : PacketProcessor
     {
-        public override void Process(PacketManager packetmanager, byte[] data, GameObject playerManager)
+        public override void Process(PacketManager packetmanager, byte[] data)
         {
             // 여기에 처리    
             var bb = new ByteBuffer(data);
@@ -21,7 +21,7 @@ namespace Network.PacketProcessor
             int id = Data.Ingameid;
             int roomID = Data.Roomid;
             
-            playerManager.GetComponent<PlayerManager>().SetMyId(id);
+            Managers.Player.GetComponent<PlayerManager>().SetMyId(id);
         }
 
         private FlatBufferBuilder mBuilder;

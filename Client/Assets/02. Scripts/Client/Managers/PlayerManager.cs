@@ -16,9 +16,6 @@ public class PlayerManager : MonoBehaviour
 
     private void Start()
     {
-        //----- Client Test -----
-        //SetMyId(0);
-        //AddPlayers(2);
     }   
     public void SetMyId(int myId)
     {
@@ -50,20 +47,6 @@ public class PlayerManager : MonoBehaviour
                 Debug.Log("Add Player ID : " + nowPlayerNum);
                 nowPlayerNum++;
                 Debug.Log("Now Players Number " + nowPlayerNum);
-            }
-        }
-    }
-
-    // 클라이언트 테스트용
-    private void AddPlayers(int maxPlayerNum)
-    {
-        for (int i = 0; i < maxPlayerNum; ++i)
-        {
-            transform.GetChild(i).gameObject.SetActive(true);
-            if (myId == i)
-            {
-                transform.GetChild(i).gameObject.GetComponent<CharacterStatus>().SetAmIPlayer(true);
-                transform.GetChild(i).gameObject.GetComponent<PlayerController>().SetMyId(myId);
             }
         }
     }

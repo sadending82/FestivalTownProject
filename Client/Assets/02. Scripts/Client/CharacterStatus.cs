@@ -47,6 +47,7 @@ public class CharacterStatus : MonoBehaviour
         if(amIPlayer == true)
         {
             myCamera.enabled = true;
+            Managers.UI.ShowSceneUI<UI_OneVersusOneSceneUI>();
         }
     }
 }

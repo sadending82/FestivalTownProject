@@ -114,8 +114,6 @@ public class NetworkManager : MonoBehaviour
         Debug.Log("Network Connect : " + isNetworkConnected);
 
         if(isNetworkConnected) recvManager.CreateRecvThread(Connection);
-
-        recvManager.SetPlayerManager(GameObject.FindWithTag("PlayerManager"));
     }
 
     private bool ConnectToServer()
