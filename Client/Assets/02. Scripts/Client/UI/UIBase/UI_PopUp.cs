@@ -11,6 +11,6 @@ public class UI_PopUp : UI_Base
 
     public virtual void ClosePopUpUI()
     {
-
+        Managers.UI.ClosePopUpUI(this);
     }
 }

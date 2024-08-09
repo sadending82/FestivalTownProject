@@ -33,6 +33,7 @@ public abstract class UI_Base : MonoBehaviour
     protected void Bind<T>(Type type) where T : UnityEngine.Object // T 라는 타입은, UnityEngine의 Object의 타입 중 하나입니다~ 라는 뜻
     {
         string[] names = Enum.GetNames(type);
+
         UnityEngine.Object[] objects = new UnityEngine.Object[names.Length];
         _objects.Add(typeof(T), objects);
 
@@ -40,7 +41,7 @@ public abstract class UI_Base : MonoBehaviour
         {
             if (typeof(T) == typeof(GameObject))
             {
-                objects[i] = Util.FindChild(gameObject, names[i], true);
+                objects[i] = Util.FindChild(gameObject, names[i], true);           
             }
             else
             {
@@ -72,5 +73,24 @@ public abstract class UI_Base : MonoBehaviour
     protected Text GetText(int idx) { return Get<Text>(idx); }
     protected Button GetButton(int idx) { return Get<Button>(idx); }
     protected Image GetImage(int idx) { return Get<Image>(idx); }
+
+
+
+    public static void BindEvent(GameObject go, Action<PointerEventData> action, Define.UIEvent type = Define.UIEvent.Click)
+    {
+        UI_EventHandler eventHandler = Util.GetOrAddComponent<UI_EventHandler>(go);
+
+        switch(type)
+        {
+            case Define.UIEvent.Click:
+                eventHandler.OnClickHandler -= action;
+                eventHandler.OnClickHandler += action;
+                break;
+            case Define.UIEvent.Drag:
+                eventHandler.OnDragHandler -= action;
+                eventHandler.OnDragHandler += action;
+                break;
+        }
+    }
 
 }
