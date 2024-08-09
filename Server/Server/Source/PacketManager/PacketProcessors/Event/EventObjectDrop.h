@@ -12,9 +12,15 @@ public:
 		// 방이 활성화 되어있는지 확인해야함
 		EV_OBJECT_DROP* event = reinterpret_cast<EV_OBJECT_DROP*>(buf);
 
-		pServer->SendObjectDropPacket(event->roomID);
+		int roomid = event->roomID;
+		GameCode gameMode = pServer->GetRooms()[event->roomID]->GetGameMode();
+		int nextEventTime = pServer->GetTableManager()->getFITH_Data()[gameMode].Block_Spawn_Time; // seconds
+		int spawnCnt = pServer->GetTableManager()->getFITH_Data()[gameMode].Block_Spawn_Count;
+		PushEventObjectDrop(pServer->GetTimer(), event->roomID, nextEventTime);
 
-		PushEventObjectDrop(pServer->GetTimer(), event->roomID);
+		for (int i = 0; i < spawnCnt; ++i) {
+			pServer->SendObjectDropPacket(event->roomID);
+		}
 	}
 
 private:

@@ -18,6 +18,7 @@ public:
 	std::array<int, MAXPLAYER>& GetPlayerIDs() { return mPlayerSessionIDs; }
 	int GetPlayerCnt() { return mPlayerCnt; }
 	int GetPlayerLimit() { return mPlayerLimit; }
+	GameCode GetGameMode() { return mGameMode; }
 
 	void AddPlayerCnt() { mPlayerCnt++; }
 	void SetPlayerLimit(int num) { mPlayerLimit = num; }

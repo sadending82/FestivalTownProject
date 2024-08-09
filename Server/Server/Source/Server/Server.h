@@ -38,6 +38,7 @@ public:
 	SESSION_ARRAY& GetSessions() { return mSessions; }
 	ROOM_ARRAY& GetRooms() { return mRooms; }
 	Timer* GetTimer() { return mTimer; }
+	TableManager* GetTableManager() { return mTableManager; }
 
 private:
 	SOCKADDR_IN mServerAddr;
@@ -47,6 +48,7 @@ private:
 	flatbuffers::FlatBufferBuilder mBuilder;
 
 	Timer* mTimer = nullptr;
+	TableManager* mTableManager = nullptr;
 
 	SESSION_ARRAY mSessions;
 	ROOM_ARRAY mRooms;

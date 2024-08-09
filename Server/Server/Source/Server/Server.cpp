@@ -40,6 +40,8 @@ void Server::Disconnect(int key)
 
 void Server::Init(class TableManager* pTableManager, class DB* pDB)
 {
+    mTableManager = pTableManager;
+
     WSADATA wsa;
     WSAStartup(MAKEWORD(2, 2), &wsa);
 
@@ -91,8 +93,11 @@ void Server::Init(class TableManager* pTableManager, class DB* pDB)
 
     // 테스트를 위해 임시 방 추가
     mRooms[TESTROOM]->Init(TESTROOM);
+    mRooms[TESTROOM]->SetGameMode(GameCode::FITH_Team_battle_Three);
     // 이벤트 테스트
-    PushEventObjectDrop(mTimer, TESTROOM);
+
+    int eventTime = mTableManager->getFITH_Data()[mRooms[TESTROOM]->GetGameMode()].Block_Spawn_Time;
+    PushEventObjectDrop(mTimer, TESTROOM, eventTime);
 
     SYSTEM_INFO si;
     GetSystemInfo(&si);
@@ -187,7 +192,7 @@ void Server::SendObjectDropPacket(int roomID)
 
     std::uniform_int_distribution<> x_distrib(0, 19);
     std::uniform_int_distribution<> y_distrib(0, 9);
-    std::uniform_int_distribution<> id_distrib(0, 9);
+    std::uniform_int_distribution<> id_distrib(0, 1);
 
     auto pos = PacketTable::ObjectTable::CreateVec2(mBuilder, x_distrib(gen), y_distrib(gen));
     mBuilder.Finish(PacketTable::ObjectTable::CreateObjectDrop(mBuilder, pos, id_distrib(gen)));

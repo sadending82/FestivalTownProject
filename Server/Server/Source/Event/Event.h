@@ -44,4 +44,4 @@ struct EV_OBJECT_DROP : EVENT {
 
 bool PushEventHeartBeat(Timer* pTimer, int sessionID);
 
-bool PushEventObjectDrop(Timer* pTimer, int roomID);
+bool PushEventObjectDrop(Timer* pTimer, int roomID, int time);

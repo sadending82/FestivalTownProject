@@ -19,14 +19,15 @@ bool PushEventHeartBeat(Timer* pTimer, int sessionID) {
 	return true;
 }
 
-bool PushEventObjectDrop(Timer* pTimer, int roomID) {
+bool PushEventObjectDrop(Timer* pTimer, int roomID, int time) {
 	EV_OBJECT_DROP e;
 	e.size = sizeof(EV_OBJECT_DROP);
 	e.type = eEventType::OBJECTDROP;
 	e.roomID = roomID;
 
+
 	EVENT_HEADER header;
-	header.start_time = std::chrono::system_clock::now() + std::chrono::milliseconds(OBJECTDROPTIME);
+	header.start_time = std::chrono::system_clock::now() + std::chrono::seconds(time);
 	memcpy(header.message, reinterpret_cast<char*>(&e), sizeof(EV_OBJECT_DROP));
 
 	pTimer->PushEvent(header);

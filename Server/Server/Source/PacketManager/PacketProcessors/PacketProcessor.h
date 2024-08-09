@@ -4,9 +4,11 @@
 #include "../../Network/Session/Session.h"
 #include "../../Server/Server.h"
 #include "../../Thread/TimerThread/TimerThread.h"
+#include "../../TableManager/TableManager.h"
 
 class Server;
 class Timer;
+class TableManager;
 
 class PacketProcessor
 {
