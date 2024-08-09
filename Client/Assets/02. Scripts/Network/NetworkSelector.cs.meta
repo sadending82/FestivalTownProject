@@ -1,12 +1,11 @@
 fileFormatVersion: 2
-guid: 75412fe37178dd5468196635b798ce83
+guid: 67ea11b99aa3d204d93e54f03ecea95b
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - packetManager: {instanceID: 0}
-  - recvManager: {instanceID: 0}
-  - IPAdressObj: {fileID: 11400000, guid: 7ae6da73159b9c8448075d88a5753fbd, type: 2}
+  - m_ViewDataDictionary: {instanceID: 0}
+  - IPAddressObj: {fileID: 11400000, guid: 7ae6da73159b9c8448075d88a5753fbd, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

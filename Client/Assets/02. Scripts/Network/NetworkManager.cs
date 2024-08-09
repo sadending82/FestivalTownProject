@@ -2,69 +2,6 @@ using System;
 using System.Net.Sockets;
 using UnityEngine;
 
-#if UNITY_EDITOR
-using UnityEditor;
-
-public class NetworkSelect : EditorWindow
-{
-    static NetworkManager _nManager;
-
-    int _networkSelected;
-    string _ipAddressText;
-
-    [MenuItem("Network/NetworkSelect %#F5")]
-
-    static void Open()
-    {
-        GetWindow<NetworkSelect>();
-        _nManager = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
-    }
-
-    private void OnGUI()
-    {
-        if (_nManager == null)
-        {
-            _nManager = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
-        }
-
-        GUIStyle labelStyle = EditorStyles.boldLabel;
-        labelStyle.alignment = TextAnchor.MiddleCenter;
-        GUILayout.Label("네트워크 설정", EditorStyles.boldLabel);
-        
-
-        _networkSelected = GUILayout.Toolbar(_networkSelected, new string[] { "로컬 네트워크로 설정", "리모트 네트워크로 설정", "IP 직접 입력" });
-
-        if (_networkSelected == 2)
-        {
-            GUILayout.Space(10);
-            GUILayout.Label("IP 주소");
-            _ipAddressText = GUILayout.TextField(_ipAddressText);
-
-        }
-
-        switch(_networkSelected)
-        {
-            case 0:
-                _nManager._ipAddress = "127.0.0.1";
-                break;
-            case 1:
-                _nManager._ipAddress = "39.120.204.67";
-                break;
-            case 2:
-                _nManager._ipAddress = _ipAddressText;
-                break;
-            default:
-                break;
-        }
-
-        labelStyle.alignment = TextAnchor.MiddleLeft;
-
-        minSize = new Vector3(480.0f, 200.0f);
-        maxSize = new Vector3(480.0f, 200.0f);
-    }
-}
-#endif
-
 public class NetworkManager : MonoBehaviour
 {
     bool isNetworkConnected = false;
@@ -78,6 +15,9 @@ public class NetworkManager : MonoBehaviour
 
     [SerializeField, Tooltip("Receive Manager")]
     private ReceiveManager recvManager;
+
+    [SerializeField, Tooltip("IPAdrees")]
+    private IPAddressData IPAddressObj;
 
     float SendBufferInterval = 2.0f;
     float CurrentTime = 0.0f;
@@ -108,6 +48,8 @@ public class NetworkManager : MonoBehaviour
 
     public void Start()
     {
+        IPAddressObj = Resources.Load<IPAddressData>("ScriptableObject/IPAddress");
+
         isNetworkConnected = ConnectToServer();
         packetManager.SetConnection(Connection);
 
@@ -120,13 +62,20 @@ public class NetworkManager : MonoBehaviour
     {
         try
         {
-
-            if (_ipAddress != "")
+#if UNITY_EDITOR
+            if (IPAddressObj.IPAddress != "")
             {
-                Connection = new TcpClient(_ipAddress, 45872);
+                Connection = new TcpClient(IPAddressObj.IPAddress, 45872);
             }
             else throw new Exception("ip 설정 안 되었어요...");
+#elif UNITY_STANDALONE_WIN
 
+            if (IPAddressObj.IPAddress != "")
+            {
+                Connection = new TcpClient(IPAddressObj.IPAddress, 45872);
+            }
+            else throw new Exception("ip 설정 안 되었어요...");
+#endif
         }
         catch (Exception e)
         {

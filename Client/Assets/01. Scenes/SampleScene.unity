@@ -598,6 +598,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   packetManager: {fileID: 0}
   recvManager: {fileID: 0}
+  IPAdressObj: {fileID: 11400000, guid: 7ae6da73159b9c8448075d88a5753fbd, type: 2}
   _ipAddress: 127.0.0.1
 --- !u!4 &1644665127
 Transform:
