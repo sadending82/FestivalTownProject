@@ -21,8 +21,11 @@ public:
 
 	void AddPlayerCnt() { mPlayerCnt++; }
 	void SetPlayerLimit(int num) { mPlayerLimit = num; }
+	void SetGameMode(GameCode gamecode) { mGameMode = gamecode; }
 
 private:
+
+	GameCode mGameMode;
 
 	std::mutex mPlayerListLock;
 	std::array<Player*, MAXPLAYER> mPlayerList;
@@ -32,7 +35,6 @@ private:
 
 	int mRoomID;
 	int mPlayerCnt = 0;
-
 	int mPlayerLimit = 0;
 };
 

@@ -70,6 +70,12 @@ enum ePlayerState {
 	ST_DEAD
 };
 
+enum GameCode {
+	FITH_Team_battle_One,
+	FITH_Team_battle_Two,
+	FITH_Team_battle_Three,
+};
+
 #pragma pack (push, 1)
 
 struct HEADER {

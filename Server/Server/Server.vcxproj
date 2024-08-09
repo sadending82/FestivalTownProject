@@ -197,11 +197,13 @@ xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     <ClInclude Include="Source\TableManager\Tables\CharacterStat.h" />
     <ClInclude Include="Source\TableManager\Tables\ItemTable.h" />
     <ClInclude Include="Source\TableManager\Tables\Tables.h" />
+    <ClInclude Include="Source\TableManager\Tables\FITH.h" />
     <ClInclude Include="Source\Thread\TimerThread\TimerThread.h" />
     <ClInclude Include="Source\utility.h" />
     <ClInclude Include="Source\Thread\WorkerThread\WorkerThread.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="GameData\FITH_Mode.xlsx" />
     <None Include="GameData\ItemTable.xlsx" />
     <None Include="Source\TableManager\ItemTable.xlsx" />
   </ItemGroup>

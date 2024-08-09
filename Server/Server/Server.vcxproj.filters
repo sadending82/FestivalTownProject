@@ -46,9 +46,11 @@
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\PacketHeartBeat.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\Utilities_generated.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\Object_generated.h" />
+    <ClInclude Include="Source\TableManager\Tables\FITH.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />
     <None Include="GameData\ItemTable.xlsx" />
+    <None Include="GameData\FITH_Mode.xlsx" />
   </ItemGroup>
 </Project>
