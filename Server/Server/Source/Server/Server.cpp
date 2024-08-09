@@ -201,7 +201,7 @@ void Server::SendObjectDropPacket(int roomID, int spawnCount)
 
         while (1) {
             int posX = x_distrib(gen), posY = y_distrib(gen);
-            if (afterMap[posY][posX] == 0 && beforeMap[posY][posX] == afterMap[posY][posX]) {
+            if (afterMap[posY][posX] > 0 && beforeMap[posY][posX] == afterMap[posY][posX]) {
                 afterMap[posY][posX]++;
                 auto pos = PacketTable::ObjectTable::CreateVec2(mBuilder, posX, posY);
                 mBuilder.Finish(PacketTable::ObjectTable::CreateObjectDrop(mBuilder, pos, id_distrib(gen)));
