@@ -76,6 +76,10 @@ enum GameCode {
 	FITH_Team_battle_Three,
 };
 
+enum MapCode {
+	TEST
+};
+
 #pragma pack (push, 1)
 
 struct HEADER {

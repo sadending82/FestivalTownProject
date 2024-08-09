@@ -172,6 +172,7 @@ xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
   <ItemGroup>
     <ClInclude Include="Source\Event.h" />
     <ClInclude Include="Source\Event\Event.h" />
+    <ClInclude Include="Source\Object\Map\Map.h" />
     <ClInclude Include="Source\PacketManager\FlatBuffer\test_generated.h" />
     <ClInclude Include="Source\PacketManager\PacketManager.h" />
     <ClInclude Include="Source\Network\ExOver.h" />

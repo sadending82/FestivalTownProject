@@ -1,3 +1,4 @@
+#include <fstream>
 #include "TableManager.h"
 
 TableManager::TableManager()
@@ -20,6 +21,7 @@ void TableManager::ReadAllDataTable()
     //ReadItemTable();
     //ReadCharacterStat();
     ReadFITHModeTable();
+    ReadMapData();
 }
 
 void TableManager::ReadItemTable()
@@ -149,4 +151,30 @@ void TableManager::ReadFITHModeTable()
     catch (const xlnt::exception& e) {
         std::cerr << "Excel File Load Fail: " << e.what() << std::endl;
     }
+}
+
+void TableManager::ReadMapData()
+{
+    std::ifstream inputFile("GameData/Map1.txt");
+
+    if (!inputFile.is_open()) {
+        std::cerr << "File Not Exist" << std::endl;
+        return;
+    }
+
+    std::string line;
+
+    while (std::getline(inputFile, line)) {
+        std::vector<int> row;
+        int number;
+        std::istringstream iss(line);
+
+        while (iss >> number) {
+            row.push_back(number);
+        }
+
+        MapData[MapCode::TEST].GetStructure().push_back(row);
+    }
+
+    inputFile.close();
 }

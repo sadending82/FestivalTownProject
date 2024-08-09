@@ -47,6 +47,7 @@
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\Utilities_generated.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\Object_generated.h" />
     <ClInclude Include="Source\TableManager\Tables\FITH.h" />
+    <ClInclude Include="Source\Object\Map\Map.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

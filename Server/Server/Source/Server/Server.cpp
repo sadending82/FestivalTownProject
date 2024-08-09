@@ -94,6 +94,7 @@ void Server::Init(class TableManager* pTableManager, class DB* pDB)
     // 테스트를 위해 임시 방 추가
     mRooms[TESTROOM]->Init(TESTROOM);
     mRooms[TESTROOM]->SetGameMode(GameCode::FITH_Team_battle_Three);
+    mRooms[TESTROOM]->InitMap(mTableManager->getMapData()[TEST]);
     // 이벤트 테스트
 
     int eventTime = mTableManager->getFITH_Data()[mRooms[TESTROOM]->GetGameMode()].Block_Spawn_Time;
@@ -181,25 +182,37 @@ void Server::SendHeartBeatPacket(int sessionID)
     GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
 }
 
-void Server::SendObjectDropPacket(int roomID)
+void Server::SendObjectDropPacket(int roomID, int spawnCount)
 {
-    // 임시 (게임 데이터 연동안함)
+    std::vector<std::vector<int>> beforeMap = mRooms[roomID]->GetMap().GetStructure();
 
-    mBuilder.Clear();
+    for (int i = 0; i < spawnCount; ++i) {
 
-    std::random_device rd;
-    std::mt19937 gen(rd());
+        mBuilder.Clear();
 
-    std::uniform_int_distribution<> x_distrib(0, 19);
-    std::uniform_int_distribution<> y_distrib(0, 9);
-    std::uniform_int_distribution<> id_distrib(0, 1);
+        std::random_device rd;
+        std::mt19937 gen(rd());
 
-    auto pos = PacketTable::ObjectTable::CreateVec2(mBuilder, x_distrib(gen), y_distrib(gen));
-    mBuilder.Finish(PacketTable::ObjectTable::CreateObjectDrop(mBuilder, pos, id_distrib(gen)));
+        std::uniform_int_distribution<> x_distrib(0, 19);
+        std::uniform_int_distribution<> y_distrib(0, 9);
+        std::uniform_int_distribution<> id_distrib(0, 1);
 
-    std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_OBJECTDROP, mBuilder.GetBufferPointer(), mBuilder.GetSize());
+        std::vector<std::vector<int>>& afterMap = mRooms[roomID]->GetMap().GetStructure();
 
-    SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
+        while (1) {
+            int posX = x_distrib(gen), posY = y_distrib(gen);
+            if (afterMap[posY][posX] == 0 && beforeMap[posY][posX] == afterMap[posY][posX]) {
+                afterMap[posY][posX]++;
+                auto pos = PacketTable::ObjectTable::CreateVec2(mBuilder, posX, posY);
+                mBuilder.Finish(PacketTable::ObjectTable::CreateObjectDrop(mBuilder, pos, id_distrib(gen)));
+                break;
+            }
+        }
+
+        std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_OBJECTDROP, mBuilder.GetBufferPointer(), mBuilder.GetSize());
+
+        SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
+    }
 }
 
 void Server::StartHeartBeat(int sessionID)

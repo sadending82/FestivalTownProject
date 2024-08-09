@@ -18,9 +18,7 @@ public:
 		int spawnCnt = pServer->GetTableManager()->getFITH_Data()[gameMode].Block_Spawn_Count;
 		PushEventObjectDrop(pServer->GetTimer(), event->roomID, nextEventTime);
 
-		for (int i = 0; i < spawnCnt; ++i) {
-			pServer->SendObjectDropPacket(event->roomID);
-		}
+		pServer->SendObjectDropPacket(event->roomID, spawnCnt);
 	}
 
 private:
