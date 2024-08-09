@@ -17,8 +17,6 @@ namespace Network.PacketProcessor
             int posX = Data.Pos.Value.X; 
             int posY = Data.Pos.Value.Y;
             int objectID = Data.Id;
-
-            Debug.Log(posX + " " + posY);
         }
 
         private FlatBufferBuilder mBuilder;
