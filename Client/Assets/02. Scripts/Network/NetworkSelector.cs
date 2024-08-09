@@ -7,7 +7,7 @@ public class NetworkSelect : EditorWindow
     static NetworkManager _nManager;
 
     [SerializeField]
-    private IPAddressData IPAddressObj;
+    static private IPAddressData IPAddressObj;
 
     int _networkSelected;
     string _ipAddressText;
@@ -18,6 +18,8 @@ public class NetworkSelect : EditorWindow
     {
         GetWindow<NetworkSelect>();
         _nManager = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
+        
+        IPAddressObj = Resources.Load<IPAddressData>("ScriptableObject/IPAddress");
     }
 
     private void OnGUI()
@@ -26,6 +28,11 @@ public class NetworkSelect : EditorWindow
         if (_nManager == null)
         {
             _nManager = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
+        }
+
+        if (IPAddressObj == null)
+        {
+            IPAddressObj = Resources.Load<IPAddressData>("ScriptableObject/IPAddress");
         }
 
         GUIStyle labelStyle = EditorStyles.boldLabel;
