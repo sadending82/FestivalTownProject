@@ -7,7 +7,7 @@ public class NetworkSelect : EditorWindow
     static NetworkManager _nManager;
 
     [SerializeField]
-    private IPAddressData IPAddressObj;
+    static private IPAddressData IPAddressObj;
 
     int _networkSelected;
     string _ipAddressText;
@@ -18,10 +18,12 @@ public class NetworkSelect : EditorWindow
     {
         GetWindow<NetworkSelect>();
         _nManager = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
+        IPAddressObj = Resources.Load<IPAddressData>("ScriptableObject/IPAddress");
     }
 
     private void OnGUI()
     {
+
         if (_nManager == null)
         {
             _nManager = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
@@ -31,10 +33,7 @@ public class NetworkSelect : EditorWindow
         labelStyle.alignment = TextAnchor.MiddleCenter;
         GUILayout.Label("네트워크 설정", EditorStyles.boldLabel);
 
-
         _networkSelected = GUILayout.Toolbar(_networkSelected, new string[] { "로컬 네트워크로 설정", "리모트 네트워크로 설정", "IP 직접 입력" });
-
-        
 
         if (_networkSelected == 2)
         {
