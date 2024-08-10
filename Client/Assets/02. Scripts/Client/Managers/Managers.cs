@@ -12,11 +12,14 @@ public class Managers : MonoBehaviour
 //    NetworkManager _network;
     PlayerManager _player;
     CubeObjectManager _cubeObject;
+    ObjectPoolManager _objPool = new ObjectPoolManager();
+
     public static UIManager UI { get { return Instance._ui; } }
     public static ResourceManager Resource { get { return Instance._resource; } }
 //    public static NetworkManager Network { get { return Instance._network; } }
     public static PlayerManager Player { get { return Instance._player; } }
     public static CubeObjectManager CubeObject { get { return Instance._cubeObject; } }
+    public static ObjectPoolManager ObjectPool { get { return Instance._objPool; } }
 
     private void Start()
     {
@@ -43,5 +46,7 @@ public class Managers : MonoBehaviour
             DontDestroyOnLoad(obj);
             s_instance = obj.GetComponent<Managers>();
         }
+
+        s_instance._objPool.Init();
     }
 }
