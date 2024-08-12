@@ -22,6 +22,9 @@ struct ObjectBuilder;
 struct ObjectDrop;
 struct ObjectDropBuilder;
 
+struct BombSpawn;
+struct BombSpawnBuilder;
+
 struct Vec2;
 struct Vec2Builder;
 
@@ -128,6 +131,48 @@ inline ::flatbuffers::Offset<ObjectDrop> CreateObjectDrop(
     int32_t id = 0) {
   ObjectDropBuilder builder_(_fbb);
   builder_.add_id(id);
+  builder_.add_pos(pos);
+  return builder_.Finish();
+}
+
+struct BombSpawn FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef BombSpawnBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_POS = 4
+  };
+  const PacketTable::ObjectTable::Vec2 *pos() const {
+    return GetPointer<const PacketTable::ObjectTable::Vec2 *>(VT_POS);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_POS) &&
+           verifier.VerifyTable(pos()) &&
+           verifier.EndTable();
+  }
+};
+
+struct BombSpawnBuilder {
+  typedef BombSpawn Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_pos(::flatbuffers::Offset<PacketTable::ObjectTable::Vec2> pos) {
+    fbb_.AddOffset(BombSpawn::VT_POS, pos);
+  }
+  explicit BombSpawnBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<BombSpawn> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<BombSpawn>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<BombSpawn> CreateBombSpawn(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<PacketTable::ObjectTable::Vec2> pos = 0) {
+  BombSpawnBuilder builder_(_fbb);
   builder_.add_pos(pos);
   return builder_.Finish();
 }

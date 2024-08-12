@@ -25,12 +25,15 @@ namespace NetworkProtocol
         S2C_PLAYERPOSSYNC,
 
         S2C_OBJECTDROP,
+        S2C_LIFEREDUCE,
+        S2C_BOMBSPAWN,
 
         // Client -> Server
         C2S_HEARTBEAT,
         C2S_PLAYERMOVE,
         C2S_PLAYERSTOP,
-        C2S_PLAYERPOSSYNC
+        C2S_PLAYERPOSSYNC,
+        C2S_BOMBINPUT
     };
 
     public enum ePlayerState

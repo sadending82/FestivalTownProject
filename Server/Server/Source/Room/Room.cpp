@@ -8,12 +8,17 @@ Room::~Room()
 {
 }
 
-void Room::Init(int id, int playerLimit)
+void Room::Init(int id, int teamLifeCount, int playerLimit)
 {
 	mRoomID = id;
 	mPlayerLimit = playerLimit;
 	std::fill(mPlayerList.begin(), mPlayerList.end(), nullptr);
+
+	// team game
+	mTeams[TeamCode::RED].Init(teamLifeCount);
+	mTeams[TeamCode::BLUE].Init(teamLifeCount);
 }
+
 
 bool Room::addPlayer(Player* player)
 {

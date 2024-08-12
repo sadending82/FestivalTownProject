@@ -92,7 +92,7 @@ void Server::Init(class TableManager* pTableManager, class DB* pDB)
     mTimer->Init(mHcp);
 
     // 테스트를 위해 임시 방 추가
-    mRooms[TESTROOM]->Init(TESTROOM);
+    mRooms[TESTROOM]->Init(TESTROOM, mTableManager->getFITH_Data()[GameCode::FITH_Team_battle_Three].Team_Life_Count);
     mRooms[TESTROOM]->SetGameMode(GameCode::FITH_Team_battle_Three);
     mRooms[TESTROOM]->InitMap(mTableManager->getMapData()[TEST]);
     // 이벤트 테스트

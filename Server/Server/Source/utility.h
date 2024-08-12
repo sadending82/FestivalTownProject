@@ -50,12 +50,15 @@ enum ePacketType {
 	S2C_PLAYERPOSSYNC,
 
 	S2C_OBJECTDROP,
+	S2C_LIFEREDUCE,
+	S2C_BOMBSPAWN,
 
 	// Client -> Server
 	C2S_HEARTBEAT,
 	C2S_PLAYERMOVE,
 	C2S_PLAYERSTOP,
-	C2S_PLAYERPOSSYNC
+	C2S_PLAYERPOSSYNC,
+	C2S_BOMBINPUT
 };
 
 enum eSessionState
@@ -74,6 +77,11 @@ enum GameCode {
 	FITH_Team_battle_One,
 	FITH_Team_battle_Two,
 	FITH_Team_battle_Three,
+};
+
+enum TeamCode {
+	RED,
+	BLUE
 };
 
 enum MapCode {

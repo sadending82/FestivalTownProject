@@ -14,6 +14,7 @@
     <ClCompile Include="Source\Thread\TimerThread\TimerThread.cpp" />
     <ClCompile Include="Source\utility.cpp" />
     <ClCompile Include="Source\Event\Event.cpp" />
+    <ClCompile Include="Source\Room\Team\Team.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DB\DB.h" />
@@ -48,6 +49,9 @@
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\Object_generated.h" />
     <ClInclude Include="Source\TableManager\Tables\FITH.h" />
     <ClInclude Include="Source\Object\Map\Map.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\Game_generated.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\PacketBombInput.h" />
+    <ClInclude Include="Source\Room\Team\Team.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

@@ -159,6 +159,7 @@ xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     <ClCompile Include="Source\Network\ExOver.cpp" />
     <ClCompile Include="Source\Network\Session\Session.cpp" />
     <ClCompile Include="Source\PacketManager\PacketManager.cpp" />
+    <ClCompile Include="Source\Room\Team\Team.cpp" />
     <ClCompile Include="Source\Server\Server.cpp" />
     <ClCompile Include="Source\Room\Room.cpp" />
     <ClCompile Include="Source\Object\Player.cpp" />
@@ -180,9 +181,11 @@ xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     <ClInclude Include="Source\PacketManager\PacketProcessors\Event\EventHeartBeat.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Event\EventObjectDrop.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\FlatBufferManager.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\Game_generated.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\Object_generated.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\Player_generated.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\Utilities_generated.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\PacketBombInput.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\PacketHeartBeat.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\PacketPlayerMove.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\PacketPlayerPosSync.h" />
@@ -190,6 +193,7 @@ xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     <ClInclude Include="Source\PacketManager\PacketProcessors\Processors.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\PacketProcessor.h" />
     <ClInclude Include="Source\PacketManager\test_generated.h" />
+    <ClInclude Include="Source\Room\Team\Team.h" />
     <ClInclude Include="Source\Server\Server.h" />
     <ClInclude Include="Source\Room\Room.h" />
     <ClInclude Include="Source\Object\Player.h" />
