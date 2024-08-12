@@ -15,6 +15,6 @@ public:
 	std::vector<uint8_t> MakeBombSpawnPacket(int x, int y);
 
 private:
-	flatbuffers::FlatBufferBuilder mBuilder;
+
 };
 
