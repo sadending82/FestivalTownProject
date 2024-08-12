@@ -7,3 +7,4 @@
 
 #include "Event/EventHeartBeat.h"
 #include "Event/EventObjectDrop.h"
+#include "Event/EventBombSpawn.h"

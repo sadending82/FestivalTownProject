@@ -29,6 +29,7 @@ public:
 	void SendPlayerGameInfo(int sessionID);
 	void SendHeartBeatPacket(int sessionID);
 	void SendObjectDropPacket(int roomID, int spawnCount);
+	void SendBombSpawnPacket(int roomID, int spawnCount);
 
 	void StartHeartBeat(int sessionID);
 

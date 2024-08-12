@@ -12,7 +12,8 @@ enum eEventType {
 	HEARTBEAT,
 	
 	// InGmae Event
-	OBJECTDROP
+	OBJECTDROP,
+	BOMBSPAWN
 };
 
 struct EVENT_HEADER {
@@ -40,8 +41,14 @@ struct EV_OBJECT_DROP : EVENT {
 	int roomID;
 };
 
+struct EV_BOMB_SPAWN : EVENT{
+	int roomID;
+};
+
 #pragma pack(pop)
 
 bool PushEventHeartBeat(Timer* pTimer, int sessionID);
 
+// InGameEvent
 bool PushEventObjectDrop(Timer* pTimer, int roomID, int time);
+bool PushEventBombSpawn(Timer* pTimer, int roomID, int time);

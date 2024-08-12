@@ -34,3 +34,20 @@ bool PushEventObjectDrop(Timer* pTimer, int roomID, int time) {
 
 	return true;
 }
+
+bool PushEventBombSpawn(Timer* pTimer, int roomID, int time)
+{
+	EV_BOMB_SPAWN e;
+	e.size = sizeof(EV_BOMB_SPAWN);
+	e.type = eEventType::BOMBSPAWN;
+	e.roomID = roomID;
+
+
+	EVENT_HEADER header;
+	header.start_time = std::chrono::system_clock::now() + std::chrono::seconds(time);
+	memcpy(header.message, reinterpret_cast<char*>(&e), sizeof(EV_BOMB_SPAWN));
+
+	pTimer->PushEvent(header);
+
+	return false;
+}

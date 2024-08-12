@@ -9,6 +9,7 @@ using PacketTable.PlayerTable;
 using Network.PacketProcessor;
 using UnityEngine.UIElements;
 using PacketTable.UtilitiesTable;
+using PacketTable.GameTable;
 
 public class PacketManager : MonoBehaviour 
 {
@@ -50,7 +51,11 @@ public class PacketManager : MonoBehaviour
             { ePacketType.S2C_PLAYERPOSSYNC, new PlayerPosSyncProcessor() },
 
 
-             { ePacketType.S2C_OBJECTDROP, new ObjectDropProcessor() }
+            { ePacketType.S2C_OBJECTDROP, new ObjectDropProcessor() },
+            { ePacketType.S2C_BOMBSPAWN, new BombSpawnProcessor() },
+
+
+            { ePacketType.S2C_LIFEREDUCE, new LifeReduceProcessor() }
         };
     }
 
@@ -216,6 +221,25 @@ public class PacketManager : MonoBehaviour
         return result;
     }
 
+    public byte[] CreateBombInputPacket(int id, int team)
+    {
+        var builder = new FlatBufferBuilder(1);
+        BombInput.AddTeam(builder, team);
+        BombInput.AddId(builder, id);
+        var offset = BombInput.EndBombInput(builder);
+        builder.Finish(offset.Value);
+
+        byte[] data = builder.SizedByteArray();
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_BOMBINPUT, flatBufferSize = (ushort)data.Length };
+        byte[] headerdata = Serialize<HEADER>(header);
+        byte[] result = new byte[data.Length + headerdata.Length];
+
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
+
+        return result;
+    }
+
     public void SendPlayerMovePacket(Vector3 position, Vector3 direction, int id, ePlayerState state)
     {
 
@@ -242,6 +266,13 @@ public class PacketManager : MonoBehaviour
     public void SendHeartBeatPacket()
     {
         byte[] packet = CreateHeartBeatPacket();
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+
+    public void SendBombInputPacket(int id, int team)
+    {
+        byte[] packet = CreateBombInputPacket(id, team);
         if (packet == null) { return; }
         SendPacket(packet);
     }

@@ -99,6 +99,7 @@ void Server::Init(class TableManager* pTableManager, class DB* pDB)
 
     int eventTime = mTableManager->getFITH_Data()[mRooms[TESTROOM]->GetGameMode()].Block_Spawn_Time;
     PushEventObjectDrop(mTimer, TESTROOM, eventTime);
+    PushEventBombSpawn(mTimer, TESTROOM, mTableManager->getFITH_Data()[mRooms[TESTROOM]->GetGameMode()].Bomb_Spawn_Time);
 
     SYSTEM_INFO si;
     GetSystemInfo(&si);
@@ -213,6 +214,29 @@ void Server::SendObjectDropPacket(int roomID, int spawnCount)
 
         SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
     }
+}
+
+void Server::SendBombSpawnPacket(int roomID, int spawnCount)
+{
+    for (int i = 0; i < spawnCount; ++i) {
+
+        mBuilder.Clear();
+
+        std::random_device rd;
+        std::mt19937 gen(rd());
+
+        std::uniform_int_distribution<> x_distrib(0, 19);
+        std::uniform_int_distribution<> y_distrib(0, 9);
+        int posX = x_distrib(gen), posY = y_distrib(gen);
+
+        auto pos = PacketTable::ObjectTable::CreateVec2(mBuilder, posX, posY);
+        mBuilder.Finish(PacketTable::ObjectTable::CreateBombSpawn(mBuilder, pos));
+
+        std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_BOMBSPAWN, mBuilder.GetBufferPointer(), mBuilder.GetSize());
+
+        SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
+    }
+
 }
 
 void Server::StartHeartBeat(int sessionID)
