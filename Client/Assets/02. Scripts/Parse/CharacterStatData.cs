@@ -7,6 +7,6 @@ using ExcelDataStructure;
 [ExcelAsset(LogOnImport = true)]
 public class CharacterStatData : ScriptableObject
 {
-	public List<CharacterStatEntity> Sheet1; // Replace 'EntityType' to an actual type that is serializable.
+	public List<CharacterStatEntity> Sheet1;
 
 }

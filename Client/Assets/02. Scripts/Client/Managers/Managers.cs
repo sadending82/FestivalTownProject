@@ -5,7 +5,7 @@ using UnityEngine;
 public class Managers : MonoBehaviour
 {
     static Managers s_instance; // static 인스턴스
-    static Managers Instance { get { Init(); return s_instance; } }
+    static Managers Instance { get { return s_instance; } }
 
     UIManager _ui = new UIManager();
     ResourceManager _resource = new ResourceManager();
@@ -13,6 +13,7 @@ public class Managers : MonoBehaviour
     PlayerManager _player;
     CubeObjectManager _cubeObject;
     ObjectPoolManager _objPool = new ObjectPoolManager();
+    DataManager _data = new DataManager();
 
     public static UIManager UI { get { return Instance._ui; } }
     public static ResourceManager Resource { get { return Instance._resource; } }
@@ -20,6 +21,8 @@ public class Managers : MonoBehaviour
     public static PlayerManager Player { get { return Instance._player; } }
     public static CubeObjectManager CubeObject { get { return Instance._cubeObject; } }
     public static ObjectPoolManager ObjectPool { get { return Instance._objPool; } }
+
+    public static DataManager Data { get { return Instance._data; } }
 
     private void Start()
     {
@@ -48,5 +51,6 @@ public class Managers : MonoBehaviour
         }
 
         s_instance._objPool.Init();
+        s_instance._data.Init();
     }
 }
