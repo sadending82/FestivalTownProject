@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody pelvisRigidbody;
 
     [Header("--- State ---")]
+    private CharacterStatus playerStatus;
     public float walkSpeed;
     public float runSpeed;
     public float jumpForce;
@@ -30,7 +31,6 @@ public class PlayerController : MonoBehaviour
     private Vector3 stabillizerDirection;
 
     [Header("--- Animation ---")]
-    private AnimationController animationController;
     private float leftMouseClickTimer;
     private bool isHold;
     private bool isLeftShiftKeyDown;
@@ -64,9 +64,9 @@ public class PlayerController : MonoBehaviour
     }
     void Start()
     {
-        animationController = this.GetComponent<AnimationController>();
         network = Managers.Network;
         pelvisRigidbody = pelvis.GetComponent<Rigidbody>();
+        playerStatus = this.GetComponent<CharacterStatus>();
 
         packetManager = network.GetPacketManager();
         receiveManager = network.GetReceiveManager();
@@ -218,7 +218,7 @@ public class PlayerController : MonoBehaviour
                 if (isGrounded == true && nowLowerBodyAnimationState != LowerBodyAnimationState.RUN)
                 {
                     nowLowerBodyAnimationState = LowerBodyAnimationState.RUN;
-                    animationController.setLowerBodyAnimationState(LowerBodyAnimationState.RUN);
+                    playerStatus.setLowerBodyAnimationState(LowerBodyAnimationState.RUN);
                 }
             }
             else
@@ -227,7 +227,7 @@ public class PlayerController : MonoBehaviour
                 if (isGrounded == true && nowLowerBodyAnimationState != LowerBodyAnimationState.WALK)
                 {
                     nowLowerBodyAnimationState = LowerBodyAnimationState.WALK;
-                    animationController.setLowerBodyAnimationState(LowerBodyAnimationState.WALK);
+                    playerStatus.setLowerBodyAnimationState(LowerBodyAnimationState.WALK);
                 }
             }
         }
@@ -236,7 +236,7 @@ public class PlayerController : MonoBehaviour
             if (isGrounded == true && nowLowerBodyAnimationState != LowerBodyAnimationState.IDLE)
             {
                 nowLowerBodyAnimationState = LowerBodyAnimationState.IDLE;
-                animationController.setLowerBodyAnimationState(LowerBodyAnimationState.IDLE);
+                playerStatus.setLowerBodyAnimationState(LowerBodyAnimationState.IDLE);
             }
         }
 
@@ -265,11 +265,11 @@ public class PlayerController : MonoBehaviour
             {
                 if (isGrounded == true)
                 {
-                    animationController.setUpperBodyAnimationState(UpperBodyAnimationState.POWERATTACK);
+                    playerStatus.setUpperBodyAnimationState(UpperBodyAnimationState.POWERATTACK);
                 }
                 else
                 {
-                    animationController.setLowerBodyAnimationState(LowerBodyAnimationState.FLYINGKICK);
+                    playerStatus.setLowerBodyAnimationState(LowerBodyAnimationState.FLYINGKICK);
                 }
             }
         }
@@ -288,7 +288,7 @@ public class PlayerController : MonoBehaviour
                 {
                     // 잡기 애니메이션 작동
                     isHold = true;
-                    animationController.setUpperBodyAnimationState(UpperBodyAnimationState.HOLD);
+                    playerStatus.setUpperBodyAnimationState(UpperBodyAnimationState.HOLD);
                 }
             }
             // 마우스 좌클릭 업
@@ -297,11 +297,11 @@ public class PlayerController : MonoBehaviour
                 if (isHold == true)
                 {
                     isHold = false;
-                    animationController.setUpperBodyAnimationState(UpperBodyAnimationState.NONE);
+                    playerStatus.setUpperBodyAnimationState(UpperBodyAnimationState.NONE);
                 }
                 else
                 {
-                    animationController.setUpperBodyAnimationState(UpperBodyAnimationState.ATTACK);
+                    playerStatus.setUpperBodyAnimationState(UpperBodyAnimationState.ATTACK);
                 }
                 leftMouseClickTimer = 0f;
             }
@@ -310,18 +310,18 @@ public class PlayerController : MonoBehaviour
         // 마우스 휠클릭 다운
         if (Input.GetMouseButtonDown(2))
         {
-            animationController.setUpperBodyAnimationState(UpperBodyAnimationState.HEADATTACK);
+            playerStatus.setUpperBodyAnimationState(UpperBodyAnimationState.HEADATTACK);
         }
         // 마우스 휠클릭 업
         if (Input.GetMouseButtonUp(2))
         {
-            animationController.setUpperBodyAnimationState(UpperBodyAnimationState.NONE);
+            playerStatus.setUpperBodyAnimationState(UpperBodyAnimationState.NONE);
         }
 
         // 마우스 우클릭 다운
         if (Input.GetMouseButtonDown(1))
         {
-            animationController.setUpperBodyAnimationState(UpperBodyAnimationState.THROW);
+            playerStatus.setUpperBodyAnimationState(UpperBodyAnimationState.THROW);
         }
     }
     public void SetAmIPlayer(bool amIPlayer)
@@ -350,7 +350,7 @@ public class PlayerController : MonoBehaviour
         isGrounded = false;
         pelvisRigidbody.velocity = Vector3.up * jumpForce;
         nowLowerBodyAnimationState = LowerBodyAnimationState.JUMP;
-        animationController.setLowerBodyAnimationState(LowerBodyAnimationState.JUMP);
+        playerStatus.setLowerBodyAnimationState(LowerBodyAnimationState.JUMP);
     }
     public void SetMyId(int myId)
     {

@@ -47,7 +47,7 @@ public class PlayerCameraController : MonoBehaviour
        }
        else
        {
-           x = Mathf.Clamp(x, 330f, 361f);
+           x = Mathf.Clamp(x, 320f, 361f);
        }
        cameraArm.rotation = Quaternion.Euler(x, cameraAngle.y + mouseDelta.x, cameraAngle.z);
     }

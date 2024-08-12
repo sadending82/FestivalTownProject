@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using eAnimationState;
 
 public class CharacterStatus : MonoBehaviour
 {
@@ -24,7 +25,10 @@ public class CharacterStatus : MonoBehaviour
 
     [Header("--- AnimationControll ---")]
     public bool isGroggy;
+    private AnimationController animationController;
     private ActiveRagdoll.AnimationModule animationMoudule;
+    private UpperBodyAnimationState upperBodyAnimationState;
+    private LowerBodyAnimationState lowerBodyAnimationState;
 
     private void Awake()
     {
@@ -33,6 +37,7 @@ public class CharacterStatus : MonoBehaviour
     }
     private void Start()
     {
+        animationController = GetComponent<AnimationController>();
     }
     private void Update()
     {
@@ -48,6 +53,26 @@ public class CharacterStatus : MonoBehaviour
         {
             myCamera.enabled = true;
             Managers.UI.ShowSceneUI<UI_OneVersusOneSceneUI>();
+        }
+    }
+    public void setUpperBodyAnimationState(UpperBodyAnimationState upperBodyAnimationState)
+    {
+        this.upperBodyAnimationState = upperBodyAnimationState;
+        animationController.setUpperBodyAnimationState(upperBodyAnimationState);
+        ///<summary>
+        ///서버에 상태 전달하는 부분 여기에 추가
+        ///</summary>
+    }
+    public void setLowerBodyAnimationState(LowerBodyAnimationState lowerBodyAnimationState)
+    {
+        if (lowerBodyAnimationState != LowerBodyAnimationState.ROLL &&
+            lowerBodyAnimationState != LowerBodyAnimationState.FLYINGKICK)
+        {
+            this.lowerBodyAnimationState = lowerBodyAnimationState;
+            animationController.setLowerBodyAnimationState(lowerBodyAnimationState);
+            ///<summary>
+            ///서버에 상태 전달하는 부분 여기에 추가
+            ///</summary>
         }
     }
 }
