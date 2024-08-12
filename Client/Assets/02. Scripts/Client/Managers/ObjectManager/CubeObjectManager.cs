@@ -14,6 +14,8 @@ public class CubeObjectManager : MonoBehaviour
     public int cubeTypes = 2;
     private List<GameObject> cubes = new List<GameObject>();
 
+    private float[,] aMapHeight = new float[30, 30];
+
     // ------ Test -------
     public int testXY = 0;
 
@@ -50,6 +52,28 @@ public class CubeObjectManager : MonoBehaviour
 
     public void SpawnCube(int x, int y, int type = 1)
     {
+        // 맵의 칸 별로의 높이를 저장
+        float targetHeight = aMapHeight[x, y];
+        switch(type)
+        {
+            case 0:
+                {
+                    targetHeight += 0.5f;
+                    aMapHeight[x, y] += 1f;
+                }
+                break;
+            case 1:
+                {
+                    targetHeight += 1f;
+                    aMapHeight[x, y] += 2f;
+                }
+                break;
+            default:
+                {
+                    Debug.Log("ERROR!! : SpawnCube(), Type is Wrong !!!");
+                }
+                break;
+        }
         GameObject reusedCube = null;
         // 단위 맞춰주기
         x *= -2;
@@ -77,6 +101,7 @@ public class CubeObjectManager : MonoBehaviour
         reusedCube.SetActive(true);
         // 타입에 해당하는 큐브 활성화, 포지션 설정
         reusedCube.gameObject.transform.GetChild(type).gameObject.SetActive(true);
+        reusedCube.gameObject.transform.GetChild(type).gameObject.GetComponent<Cube>().SetTargetHeight(targetHeight);
         reusedCube.gameObject.transform.GetChild(type).gameObject.transform.position = new Vector3(x + offsetX, creatHeight, y + offsetY);
     }
 }

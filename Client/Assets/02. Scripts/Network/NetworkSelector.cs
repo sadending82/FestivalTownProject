@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class NetworkSelect : EditorWindow
 {
-    static NetworkManager _nManager;
-
     [SerializeField]
     static private IPAddressData IPAddressObj;
 
@@ -17,18 +15,12 @@ public class NetworkSelect : EditorWindow
     static void Open()
     {
         GetWindow<NetworkSelect>();
-        _nManager = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
         
         IPAddressObj = Resources.Load<IPAddressData>("ScriptableObject/IPAddress");
     }
 
     private void OnGUI()
     {
-
-        if (_nManager == null)
-        {
-            _nManager = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
-        }
 
         if (IPAddressObj == null)
         {

@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         animationController = this.GetComponent<AnimationController>();
-        network = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
+        network = Managers.Network;
         pelvisRigidbody = pelvis.GetComponent<Rigidbody>();
 
         packetManager = network.GetPacketManager();
