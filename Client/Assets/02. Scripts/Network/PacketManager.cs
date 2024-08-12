@@ -4,12 +4,9 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using NetworkProtocol;
-using Google.FlatBuffers;
-using PacketTable.PlayerTable;
 using Network.PacketProcessor;
 using UnityEngine.UIElements;
-using PacketTable.UtilitiesTable;
-using PacketTable.GameTable;
+
 
 public class PacketManager : MonoBehaviour 
 {
@@ -21,6 +18,7 @@ public class PacketManager : MonoBehaviour
     }
 
     private TcpClient _connection;
+    private PacketCreater _packetCreater = new PacketCreater();
 
     public PacketManager()
     {
@@ -94,156 +92,10 @@ public class PacketManager : MonoBehaviour
         return buffer;
     }
 
-    public byte[] CreatePlayerMovePacket(Vector3 position, Vector3 direction, int id, ePlayerState state)
-    {
-        var builder = new FlatBufferBuilder(1);
-        var pos = Vec3.CreateVec3(builder, position.x, position.y, position.z);
-        var dir = Vec3.CreateVec3(builder, direction.x, direction.y, direction.z);
-        PlayerMove.StartPlayerMove(builder);
-        PlayerMove.AddPos(builder, pos);
-        PlayerMove.AddDirection(builder, dir);
-        PlayerMove.AddId(builder, id);
-        PlayerMove.AddState(builder, (int)state);
-        var offset = PlayerMove.EndPlayerMove(builder);
-        builder.Finish(offset.Value);
-
-        //var buf = builder.DataBuffer;
-        //var verifier = new Verifier(buf);
-        //if (PlayerMoveVerify.Verify(verifier, (uint)offset.Value) == false)
-        //{
-        //    Debug.Log("invaild buf / CreatePlayerMovePacket");
-        //    return null;
-        //}
-
-        byte[] data = builder.SizedByteArray();
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERMOVE, flatBufferSize = (ushort)data.Length };
-
-        byte[] headerdata = Serialize<HEADER>(header);
-        byte[] result = new byte[data.Length + headerdata.Length];
-
-        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
-        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
-
-        return result;
-    }
-
-    public byte[] CreatePlayerStopPacket(Vector3 position, Vector3 direction, int id, ePlayerState state)
-    {
-        var builder = new FlatBufferBuilder(1);
-        var pos = Vec3.CreateVec3(builder, position.x, position.y, position.z);
-        var dir = Vec3.CreateVec3(builder, direction.x, direction.y, direction.z);
-        PlayerStop.StartPlayerStop(builder);
-        PlayerStop.AddPos(builder, pos);
-        PlayerStop.AddDirection(builder, dir);
-        PlayerStop.AddId(builder, id);
-        PlayerStop.AddState(builder, (int)state);
-        var offset = PlayerStop.EndPlayerStop(builder);
-        builder.Finish(offset.Value);
-
-        //var buf = builder.DataBuffer;
-        //var verifier = new Verifier(buf);
-        //if (PlayerStopVerify.Verify(verifier, (uint)offset.Value) == false)
-        //{
-        //    Debug.Log("invaild buf / CreatePlayerStopPacket");
-        //    return null;
-        //}
-
-        byte[] data = builder.SizedByteArray();
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERSTOP, flatBufferSize = (ushort)data.Length };
-        byte[] headerdata = Serialize<HEADER>(header);
-        byte[] result = new byte[data.Length + headerdata.Length];
-
-        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
-        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
-
-        return result;
-    }
-
-    public byte[] CreatePlayerPosSyncPacket(Vector3 position, Vector3 direction, int id)
-    {
-        var builder = new FlatBufferBuilder(1);
-        var pos = Vec3.CreateVec3(builder, position.x, position.y, position.z);
-        var dir = Vec3.CreateVec3(builder, direction.x, direction.y, direction.z);
-        PlayerPos.StartPlayerPos(builder);
-        PlayerPos.AddPos(builder, pos);
-        PlayerPos.AddDirection(builder, dir);
-        PlayerPos.AddId(builder, id);
-        var offset = PlayerPos.EndPlayerPos(builder);
-        builder.Finish(offset.Value);
-
-        //var buf = builder.DataBuffer;
-        //var verifier = new Verifier(buf);
-        //if (PlayerPosSyncVerify.Verify(verifier, (uint)offset.Value) == false)
-        //{
-        //    Debug.Log("invaild buf / CreatePlayerPosSyncPacket");
-        //    return null;
-        //}
-
-        byte[] data = builder.SizedByteArray();
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERPOSSYNC, flatBufferSize = (ushort)data.Length };
-
-        byte[] headerdata = Serialize<HEADER>(header);
-        byte[] result = new byte[data.Length + headerdata.Length];
-
-        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
-        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
-
-        return result;
-    }
-
-    public byte[] CreateHeartBeatPacket()
-    {
-        long currTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-
-        var builder = new FlatBufferBuilder(1);
-        HeartBeat.StartHeartBeat(builder);
-        HeartBeat.AddTime(builder, currTime);
-        var offset = HeartBeat.EndHeartBeat(builder);
-        builder.Finish(offset.Value);
-
-        //서버에서 버퍼 이상없이 잘 읽는데 Verity가 false가 뜸...
-        var buf = builder.DataBuffer;
-        var timeCheck = HeartBeat.GetRootAsHeartBeat(buf).Time;
-        if (timeCheck != currTime)
-        {
-            Debug.Log("invaild buf / CreateHeartBeatPacket");
-
-            return null;
-        }
-
-        byte[] data = builder.SizedByteArray();
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_HEARTBEAT, flatBufferSize = (ushort)data.Length };
-        byte[] headerdata = Serialize<HEADER>(header);
-
-        byte[] result = new byte[data.Length + headerdata.Length];
-        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
-        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
-        return result;
-    }
-
-    public byte[] CreateBombInputPacket(int id, int team)
-    {
-        var builder = new FlatBufferBuilder(1);
-        BombInput.AddTeam(builder, team);
-        BombInput.AddId(builder, id);
-        var offset = BombInput.EndBombInput(builder);
-        builder.Finish(offset.Value);
-
-        byte[] data = builder.SizedByteArray();
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_BOMBINPUT, flatBufferSize = (ushort)data.Length };
-        byte[] headerdata = Serialize<HEADER>(header);
-        byte[] result = new byte[data.Length + headerdata.Length];
-
-        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
-        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
-
-        return result;
-    }
-
     public void SendPlayerMovePacket(Vector3 position, Vector3 direction, int id, ePlayerState state)
     {
 
-        byte[] packet = CreatePlayerMovePacket(position, direction, id, state);
+        byte[] packet = _packetCreater.CreatePlayerMovePacket(position, direction, id, state);
         if (packet == null) { return; }
         SendPacket(packet);
     }
@@ -251,28 +103,28 @@ public class PacketManager : MonoBehaviour
     public void SendPlayerStopPacket(Vector3 position, Vector3 direction, int id, ePlayerState state)
     {
 
-        byte[] packet = CreatePlayerStopPacket(position, direction, id, state);
+        byte[] packet = _packetCreater.CreatePlayerStopPacket(position, direction, id, state);
         if (packet == null) { return; }
         SendPacket(packet);
     }
 
     public void SendPlayerPosPacket(Vector3 position, Vector3 direction, int id)
     {
-        byte[] packet = CreatePlayerPosSyncPacket(position, direction, id);
+        byte[] packet = _packetCreater.CreatePlayerPosSyncPacket(position, direction, id);
         if (packet == null) { return; }
         SendPacket(packet);
     }
 
     public void SendHeartBeatPacket()
     {
-        byte[] packet = CreateHeartBeatPacket();
+        byte[] packet = _packetCreater.CreateHeartBeatPacket();
         if (packet == null) { return; }
         SendPacket(packet);
     }
 
     public void SendBombInputPacket(int id, int team)
     {
-        byte[] packet = CreateBombInputPacket(id, team);
+        byte[] packet = _packetCreater.CreateBombInputPacket(id, team);
         if (packet == null) { return; }
         SendPacket(packet);
     }
