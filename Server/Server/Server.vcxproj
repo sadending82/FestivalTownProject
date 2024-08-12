@@ -158,6 +158,7 @@ xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     <ClCompile Include="Source\Event\Event.cpp" />
     <ClCompile Include="Source\Network\ExOver.cpp" />
     <ClCompile Include="Source\Network\Session\Session.cpp" />
+    <ClCompile Include="Source\PacketManager\PacketMaker\PacketMaker.cpp" />
     <ClCompile Include="Source\PacketManager\PacketManager.cpp" />
     <ClCompile Include="Source\Room\Team\Team.cpp" />
     <ClCompile Include="Source\Server\Server.cpp" />
@@ -175,6 +176,7 @@ xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     <ClInclude Include="Source\Event\Event.h" />
     <ClInclude Include="Source\Object\Map\Map.h" />
     <ClInclude Include="Source\PacketManager\FlatBuffer\test_generated.h" />
+    <ClInclude Include="Source\PacketManager\PacketMaker\PacketMaker.h" />
     <ClInclude Include="Source\PacketManager\PacketManager.h" />
     <ClInclude Include="Source\Network\ExOver.h" />
     <ClInclude Include="Source\Network\Session\Session.h" />

@@ -87,6 +87,7 @@ void Server::Init(class TableManager* pTableManager, class DB* pDB)
 
     pDB->Init();
 
+    mPacketMaker = new PacketMaker;
     // Thread Create
     mTimer = new Timer;
     mTimer->Init(mHcp);
@@ -149,37 +150,27 @@ void Server::SendAllPlayerInRoomExceptSender(void* packet, int size, int session
 
 void Server::SendPlayerAdd(int sessionID, int destination)
 {
-    mBuilder.Clear();
     Player* player = dynamic_cast<Player*>(GetSessions()[sessionID]);
     int inGameID = player->GetInGameID();
     int roomID = player->GetRoomID();
-    mBuilder.Finish(PacketTable::PlayerTable::CreatePlayerAdd(mBuilder, inGameID));
-    std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYERADD, mBuilder.GetBufferPointer(), mBuilder.GetSize());
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerAdd(inGameID);
 
     GetSessions()[destination]->DoSend(send_buffer.data(), send_buffer.size());
 }
 
 void Server::SendPlayerGameInfo(int sessionID)
 {
-    mBuilder.Clear();
     Player* player = dynamic_cast<Player*>(GetSessions()[sessionID]);
     int inGameID = player->GetInGameID();
-
     int roomID = player->GetRoomID();
-    mBuilder.Finish(PacketTable::PlayerTable::CreatePlayerGameInfo(mBuilder, inGameID, roomID));
-    std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYERGAMEINFO, mBuilder.GetBufferPointer(), mBuilder.GetSize());
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerGameInfo(inGameID, roomID);
 
     GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
 }
 
 void Server::SendHeartBeatPacket(int sessionID)
 {
-    mBuilder.Clear();
-    long long currTime = std::chrono::duration_cast<std::chrono::milliseconds>(
-        std::chrono::system_clock::now().time_since_epoch()).count();
-    mBuilder.Finish(PacketTable::UtilitiesTable::CreateHeartBeat(mBuilder, currTime));
-
-    std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_HEARTBEAT, mBuilder.GetBufferPointer(), mBuilder.GetSize());
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakeHeartBeatPacket();
     GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
 }
 
@@ -188,9 +179,6 @@ void Server::SendObjectDropPacket(int roomID, int spawnCount)
     std::vector<std::vector<int>> beforeMap = mRooms[roomID]->GetMap().GetStructure();
 
     for (int i = 0; i < spawnCount; ++i) {
-
-        mBuilder.Clear();
-
         std::random_device rd;
         std::mt19937 gen(rd());
 
@@ -199,18 +187,17 @@ void Server::SendObjectDropPacket(int roomID, int spawnCount)
         std::uniform_int_distribution<> id_distrib(0, 1);
 
         std::vector<std::vector<int>>& afterMap = mRooms[roomID]->GetMap().GetStructure();
-
+        int posX = 0, posY = 0, type = id_distrib(gen);
         while (1) {
-            int posX = x_distrib(gen), posY = y_distrib(gen);
+            posX = x_distrib(gen);
+            posY = y_distrib(gen);
             if (afterMap[posY][posX] > 0 && beforeMap[posY][posX] == afterMap[posY][posX]) {
                 afterMap[posY][posX]++;
-                auto pos = PacketTable::ObjectTable::CreateVec2(mBuilder, posX, posY);
-                mBuilder.Finish(PacketTable::ObjectTable::CreateObjectDrop(mBuilder, pos, id_distrib(gen)));
                 break;
             }
         }
 
-        std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_OBJECTDROP, mBuilder.GetBufferPointer(), mBuilder.GetSize());
+        std::vector<uint8_t> send_buffer = mPacketMaker->MakeObjectDropPacket(posX, posY, type);
 
         SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
     }
@@ -219,9 +206,6 @@ void Server::SendObjectDropPacket(int roomID, int spawnCount)
 void Server::SendBombSpawnPacket(int roomID, int spawnCount)
 {
     for (int i = 0; i < spawnCount; ++i) {
-
-        mBuilder.Clear();
-
         std::random_device rd;
         std::mt19937 gen(rd());
 
@@ -229,10 +213,7 @@ void Server::SendBombSpawnPacket(int roomID, int spawnCount)
         std::uniform_int_distribution<> y_distrib(0, 9);
         int posX = x_distrib(gen), posY = y_distrib(gen);
 
-        auto pos = PacketTable::ObjectTable::CreateVec2(mBuilder, posX, posY);
-        mBuilder.Finish(PacketTable::ObjectTable::CreateBombSpawn(mBuilder, pos));
-
-        std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_BOMBSPAWN, mBuilder.GetBufferPointer(), mBuilder.GetSize());
+        std::vector<uint8_t> send_buffer = mPacketMaker->MakeBombSpawnPacket(posX, posY);
 
         SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
     }

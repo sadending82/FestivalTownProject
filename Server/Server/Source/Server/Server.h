@@ -1,7 +1,7 @@
 #pragma once
 #include "../Network/Session/Session.h"
 #include "../Room/Room.h"
-#include "../PacketManager/PacketProcessors/flatbuffer/FlatBufferManager.h"
+#include "../PacketManager/PacketMaker/PacketMaker.h"
 
 #define SESSION_ARRAY std::array<Session*, MAXSESSION>
 #define ROOM_ARRAY std::array<Room*, MAXROOM>
@@ -46,10 +46,9 @@ private:
 	HANDLE mHcp;
 	SOCKET mListenSocket;
 
-	flatbuffers::FlatBufferBuilder mBuilder;
-
 	Timer* mTimer = nullptr;
 	TableManager* mTableManager = nullptr;
+	PacketMaker* mPacketMaker = nullptr;
 
 	SESSION_ARRAY mSessions;
 	ROOM_ARRAY mRooms;

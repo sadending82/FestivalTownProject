@@ -11,15 +11,15 @@ using PacketTable.PlayerTable;
 using PacketTable.UtilitiesTable;
 using PacketTable.GameTable;
 
-public class PacketCreater
+public class PacketMaker
 {
 
-    public PacketCreater()
+    public PacketMaker()
     {
 
 
     }
-        public void Init()
+    public void Init()
     {
 
     }
@@ -39,7 +39,7 @@ public class PacketCreater
         return buffer;
     }
 
-    public byte[] CreatePlayerMovePacket(Vector3 position, Vector3 direction, int id, ePlayerState state)
+    public byte[] MakePlayerMovePacket(Vector3 position, Vector3 direction, int id, ePlayerState state)
     {
         var builder = new FlatBufferBuilder(1);
         var pos = Vec3.CreateVec3(builder, position.x, position.y, position.z);
@@ -72,7 +72,7 @@ public class PacketCreater
         return result;
     }
 
-    public byte[] CreatePlayerStopPacket(Vector3 position, Vector3 direction, int id, ePlayerState state)
+    public byte[] MakePlayerStopPacket(Vector3 position, Vector3 direction, int id, ePlayerState state)
     {
         var builder = new FlatBufferBuilder(1);
         var pos = Vec3.CreateVec3(builder, position.x, position.y, position.z);
@@ -104,7 +104,7 @@ public class PacketCreater
         return result;
     }
 
-    public byte[] CreatePlayerPosSyncPacket(Vector3 position, Vector3 direction, int id)
+    public byte[] MakePlayerPosSyncPacket(Vector3 position, Vector3 direction, int id)
     {
         var builder = new FlatBufferBuilder(1);
         var pos = Vec3.CreateVec3(builder, position.x, position.y, position.z);
@@ -136,7 +136,7 @@ public class PacketCreater
         return result;
     }
 
-    public byte[] CreateHeartBeatPacket()
+    public byte[] MakeHeartBeatPacket()
     {
         long currTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
@@ -166,7 +166,7 @@ public class PacketCreater
         return result;
     }
 
-    public byte[] CreateBombInputPacket(int id, int team)
+    public byte[] MakeBombInputPacket(int id, int team)
     {
         var builder = new FlatBufferBuilder(1);
         BombInput.AddTeam(builder, team);

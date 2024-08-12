@@ -18,7 +18,7 @@ public class PacketManager : MonoBehaviour
     }
 
     private TcpClient _connection;
-    private PacketCreater _packetCreater = new PacketCreater();
+    private PacketMaker _packetMaker = new PacketMaker();
 
     public PacketManager()
     {
@@ -95,7 +95,7 @@ public class PacketManager : MonoBehaviour
     public void SendPlayerMovePacket(Vector3 position, Vector3 direction, int id, ePlayerState state)
     {
 
-        byte[] packet = _packetCreater.CreatePlayerMovePacket(position, direction, id, state);
+        byte[] packet = _packetMaker.MakePlayerMovePacket(position, direction, id, state);
         if (packet == null) { return; }
         SendPacket(packet);
     }
@@ -103,28 +103,28 @@ public class PacketManager : MonoBehaviour
     public void SendPlayerStopPacket(Vector3 position, Vector3 direction, int id, ePlayerState state)
     {
 
-        byte[] packet = _packetCreater.CreatePlayerStopPacket(position, direction, id, state);
+        byte[] packet = _packetMaker.MakePlayerStopPacket(position, direction, id, state);
         if (packet == null) { return; }
         SendPacket(packet);
     }
 
     public void SendPlayerPosPacket(Vector3 position, Vector3 direction, int id)
     {
-        byte[] packet = _packetCreater.CreatePlayerPosSyncPacket(position, direction, id);
+        byte[] packet = _packetMaker.MakePlayerPosSyncPacket(position, direction, id);
         if (packet == null) { return; }
         SendPacket(packet);
     }
 
     public void SendHeartBeatPacket()
     {
-        byte[] packet = _packetCreater.CreateHeartBeatPacket();
+        byte[] packet = _packetMaker.MakeHeartBeatPacket();
         if (packet == null) { return; }
         SendPacket(packet);
     }
 
     public void SendBombInputPacket(int id, int team)
     {
-        byte[] packet = _packetCreater.CreateBombInputPacket(id, team);
+        byte[] packet = _packetMaker.MakeBombInputPacket(id, team);
         if (packet == null) { return; }
         SendPacket(packet);
     }
