@@ -9,14 +9,14 @@ public class Managers : MonoBehaviour
 
     UIManager _ui = new UIManager();
     ResourceManager _resource = new ResourceManager();
-//    NetworkManager _network;
+    NetworkManager _network;
     PlayerManager _player;
     CubeObjectManager _cubeObject;
     ObjectPoolManager _objPool = new ObjectPoolManager();
 
     public static UIManager UI { get { return Instance._ui; } }
     public static ResourceManager Resource { get { return Instance._resource; } }
-//    public static NetworkManager Network { get { return Instance._network; } }
+   public static NetworkManager Network { get { return Instance._network; } }
     public static PlayerManager Player { get { return Instance._player; } }
     public static CubeObjectManager CubeObject { get { return Instance._cubeObject; } }
     public static ObjectPoolManager ObjectPool { get { return Instance._objPool; } }
@@ -26,7 +26,7 @@ public class Managers : MonoBehaviour
         Init();
 
         // TODO : 나중에는 아래의 매니저 들도 Managers에서 생성하는 것이 바람직해 보입니다.
-
+        _network = gameObject.AddComponent<NetworkManager>();
 //        _network = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
         _player = GameObject.Find("PlayerManager").GetComponent<PlayerManager>();
         _cubeObject = GameObject.Find("CubeObjectManager").GetComponent<CubeObjectManager>();

@@ -6,8 +6,11 @@ public class UI_OneVersusOneSceneUI : UI_Scene
 {
     enum GameObjects
     {
+        CharacterImageTeam1,
+        CharacterImageTeam2,
         PointPanelTeam1,
         PointPanelTeam2,
+        TimerText
     }
 
     void Start()

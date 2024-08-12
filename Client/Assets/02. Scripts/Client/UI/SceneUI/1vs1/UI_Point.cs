@@ -10,7 +10,7 @@ public class UI_Point : UI_Base
         Green,
     }
 
-    bool isOn = true;
+    public bool isOn = true;
 
     void Start()
     {
