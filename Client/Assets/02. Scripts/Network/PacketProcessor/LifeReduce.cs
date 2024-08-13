@@ -17,8 +17,6 @@ namespace Network.PacketProcessor
             int team = Data.Team;
             int lifeCount = Data.Life;
 
-            
-
         }
 
         private FlatBufferBuilder mBuilder;

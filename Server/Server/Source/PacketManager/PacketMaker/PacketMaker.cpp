@@ -42,7 +42,7 @@ std::vector<uint8_t> PacketMaker::MakeBombSpawnPacket(int x, int y)
 	Builder.Clear();
 	auto pos = PacketTable::ObjectTable::CreateVec2(Builder, x, y);
 	Builder.Finish(PacketTable::ObjectTable::CreateBombSpawn(Builder, pos));
-	return std::vector<uint8_t>();
+	return MakeBuffer(ePacketType::S2C_BOMBSPAWN, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
 std::vector<uint8_t> PacketMaker::MakeLifeReducePacket(int team, int lifeCount)
@@ -50,5 +50,5 @@ std::vector<uint8_t> PacketMaker::MakeLifeReducePacket(int team, int lifeCount)
 	flatbuffers::FlatBufferBuilder Builder;
 	Builder.Clear();
 	Builder.Finish(PacketTable::GameTable::CreateLifeReduce(Builder, team, lifeCount));
-	return std::vector<uint8_t>();
+	return MakeBuffer(ePacketType::S2C_LIFEREDUCE, Builder.GetBufferPointer(), Builder.GetSize());
 }
