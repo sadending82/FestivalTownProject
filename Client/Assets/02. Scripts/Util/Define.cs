@@ -4,13 +4,21 @@ using UnityEngine;
 
 public class Define
 {
+    public enum Scene
+    {
+        None,
+        Login,
+        WaitingRoom,
+        Game,
+    }
     public enum GameMode
     {
+        None,
         FireInTheHoleTeam1,
         FireInTheHoleTeam2,
         FireInTheHoleTeam3,
         FireInTheHoleIndivisual3,
-        FireINTheHoleIndivisual5,
+        FireInTheHoleIndivisual5,
     }
 
     public enum CharacterType

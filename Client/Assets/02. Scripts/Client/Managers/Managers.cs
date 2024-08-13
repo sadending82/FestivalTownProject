@@ -14,6 +14,8 @@ public class Managers : MonoBehaviour
     CubeObjectManager _cubeObject;
     ObjectPoolManager _objPool = new ObjectPoolManager();
     DataManager _data = new DataManager();
+    SceneManagerEx _scene = new SceneManagerEx();
+    GameManager _game;
 
     public static UIManager UI { get { return Instance._ui; } }
     public static ResourceManager Resource { get { return Instance._resource; } }
@@ -24,15 +26,21 @@ public class Managers : MonoBehaviour
 
     public static DataManager Data { get { return Instance._data; } }
 
+    public static SceneManagerEx Scene { get { return Instance._scene; } }
+
+    public static GameManager Game { get { return Instance._game; } }
+
     private void Start()
     {
+        _game = gameObject.AddComponent<GameManager>();
         Init();
 
         // TODO : 나중에는 아래의 매니저 들도 Managers에서 생성하는 것이 바람직해 보입니다.
         _network = gameObject.AddComponent<NetworkManager>();
-//        _network = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
+        //        _network = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
         _player = GameObject.Find("PlayerManager").GetComponent<PlayerManager>();
         _cubeObject = GameObject.Find("CubeObjectManager").GetComponent<CubeObjectManager>();
+        
     }
 
     static void Init()
@@ -52,5 +60,12 @@ public class Managers : MonoBehaviour
 
         s_instance._objPool.Init();
         s_instance._data.Init();
+        s_instance._game.Init();
+    }
+
+    static public void Clear()
+    {
+        // TODO: 씬이 교체될 때 비워줘야 할 것들 처리해 주어야 합니다.
+        // 대표적으로 UI 같은게 있겠네요
     }
 }
