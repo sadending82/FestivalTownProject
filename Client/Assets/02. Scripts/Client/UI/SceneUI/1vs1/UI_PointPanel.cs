@@ -21,6 +21,8 @@ public class UI_PointPanel : UI_Base
     public override void Init()
     {
         Bind<GameObject>(typeof(GameObjects));
+
+        RemainPoint = 3;
     }
 
     public void SetPoint(int value)
@@ -50,5 +52,10 @@ public class UI_PointPanel : UI_Base
         Get<GameObject>((int)GameObjects.Point1).GetComponent<UI_Point>().SetState(false);
         Get<GameObject>((int)GameObjects.Point2).GetComponent<UI_Point>().SetState(false);
         Get<GameObject>((int)GameObjects.Point3).GetComponent<UI_Point>().SetState(false);
+    }
+
+    public int GetPoint()
+    {
+        return RemainPoint;
     }
 }

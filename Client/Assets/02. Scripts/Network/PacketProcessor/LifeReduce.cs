@@ -17,6 +17,9 @@ namespace Network.PacketProcessor
             int team = Data.Team;
             int lifeCount = Data.Life;
 
+            Managers.Game.SetLifeCount(team, lifeCount);
+            Debug.Log("Life Reduced.");
+
         }
 
         private FlatBufferBuilder mBuilder;
