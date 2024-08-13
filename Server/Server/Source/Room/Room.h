@@ -24,15 +24,17 @@ public:
 	GameCode GetGameMode() { return mGameMode; }
 	Map& GetMap() { return mMap; }
 	TIMEPOINT GetStartTime() { return mStartTime; }
+	eRoomState GetState() { return mState; }
 	
 
 	void AddPlayerCnt() { mPlayerCnt++; }
 	void SetPlayerLimit(int num) { mPlayerLimit = num; }
 	void SetGameMode(GameCode gamecode) { mGameMode = gamecode; }
 	void SetStartTime(TIMEPOINT time) { mStartTime = time; }
+	void SetState(eRoomState state) { mState = state; }
 
 private:
-
+	eRoomState mState;
 	GameCode mGameMode;
 	Map mMap;
 
@@ -41,7 +43,6 @@ private:
 
 	std::mutex mPlayerSessionIDsLock;
 	std::array<int, MAXPLAYER> mPlayerSessionIDs;
-
 	std::unordered_map<int, Team> mTeams;
 
 	int mRoomID;

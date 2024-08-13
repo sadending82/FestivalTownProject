@@ -57,7 +57,6 @@ bool PushEventRemainTimeSync(Timer* pTimer, int roomID)
 	e.type = eEventType::TIMESYNC;
 	e.roomID = roomID;
 
-
 	EVENT_HEADER header;
 	header.start_time = std::chrono::system_clock::now() + std::chrono::milliseconds(REMAINTIMESYNC);
 	memcpy(header.message, reinterpret_cast<char*>(&e), sizeof(EV_TIME_SYNC));

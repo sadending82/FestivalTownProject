@@ -78,6 +78,11 @@ enum ePlayerState {
 	ST_DEAD
 };
 
+enum eRoomState {
+	ST_FREE,
+	ST_INGAME
+};
+
 enum GameCode {
 	FITH_Team_battle_One,
 	FITH_Team_battle_Two,

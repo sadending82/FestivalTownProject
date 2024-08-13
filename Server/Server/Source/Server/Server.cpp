@@ -247,6 +247,7 @@ void Server::StartGame(int roomID)
     GetRooms()[roomID]->SetGameMode(GameCode::FITH_Team_battle_Three);
     GetRooms()[roomID]->InitMap(GetTableManager()->getMapData()[TEST]);
     GetRooms()[roomID]->SetPlayerLimit(6); // юс╫ц
+    GetRooms()[roomID]->SetState(ST_INGAME);
 
     // Player Add Into New Room
     for (Session* s : GetSessions()) {

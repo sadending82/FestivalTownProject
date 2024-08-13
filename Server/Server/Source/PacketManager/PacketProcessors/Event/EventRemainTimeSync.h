@@ -10,6 +10,10 @@ public:
 		EV_TIME_SYNC* event = reinterpret_cast<EV_TIME_SYNC*>(buf);
 
 		int roomid = event->roomID;
+		if (pServer->GetRooms()[roomid]->GetState() == eRoomState::ST_FREE) {
+			return;
+		}
+
 		GameCode gameMode = pServer->GetRooms()[event->roomID]->GetGameMode();
 		
 		int spawnCnt = pServer->GetTableManager()->getFITH_Data()[gameMode].Bomb_Spawn_Count;
