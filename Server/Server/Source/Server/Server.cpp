@@ -3,6 +3,7 @@
 #include "Server.h"
 #include "../Thread/WorkerThread/WorkerThread.h"
 #include "../Thread/TimerThread/TimerThread.h"
+#include "../Thread/TestThread/TestThread.h"
 #include "../TableManager/TableManager.h"
 #include "../Event/Event.h"
 
@@ -91,16 +92,7 @@ void Server::Init(class TableManager* pTableManager, class DB* pDB)
     // Thread Create
     mTimer = new Timer;
     mTimer->Init(mHcp);
-
-    // 테스트를 위해 임시 방 추가
-    mRooms[TESTROOM]->Init(TESTROOM, mTableManager->getFITH_Data()[GameCode::FITH_Team_battle_Three].Team_Life_Count);
-    mRooms[TESTROOM]->SetGameMode(GameCode::FITH_Team_battle_Three);
-    mRooms[TESTROOM]->InitMap(mTableManager->getMapData()[TEST]);
-    // 이벤트 테스트
-
-    int eventTime = mTableManager->getFITH_Data()[mRooms[TESTROOM]->GetGameMode()].Block_Spawn_Time;
-    PushEventObjectDrop(mTimer, TESTROOM, eventTime);
-    PushEventBombSpawn(mTimer, TESTROOM, mTableManager->getFITH_Data()[mRooms[TESTROOM]->GetGameMode()].Bomb_Spawn_Time);
+    mTimerThread = std::thread(&Timer::Main, mTimer);
 
     SYSTEM_INFO si;
     GetSystemInfo(&si);
@@ -108,16 +100,23 @@ void Server::Init(class TableManager* pTableManager, class DB* pDB)
         WorkerThread* pWorkerThreadRef = new WorkerThread(this);
         mWorkerThreads.emplace_back(std::thread(&WorkerThread::RunWorker, pWorkerThreadRef));
     }
-    mTimerThread = std::thread(&Timer::Main, mTimer);
 
+#ifdef RunTest
+    TestThread* pTestThreadRef = new TestThread(this, mTimer);
+    mTestThread = std::thread(&TestThread::RunWorker, pTestThreadRef);
+#endif
     DEBUGMSGNOPARAM("Thread Ready\n");
 }
 
 void Server::ThreadJoin()
 {
-    for (auto& th : mWorkerThreads)
+    for (auto& th : mWorkerThreads) {
         th.join();
+    }
     mTimerThread.join();
+#ifdef RunTest
+    mTestThread.join();
+#endif
 }
 
 void Server::SendAllPlayerInRoomBySessionID(void* packet, int size, int sessionID)

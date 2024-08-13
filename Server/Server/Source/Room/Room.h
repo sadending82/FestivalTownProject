@@ -44,6 +44,6 @@ private:
 
 	int mRoomID;
 	int mPlayerCnt = 0;
-	int mPlayerLimit = 0;
+	int mPlayerLimit = 6;
 };
 

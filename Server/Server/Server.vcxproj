@@ -166,6 +166,7 @@ xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     <ClCompile Include="Source\Object\Player.cpp" />
     <ClCompile Include="Source\DB\DB.cpp" />
     <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\Thread\TestThread\TestThread.cpp" />
     <ClCompile Include="Source\Thread\TimerThread\TimerThread.cpp" />
     <ClCompile Include="Source\Thread\WorkerThread\WorkerThread.cpp" />
     <ClCompile Include="Source\TableManager\TableManager.cpp" />
@@ -206,6 +207,7 @@ xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     <ClInclude Include="Source\TableManager\Tables\ItemTable.h" />
     <ClInclude Include="Source\TableManager\Tables\Tables.h" />
     <ClInclude Include="Source\TableManager\Tables\FITH.h" />
+    <ClInclude Include="Source\Thread\TestThread\TestThread.h" />
     <ClInclude Include="Source\Thread\TimerThread\TimerThread.h" />
     <ClInclude Include="Source\utility.h" />
     <ClInclude Include="Source\Thread\WorkerThread\WorkerThread.h" />

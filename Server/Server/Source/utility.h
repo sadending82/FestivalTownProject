@@ -40,6 +40,8 @@ constexpr int MAXPLAYER = 6;
 #define DEBUGMSGONEPARAM(...)
 #endif
 
+#define RunTest
+
 enum ePacketType {
 	// Server -> Client
 	S2C_HEARTBEAT,

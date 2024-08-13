@@ -38,33 +38,6 @@ void WorkerThread::RunWorker()
                 // 접속하자 마자 HeartBeat 이벤트 추가
                 m_pServer->StartHeartBeat(newKey);
 
-                // Player test방에 넣는 임시 코드
-                {
-                    Player* newPlayer = dynamic_cast<Player*>(newSession);
-                    bool addPlayerOk = m_pServer->GetRooms()[TESTROOM]->addPlayer(newPlayer);
-                    if (addPlayerOk == false) {
-                        std::cout << "AddPlayer fail: Already Player Max\n";
-                        m_pServer->Disconnect(newKey);
-                    }
-                    else {
-                        m_pServer->GetRooms()[TESTROOM]->AddPlayerCnt();
-
-                        m_pServer->SendPlayerGameInfo(newKey);
-
-                        // 새 플레이어에게 기존 플레이어의 정보 전송
-                        for (Player* p : m_pServer->GetRooms()[TESTROOM]->GetPlayerList()) {
-                            if (p == nullptr) continue;
-                            m_pServer->SendPlayerAdd(newPlayer->GetSessionID(), p->GetSessionID());
-                        }
-
-                        // 기존 플레이어들에게 새 플레이어 정보 전송
-                        for (Player* p : m_pServer->GetRooms()[TESTROOM]->GetPlayerList()) {
-                            if (p == nullptr) continue;
-                            m_pServer->SendPlayerAdd(p->GetSessionID(), newPlayer->GetSessionID());
-                        }
-                    }
-                }
-
                 newSession->DoRecv();
             }
             else {

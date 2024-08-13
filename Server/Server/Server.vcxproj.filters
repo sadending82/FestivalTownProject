@@ -16,6 +16,7 @@
     <ClCompile Include="Source\Event\Event.cpp" />
     <ClCompile Include="Source\Room\Team\Team.cpp" />
     <ClCompile Include="Source\PacketManager\PacketMaker\PacketMaker.cpp" />
+    <ClCompile Include="Source\Thread\TestThread\TestThread.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DB\DB.h" />
@@ -55,6 +56,7 @@
     <ClInclude Include="Source\Room\Team\Team.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Event\EventBombSpawn.h" />
     <ClInclude Include="Source\PacketManager\PacketMaker\PacketMaker.h" />
+    <ClInclude Include="Source\Thread\TestThread\TestThread.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

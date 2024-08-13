@@ -54,6 +54,7 @@ private:
 	ROOM_ARRAY mRooms;
 	std::vector<std::thread> mWorkerThreads;
 	std::thread mTimerThread;
+	std::thread mTestThread;
 
 	int testUID = 1;
 };
