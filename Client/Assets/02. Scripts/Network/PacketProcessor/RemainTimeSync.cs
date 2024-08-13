@@ -15,6 +15,9 @@ namespace Network.PacketProcessor
             var Data = RemainTimeSync.GetRootAsRemainTimeSync(bb);
 
             int remainTime = Data.RemainTime; // Seconds
+
+            Managers.Game.GameRemainTime = (Data.RemainTime);
+            Debug.Log($"Remain Time recv. {Data.RemainTime}");
         }
 
         private FlatBufferBuilder mBuilder;

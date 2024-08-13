@@ -51,11 +51,11 @@ public class UI_OneVersusOneSceneUI : UI_Scene
         }
     }
 
-    public void SetTimer(float time, float max_time)
+    public void SetTimer(float remain_time)
     {
 
-        int min = (int)((max_time - time) / 60.0f);
-        int sec = (int)((max_time - time) % 60.0f);
+        int min = (int)(remain_time / 60.0f);
+        int sec = (int)(remain_time % 60.0f);
 
         Get<GameObject>((int)GameObjects.TimerText).GetComponent<TMP_Text>().text = string.Format("{0:D}:{1:D2}", min, sec);
 
@@ -79,7 +79,7 @@ public class UI_OneVersusOneSceneUI : UI_Scene
                 }
             }
 
-            SetTimer(Managers.Game.GamePlayTime, Managers.Game.GameEndTime);
+            SetTimer(Managers.Game.GameRemainTime);
 
         }
     }
