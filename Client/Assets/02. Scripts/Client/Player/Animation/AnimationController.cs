@@ -9,27 +9,48 @@ public class AnimationController : MonoBehaviour
     private UpperBodyAnimationState upperBodyAnimationState;
     private LowerBodyAnimationState lowerBodyAnimationState;
 
-    private ActiveRagdoll.AnimationModule animationModule;
+    public ActiveRagdoll.AnimationModule animationModule;
 
     [Header("--- Animation ---")]
-    public Animator lowerBodyAnimator;
+    public Animator animator;
+
+    [Header("--- IK ---")]
+    public Transform leftHandTarget;
+    public Transform rightHandTarget;
 
     private void Awake()
     {   
         upperBodyAnimationState = UpperBodyAnimationState.NONE;
         lowerBodyAnimationState = LowerBodyAnimationState.IDLE;
 
-        if(lowerBodyAnimator == null)
+        if(animator == null)
         {
-            lowerBodyAnimator = GetComponentInChildren<Animator>();
+            animator = GetComponent<Animator>();
         }
     }
     void Start()
     {
-        animationModule = this.GetComponent<ActiveRagdoll.AnimationModule>();
     }
     void Update()
     {
+    }
+    private void OnAnimatorIK(int layerIndex)
+    {
+        // test
+        if (upperBodyAnimationState == UpperBodyAnimationState.HOLD)
+        {
+            animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1f);
+            animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1f);
+        
+            animator.SetIKPosition(AvatarIKGoal.LeftHand, leftHandTarget.position);
+            animator.SetIKRotation(AvatarIKGoal.LeftHand, leftHandTarget.rotation);
+        
+            animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
+            animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
+        
+            animator.SetIKPosition(AvatarIKGoal.RightHand, rightHandTarget.position);
+            animator.SetIKRotation(AvatarIKGoal.RightHand, rightHandTarget.rotation);
+        }
     }
 
     // ------------------- GETTERS & SETTERS -------------------
@@ -119,7 +140,7 @@ public class AnimationController : MonoBehaviour
     }
     private void ChangeAnimation(string state)
     {
-        lowerBodyAnimator.SetTrigger("New State");
-        lowerBodyAnimator.SetTrigger(state);
+        animator.SetTrigger("New State");
+        animator.SetTrigger(state);
     }
 }

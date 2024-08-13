@@ -25,7 +25,7 @@ public class CharacterStatus : MonoBehaviour
 
     [Header("--- AnimationControll ---")]
     public bool isGroggy;
-    private AnimationController animationController;
+    public AnimationController animationController;
     private ActiveRagdoll.AnimationModule animationMoudule;
     private UpperBodyAnimationState upperBodyAnimationState;
     private LowerBodyAnimationState lowerBodyAnimationState;
@@ -37,7 +37,6 @@ public class CharacterStatus : MonoBehaviour
     }
     private void Start()
     {
-        animationController = GetComponent<AnimationController>();
     }
     private void Update()
     {
