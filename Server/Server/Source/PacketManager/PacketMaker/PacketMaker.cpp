@@ -52,3 +52,13 @@ std::vector<uint8_t> PacketMaker::MakeLifeReducePacket(int team, int lifeCount)
 	Builder.Finish(PacketTable::GameTable::CreateLifeReduce(Builder, team, lifeCount));
 	return MakeBuffer(ePacketType::S2C_LIFEREDUCE, Builder.GetBufferPointer(), Builder.GetSize());
 }
+
+std::vector<uint8_t> PacketMaker::MakeRemainTimeSyncPacket(int roomID, TIMEPOINT gameStartTime, int gameEndTime)
+{
+	flatbuffers::FlatBufferBuilder Builder;
+	Builder.Clear();
+	TIMEPOINT currTime = std::chrono::system_clock::now();
+	int elapsedSeconds = std::chrono::duration_cast<std::chrono::seconds>(currTime - gameStartTime).count();
+	Builder.Finish(PacketTable::GameTable::CreateRemainTimeSync(Builder, gameEndTime - elapsedSeconds));
+	return MakeBuffer(ePacketType::S2C_REMAINTIMESYNC, Builder.GetBufferPointer(), Builder.GetSize());
+}

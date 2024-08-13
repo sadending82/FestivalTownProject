@@ -224,6 +224,15 @@ void Server::SendLifeReducePacket(int team, int lifeCount, int roomID) {
     SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
 
+void Server::SendRemainTimeSync(int roomID)
+{
+    TIMEPOINT startTime = GetRooms()[roomID]->GetStartTime();
+    GameCode gameCode = GetRooms()[roomID]->GetGameMode();
+    int playTime = mTableManager->getFITH_Data()[gameCode].Play_Time;
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakeRemainTimeSyncPacket(roomID, startTime, playTime);
+    SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
+}
+
 void Server::StartHeartBeat(int sessionID)
 {
     GetSessions()[sessionID]->SetIsHeartbeatAck(false);
@@ -272,6 +281,7 @@ void Server::StartGame(int roomID)
     int eventTime = GetTableManager()->getFITH_Data()[gameCode].Block_Spawn_Time;
     PushEventObjectDrop(mTimer, roomID, eventTime);
     PushEventBombSpawn(mTimer, roomID, GetTableManager()->getFITH_Data()[gameCode].Bomb_Spawn_Time);
+    PushEventRemainTimeSync(mTimer, roomID);
 
     GetRooms()[roomID]->SetStartTime(std::chrono::system_clock::now());
 }

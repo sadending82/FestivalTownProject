@@ -2,8 +2,8 @@
 #include "../utility.h"
 
 constexpr int HEARTBEATTIME = 6000;
-
 constexpr int OBJECTDROPTIME = 10000;
+constexpr int REMAINTIMESYNC = 30000;
 
 class Timer;
 
@@ -14,7 +14,7 @@ enum eEventType {
 	// InGmae Event
 	OBJECTDROP,
 	BOMBSPAWN,
-	TIMERSYNC
+	TIMESYNC
 };
 
 struct EVENT_HEADER {
@@ -46,7 +46,7 @@ struct EV_BOMB_SPAWN : EVENT{
 	int roomID;
 };
 
-struct EV_TIMER_SYNC : EVENT {
+struct EV_TIME_SYNC : EVENT {
 	int roomID;
 	int time;
 };
@@ -56,5 +56,6 @@ struct EV_TIMER_SYNC : EVENT {
 bool PushEventHeartBeat(Timer* pTimer, int sessionID);
 
 // InGameEvent
-bool PushEventObjectDrop(Timer* pTimer, int roomID, int time);
-bool PushEventBombSpawn(Timer* pTimer, int roomID, int time);
+bool PushEventObjectDrop(Timer* pTimer, int roomID, int intervalTime);
+bool PushEventBombSpawn(Timer* pTimer, int roomID, int intervalTime);
+bool PushEventRemainTimeSync(Timer* pTimer, int roomID);

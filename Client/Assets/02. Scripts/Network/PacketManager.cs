@@ -53,7 +53,8 @@ public class PacketManager : MonoBehaviour
             { ePacketType.S2C_BOMBSPAWN, new BombSpawnProcessor() },
 
 
-            { ePacketType.S2C_LIFEREDUCE, new LifeReduceProcessor() }
+            { ePacketType.S2C_LIFEREDUCE, new LifeReduceProcessor() },
+            { ePacketType.S2C_REMAINTIMESYNC, new RemainTimeSyncProcessor() }
         };
     }
 

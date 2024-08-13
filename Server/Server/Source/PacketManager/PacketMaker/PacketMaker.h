@@ -15,6 +15,8 @@ public:
 	std::vector<uint8_t> MakeBombSpawnPacket(int x, int y);
 
 	std::vector<uint8_t> MakeLifeReducePacket(int team, int lifeCount);
+	std::vector<uint8_t> MakeRemainTimeSyncPacket(int roomID, TIMEPOINT time, int gameEndTime);
+
 
 private:
 

@@ -27,6 +27,7 @@ namespace NetworkProtocol
         S2C_OBJECTDROP,
         S2C_LIFEREDUCE,
         S2C_BOMBSPAWN,
+        S2C_REMAINTIMESYNC,
 
         // Client -> Server
         C2S_HEARTBEAT,

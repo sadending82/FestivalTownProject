@@ -31,6 +31,7 @@ public:
 	void SendObjectDropPacket(int roomID, int spawnCount);
 	void SendBombSpawnPacket(int roomID, int spawnCount);
 	void SendLifeReducePacket(int team, int lifeCount, int roomID);
+	void SendRemainTimeSync(int roomID);
 
 	void StartHeartBeat(int sessionID);
 	void StartGame(int roomID);

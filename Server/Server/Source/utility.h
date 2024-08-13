@@ -21,6 +21,8 @@
 #pragma comment (lib,"WS2_32.lib")
 #pragma comment (lib,"MSWSock.lib")
 
+#define TIMEPOINT std::chrono::system_clock::time_point
+
 constexpr int SERVERKEY = 0;
 constexpr int STARTKEY = 1;
 constexpr int INVALIDKEY = -1;
@@ -54,6 +56,7 @@ enum ePacketType {
 	S2C_OBJECTDROP,
 	S2C_LIFEREDUCE,
 	S2C_BOMBSPAWN,
+	S2C_REMAINTIMESYNC,
 
 	// Client -> Server
 	C2S_HEARTBEAT,

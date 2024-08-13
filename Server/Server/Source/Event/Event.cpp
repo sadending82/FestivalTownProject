@@ -17,7 +17,7 @@ bool PushEventHeartBeat(Timer* pTimer, int sessionID) {
 	return true;
 }
 
-bool PushEventObjectDrop(Timer* pTimer, int roomID, int time) {
+bool PushEventObjectDrop(Timer* pTimer, int roomID, int intervalTime) {
 	EV_OBJECT_DROP e;
 	e.size = sizeof(EV_OBJECT_DROP);
 	e.type = eEventType::OBJECTDROP;
@@ -25,7 +25,7 @@ bool PushEventObjectDrop(Timer* pTimer, int roomID, int time) {
 
 
 	EVENT_HEADER header;
-	header.start_time = std::chrono::system_clock::now() + std::chrono::seconds(time);
+	header.start_time = std::chrono::system_clock::now() + std::chrono::seconds(intervalTime);
 	memcpy(header.message, reinterpret_cast<char*>(&e), sizeof(EV_OBJECT_DROP));
 
 	pTimer->PushEvent(header);
@@ -33,7 +33,7 @@ bool PushEventObjectDrop(Timer* pTimer, int roomID, int time) {
 	return true;
 }
 
-bool PushEventBombSpawn(Timer* pTimer, int roomID, int time)
+bool PushEventBombSpawn(Timer* pTimer, int roomID, int intervalTime)
 {
 	EV_BOMB_SPAWN e;
 	e.size = sizeof(EV_BOMB_SPAWN);
@@ -42,8 +42,25 @@ bool PushEventBombSpawn(Timer* pTimer, int roomID, int time)
 
 
 	EVENT_HEADER header;
-	header.start_time = std::chrono::system_clock::now() + std::chrono::seconds(time);
+	header.start_time = std::chrono::system_clock::now() + std::chrono::seconds(intervalTime);
 	memcpy(header.message, reinterpret_cast<char*>(&e), sizeof(EV_BOMB_SPAWN));
+
+	pTimer->PushEvent(header);
+
+	return false;
+}
+
+bool PushEventRemainTimeSync(Timer* pTimer, int roomID)
+{
+	EV_TIME_SYNC e;
+	e.size = sizeof(EV_TIME_SYNC);
+	e.type = eEventType::TIMESYNC;
+	e.roomID = roomID;
+
+
+	EVENT_HEADER header;
+	header.start_time = std::chrono::system_clock::now() + std::chrono::milliseconds(REMAINTIMESYNC);
+	memcpy(header.message, reinterpret_cast<char*>(&e), sizeof(EV_TIME_SYNC));
 
 	pTimer->PushEvent(header);
 

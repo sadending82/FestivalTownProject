@@ -2,8 +2,6 @@
 #include "Team/Team.h"
 #include "../Object/Map/Map.h"
 
-#define TIMEPOINT std::chrono::system_clock::time_point
-
 class Room
 {
 public:
