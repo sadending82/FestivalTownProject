@@ -2,8 +2,6 @@
 #include "Event.h"
 #include "../Thread/TimerThread/TimerThread.h"
 
-
-
 bool PushEventHeartBeat(Timer* pTimer, int sessionID) {
 	EV_HEART_BEAT e;
 	e.size = sizeof(EV_HEART_BEAT);

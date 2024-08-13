@@ -3,6 +3,9 @@
 
 #ifdef RunTest
 
+constexpr char GameStartCommand = 's';
+constexpr char SendLifeReduceCommand = 'l';
+
 class Timer;
 
 class TestThread

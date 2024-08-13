@@ -45,3 +45,10 @@ std::vector<uint8_t> PacketMaker::MakeBombSpawnPacket(int x, int y)
 	return std::vector<uint8_t>();
 }
 
+std::vector<uint8_t> PacketMaker::MakeLifeReducePacket(int team, int lifeCount)
+{
+	flatbuffers::FlatBufferBuilder Builder;
+	Builder.Clear();
+	Builder.Finish(PacketTable::GameTable::CreateLifeReduce(Builder, team, lifeCount));
+	return std::vector<uint8_t>();
+}

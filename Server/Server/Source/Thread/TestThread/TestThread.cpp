@@ -18,16 +18,26 @@ void TestThread::RunWorker()
         std::cout << "Please Input Command" << std::endl;
         std::cin >> command;
         int roomcnt = 0;
+
         switch (command) {
-        case 's': {
+            // 게임 시작
+        case GameStartCommand: {
             GameStart(roomcnt);
             roomcnt++;
         }
-                break;
+        break;
+            // 라이프 감소 전송
+        case SendLifeReduceCommand: {
+            int roomID;
+            std::cout << "Input roomID" << std::endl;
+            std::cin >> roomID;
+            m_pServer->SendLifeReducePacket(0, 0, roomID);
+        }
+        break;
         default: {
             std::cout << "Wrong Command" << std::endl;
         }
-               break;
+        break;
         }
     }
 }

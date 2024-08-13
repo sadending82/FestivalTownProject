@@ -30,6 +30,7 @@ public:
 	void SendHeartBeatPacket(int sessionID);
 	void SendObjectDropPacket(int roomID, int spawnCount);
 	void SendBombSpawnPacket(int roomID, int spawnCount);
+	void SendLifeReducePacket(int team, int lifeCount, int roomID);
 
 	void StartHeartBeat(int sessionID);
 

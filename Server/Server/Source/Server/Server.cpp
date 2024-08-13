@@ -219,6 +219,11 @@ void Server::SendBombSpawnPacket(int roomID, int spawnCount)
 
 }
 
+void Server::SendLifeReducePacket(int team, int lifeCount, int roomID) {
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakeLifeReducePacket(team, lifeCount);
+    SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
+}
+
 void Server::StartHeartBeat(int sessionID)
 {
     GetSessions()[sessionID]->SetIsHeartbeatAck(false);
