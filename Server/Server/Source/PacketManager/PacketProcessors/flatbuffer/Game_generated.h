@@ -25,6 +25,12 @@ struct BombInputBuilder;
 struct LifeReduce;
 struct LifeReduceBuilder;
 
+struct RemainTimeSync;
+struct RemainTimeSyncBuilder;
+
+struct GameStart;
+struct GameStartBuilder;
+
 struct GameEnd;
 struct GameEndBuilder;
 
@@ -156,6 +162,98 @@ inline ::flatbuffers::Offset<LifeReduce> CreateLifeReduce(
   LifeReduceBuilder builder_(_fbb);
   builder_.add_life(life);
   builder_.add_team(team);
+  return builder_.Finish();
+}
+
+struct RemainTimeSync FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef RemainTimeSyncBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_REMAIN_TIME = 4
+  };
+  int32_t remain_time() const {
+    return GetField<int32_t>(VT_REMAIN_TIME, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_REMAIN_TIME, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct RemainTimeSyncBuilder {
+  typedef RemainTimeSync Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_remain_time(int32_t remain_time) {
+    fbb_.AddElement<int32_t>(RemainTimeSync::VT_REMAIN_TIME, remain_time, 0);
+  }
+  explicit RemainTimeSyncBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<RemainTimeSync> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<RemainTimeSync>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<RemainTimeSync> CreateRemainTimeSync(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t remain_time = 0) {
+  RemainTimeSyncBuilder builder_(_fbb);
+  builder_.add_remain_time(remain_time);
+  return builder_.Finish();
+}
+
+struct GameStart FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef GameStartBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ROOMID = 4,
+    VT_TIME = 6
+  };
+  int32_t roomid() const {
+    return GetField<int32_t>(VT_ROOMID, 0);
+  }
+  int64_t time() const {
+    return GetField<int64_t>(VT_TIME, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_ROOMID, 4) &&
+           VerifyField<int64_t>(verifier, VT_TIME, 8) &&
+           verifier.EndTable();
+  }
+};
+
+struct GameStartBuilder {
+  typedef GameStart Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_roomid(int32_t roomid) {
+    fbb_.AddElement<int32_t>(GameStart::VT_ROOMID, roomid, 0);
+  }
+  void add_time(int64_t time) {
+    fbb_.AddElement<int64_t>(GameStart::VT_TIME, time, 0);
+  }
+  explicit GameStartBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<GameStart> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<GameStart>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<GameStart> CreateGameStart(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t roomid = 0,
+    int64_t time = 0) {
+  GameStartBuilder builder_(_fbb);
+  builder_.add_time(time);
+  builder_.add_roomid(roomid);
   return builder_.Finish();
 }
 

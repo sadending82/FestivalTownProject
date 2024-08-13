@@ -13,7 +13,8 @@ enum eEventType {
 	
 	// InGmae Event
 	OBJECTDROP,
-	BOMBSPAWN
+	BOMBSPAWN,
+	TIMERSYNC
 };
 
 struct EVENT_HEADER {
@@ -43,6 +44,11 @@ struct EV_OBJECT_DROP : EVENT {
 
 struct EV_BOMB_SPAWN : EVENT{
 	int roomID;
+};
+
+struct EV_TIMER_SYNC : EVENT {
+	int roomID;
+	int time;
 };
 
 #pragma pack(pop)

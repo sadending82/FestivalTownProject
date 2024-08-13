@@ -2,6 +2,8 @@
 #include "Team/Team.h"
 #include "../Object/Map/Map.h"
 
+#define TIMEPOINT std::chrono::system_clock::time_point
+
 class Room
 {
 public:
@@ -23,11 +25,13 @@ public:
 	int GetPlayerLimit() { return mPlayerLimit; }
 	GameCode GetGameMode() { return mGameMode; }
 	Map& GetMap() { return mMap; }
+	TIMEPOINT GetStartTime() { return mStartTime; }
 	
 
 	void AddPlayerCnt() { mPlayerCnt++; }
 	void SetPlayerLimit(int num) { mPlayerLimit = num; }
 	void SetGameMode(GameCode gamecode) { mGameMode = gamecode; }
+	void SetStartTime(TIMEPOINT time) { mStartTime = time; }
 
 private:
 
@@ -45,5 +49,6 @@ private:
 	int mRoomID;
 	int mPlayerCnt = 0;
 	int mPlayerLimit = 6;
+	TIMEPOINT mStartTime;
 };
 

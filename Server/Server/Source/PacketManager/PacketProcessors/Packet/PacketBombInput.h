@@ -18,6 +18,9 @@ public:
 			int roomid = dynamic_cast<Player*>(pServer->GetSessions()[key])->GetRoomID();
 
 			pServer->GetRooms()[roomid]->GetTeams()[team].ReduceLife();
+			int lifeCount = pServer->GetRooms()[roomid]->GetTeams()[team].GetLife();
+
+			pServer->SendLifeReducePacket(team, lifeCount, roomid);
 		}
 	}
 

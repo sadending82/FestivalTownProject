@@ -230,3 +230,48 @@ void Server::StartHeartBeat(int sessionID)
     SendHeartBeatPacket(sessionID);
     PushEventHeartBeat(mTimer, sessionID);
 }
+
+void Server::StartGame(int roomID)
+{
+    // Activate New Room
+    GetRooms()[roomID]->Init(roomID, GetTableManager()->getFITH_Data()[GameCode::FITH_Team_battle_Three].Team_Life_Count);
+    GetRooms()[roomID]->SetGameMode(GameCode::FITH_Team_battle_Three);
+    GetRooms()[roomID]->InitMap(GetTableManager()->getMapData()[TEST]);
+    GetRooms()[roomID]->SetPlayerLimit(6); // юс╫ц
+
+    // Player Add Into New Room
+    for (Session* s : GetSessions()) {
+        if (GetRooms()[roomID]->GetPlayerCnt() == GetRooms()[roomID]->GetPlayerLimit()) {
+            break;
+        }
+        if (s->GetState() == eSessionState::ST_ACCEPTED) {
+            Player* p = dynamic_cast<Player*>(s);
+            int sessionID = p->GetSessionID();
+            bool addPlayerOk = GetRooms()[roomID]->addPlayer(p);
+            if (addPlayerOk == false) {
+                std::cout << "AddPlayer fail: Already Player Max\n";
+            }
+            else {
+                GetRooms()[TESTROOM]->AddPlayerCnt();
+                SendPlayerGameInfo(sessionID);
+            }
+        }
+    }
+
+    // Send Each Player's Info
+    for (Player* p :GetRooms()[roomID]->GetPlayerList()) {
+        if (p == nullptr) continue;
+        for (Player* other : GetRooms()[roomID]->GetPlayerList()) {
+            if (other == nullptr) continue;
+            SendPlayerAdd(p->GetSessionID(), other->GetSessionID());
+        }
+    }
+
+    // Push Event
+    GameCode gameCode = GetRooms()[roomID]->GetGameMode();
+    int eventTime = GetTableManager()->getFITH_Data()[gameCode].Block_Spawn_Time;
+    PushEventObjectDrop(mTimer, roomID, eventTime);
+    PushEventBombSpawn(mTimer, roomID, GetTableManager()->getFITH_Data()[gameCode].Bomb_Spawn_Time);
+
+    GetRooms()[roomID]->SetStartTime(std::chrono::system_clock::now());
+}

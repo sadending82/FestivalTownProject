@@ -33,6 +33,7 @@ public:
 	void SendLifeReducePacket(int team, int lifeCount, int roomID);
 
 	void StartHeartBeat(int sessionID);
+	void StartGame(int roomID);
 
 	HANDLE GetHcp() { return mHcp; }
 	SOCKADDR_IN GetServerAddr() { return mServerAddr; }

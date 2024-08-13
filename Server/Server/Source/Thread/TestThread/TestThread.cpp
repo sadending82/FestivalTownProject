@@ -22,7 +22,7 @@ void TestThread::RunWorker()
         switch (command) {
             // 게임 시작
         case GameStartCommand: {
-            GameStart(roomcnt);
+            m_pServer->StartGame(roomcnt);
             roomcnt++;
         }
         break;
@@ -40,49 +40,6 @@ void TestThread::RunWorker()
         break;
         }
     }
-}
-
-void TestThread::GameStart(int roomID)
-{
-    // Activate New Room
-    m_pServer->GetRooms()[roomID]->Init(roomID, m_pServer->GetTableManager()->getFITH_Data()[GameCode::FITH_Team_battle_Three].Team_Life_Count);
-    m_pServer->GetRooms()[roomID]->SetGameMode(GameCode::FITH_Team_battle_Three);
-    m_pServer->GetRooms()[roomID]->InitMap(m_pServer->GetTableManager()->getMapData()[TEST]);
-    m_pServer->GetRooms()[roomID]->SetPlayerLimit(6); // 임시
-
-    // Player Add Into New Room
-    for (Session* s : m_pServer->GetSessions()) {
-        if (m_pServer->GetRooms()[roomID]->GetPlayerCnt() == m_pServer->GetRooms()[roomID]->GetPlayerLimit()) {
-            break;
-        }
-        if (s->GetState() == eSessionState::ST_ACCEPTED) {
-            Player* p = dynamic_cast<Player*>(s);
-            int sessionID = p->GetSessionID();
-            bool addPlayerOk = m_pServer->GetRooms()[roomID]->addPlayer(p);
-            if (addPlayerOk == false) {
-                std::cout << "AddPlayer fail: Already Player Max\n";
-            }
-            else {
-                m_pServer->GetRooms()[TESTROOM]->AddPlayerCnt();
-                m_pServer->SendPlayerGameInfo(sessionID);
-            }
-        }
-    }
-
-    // Send Each Player's Info
-    for (Player* p : m_pServer->GetRooms()[roomID]->GetPlayerList()) {
-        if (p == nullptr) continue;
-        for (Player* other : m_pServer->GetRooms()[roomID]->GetPlayerList()) {
-            if (other == nullptr) continue;
-            m_pServer->SendPlayerAdd(p->GetSessionID(), other->GetSessionID());
-        }
-    }
-
-    // Push Event
-    GameCode gameCode = m_pServer->GetRooms()[roomID]->GetGameMode();
-    int eventTime = m_pServer->GetTableManager()->getFITH_Data()[gameCode].Block_Spawn_Time;
-    PushEventObjectDrop(m_pTimer, roomID, eventTime);
-    PushEventBombSpawn(m_pTimer, roomID, m_pServer->GetTableManager()->getFITH_Data()[gameCode].Bomb_Spawn_Time);
 }
 
 #endif RunTest
