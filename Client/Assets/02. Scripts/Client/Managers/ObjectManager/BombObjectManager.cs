@@ -9,7 +9,7 @@ public class BombObjectManager : MonoBehaviour
     public static BombObjectManager instance;
     public int initialBombs = 10;
     public GameObject bombPrefab;
-    public float bombLifeTime = 20;   // 초단위
+    public float bombLifeTime = 5;   // 초단위
     private List<GameObject> bombs = new List<GameObject>();
 
     // ------ Test -------
@@ -44,7 +44,7 @@ public class BombObjectManager : MonoBehaviour
             testXY %= 10;
         }
     }
-    public void SpawnBomb(int x, int y, float lifeTime = 20)
+    public void SpawnBomb(int x, int y, float lifeTime = 10)
     {
         GameObject reusedBomb = null;
         // 미리 생성되어 있는 큐브부터 사용

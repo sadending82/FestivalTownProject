@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Bomb : MonoBehaviour
 {
-    private float lifeTime = 20;
-    private float currentLifeTime;
+    private float lifeTime;
+    private float timer = 0;
     public GameObject bombPusher;
     private void OnEnable()
     {
-        currentLifeTime = lifeTime;
+        timer = 0;
     }
     private void OnDisable()
     {
@@ -18,7 +18,14 @@ public class Bomb : MonoBehaviour
                                 RigidbodyConstraints.FreezeRotationY |
                                 RigidbodyConstraints.FreezeRotationZ;
     }
-
+    private void Update()
+    {
+        timer += Time.deltaTime;
+        if(timer>= lifeTime)
+        {
+            Boom();
+        }
+    }
     private void OnCollisionEnter(Collision collision)
     {
         // 바닥에 도달했을때 더이상 움직이지 않도록 고정
