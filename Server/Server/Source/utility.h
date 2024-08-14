@@ -10,6 +10,7 @@
 #include <locale.h>
 #include <cctype>
 #include <memory>
+#include <mutex>
 
 #define _WINSOCKAPI_
 #include <windows.h>  

@@ -9,39 +9,39 @@ using global::System;
 using global::System.Collections.Generic;
 using global::Google.FlatBuffers;
 
-public struct Vec3 : IFlatbufferObject
+public struct Vec2i : IFlatbufferObject
 {
   private Table __p;
   public ByteBuffer ByteBuffer { get { return __p.bb; } }
   public static void ValidateVersion() { FlatBufferConstants.FLATBUFFERS_24_3_25(); }
-  public static Vec3 GetRootAsVec3(ByteBuffer _bb) { return GetRootAsVec3(_bb, new Vec3()); }
-  public static Vec3 GetRootAsVec3(ByteBuffer _bb, Vec3 obj) { return (obj.__assign(_bb.GetInt(_bb.Position) + _bb.Position, _bb)); }
+  public static Vec2i GetRootAsVec2i(ByteBuffer _bb) { return GetRootAsVec2i(_bb, new Vec2i()); }
+  public static Vec2i GetRootAsVec2i(ByteBuffer _bb, Vec2i obj) { return (obj.__assign(_bb.GetInt(_bb.Position) + _bb.Position, _bb)); }
   public void __init(int _i, ByteBuffer _bb) { __p = new Table(_i, _bb); }
-  public Vec3 __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
+  public Vec2i __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public int X { get { int o = __p.__offset(4); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
   public int Y { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
 
-  public static Offset<PacketTable.ObjectTable.Vec3> CreateVec3(FlatBufferBuilder builder,
+  public static Offset<PacketTable.ObjectTable.Vec2i> CreateVec2i(FlatBufferBuilder builder,
       int x = 0,
       int y = 0) {
     builder.StartTable(2);
-    Vec3.AddY(builder, y);
-    Vec3.AddX(builder, x);
-    return Vec3.EndVec3(builder);
+    Vec2i.AddY(builder, y);
+    Vec2i.AddX(builder, x);
+    return Vec2i.EndVec2i(builder);
   }
 
-  public static void StartVec3(FlatBufferBuilder builder) { builder.StartTable(2); }
+  public static void StartVec2i(FlatBufferBuilder builder) { builder.StartTable(2); }
   public static void AddX(FlatBufferBuilder builder, int x) { builder.AddInt(0, x, 0); }
   public static void AddY(FlatBufferBuilder builder, int y) { builder.AddInt(1, y, 0); }
-  public static Offset<PacketTable.ObjectTable.Vec3> EndVec3(FlatBufferBuilder builder) {
+  public static Offset<PacketTable.ObjectTable.Vec2i> EndVec2i(FlatBufferBuilder builder) {
     int o = builder.EndTable();
-    return new Offset<PacketTable.ObjectTable.Vec3>(o);
+    return new Offset<PacketTable.ObjectTable.Vec2i>(o);
   }
 }
 
 
-static public class Vec3Verify
+static public class Vec2iVerify
 {
   static public bool Verify(Google.FlatBuffers.Verifier verifier, uint tablePos)
   {

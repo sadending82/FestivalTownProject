@@ -19,17 +19,17 @@ public struct BombSpawn : IFlatbufferObject
   public void __init(int _i, ByteBuffer _bb) { __p = new Table(_i, _bb); }
   public BombSpawn __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public PacketTable.ObjectTable.Vec2? Pos { get { int o = __p.__offset(4); return o != 0 ? (PacketTable.ObjectTable.Vec2?)(new PacketTable.ObjectTable.Vec2()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
+  public PacketTable.ObjectTable.Vec2i? Pos { get { int o = __p.__offset(4); return o != 0 ? (PacketTable.ObjectTable.Vec2i?)(new PacketTable.ObjectTable.Vec2i()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
 
   public static Offset<PacketTable.ObjectTable.BombSpawn> CreateBombSpawn(FlatBufferBuilder builder,
-      Offset<PacketTable.ObjectTable.Vec2> posOffset = default(Offset<PacketTable.ObjectTable.Vec2>)) {
+      Offset<PacketTable.ObjectTable.Vec2i> posOffset = default(Offset<PacketTable.ObjectTable.Vec2i>)) {
     builder.StartTable(1);
     BombSpawn.AddPos(builder, posOffset);
     return BombSpawn.EndBombSpawn(builder);
   }
 
   public static void StartBombSpawn(FlatBufferBuilder builder) { builder.StartTable(1); }
-  public static void AddPos(FlatBufferBuilder builder, Offset<PacketTable.ObjectTable.Vec2> posOffset) { builder.AddOffset(0, posOffset.Value, 0); }
+  public static void AddPos(FlatBufferBuilder builder, Offset<PacketTable.ObjectTable.Vec2i> posOffset) { builder.AddOffset(0, posOffset.Value, 0); }
   public static Offset<PacketTable.ObjectTable.BombSpawn> EndBombSpawn(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<PacketTable.ObjectTable.BombSpawn>(o);
@@ -42,7 +42,7 @@ static public class BombSpawnVerify
   static public bool Verify(Google.FlatBuffers.Verifier verifier, uint tablePos)
   {
     return verifier.VerifyTableStart(tablePos)
-      && verifier.VerifyTable(tablePos, 4 /*Pos*/, PacketTable.ObjectTable.Vec2Verify.Verify, false)
+      && verifier.VerifyTable(tablePos, 4 /*Pos*/, PacketTable.ObjectTable.Vec2iVerify.Verify, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }

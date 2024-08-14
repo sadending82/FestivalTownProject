@@ -4,6 +4,9 @@
 #include "Packet/PacketPlayerPosSync.h"
 #include "Packet/PacketHeartBeat.h"
 #include "Packet/PacketBombInput.h"
+#include "Packet/PacketPlayerGrabBomb.h"
+#include "Packet/PacketPlayerThrowBomb.h"
+#include "Packet/PacketBombPositionSync.h"
 
 #include "Event/EventHeartBeat.h"
 #include "Event/EventObjectDrop.h"

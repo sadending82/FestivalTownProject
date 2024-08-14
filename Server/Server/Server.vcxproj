@@ -159,6 +159,7 @@ xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     <ClCompile Include="Source\Event\Event.cpp" />
     <ClCompile Include="Source\Network\ExOver.cpp" />
     <ClCompile Include="Source\Network\Session\Session.cpp" />
+    <ClCompile Include="Source\Object\Object.cpp" />
     <ClCompile Include="Source\PacketManager\PacketMaker\PacketMaker.cpp" />
     <ClCompile Include="Source\PacketManager\PacketManager.cpp" />
     <ClCompile Include="Source\Room\Team\Team.cpp" />
@@ -194,10 +195,13 @@ xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\Player_generated.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\Utilities_generated.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\PacketBombInput.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\PacketBombPositionSync.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\PacketHeartBeat.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\PacketPlayerGrabBomb.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\PacketPlayerMove.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\PacketPlayerPosSync.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\PacketPlayerStop.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\PacketPlayerThrowBomb.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Processors.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\PacketProcessor.h" />
     <ClInclude Include="Source\PacketManager\test_generated.h" />

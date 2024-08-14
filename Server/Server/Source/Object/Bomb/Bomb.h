@@ -7,5 +7,6 @@ public:
 	Bomb();
 	~Bomb();
 
+
 private:
 };

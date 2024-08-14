@@ -10,6 +10,7 @@ using UnityEngine.UIElements;
 using PacketTable.PlayerTable;
 using PacketTable.UtilitiesTable;
 using PacketTable.GameTable;
+using PacketTable.ObjectTable;
 
 public class PacketMaker
 {
@@ -176,6 +177,72 @@ public class PacketMaker
 
         byte[] data = builder.SizedByteArray();
         HEADER header = new HEADER { type = (ushort)ePacketType.C2S_BOMBINPUT, flatBufferSize = (ushort)data.Length };
+        byte[] headerdata = Serialize<HEADER>(header);
+        byte[] result = new byte[data.Length + headerdata.Length];
+
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
+
+        return result;
+    }
+
+    public byte[] MakePlayerGrabBombPacket(Vector3 position, Vector3 direction, int playerID, int BombID)
+    {
+        var builder = new FlatBufferBuilder(1);
+        var pos = Vec3.CreateVec3(builder, position.x, position.y, position.z);
+        var dir = Vec3.CreateVec3(builder, direction.x, direction.y, direction.z);
+        PlayerGrabBomb.AddId(builder, playerID);
+        PlayerGrabBomb.AddPos(builder, pos);
+        PlayerGrabBomb.AddDirection(builder, dir);
+        PlayerGrabBomb.AddBombId(builder, BombID);
+        var offset = PlayerGrabBomb.EndPlayerGrabBomb(builder);
+        builder.Finish(offset.Value);
+
+        byte[] data = builder.SizedByteArray();
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERGRABBOMB, flatBufferSize = (ushort)data.Length };
+        byte[] headerdata = Serialize<HEADER>(header);
+        byte[] result = new byte[data.Length + headerdata.Length];
+
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
+
+        return result;
+    }
+
+    public byte[] MakePlayerThrowBombPacket(Vector3 position, Vector3 direction, int playerID, int BombID)
+    {
+        var builder = new FlatBufferBuilder(1);
+        var pos = Vec3.CreateVec3(builder, position.x, position.y, position.z);
+        var dir = Vec3.CreateVec3(builder, direction.x, direction.y, direction.z);
+        PlayerThrowBomb.AddId(builder, playerID);
+        PlayerThrowBomb.AddPos(builder, pos);
+        PlayerThrowBomb.AddDirection(builder, dir);
+        PlayerThrowBomb.AddBombId(builder, BombID);
+        var offset = PlayerThrowBomb.EndPlayerThrowBomb(builder);
+        builder.Finish(offset.Value);
+
+        byte[] data = builder.SizedByteArray();
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERTHROWBOMB, flatBufferSize = (ushort)data.Length };
+        byte[] headerdata = Serialize<HEADER>(header);
+        byte[] result = new byte[data.Length + headerdata.Length];
+
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
+
+        return result;
+    }
+
+    public byte[] MakeBombPositionSyncPacket(Vector3 position, int BombID)
+    {
+        var builder = new FlatBufferBuilder(1);
+        var pos = Vec3f.CreateVec3f(builder, position.x, position.y, position.z);
+        BombPosition.AddId(builder, BombID);
+        BombPosition.AddPos(builder, pos);
+        var offset = BombPosition.EndBombPosition(builder);
+        builder.Finish(offset.Value);
+
+        byte[] data = builder.SizedByteArray();
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_BOMBPOSSYNC, flatBufferSize = (ushort)data.Length };
         byte[] headerdata = Serialize<HEADER>(header);
         byte[] result = new byte[data.Length + headerdata.Length];
 

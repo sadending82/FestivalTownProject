@@ -13,7 +13,6 @@ namespace Network.PacketProcessor
     {
         public override void Process(PacketManager packetmanager, byte[] data)
         {
-            // 여기에 처리    
             var bb = new ByteBuffer(data);
 
             var Data = PlayerAdd.GetRootAsPlayerAdd(bb);

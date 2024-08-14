@@ -3,8 +3,10 @@
 
 Bomb::Bomb()
 {
+
 }
 
 Bomb::~Bomb()
 {
+
 }

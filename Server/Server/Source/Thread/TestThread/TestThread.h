@@ -20,8 +20,6 @@ public:
 
 	void RunWorker();
 
-	void GameStart(int roomID);
-
 private:
 	class Server* m_pServer;
 	PacketManager* m_pPacketManager;

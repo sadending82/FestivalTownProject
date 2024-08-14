@@ -47,10 +47,13 @@ public class PacketManager : MonoBehaviour
             { ePacketType.S2C_PLAYERMOVE, new PlayerMoveProcessor() },
             { ePacketType.S2C_PLAYERSTOP, new PlayerStopProcessor() },
             { ePacketType.S2C_PLAYERPOSSYNC, new PlayerPosSyncProcessor() },
+            { ePacketType.S2C_PLAYERGRABBOMB, new PlayerGrabBombProcessor() },
+            { ePacketType.S2C_PLAYERTHROWBOMB, new PlayerThrowBombProcessor() },
 
 
             { ePacketType.S2C_OBJECTDROP, new ObjectDropProcessor() },
             { ePacketType.S2C_BOMBSPAWN, new BombSpawnProcessor() },
+            { ePacketType.S2C_BOMBPOSSYNC, new BombPositionSyncProcessor() },
 
 
             { ePacketType.S2C_LIFEREDUCE, new LifeReduceProcessor() },
@@ -126,6 +129,27 @@ public class PacketManager : MonoBehaviour
     public void SendBombInputPacket(int id, int team)
     {
         byte[] packet = _packetMaker.MakeBombInputPacket(id, team);
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+
+    public void SendPlayerGrabBombPacket(Vector3 position, Vector3 direction, int playerID, int BombID)
+    {
+        byte[] packet = _packetMaker.MakePlayerGrabBombPacket(position, direction, playerID, BombID);
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+
+    public void SendPlayerThrowBombPacket(Vector3 position, Vector3 direction, int playerID, int BombID)
+    {
+        byte[] packet = _packetMaker.MakePlayerThrowBombPacket(position, direction, playerID, BombID);
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+
+    public void SendBombPositionSyncPacket(Vector3 position, int BombID)
+    {
+        byte[] packet = _packetMaker.MakeBombPositionSyncPacket(position, BombID);
         if (packet == null) { return; }
         SendPacket(packet);
     }

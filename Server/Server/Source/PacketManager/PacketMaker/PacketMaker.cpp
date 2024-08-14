@@ -31,7 +31,7 @@ std::vector<uint8_t> PacketMaker::MakeObjectDropPacket(int x, int y, int type)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 	Builder.Clear();
-	auto pos = PacketTable::ObjectTable::CreateVec2(Builder, x, y);
+	auto pos = PacketTable::ObjectTable::CreateVec2i(Builder, x, y);
 	Builder.Finish(PacketTable::ObjectTable::CreateObjectDrop(Builder, pos, type));
 	return MakeBuffer(ePacketType::S2C_OBJECTDROP, Builder.GetBufferPointer(), Builder.GetSize());
 }
@@ -40,7 +40,7 @@ std::vector<uint8_t> PacketMaker::MakeBombSpawnPacket(int x, int y)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 	Builder.Clear();
-	auto pos = PacketTable::ObjectTable::CreateVec2(Builder, x, y);
+	auto pos = PacketTable::ObjectTable::CreateVec2i(Builder, x, y);
 	Builder.Finish(PacketTable::ObjectTable::CreateBombSpawn(Builder, pos));
 	return MakeBuffer(ePacketType::S2C_BOMBSPAWN, Builder.GetBufferPointer(), Builder.GetSize());
 }

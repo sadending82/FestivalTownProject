@@ -19,11 +19,11 @@ public struct ObjectDrop : IFlatbufferObject
   public void __init(int _i, ByteBuffer _bb) { __p = new Table(_i, _bb); }
   public ObjectDrop __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public PacketTable.ObjectTable.Vec2? Pos { get { int o = __p.__offset(4); return o != 0 ? (PacketTable.ObjectTable.Vec2?)(new PacketTable.ObjectTable.Vec2()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
+  public PacketTable.ObjectTable.Vec2i? Pos { get { int o = __p.__offset(4); return o != 0 ? (PacketTable.ObjectTable.Vec2i?)(new PacketTable.ObjectTable.Vec2i()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
   public int Id { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
 
   public static Offset<PacketTable.ObjectTable.ObjectDrop> CreateObjectDrop(FlatBufferBuilder builder,
-      Offset<PacketTable.ObjectTable.Vec2> posOffset = default(Offset<PacketTable.ObjectTable.Vec2>),
+      Offset<PacketTable.ObjectTable.Vec2i> posOffset = default(Offset<PacketTable.ObjectTable.Vec2i>),
       int id = 0) {
     builder.StartTable(2);
     ObjectDrop.AddId(builder, id);
@@ -32,7 +32,7 @@ public struct ObjectDrop : IFlatbufferObject
   }
 
   public static void StartObjectDrop(FlatBufferBuilder builder) { builder.StartTable(2); }
-  public static void AddPos(FlatBufferBuilder builder, Offset<PacketTable.ObjectTable.Vec2> posOffset) { builder.AddOffset(0, posOffset.Value, 0); }
+  public static void AddPos(FlatBufferBuilder builder, Offset<PacketTable.ObjectTable.Vec2i> posOffset) { builder.AddOffset(0, posOffset.Value, 0); }
   public static void AddId(FlatBufferBuilder builder, int id) { builder.AddInt(1, id, 0); }
   public static Offset<PacketTable.ObjectTable.ObjectDrop> EndObjectDrop(FlatBufferBuilder builder) {
     int o = builder.EndTable();
@@ -46,7 +46,7 @@ static public class ObjectDropVerify
   static public bool Verify(Google.FlatBuffers.Verifier verifier, uint tablePos)
   {
     return verifier.VerifyTableStart(tablePos)
-      && verifier.VerifyTable(tablePos, 4 /*Pos*/, PacketTable.ObjectTable.Vec2Verify.Verify, false)
+      && verifier.VerifyTable(tablePos, 4 /*Pos*/, PacketTable.ObjectTable.Vec2iVerify.Verify, false)
       && verifier.VerifyField(tablePos, 6 /*Id*/, 4 /*int*/, 4, false)
       && verifier.VerifyTableEnd(tablePos);
   }

@@ -18,6 +18,7 @@
     <ClCompile Include="Source\PacketManager\PacketMaker\PacketMaker.cpp" />
     <ClCompile Include="Source\Thread\TestThread\TestThread.cpp" />
     <ClCompile Include="Source\Object\Bomb\Bomb.cpp" />
+    <ClCompile Include="Source\Object\Object.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DB\DB.h" />
@@ -62,6 +63,9 @@
     <ClInclude Include="Source\Object\Bomb\Bomb.h" />
     <ClInclude Include="Source\protocol.h" />
     <ClInclude Include="Source\Object\Object.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\PacketPlayerGrabBomb.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\PacketPlayerThrowBomb.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\PacketBombPositionSync.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

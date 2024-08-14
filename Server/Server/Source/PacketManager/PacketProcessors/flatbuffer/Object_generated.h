@@ -28,11 +28,11 @@ struct BombPositionBuilder;
 struct BombSpawn;
 struct BombSpawnBuilder;
 
-struct Vec2;
-struct Vec2Builder;
+struct Vec2i;
+struct Vec2iBuilder;
 
-struct Vec3;
-struct Vec3Builder;
+struct Vec3f;
+struct Vec3fBuilder;
 
 struct Object FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef ObjectBuilder Builder;
@@ -40,8 +40,8 @@ struct Object FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_POS = 4,
     VT_ID = 6
   };
-  const PacketTable::ObjectTable::Vec3 *pos() const {
-    return GetPointer<const PacketTable::ObjectTable::Vec3 *>(VT_POS);
+  const PacketTable::ObjectTable::Vec3f *pos() const {
+    return GetPointer<const PacketTable::ObjectTable::Vec3f *>(VT_POS);
   }
   int32_t id() const {
     return GetField<int32_t>(VT_ID, 0);
@@ -59,7 +59,7 @@ struct ObjectBuilder {
   typedef Object Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_pos(::flatbuffers::Offset<PacketTable::ObjectTable::Vec3> pos) {
+  void add_pos(::flatbuffers::Offset<PacketTable::ObjectTable::Vec3f> pos) {
     fbb_.AddOffset(Object::VT_POS, pos);
   }
   void add_id(int32_t id) {
@@ -78,7 +78,7 @@ struct ObjectBuilder {
 
 inline ::flatbuffers::Offset<Object> CreateObject(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<PacketTable::ObjectTable::Vec3> pos = 0,
+    ::flatbuffers::Offset<PacketTable::ObjectTable::Vec3f> pos = 0,
     int32_t id = 0) {
   ObjectBuilder builder_(_fbb);
   builder_.add_id(id);
@@ -92,8 +92,8 @@ struct ObjectDrop FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_POS = 4,
     VT_ID = 6
   };
-  const PacketTable::ObjectTable::Vec2 *pos() const {
-    return GetPointer<const PacketTable::ObjectTable::Vec2 *>(VT_POS);
+  const PacketTable::ObjectTable::Vec2i *pos() const {
+    return GetPointer<const PacketTable::ObjectTable::Vec2i *>(VT_POS);
   }
   int32_t id() const {
     return GetField<int32_t>(VT_ID, 0);
@@ -111,7 +111,7 @@ struct ObjectDropBuilder {
   typedef ObjectDrop Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_pos(::flatbuffers::Offset<PacketTable::ObjectTable::Vec2> pos) {
+  void add_pos(::flatbuffers::Offset<PacketTable::ObjectTable::Vec2i> pos) {
     fbb_.AddOffset(ObjectDrop::VT_POS, pos);
   }
   void add_id(int32_t id) {
@@ -130,7 +130,7 @@ struct ObjectDropBuilder {
 
 inline ::flatbuffers::Offset<ObjectDrop> CreateObjectDrop(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<PacketTable::ObjectTable::Vec2> pos = 0,
+    ::flatbuffers::Offset<PacketTable::ObjectTable::Vec2i> pos = 0,
     int32_t id = 0) {
   ObjectDropBuilder builder_(_fbb);
   builder_.add_id(id);
@@ -144,8 +144,8 @@ struct BombPosition FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_POS = 4,
     VT_ID = 6
   };
-  const PacketTable::ObjectTable::Vec3 *pos() const {
-    return GetPointer<const PacketTable::ObjectTable::Vec3 *>(VT_POS);
+  const PacketTable::ObjectTable::Vec3f *pos() const {
+    return GetPointer<const PacketTable::ObjectTable::Vec3f *>(VT_POS);
   }
   int32_t id() const {
     return GetField<int32_t>(VT_ID, 0);
@@ -163,7 +163,7 @@ struct BombPositionBuilder {
   typedef BombPosition Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_pos(::flatbuffers::Offset<PacketTable::ObjectTable::Vec3> pos) {
+  void add_pos(::flatbuffers::Offset<PacketTable::ObjectTable::Vec3f> pos) {
     fbb_.AddOffset(BombPosition::VT_POS, pos);
   }
   void add_id(int32_t id) {
@@ -182,7 +182,7 @@ struct BombPositionBuilder {
 
 inline ::flatbuffers::Offset<BombPosition> CreateBombPosition(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<PacketTable::ObjectTable::Vec3> pos = 0,
+    ::flatbuffers::Offset<PacketTable::ObjectTable::Vec3f> pos = 0,
     int32_t id = 0) {
   BombPositionBuilder builder_(_fbb);
   builder_.add_id(id);
@@ -195,8 +195,8 @@ struct BombSpawn FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_POS = 4
   };
-  const PacketTable::ObjectTable::Vec2 *pos() const {
-    return GetPointer<const PacketTable::ObjectTable::Vec2 *>(VT_POS);
+  const PacketTable::ObjectTable::Vec2i *pos() const {
+    return GetPointer<const PacketTable::ObjectTable::Vec2i *>(VT_POS);
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -210,7 +210,7 @@ struct BombSpawnBuilder {
   typedef BombSpawn Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_pos(::flatbuffers::Offset<PacketTable::ObjectTable::Vec2> pos) {
+  void add_pos(::flatbuffers::Offset<PacketTable::ObjectTable::Vec2i> pos) {
     fbb_.AddOffset(BombSpawn::VT_POS, pos);
   }
   explicit BombSpawnBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
@@ -226,14 +226,14 @@ struct BombSpawnBuilder {
 
 inline ::flatbuffers::Offset<BombSpawn> CreateBombSpawn(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<PacketTable::ObjectTable::Vec2> pos = 0) {
+    ::flatbuffers::Offset<PacketTable::ObjectTable::Vec2i> pos = 0) {
   BombSpawnBuilder builder_(_fbb);
   builder_.add_pos(pos);
   return builder_.Finish();
 }
 
-struct Vec2 FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef Vec2Builder Builder;
+struct Vec2i FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef Vec2iBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_X = 4,
     VT_Y = 6
@@ -252,83 +252,93 @@ struct Vec2 FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   }
 };
 
-struct Vec2Builder {
-  typedef Vec2 Table;
+struct Vec2iBuilder {
+  typedef Vec2i Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
   void add_x(int32_t x) {
-    fbb_.AddElement<int32_t>(Vec2::VT_X, x, 0);
+    fbb_.AddElement<int32_t>(Vec2i::VT_X, x, 0);
   }
   void add_y(int32_t y) {
-    fbb_.AddElement<int32_t>(Vec2::VT_Y, y, 0);
+    fbb_.AddElement<int32_t>(Vec2i::VT_Y, y, 0);
   }
-  explicit Vec2Builder(::flatbuffers::FlatBufferBuilder &_fbb)
+  explicit Vec2iBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  ::flatbuffers::Offset<Vec2> Finish() {
+  ::flatbuffers::Offset<Vec2i> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<Vec2>(end);
+    auto o = ::flatbuffers::Offset<Vec2i>(end);
     return o;
   }
 };
 
-inline ::flatbuffers::Offset<Vec2> CreateVec2(
+inline ::flatbuffers::Offset<Vec2i> CreateVec2i(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t x = 0,
     int32_t y = 0) {
-  Vec2Builder builder_(_fbb);
+  Vec2iBuilder builder_(_fbb);
   builder_.add_y(y);
   builder_.add_x(x);
   return builder_.Finish();
 }
 
-struct Vec3 FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef Vec3Builder Builder;
+struct Vec3f FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef Vec3fBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_X = 4,
-    VT_Y = 6
+    VT_Y = 6,
+    VT_Z = 8
   };
-  int32_t x() const {
-    return GetField<int32_t>(VT_X, 0);
+  float x() const {
+    return GetField<float>(VT_X, 0.0f);
   }
-  int32_t y() const {
-    return GetField<int32_t>(VT_Y, 0);
+  float y() const {
+    return GetField<float>(VT_Y, 0.0f);
+  }
+  float z() const {
+    return GetField<float>(VT_Z, 0.0f);
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<int32_t>(verifier, VT_X, 4) &&
-           VerifyField<int32_t>(verifier, VT_Y, 4) &&
+           VerifyField<float>(verifier, VT_X, 4) &&
+           VerifyField<float>(verifier, VT_Y, 4) &&
+           VerifyField<float>(verifier, VT_Z, 4) &&
            verifier.EndTable();
   }
 };
 
-struct Vec3Builder {
-  typedef Vec3 Table;
+struct Vec3fBuilder {
+  typedef Vec3f Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_x(int32_t x) {
-    fbb_.AddElement<int32_t>(Vec3::VT_X, x, 0);
+  void add_x(float x) {
+    fbb_.AddElement<float>(Vec3f::VT_X, x, 0.0f);
   }
-  void add_y(int32_t y) {
-    fbb_.AddElement<int32_t>(Vec3::VT_Y, y, 0);
+  void add_y(float y) {
+    fbb_.AddElement<float>(Vec3f::VT_Y, y, 0.0f);
   }
-  explicit Vec3Builder(::flatbuffers::FlatBufferBuilder &_fbb)
+  void add_z(float z) {
+    fbb_.AddElement<float>(Vec3f::VT_Z, z, 0.0f);
+  }
+  explicit Vec3fBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  ::flatbuffers::Offset<Vec3> Finish() {
+  ::flatbuffers::Offset<Vec3f> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<Vec3>(end);
+    auto o = ::flatbuffers::Offset<Vec3f>(end);
     return o;
   }
 };
 
-inline ::flatbuffers::Offset<Vec3> CreateVec3(
+inline ::flatbuffers::Offset<Vec3f> CreateVec3f(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    int32_t x = 0,
-    int32_t y = 0) {
-  Vec3Builder builder_(_fbb);
+    float x = 0.0f,
+    float y = 0.0f,
+    float z = 0.0f) {
+  Vec3fBuilder builder_(_fbb);
+  builder_.add_z(z);
   builder_.add_y(y);
   builder_.add_x(x);
   return builder_.Finish();
