@@ -6,7 +6,7 @@ class Room
 {
 public:
 
-	Room();
+	Room() :mState(eRoomState::RS_FREE) {};
 	~Room();
 
 	void Init(int id, int teamLifeCount, int playerLimit = MAXPLAYER);

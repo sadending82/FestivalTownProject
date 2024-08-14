@@ -12,7 +12,7 @@ public:
 		EV_BOMB_SPAWN* event = reinterpret_cast<EV_BOMB_SPAWN*>(buf);
 
 		int roomid = event->roomID;
-		if (pServer->GetRooms()[roomid]->GetState() == eRoomState::ST_FREE) {
+		if (pServer->GetRooms()[roomid]->GetState() == eRoomState::RS_FREE) {
 			return;
 		}
 

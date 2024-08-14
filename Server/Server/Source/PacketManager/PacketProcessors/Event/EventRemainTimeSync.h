@@ -10,7 +10,7 @@ public:
 		EV_TIME_SYNC* event = reinterpret_cast<EV_TIME_SYNC*>(buf);
 
 		int roomid = event->roomID;
-		if (pServer->GetRooms()[roomid]->GetState() == eRoomState::ST_FREE) {
+		if (pServer->GetRooms()[roomid]->GetState() == eRoomState::RS_FREE) {
 			return;
 		}
 

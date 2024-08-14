@@ -72,15 +72,15 @@ enum eSessionState
 };
 
 enum ePlayerState {
-	ST_IDLE,
-	ST_RUNNING,
-	ST_WALKING,
-	ST_DEAD
+	PS_IDLE,
+	PS_RUNNING,
+	PS_WALKING,
+	PS_DEAD
 };
 
 enum eRoomState {
-	ST_FREE,
-	ST_INGAME
+	RS_FREE,
+	RS_INGAME
 };
 
 enum GameCode {
