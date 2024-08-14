@@ -1,5 +1,6 @@
 #pragma once
 #include "../../utility.h"
+#include "../../protocol.h"
 #include "../PacketProcessors/flatbuffer/FlatBufferManager.h"
 
 class PacketMaker

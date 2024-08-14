@@ -1,6 +1,7 @@
 #pragma once
 #include "Team/Team.h"
 #include "../Object/Map/Map.h"
+#include "../Object/Object.h"
 
 class Room
 {
@@ -13,12 +14,16 @@ public:
 
 	void InitMap(Map& map) { mMap = map; }
 
-	bool addPlayer(Player* player);
+	bool AddPlayer(Player* player);
 	bool DeletePlayer(int playerID);
+
+	bool AddObject(Object* object, Vector3f position, Vector3f direction = Vector3f(0, 0, 0));
+	bool DeleteObject(int id);
 
 	std::array<Player*, MAXPLAYER>& GetPlayerList() { return mPlayerList; }
 	std::array<int, MAXPLAYER>& GetPlayerIDs() { return mPlayerSessionIDs; }
 	std::unordered_map<int, Team>& GetTeams() { return mTeams; }
+	std::array<Object*, MAXOBJECT>& GetObjects() { return mObjectList; }
 	int GetPlayerCnt() { return mPlayerCnt; }
 	int GetPlayerLimit() { return mPlayerLimit; }
 	GameCode GetGameMode() { return mGameMode; }
@@ -40,6 +45,7 @@ private:
 
 	std::mutex mPlayerListLock;
 	std::array<Player*, MAXPLAYER> mPlayerList;
+	std::array<Object*, MAXOBJECT> mObjectList;
 
 	std::mutex mPlayerSessionIDsLock;
 	std::array<int, MAXPLAYER> mPlayerSessionIDs;

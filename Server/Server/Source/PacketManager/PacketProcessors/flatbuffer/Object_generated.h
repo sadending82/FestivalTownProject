@@ -22,6 +22,9 @@ struct ObjectBuilder;
 struct ObjectDrop;
 struct ObjectDropBuilder;
 
+struct BombPosition;
+struct BombPositionBuilder;
+
 struct BombSpawn;
 struct BombSpawnBuilder;
 
@@ -130,6 +133,58 @@ inline ::flatbuffers::Offset<ObjectDrop> CreateObjectDrop(
     ::flatbuffers::Offset<PacketTable::ObjectTable::Vec2> pos = 0,
     int32_t id = 0) {
   ObjectDropBuilder builder_(_fbb);
+  builder_.add_id(id);
+  builder_.add_pos(pos);
+  return builder_.Finish();
+}
+
+struct BombPosition FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef BombPositionBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_POS = 4,
+    VT_ID = 6
+  };
+  const PacketTable::ObjectTable::Vec3 *pos() const {
+    return GetPointer<const PacketTable::ObjectTable::Vec3 *>(VT_POS);
+  }
+  int32_t id() const {
+    return GetField<int32_t>(VT_ID, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_POS) &&
+           verifier.VerifyTable(pos()) &&
+           VerifyField<int32_t>(verifier, VT_ID, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct BombPositionBuilder {
+  typedef BombPosition Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_pos(::flatbuffers::Offset<PacketTable::ObjectTable::Vec3> pos) {
+    fbb_.AddOffset(BombPosition::VT_POS, pos);
+  }
+  void add_id(int32_t id) {
+    fbb_.AddElement<int32_t>(BombPosition::VT_ID, id, 0);
+  }
+  explicit BombPositionBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<BombPosition> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<BombPosition>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<BombPosition> CreateBombPosition(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<PacketTable::ObjectTable::Vec3> pos = 0,
+    int32_t id = 0) {
+  BombPositionBuilder builder_(_fbb);
   builder_.add_id(id);
   builder_.add_pos(pos);
   return builder_.Finish();

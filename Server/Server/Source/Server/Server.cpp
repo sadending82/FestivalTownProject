@@ -208,8 +208,8 @@ void Server::SendBombSpawnPacket(int roomID, int spawnCount)
         std::random_device rd;
         std::mt19937 gen(rd());
 
-        std::uniform_int_distribution<> x_distrib(0, 19);
-        std::uniform_int_distribution<> y_distrib(0, 9);
+        std::uniform_int_distribution<> x_distrib(9, 12);
+        std::uniform_int_distribution<> y_distrib(4, 7);
         int posX = x_distrib(gen), posY = y_distrib(gen);
 
         std::vector<uint8_t> send_buffer = mPacketMaker->MakeBombSpawnPacket(posX, posY);
@@ -257,8 +257,8 @@ void Server::StartGame(int roomID)
         if (s->GetState() == eSessionState::ST_ACCEPTED) {
             Player* p = dynamic_cast<Player*>(s);
             int sessionID = p->GetSessionID();
-            bool addPlayerOk = GetRooms()[roomID]->addPlayer(p);
-            if (addPlayerOk == false) {
+            bool AddPlayerOk = GetRooms()[roomID]->AddPlayer(p);
+            if (AddPlayerOk == false) {
                 std::cout << "AddPlayer fail: Already Player Max\n";
             }
             else {

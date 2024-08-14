@@ -34,6 +34,12 @@ struct PlayerMoveBuilder;
 struct PlayerStop;
 struct PlayerStopBuilder;
 
+struct PlayerGrapBomb;
+struct PlayerGrapBombBuilder;
+
+struct PlayerThrowBomb;
+struct PlayerThrowBombBuilder;
+
 struct Vec3;
 struct Vec3Builder;
 
@@ -417,6 +423,152 @@ inline ::flatbuffers::Offset<PlayerStop> CreatePlayerStop(
     int32_t state = 0) {
   PlayerStopBuilder builder_(_fbb);
   builder_.add_state(state);
+  builder_.add_direction(direction);
+  builder_.add_pos(pos);
+  builder_.add_id(id);
+  return builder_.Finish();
+}
+
+struct PlayerGrapBomb FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef PlayerGrapBombBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ID = 4,
+    VT_POS = 6,
+    VT_DIRECTION = 8,
+    VT_BOMB_ID = 10
+  };
+  int32_t id() const {
+    return GetField<int32_t>(VT_ID, 0);
+  }
+  const PacketTable::PlayerTable::Vec3 *pos() const {
+    return GetPointer<const PacketTable::PlayerTable::Vec3 *>(VT_POS);
+  }
+  const PacketTable::PlayerTable::Vec3 *direction() const {
+    return GetPointer<const PacketTable::PlayerTable::Vec3 *>(VT_DIRECTION);
+  }
+  int32_t bomb_id() const {
+    return GetField<int32_t>(VT_BOMB_ID, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_ID, 4) &&
+           VerifyOffset(verifier, VT_POS) &&
+           verifier.VerifyTable(pos()) &&
+           VerifyOffset(verifier, VT_DIRECTION) &&
+           verifier.VerifyTable(direction()) &&
+           VerifyField<int32_t>(verifier, VT_BOMB_ID, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct PlayerGrapBombBuilder {
+  typedef PlayerGrapBomb Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_id(int32_t id) {
+    fbb_.AddElement<int32_t>(PlayerGrapBomb::VT_ID, id, 0);
+  }
+  void add_pos(::flatbuffers::Offset<PacketTable::PlayerTable::Vec3> pos) {
+    fbb_.AddOffset(PlayerGrapBomb::VT_POS, pos);
+  }
+  void add_direction(::flatbuffers::Offset<PacketTable::PlayerTable::Vec3> direction) {
+    fbb_.AddOffset(PlayerGrapBomb::VT_DIRECTION, direction);
+  }
+  void add_bomb_id(int32_t bomb_id) {
+    fbb_.AddElement<int32_t>(PlayerGrapBomb::VT_BOMB_ID, bomb_id, 0);
+  }
+  explicit PlayerGrapBombBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<PlayerGrapBomb> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<PlayerGrapBomb>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<PlayerGrapBomb> CreatePlayerGrapBomb(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t id = 0,
+    ::flatbuffers::Offset<PacketTable::PlayerTable::Vec3> pos = 0,
+    ::flatbuffers::Offset<PacketTable::PlayerTable::Vec3> direction = 0,
+    int32_t bomb_id = 0) {
+  PlayerGrapBombBuilder builder_(_fbb);
+  builder_.add_bomb_id(bomb_id);
+  builder_.add_direction(direction);
+  builder_.add_pos(pos);
+  builder_.add_id(id);
+  return builder_.Finish();
+}
+
+struct PlayerThrowBomb FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef PlayerThrowBombBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ID = 4,
+    VT_POS = 6,
+    VT_DIRECTION = 8,
+    VT_BOMB_ID = 10
+  };
+  int32_t id() const {
+    return GetField<int32_t>(VT_ID, 0);
+  }
+  const PacketTable::PlayerTable::Vec3 *pos() const {
+    return GetPointer<const PacketTable::PlayerTable::Vec3 *>(VT_POS);
+  }
+  const PacketTable::PlayerTable::Vec3 *direction() const {
+    return GetPointer<const PacketTable::PlayerTable::Vec3 *>(VT_DIRECTION);
+  }
+  int32_t bomb_id() const {
+    return GetField<int32_t>(VT_BOMB_ID, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_ID, 4) &&
+           VerifyOffset(verifier, VT_POS) &&
+           verifier.VerifyTable(pos()) &&
+           VerifyOffset(verifier, VT_DIRECTION) &&
+           verifier.VerifyTable(direction()) &&
+           VerifyField<int32_t>(verifier, VT_BOMB_ID, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct PlayerThrowBombBuilder {
+  typedef PlayerThrowBomb Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_id(int32_t id) {
+    fbb_.AddElement<int32_t>(PlayerThrowBomb::VT_ID, id, 0);
+  }
+  void add_pos(::flatbuffers::Offset<PacketTable::PlayerTable::Vec3> pos) {
+    fbb_.AddOffset(PlayerThrowBomb::VT_POS, pos);
+  }
+  void add_direction(::flatbuffers::Offset<PacketTable::PlayerTable::Vec3> direction) {
+    fbb_.AddOffset(PlayerThrowBomb::VT_DIRECTION, direction);
+  }
+  void add_bomb_id(int32_t bomb_id) {
+    fbb_.AddElement<int32_t>(PlayerThrowBomb::VT_BOMB_ID, bomb_id, 0);
+  }
+  explicit PlayerThrowBombBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<PlayerThrowBomb> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<PlayerThrowBomb>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<PlayerThrowBomb> CreatePlayerThrowBomb(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t id = 0,
+    ::flatbuffers::Offset<PacketTable::PlayerTable::Vec3> pos = 0,
+    ::flatbuffers::Offset<PacketTable::PlayerTable::Vec3> direction = 0,
+    int32_t bomb_id = 0) {
+  PlayerThrowBombBuilder builder_(_fbb);
+  builder_.add_bomb_id(bomb_id);
   builder_.add_direction(direction);
   builder_.add_pos(pos);
   builder_.add_id(id);
