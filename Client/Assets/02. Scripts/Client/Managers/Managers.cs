@@ -15,6 +15,7 @@ public class Managers : MonoBehaviour
     ObjectPoolManager _objPool = new ObjectPoolManager();
     DataManager _data = new DataManager();
     SceneManagerEx _scene = new SceneManagerEx();
+    BombObjectManager _bombObject;
     GameManager _game;
 
     public static UIManager UI { get { return Instance._ui; } }
@@ -22,6 +23,7 @@ public class Managers : MonoBehaviour
    public static NetworkManager Network { get { return Instance._network; } }
     public static PlayerManager Player { get { return Instance._player; } }
     public static CubeObjectManager CubeObject { get { return Instance._cubeObject; } }
+    public static BombObjectManager BombObject { get { return Instance._bombObject; } }
     public static ObjectPoolManager ObjectPool { get { return Instance._objPool; } }
 
     public static DataManager Data { get { return Instance._data; } }
@@ -40,6 +42,7 @@ public class Managers : MonoBehaviour
         //        _network = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
         _player = GameObject.Find("PlayerManager").GetComponent<PlayerManager>();
         _cubeObject = GameObject.Find("CubeObjectManager").GetComponent<CubeObjectManager>();
+        _bombObject = GameObject.Find("BombObjectManager").GetComponent<BombObjectManager>();
         
     }
 
