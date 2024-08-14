@@ -18,6 +18,8 @@ namespace Network.PacketProcessor
             int posY = Data.Pos.Value.Y;
 
             // 폭탄 생성
+
+            Debug.Log("Bomb spawn : "+ posX  + ", " + posY);
         }
 
         private FlatBufferBuilder mBuilder;

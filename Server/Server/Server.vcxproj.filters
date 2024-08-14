@@ -61,6 +61,7 @@
     <ClInclude Include="Source\PacketManager\PacketProcessors\Event\EventRemainTimeSync.h" />
     <ClInclude Include="Source\Object\Bomb\Bomb.h" />
     <ClInclude Include="Source\protocol.h" />
+    <ClInclude Include="Source\Object\Object.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

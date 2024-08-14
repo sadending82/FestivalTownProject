@@ -204,16 +204,37 @@ void Server::SendObjectDropPacket(int roomID, int spawnCount)
 
 void Server::SendBombSpawnPacket(int roomID, int spawnCount)
 {
-    for (int i = 0; i < spawnCount; ++i) {
-        std::random_device rd;
-        std::mt19937 gen(rd());
+    std::random_device rd;
+    std::mt19937 gen(rd());
 
-        std::uniform_int_distribution<> x_distrib(9, 12);
-        std::uniform_int_distribution<> y_distrib(4, 7);
-        int posX = x_distrib(gen), posY = y_distrib(gen);
+    std::uniform_int_distribution<> x_distrib(9, 12);
+    std::uniform_int_distribution<> y_distrib(4, 7);
 
-        std::vector<uint8_t> send_buffer = mPacketMaker->MakeBombSpawnPacket(posX, posY);
+    std::set<std::pair<int, int>> unique_pos;
 
+    std::array<Object*, MAXOBJECT>& object_list = mRooms[roomID]->GetObjects();
+
+    while (unique_pos.size() < spawnCount) {
+        int x = x_distrib(gen);
+        int y = y_distrib(gen);
+        bool invalid_pos = false;
+        for (int i = 0; i < MAXOBJECT; ++i) {
+            if (object_list[i] == nullptr) {
+                continue;
+            }
+            if (x == object_list[i]->GetPosition().x && y == object_list[i]->GetPosition().x) {
+                invalid_pos = true;
+                break;
+            }
+        }
+        if (invalid_pos == false) {
+            unique_pos.emplace(x, y);
+        }
+    }
+
+    for (const auto& pos : unique_pos) {
+        mRooms[roomID]->AddObject(new Bomb, Vector3f(pos.first, pos.second, 0));
+        std::vector<uint8_t> send_buffer = mPacketMaker->MakeBombSpawnPacket(pos.first, pos.second);
         SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
     }
 

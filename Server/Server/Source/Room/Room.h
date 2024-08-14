@@ -2,6 +2,7 @@
 #include "Team/Team.h"
 #include "../Object/Map/Map.h"
 #include "../Object/Object.h"
+#include "../Object/Bomb/Bomb.h"
 
 class Room
 {
