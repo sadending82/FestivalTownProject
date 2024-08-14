@@ -4,14 +4,19 @@ using UnityEngine;
 
 public class Bomb : MonoBehaviour
 {
-    private float lifeTime;
+    private float lifeTime = 20;
+    private float currentLifeTime;
+    public GameObject bombPusher;
     private void OnEnable()
     {
-        
+        currentLifeTime = lifeTime;
     }
     private void OnDisable()
     {
-
+        Rigidbody rigidbody = this.GetComponent<Rigidbody>();
+        rigidbody.constraints = RigidbodyConstraints.FreezeRotationX |
+                                RigidbodyConstraints.FreezeRotationY |
+                                RigidbodyConstraints.FreezeRotationZ;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -31,5 +36,14 @@ public class Bomb : MonoBehaviour
     public void SetLifeTime(float lifeTime)
     {
         this.lifeTime = lifeTime;
+    }
+    public void Boom()
+    {
+        GameObject pusher = Instantiate(bombPusher) as GameObject;
+
+        pusher.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z);
+        pusher.SetActive(true);
+
+        this.gameObject.SetActive(false);
     }
 }

@@ -69,8 +69,8 @@ public class BombObjectManager : MonoBehaviour
         // 큐브 생성 위치와 큐브 타입 설정, 플레이어를 밀어내는 Pusher 작동
         reusedBomb.SetActive(true);
         // 타입에 해당하는 큐브 활성화, 포지션 설정
-        reusedBomb.gameObject.SetActive(true);
         reusedBomb.gameObject.GetComponent<Bomb>().SetLifeTime(lifeTime);
         reusedBomb.gameObject.transform.position = new Vector3(x, createHeight, y);
+        reusedBomb.gameObject.SetActive(true);
     }
 }

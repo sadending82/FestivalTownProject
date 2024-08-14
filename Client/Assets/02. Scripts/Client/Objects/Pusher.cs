@@ -7,6 +7,7 @@ public class Pusher : MonoBehaviour
     public float maxScale = 3;
     public float pushSpeed = 0.5f;
     private bool isStartPush;
+    public bool useAgain = true;
 
     private void Awake()
     {
@@ -30,9 +31,16 @@ public class Pusher : MonoBehaviour
                                                 this.transform.localScale.z + pushSpeed);
         if(this.transform.localScale.x >= maxScale)
         {
-            this.transform.localScale = new Vector3(0, this.transform.localScale.y, 0);
-            isStartPush = false;
-            this.gameObject.SetActive(false);
+            if (useAgain == true)
+            {
+                this.transform.localScale = new Vector3(0, this.transform.localScale.y, 0);
+                isStartPush = false;
+                this.gameObject.SetActive(false);
+            }
+            else
+            {
+                Destroy(this.gameObject);
+            }
         }
     }
 }

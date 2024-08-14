@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Ground
   - PlayerManager
+  - Bomb
   layers:
   - Default
   - TransparentFX
@@ -16,8 +17,8 @@ TagManager:
   - NoSelfCollision
   - Cube
   - Pusher
-  - Object
-  - 
+  - Bomb
+  - Checker
   - 
   - 
   - 

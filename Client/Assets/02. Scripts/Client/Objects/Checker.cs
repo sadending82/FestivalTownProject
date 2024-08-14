@@ -12,7 +12,6 @@ public class Checker : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        // 바닥에 도달했을때 더이상 움직이지 않도록 고정
         if (other.gameObject.tag == "Player" && check == false)
         {
             check = true;
@@ -20,6 +19,10 @@ public class Checker : MonoBehaviour
             // Pusher 작동
             pusher.SetActive(true);
             pusher.transform.position = new Vector3(this.transform.position.x, 5, this.transform.position.z);
+        }
+        if (other.gameObject.tag == "Bomb")
+        {
+            other.gameObject.GetComponent<Bomb>().Boom();
         }
     }
 }
