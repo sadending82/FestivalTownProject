@@ -6,7 +6,7 @@ public class CubeObjectManager : MonoBehaviour
 {
     private float offsetX = 19;
     private float offsetY = 9;
-    private float creatHeight = 8;
+    private float createHeight = 8;
 
     public static CubeObjectManager instance;
     public int initialCubes = 10;
@@ -102,6 +102,6 @@ public class CubeObjectManager : MonoBehaviour
         // 타입에 해당하는 큐브 활성화, 포지션 설정
         reusedCube.gameObject.transform.GetChild(type).gameObject.SetActive(true);
         reusedCube.gameObject.transform.GetChild(type).gameObject.GetComponent<Cube>().SetTargetHeight(targetHeight);
-        reusedCube.gameObject.transform.GetChild(type).gameObject.transform.position = new Vector3(x + offsetX, creatHeight, y + offsetY);
+        reusedCube.gameObject.transform.GetChild(type).gameObject.transform.position = new Vector3(x + offsetX, createHeight, y + offsetY);
     }
 }
