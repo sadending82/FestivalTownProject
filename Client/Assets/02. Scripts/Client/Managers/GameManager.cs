@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     {
         // 이건 임시로 만든 거라서 나중에 바꿔줘야 합니당
         isInGame = true;
+        SetDefaultGameData(Define.GameMode.FireInTheHoleTeam1);
     }
 
     public void SetDefaultGameData(Define.GameMode mode)
@@ -62,9 +63,10 @@ public class GameManager : MonoBehaviour
         if (data != null)
         {
             Debug.Log($"{mode}가 Null 이에요!!!!!!!.");
+            return;
         }
 
-        GameEndTime = data.Play_Time;
+        //GameEndTime = data.Play_Time;
     }
     
     public void SetLifeCount(int team, int life)
