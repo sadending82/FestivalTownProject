@@ -209,8 +209,8 @@ void Server::SendBombSpawnPacket(int roomID, int spawnCount)
     std::mt19937 gen(rd());
 
     // 엑셀 데이터로 수정해야함
-    std::uniform_int_distribution<> x_distrib(9, 12);
-    std::uniform_int_distribution<> y_distrib(4, 7);
+    std::uniform_int_distribution<> x_distrib(8, 11);
+    std::uniform_int_distribution<> y_distrib(3, 6);
 
     std::set<std::pair<int, int>> unique_pos;
 
