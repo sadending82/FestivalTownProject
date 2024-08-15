@@ -43,6 +43,7 @@ public class Statue : MonoBehaviour
         if(state == Define.StatueState.Destroyed)
         {
             transform.GetChild(2).gameObject.SetActive(true);
+            StartCoroutine(AfterDestroy());
         }
         else if (state == Define.StatueState.Fine)
         {
@@ -53,6 +54,13 @@ public class Statue : MonoBehaviour
             transform.GetChild(1).gameObject.SetActive(true);
         }
        
+    }
+
+    public IEnumerator AfterDestroy()
+    {
+        yield return new WaitForSeconds(3);
+
+        transform.GetChild(2).gameObject.SetActive(false);
     }
 
     void AllObjectOff()
