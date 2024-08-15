@@ -170,6 +170,7 @@ public class PacketMaker
     public byte[] MakeBombInputPacket(int id, int team)
     {
         var builder = new FlatBufferBuilder(1);
+        BombInput.StartBombInput(builder);
         BombInput.AddTeam(builder, team);
         BombInput.AddId(builder, id);
         var offset = BombInput.EndBombInput(builder);
@@ -191,6 +192,7 @@ public class PacketMaker
         var builder = new FlatBufferBuilder(1);
         var pos = Vec3.CreateVec3(builder, position.x, position.y, position.z);
         var dir = Vec3.CreateVec3(builder, direction.x, direction.y, direction.z);
+        PlayerGrabBomb.StartPlayerGrabBomb(builder);
         PlayerGrabBomb.AddId(builder, playerID);
         PlayerGrabBomb.AddPos(builder, pos);
         PlayerGrabBomb.AddDirection(builder, dir);
@@ -214,6 +216,7 @@ public class PacketMaker
         var builder = new FlatBufferBuilder(1);
         var pos = Vec3.CreateVec3(builder, position.x, position.y, position.z);
         var dir = Vec3.CreateVec3(builder, direction.x, direction.y, direction.z);
+        PlayerThrowBomb.StartPlayerThrowBomb(builder);
         PlayerThrowBomb.AddId(builder, playerID);
         PlayerThrowBomb.AddPos(builder, pos);
         PlayerThrowBomb.AddDirection(builder, dir);
@@ -236,6 +239,7 @@ public class PacketMaker
     {
         var builder = new FlatBufferBuilder(1);
         var pos = Vec3f.CreateVec3f(builder, position.x, position.y, position.z);
+        BombPosition.StartBombPosition(builder);
         BombPosition.AddId(builder, BombID);
         BombPosition.AddPos(builder, pos);
         var offset = BombPosition.EndBombPosition(builder);

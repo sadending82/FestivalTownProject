@@ -12,8 +12,8 @@ public:
 		flatbuffers::Verifier verifier(data, size);
 		if (verifier.VerifyBuffer<PlayerGrabBomb>(nullptr)) {
 			const PlayerGrabBomb* read = flatbuffers::GetRoot<PlayerGrabBomb>(data);
-
-			int roomid = dynamic_cast<Player*>(pServer->GetSessions()[read->id()])->GetInGameID();
+			Player* p = dynamic_cast<Player*>(pServer->GetSessions()[key]);
+			int roomid = p->GetRoomID();
 			int bombid = read->bomb_id();
 
 			Bomb* bomb = dynamic_cast<Bomb*>(pServer->GetRooms()[roomid]->GetObjects()[roomid]);
