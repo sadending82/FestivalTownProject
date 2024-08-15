@@ -14,7 +14,7 @@ public class NearObjectChecker : MonoBehaviour
     private void Update()
     {
         // 가까이 있다고 생각했던 오브젝트가 사라질 때
-        if (nearObject.activeSelf == false)
+        if (nearObject != null && nearObject.activeSelf == false)
         {
             nearObject = null;
         }
@@ -26,18 +26,20 @@ public class NearObjectChecker : MonoBehaviour
         {
             if (other.tag == "Bomb")
             {
-                if (nearObject == null)
+                Bomb targetBomb = other.GetComponent<Bomb>();
+                if (targetBomb.GetIsPickUp() == false)
                 {
-                    nearObject = other.gameObject;
-                    Debug.Log("Near Object : " + nearObject.transform.position.x);
-                }
-                else
-                {
-                    // other이 현재 nearObject보다 가깝다면 교체
-                    if (Vector3.Distance(this.transform.position, other.transform.position) < Vector3.Distance(this.transform.position, nearObject.transform.position))
+                    if (nearObject == null)
                     {
                         nearObject = other.gameObject;
-                        Debug.Log("Near Object : " + nearObject.transform.position.x);
+                    }
+                    else
+                    {
+                        // other이 현재 nearObject보다 가깝다면 교체
+                        if (Vector3.Distance(this.transform.position, other.transform.position) < Vector3.Distance(this.transform.position, nearObject.transform.position))
+                        {
+                            nearObject = other.gameObject;
+                        }
                     }
                 }
             }
@@ -50,7 +52,6 @@ public class NearObjectChecker : MonoBehaviour
             nearObject = null;
         }
     }
-
     public GameObject GetNearObject()
     {
         return nearObject;

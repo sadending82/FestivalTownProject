@@ -22,6 +22,7 @@ public class CharacterStatus : MonoBehaviour
     public float groggyTime;
     public Camera myCamera;
     private bool amIPlayer;
+    private bool isHaveItem = false;
 
     [Header("--- AnimationControll ---")]
     public bool isGroggy;
@@ -73,5 +74,23 @@ public class CharacterStatus : MonoBehaviour
             ///서버에 상태 전달하는 부분 여기에 추가
             ///</summary>
         }
+    }
+    public void SetIsHaveItem(bool isHaveItem)
+    {
+        this.isHaveItem = isHaveItem;
+    }
+    public bool GetIsHaveItem()
+    {
+        return isHaveItem;
+    }
+    public void SetIsDie(bool isDie)
+    {
+        this.isDie = isDie;
+        // 플레이어 그로기 및 죽음 처리 전까지 확인용 로그
+        Debug.Log(this.name + " is Die? : " + isDie);
+    }
+    public int GetId()
+    {
+        return id;
     }
 }

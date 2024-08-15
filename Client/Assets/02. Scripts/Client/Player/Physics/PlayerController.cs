@@ -49,10 +49,17 @@ public class PlayerController : MonoBehaviour
     private float curTime= 0.0f;
     private float sendInterval = 0.01666666666f;
 
+    [Header("--- Pick Up ---")]
+    public NearObjectChecker nearObjectChecker;
+    public Transform bombInvenTransform;
+    private float fKeyDownTimer;
+    private bool isPickUpMode = false;
+    private GameObject targetItem;
 
     private void Awake()
     {
         leftMouseClickTimer = 0f;
+        fKeyDownTimer = 0;
         isHold = false;
         isLeftShiftKeyDown = false;
         beforeAxisRawH = 0;
@@ -96,7 +103,11 @@ public class PlayerController : MonoBehaviour
     {
         if (amIPlayer == true)
         {
-            MouseInput();
+            KeyboardInput();
+            if (isPickUpMode == false)
+            {
+                MouseInput();
+            }
             if (gameObject != null)
             {
                 curTime += Time.deltaTime;
@@ -256,6 +267,39 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+    private void KeyboardInput()
+    {
+        /// <summary>
+        /// F 키를 눌렀을때 플레이어가 아이템을 가지지 않고 
+        /// 주울 수 있는 범위 내에 아이템이 존재하면 픽업모드 시작
+        /// </summary>
+        if (Input.GetKeyDown(KeyCode.F) &&
+            nearObjectChecker.GetNearObject() != null &&
+            playerStatus.GetIsHaveItem() == false)
+        {
+            fKeyDownTimer = 0;
+            isPickUpMode = true;
+            targetItem = nearObjectChecker.GetNearObject();
+        }
+        if(Input.GetKey(KeyCode.F) && isPickUpMode == true)
+        {
+            fKeyDownTimer += Time.deltaTime;
+            // 목표 아이템이 사라졌거나 변경 됐으면 픽업모드 초기화
+            if(nearObjectChecker.GetNearObject() == null || targetItem != nearObjectChecker.GetNearObject())
+            {
+                fKeyDownTimer = 0;
+                isPickUpMode = false;
+            }
+            else if (fKeyDownTimer >= 1f && playerStatus.GetIsHaveItem() == false)
+            {
+                PickUpItem();
+            }
+        }
+        if(Input.GetKeyUp(KeyCode.F) && isPickUpMode == true)
+        {
+            isPickUpMode = false;
+        }
+    }
     private void MouseInput()
     {
         if (isLeftShiftKeyDown == true)
@@ -324,6 +368,38 @@ public class PlayerController : MonoBehaviour
             playerStatus.setUpperBodyAnimationState(UpperBodyAnimationState.THROW);
         }
     }
+    private void PickUpItem()
+    {
+        if (targetItem == null)
+        {
+            Debug.Log("Error!! PickUpItem(), You don't Have Target Item !!!");
+        }
+        else
+        {
+            if (targetItem.tag == "Bomb")
+            {
+                //-----------------------------------------------------------------------------------
+                // 나중에 오브젝트 풀링 적용하면 폭탄 직접 자식객체로 넣었다가 돌려주도록 설정하자!!
+                //-----------------------------------------------------------------------------------
+                Bomb targetBomb = targetItem.GetComponent<Bomb>();
+                targetBomb.PickUp(playerStatus.GetId(), bombInvenTransform);
+                playerStatus.SetIsHaveItem(true);
+            }
+            else
+            {
+                Debug.Log("Error!! PickUpItem(), Target Item Tag is Wrong !!!");
+            }
+        }
+    }
+    public void Jump()
+    {
+        isGrounded = false;
+        pelvisRigidbody.velocity = Vector3.up * jumpForce;
+        nowLowerBodyAnimationState = LowerBodyAnimationState.JUMP;
+        playerStatus.setLowerBodyAnimationState(LowerBodyAnimationState.JUMP);
+    }
+
+    // ------- Setter Getter -------
     public void SetAmIPlayer(bool amIPlayer)
     {
         this.amIPlayer = amIPlayer;
@@ -344,13 +420,6 @@ public class PlayerController : MonoBehaviour
     public void SetIsMove(bool isMove)
     {
         this.isMove = isMove;
-    }
-    public void Jump()
-    {
-        isGrounded = false;
-        pelvisRigidbody.velocity = Vector3.up * jumpForce;
-        nowLowerBodyAnimationState = LowerBodyAnimationState.JUMP;
-        playerStatus.setLowerBodyAnimationState(LowerBodyAnimationState.JUMP);
     }
     public void SetMyId(int myId)
     {
