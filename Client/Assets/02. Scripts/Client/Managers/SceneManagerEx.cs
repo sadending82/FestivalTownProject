@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// 그냥 씬 전환 매니저임.
+/// Ex 붙인 이유는 이미 유니티에도 SceneManager가 있어서...
+/// </summary>
+/// 
 public class SceneManagerEx
 {
-    /// <summary>
-    /// 그냥 씬 전환 매니저임.
-    /// Ex 붙인 이유는 이미 유니티에도 SceneManager가 있어서...
-    /// </summary>
 
     public BaseScene CurrentScene { get { return GameObject.FindObjectOfType<BaseScene>(); } }
 

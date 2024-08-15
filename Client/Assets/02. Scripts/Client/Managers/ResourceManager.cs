@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ResourceManager
@@ -30,7 +28,7 @@ public class ResourceManager
 
     public GameObject Instantiate(string path, Transform parent = null)
     {
-        
+        Debug.Log("혹시 여기니?");
         GameObject prefab = Load<GameObject>($"Prefabs/{path}");
 
         if(prefab == null)
@@ -48,7 +46,7 @@ public class ResourceManager
 
         GameObject go = Object.Instantiate(prefab, parent);
         go.name = prefab.name; // 뒤에 (clone) 붙는거 빼주기
-        return Object.Instantiate(prefab, parent);
+        return go;
     }
 
     public void Destroy(GameObject go)

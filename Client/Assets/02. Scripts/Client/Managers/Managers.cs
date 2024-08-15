@@ -5,7 +5,7 @@ using UnityEngine;
 public class Managers : MonoBehaviour
 {
     static Managers s_instance; // static 인스턴스
-    static Managers Instance { get { return s_instance; } }
+    static Managers Instance { get { Init(); return s_instance; } }
 
     UIManager _ui = new UIManager();
     ResourceManager _resource = new ResourceManager();
@@ -34,16 +34,14 @@ public class Managers : MonoBehaviour
 
     private void Start()
     {
-        _game = gameObject.AddComponent<GameManager>();
+        _game = gameObject.AddComponent<GameManager>();    
         Init();
-
+        _game.Init();
         // TODO : 나중에는 아래의 매니저 들도 Managers에서 생성하는 것이 바람직해 보입니다.
         _network = gameObject.AddComponent<NetworkManager>();
-        //        _network = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
         _player = GameObject.Find("PlayerManager").GetComponent<PlayerManager>();
         _cubeObject = GameObject.Find("CubeObjectManager").GetComponent<CubeObjectManager>();
         _bombObject = GameObject.Find("BombObjectManager").GetComponent<BombObjectManager>();
-        
     }
 
     static void Init()
@@ -59,11 +57,11 @@ public class Managers : MonoBehaviour
 
             DontDestroyOnLoad(obj);
             s_instance = obj.GetComponent<Managers>();
-        }
 
-        s_instance._objPool.Init();
-        s_instance._data.Init();
-        s_instance._game.Init();
+            s_instance._objPool.Init();
+            s_instance._data.Init();
+            //s_instance._game.Init();
+        }
     }
 
     static public void Clear()

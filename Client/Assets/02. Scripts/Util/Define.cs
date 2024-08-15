@@ -21,6 +21,14 @@ public class Define
         FireInTheHoleIndivisual5,
     }
 
+    public enum StatueState
+    { 
+        Destroyed,
+        AttackedTwoTime,
+        AttackedOneTime,
+        Fine,
+
+    }
     public enum CharacterType
     {
         Neru,
