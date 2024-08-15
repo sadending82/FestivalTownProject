@@ -26,7 +26,7 @@ namespace NetworkProtocol
         S2C_PLAYERGRABBOMB,
         S2C_PLAYERTHROWBOMB,
 
-        S2C_OBJECTDROP,
+        S2C_BLOCKDROP,
         S2C_BOMBSPAWN,
         S2C_BOMBPOSSYNC,
 

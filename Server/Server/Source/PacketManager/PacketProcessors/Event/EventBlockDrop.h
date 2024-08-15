@@ -4,7 +4,7 @@
 
 using namespace PacketTable::ObjectTable;
 
-class EventObjectDrop : public PacketProcessor {
+class EventBlockDrop : public PacketProcessor {
 
 public:
 
@@ -19,9 +19,9 @@ public:
 		GameCode gameMode = pServer->GetRooms()[event->roomID]->GetGameMode();
 		int nextEventTime = pServer->GetTableManager()->getFITH_Data()[gameMode].Block_Spawn_Time; // seconds
 		int spawnCnt = pServer->GetTableManager()->getFITH_Data()[gameMode].Block_Spawn_Count;
-		PushEventObjectDrop(pServer->GetTimer(), event->roomID, nextEventTime);
+		PushEventBlockDrop(pServer->GetTimer(), event->roomID, nextEventTime);
 
-		pServer->SendObjectDropPacket(event->roomID, spawnCnt);
+		pServer->SendBlockDropPacket(event->roomID, spawnCnt);
 	}
 
 private:

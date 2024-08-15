@@ -9,39 +9,39 @@ using global::System;
 using global::System.Collections.Generic;
 using global::Google.FlatBuffers;
 
-public struct ObjectDrop : IFlatbufferObject
+public struct BlockDrop : IFlatbufferObject
 {
   private Table __p;
   public ByteBuffer ByteBuffer { get { return __p.bb; } }
   public static void ValidateVersion() { FlatBufferConstants.FLATBUFFERS_24_3_25(); }
-  public static ObjectDrop GetRootAsObjectDrop(ByteBuffer _bb) { return GetRootAsObjectDrop(_bb, new ObjectDrop()); }
-  public static ObjectDrop GetRootAsObjectDrop(ByteBuffer _bb, ObjectDrop obj) { return (obj.__assign(_bb.GetInt(_bb.Position) + _bb.Position, _bb)); }
+  public static BlockDrop GetRootAsBlockDrop(ByteBuffer _bb) { return GetRootAsBlockDrop(_bb, new BlockDrop()); }
+  public static BlockDrop GetRootAsBlockDrop(ByteBuffer _bb, BlockDrop obj) { return (obj.__assign(_bb.GetInt(_bb.Position) + _bb.Position, _bb)); }
   public void __init(int _i, ByteBuffer _bb) { __p = new Table(_i, _bb); }
-  public ObjectDrop __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
+  public BlockDrop __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public PacketTable.ObjectTable.Vec2i? Pos { get { int o = __p.__offset(4); return o != 0 ? (PacketTable.ObjectTable.Vec2i?)(new PacketTable.ObjectTable.Vec2i()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
   public int Id { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
 
-  public static Offset<PacketTable.ObjectTable.ObjectDrop> CreateObjectDrop(FlatBufferBuilder builder,
+  public static Offset<PacketTable.ObjectTable.BlockDrop> CreateBlockDrop(FlatBufferBuilder builder,
       Offset<PacketTable.ObjectTable.Vec2i> posOffset = default(Offset<PacketTable.ObjectTable.Vec2i>),
       int id = 0) {
     builder.StartTable(2);
-    ObjectDrop.AddId(builder, id);
-    ObjectDrop.AddPos(builder, posOffset);
-    return ObjectDrop.EndObjectDrop(builder);
+    BlockDrop.AddId(builder, id);
+    BlockDrop.AddPos(builder, posOffset);
+    return BlockDrop.EndBlockDrop(builder);
   }
 
-  public static void StartObjectDrop(FlatBufferBuilder builder) { builder.StartTable(2); }
+  public static void StartBlockDrop(FlatBufferBuilder builder) { builder.StartTable(2); }
   public static void AddPos(FlatBufferBuilder builder, Offset<PacketTable.ObjectTable.Vec2i> posOffset) { builder.AddOffset(0, posOffset.Value, 0); }
   public static void AddId(FlatBufferBuilder builder, int id) { builder.AddInt(1, id, 0); }
-  public static Offset<PacketTable.ObjectTable.ObjectDrop> EndObjectDrop(FlatBufferBuilder builder) {
+  public static Offset<PacketTable.ObjectTable.BlockDrop> EndBlockDrop(FlatBufferBuilder builder) {
     int o = builder.EndTable();
-    return new Offset<PacketTable.ObjectTable.ObjectDrop>(o);
+    return new Offset<PacketTable.ObjectTable.BlockDrop>(o);
   }
 }
 
 
-static public class ObjectDropVerify
+static public class BlockDropVerify
 {
   static public bool Verify(Google.FlatBuffers.Verifier verifier, uint tablePos)
   {

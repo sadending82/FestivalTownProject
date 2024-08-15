@@ -28,7 +28,7 @@ public:
 	void SendPlayerAdd(int sessionID, int destination);
 	void SendPlayerGameInfo(int sessionID);
 	void SendHeartBeatPacket(int sessionID);
-	void SendObjectDropPacket(int roomID, int spawnCount);
+	void SendBlockDropPacket(int roomID, int spawnCount);
 	void SendBombSpawnPacket(int roomID, int spawnCount);
 	void SendLifeReducePacket(int team, int lifeCount, int roomID);
 	void SendRemainTimeSync(int roomID);

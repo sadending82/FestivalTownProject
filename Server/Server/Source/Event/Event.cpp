@@ -17,10 +17,10 @@ bool PushEventHeartBeat(Timer* pTimer, int sessionID) {
 	return true;
 }
 
-bool PushEventObjectDrop(Timer* pTimer, int roomID, int intervalTime) {
+bool PushEventBlockDrop(Timer* pTimer, int roomID, int intervalTime) {
 	EV_OBJECT_DROP e;
 	e.size = sizeof(EV_OBJECT_DROP);
-	e.type = eEventType::OBJECTDROP;
+	e.type = eEventType::BlockDrop;
 	e.roomID = roomID;
 
 

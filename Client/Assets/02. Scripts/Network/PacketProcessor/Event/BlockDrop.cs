@@ -7,12 +7,12 @@ using UnityEngine;
 
 namespace Network.PacketProcessor
 {
-    public class ObjectDropProcessor : PacketProcessor
+    public class BlockDropProcessor : PacketProcessor
     {
         public override void Process(PacketManager packetmanager, byte[] data)
         {
             var bb = new ByteBuffer(data);
-            var Data = ObjectDrop.GetRootAsObjectDrop(bb);
+            var Data = BlockDrop.GetRootAsBlockDrop(bb);
 
             int posX = Data.Pos.Value.X; 
             int posY = Data.Pos.Value.Y;

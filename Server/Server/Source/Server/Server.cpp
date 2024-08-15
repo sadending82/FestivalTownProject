@@ -173,7 +173,7 @@ void Server::SendHeartBeatPacket(int sessionID)
     GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
 }
 
-void Server::SendObjectDropPacket(int roomID, int spawnCount)
+void Server::SendBlockDropPacket(int roomID, int spawnCount)
 {
     std::vector<std::vector<int>>& mapStructure = mRooms[roomID]->GetMap().GetStructure();
 
@@ -198,7 +198,7 @@ void Server::SendObjectDropPacket(int roomID, int spawnCount)
 
     for (const auto& pos : unique_pos) {
         mapStructure[pos.second][pos.first]++;
-        std::vector<uint8_t> send_buffer = mPacketMaker->MakeObjectDropPacket(pos.first, pos.second, id_distrib(gen));
+        std::vector<uint8_t> send_buffer = mPacketMaker->MakeBlockDropPacket(pos.first, pos.second, id_distrib(gen));
         SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
     }
 }
@@ -304,7 +304,7 @@ void Server::StartGame(int roomID)
     // Push Event
     GameCode gameCode = GetRooms()[roomID]->GetGameMode();
     int eventTime = GetTableManager()->getFITH_Data()[gameCode].Block_Spawn_Time;
-    PushEventObjectDrop(mTimer, roomID, eventTime);
+    PushEventBlockDrop(mTimer, roomID, eventTime);
     PushEventBombSpawn(mTimer, roomID, GetTableManager()->getFITH_Data()[gameCode].Bomb_Spawn_Time);
     PushEventRemainTimeSync(mTimer, roomID);
 

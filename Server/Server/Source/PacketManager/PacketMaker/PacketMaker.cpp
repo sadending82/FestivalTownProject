@@ -27,13 +27,13 @@ std::vector<uint8_t> PacketMaker::MakeHeartBeatPacket()
 	return MakeBuffer(ePacketType::S2C_HEARTBEAT, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakeObjectDropPacket(int x, int y, int type)
+std::vector<uint8_t> PacketMaker::MakeBlockDropPacket(int x, int y, int type)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 	Builder.Clear();
 	auto pos = PacketTable::ObjectTable::CreateVec2i(Builder, x, y);
-	Builder.Finish(PacketTable::ObjectTable::CreateObjectDrop(Builder, pos, type));
-	return MakeBuffer(ePacketType::S2C_OBJECTDROP, Builder.GetBufferPointer(), Builder.GetSize());
+	Builder.Finish(PacketTable::ObjectTable::CreateBlockDrop(Builder, pos, type));
+	return MakeBuffer(ePacketType::S2C_BLOCKDROP, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
 std::vector<uint8_t> PacketMaker::MakeBombSpawnPacket(int x, int y)

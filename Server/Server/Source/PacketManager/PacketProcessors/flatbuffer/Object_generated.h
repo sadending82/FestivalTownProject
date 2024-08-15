@@ -19,8 +19,8 @@ namespace ObjectTable {
 struct Object;
 struct ObjectBuilder;
 
-struct ObjectDrop;
-struct ObjectDropBuilder;
+struct BlockDrop;
+struct BlockDropBuilder;
 
 struct BombPosition;
 struct BombPositionBuilder;
@@ -86,8 +86,8 @@ inline ::flatbuffers::Offset<Object> CreateObject(
   return builder_.Finish();
 }
 
-struct ObjectDrop FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef ObjectDropBuilder Builder;
+struct BlockDrop FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef BlockDropBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_POS = 4,
     VT_ID = 6
@@ -107,32 +107,32 @@ struct ObjectDrop FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   }
 };
 
-struct ObjectDropBuilder {
-  typedef ObjectDrop Table;
+struct BlockDropBuilder {
+  typedef BlockDrop Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
   void add_pos(::flatbuffers::Offset<PacketTable::ObjectTable::Vec2i> pos) {
-    fbb_.AddOffset(ObjectDrop::VT_POS, pos);
+    fbb_.AddOffset(BlockDrop::VT_POS, pos);
   }
   void add_id(int32_t id) {
-    fbb_.AddElement<int32_t>(ObjectDrop::VT_ID, id, 0);
+    fbb_.AddElement<int32_t>(BlockDrop::VT_ID, id, 0);
   }
-  explicit ObjectDropBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+  explicit BlockDropBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  ::flatbuffers::Offset<ObjectDrop> Finish() {
+  ::flatbuffers::Offset<BlockDrop> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<ObjectDrop>(end);
+    auto o = ::flatbuffers::Offset<BlockDrop>(end);
     return o;
   }
 };
 
-inline ::flatbuffers::Offset<ObjectDrop> CreateObjectDrop(
+inline ::flatbuffers::Offset<BlockDrop> CreateBlockDrop(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     ::flatbuffers::Offset<PacketTable::ObjectTable::Vec2i> pos = 0,
     int32_t id = 0) {
-  ObjectDropBuilder builder_(_fbb);
+  BlockDropBuilder builder_(_fbb);
   builder_.add_id(id);
   builder_.add_pos(pos);
   return builder_.Finish();

@@ -51,7 +51,7 @@ public class PacketManager : MonoBehaviour
             { ePacketType.S2C_PLAYERTHROWBOMB, new PlayerThrowBombProcessor() },
 
 
-            { ePacketType.S2C_OBJECTDROP, new ObjectDropProcessor() },
+            { ePacketType.S2C_BLOCKDROP, new BlockDropProcessor() },
             { ePacketType.S2C_BOMBSPAWN, new BombSpawnProcessor() },
             { ePacketType.S2C_BOMBPOSSYNC, new BombPositionSyncProcessor() },
 

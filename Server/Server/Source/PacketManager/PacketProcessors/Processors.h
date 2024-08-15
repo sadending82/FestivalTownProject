@@ -9,6 +9,6 @@
 #include "Packet/PacketBombPositionSync.h"
 
 #include "Event/EventHeartBeat.h"
-#include "Event/EventObjectDrop.h"
+#include "Event/EventBlockDrop.h"
 #include "Event/EventBombSpawn.h"
 #include "Event/EventRemainTimeSync.h"
