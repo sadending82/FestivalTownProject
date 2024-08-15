@@ -93,6 +93,13 @@ struct Vector3f {
 
 	Vector3f() : x(0), y(0), z(0) {};
 	Vector3f(float fx, float fy, float fz) : x(fx), y(fy), z(fz) {};
+
+	bool operator == (const Vector3f other) const {
+		if (x == other.x && y == other.y && z == other.z) {
+			return true;
+		}
+		return false;
+	}
 };
 
 #pragma pack(pop)

@@ -23,7 +23,6 @@ void TestThread::RunWorker()
             // 게임 시작
         case GameStartCommand: {
             m_pServer->StartGame(roomcnt);
-            std::cout << roomcnt << std::endl;
             roomcnt++;
         }
         break;

@@ -27,6 +27,5 @@ public:
 	}
 
 private:
-
 	flatbuffers::FlatBufferBuilder mBuilder;
 };

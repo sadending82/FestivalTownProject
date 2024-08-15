@@ -175,29 +175,30 @@ void Server::SendHeartBeatPacket(int sessionID)
 
 void Server::SendObjectDropPacket(int roomID, int spawnCount)
 {
-    std::vector<std::vector<int>> beforeMap = mRooms[roomID]->GetMap().GetStructure();
+    std::vector<std::vector<int>>& mapStructure = mRooms[roomID]->GetMap().GetStructure();
 
-    for (int i = 0; i < spawnCount; ++i) {
-        std::random_device rd;
-        std::mt19937 gen(rd());
+    std::random_device rd;
+    std::mt19937 gen(rd());
 
-        std::uniform_int_distribution<> x_distrib(0, 19);
-        std::uniform_int_distribution<> y_distrib(0, 9);
-        std::uniform_int_distribution<> id_distrib(0, 1);
+    // 엑셀 데이터로 수정해야함
+    std::uniform_int_distribution<> x_distrib(0, 19);
+    std::uniform_int_distribution<> y_distrib(0, 9);
+    std::uniform_int_distribution<> id_distrib(0, 1);
 
-        std::vector<std::vector<int>>& afterMap = mRooms[roomID]->GetMap().GetStructure();
-        int posX = 0, posY = 0, type = id_distrib(gen);
-        while (1) {
-            posX = x_distrib(gen);
-            posY = y_distrib(gen);
-            if (afterMap[posY][posX] > 0 && beforeMap[posY][posX] == afterMap[posY][posX]) {
-                afterMap[posY][posX]++;
-                break;
-            }
+    std::set<std::pair<int, int>> unique_pos;
+
+    while (unique_pos.size() < spawnCount) {
+        int x = x_distrib(gen);
+        int y = y_distrib(gen);
+       
+        if (mapStructure[y][x] > 0) {
+            unique_pos.emplace(x, y);
         }
+    }
 
-        std::vector<uint8_t> send_buffer = mPacketMaker->MakeObjectDropPacket(posX, posY, type);
-
+    for (const auto& pos : unique_pos) {
+        mapStructure[pos.second][pos.first]++;
+        std::vector<uint8_t> send_buffer = mPacketMaker->MakeObjectDropPacket(pos.first, pos.second, id_distrib(gen));
         SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
     }
 }
@@ -207,6 +208,7 @@ void Server::SendBombSpawnPacket(int roomID, int spawnCount)
     std::random_device rd;
     std::mt19937 gen(rd());
 
+    // 엑셀 데이터로 수정해야함
     std::uniform_int_distribution<> x_distrib(9, 12);
     std::uniform_int_distribution<> y_distrib(4, 7);
 
@@ -222,7 +224,8 @@ void Server::SendBombSpawnPacket(int roomID, int spawnCount)
             if (object_list[i] == nullptr) {
                 continue;
             }
-            if (x == object_list[i]->GetPosition().x && y == object_list[i]->GetPosition().x) {
+            if (x == object_list[i]->GetPosition().x 
+                && y == object_list[i]->GetPosition().y) {
                 invalid_pos = true;
                 break;
             }

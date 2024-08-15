@@ -1,5 +1,7 @@
 #pragma once
 #include "../utility.h"
+
+// Bomb, Weapon ...
 class Object {
 
 public:
