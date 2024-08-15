@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BombObjectManager : MonoBehaviour
 {
+    private float offsetX = 19;
+    private float offsetY = 9;
     private float createHeight = 8;
 
     public static BombObjectManager instance;
@@ -47,6 +49,9 @@ public class BombObjectManager : MonoBehaviour
     }
     public void SpawnBomb(int x, int y, float lifeTime = 10)
     {
+        // 단위 맞춰주기
+        x *= -2;
+        y *= -2;
         GameObject reusedBomb = null;
         // 미리 생성되어 있는 폭탄부터 사용
         for (int i = 0; i < bombs.Count; ++i)
@@ -71,7 +76,7 @@ public class BombObjectManager : MonoBehaviour
         reusedBomb.SetActive(true);
         // 폭탄 위치 설정
         reusedBomb.gameObject.GetComponent<Bomb>().SetLifeTime(lifeTime);
-        reusedBomb.gameObject.transform.position = new Vector3(x, createHeight, y);
+        reusedBomb.gameObject.transform.position = new Vector3(x + offsetX, createHeight, y + offsetY);
         reusedBomb.gameObject.SetActive(true);
     }
 }

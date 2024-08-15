@@ -283,7 +283,7 @@ public class PlayerController : MonoBehaviour
             if (targetItem.tag == "Bomb")
             {
                 Bomb targetBomb = targetItem.GetComponent<Bomb>();
-                Debug.Log("Target Bomb : " + targetBomb.GetId());
+                Debug.Log("Target Bomb : " + targetBomb.GetId() + " Player ID : " + myId);
                 packetManager.SendPlayerGrabBombPacket(pelvis.transform.position, stabillizerDirection, myId, targetBomb.GetId());
             }
         }
@@ -400,8 +400,12 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+    /// <summary>
+    /// 이것도 게임 매니저에서 관리해야하지 않을까???
+    /// </summary>
     public void s_PickUpItem(int playerId, int bombId)
     {
+        Debug.Log("PickUp!! Target Bomb : " + bombId + " Player ID : " + myId);
         // 폭탄과 플레이어 붙여주기
         Bomb targetBomb = GameObject.Find("BombObjectManager").transform.GetChild(bombId).GetComponent<Bomb>();
         targetBomb.PickUp(playerId, bombInvenTransform);
