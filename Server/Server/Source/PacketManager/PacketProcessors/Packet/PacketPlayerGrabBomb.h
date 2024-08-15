@@ -18,10 +18,11 @@ public:
 
 			Bomb* bomb = dynamic_cast<Bomb*>(pServer->GetRooms()[roomid]->GetObjects()[roomid]);
 
-			bomb->SetIsGrabbed(true);
-
-			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::C2S_PLAYERGRABBOMB, data, size);
-			pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), key);
+			if (bomb->SetIsGrabbed(true) == true) {
+				std::cout << "Àâ´Â´Ù\n";
+				std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYERGRABBOMB, data, size);
+				pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), key);
+			}
 		}
 	}
 

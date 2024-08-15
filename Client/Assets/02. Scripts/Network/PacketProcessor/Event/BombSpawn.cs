@@ -19,8 +19,6 @@ namespace Network.PacketProcessor
 
             // 폭탄 생성
             Managers.BombObject.SpawnBomb(posX, posY);
-
-            Debug.Log("Bomb spawn : "+ posX  + ", " + posY);
         }
 
         private FlatBufferBuilder mBuilder;

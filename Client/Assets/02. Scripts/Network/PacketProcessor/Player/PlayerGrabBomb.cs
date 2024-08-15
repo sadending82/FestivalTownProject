@@ -14,6 +14,7 @@ namespace Network.PacketProcessor
     {
         public override void Process(PacketManager packetmanager, byte[] data)
         {
+            Debug.Log("grab 받음?");
             var bb = new ByteBuffer(data);
 
             var Data = PlayerGrabBomb.GetRootAsPlayerGrabBomb(bb);

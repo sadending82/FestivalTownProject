@@ -20,7 +20,7 @@ public:
 
 			bomb->SetIsGrabbed(false);
 
-			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::C2S_PLAYERTHROWBOMB, data, size);
+			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYERTHROWBOMB, data, size);
 			pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), key);
 		}
 	}
