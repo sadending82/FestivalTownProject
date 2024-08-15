@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour
     [Header("--- Pick Up ---")]
     public NearObjectChecker nearObjectChecker;
     public Transform bombInvenTransform;
-//    private float fKeyDownTimer;
+    private float fKeyDownTimer;
     private bool isPickUpMode = false;
     private GameObject targetItem;
 
@@ -276,33 +276,30 @@ public class PlayerController : MonoBehaviour
             nearObjectChecker.GetNearObject() != null &&
             playerStatus.GetIsHaveItem() == false)
         {
-            // fKeyDownTimer = 0;
+            fKeyDownTimer = 0;
             isPickUpMode = true;
             targetItem = nearObjectChecker.GetNearObject();
-
-            if (targetItem.tag == "Bomb")
-            {
-                Bomb targetBomb = targetItem.GetComponent<Bomb>();
-                Debug.Log("Target Bomb : " + targetBomb.GetId() + " Player ID : " + myId);
-                packetManager.SendPlayerGrabBombPacket(pelvis.transform.position, stabillizerDirection, myId, targetBomb.GetId());
-            }
         }
         if(Input.GetKey(KeyCode.F) && isPickUpMode == true)
         {
+            fKeyDownTimer += Time.deltaTime;
             // 목표 아이템이 사라졌거나 변경 됐으면 픽업모드 초기화
             if(nearObjectChecker.GetNearObject() == null || targetItem != nearObjectChecker.GetNearObject())
             {
-//                fKeyDownTimer = 0;
+                fKeyDownTimer = 0;
                 isPickUpMode = false;
             }
-            ///<summary>
-            /// 클라 테스트 용 서버에서는 필요없을듯 - 서버에서 잡아야하는지 여부를 보내주기 때문에
-            /// </summary>
-            //else if (fKeyDownTimer >= 1f && playerStatus.GetIsHaveItem() == false)
-            //{
-            //    PickUpItem();
-            //}
-            //fKeyDownTimer += Time.deltaTime;
+            else if (fKeyDownTimer >= 1f && playerStatus.GetIsHaveItem() == false)
+            {
+                if (targetItem.tag == "Bomb")
+                {
+                    Bomb targetBomb = targetItem.GetComponent<Bomb>();
+                    Debug.Log("Target Bomb : " + targetBomb.GetId() + " Player ID : " + myId);
+                    packetManager.SendPlayerGrabBombPacket(pelvis.transform.position, stabillizerDirection, myId, targetBomb.GetId());
+                }
+                // 클라 테스트용
+                //PickUpItem();
+            }
         }
         if(Input.GetKeyUp(KeyCode.F) && isPickUpMode == true)
         {
