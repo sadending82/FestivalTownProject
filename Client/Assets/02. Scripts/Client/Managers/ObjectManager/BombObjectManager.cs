@@ -31,6 +31,7 @@ public class BombObjectManager : MonoBehaviour
             GameObject tempBomb = Instantiate(bombPrefab) as GameObject;
 
             tempBomb.transform.parent = transform;
+            tempBomb.GetComponent<Bomb>().SetId(i);
             tempBomb.SetActive(false);
             bombs.Add(tempBomb);
         }
@@ -47,7 +48,7 @@ public class BombObjectManager : MonoBehaviour
     public void SpawnBomb(int x, int y, float lifeTime = 10)
     {
         GameObject reusedBomb = null;
-        // 미리 생성되어 있는 큐브부터 사용
+        // 미리 생성되어 있는 폭탄부터 사용
         for (int i = 0; i < bombs.Count; ++i)
         {
             if (bombs[i].activeSelf == false)
@@ -56,19 +57,19 @@ public class BombObjectManager : MonoBehaviour
                 break;
             }
         }
-        // 사용 가능한 큐브가 없으면 새로 생성
+        // 사용 가능한 폭탄이 없으면 새로 생성
         if (reusedBomb == null)
         {
             GameObject newBomb = Instantiate(bombPrefab) as GameObject;
 
             newBomb.transform.parent = transform;
+            newBomb.GetComponent<Bomb>().SetId(bombs.Count);
             bombs.Add(newBomb);
             reusedBomb = newBomb;
         }
 
-        // 큐브 생성 위치와 큐브 타입 설정, 플레이어를 밀어내는 Pusher 작동
         reusedBomb.SetActive(true);
-        // 타입에 해당하는 큐브 활성화, 포지션 설정
+        // 폭탄 위치 설정
         reusedBomb.gameObject.GetComponent<Bomb>().SetLifeTime(lifeTime);
         reusedBomb.gameObject.transform.position = new Vector3(x, createHeight, y);
         reusedBomb.gameObject.SetActive(true);

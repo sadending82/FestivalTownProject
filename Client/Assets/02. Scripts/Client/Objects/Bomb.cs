@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Bomb : MonoBehaviour
 {
+    // test - 시간으로 인해 꺼지는거 꺼놓음
+    public bool isTimeBomb = false;
+
     private float lifeTime;
     private float timer = 0;
     public GameObject bombPusher;
@@ -11,6 +14,10 @@ public class Bomb : MonoBehaviour
     private bool isPickUp = false;
     private int pickUpPlayerId;
     private Transform targetTransform;
+
+    // ------ Server -------
+    [SerializeField]
+    private int id;
 
     private void OnEnable()
     {
@@ -31,10 +38,13 @@ public class Bomb : MonoBehaviour
     }
     private void Update()
     {
-        timer += Time.deltaTime;
-        if(timer>= lifeTime)
+        if (isTimeBomb == true)
         {
-            Boom();
+            timer += Time.deltaTime;
+            if (timer >= lifeTime)
+            {
+                Boom();
+            }
         }
     }
     private void OnCollisionEnter(Collision collision)
@@ -101,5 +111,14 @@ public class Bomb : MonoBehaviour
         rig.useGravity = true;
         rig.mass = 1;
         rig.angularDrag = 0.05f;
+    }
+    
+    public void SetId(int id)
+    {
+        this.id = id;
+    }
+    public int GetId()
+    {
+        return id;
     }
 }

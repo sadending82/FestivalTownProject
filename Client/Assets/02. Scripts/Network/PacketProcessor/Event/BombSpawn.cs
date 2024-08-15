@@ -18,6 +18,7 @@ namespace Network.PacketProcessor
             int posY = Data.Pos.Value.Y;
 
             // 폭탄 생성
+            Managers.BombObject.SpawnBomb(posX, posY);
 
             Debug.Log("Bomb spawn : "+ posX  + ", " + posY);
         }
