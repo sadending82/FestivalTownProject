@@ -19,7 +19,9 @@ public:
 			int roomid = p->GetRoomID();
 			int bombid = read->id();
 
-			Bomb* bomb = dynamic_cast<Bomb*>(pServer->GetRooms()[roomid]->GetObjects()[roomid]);
+			Bomb* bomb = dynamic_cast<Bomb*>(pServer->GetRooms()[roomid]->GetObjects()[bombid]);
+
+			if (bomb == nullptr) return;
 
 			bomb->SetPosition(Vector3f(read->pos()->x(), read->pos()->y(), read->pos()->z()));
 

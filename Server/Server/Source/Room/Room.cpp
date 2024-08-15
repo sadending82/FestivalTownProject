@@ -51,7 +51,7 @@ bool Room::DeletePlayer(int playerID)
 	return true;
 }
 
-bool Room::AddObject(Object* object, Vector3f position, Vector3f direction)
+bool Room::AddBomb(Bomb* object, Vector3f position, Vector3f direction)
 {
 	for (int i = 0; i < MAXPLAYER; ++i) {
 		if (mObjectList[i] == nullptr) {

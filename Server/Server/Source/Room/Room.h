@@ -18,7 +18,7 @@ public:
 	bool AddPlayer(Player* player);
 	bool DeletePlayer(int playerID);
 
-	bool AddObject(Object* object, Vector3f position, Vector3f direction = Vector3f(0, 0, 0));
+	bool AddBomb(Bomb* object, Vector3f position, Vector3f direction = Vector3f(0, 0, 0));
 	bool DeleteObject(int id);
 
 	std::array<Player*, MAXPLAYER>& GetPlayerList() { return mPlayerList; }

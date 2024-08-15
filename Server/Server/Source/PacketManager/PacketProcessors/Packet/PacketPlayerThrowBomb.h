@@ -17,7 +17,9 @@ public:
 			int roomid = p->GetRoomID();
 			int bombid = read->bomb_id();
 
-			Bomb* bomb = dynamic_cast<Bomb*>(pServer->GetRooms()[roomid]->GetObjects()[roomid]);
+			Bomb* bomb = dynamic_cast<Bomb*>(pServer->GetRooms()[roomid]->GetObjects()[bombid]);
+
+			if (bomb == nullptr) return;
 
 			bomb->SetIsGrabbed(false);
 

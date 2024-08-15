@@ -16,7 +16,9 @@ public:
 			int roomid = p->GetRoomID();
 			int bombid = read->bomb_id();
 
-			Bomb* bomb = dynamic_cast<Bomb*>(pServer->GetRooms()[roomid]->GetObjects()[roomid]);
+			Bomb* bomb = dynamic_cast<Bomb*>(pServer->GetRooms()[roomid]->GetObjects()[bombid]);
+
+			if (bomb == nullptr) return;
 
 			if (bomb->SetIsGrabbed(true) == true) {
 				std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYERGRABBOMB, data, size);

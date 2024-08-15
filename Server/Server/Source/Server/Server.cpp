@@ -236,7 +236,7 @@ void Server::SendBombSpawnPacket(int roomID, int spawnCount)
     }
 
     for (const auto& pos : unique_pos) {
-        mRooms[roomID]->AddObject(new Bomb, Vector3f(pos.first, pos.second, 0));
+        mRooms[roomID]->AddBomb(new Bomb, Vector3f(pos.first, pos.second, 0));
         std::vector<uint8_t> send_buffer = mPacketMaker->MakeBombSpawnPacket(pos.first, pos.second);
         SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
     }
