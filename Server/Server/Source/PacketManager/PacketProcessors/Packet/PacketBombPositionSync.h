@@ -15,7 +15,8 @@ public:
 		if (verifier.VerifyBuffer<BombPosition>(nullptr)) {
 			const BombPosition* read = flatbuffers::GetRoot<BombPosition>(data);
 
-			int roomid = dynamic_cast<Player*>(pServer->GetSessions()[key])->GetInGameID();
+			Player* p = dynamic_cast<Player*>(pServer->GetSessions()[key]);
+			int roomid = p->GetRoomID();
 			int bombid = read->id();
 
 			Bomb* bomb = dynamic_cast<Bomb*>(pServer->GetRooms()[roomid]->GetObjects()[roomid]);
@@ -23,7 +24,7 @@ public:
 			bomb->SetPosition(Vector3f(read->pos()->x(), read->pos()->y(), read->pos()->z()));
 
 			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_BOMBPOSSYNC, data, size);
-			pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), key);
+			pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomid);
 		}
 	}
 

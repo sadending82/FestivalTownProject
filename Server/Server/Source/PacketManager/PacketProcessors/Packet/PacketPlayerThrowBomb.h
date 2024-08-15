@@ -13,7 +13,8 @@ public:
 		if (verifier.VerifyBuffer<PlayerThrowBomb>(nullptr)) {
 			const PlayerThrowBomb* read = flatbuffers::GetRoot<PlayerThrowBomb>(data);
 
-			int roomid = dynamic_cast<Player*>(pServer->GetSessions()[read->id()])->GetInGameID();
+			Player* p = dynamic_cast<Player*>(pServer->GetSessions()[key]);
+			int roomid = p->GetRoomID();
 			int bombid = read->bomb_id();
 
 			Bomb* bomb = dynamic_cast<Bomb*>(pServer->GetRooms()[roomid]->GetObjects()[roomid]);
@@ -21,7 +22,7 @@ public:
 			bomb->SetIsGrabbed(false);
 
 			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYERTHROWBOMB, data, size);
-			pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), key);
+			pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomid);
 		}
 	}
 
