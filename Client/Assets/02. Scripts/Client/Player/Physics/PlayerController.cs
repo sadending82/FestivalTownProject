@@ -294,7 +294,7 @@ public class PlayerController : MonoBehaviour
                 if (targetItem.tag == "Bomb")
                 {
                     Bomb targetBomb = targetItem.GetComponent<Bomb>();
-                    Debug.Log("Target Bomb : " + targetBomb.GetId() + " Player ID : " + myId);
+                    //Debug.Log("Target Bomb : " + targetBomb.GetId() + " Player ID : " + myId);
                     packetManager.SendPlayerGrabBombPacket(pelvis.transform.position, stabillizerDirection, myId, targetBomb.GetId());
                 }
                 // 클라 테스트용
@@ -403,7 +403,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void s_PickUpItem(int playerId, int bombId)
     {
-        Debug.Log("PickUp!! Target Bomb : " + bombId + " Player ID : " + myId);
+        //Debug.Log("PickUp!! Target Bomb : " + bombId + " Player ID : " + myId);
         // 폭탄과 플레이어 붙여주기
         Bomb targetBomb = Managers.BombObject.FindBombById(bombId).GetComponent<Bomb>();
         targetBomb.PickUp(playerId, bombInvenTransform);
@@ -423,11 +423,13 @@ public class PlayerController : MonoBehaviour
         {
             if(playerStatus.GetItemTag() == "Bomb")
             {
-                Bomb targetBomb = Managers.BombObject.FindBombById(playerStatus.GetItemId()).GetComponent<Bomb>();
-                targetBomb.Throw(stabillizerDirection, playerStatus.GetStrength());
+                GameObject targetBomb = Managers.BombObject.FindBombById(playerStatus.GetItemId());
+                targetBomb.GetComponent<Bomb>().Throw(stabillizerDirection, playerStatus.GetStrength());
                 /// <summary>
                 /// 서버에 여기서 플레이어 위치, 폭탄 발사 방향, 폭탄 위치, 플레이어 아이디, 폭탄 아이디 보내줌
                 /// </summary>
+                
+                packetManager.SendPlayerThrowBombPacket(targetBomb.transform.position, stabillizerDirection, myId, targetBomb.GetComponent<Bomb>().GetId());
                 playerStatus.SetIsHaveItem(false);
             }
         }
@@ -436,9 +438,23 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Player " + playerStatus.GetId() + " Don't Have an Item to Throw !!!");
         }
     }
-    public void s_Throw()
+    public void s_Throw(Vector3 bombPosition, int bombId)
     {
+        if (playerStatus.GetIsHaveItem() == true)
+        {
+            if (playerStatus.GetItemTag() == "Bomb")
+            {
+                GameObject targetBomb = Managers.BombObject.FindBombById(bombId);
+                targetBomb.transform.position = bombPosition;
+                targetBomb.GetComponent<Bomb>().Throw(moveDirection, playerStatus.GetStrength());
 
+                playerStatus.SetIsHaveItem(false);
+            }
+        }
+        else
+        {
+            Debug.Log("Player " + playerStatus.GetId() + " Don't Have an Item to Throw !!!");
+        }
     }
 
     // ------- Setter Getter -------
