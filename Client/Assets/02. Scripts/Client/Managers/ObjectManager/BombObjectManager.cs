@@ -10,7 +10,6 @@ public class BombObjectManager : MonoBehaviour
 
     public static BombObjectManager instance;
     public int initialBombs = 10;
-    public GameObject bombPrefab;
     public float bombLifeTime = 5;   // 초단위
     private List<GameObject> bombs = new List<GameObject>();
 
@@ -27,15 +26,20 @@ public class BombObjectManager : MonoBehaviour
     }
 
     private void MakeBombs()
-    {
+    {   
+        List<GameObject> list = new List<GameObject>();
+
         for (int i = 0; i < initialBombs; ++i)
         {
-            GameObject tempBomb = Instantiate(bombPrefab) as GameObject;
+            GameObject go = Managers.Resource.Instantiate("Bomb");
+            go.GetComponent<Bomb>().SetId(i);
+            list.Add(go);
+        }
 
-            tempBomb.transform.parent = transform;
-            tempBomb.GetComponent<Bomb>().SetId(i);
-            tempBomb.SetActive(false);
-            bombs.Add(tempBomb);
+        foreach (GameObject obj in list)
+        {
+            Managers.Resource.Destroy(obj);
+
         }
     }
     void Update()
@@ -53,28 +57,14 @@ public class BombObjectManager : MonoBehaviour
         x *= -2;
         y *= -2;
         GameObject reusedBomb = null;
-        // 미리 생성되어 있는 폭탄부터 사용
-        for (int i = 0; i < bombs.Count; ++i)
-        {
-            if (bombs[i].activeSelf == false)
-            {
-                reusedBomb = bombs[i];
-                break;
-            }
-        }
-        // 사용 가능한 폭탄이 없으면 새로 생성
-        if (reusedBomb == null)
-        {
-            GameObject newBomb = Instantiate(bombPrefab) as GameObject;
 
-            newBomb.transform.parent = transform;
-            newBomb.GetComponent<Bomb>().SetId(bombs.Count);
-            bombs.Add(newBomb);
-            reusedBomb = newBomb;
-        }
+        reusedBomb = Managers.ObjectPool.Pop(Managers.ObjectPool.GetOrigin("Bomb"), transform).gameObject;
 
-        reusedBomb.SetActive(true);
-        // 폭탄 위치 설정
+
+        reusedBomb.GetComponent<Bomb>().SetId(bombs.Count);
+        // 큐브 생성 위치와 큐브 타입 설정, 플레이어를 밀어내는 Pusher 작동
+        reusedBomb.gameObject.SetActive(true);
+        // 타입에 해당하는 큐브 활성화, 포지션 설정
         reusedBomb.gameObject.GetComponent<Bomb>().SetLifeTime(lifeTime);
         reusedBomb.gameObject.transform.position = new Vector3(x + offsetX, createHeight, y + offsetY);
         reusedBomb.gameObject.SetActive(true);

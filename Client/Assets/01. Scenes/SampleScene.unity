@@ -539,7 +539,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialBombs: 10
-  bombPrefab: {fileID: 128380253056588412, guid: c5f9e486da61ab343bed7e97246595b5, type: 3}
   bombLifeTime: 30
   testXY: 0
 --- !u!4 &1051065946

@@ -72,6 +72,13 @@ class Pool
 
         data.gameObject.SetActive(true);
 
+        // 그냥 null로 설정하면 DontDestroyOnLoad가 풀리지 않아서 문제가 생길 수 있으므로
+        // 일단 Scene의 자식으로 설정한 뒤에 다시 풀어 주면 괜찮지 않을까?
+        if(parent == null)
+        {
+            data.transform.parent = Managers.Scene.CurrentScene.transform;
+        }
+
         data.transform.parent = parent;
         data.isUsing = true;
 
