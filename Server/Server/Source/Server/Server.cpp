@@ -176,13 +176,16 @@ void Server::SendHeartBeatPacket(int sessionID)
 void Server::SendBlockDropPacket(int roomID, int spawnCount)
 {
     std::vector<std::vector<int>>& mapStructure = mRooms[roomID]->GetMap().GetStructure();
+    GameCode gameMode = mRooms[roomID]->GetGameMode();
+    int minX = mTableManager->getFITH_Data()[gameMode].Block_Spawn_Location_MinX;
+    int maxX = mTableManager->getFITH_Data()[gameMode].Block_Spawn_Location_MaxX;
+    int minY = mTableManager->getFITH_Data()[gameMode].Block_Spawn_Location_MinY;
+    int maxY = mTableManager->getFITH_Data()[gameMode].Block_Spawn_Location_MaxY;
 
     std::random_device rd;
     std::mt19937 gen(rd());
-
-    // 엑셀 데이터로 수정해야함
-    std::uniform_int_distribution<> x_distrib(0, 19);
-    std::uniform_int_distribution<> y_distrib(0, 9);
+    std::uniform_int_distribution<> x_distrib(minX, maxX);
+    std::uniform_int_distribution<> y_distrib(minY, maxY);
     std::uniform_int_distribution<> id_distrib(0, 1);
 
     std::set<std::pair<int, int>> unique_pos;
@@ -205,12 +208,16 @@ void Server::SendBlockDropPacket(int roomID, int spawnCount)
 
 void Server::SendBombSpawnPacket(int roomID, int spawnCount)
 {
+    GameCode gameMode = mRooms[roomID]->GetGameMode();
+    int minX = mTableManager->getFITH_Data()[gameMode].Bomb_Spawn_Location_MinX;
+    int maxX = mTableManager->getFITH_Data()[gameMode].Bomb_Spawn_Location_MaxX;
+    int minY = mTableManager->getFITH_Data()[gameMode].Bomb_Spawn_Location_MinY;
+    int maxY = mTableManager->getFITH_Data()[gameMode].Bomb_Spawn_Location_MaxY;
+
     std::random_device rd;
     std::mt19937 gen(rd());
-
-    // 엑셀 데이터로 수정해야함
-    std::uniform_int_distribution<> x_distrib(8, 11);
-    std::uniform_int_distribution<> y_distrib(3, 6);
+    std::uniform_int_distribution<> x_distrib(minX, maxX);
+    std::uniform_int_distribution<> y_distrib(minY, maxY);
 
     std::set<std::pair<int, int>> unique_pos;
 
