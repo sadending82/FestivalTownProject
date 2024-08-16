@@ -936,7 +936,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialCubes: 10
-  cubePrefab: {fileID: 928806647997252726, guid: c0b9d0d26133d794fabe018c32ea0a37, type: 3}
   cubeTypes: 2
   testXY: 0
 --- !u!4 &2144689200

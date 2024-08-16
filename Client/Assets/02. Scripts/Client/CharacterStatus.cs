@@ -22,7 +22,10 @@ public class CharacterStatus : MonoBehaviour
     public float groggyTime;
     public Camera myCamera;
     private bool amIPlayer;
+    [SerializeField]
     private bool isHaveItem = false;
+    private string itemTag;
+    private int itemId;
 
     [Header("--- AnimationControll ---")]
     public bool isGroggy;
@@ -75,13 +78,23 @@ public class CharacterStatus : MonoBehaviour
             ///</summary>
         }
     }
-    public void SetIsHaveItem(bool isHaveItem)
+    public void SetIsHaveItem(bool isHaveItem, string itemTag = "NULL", int itemId = -1)
     {
         this.isHaveItem = isHaveItem;
+        this.itemTag = itemTag;
+        this.itemId = itemId;
     }
     public bool GetIsHaveItem()
     {
         return isHaveItem;
+    }
+    public string GetItemTag()
+    {
+        return itemTag;
+    }
+    public int GetItemId()
+    {
+        return itemId;
     }
     public void SetIsDie(bool isDie)
     {
@@ -92,5 +105,9 @@ public class CharacterStatus : MonoBehaviour
     public int GetId()
     {
         return id;
+    }
+    public int GetStrength()
+    {
+        return strength;
     }
 }

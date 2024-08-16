@@ -811,7 +811,7 @@ MonoBehaviour:
   maxStamina: 0
   stamina: 0
   staminaRecoverySpeed: 0
-  strength: 0
+  strength: 5
   speed: 0
   runSpeedRatio: 0
   isDie: 0

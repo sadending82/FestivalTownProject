@@ -15,10 +15,17 @@ public class Bomb : MonoBehaviour
     private int pickUpPlayerId;
     private Transform targetTransform;
 
+    private Vector3 throwDirection;
+    private Rigidbody rigidbody;
+
     // ------ Server -------
     [SerializeField]
     private int id;
 
+    private void Awake()
+    {
+        rigidbody = this.GetComponent<Rigidbody>();
+    }
     private void OnEnable()
     {
         timer = 0;
@@ -50,9 +57,8 @@ public class Bomb : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         // 바닥에 도달했을때 더이상 움직이지 않도록 고정
-        if (collision.gameObject.tag == "Ground")
+        if (collision.gameObject.tag == "Ground" && isPickUp == false)
         {
-            Rigidbody rigidbody = this.GetComponent<Rigidbody>();
             rigidbody.constraints = RigidbodyConstraints.FreezePosition |
                                     RigidbodyConstraints.FreezeRotation;
         }
@@ -71,9 +77,7 @@ public class Bomb : MonoBehaviour
             /// </summary>
             Debug.Log("Player " + pickUpPlayerId + " is Die");
 
-            isPickUp = false;
-            this.pickUpPlayerId = -1;
-            this.targetTransform = null;
+            PickUpOff();
         }
 
         Managers.Resource.Destroy(this.gameObject);
@@ -94,25 +98,46 @@ public class Bomb : MonoBehaviour
         this.pickUpPlayerId = pickUpPlayerId;
         this.targetTransform = targetTransform;
         SetRigidBodyPickUp();
-        Debug.Log(this.name + " Pick Up to Player " + pickUpPlayerId);
+        Debug.Log("Bomb " + this.id + " Pick Up to Player " + pickUpPlayerId);
     }
+    public void PickUpOff()
+    {
+        CharacterStatus pickUpPlayerStatus = Managers.Player.transform.GetChild(pickUpPlayerId).GetComponent<CharacterStatus>();
+        pickUpPlayerStatus.SetIsHaveItem(false);
+
+        isPickUp = false;
+        this.pickUpPlayerId = -1;
+        this.targetTransform = null;
+    }
+
+    public void Throw(Vector3 throwDirection, int throwStrength)
+    {
+        this.throwDirection = throwDirection;
+        SetRigidBodyBasic();
+
+        rigidbody.AddForce(throwDirection * throwStrength, ForceMode.Impulse);
+
+        PickUpOff();
+    }
+
     private void SetRigidBodyPickUp()
     {
-        Rigidbody rig = this.GetComponent<Rigidbody>();
-        rig.constraints = RigidbodyConstraints.None;
-        rig.useGravity = false;
-        rig.mass = 0;
-        rig.angularDrag = 0;
+        rigidbody.constraints = RigidbodyConstraints.None;
+        rigidbody.useGravity = false;
+        rigidbody.mass = 0;
+        rigidbody.angularDrag = 0;
     }
     private void SetRigidBodyBasic()
     {
-        Rigidbody rig = this.GetComponent<Rigidbody>();
-        rig.constraints = RigidbodyConstraints.FreezeRotation;
-        rig.useGravity = true;
-        rig.mass = 1;
-        rig.angularDrag = 0.05f;
+        rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
+        rigidbody.useGravity = true;
+        rigidbody.mass = 1;
+        rigidbody.angularDrag = 0.05f;
     }
-    
+    public void SetPosition(Vector3 position)
+    {
+        transform.position = position;
+    }
     public void SetId(int id)
     {
         this.id = id;

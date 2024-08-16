@@ -372,6 +372,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButtonDown(1))
         {
             playerStatus.setUpperBodyAnimationState(UpperBodyAnimationState.THROW);
+            Throw();
         }
     }
     private void PickUpItem()
@@ -389,7 +390,7 @@ public class PlayerController : MonoBehaviour
                 //-----------------------------------------------------------------------------------
                 Bomb targetBomb = targetItem.GetComponent<Bomb>();
                 targetBomb.PickUp(playerStatus.GetId(), bombInvenTransform);
-                playerStatus.SetIsHaveItem(true);
+                playerStatus.SetIsHaveItem(true, "Bomb", targetBomb.GetId());
             }
             else
             {
@@ -404,9 +405,9 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log("PickUp!! Target Bomb : " + bombId + " Player ID : " + myId);
         // 폭탄과 플레이어 붙여주기
-        Bomb targetBomb = GameObject.Find("BombObjectManager").transform.GetChild(bombId).GetComponent<Bomb>();
+        Bomb targetBomb = Managers.BombObject.FindBombById(bombId).GetComponent<Bomb>();
         targetBomb.PickUp(playerId, bombInvenTransform);
-        playerStatus.SetIsHaveItem(true);
+        playerStatus.SetIsHaveItem(true, "Bomb", bombId);
     }
     public void Jump()
     {
@@ -414,6 +415,30 @@ public class PlayerController : MonoBehaviour
         pelvisRigidbody.velocity = Vector3.up * jumpForce;
         nowLowerBodyAnimationState = LowerBodyAnimationState.JUMP;
         playerStatus.setLowerBodyAnimationState(LowerBodyAnimationState.JUMP);
+    }
+
+    public void Throw()
+    {
+        if(playerStatus.GetIsHaveItem() == true)
+        {
+            if(playerStatus.GetItemTag() == "Bomb")
+            {
+                Bomb targetBomb = Managers.BombObject.FindBombById(playerStatus.GetItemId()).GetComponent<Bomb>();
+                targetBomb.Throw(stabillizerDirection, playerStatus.GetStrength());
+                /// <summary>
+                /// 서버에 여기서 플레이어 위치, 폭탄 발사 방향, 폭탄 위치, 플레이어 아이디, 폭탄 아이디 보내줌
+                /// </summary>
+                playerStatus.SetIsHaveItem(false);
+            }
+        }
+        else
+        {
+            Debug.Log("Player " + playerStatus.GetId() + " Don't Have an Item to Throw !!!");
+        }
+    }
+    public void s_Throw()
+    {
+
     }
 
     // ------- Setter Getter -------
@@ -428,7 +453,7 @@ public class PlayerController : MonoBehaviour
 
             return; }
 
-        pelvis.transform.position = new Vector3(position.x, pelvis.transform.position.y, position.z);
+        pelvis.transform.position = position;
     }
     public void SetDirection(Vector3 direction)
     {
