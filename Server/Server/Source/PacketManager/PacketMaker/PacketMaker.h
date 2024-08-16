@@ -13,7 +13,7 @@ public:
 	std::vector<uint8_t> MakeGameInfo(int inGameID, int roomID, int team, int gameMode, bool isHost = false);
 	std::vector<uint8_t> MakeHeartBeatPacket();
 	std::vector<uint8_t> MakeBlockDropPacket(int x, int y, int type);
-	std::vector<uint8_t> MakeBombSpawnPacket(int x, int y);
+	std::vector<uint8_t> MakeBombSpawnPacket(int x, int y, int bombid);
 	std::vector<uint8_t> MakeBombExplosionPacket(int bombID, Vector3f position);
 
 	std::vector<uint8_t> MakeLifeReducePacket(int team, int lifeCount);

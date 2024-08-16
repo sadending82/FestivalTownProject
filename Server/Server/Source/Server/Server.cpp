@@ -254,7 +254,7 @@ void Server::SendBombSpawnPacket(int roomID, int spawnCount)
         int bombid = mRooms[roomID]->AddBomb(new Bomb, Vector3f(pos.first, pos.second, 0));
         std::cout << "addBomb: " << bombid << std::endl;
         if (bombid == INVALIDKEY) continue;
-        std::vector<uint8_t> send_buffer = mPacketMaker->MakeBombSpawnPacket(pos.first, pos.second);
+        std::vector<uint8_t> send_buffer = mPacketMaker->MakeBombSpawnPacket(pos.first, pos.second, bombid);
         SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
         PushEventBombExplosion(mTimer, roomID, bombid);
     }
