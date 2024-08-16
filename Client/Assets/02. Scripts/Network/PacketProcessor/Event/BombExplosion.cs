@@ -16,8 +16,18 @@ namespace Network.PacketProcessor
             var bb = new ByteBuffer(data);
             var Data = BombExplosion.GetRootAsBombExplosion(bb);
             Vector3 pos = new Vector3(Data.Pos.Value.X, Data.Pos.Value.Y, Data.Pos.Value.Z);
-            int bomb_id = Data.Id;
+            int bombId = Data.Id;
 
+            GameObject targetBomb = Managers.BombObject.FindBombById(bombId);
+            if (targetBomb != null)
+            {
+                targetBomb.transform.position = pos;
+                targetBomb.GetComponent<Bomb>().Boom();
+            }
+            else
+            {
+                Debug.Log("BombExplosionProcessor Target Bomb is NULL !!!");
+            }
         }
 
         private FlatBufferBuilder mBuilder;
