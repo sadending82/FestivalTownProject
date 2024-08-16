@@ -16,8 +16,8 @@ static_assert(FLATBUFFERS_VERSION_MAJOR == 24 &&
 namespace PacketTable {
 namespace ObjectTable {
 
-struct Object;
-struct ObjectBuilder;
+struct RootObject;
+struct RootObjectBuilder;
 
 struct BlockDrop;
 struct BlockDropBuilder;
@@ -28,14 +28,17 @@ struct BombPositionBuilder;
 struct BombSpawn;
 struct BombSpawnBuilder;
 
+struct BombExplosion;
+struct BombExplosionBuilder;
+
 struct Vec2i;
 struct Vec2iBuilder;
 
 struct Vec3f;
 struct Vec3fBuilder;
 
-struct Object FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef ObjectBuilder Builder;
+struct RootObject FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef RootObjectBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_POS = 4,
     VT_ID = 6
@@ -55,32 +58,32 @@ struct Object FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   }
 };
 
-struct ObjectBuilder {
-  typedef Object Table;
+struct RootObjectBuilder {
+  typedef RootObject Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
   void add_pos(::flatbuffers::Offset<PacketTable::ObjectTable::Vec3f> pos) {
-    fbb_.AddOffset(Object::VT_POS, pos);
+    fbb_.AddOffset(RootObject::VT_POS, pos);
   }
   void add_id(int32_t id) {
-    fbb_.AddElement<int32_t>(Object::VT_ID, id, 0);
+    fbb_.AddElement<int32_t>(RootObject::VT_ID, id, 0);
   }
-  explicit ObjectBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+  explicit RootObjectBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  ::flatbuffers::Offset<Object> Finish() {
+  ::flatbuffers::Offset<RootObject> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<Object>(end);
+    auto o = ::flatbuffers::Offset<RootObject>(end);
     return o;
   }
 };
 
-inline ::flatbuffers::Offset<Object> CreateObject(
+inline ::flatbuffers::Offset<RootObject> CreateRootObject(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     ::flatbuffers::Offset<PacketTable::ObjectTable::Vec3f> pos = 0,
     int32_t id = 0) {
-  ObjectBuilder builder_(_fbb);
+  RootObjectBuilder builder_(_fbb);
   builder_.add_id(id);
   builder_.add_pos(pos);
   return builder_.Finish();
@@ -193,15 +196,20 @@ inline ::flatbuffers::Offset<BombPosition> CreateBombPosition(
 struct BombSpawn FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef BombSpawnBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_POS = 4
+    VT_POS = 4,
+    VT_ID = 6
   };
   const PacketTable::ObjectTable::Vec2i *pos() const {
     return GetPointer<const PacketTable::ObjectTable::Vec2i *>(VT_POS);
+  }
+  int32_t id() const {
+    return GetField<int32_t>(VT_ID, 0);
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_POS) &&
            verifier.VerifyTable(pos()) &&
+           VerifyField<int32_t>(verifier, VT_ID, 4) &&
            verifier.EndTable();
   }
 };
@@ -212,6 +220,9 @@ struct BombSpawnBuilder {
   ::flatbuffers::uoffset_t start_;
   void add_pos(::flatbuffers::Offset<PacketTable::ObjectTable::Vec2i> pos) {
     fbb_.AddOffset(BombSpawn::VT_POS, pos);
+  }
+  void add_id(int32_t id) {
+    fbb_.AddElement<int32_t>(BombSpawn::VT_ID, id, 0);
   }
   explicit BombSpawnBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -226,8 +237,62 @@ struct BombSpawnBuilder {
 
 inline ::flatbuffers::Offset<BombSpawn> CreateBombSpawn(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<PacketTable::ObjectTable::Vec2i> pos = 0) {
+    ::flatbuffers::Offset<PacketTable::ObjectTable::Vec2i> pos = 0,
+    int32_t id = 0) {
   BombSpawnBuilder builder_(_fbb);
+  builder_.add_id(id);
+  builder_.add_pos(pos);
+  return builder_.Finish();
+}
+
+struct BombExplosion FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef BombExplosionBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_POS = 4,
+    VT_ID = 6
+  };
+  const PacketTable::ObjectTable::Vec3f *pos() const {
+    return GetPointer<const PacketTable::ObjectTable::Vec3f *>(VT_POS);
+  }
+  int32_t id() const {
+    return GetField<int32_t>(VT_ID, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_POS) &&
+           verifier.VerifyTable(pos()) &&
+           VerifyField<int32_t>(verifier, VT_ID, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct BombExplosionBuilder {
+  typedef BombExplosion Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_pos(::flatbuffers::Offset<PacketTable::ObjectTable::Vec3f> pos) {
+    fbb_.AddOffset(BombExplosion::VT_POS, pos);
+  }
+  void add_id(int32_t id) {
+    fbb_.AddElement<int32_t>(BombExplosion::VT_ID, id, 0);
+  }
+  explicit BombExplosionBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<BombExplosion> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<BombExplosion>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<BombExplosion> CreateBombExplosion(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<PacketTable::ObjectTable::Vec3f> pos = 0,
+    int32_t id = 0) {
+  BombExplosionBuilder builder_(_fbb);
+  builder_.add_id(id);
   builder_.add_pos(pos);
   return builder_.Finish();
 }
@@ -344,33 +409,33 @@ inline ::flatbuffers::Offset<Vec3f> CreateVec3f(
   return builder_.Finish();
 }
 
-inline const PacketTable::ObjectTable::Object *GetObject(const void *buf) {
-  return ::flatbuffers::GetRoot<PacketTable::ObjectTable::Object>(buf);
+inline const PacketTable::ObjectTable::RootObject *GetRootObject(const void *buf) {
+  return ::flatbuffers::GetRoot<PacketTable::ObjectTable::RootObject>(buf);
 }
 
-inline const PacketTable::ObjectTable::Object *GetSizePrefixedObject(const void *buf) {
-  return ::flatbuffers::GetSizePrefixedRoot<PacketTable::ObjectTable::Object>(buf);
+inline const PacketTable::ObjectTable::RootObject *GetSizePrefixedRootObject(const void *buf) {
+  return ::flatbuffers::GetSizePrefixedRoot<PacketTable::ObjectTable::RootObject>(buf);
 }
 
-inline bool VerifyObjectBuffer(
+inline bool VerifyRootObjectBuffer(
     ::flatbuffers::Verifier &verifier) {
-  return verifier.VerifyBuffer<PacketTable::ObjectTable::Object>(nullptr);
+  return verifier.VerifyBuffer<PacketTable::ObjectTable::RootObject>(nullptr);
 }
 
-inline bool VerifySizePrefixedObjectBuffer(
+inline bool VerifySizePrefixedRootObjectBuffer(
     ::flatbuffers::Verifier &verifier) {
-  return verifier.VerifySizePrefixedBuffer<PacketTable::ObjectTable::Object>(nullptr);
+  return verifier.VerifySizePrefixedBuffer<PacketTable::ObjectTable::RootObject>(nullptr);
 }
 
-inline void FinishObjectBuffer(
+inline void FinishRootObjectBuffer(
     ::flatbuffers::FlatBufferBuilder &fbb,
-    ::flatbuffers::Offset<PacketTable::ObjectTable::Object> root) {
+    ::flatbuffers::Offset<PacketTable::ObjectTable::RootObject> root) {
   fbb.Finish(root);
 }
 
-inline void FinishSizePrefixedObjectBuffer(
+inline void FinishSizePrefixedRootObjectBuffer(
     ::flatbuffers::FlatBufferBuilder &fbb,
-    ::flatbuffers::Offset<PacketTable::ObjectTable::Object> root) {
+    ::flatbuffers::Offset<PacketTable::ObjectTable::RootObject> root) {
   fbb.FinishSizePrefixed(root);
 }
 

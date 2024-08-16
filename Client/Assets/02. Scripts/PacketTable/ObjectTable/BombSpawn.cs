@@ -20,16 +20,20 @@ public struct BombSpawn : IFlatbufferObject
   public BombSpawn __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public PacketTable.ObjectTable.Vec2i? Pos { get { int o = __p.__offset(4); return o != 0 ? (PacketTable.ObjectTable.Vec2i?)(new PacketTable.ObjectTable.Vec2i()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
+  public int Id { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
 
   public static Offset<PacketTable.ObjectTable.BombSpawn> CreateBombSpawn(FlatBufferBuilder builder,
-      Offset<PacketTable.ObjectTable.Vec2i> posOffset = default(Offset<PacketTable.ObjectTable.Vec2i>)) {
-    builder.StartTable(1);
+      Offset<PacketTable.ObjectTable.Vec2i> posOffset = default(Offset<PacketTable.ObjectTable.Vec2i>),
+      int id = 0) {
+    builder.StartTable(2);
+    BombSpawn.AddId(builder, id);
     BombSpawn.AddPos(builder, posOffset);
     return BombSpawn.EndBombSpawn(builder);
   }
 
-  public static void StartBombSpawn(FlatBufferBuilder builder) { builder.StartTable(1); }
+  public static void StartBombSpawn(FlatBufferBuilder builder) { builder.StartTable(2); }
   public static void AddPos(FlatBufferBuilder builder, Offset<PacketTable.ObjectTable.Vec2i> posOffset) { builder.AddOffset(0, posOffset.Value, 0); }
+  public static void AddId(FlatBufferBuilder builder, int id) { builder.AddInt(1, id, 0); }
   public static Offset<PacketTable.ObjectTable.BombSpawn> EndBombSpawn(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<PacketTable.ObjectTable.BombSpawn>(o);
@@ -43,6 +47,7 @@ static public class BombSpawnVerify
   {
     return verifier.VerifyTableStart(tablePos)
       && verifier.VerifyTable(tablePos, 4 /*Pos*/, PacketTable.ObjectTable.Vec2iVerify.Verify, false)
+      && verifier.VerifyField(tablePos, 6 /*Id*/, 4 /*int*/, 4, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }

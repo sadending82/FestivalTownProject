@@ -45,6 +45,15 @@ std::vector<uint8_t> PacketMaker::MakeBombSpawnPacket(int x, int y)
 	return MakeBuffer(ePacketType::S2C_BOMBSPAWN, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
+std::vector<uint8_t> PacketMaker::MakeBombExplosionPacket(int bombID, Vector3f position)
+{
+	flatbuffers::FlatBufferBuilder Builder;
+	Builder.Clear();
+	auto pos = PacketTable::ObjectTable::CreateVec3f(Builder, position.x, position.y, position.x);
+	Builder.Finish(PacketTable::ObjectTable::CreateBombExplosion(Builder, pos, bombID));
+	return MakeBuffer(ePacketType::S2C_BOMBEXPLOSION, Builder.GetBufferPointer(), Builder.GetSize());
+}
+
 std::vector<uint8_t> PacketMaker::MakeLifeReducePacket(int team, int lifeCount)
 {
 	flatbuffers::FlatBufferBuilder Builder;

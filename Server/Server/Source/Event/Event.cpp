@@ -20,7 +20,7 @@ bool PushEventHeartBeat(Timer* pTimer, int sessionID) {
 bool PushEventBlockDrop(Timer* pTimer, int roomID, int intervalTime) {
 	EV_OBJECT_DROP e;
 	e.size = sizeof(EV_OBJECT_DROP);
-	e.type = eEventType::BlockDrop;
+	e.type = eEventType::BLOCKDROP;
 	e.roomID = roomID;
 
 
@@ -47,7 +47,7 @@ bool PushEventBombSpawn(Timer* pTimer, int roomID, int intervalTime)
 
 	pTimer->PushEvent(header);
 
-	return false;
+	return true;
 }
 
 bool PushEventRemainTimeSync(Timer* pTimer, int roomID)
@@ -63,5 +63,22 @@ bool PushEventRemainTimeSync(Timer* pTimer, int roomID)
 
 	pTimer->PushEvent(header);
 
-	return false;
+	return true;
+}
+
+bool PushEventBombExplosion(Timer* pTimer, int roomID, int bombID)
+{
+	EV_BOMB_EXPLOSION e;
+	e.size = sizeof(EV_BOMB_EXPLOSION);
+	e.type = eEventType::BOMBEXPLOSION;
+	e.roomID = roomID;
+	e.bombID = bombID;
+
+	EVENT_HEADER header;
+	header.start_time = std::chrono::system_clock::now() + std::chrono::milliseconds(10000);
+	memcpy(header.message, reinterpret_cast<char*>(&e), sizeof(EV_TIME_SYNC));
+
+	pTimer->PushEvent(header);
+
+	return true;
 }

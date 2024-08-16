@@ -17,10 +17,12 @@ void PacketManager::Init(Server* server)
     PacketProcessorMap[ePacketType::C2S_PLAYERGRABBOMB] = std::make_unique<PacketPlayerGrabBomb>();
     PacketProcessorMap[ePacketType::C2S_PLAYERTHROWBOMB] = std::make_unique<PacketPlayerThrowBomb>();
     PacketProcessorMap[ePacketType::C2S_BOMBPOSSYNC] = std::make_unique<PacketBombPositionSync>();
+    PacketProcessorMap[ePacketType::C2S_BOMBEXPLOSION] = std::make_unique<PacketBombExplosion>();
 
     EventProcessorMap[eEventType::HEARTBEAT] = std::make_unique<EventHeartBeat>();
-    EventProcessorMap[eEventType::BlockDrop] = std::make_unique<EventBlockDrop>();
+    EventProcessorMap[eEventType::BLOCKDROP] = std::make_unique<EventBlockDrop>();
     EventProcessorMap[eEventType::BOMBSPAWN] = std::make_unique<EventBombSpawn>();
+    EventProcessorMap[eEventType::BOMBEXPLOSION] = std::make_unique<EventBombExplosion>();
     EventProcessorMap[eEventType::TIMESYNC] = std::make_unique<EventRemainTimeSync>();
 }
 

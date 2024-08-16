@@ -51,20 +51,22 @@ bool Room::DeletePlayer(int playerID)
 	return true;
 }
 
-bool Room::AddBomb(Bomb* object, Vector3f position, Vector3f direction)
+int Room::AddBomb(Bomb* object, Vector3f position, Vector3f direction)
 {
 	for (int i = 0; i < MAXPLAYER; ++i) {
+		mObjectListLock.lock();
 		if (mObjectList[i] == nullptr) {
 			mObjectList[i] = object;
-
+			mObjectListLock.unlock();
 			object->SetID(i);
 			object->SetPosition(position);
 			object->SetDirection(direction);
-			return true;
+			return i;
 		}
+		mObjectListLock.unlock();
 	}
 
-	return false;
+	return INVALIDKEY;
 }
 
 bool Room::DeleteObject(int id)

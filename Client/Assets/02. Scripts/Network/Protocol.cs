@@ -28,6 +28,7 @@ namespace NetworkProtocol
 
         S2C_BLOCKDROP,
         S2C_BOMBSPAWN,
+        S2C_BOMBEXPLOSION,
         S2C_BOMBPOSSYNC,
 
         S2C_LIFEREDUCE,
@@ -42,7 +43,8 @@ namespace NetworkProtocol
         C2S_PLAYERTHROWBOMB,
 
         C2S_BOMBINPUT,
-        C2S_BOMBPOSSYNC
+        C2S_BOMBPOSSYNC,
+        C2S_BOMBEXPLOSION
 
     };
 

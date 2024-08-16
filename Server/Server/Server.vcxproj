@@ -185,6 +185,7 @@ xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     <ClInclude Include="Source\PacketManager\PacketManager.h" />
     <ClInclude Include="Source\Network\ExOver.h" />
     <ClInclude Include="Source\Network\Session\Session.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Event\EventBombExplosion.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Event\EventBombSpawn.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Event\EventHeartBeat.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Event\EventBlockDrop.h" />
@@ -194,6 +195,7 @@ xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\Object_generated.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\Player_generated.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\Utilities_generated.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\PacketBombExplosion.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\PacketBombInput.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\PacketBombPositionSync.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\PacketHeartBeat.h" />

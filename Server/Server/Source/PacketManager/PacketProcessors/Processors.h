@@ -7,8 +7,10 @@
 #include "Packet/PacketPlayerGrabBomb.h"
 #include "Packet/PacketPlayerThrowBomb.h"
 #include "Packet/PacketBombPositionSync.h"
+#include "Packet/PacketBombExplosion.h"
 
 #include "Event/EventHeartBeat.h"
 #include "Event/EventBlockDrop.h"
 #include "Event/EventBombSpawn.h"
 #include "Event/EventRemainTimeSync.h"
+#include "Event/EventBombExplosion.h"

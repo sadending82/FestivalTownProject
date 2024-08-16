@@ -243,11 +243,20 @@ void Server::SendBombSpawnPacket(int roomID, int spawnCount)
     }
 
     for (const auto& pos : unique_pos) {
-        mRooms[roomID]->AddBomb(new Bomb, Vector3f(pos.first, pos.second, 0));
+        int bombid = mRooms[roomID]->AddBomb(new Bomb, Vector3f(pos.first, pos.second, 0));
         std::vector<uint8_t> send_buffer = mPacketMaker->MakeBombSpawnPacket(pos.first, pos.second);
         SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
+        PushEventBombExplosion(mTimer, roomID, bombid);
     }
+}
 
+void Server::SendBombExplosionPacket(int roomID, int bombID)
+{
+    Object* object = mRooms[roomID]->GetObjects()[bombID];
+    if (object == nullptr) return;
+    Vector3f pos = object->GetPosition();
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakeBombExplosionPacket(bombID, pos);
+    SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
 
 void Server::SendLifeReducePacket(int team, int lifeCount, int roomID) {

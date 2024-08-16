@@ -53,6 +53,7 @@ public class PacketManager : MonoBehaviour
 
             { ePacketType.S2C_BLOCKDROP, new BlockDropProcessor() },
             { ePacketType.S2C_BOMBSPAWN, new BombSpawnProcessor() },
+            { ePacketType.S2C_BOMBEXPLOSION, new BombExplosionProcessor() },
             { ePacketType.S2C_BOMBPOSSYNC, new BombPositionSyncProcessor() },
 
 
@@ -150,6 +151,13 @@ public class PacketManager : MonoBehaviour
     public void SendBombPositionSyncPacket(Vector3 position, int BombID)
     {
         byte[] packet = _packetMaker.MakeBombPositionSyncPacket(position, BombID);
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+
+    public void SendBombExplosionPacket(Vector3 position, int BombID)
+    {
+        byte[] packet = _packetMaker.MakeBombExplosionPacket(position, BombID);
         if (packet == null) { return; }
         SendPacket(packet);
     }
