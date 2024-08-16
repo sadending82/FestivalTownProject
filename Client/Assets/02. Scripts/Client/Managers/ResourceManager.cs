@@ -28,7 +28,6 @@ public class ResourceManager
 
     public GameObject Instantiate(string path, Transform parent = null)
     {
-        Debug.Log("혹시 여기니?");
         GameObject prefab = Load<GameObject>($"Prefabs/{path}");
 
         if(prefab == null)
