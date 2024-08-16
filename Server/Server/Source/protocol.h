@@ -5,7 +5,7 @@ enum ePacketType
     // Server -> Client
     S2C_HEARTBEAT,
     S2C_PLAYERADD,
-    S2C_PLAYERGAMEINFO,
+    S2C_GAMEINFO,
     S2C_PLAYERMOVE,
     S2C_PLAYERSTOP,
     S2C_PLAYERPOSSYNC,

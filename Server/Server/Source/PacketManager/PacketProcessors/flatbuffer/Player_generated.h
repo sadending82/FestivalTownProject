@@ -16,9 +16,6 @@ static_assert(FLATBUFFERS_VERSION_MAJOR == 24 &&
 namespace PacketTable {
 namespace PlayerTable {
 
-struct PlayerGameInfo;
-struct PlayerGameInfoBuilder;
-
 struct PlayerPos;
 struct PlayerPosBuilder;
 
@@ -42,57 +39,6 @@ struct PlayerThrowBombBuilder;
 
 struct Vec3;
 struct Vec3Builder;
-
-struct PlayerGameInfo FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef PlayerGameInfoBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_INGAMEID = 4,
-    VT_ROOMID = 6
-  };
-  int32_t ingameid() const {
-    return GetField<int32_t>(VT_INGAMEID, 0);
-  }
-  int32_t roomid() const {
-    return GetField<int32_t>(VT_ROOMID, 0);
-  }
-  bool Verify(::flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<int32_t>(verifier, VT_INGAMEID, 4) &&
-           VerifyField<int32_t>(verifier, VT_ROOMID, 4) &&
-           verifier.EndTable();
-  }
-};
-
-struct PlayerGameInfoBuilder {
-  typedef PlayerGameInfo Table;
-  ::flatbuffers::FlatBufferBuilder &fbb_;
-  ::flatbuffers::uoffset_t start_;
-  void add_ingameid(int32_t ingameid) {
-    fbb_.AddElement<int32_t>(PlayerGameInfo::VT_INGAMEID, ingameid, 0);
-  }
-  void add_roomid(int32_t roomid) {
-    fbb_.AddElement<int32_t>(PlayerGameInfo::VT_ROOMID, roomid, 0);
-  }
-  explicit PlayerGameInfoBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  ::flatbuffers::Offset<PlayerGameInfo> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<PlayerGameInfo>(end);
-    return o;
-  }
-};
-
-inline ::flatbuffers::Offset<PlayerGameInfo> CreatePlayerGameInfo(
-    ::flatbuffers::FlatBufferBuilder &_fbb,
-    int32_t ingameid = 0,
-    int32_t roomid = 0) {
-  PlayerGameInfoBuilder builder_(_fbb);
-  builder_.add_roomid(roomid);
-  builder_.add_ingameid(ingameid);
-  return builder_.Finish();
-}
 
 struct PlayerPos FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef PlayerPosBuilder Builder;

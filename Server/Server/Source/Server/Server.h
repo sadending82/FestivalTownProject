@@ -26,7 +26,7 @@ public:
 	void SendAllPlayerInRoomExceptSender(void* packet, int size, int sessionID);
 
 	void SendPlayerAdd(int sessionID, int destination);
-	void SendPlayerGameInfo(int sessionID);
+	void SendGameInfo(int sessionID);
 	void SendHeartBeatPacket(int sessionID);
 	void SendBlockDropPacket(int roomID, int spawnCount);
 	void SendBombSpawnPacket(int roomID, int spawnCount);

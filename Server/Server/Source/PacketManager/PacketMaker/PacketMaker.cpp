@@ -9,12 +9,12 @@ std::vector<uint8_t> PacketMaker::MakePlayerAdd(int inGameID)
 	return MakeBuffer(ePacketType::S2C_PLAYERADD, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakePlayerGameInfo(int inGameID, int roomID)
+std::vector<uint8_t> PacketMaker::MakeGameInfo(int inGameID, int roomID, int team, int gameMode, bool isHost)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 	Builder.Clear();
-	Builder.Finish(PacketTable::PlayerTable::CreatePlayerGameInfo(Builder, inGameID, roomID));
-	return MakeBuffer(ePacketType::S2C_PLAYERGAMEINFO, Builder.GetBufferPointer(), Builder.GetSize());
+	Builder.Finish(PacketTable::GameTable::CreateGameInfo(Builder, inGameID, roomID, team, gameMode, isHost));
+	return MakeBuffer(ePacketType::S2C_GAMEINFO, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
 std::vector<uint8_t> PacketMaker::MakeHeartBeatPacket()

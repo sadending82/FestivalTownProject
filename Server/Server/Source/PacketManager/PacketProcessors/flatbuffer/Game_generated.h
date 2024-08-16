@@ -19,6 +19,9 @@ namespace GameTable {
 struct Game;
 struct GameBuilder;
 
+struct GameInfo;
+struct GameInfoBuilder;
+
 struct BombInput;
 struct BombInputBuilder;
 
@@ -60,6 +63,87 @@ struct GameBuilder {
 inline ::flatbuffers::Offset<Game> CreateGame(
     ::flatbuffers::FlatBufferBuilder &_fbb) {
   GameBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct GameInfo FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef GameInfoBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_INGAMEID = 4,
+    VT_ROOMID = 6,
+    VT_TEAM = 8,
+    VT_GAMEMODE = 10,
+    VT_ISHOST = 12
+  };
+  int32_t ingameid() const {
+    return GetField<int32_t>(VT_INGAMEID, 0);
+  }
+  int32_t roomid() const {
+    return GetField<int32_t>(VT_ROOMID, 0);
+  }
+  int32_t team() const {
+    return GetField<int32_t>(VT_TEAM, 0);
+  }
+  int32_t gamemode() const {
+    return GetField<int32_t>(VT_GAMEMODE, 0);
+  }
+  bool ishost() const {
+    return GetField<uint8_t>(VT_ISHOST, 0) != 0;
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_INGAMEID, 4) &&
+           VerifyField<int32_t>(verifier, VT_ROOMID, 4) &&
+           VerifyField<int32_t>(verifier, VT_TEAM, 4) &&
+           VerifyField<int32_t>(verifier, VT_GAMEMODE, 4) &&
+           VerifyField<uint8_t>(verifier, VT_ISHOST, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct GameInfoBuilder {
+  typedef GameInfo Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_ingameid(int32_t ingameid) {
+    fbb_.AddElement<int32_t>(GameInfo::VT_INGAMEID, ingameid, 0);
+  }
+  void add_roomid(int32_t roomid) {
+    fbb_.AddElement<int32_t>(GameInfo::VT_ROOMID, roomid, 0);
+  }
+  void add_team(int32_t team) {
+    fbb_.AddElement<int32_t>(GameInfo::VT_TEAM, team, 0);
+  }
+  void add_gamemode(int32_t gamemode) {
+    fbb_.AddElement<int32_t>(GameInfo::VT_GAMEMODE, gamemode, 0);
+  }
+  void add_ishost(bool ishost) {
+    fbb_.AddElement<uint8_t>(GameInfo::VT_ISHOST, static_cast<uint8_t>(ishost), 0);
+  }
+  explicit GameInfoBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<GameInfo> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<GameInfo>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<GameInfo> CreateGameInfo(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t ingameid = 0,
+    int32_t roomid = 0,
+    int32_t team = 0,
+    int32_t gamemode = 0,
+    bool ishost = false) {
+  GameInfoBuilder builder_(_fbb);
+  builder_.add_gamemode(gamemode);
+  builder_.add_team(team);
+  builder_.add_roomid(roomid);
+  builder_.add_ingameid(ingameid);
+  builder_.add_ishost(ishost);
   return builder_.Finish();
 }
 

@@ -157,12 +157,20 @@ void Server::SendPlayerAdd(int sessionID, int destination)
     GetSessions()[destination]->DoSend(send_buffer.data(), send_buffer.size());
 }
 
-void Server::SendPlayerGameInfo(int sessionID)
+void Server::SendGameInfo(int sessionID)
 {
     Player* player = dynamic_cast<Player*>(GetSessions()[sessionID]);
     int inGameID = player->GetInGameID();
     int roomID = player->GetRoomID();
-    std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerGameInfo(inGameID, roomID);
+    int team = player->GetTeam();
+    Room* room = mRooms[roomID];
+    std::vector<uint8_t> send_buffer;
+    if (inGameID == room->GetHostID()) {
+        send_buffer = mPacketMaker->MakeGameInfo(inGameID, roomID, team, room->GetGameMode(), true);
+    }
+    else {
+        send_buffer = mPacketMaker->MakeGameInfo(inGameID, roomID, team, room->GetGameMode());
+    }
 
     GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
 }
@@ -244,6 +252,8 @@ void Server::SendBombSpawnPacket(int roomID, int spawnCount)
 
     for (const auto& pos : unique_pos) {
         int bombid = mRooms[roomID]->AddBomb(new Bomb, Vector3f(pos.first, pos.second, 0));
+        std::cout << "addBomb: " << bombid << std::endl;
+        if (bombid == INVALIDKEY) continue;
         std::vector<uint8_t> send_buffer = mPacketMaker->MakeBombSpawnPacket(pos.first, pos.second);
         SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
         PushEventBombExplosion(mTimer, roomID, bombid);
@@ -302,8 +312,11 @@ void Server::StartGame(int roomID)
                 std::cout << "AddPlayer fail: Already Player Max\n";
             }
             else {
-                GetRooms()[TESTROOM]->AddPlayerCnt();
-                SendPlayerGameInfo(sessionID);
+                if (GetRooms()[roomID]->GetHostID() == INVALIDKEY) {
+                    GetRooms()[roomID]->SetHost(p->GetInGameID());
+                }
+                GetRooms()[roomID]->AddPlayerCnt();
+                SendGameInfo(sessionID);
             }
         }
     }

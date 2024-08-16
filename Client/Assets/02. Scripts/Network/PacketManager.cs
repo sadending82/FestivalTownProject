@@ -43,7 +43,7 @@ public class PacketManager : MonoBehaviour
 
 
             { ePacketType.S2C_PLAYERADD, new PlayerAddProcessor() },
-            { ePacketType.S2C_PLAYERGAMEINFO, new PlayerGameInfoProcessor() },
+            { ePacketType.S2C_GAMEINFO, new GameInfoProcessor() },
             { ePacketType.S2C_PLAYERMOVE, new PlayerMoveProcessor() },
             { ePacketType.S2C_PLAYERSTOP, new PlayerStopProcessor() },
             { ePacketType.S2C_PLAYERPOSSYNC, new PlayerPosSyncProcessor() },

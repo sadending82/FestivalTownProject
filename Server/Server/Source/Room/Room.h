@@ -31,6 +31,7 @@ public:
 	Map& GetMap() { return mMap; }
 	TIMEPOINT GetStartTime() { return mStartTime; }
 	eRoomState GetState() { return mState; }
+	int GetHostID() { return mHostID; }
 	
 
 	void AddPlayerCnt() { mPlayerCnt++; }
@@ -38,6 +39,7 @@ public:
 	void SetGameMode(GameCode gamecode) { mGameMode = gamecode; }
 	void SetStartTime(TIMEPOINT time) { mStartTime = time; }
 	void SetState(eRoomState state) { mState = state; }
+	void SetHost(int ingameid) { mHostID = ingameid; }
 
 private:
 	eRoomState mState;
@@ -56,6 +58,7 @@ private:
 	int mRoomID;
 	int mPlayerCnt = 0;
 	int mPlayerLimit = 6;
+	int mHostID = INVALIDKEY;
 	TIMEPOINT mStartTime;
 };
 

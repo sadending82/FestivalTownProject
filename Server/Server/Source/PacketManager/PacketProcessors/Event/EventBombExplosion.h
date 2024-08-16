@@ -17,11 +17,10 @@ public:
 			return;
 		}
 
-		//GameCode gameMode = pServer->GetRooms()[event->roomID]->GetGameMode();
 		Bomb* bomb = dynamic_cast<Bomb*>(pServer->GetRooms()[roomid]->GetObjects()[bombid]);
 		if (bomb == nullptr) return;
 		pServer->SendBombExplosionPacket(roomid, bombid);
-		bomb = nullptr;
+		pServer->GetRooms()[roomid]->GetObjects()[bombid] = nullptr;
 	}
 
 private:
