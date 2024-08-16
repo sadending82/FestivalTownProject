@@ -6,7 +6,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour 
 {
     /// <summary>
-    /// 현재 게임에 대한 데이터를 저장하는 녀석
+    /// 현재 게임에 대한 데이터를 저장하고, 게임을 관리하는 녀석.
     /// 라이프라던지, 시간이라던지
     /// 현재 씬이 인게임이 아니라면 Clear 하고나서 관리 안 해도 됨.
     /// </summary>

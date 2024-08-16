@@ -10,7 +10,6 @@ public class CubeObjectManager : MonoBehaviour
 
     public static CubeObjectManager instance;
     public int initialCubes = 10;
-    public GameObject cubePrefab;
     public int cubeTypes = 2;
     private List<GameObject> cubes = new List<GameObject>();
 
@@ -31,13 +30,16 @@ public class CubeObjectManager : MonoBehaviour
 
     private void MakeCubes()
     {
+        List<GameObject> list = new List<GameObject>();
+
         for(int i=0;i<initialCubes;++i)
         {
-            GameObject tempCube = Instantiate(cubePrefab) as GameObject;
+            list.Add(Managers.Resource.Instantiate("Cube"));
+        }
 
-            tempCube.transform.parent = transform;
-            tempCube.SetActive(false);
-            cubes.Add(tempCube);
+        foreach(GameObject obj in list)
+        {
+            Managers.Resource.Destroy(obj);
         }
     }
     private void Update()
@@ -78,25 +80,28 @@ public class CubeObjectManager : MonoBehaviour
         // 단위 맞춰주기
         x *= -2;
         y *= -2;
-        // 미리 생성되어 있는 큐브부터 사용
-        for(int i=0;i<cubes.Count;++i)
-        {
-            if (cubes[i].activeSelf == false)
-            {
-                reusedCube = cubes[i];
-                break;
-            }
-        }
-        // 사용 가능한 큐브가 없으면 새로 생성
-        if(reusedCube == null)
-        {
-            GameObject newCube = Instantiate(cubePrefab) as GameObject;
 
-            newCube.transform.parent = transform;
-            cubes.Add(newCube);
-            reusedCube = newCube;
-        }
-        
+        //// 미리 생성되어 있는 큐브부터 사용
+        //for(int i=0;i<cubes.Count;++i)
+        //{
+        //    if (cubes[i].activeSelf == false)
+        //    {
+        //        reusedCube = cubes[i];
+        //        break;
+        //    }
+        //}
+        //// 사용 가능한 큐브가 없으면 새로 생성
+        //if(reusedCube == null)
+        //{
+        //    GameObject newCube = Instantiate(cubePrefab) as GameObject;
+
+        //    newCube.transform.parent = transform;
+        //    cubes.Add(newCube);
+        //    reusedCube = newCube;
+        //}
+
+        reusedCube = Managers.ObjectPool.Pop(Managers.ObjectPool.GetOrigin("Cube"), transform).gameObject;
+
         // 큐브 생성 위치와 큐브 타입 설정, 플레이어를 밀어내는 Pusher 작동
         reusedCube.SetActive(true);
         // 타입에 해당하는 큐브 활성화, 포지션 설정

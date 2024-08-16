@@ -39,7 +39,7 @@ public class Pusher : MonoBehaviour
             }
             else
             {
-                Destroy(this.gameObject);
+                Managers.Resource.Destroy(this.gameObject);
             }
         }
     }

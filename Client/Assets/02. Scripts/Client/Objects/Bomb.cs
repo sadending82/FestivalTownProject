@@ -59,7 +59,7 @@ public class Bomb : MonoBehaviour
     }
     public void Boom()
     {
-        GameObject pusher = Instantiate(bombPusher) as GameObject;
+        GameObject pusher = Managers.Resource.Instantiate("BombPusher");
 
         pusher.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z);
         pusher.SetActive(true);
@@ -76,7 +76,7 @@ public class Bomb : MonoBehaviour
             this.targetTransform = null;
         }
 
-        this.gameObject.SetActive(false);
+        Managers.Resource.Destroy(this.gameObject);
     }
 
     public void SetLifeTime(float lifeTime)
