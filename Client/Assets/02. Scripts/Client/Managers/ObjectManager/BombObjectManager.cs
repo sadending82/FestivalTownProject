@@ -10,12 +10,7 @@ public class BombObjectManager : MonoBehaviour
 
     public static BombObjectManager instance;
     public int initialBombs = 10;
-    public float bombLifeTime = 5;   // 초단위
 
-    public int bombIdCount = 0;
-
-    // ------ Test -------
-    public int testXY = 0;
 
     void Start()
     {
@@ -42,16 +37,7 @@ public class BombObjectManager : MonoBehaviour
 
         }
     }
-    void Update()
-    {
-        if (Input.GetKeyUp(KeyCode.T))
-        {
-            SpawnBomb((testXY * -2 + 19), (testXY * -2 + 9), bombLifeTime);
-            testXY++;
-            testXY %= 10;
-        }
-    }
-    public void SpawnBomb(int x, int y, float lifeTime = 10)
+    public void SpawnBomb(int x, int y, int id)
     {
         // 단위 맞춰주기
         x *= -2;
@@ -60,27 +46,27 @@ public class BombObjectManager : MonoBehaviour
 
         reusedBomb = Managers.ObjectPool.Pop(Managers.ObjectPool.GetOrigin("Bomb"), transform).gameObject;
 
-        // 오브젝트 풀에서 빼올때 아이디를 넣어줌
-        reusedBomb.gameObject.GetComponent<Bomb>().SetId(bombIdCount++);
         // 큐브 생성 위치와 큐브 타입 설정, 플레이어를 밀어내는 Pusher 작동
         reusedBomb.gameObject.SetActive(true);
+        // 오브젝트 풀에서 빼올때 아이디를 넣어줌
+        reusedBomb.gameObject.GetComponent<Bomb>().SetId(id);
         // 타입에 해당하는 큐브 활성화, 포지션 설정
-        reusedBomb.gameObject.GetComponent<Bomb>().SetLifeTime(lifeTime);
         reusedBomb.gameObject.transform.position = new Vector3(x + offsetX, createHeight, y + offsetY);
         reusedBomb.gameObject.SetActive(true);
     }
 
     public GameObject FindBombById(int targetBombId)
     {
-        for (int i = 0; i < transform.childCount; ++i)
+        int numOfChild = this.transform.childCount;
+        for (int i = 0; i < numOfChild; ++i)
         {
-            if (transform.GetChild(i).GetComponent<Bomb>().GetId() == targetBombId)
+            if (this.transform.GetChild(i).GetComponent<Bomb>().GetId() == targetBombId)
             {
                 return transform.GetChild(i).gameObject;
             }
         }
-        
-        Debug.Log("ERROR!!! : Can't Find Target Bomb By Id");
+
+        Debug.Log("ERROR!!! : Can't Find Target Bomb By Id : " + targetBombId);
         return null;
     }
 }

@@ -16,9 +16,11 @@ namespace Network.PacketProcessor
 
             int posX = Data.Pos.Value.X;
             int posY = Data.Pos.Value.Y;
+            int id = Data.Id;
 
+            Debug.Log("Spawn Bomb : " + id);
             // 폭탄 생성
-            Managers.BombObject.SpawnBomb(posX, posY);
+            Managers.BombObject.SpawnBomb(posX, posY, id);
         }
 
         private FlatBufferBuilder mBuilder;

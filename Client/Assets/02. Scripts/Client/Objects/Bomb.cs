@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class Bomb : MonoBehaviour
 {
-    // test - 시간으로 인해 꺼지는거 꺼놓음
-    public bool isTimeBomb = false;
-
-    private float lifeTime;
-    private float timer = 0;
     public GameObject bombPusher;
 
     private bool isPickUp = false;
@@ -16,7 +11,7 @@ public class Bomb : MonoBehaviour
     private Transform targetTransform;
 
     private Vector3 throwDirection;
-    private Rigidbody rigidbody;
+    private Rigidbody rig;
 
     // ------ Server -------
     [SerializeField]
@@ -24,11 +19,10 @@ public class Bomb : MonoBehaviour
 
     private void Awake()
     {
-        rigidbody = this.GetComponent<Rigidbody>();
+        rig = this.GetComponent<Rigidbody>();
     }
     private void OnEnable()
     {
-        timer = 0;
         isPickUp = false;
         pickUpPlayerId = -1;
     }
@@ -43,23 +37,12 @@ public class Bomb : MonoBehaviour
             this.transform.position = targetTransform.position;
         }
     }
-    private void Update()
-    {
-        if (isTimeBomb == true)
-        {
-            timer += Time.deltaTime;
-            if (timer >= lifeTime)
-            {
-                Boom();
-            }
-        }
-    }
     private void OnCollisionEnter(Collision collision)
     {
         // 바닥에 도달했을때 더이상 움직이지 않도록 고정
         if (collision.gameObject.tag == "Ground" && isPickUp == false)
         {
-            rigidbody.constraints = RigidbodyConstraints.FreezePosition |
+            rig.constraints = RigidbodyConstraints.FreezePosition |
                                     RigidbodyConstraints.FreezeRotation;
         }
     }
@@ -81,11 +64,6 @@ public class Bomb : MonoBehaviour
         }
 
         Managers.Resource.Destroy(this.gameObject);
-    }
-
-    public void SetLifeTime(float lifeTime)
-    {
-        this.lifeTime = lifeTime;
     }
     public bool GetIsPickUp()
     {
@@ -115,24 +93,24 @@ public class Bomb : MonoBehaviour
         this.throwDirection = throwDirection;
         SetRigidBodyBasic();
 
-        rigidbody.AddForce(throwDirection * throwStrength, ForceMode.Impulse);
+        rig.AddForce(throwDirection * throwStrength, ForceMode.Impulse);
 
         PickUpOff();
     }
 
     private void SetRigidBodyPickUp()
     {
-        rigidbody.constraints = RigidbodyConstraints.None;
-        rigidbody.useGravity = false;
-        rigidbody.mass = 0;
-        rigidbody.angularDrag = 0;
+        rig.constraints = RigidbodyConstraints.None;
+        rig.useGravity = false;
+        rig.mass = 0;
+        rig.angularDrag = 0;
     }
     private void SetRigidBodyBasic()
     {
-        rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
-        rigidbody.useGravity = true;
-        rigidbody.mass = 1;
-        rigidbody.angularDrag = 0.05f;
+        rig.constraints = RigidbodyConstraints.FreezeRotation;
+        rig.useGravity = true;
+        rig.mass = 1;
+        rig.angularDrag = 0.05f;
     }
     public void SetPosition(Vector3 position)
     {
