@@ -14,6 +14,7 @@ public:
 		if (verifier.VerifyBuffer<BombInput>(nullptr)) {
 			const BombInput* read = flatbuffers::GetRoot<BombInput>(data);
 
+			int bombid = read->id();
 			int team = read->team();
 			int roomid = dynamic_cast<Player*>(pServer->GetSessions()[key])->GetRoomID();
 
@@ -21,6 +22,7 @@ public:
 			int lifeCount = pServer->GetRooms()[roomid]->GetTeams()[team].GetLife();
 
 			pServer->SendLifeReducePacket(team, lifeCount, roomid);
+			pServer->GetRooms()[roomid]->GetObjects()[bombid] = nullptr;
 		}
 	}
 
