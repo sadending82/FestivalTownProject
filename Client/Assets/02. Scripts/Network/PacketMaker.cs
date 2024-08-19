@@ -167,12 +167,13 @@ public class PacketMaker
         return result;
     }
 
-    public byte[] MakeBombInputPacket(int id, int team)
+    public byte[] MakeBombInputPacket(int playerid, int bombid, int team)
     {
         var builder = new FlatBufferBuilder(1);
         BombInput.StartBombInput(builder);
+        BombInput.AddId(builder, playerid);
         BombInput.AddTeam(builder, team);
-        BombInput.AddBombid(builder, id);
+        BombInput.AddBombid(builder, bombid);
         var offset = BombInput.EndBombInput(builder);
         builder.Finish(offset.Value);
 

@@ -75,7 +75,7 @@ bool PushEventBombExplosion(Timer* pTimer, int roomID, int bombID)
 	e.bombID = bombID;
 
 	EVENT_HEADER header;
-	header.start_time = std::chrono::system_clock::now() + std::chrono::milliseconds(10000);
+	header.start_time = std::chrono::system_clock::now() + std::chrono::milliseconds(60000);
 	memcpy(header.message, reinterpret_cast<char*>(&e), sizeof(EV_TIME_SYNC));
 
 	pTimer->PushEvent(header);

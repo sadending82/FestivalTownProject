@@ -127,9 +127,9 @@ public class PacketManager : MonoBehaviour
         SendPacket(packet);
     }
 
-    public void SendBombInputPacket(int id, int team)
+    public void SendBombInputPacket(int bombid, int team, int playerid = 0)
     {
-        byte[] packet = _packetMaker.MakeBombInputPacket(id, team);
+        byte[] packet = _packetMaker.MakeBombInputPacket(playerid, bombid, team);
         if (packet == null) { return; }
         SendPacket(packet);
     }

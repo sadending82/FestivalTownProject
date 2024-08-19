@@ -14,7 +14,8 @@ public:
 		if (verifier.VerifyBuffer<BombInput>(nullptr)) {
 			const BombInput* read = flatbuffers::GetRoot<BombInput>(data);
 
-			int bombid = read->id();
+			int playerid = read->id();
+			int bombid = read->bombid();
 			int team = read->team();
 			int roomid = dynamic_cast<Player*>(pServer->GetSessions()[key])->GetRoomID();
 
