@@ -129,6 +129,7 @@ void TableManager::ReadFITHModeTable()
                         row[FITH_Field::Team_Life_Count].value<int>(),
                         row[FITH_Field::Bomb_Spawn_Count].value<int>(),
                         row[FITH_Field::Bomb_Spawn_Time].value<int>(),
+                        row[FITH_Field::Bomb_Delay_Time].value<int>(),
                         row[FITH_Field::Bomb_Spawn_Location_MinX].value<float>(),
                         row[FITH_Field::Bomb_Spawn_Location_MaxX].value<float>(),
                         row[FITH_Field::Bomb_Spawn_Location_MinY].value<float>(),

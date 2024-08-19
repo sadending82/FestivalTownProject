@@ -7,6 +7,7 @@ enum FITH_Field {
 	Team_Life_Count,
 	Bomb_Spawn_Count,
 	Bomb_Spawn_Time,
+	Bomb_Delay_Time,
 	Bomb_Spawn_Location_MinX,
 	Bomb_Spawn_Location_MaxX,
 	Bomb_Spawn_Location_MinY,
@@ -28,6 +29,7 @@ struct FITH {
 	int Team_Life_Count;
 	int Bomb_Spawn_Count;
 	int Bomb_Spawn_Time;
+	int Bomb_Delay_Time;
 	float Bomb_Spawn_Location_MinX;
 	float Bomb_Spawn_Location_MaxX;
 	float Bomb_Spawn_Location_MinY;
