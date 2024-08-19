@@ -456,6 +456,17 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Player " + playerStatus.GetId() + " Don't Have an Item to Throw !!!");
         }
     }
+    
+    /// <summary> --------------------------------------
+    /// 이거 제발 게임 매니저로 나중에 꼭 옮겨줘...ㅠㅠ
+    /// </summary> -------------------------------------
+    public void SendToServerGoalTeamNumber(int bombId, int teamNumber)
+    {
+        if(amIPlayer == true)
+        {
+            packetManager.SendBombInputPacket(bombId, teamNumber);
+        }
+    }
 
     // ------- Setter Getter -------
     public void SetAmIPlayer(bool amIPlayer)
