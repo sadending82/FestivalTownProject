@@ -190,6 +190,7 @@ xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     <ClInclude Include="Source\PacketManager\PacketProcessors\Event\EventHeartBeat.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Event\EventBlockDrop.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Event\EventRemainTimeSync.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Event\EventTimeOverCheck.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\FlatBufferManager.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\Game_generated.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\Object_generated.h" />

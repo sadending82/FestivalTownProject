@@ -1,9 +1,11 @@
 #pragma once
 #include "../utility.h"
 
-constexpr int HEARTBEATTIME = 6000;
-constexpr int BLOCKDROPTIME = 10000;
-constexpr int REMAINTIMESYNC = 30000;
+constexpr int HEARTBEATINTERVAL = 6000;
+constexpr int BLOCKDROPINTERVAL = 10000;
+constexpr int REMAINTIMESYNCINTERVAL = 30000;
+constexpr int BOMBEXPLOSIONINTERVAL = 60000;
+constexpr int TIMEOVERCHECKINTERVAL = 5000;
 
 class Timer;
 
@@ -15,6 +17,7 @@ enum eEventType {
 	BLOCKDROP,
 	BOMBSPAWN,
 	BOMBEXPLOSION,
+	TIMEOVERCHECK,
 
 	TIMESYNC
 };
@@ -53,6 +56,10 @@ struct EV_BOMB_EXPLOSION : EVENT {
 	int bombID;
 };
 
+struct EV_TIMEOVER_CHECK : EVENT {
+	int roomID;
+};
+
 struct EV_TIME_SYNC : EVENT {
 	int roomID;
 	int time;
@@ -67,3 +74,4 @@ bool PushEventBlockDrop(Timer* pTimer, int roomID, int intervalTime);
 bool PushEventBombSpawn(Timer* pTimer, int roomID, int intervalTime);
 bool PushEventRemainTimeSync(Timer* pTimer, int roomID);
 bool PushEventBombExplosion(Timer* pTimer, int roomID, int bombID);
+bool PushEventTimeOverCheck(Timer* pTimer, int roomID);

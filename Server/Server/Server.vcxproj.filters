@@ -68,6 +68,7 @@
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\PacketBombPositionSync.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Event\EventBombExplosion.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\PacketBombExplosion.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Event\EventTimeOverCheck.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

@@ -343,6 +343,7 @@ void Server::StartGame(int roomID)
     PushEventBlockDrop(mTimer, roomID, eventTime);
     PushEventBombSpawn(mTimer, roomID, GetTableManager()->getFITH_Data()[gameCode].Bomb_Spawn_Time);
     PushEventRemainTimeSync(mTimer, roomID);
+    //PushEventTimeOverCheck(mTimer, roomID);
 
     GetRooms()[roomID]->SetStartTime(std::chrono::system_clock::now());
 }

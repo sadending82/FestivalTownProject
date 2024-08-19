@@ -9,7 +9,7 @@ bool PushEventHeartBeat(Timer* pTimer, int sessionID) {
 	e.sessionID = sessionID;
 
 	EVENT_HEADER header;
-	header.start_time = std::chrono::system_clock::now() + std::chrono::milliseconds(HEARTBEATTIME);
+	header.start_time = std::chrono::system_clock::now() + std::chrono::milliseconds(HEARTBEATINTERVAL);
 	memcpy(header.message, reinterpret_cast<char*>(&e), sizeof(EV_HEART_BEAT));
 
 	pTimer->PushEvent(header);
@@ -58,7 +58,7 @@ bool PushEventRemainTimeSync(Timer* pTimer, int roomID)
 	e.roomID = roomID;
 
 	EVENT_HEADER header;
-	header.start_time = std::chrono::system_clock::now() + std::chrono::milliseconds(REMAINTIMESYNC);
+	header.start_time = std::chrono::system_clock::now() + std::chrono::milliseconds(REMAINTIMESYNCINTERVAL);
 	memcpy(header.message, reinterpret_cast<char*>(&e), sizeof(EV_TIME_SYNC));
 
 	pTimer->PushEvent(header);
@@ -75,8 +75,24 @@ bool PushEventBombExplosion(Timer* pTimer, int roomID, int bombID)
 	e.bombID = bombID;
 
 	EVENT_HEADER header;
-	header.start_time = std::chrono::system_clock::now() + std::chrono::milliseconds(60000);
+	header.start_time = std::chrono::system_clock::now() + std::chrono::milliseconds(BOMBEXPLOSIONINTERVAL);
 	memcpy(header.message, reinterpret_cast<char*>(&e), sizeof(EV_TIME_SYNC));
+
+	pTimer->PushEvent(header);
+
+	return true;
+}
+
+bool PushEventTimeOverCheck(Timer* pTimer, int roomID)
+{
+	EV_TIMEOVER_CHECK e;
+	e.size = sizeof(EV_TIMEOVER_CHECK);
+	e.type = eEventType::TIMEOVERCHECK;
+	e.roomID = roomID;
+
+	EVENT_HEADER header;
+	header.start_time = std::chrono::system_clock::now() + std::chrono::milliseconds(TIMEOVERCHECKINTERVAL);
+	memcpy(header.message, reinterpret_cast<char*>(&e), sizeof(EV_TIMEOVER_CHECK));
 
 	pTimer->PushEvent(header);
 
