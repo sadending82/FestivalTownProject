@@ -11,7 +11,7 @@ public:
 	int GetID() { return mID; }
 	Vector3f GetPosition() { return mPosition; }
 	Vector3f GetDirection() { return mDirection; }
-	bool GetIsGrabbed() { return mIsGrabbed; }
+	bool GetIsGrabbed() { return mIsGrabbed.load(); }
 
 	void SetID(int id) { mID = id; }
 	void SetPosition(float x, float y, float z) { mPosition = Vector3f(x, y, z); }

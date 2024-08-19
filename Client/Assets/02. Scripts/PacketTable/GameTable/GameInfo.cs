@@ -23,20 +23,20 @@ public struct GameInfo : IFlatbufferObject
   public int Roomid { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
   public int Team { get { int o = __p.__offset(8); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
   public int Gamemode { get { int o = __p.__offset(10); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public bool Ishost { get { int o = __p.__offset(12); return o != 0 ? 0!=__p.bb.Get(o + __p.bb_pos) : (bool)false; } }
+  public bool IsHost { get { int o = __p.__offset(12); return o != 0 ? 0!=__p.bb.Get(o + __p.bb_pos) : (bool)false; } }
 
   public static Offset<PacketTable.GameTable.GameInfo> CreateGameInfo(FlatBufferBuilder builder,
       int ingameid = 0,
       int roomid = 0,
       int team = 0,
       int gamemode = 0,
-      bool ishost = false) {
+      bool is_host = false) {
     builder.StartTable(5);
     GameInfo.AddGamemode(builder, gamemode);
     GameInfo.AddTeam(builder, team);
     GameInfo.AddRoomid(builder, roomid);
     GameInfo.AddIngameid(builder, ingameid);
-    GameInfo.AddIshost(builder, ishost);
+    GameInfo.AddIsHost(builder, is_host);
     return GameInfo.EndGameInfo(builder);
   }
 
@@ -45,7 +45,7 @@ public struct GameInfo : IFlatbufferObject
   public static void AddRoomid(FlatBufferBuilder builder, int roomid) { builder.AddInt(1, roomid, 0); }
   public static void AddTeam(FlatBufferBuilder builder, int team) { builder.AddInt(2, team, 0); }
   public static void AddGamemode(FlatBufferBuilder builder, int gamemode) { builder.AddInt(3, gamemode, 0); }
-  public static void AddIshost(FlatBufferBuilder builder, bool ishost) { builder.AddBool(4, ishost, false); }
+  public static void AddIsHost(FlatBufferBuilder builder, bool isHost) { builder.AddBool(4, isHost, false); }
   public static Offset<PacketTable.GameTable.GameInfo> EndGameInfo(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<PacketTable.GameTable.GameInfo>(o);
@@ -62,7 +62,7 @@ static public class GameInfoVerify
       && verifier.VerifyField(tablePos, 6 /*Roomid*/, 4 /*int*/, 4, false)
       && verifier.VerifyField(tablePos, 8 /*Team*/, 4 /*int*/, 4, false)
       && verifier.VerifyField(tablePos, 10 /*Gamemode*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 12 /*Ishost*/, 1 /*bool*/, 1, false)
+      && verifier.VerifyField(tablePos, 12 /*IsHost*/, 1 /*bool*/, 1, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }

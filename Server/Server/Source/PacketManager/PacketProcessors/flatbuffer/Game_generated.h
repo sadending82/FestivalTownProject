@@ -73,7 +73,7 @@ struct GameInfo FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_ROOMID = 6,
     VT_TEAM = 8,
     VT_GAMEMODE = 10,
-    VT_ISHOST = 12
+    VT_IS_HOST = 12
   };
   int32_t ingameid() const {
     return GetField<int32_t>(VT_INGAMEID, 0);
@@ -87,8 +87,8 @@ struct GameInfo FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   int32_t gamemode() const {
     return GetField<int32_t>(VT_GAMEMODE, 0);
   }
-  bool ishost() const {
-    return GetField<uint8_t>(VT_ISHOST, 0) != 0;
+  bool is_host() const {
+    return GetField<uint8_t>(VT_IS_HOST, 0) != 0;
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -96,7 +96,7 @@ struct GameInfo FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            VerifyField<int32_t>(verifier, VT_ROOMID, 4) &&
            VerifyField<int32_t>(verifier, VT_TEAM, 4) &&
            VerifyField<int32_t>(verifier, VT_GAMEMODE, 4) &&
-           VerifyField<uint8_t>(verifier, VT_ISHOST, 1) &&
+           VerifyField<uint8_t>(verifier, VT_IS_HOST, 1) &&
            verifier.EndTable();
   }
 };
@@ -117,8 +117,8 @@ struct GameInfoBuilder {
   void add_gamemode(int32_t gamemode) {
     fbb_.AddElement<int32_t>(GameInfo::VT_GAMEMODE, gamemode, 0);
   }
-  void add_ishost(bool ishost) {
-    fbb_.AddElement<uint8_t>(GameInfo::VT_ISHOST, static_cast<uint8_t>(ishost), 0);
+  void add_is_host(bool is_host) {
+    fbb_.AddElement<uint8_t>(GameInfo::VT_IS_HOST, static_cast<uint8_t>(is_host), 0);
   }
   explicit GameInfoBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -137,13 +137,13 @@ inline ::flatbuffers::Offset<GameInfo> CreateGameInfo(
     int32_t roomid = 0,
     int32_t team = 0,
     int32_t gamemode = 0,
-    bool ishost = false) {
+    bool is_host = false) {
   GameInfoBuilder builder_(_fbb);
   builder_.add_gamemode(gamemode);
   builder_.add_team(team);
   builder_.add_roomid(roomid);
   builder_.add_ingameid(ingameid);
-  builder_.add_ishost(ishost);
+  builder_.add_is_host(is_host);
   return builder_.Finish();
 }
 
@@ -151,10 +151,14 @@ struct BombInput FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef BombInputBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_ID = 4,
-    VT_TEAM = 6
+    VT_BOMBID = 6,
+    VT_TEAM = 8
   };
   int32_t id() const {
     return GetField<int32_t>(VT_ID, 0);
+  }
+  int32_t bombid() const {
+    return GetField<int32_t>(VT_BOMBID, 0);
   }
   int32_t team() const {
     return GetField<int32_t>(VT_TEAM, 0);
@@ -162,6 +166,7 @@ struct BombInput FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_ID, 4) &&
+           VerifyField<int32_t>(verifier, VT_BOMBID, 4) &&
            VerifyField<int32_t>(verifier, VT_TEAM, 4) &&
            verifier.EndTable();
   }
@@ -173,6 +178,9 @@ struct BombInputBuilder {
   ::flatbuffers::uoffset_t start_;
   void add_id(int32_t id) {
     fbb_.AddElement<int32_t>(BombInput::VT_ID, id, 0);
+  }
+  void add_bombid(int32_t bombid) {
+    fbb_.AddElement<int32_t>(BombInput::VT_BOMBID, bombid, 0);
   }
   void add_team(int32_t team) {
     fbb_.AddElement<int32_t>(BombInput::VT_TEAM, team, 0);
@@ -191,9 +199,11 @@ struct BombInputBuilder {
 inline ::flatbuffers::Offset<BombInput> CreateBombInput(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t id = 0,
+    int32_t bombid = 0,
     int32_t team = 0) {
   BombInputBuilder builder_(_fbb);
   builder_.add_team(team);
+  builder_.add_bombid(bombid);
   builder_.add_id(id);
   return builder_.Finish();
 }

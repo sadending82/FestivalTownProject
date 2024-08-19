@@ -20,20 +20,24 @@ public struct BombInput : IFlatbufferObject
   public BombInput __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public int Id { get { int o = __p.__offset(4); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public int Team { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int Bombid { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int Team { get { int o = __p.__offset(8); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
 
   public static Offset<PacketTable.GameTable.BombInput> CreateBombInput(FlatBufferBuilder builder,
       int id = 0,
+      int bombid = 0,
       int team = 0) {
-    builder.StartTable(2);
+    builder.StartTable(3);
     BombInput.AddTeam(builder, team);
+    BombInput.AddBombid(builder, bombid);
     BombInput.AddId(builder, id);
     return BombInput.EndBombInput(builder);
   }
 
-  public static void StartBombInput(FlatBufferBuilder builder) { builder.StartTable(2); }
+  public static void StartBombInput(FlatBufferBuilder builder) { builder.StartTable(3); }
   public static void AddId(FlatBufferBuilder builder, int id) { builder.AddInt(0, id, 0); }
-  public static void AddTeam(FlatBufferBuilder builder, int team) { builder.AddInt(1, team, 0); }
+  public static void AddBombid(FlatBufferBuilder builder, int bombid) { builder.AddInt(1, bombid, 0); }
+  public static void AddTeam(FlatBufferBuilder builder, int team) { builder.AddInt(2, team, 0); }
   public static Offset<PacketTable.GameTable.BombInput> EndBombInput(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<PacketTable.GameTable.BombInput>(o);
@@ -47,7 +51,8 @@ static public class BombInputVerify
   {
     return verifier.VerifyTableStart(tablePos)
       && verifier.VerifyField(tablePos, 4 /*Id*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 6 /*Team*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 6 /*Bombid*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 8 /*Team*/, 4 /*int*/, 4, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }

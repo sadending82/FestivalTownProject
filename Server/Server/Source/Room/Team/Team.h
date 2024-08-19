@@ -11,14 +11,14 @@ public:
 
 	void Init(int lifeCount);
 
-	void ReduceLife() { mLife--; }
-	void SetLife(int life) { mLife = life; }
+	void ReduceLife();
+	void SetLife(int life);
 
-	int GetLife() { return mLife; }
+	int GetLife() { return mLife.load(); }
 
 private:
 
-	int mLife;
+	std::atomic<int> mLife;
 
 	std::unordered_map<int, Player*> mMembers;
 };

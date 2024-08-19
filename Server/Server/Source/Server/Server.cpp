@@ -299,6 +299,8 @@ void Server::StartGame(int roomID)
     GetRooms()[roomID]->SetPlayerLimit(6); // 임시
     GetRooms()[roomID]->SetState(eRoomState::RS_INGAME);
 
+    int tFlag = 0;
+
     // Player Add Into New Room
     for (Session* s : GetSessions()) {
         if (GetRooms()[roomID]->GetPlayerCnt() == GetRooms()[roomID]->GetPlayerLimit()) {
@@ -306,6 +308,12 @@ void Server::StartGame(int roomID)
         }
         if (s->GetState() == eSessionState::ST_ACCEPTED) {
             Player* p = dynamic_cast<Player*>(s);
+
+            // 임시
+            p->SetTeam(tFlag%2);
+            tFlag++;
+            //
+
             int sessionID = p->GetSessionID();
             bool AddPlayerOk = GetRooms()[roomID]->AddPlayer(p);
             if (AddPlayerOk == false) {

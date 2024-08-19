@@ -172,7 +172,7 @@ public class PacketMaker
         var builder = new FlatBufferBuilder(1);
         BombInput.StartBombInput(builder);
         BombInput.AddTeam(builder, team);
-        BombInput.AddId(builder, id);
+        BombInput.AddBombid(builder, id);
         var offset = BombInput.EndBombInput(builder);
         builder.Finish(offset.Value);
 
