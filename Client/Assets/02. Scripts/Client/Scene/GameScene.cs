@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class GameScene : BaseScene
 {
@@ -11,8 +12,14 @@ public class GameScene : BaseScene
 
         SceneType = Define.Scene.Game;
 
+        // 일단은 인게임에서 관리하도록 설정해보자.
+        Managers.SetInGameManagers();
+
         LoadStatue();
 
+        Managers.UI.ShowPopUpUI<UI_Loading>();
+
+        
         //LoadCube();
 
         //LoadBomb();
@@ -24,11 +31,11 @@ public class GameScene : BaseScene
     public void LoadStatue()
     {
         GameObject Statue1 = Managers.Resource.Instantiate("Statue");
+        Statue1.transform.position = new Vector3(23.0f, 0.0f, 0.0f);
+        Statue1.transform.rotation = Quaternion.Euler(0.0f, -180.0f, 0.0f);
         Statue1.GetComponent<Statue>().SetTeam(0);
 
         GameObject Statue2 = Managers.Resource.Instantiate("Statue");
-        Statue2.transform.position = new Vector3(23.0f, 0.0f, 0.0f);
-        Statue2.transform.rotation = Quaternion.Euler(0.0f, -180.0f, 0.0f);
         Statue2.GetComponent<Statue>().SetTeam(1);
     }
 

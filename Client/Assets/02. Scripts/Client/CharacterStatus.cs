@@ -55,6 +55,10 @@ public class CharacterStatus : MonoBehaviour
         if(amIPlayer == true)
         {
             myCamera.enabled = true;
+            // 로딩 창 없애기
+            Managers.UI.ClosePopUpUI(GameObject.FindObjectOfType<UI_Loading>());
+
+            // 씬 기본 UI 표시해주기
             Managers.UI.ShowSceneUI<UI_OneVersusOneSceneUI>();
         }
     }

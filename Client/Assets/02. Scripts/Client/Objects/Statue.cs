@@ -26,7 +26,7 @@ public class Statue : MonoBehaviour
         {
             if (Managers.Game.TeamLife.TryGetValue(Team, out int life)) // 값이 없으면 null이라 문제가 되니까 묶지 말고 따로 해야함
             {
-                if (life != (int)_state)
+                if (life != (int)_state && life >= 0)
                 {
                     StateChange((Define.StatueState)life);
                 }
