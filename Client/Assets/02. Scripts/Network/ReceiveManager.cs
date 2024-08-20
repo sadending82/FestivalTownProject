@@ -183,6 +183,6 @@ public class ReceiveManager : MonoBehaviour
 
     public void OnDestroy()
     {
-        workerThread.Abort();
+        if(workerThread != null) workerThread.Abort();
     }
 }

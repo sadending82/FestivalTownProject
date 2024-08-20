@@ -8,7 +8,7 @@ public class Define
     {
         None,
         Login,
-        WaitingRoom,
+        Home,
         Game,
     }
     public enum GameMode

@@ -39,9 +39,22 @@ public class Managers : MonoBehaviour
         _game.Init();
         // TODO : 나중에는 아래의 매니저 들도 Managers에서 생성하는 것이 바람직해 보입니다.
         _network = gameObject.AddComponent<NetworkManager>();
-        _player = GameObject.Find("PlayerManager").GetComponent<PlayerManager>();
-        _cubeObject = GameObject.Find("CubeObjectManager").GetComponent<CubeObjectManager>();
-        _bombObject = GameObject.Find("BombObjectManager").GetComponent<BombObjectManager>();
+    }
+
+    public static void SetInGameManagers()
+    {
+        // 이런 문제 때문에 기본적으로 Managers에서 생성하는 것이 바람직하다고 한 것이긴 합니다.
+        // 게임 내부에서만 필요한 매니저들의 경우 Scene에서 생성해서 관리해야 할 텐데...
+        s_instance._player = GameObject.Find("PlayerManager").GetComponent<PlayerManager>();
+        s_instance._cubeObject = GameObject.Find("CubeObjectManager").GetComponent<CubeObjectManager>();
+        s_instance._bombObject = GameObject.Find("BombObjectManager").GetComponent<BombObjectManager>();
+    }
+
+    public static void DeleteInGameManagers()
+    {
+        s_instance._player = null;
+        s_instance._cubeObject = null;
+        s_instance._bombObject = null;
     }
 
     static void Init()
@@ -68,5 +81,8 @@ public class Managers : MonoBehaviour
     {
         // TODO: 씬이 교체될 때 비워줘야 할 것들 처리해 주어야 합니다.
         // 대표적으로 UI 같은게 있겠네요
+
+        Scene.Clear();
+        UI.Clear();
     }
 }

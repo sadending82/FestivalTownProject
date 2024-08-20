@@ -55,7 +55,8 @@ public class CharacterStatus : MonoBehaviour
         if(amIPlayer == true)
         {
             myCamera.enabled = true;
-            Managers.UI.ShowSceneUI<UI_OneVersusOneSceneUI>();
+            // 로딩 창 없애기
+            Managers.UI.ClosePopUpUI();
         }
     }
     public void setUpperBodyAnimationState(UpperBodyAnimationState upperBodyAnimationState)

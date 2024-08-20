@@ -12,7 +12,7 @@ public class UI_OneVersusOneSceneUI : UI_Scene
         CharacterImageTeam2,
         PointPanelTeam1,
         PointPanelTeam2,
-        TimerText
+        TimerText,
     }
 
     void Start()

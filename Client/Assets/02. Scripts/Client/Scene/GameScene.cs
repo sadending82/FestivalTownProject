@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class GameScene : BaseScene
 {
@@ -11,7 +12,13 @@ public class GameScene : BaseScene
 
         SceneType = Define.Scene.Game;
 
+        // 일단은 인게임에서 관리하도록 설정해보자.
+        Managers.SetInGameManagers();
+
         LoadStatue();
+
+        Managers.UI.ShowPopUpUI<UI_Loading>();
+
 
         //LoadCube();
 
