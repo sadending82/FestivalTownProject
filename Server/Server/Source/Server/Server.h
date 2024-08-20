@@ -34,9 +34,12 @@ public:
 	void SendBombExplosionPacket(int roomID, int bombID);
 	void SendLifeReducePacket(int team, int lifeCount, int roomID);
 	void SendRemainTimeSync(int roomID);
+	void SendGameStartPacket(int roomID);
+	void SendGameEndPacket(int roomID, int winningTeam);
 
 	void StartHeartBeat(int sessionID);
 	void StartGame(int roomID);
+	void CheckGameEnd(int roomID);
 
 	HANDLE GetHcp() { return mHcp; }
 	SOCKADDR_IN GetServerAddr() { return mServerAddr; }

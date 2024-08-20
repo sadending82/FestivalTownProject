@@ -300,6 +300,19 @@ void Server::SendRemainTimeSync(int roomID)
     SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
 
+void Server::SendGameStartPacket(int roomID)
+{
+    long startTime = 0;
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakeGameStartPacket(roomID, startTime);
+    SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
+}
+
+void Server::SendGameEndPacket(int roomID, int winningTeam)
+{
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakeGameEndPacket(winningTeam);
+    SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
+}
+
 void Server::StartHeartBeat(int sessionID)
 {
     GetSessions()[sessionID]->SetIsHeartbeatAck(false);
@@ -366,4 +379,27 @@ void Server::StartGame(int roomID)
     //PushEventTimeOverCheck(mTimer, roomID);
 
     GetRooms()[roomID]->SetStartTime(std::chrono::system_clock::now());
+}
+
+void Server::CheckGameEnd(int roomID)
+{
+    Room* room = GetRooms()[roomID];
+    int teamCnt = 2; // 팀 수 (임시 나중에 게임 데이터로 읽어야 함)
+    int loseTeamCnt = 0;
+    int winningTeam = 0;
+    for (auto iter = room->GetTeams().begin(); iter != room->GetTeams().end(); ++iter) {
+        if (iter->second.GetLife() <= 0) {
+            loseTeamCnt++;
+        }
+        else {
+            winningTeam = iter->first;
+        }
+    }
+
+    if (loseTeamCnt = teamCnt - 1) {
+        SendGameEndPacket(roomID, winningTeam);
+
+        // 종료하자마자 바로 초기화 하는데 나중에 어떻게 해야할지 고민해야할듯
+        GetRooms()[roomID]->Reset();
+    }
 }

@@ -54,6 +54,22 @@ std::vector<uint8_t> PacketMaker::MakeBombExplosionPacket(int bombID, Vector3f p
 	return MakeBuffer(ePacketType::S2C_BOMBEXPLOSION, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
+std::vector<uint8_t> PacketMaker::MakeGameStartPacket(int roomID, int startTime)
+{
+	flatbuffers::FlatBufferBuilder Builder;
+	Builder.Clear();
+	Builder.Finish(PacketTable::GameTable::CreateGameStart(Builder, roomID, startTime));
+	return MakeBuffer(ePacketType::S2C_GAMESTART, Builder.GetBufferPointer(), Builder.GetSize());
+}
+
+std::vector<uint8_t> PacketMaker::MakeGameEndPacket(int winningTeam)
+{
+	flatbuffers::FlatBufferBuilder Builder;
+	Builder.Clear();
+	Builder.Finish(PacketTable::GameTable::CreateGameEnd(Builder, winningTeam));
+	return MakeBuffer(ePacketType::S2C_GAMEEND, Builder.GetBufferPointer(), Builder.GetSize());
+}
+
 std::vector<uint8_t> PacketMaker::MakeLifeReducePacket(int team, int lifeCount)
 {
 	flatbuffers::FlatBufferBuilder Builder;

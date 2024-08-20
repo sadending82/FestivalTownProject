@@ -18,12 +18,15 @@ public:
 			int bombid = read->bombid();
 			int team = read->team();
 			int roomid = dynamic_cast<Player*>(pServer->GetSessions()[key])->GetRoomID();
+			pServer->GetRooms()[roomid]->GetObjects()[bombid] = nullptr;
 
 			pServer->GetRooms()[roomid]->GetTeams()[team].ReduceLife();
 			int lifeCount = pServer->GetRooms()[roomid]->GetTeams()[team].GetLife();
-
 			pServer->SendLifeReducePacket(team, lifeCount, roomid);
-			pServer->GetRooms()[roomid]->GetObjects()[bombid] = nullptr;
+
+			if (lifeCount <= 0) {
+				pServer->CheckGameEnd(roomid);
+			}
 		}
 	}
 

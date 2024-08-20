@@ -6,7 +6,7 @@ using UnityEngine;
 using NetworkProtocol;
 using Network.PacketProcessor;
 using UnityEngine.UIElements;
-
+using PacketTable.GameTable;
 
 public class PacketManager : MonoBehaviour 
 {
@@ -55,6 +55,7 @@ public class PacketManager : MonoBehaviour
             { ePacketType.S2C_BOMBSPAWN, new BombSpawnProcessor() },
             { ePacketType.S2C_BOMBEXPLOSION, new BombExplosionProcessor() },
             { ePacketType.S2C_BOMBPOSSYNC, new BombPositionSyncProcessor() },
+            { ePacketType.S2C_GAMEEND, new GameEndProcessor() },
 
 
             { ePacketType.S2C_LIFEREDUCE, new LifeReduceProcessor() },

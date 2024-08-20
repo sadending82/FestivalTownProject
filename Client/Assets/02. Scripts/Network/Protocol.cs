@@ -30,6 +30,8 @@ namespace NetworkProtocol
         S2C_BOMBSPAWN,
         S2C_BOMBEXPLOSION,
         S2C_BOMBPOSSYNC,
+        S2C_GAMESTART,
+        S2C_GAMEEND,
 
         S2C_LIFEREDUCE,
         S2C_REMAINTIMESYNC,
