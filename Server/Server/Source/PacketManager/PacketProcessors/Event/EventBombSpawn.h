@@ -12,15 +12,19 @@ public:
 		EV_BOMB_SPAWN* event = reinterpret_cast<EV_BOMB_SPAWN*>(buf);
 
 		int roomid = event->roomID;
-		if (pServer->GetRooms()[roomid]->GetState() == eRoomState::RS_FREE) {
+		Room* room = pServer->GetRooms()[roomid];
+		long long roomCode = room->GetRoomCode();
+		if (roomCode != event->roomCode) {
 			return;
 		}
-
-		GameCode gameMode = pServer->GetRooms()[event->roomID]->GetGameMode();
+		if (room->GetState() == eRoomState::RS_FREE) {
+			return;
+		}
+		GameCode gameMode = room->GetGameMode();
 		int nextEventTime = pServer->GetTableManager()->getFITH_Data()[gameMode].Bomb_Spawn_Time; // seconds
 		int spawnCnt = pServer->GetTableManager()->getFITH_Data()[gameMode].Bomb_Spawn_Count;
 
-		PushEventBombSpawn(pServer->GetTimer(), event->roomID, nextEventTime);
+		PushEventBombSpawn(pServer->GetTimer(), event->roomID, event->roomCode, nextEventTime);
 		pServer->SendBombSpawnPacket(roomid, spawnCnt);
 	}
 

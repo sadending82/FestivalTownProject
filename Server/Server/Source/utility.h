@@ -9,6 +9,7 @@
 #include <string>
 #include <locale.h>
 #include <cctype>
+#include <cmath>
 #include <memory>
 #include <mutex>
 
@@ -54,7 +55,6 @@ enum eSessionState
 enum ePlayerState {
 	PS_IDLE,
 	PS_RUNNING,
-	PS_WALKING,
 	PS_DEAD
 };
 

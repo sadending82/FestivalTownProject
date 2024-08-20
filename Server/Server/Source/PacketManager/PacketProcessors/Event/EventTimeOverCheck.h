@@ -11,11 +11,15 @@ public:
 
 		int roomid = event->roomID;
 		Room* room = pServer->GetRooms()[roomid];
+		long long roomCode = room->GetRoomCode();
+		if (roomCode != event->roomCode) {
+			return;
+		}
 		if (room->GetState() == eRoomState::RS_FREE) {
 			return;
 		}
 
-		GameCode gameMode = pServer->GetRooms()[event->roomID]->GetGameMode();
+		GameCode gameMode = room->GetGameMode();
 
 		TIMEPOINT startTime = room->GetStartTime();
 		std::chrono::seconds playTime(pServer->GetTableManager()->getFITH_Data()[gameMode].Play_Time);
@@ -26,7 +30,7 @@ public:
 			return;
 		}
 
-		PushEventTimeOverCheck(pServer->GetTimer(), roomid);
+		PushEventTimeOverCheck(pServer->GetTimer(), roomid, event->roomCode);
 	}
 
 private:

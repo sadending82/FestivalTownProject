@@ -12,14 +12,19 @@ public:
 		EV_OBJECT_DROP* event = reinterpret_cast<EV_OBJECT_DROP*>(buf);
 
 		int roomid = event->roomID;
-		if (pServer->GetRooms()[roomid]->GetState() == eRoomState::RS_FREE) {
+		Room* room = pServer->GetRooms()[roomid];
+		long long roomCode = room->GetRoomCode();
+		if (roomCode != event->roomCode) {
+			return;
+		}
+		if (room->GetState() == eRoomState::RS_FREE) {
 			return;
 		}
 
-		GameCode gameMode = pServer->GetRooms()[event->roomID]->GetGameMode();
+		GameCode gameMode = room->GetGameMode();
 		int nextEventTime = pServer->GetTableManager()->getFITH_Data()[gameMode].Block_Spawn_Time; // seconds
 		int spawnCnt = pServer->GetTableManager()->getFITH_Data()[gameMode].Block_Spawn_Count;
-		PushEventBlockDrop(pServer->GetTimer(), event->roomID, nextEventTime);
+		PushEventBlockDrop(pServer->GetTimer(), event->roomID, event->roomCode, nextEventTime);
 
 		pServer->SendBlockDropPacket(event->roomID, spawnCnt);
 	}

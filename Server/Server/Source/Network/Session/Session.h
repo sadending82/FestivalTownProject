@@ -46,7 +46,6 @@ protected:
 	int mSessionID;
 	SOCKET mSocket;
 	int	mPrevData;
-
 	bool mIsHeartbeatAck;
 };
 

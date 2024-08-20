@@ -7,36 +7,53 @@
 #include "../TableManager/TableManager.h"
 #include "../Event/Event.h"
 
-int Server::SetSessionKey()
+int Server::SetSessionID()
 {
     for (int i = STARTKEY; i < MAXSESSION; ++i) {
         auto session = GetSessions()[i];
         if (session == nullptr) continue;
+        session->GetStateLock().lock();
         if (eSessionState::ST_FREE == session->GetState()) {
+            session->SetState(eSessionState::ST_ACCEPTED);
+            session->GetStateLock().unlock();
             return i;
         }
+        session->GetStateLock().unlock();
     }
-    DEBUGMSGNOPARAM("Set Key Error\n");
+    DEBUGMSGNOPARAM("Set Session ID Error\n");
+    return INVALIDKEY;
+}
+
+int Server::SetRoomID()
+{
+    for (int i = STARTKEY; i < MAXROOM; ++i) {
+        auto room = GetRooms()[i];
+        if (room == nullptr) continue;
+        room->GetStateLock().lock();
+        if (eRoomState::RS_FREE == room->GetState()) {
+            room->SetState(eRoomState::RS_INGAME);
+            room->GetStateLock().unlock();
+            return i;
+        }
+        room->GetStateLock().unlock();
+    }
+    DEBUGMSGNOPARAM("Set Room ID Error\n");
     return INVALIDKEY;
 }
 
 void Server::Disconnect(int key)
 {
-    Player* session = dynamic_cast<Player*>(GetSessions()[key]);
-    if (session->GetState() == eSessionState::ST_FREE) {
+    Player* player = dynamic_cast<Player*>(GetSessions()[key]);
+    if (player->GetState() == eSessionState::ST_FREE) {
         return;
     }
 
     // Delete Player In Room
     int roomID;
-    if (roomID = session->GetRoomID() != INVALIDKEY) {
-        mRooms[roomID]->DeletePlayer(session->GetInGameID());
+    if (roomID = player->GetRoomID() != INVALIDKEY) {
+        mRooms[roomID]->DeletePlayer(player->GetInGameID());
     }
-
-    closesocket(session->GetSocket());
-    session->SetState(eSessionState::ST_FREE);
-
-    DEBUGMSGONEPARAM("Disconnect: %d\n", key);
+    player->Disconnect();
 }
 
 void Server::Init(class TableManager* pTableManager, class DB* pDB)
@@ -216,7 +233,9 @@ void Server::SendBlockDropPacket(int roomID, int spawnCount)
 
 void Server::SendBombSpawnPacket(int roomID, int spawnCount)
 {
-    GameCode gameMode = mRooms[roomID]->GetGameMode();
+    Room* room = mRooms[roomID];
+    GameCode gameMode = room->GetGameMode();
+    int explosionInterval = mTableManager->getFITH_Data()[gameMode].Bomb_Delay_Time;
     int minX = mTableManager->getFITH_Data()[gameMode].Bomb_Spawn_Location_MinX;
     int maxX = mTableManager->getFITH_Data()[gameMode].Bomb_Spawn_Location_MaxX;
     int minY = mTableManager->getFITH_Data()[gameMode].Bomb_Spawn_Location_MinY;
@@ -228,8 +247,7 @@ void Server::SendBombSpawnPacket(int roomID, int spawnCount)
     std::uniform_int_distribution<> y_distrib(minY, maxY);
 
     std::set<std::pair<int, int>> unique_pos;
-
-    std::array<Object*, MAXOBJECT>& object_list = mRooms[roomID]->GetObjects();
+    std::array<Object*, MAXOBJECT>& object_list = room->GetObjects();
 
     while (unique_pos.size() < spawnCount) {
         int x = x_distrib(gen);
@@ -251,11 +269,11 @@ void Server::SendBombSpawnPacket(int roomID, int spawnCount)
     }
 
     for (const auto& pos : unique_pos) {
-        int bombid = mRooms[roomID]->AddBomb(new Bomb, Vector3f(pos.first, pos.second, 0));
+        int bombid = room->AddBomb(new Bomb, Vector3f(pos.first, pos.second, 0));
         if (bombid == INVALIDKEY) continue;
         std::vector<uint8_t> send_buffer = mPacketMaker->MakeBombSpawnPacket(pos.first, pos.second, bombid);
         SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
-        PushEventBombExplosion(mTimer, roomID, bombid);
+        PushEventBombExplosion(mTimer, roomID, bombid, room->GetRoomCode(), explosionInterval);
     }
 }
 
@@ -292,17 +310,18 @@ void Server::StartHeartBeat(int sessionID)
 void Server::StartGame(int roomID)
 {
     // Activate New Room
-    GetRooms()[roomID]->Init(roomID, GetTableManager()->getFITH_Data()[GameCode::FITH_Team_battle_Three].Team_Life_Count);
-    GetRooms()[roomID]->SetGameMode(GameCode::FITH_Team_battle_Three);
-    GetRooms()[roomID]->InitMap(GetTableManager()->getMapData()[TEST]);
-    GetRooms()[roomID]->SetPlayerLimit(6); // 임시
-    GetRooms()[roomID]->SetState(eRoomState::RS_INGAME);
+    Room* room = GetRooms()[roomID];
+
+    room->Init(roomID, GetTableManager()->getFITH_Data()[GameCode::FITH_Team_battle_Three].Team_Life_Count);
+    room->SetGameMode(GameCode::FITH_Team_battle_Three);
+    room->InitMap(GetTableManager()->getMapData()[TEST]);
+    room->SetPlayerLimit(6); // 임시
 
     int tFlag = 0;
 
     // Player Add Into New Room
     for (Session* s : GetSessions()) {
-        if (GetRooms()[roomID]->GetPlayerCnt() == GetRooms()[roomID]->GetPlayerLimit()) {
+        if (room->GetPlayerCnt() == room->GetPlayerLimit()) {
             break;
         }
         if (s->GetState() == eSessionState::ST_ACCEPTED) {
@@ -314,35 +333,36 @@ void Server::StartGame(int roomID)
             //
 
             int sessionID = p->GetSessionID();
-            bool AddPlayerOk = GetRooms()[roomID]->AddPlayer(p);
+            bool AddPlayerOk = room->AddPlayer(p);
             if (AddPlayerOk == false) {
                 std::cout << "AddPlayer fail: Already Player Max\n";
             }
             else {
-                if (GetRooms()[roomID]->GetHostID() == INVALIDKEY) {
-                    GetRooms()[roomID]->SetHost(p->GetInGameID());
+                if (room->GetHostID() == INVALIDKEY) {
+                    room->SetHost(p->GetInGameID());
                 }
-                GetRooms()[roomID]->AddPlayerCnt();
+                room->AddPlayerCnt();
                 SendGameInfo(sessionID);
             }
         }
     }
 
     // Send Each Player's Info
-    for (Player* p :GetRooms()[roomID]->GetPlayerList()) {
+    for (Player* p : room->GetPlayerList()) {
         if (p == nullptr) continue;
-        for (Player* other : GetRooms()[roomID]->GetPlayerList()) {
+        for (Player* other : room->GetPlayerList()) {
             if (other == nullptr) continue;
             SendPlayerAdd(p->GetSessionID(), other->GetSessionID());
         }
     }
 
     // Push Event
-    GameCode gameCode = GetRooms()[roomID]->GetGameMode();
+    long long roomCode = room->GetRoomCode();
+    GameCode gameCode = room->GetGameMode();
     int eventTime = GetTableManager()->getFITH_Data()[gameCode].Block_Spawn_Time;
-    PushEventBlockDrop(mTimer, roomID, eventTime);
-    PushEventBombSpawn(mTimer, roomID, GetTableManager()->getFITH_Data()[gameCode].Bomb_Spawn_Time);
-    PushEventRemainTimeSync(mTimer, roomID);
+    PushEventBlockDrop(mTimer, roomID, roomCode, eventTime);
+    PushEventBombSpawn(mTimer, roomID, roomCode, GetTableManager()->getFITH_Data()[gameCode].Bomb_Spawn_Time);
+    PushEventRemainTimeSync(mTimer, roomID, roomCode);
     //PushEventTimeOverCheck(mTimer, roomID);
 
     GetRooms()[roomID]->SetStartTime(std::chrono::system_clock::now());

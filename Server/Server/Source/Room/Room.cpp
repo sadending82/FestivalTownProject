@@ -4,18 +4,48 @@ Room::~Room()
 {
 }
 
+void Room::Reset()
+{
+	mRoomID = 0; 
+	mPlayerCnt = 0;
+	mPlayerLimit = 0;
+	mHostID = INVALIDKEY;
+	mRoomCode = 0;
+	std::fill(mPlayerList.begin(), mPlayerList.end(), nullptr);
+	std::fill(mObjectList.begin(), mObjectList.end(), nullptr);
+	mTeams.clear();
+	mStateLock.lock();
+	mState = eRoomState::RS_FREE;
+	mStateLock.unlock();
+}
+
 void Room::Init(int id, int teamLifeCount, int playerLimit)
 {
 	mRoomID = id;
+	mPlayerCnt = 0;
 	mPlayerLimit = playerLimit;
+	mHostID = INVALIDKEY;
 	std::fill(mPlayerList.begin(), mPlayerList.end(), nullptr);
 	std::fill(mObjectList.begin(), mObjectList.end(), nullptr);
+	mTeams.clear();
 
 	// team game
 	mTeams[TeamCode::RED].Init(teamLifeCount);
 	mTeams[TeamCode::BLUE].Init(teamLifeCount);
+
+	InitRoomCode();
 }
 
+
+void Room::InitRoomCode()
+{
+	auto now = std::chrono::system_clock::now();
+	auto duration = now.time_since_epoch();
+	long long millis = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
+
+	int numDigits = log10(mRoomID) + 1;
+	mRoomCode = millis * pow(10, numDigits) + mRoomID;
+}
 
 bool Room::AddPlayer(Player* player)
 {
@@ -26,9 +56,12 @@ bool Room::AddPlayer(Player* player)
 
 			mPlayerListLock.unlock();
 			player->SetInGameID(i);
-			player->SetState(eSessionState::ST_INGAME);
 			player->SetRoomID(mRoomID);
-			mPlayerSessionIDs[i] = player->GetSessionID();
+			player->SetState(eSessionState::ST_INGAME);
+
+			player->GetPlayerStateLock().lock();
+			player->SetPlayerState(ePlayerState::PS_RUNNING);
+			player->GetPlayerStateLock().unlock();
 			return true;
 		}
 		mPlayerListLock.unlock();

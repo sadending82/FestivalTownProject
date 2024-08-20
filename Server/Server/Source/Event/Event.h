@@ -4,7 +4,6 @@
 constexpr int HEARTBEATINTERVAL = 6000;
 constexpr int BLOCKDROPINTERVAL = 10000;
 constexpr int REMAINTIMESYNCINTERVAL = 30000;
-constexpr int BOMBEXPLOSIONINTERVAL = 60000;
 constexpr int TIMEOVERCHECKINTERVAL = 5000;
 
 class Timer;
@@ -45,24 +44,29 @@ struct EV_HEART_BEAT : EVENT {
 
 struct EV_OBJECT_DROP : EVENT {
 	int roomID;
+	long long roomCode;
 };
 
 struct EV_BOMB_SPAWN : EVENT{
 	int roomID;
+	long long roomCode;
 };
 
 struct EV_BOMB_EXPLOSION : EVENT {
 	int roomID;
 	int bombID;
+	long long roomCode;
 };
 
 struct EV_TIMEOVER_CHECK : EVENT {
 	int roomID;
+	long long roomCode;
 };
 
 struct EV_TIME_SYNC : EVENT {
 	int roomID;
 	int time;
+	long long roomCode;
 };
 
 #pragma pack(pop)
@@ -70,8 +74,8 @@ struct EV_TIME_SYNC : EVENT {
 bool PushEventHeartBeat(Timer* pTimer, int sessionID);
 
 // InGameEvent
-bool PushEventBlockDrop(Timer* pTimer, int roomID, int intervalTime);
-bool PushEventBombSpawn(Timer* pTimer, int roomID, int intervalTime);
-bool PushEventRemainTimeSync(Timer* pTimer, int roomID);
-bool PushEventBombExplosion(Timer* pTimer, int roomID, int bombID);
-bool PushEventTimeOverCheck(Timer* pTimer, int roomID);
+bool PushEventBlockDrop(Timer* pTimer, int roomID, long long roomCode, int intervalSecond);
+bool PushEventBombSpawn(Timer* pTimer, int roomID, long long roomCode, int intervalSecond);
+bool PushEventRemainTimeSync(Timer* pTimer, int roomID, long long roomCode);
+bool PushEventBombExplosion(Timer* pTimer, int roomID, int bombID, long long roomCode, int intervalSecond);
+bool PushEventTimeOverCheck(Timer* pTimer, int roomID, long long roomCode);

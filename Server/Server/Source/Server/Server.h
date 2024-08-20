@@ -16,7 +16,8 @@ public:
 	Server() {};
 	~Server() {};
 
-	int SetSessionKey();
+	int SetSessionID();
+	int SetRoomID();
 	void Disconnect(int key);
 	void Init(class TableManager* pTableManager, class DB* pDB);
 	void ThreadJoin();

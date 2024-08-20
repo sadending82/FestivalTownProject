@@ -13,11 +13,16 @@ public:
 
 		int roomid = event->roomID;
 		int bombid = event->bombID;
-		if (pServer->GetRooms()[roomid]->GetState() == eRoomState::RS_FREE) {
+		Room* room = pServer->GetRooms()[roomid];
+		long long roomCode = room->GetRoomCode();
+		if (roomCode != event->roomCode) {
+			return;
+		}
+		if (room->GetState() == eRoomState::RS_FREE) {
 			return;
 		}
 
-		Bomb* bomb = dynamic_cast<Bomb*>(pServer->GetRooms()[roomid]->GetObjects()[bombid]);
+		Bomb* bomb = dynamic_cast<Bomb*>(room->GetObjects()[bombid]);
 		if (bomb == nullptr) return;
 		pServer->SendBombExplosionPacket(roomid, bombid);
 		pServer->GetRooms()[roomid]->GetObjects()[bombid] = nullptr;

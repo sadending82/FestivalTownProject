@@ -10,15 +10,20 @@ public:
 		EV_TIME_SYNC* event = reinterpret_cast<EV_TIME_SYNC*>(buf);
 
 		int roomid = event->roomID;
-		if (pServer->GetRooms()[roomid]->GetState() == eRoomState::RS_FREE) {
+		Room* room = pServer->GetRooms()[roomid];
+		long long roomCode = room->GetRoomCode();
+		if (roomCode != event->roomCode) {
+			return;
+		}
+		if (room->GetState() == eRoomState::RS_FREE) {
 			return;
 		}
 
-		GameCode gameMode = pServer->GetRooms()[event->roomID]->GetGameMode();
+		GameCode gameMode = room->GetGameMode();
 		
 		int spawnCnt = pServer->GetTableManager()->getFITH_Data()[gameMode].Bomb_Spawn_Count;
 
-		PushEventRemainTimeSync(pServer->GetTimer(), roomid);
+		PushEventRemainTimeSync(pServer->GetTimer(), roomid, event->roomCode);
 		pServer->SendRemainTimeSync(roomid);
 	}
 
