@@ -6,7 +6,7 @@ public class UI_Loading : UI_PopUp
 {
     enum GameObjects
     {
-        Ranel,
+        Panel,
         LoadingText,
     }
 

@@ -19,7 +19,7 @@ public class GameScene : BaseScene
 
         Managers.UI.ShowPopUpUI<UI_Loading>();
 
-
+        
         //LoadCube();
 
         //LoadBomb();
