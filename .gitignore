@@ -93,3 +93,6 @@ Release
 *.vbproj.user
 ipch
 *sdf
+
+#DB config file
+DBconfig.txt

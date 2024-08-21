@@ -313,6 +313,14 @@ void Server::SendGameEndPacket(int roomID, int winningTeam)
     SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
 
+void Server::SendPlayerRespawn(int sessionID, int roomID)
+{
+    Player* player = dynamic_cast<Player*>(GetSessions()[sessionID]);
+    int inGameID = player->GetInGameID();
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerRespawnPacket(inGameID, roomID, 0, 0);
+    SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
+}
+
 void Server::StartHeartBeat(int sessionID)
 {
     GetSessions()[sessionID]->SetIsHeartbeatAck(false);

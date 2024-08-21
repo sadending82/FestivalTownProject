@@ -78,7 +78,7 @@ bool PushEventBombExplosion(Timer* pTimer, int roomID, int bombID, long long roo
 
 	EVENT_HEADER header;
 	header.start_time = std::chrono::system_clock::now() + std::chrono::seconds(intervalSecond);
-	memcpy(header.message, reinterpret_cast<char*>(&e), sizeof(EV_TIME_SYNC));
+	memcpy(header.message, reinterpret_cast<char*>(&e), sizeof(EV_BOMB_EXPLOSION));
 
 	pTimer->PushEvent(header);
 
@@ -96,6 +96,24 @@ bool PushEventTimeOverCheck(Timer* pTimer, int roomID, long long roomCode)
 	EVENT_HEADER header;
 	header.start_time = std::chrono::system_clock::now() + std::chrono::milliseconds(TIMEOVERCHECKINTERVAL);
 	memcpy(header.message, reinterpret_cast<char*>(&e), sizeof(EV_TIMEOVER_CHECK));
+
+	pTimer->PushEvent(header);
+
+	return true;
+}
+
+bool PushEventPlayerRespawn(Timer* pTimer, int playerID, int roomID, long long roomCode, int intervalSecond)
+{
+	EV_PLAYER_RESPAWN e;
+	e.size = sizeof(EV_PLAYER_RESPAWN);
+	e.type = eEventType::PLAYERRESPAWN;
+	e.playerID = playerID;
+	e.roomID = roomID;
+	e.roomCode = roomCode;
+
+	EVENT_HEADER header;
+	header.start_time = std::chrono::system_clock::now() + std::chrono::seconds(intervalSecond);
+	memcpy(header.message, reinterpret_cast<char*>(&e), sizeof(EV_PLAYER_RESPAWN));
 
 	pTimer->PushEvent(header);
 

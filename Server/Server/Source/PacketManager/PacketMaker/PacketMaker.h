@@ -10,6 +10,7 @@ public:
 	~PacketMaker() {};
 
 	std::vector<uint8_t> MakePlayerAdd(int inGameID);
+	std::vector<uint8_t> MakePlayerRespawnPacket(int inGameID, int roomID, int x, int y);
 	std::vector<uint8_t> MakeGameInfo(int inGameID, int roomID, int team, int gameMode, bool isHost = false);
 	std::vector<uint8_t> MakeHeartBeatPacket();
 	std::vector<uint8_t> MakeBlockDropPacket(int x, int y, int type);

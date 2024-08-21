@@ -9,6 +9,15 @@ std::vector<uint8_t> PacketMaker::MakePlayerAdd(int inGameID)
 	return MakeBuffer(ePacketType::S2C_PLAYERADD, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
+std::vector<uint8_t> PacketMaker::MakePlayerRespawnPacket(int inGameID, int roomID, int x, int y)
+{
+	flatbuffers::FlatBufferBuilder Builder;
+	Builder.Clear();
+	auto pos = PacketTable::PlayerTable::CreateVec3(Builder, x, y);
+	Builder.Finish(PacketTable::PlayerTable::CreatePlayerRespawn(Builder, inGameID, pos));
+	return MakeBuffer(ePacketType::S2C_PLAYERRESPAWN, Builder.GetBufferPointer(), Builder.GetSize());
+}
+
 std::vector<uint8_t> PacketMaker::MakeGameInfo(int inGameID, int roomID, int team, int gameMode, bool isHost)
 {
 	flatbuffers::FlatBufferBuilder Builder;

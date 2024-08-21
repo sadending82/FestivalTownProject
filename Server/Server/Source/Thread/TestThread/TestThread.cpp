@@ -15,7 +15,7 @@ void TestThread::RunWorker()
 
     while (1) {
         char command;
-        std::cout << "Please Input Command" << std::endl;
+        std::cout << "Please Input Command (s = GameStart)" << std::endl;
         std::cin >> command;
 
         switch (command) {

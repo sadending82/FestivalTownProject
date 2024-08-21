@@ -162,6 +162,7 @@ xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     <ClCompile Include="Source\Object\Object.cpp" />
     <ClCompile Include="Source\PacketManager\PacketMaker\PacketMaker.cpp" />
     <ClCompile Include="Source\PacketManager\PacketManager.cpp" />
+    <ClCompile Include="Source\PacketManager\PacketProcessors\Event\EventPlayerRespawn.h" />
     <ClCompile Include="Source\Room\Team\Team.cpp" />
     <ClCompile Include="Source\Server\Server.cpp" />
     <ClCompile Include="Source\Room\Room.cpp" />

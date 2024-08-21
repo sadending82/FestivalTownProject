@@ -19,6 +19,7 @@
     <ClCompile Include="Source\Thread\TestThread\TestThread.cpp" />
     <ClCompile Include="Source\Object\Bomb\Bomb.cpp" />
     <ClCompile Include="Source\Object\Object.cpp" />
+    <ClCompile Include="Source\PacketManager\PacketProcessors\Event\EventPlayerRespawn.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DB\DB.h" />
