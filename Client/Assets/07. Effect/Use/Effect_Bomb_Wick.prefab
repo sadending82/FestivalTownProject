@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 198000012283690144}
   - component: {fileID: 199000010805106158}
   m_Layer: 0
-  m_Name: ElectricalSparksEffect
+  m_Name: Effect_Bomb_Wick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
