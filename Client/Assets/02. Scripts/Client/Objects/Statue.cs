@@ -1,11 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class Statue : MonoBehaviour
 {
     public int Team = 0;
+
     public Define.StatueState _state = Define.StatueState.Fine;
 
     // Start is called before the first frame update
@@ -40,27 +39,33 @@ public class Statue : MonoBehaviour
 
         AllObjectOff();
 
-        if(state == Define.StatueState.Destroyed)
+        switch(state)
         {
-            transform.GetChild(2).gameObject.SetActive(true);
-            StartCoroutine(AfterDestroy());
+            case Define.StatueState.Fine:
+                transform.GetChild(0).gameObject.SetActive(true);
+                break;
+            case Define.StatueState.AttackedOneTime:
+                transform.GetChild(1).gameObject.SetActive(true);
+                break;
+            case Define.StatueState.AttackedTwoTime:
+                transform.GetChild(2).gameObject.SetActive(true);
+                break;
+            case Define.StatueState.Destroyed:
+                transform.GetChild(3).gameObject.SetActive(true);
+                StartCoroutine(AfterDestroy(3));
+                break;
+            default:
+                break;
         }
-        else if (state == Define.StatueState.Fine)
-        {
-            transform.GetChild(0).gameObject.SetActive(true);
-        }
-        else
-        {
-            transform.GetChild(1).gameObject.SetActive(true);
-        }
-       
-    }
 
-    public IEnumerator AfterDestroy()
+    }
+      
+
+    public IEnumerator AfterDestroy(int childIndex)
     {
         yield return new WaitForSeconds(3);
 
-        transform.GetChild(2).gameObject.SetActive(false);
+        transform.GetChild(childIndex).gameObject.SetActive(false);
     }
 
     void AllObjectOff()
@@ -68,5 +73,6 @@ public class Statue : MonoBehaviour
         transform.GetChild(0).gameObject.SetActive(false);
         transform.GetChild(1).gameObject.SetActive(false);
         transform.GetChild(2).gameObject.SetActive(false);
+        transform.GetChild(3).gameObject.SetActive(false);
     }
 }
