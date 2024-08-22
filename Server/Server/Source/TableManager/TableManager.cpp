@@ -181,8 +181,11 @@ void TableManager::ReadMapData()
             case 'b': {
                 MapData[MapCode::TEST].GetBombSpawnIndexes().push_back({ colCnt, lineCnt });
             }break;
-            case 'p': {
-                MapData[MapCode::TEST].GetPlayerSpawnIndexes().push_back({ colCnt, lineCnt });
+            case 'R': {
+                MapData[MapCode::TEST].GetPlayerSpawnIndexes(TeamCode::RED).push_back({colCnt, lineCnt});
+            }break;
+            case 'B': {
+                MapData[MapCode::TEST].GetPlayerSpawnIndexes(TeamCode::BLUE).push_back({ colCnt, lineCnt });
             }break;
             default: {
 

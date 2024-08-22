@@ -266,6 +266,7 @@ void Server::SendBombSpawnPacket(int roomID, int spawnCount)
     }
 }
 
+
 void Server::SendBombExplosionPacket(int roomID, int bombID)
 {
     Object* object = mRooms[roomID]->GetObjects()[bombID];
@@ -304,7 +305,18 @@ void Server::SendGameEndPacket(int roomID, int winningTeam)
 
 void Server::SendPlayerRespawn(int inGameID, int roomID)
 {
-    std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerRespawnPacket(inGameID, roomID, 0, 0);
+    Player* player = dynamic_cast<Player*>(mRooms[roomID]->GetPlayerList()[inGameID]);
+    int team = player->GetTeam();
+    std::vector<std::pair<int, int>>& spawnPoses = mRooms[roomID]->GetMap().GetPlayerSpawnIndexes(team);
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> idx_distrib(0, spawnPoses.size() - 1);
+    int idx = idx_distrib(gen);
+    int posX = spawnPoses[idx].first;
+    int posY = spawnPoses[idx].second;
+
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerRespawnPacket(inGameID, roomID, posX, posY);
     SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
 
