@@ -164,17 +164,36 @@ void TableManager::ReadMapData()
     }
 
     std::string line;
-
+    int lineCnt = 0;
     while (std::getline(inputFile, line)) {
-        std::vector<int> row;
-        int number;
+        std::vector<char> row;
+        char character;
         std::istringstream iss(line);
 
-        while (iss >> number) {
-            row.push_back(number);
+        int colCnt = 0;
+        while (iss >> character) {
+            row.push_back(character);
+
+            switch (character) {
+            case 'n': {
+                MapData[MapCode::TEST].GetBlockDropIndexes().push_back({ colCnt, lineCnt });
+            }break;
+            case 'b': {
+                MapData[MapCode::TEST].GetBombSpawnIndexes().push_back({ colCnt, lineCnt });
+            }break;
+            case 'p': {
+                MapData[MapCode::TEST].GetPlayerSpawnIndexes().push_back({ colCnt, lineCnt });
+            }break;
+            default: {
+
+            }break;
+            }
+
+            colCnt++;
         }
 
         MapData[MapCode::TEST].GetStructure().push_back(row);
+        lineCnt++;
     }
 
     inputFile.close();

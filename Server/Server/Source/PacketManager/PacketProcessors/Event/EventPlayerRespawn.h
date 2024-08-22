@@ -20,7 +20,7 @@ public:
 			return;
 		}
 
-		pServer->SendRemainTimeSync(roomid);
+		pServer->SendPlayerRespawn(playerid, roomid);
 	}
 
 private:

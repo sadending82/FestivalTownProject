@@ -200,58 +200,45 @@ void Server::SendHeartBeatPacket(int sessionID)
 
 void Server::SendBlockDropPacket(int roomID, int spawnCount)
 {
-    std::vector<std::vector<int>>& mapStructure = mRooms[roomID]->GetMap().GetStructure();
+    std::vector<std::pair<int, int>>& spawnPoses = mRooms[roomID]->GetMap().GetBlockDropIndexes();
     GameCode gameMode = mRooms[roomID]->GetGameMode();
-    int minX = mTableManager->getFITH_Data()[gameMode].Block_Spawn_Location_MinX;
-    int maxX = mTableManager->getFITH_Data()[gameMode].Block_Spawn_Location_MaxX;
-    int minY = mTableManager->getFITH_Data()[gameMode].Block_Spawn_Location_MinY;
-    int maxY = mTableManager->getFITH_Data()[gameMode].Block_Spawn_Location_MaxY;
 
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> x_distrib(minX, maxX);
-    std::uniform_int_distribution<> y_distrib(minY, maxY);
-    std::uniform_int_distribution<> id_distrib(0, 1);
+    std::uniform_int_distribution<> idx_distrib(0, spawnPoses.size()-1);
+    std::uniform_int_distribution<> type_distrib(0, 1);
 
-    std::set<std::pair<int, int>> unique_pos;
+    std::set<int> unique_idx;
 
-    while (unique_pos.size() < spawnCount) {
-        int x = x_distrib(gen);
-        int y = y_distrib(gen);
-       
-        if (mapStructure[y][x] > 0) {
-            unique_pos.emplace(x, y);
-        }
+    while (unique_idx.size() < spawnCount) {
+        int idx = idx_distrib(gen);
+        unique_idx.emplace(idx);
     }
 
-    for (const auto& pos : unique_pos) {
-        mapStructure[pos.second][pos.first]++;
-        std::vector<uint8_t> send_buffer = mPacketMaker->MakeBlockDropPacket(pos.first, pos.second, id_distrib(gen));
+    for (const auto& idx : unique_idx) {
+        std::vector<uint8_t> send_buffer = mPacketMaker->MakeBlockDropPacket(spawnPoses[idx].first, spawnPoses[idx].second, type_distrib(gen));
         SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
     }
 }
 
 void Server::SendBombSpawnPacket(int roomID, int spawnCount)
 {
+    std::vector<std::pair<int, int>>& spawnPoses = mRooms[roomID]->GetMap().GetBombSpawnIndexes();
     Room* room = mRooms[roomID];
     GameCode gameMode = room->GetGameMode();
     int explosionInterval = mTableManager->getFITH_Data()[gameMode].Bomb_Delay_Time;
-    int minX = mTableManager->getFITH_Data()[gameMode].Bomb_Spawn_Location_MinX;
-    int maxX = mTableManager->getFITH_Data()[gameMode].Bomb_Spawn_Location_MaxX;
-    int minY = mTableManager->getFITH_Data()[gameMode].Bomb_Spawn_Location_MinY;
-    int maxY = mTableManager->getFITH_Data()[gameMode].Bomb_Spawn_Location_MaxY;
 
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> x_distrib(minX, maxX);
-    std::uniform_int_distribution<> y_distrib(minY, maxY);
+    std::uniform_int_distribution<> idx_distrib(0, spawnPoses.size() - 1);
 
-    std::set<std::pair<int, int>> unique_pos;
+    std::set<int> unique_idx;
     std::array<Object*, MAXOBJECT>& object_list = room->GetObjects();
 
-    while (unique_pos.size() < spawnCount) {
-        int x = x_distrib(gen);
-        int y = y_distrib(gen);
+    while (unique_idx.size() < spawnCount) {
+        int idx = idx_distrib(gen);
+        int x = spawnPoses[idx].first;
+        int y = spawnPoses[idx].second;
         bool invalid_pos = false;
         for (int i = 0; i < MAXOBJECT; ++i) {
             if (object_list[i] == nullptr) {
@@ -264,14 +251,16 @@ void Server::SendBombSpawnPacket(int roomID, int spawnCount)
             }
         }
         if (invalid_pos == false) {
-            unique_pos.emplace(x, y);
+            unique_idx.emplace(idx);
         }
     }
 
-    for (const auto& pos : unique_pos) {
-        int bombid = room->AddBomb(new Bomb, Vector3f(pos.first, pos.second, 0));
+    for (const auto& idx : unique_idx) {
+        int x = spawnPoses[idx].first;
+        int y = spawnPoses[idx].second;
+        int bombid = room->AddBomb(new Bomb, Vector3f(x, y, 0));
         if (bombid == INVALIDKEY) continue;
-        std::vector<uint8_t> send_buffer = mPacketMaker->MakeBombSpawnPacket(pos.first, pos.second, bombid);
+        std::vector<uint8_t> send_buffer = mPacketMaker->MakeBombSpawnPacket(x, y, bombid);
         SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
         PushEventBombExplosion(mTimer, roomID, bombid, room->GetRoomCode(), explosionInterval);
     }
@@ -313,10 +302,8 @@ void Server::SendGameEndPacket(int roomID, int winningTeam)
     SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
 
-void Server::SendPlayerRespawn(int sessionID, int roomID)
+void Server::SendPlayerRespawn(int inGameID, int roomID)
 {
-    Player* player = dynamic_cast<Player*>(GetSessions()[sessionID]);
-    int inGameID = player->GetInGameID();
     std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerRespawnPacket(inGameID, roomID, 0, 0);
     SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
