@@ -60,6 +60,9 @@ public class CharacterStatus : MonoBehaviour
 
             // 씬 기본 UI 표시해주기
             Managers.UI.ShowSceneUI<UI_OneVersusOneSceneUI>();
+
+            // 타이머 스타트
+            Managers.Game.isTimerStart = true;
         }
     }
     public void setUpperBodyAnimationState(UpperBodyAnimationState upperBodyAnimationState)
