@@ -9,7 +9,7 @@ public:
 
 	std::vector<std::vector<char>>& GetStructure() { return Structure; }
 	std::vector<std::pair<int, int>>& GetBombSpawnIndexes() { return BombSpawnIndexes; }
-	std::vector<std::pair<int, int>>& GetBlockDropIndexes() { return BombSpawnIndexes; }
+	std::vector<std::pair<int, int>>& GetBlockDropIndexes() { return BlockDropIndexes; }
 	std::vector<std::pair<int, int>>& GetPlayerSpawnIndexes(int team) { return PlayerSpawnIndexes[team]; }
 
 private:
