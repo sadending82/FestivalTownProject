@@ -41,6 +41,7 @@ public:
 	void StartHeartBeat(int sessionID);
 	void StartGame(int roomID);
 	void CheckGameEnd(int roomID);
+	void TimeoverGameEnd(int roomID);
 
 	HANDLE GetHcp() { return mHcp; }
 	SOCKADDR_IN GetServerAddr() { return mServerAddr; }

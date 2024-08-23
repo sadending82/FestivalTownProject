@@ -410,3 +410,9 @@ void Server::CheckGameEnd(int roomID)
         GetRooms()[roomID]->Reset();
     }
 }
+
+void Server::TimeoverGameEnd(int roomID) {
+    Room* room = GetRooms()[roomID];
+
+    int teamCnt = 2; // 팀 수 (임시 나중에 게임 데이터로 읽어야 함)
+}
