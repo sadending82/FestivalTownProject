@@ -406,6 +406,13 @@ void Server::CheckGameEnd(int roomID)
     if (loseTeamCnt = teamCnt - 1) {
         SendGameEndPacket(roomID, winningTeam);
 
+        for (auto player : room->GetPlayerList()) {
+            if (player == nullptr) continue;
+            player->GetStateLock().lock();
+            player->SetState(eSessionState::ST_ACCEPTED);
+            player->GetStateLock().unlock();
+        }
+
         // 종료하자마자 바로 초기화 하는데 나중에 어떻게 해야할지 고민해야할듯
         GetRooms()[roomID]->Reset();
     }
