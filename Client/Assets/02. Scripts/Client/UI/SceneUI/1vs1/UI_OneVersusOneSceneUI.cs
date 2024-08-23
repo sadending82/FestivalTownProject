@@ -79,7 +79,9 @@ public class UI_OneVersusOneSceneUI : UI_Scene
                 }
             }
 
+
             SetTimer(Managers.Game.GameRemainTime);
+
 
         }
     }

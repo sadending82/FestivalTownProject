@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
 
     public bool isInGame = false;
+    public bool isTimerStart = false;
     public float GameRemainTime = 300.0f;
     public float GameEndTime = 300.0f;
     public Dictionary<int, int> TeamLife = new();
@@ -81,7 +82,7 @@ public class GameManager : MonoBehaviour
     {
         if (!isInGame) return;
 
-        if (GameRemainTime > 0)
+        if (GameRemainTime > 0 && isTimerStart)
         {
             GameRemainTime -= Time.deltaTime;
         }

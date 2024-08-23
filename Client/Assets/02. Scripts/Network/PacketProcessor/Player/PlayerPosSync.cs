@@ -20,6 +20,8 @@ namespace Network.PacketProcessor
 
             Debug.Log("Player ID : " + id + ", PlayerPosSyncPacket");
 
+            if (Managers.Player == null) return;
+
             if (Managers.Player.transform.GetChild(id) != null)
             {
                 Managers.Player.transform.GetChild(id).GetComponent<PlayerController>().SetDirection(dir);
