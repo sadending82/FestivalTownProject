@@ -84,5 +84,6 @@ public class Managers : MonoBehaviour
 
         Scene.Clear();
         UI.Clear();
+        DeleteInGameManagers();
     }
 }

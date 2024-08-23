@@ -18,6 +18,8 @@ namespace Network.PacketProcessor
             var Data = GameEnd.GetRootAsGameEnd(bb);
 
             int winningTeam = Data.Winningteam;
+
+            Managers.Scene.LoadScene(Define.Scene.Home);
         }
 
         private FlatBufferBuilder mBuilder;

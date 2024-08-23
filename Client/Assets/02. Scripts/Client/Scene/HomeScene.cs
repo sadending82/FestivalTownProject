@@ -13,6 +13,8 @@ public class HomeScene : BaseScene
         Managers.UI.ShowSceneUI<UI_HomeScene>();
         Managers.UI.ShowPopUpUI<UI_HomeStart>();
 
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     public override void Clear()
