@@ -22,10 +22,15 @@ public:
 			return;
 		}
 
+		room->GetObjectListLock().lock();
 		Bomb* bomb = dynamic_cast<Bomb*>(room->GetObjects()[bombid]);
-		if (bomb == nullptr) return;
+		if (bomb == nullptr) {
+			room->GetObjectListLock().unlock();
+			return;
+		}
 		pServer->SendBombExplosionPacket(roomid, bombid);
 		pServer->GetRooms()[roomid]->GetObjects()[bombid] = nullptr;
+		room->GetObjectListLock().unlock();
 	}
 
 private:

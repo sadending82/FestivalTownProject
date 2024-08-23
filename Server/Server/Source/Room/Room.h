@@ -33,8 +33,11 @@ public:
 	TIMEPOINT GetStartTime() { return mStartTime; }
 	eRoomState GetState() { return mState; }
 	std::mutex& GetStateLock() { return mStateLock; }
+	std::mutex& GetPlayerListLock() { return mPlayerListLock; }
+	std::mutex& GetObjectListLock() { return mObjectListLock; }
 	int GetHostID() { return mHostID; }
 	long long GetRoomCode() { return mRoomCode; }
+	bool GetIsRun() { return mIsRun.load(); }
 	
 
 	void AddPlayerCnt() { mPlayerCnt++; }
@@ -43,6 +46,7 @@ public:
 	void SetStartTime(TIMEPOINT time) { mStartTime = time; }
 	void SetState(eRoomState state) { mState = state; }
 	void SetHost(int ingameid) { mHostID = ingameid; }
+	bool SetIsRun(bool desired);
 
 private:
 	eRoomState mState;
@@ -64,5 +68,6 @@ private:
 	int mHostID = INVALIDKEY;
 	TIMEPOINT mStartTime;
 	long long mRoomCode = 0; // 이벤트 처리용 고유 식별 번호
+	std::atomic<bool> mIsRun = 0;
 };
 

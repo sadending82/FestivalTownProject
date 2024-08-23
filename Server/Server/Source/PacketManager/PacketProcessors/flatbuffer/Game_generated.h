@@ -354,14 +354,14 @@ inline ::flatbuffers::Offset<GameStart> CreateGameStart(
 struct GameEnd FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef GameEndBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_WINNINGTEAM = 4
+    VT_WINNINGTEAMS_FLAG = 4
   };
-  int32_t winningteam() const {
-    return GetField<int32_t>(VT_WINNINGTEAM, 0);
+  uint8_t winningteams_flag() const {
+    return GetField<uint8_t>(VT_WINNINGTEAMS_FLAG, 0);
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<int32_t>(verifier, VT_WINNINGTEAM, 4) &&
+           VerifyField<uint8_t>(verifier, VT_WINNINGTEAMS_FLAG, 1) &&
            verifier.EndTable();
   }
 };
@@ -370,8 +370,8 @@ struct GameEndBuilder {
   typedef GameEnd Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_winningteam(int32_t winningteam) {
-    fbb_.AddElement<int32_t>(GameEnd::VT_WINNINGTEAM, winningteam, 0);
+  void add_winningteams_flag(uint8_t winningteams_flag) {
+    fbb_.AddElement<uint8_t>(GameEnd::VT_WINNINGTEAMS_FLAG, winningteams_flag, 0);
   }
   explicit GameEndBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -386,9 +386,9 @@ struct GameEndBuilder {
 
 inline ::flatbuffers::Offset<GameEnd> CreateGameEnd(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    int32_t winningteam = 0) {
+    uint8_t winningteams_flag = 0) {
   GameEndBuilder builder_(_fbb);
-  builder_.add_winningteam(winningteam);
+  builder_.add_winningteams_flag(winningteams_flag);
   return builder_.Finish();
 }
 

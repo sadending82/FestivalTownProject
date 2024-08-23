@@ -26,7 +26,7 @@ public:
 		TIMEPOINT endTime = startTime + playTime;
 		TIMEPOINT currTime = std::chrono::system_clock::now();
 		if (endTime <= currTime) {
-			pServer->SendGameEndPacket(roomid, INVALIDKEY);
+			pServer->TimeoverGameEnd(roomid);
 			return;
 		}
 

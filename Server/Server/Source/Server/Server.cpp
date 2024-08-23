@@ -233,8 +233,10 @@ void Server::SendBombSpawnPacket(int roomID, int spawnCount)
     std::uniform_int_distribution<> idx_distrib(0, spawnPoses.size() - 1);
 
     std::set<int> unique_idx;
-    std::array<Object*, MAXOBJECT>& object_list = room->GetObjects();
 
+    room->GetObjectListLock().lock();
+    std::array<Object*, MAXOBJECT>& object_list = room->GetObjects();
+    room->GetObjectListLock().unlock();
     while (unique_idx.size() < spawnCount) {
         int idx = idx_distrib(gen);
         int x = spawnPoses[idx].first;
@@ -297,9 +299,10 @@ void Server::SendGameStartPacket(int roomID)
     SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
 
-void Server::SendGameEndPacket(int roomID, int winningTeam)
+void Server::SendGameEndPacket(int roomID, uint8_t winningTeams_flag)
 {
-    std::vector<uint8_t> send_buffer = mPacketMaker->MakeGameEndPacket(winningTeam);
+    std::cout << "win - " << (int)winningTeams_flag << std::endl;
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakeGameEndPacket(winningTeams_flag);
     SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
 
@@ -336,6 +339,7 @@ void Server::StartGame(int roomID)
     room->SetGameMode(GameCode::FITH_Team_battle_Three);
     room->InitMap(GetTableManager()->getMapData()[TEST]);
     room->SetPlayerLimit(6); // 임시
+    room->SetIsRun(true);
 
     int tFlag = 0;
 
@@ -383,7 +387,7 @@ void Server::StartGame(int roomID)
     PushEventBlockDrop(mTimer, roomID, roomCode, eventTime);
     PushEventBombSpawn(mTimer, roomID, roomCode, GetTableManager()->getFITH_Data()[gameCode].Bomb_Spawn_Time);
     PushEventRemainTimeSync(mTimer, roomID, roomCode);
-    //PushEventTimeOverCheck(mTimer, roomID);
+    PushEventTimeOverCheck(mTimer, roomID, roomCode);
 
     GetRooms()[roomID]->SetStartTime(std::chrono::system_clock::now());
 }
@@ -393,19 +397,51 @@ void Server::CheckGameEnd(int roomID)
     Room* room = GetRooms()[roomID];
     int teamCnt = 2; // 팀 수 (임시 나중에 게임 데이터로 읽어야 함)
     int loseTeamCnt = 0;
-    int winningTeam = 0;
+    uint8_t winningTeams_flag = DEFAULT_8BITFLAG;
     for (auto iter = room->GetTeams().begin(); iter != room->GetTeams().end(); ++iter) {
         if (iter->second.GetLife() <= 0) {
             loseTeamCnt++;
         }
         else {
-            winningTeam = iter->first;
+            winningTeams_flag = winningTeams_flag | (1 << iter->first);
         }
     }
 
     if (loseTeamCnt = teamCnt - 1) {
-        SendGameEndPacket(roomID, winningTeam);
+        if (room->SetIsRun(false) == true) {
+            SendGameEndPacket(roomID, winningTeams_flag);
+            for (auto player : room->GetPlayerList()) {
+                if (player == nullptr) continue;
+                player->GetStateLock().lock();
+                player->SetState(eSessionState::ST_ACCEPTED);
+                player->GetStateLock().unlock();
+            }
 
+            // 종료하자마자 바로 초기화 하는데 나중에 어떻게 해야할지 고민해야할듯
+            GetRooms()[roomID]->Reset();
+        }
+    }
+}
+
+void Server::TimeoverGameEnd(int roomID) {
+    Room* room = GetRooms()[roomID];
+
+    uint8_t winningTeams_flag = DEFAULT_8BITFLAG;
+    int maxLife = 0;
+
+    for (auto iter = room->GetTeams().begin(); iter != room->GetTeams().end(); ++iter) {
+        int life = iter->second.GetLife();
+        if (maxLife < life) {
+            winningTeams_flag = DEFAULT_8BITFLAG | (1 << iter->first);
+            maxLife = life;
+        }
+        else if (maxLife == life) {
+            winningTeams_flag = winningTeams_flag | (1 << iter->first);
+        }
+    }
+
+    if (room->SetIsRun(false) == true) {
+        SendGameEndPacket(roomID, winningTeams_flag);
         for (auto player : room->GetPlayerList()) {
             if (player == nullptr) continue;
             player->GetStateLock().lock();
@@ -416,10 +452,4 @@ void Server::CheckGameEnd(int roomID)
         // 종료하자마자 바로 초기화 하는데 나중에 어떻게 해야할지 고민해야할듯
         GetRooms()[roomID]->Reset();
     }
-}
-
-void Server::TimeoverGameEnd(int roomID) {
-    Room* room = GetRooms()[roomID];
-
-    int teamCnt = 2; // 팀 수 (임시 나중에 게임 데이터로 읽어야 함)
 }

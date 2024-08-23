@@ -37,6 +37,8 @@ constexpr int MAXROOM = 100;
 constexpr int MAXPLAYER = 6;
 constexpr int MAXOBJECT = 100;
 
+const uint8_t DEFAULT_8BITFLAG = 0b00000000;
+
 #ifdef _DEBUG
 #define DEBUGMSGNOPARAM(args) (printf("file: %s, line:%d ",__FILE__,__LINE__), printf(args))
 #define DEBUGMSGONEPARAM(args,k) (printf("file: %s, line:%d ",__FILE__,__LINE__), printf(args,k))

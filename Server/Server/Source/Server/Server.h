@@ -35,7 +35,7 @@ public:
 	void SendLifeReducePacket(int team, int lifeCount, int roomID);
 	void SendRemainTimeSync(int roomID);
 	void SendGameStartPacket(int roomID);
-	void SendGameEndPacket(int roomID, int winningTeam);
+	void SendGameEndPacket(int roomID, uint8_t winningTeams_flag);
 	void SendPlayerRespawn(int sessionID, int roomID);
 
 	void StartHeartBeat(int sessionID);

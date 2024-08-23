@@ -71,11 +71,11 @@ std::vector<uint8_t> PacketMaker::MakeGameStartPacket(int roomID, int startTime)
 	return MakeBuffer(ePacketType::S2C_GAMESTART, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakeGameEndPacket(int winningTeam)
+std::vector<uint8_t> PacketMaker::MakeGameEndPacket(uint8_t winningTeams_flag)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 	Builder.Clear();
-	Builder.Finish(PacketTable::GameTable::CreateGameEnd(Builder, winningTeam));
+	Builder.Finish(PacketTable::GameTable::CreateGameEnd(Builder, winningTeams_flag));
 	return MakeBuffer(ePacketType::S2C_GAMEEND, Builder.GetBufferPointer(), Builder.GetSize());
 }
 

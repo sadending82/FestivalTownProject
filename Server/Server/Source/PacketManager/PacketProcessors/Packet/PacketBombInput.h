@@ -18,7 +18,10 @@ public:
 			int bombid = read->bombid();
 			int team = read->team();
 			int roomid = dynamic_cast<Player*>(pServer->GetSessions()[key])->GetRoomID();
+			Room* room = pServer->GetRooms()[roomid];
+			room->GetObjectListLock().lock();
 			pServer->GetRooms()[roomid]->GetObjects()[bombid] = nullptr;
+			room->GetObjectListLock().unlock();
 
 			pServer->GetRooms()[roomid]->GetTeams()[team].ReduceLife();
 			int lifeCount = pServer->GetRooms()[roomid]->GetTeams()[team].GetLife();

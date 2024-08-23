@@ -110,3 +110,9 @@ bool Room::DeleteObject(int id)
 	mObjectList[id] = nullptr;
 	return true;
 }
+
+bool Room::SetIsRun(bool desired)
+{
+	bool expected = !desired;
+	return mIsRun.compare_exchange_strong(expected, desired);
+}
