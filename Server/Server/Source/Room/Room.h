@@ -34,7 +34,7 @@ public:
 	eRoomState GetState() { return mState; }
 	std::mutex& GetStateLock() { return mStateLock; }
 	std::mutex& GetPlayerListLock() { return mPlayerListLock; }
-	std::mutex& GetObjectListLock() { return mObjectListLock; }
+	std::shared_mutex& GetObjectListLock() { return mObjectListLock; }
 	int GetHostID() { return mHostID; }
 	long long GetRoomCode() { return mRoomCode; }
 	bool GetIsRun() { return mIsRun.load(); }
@@ -55,7 +55,9 @@ private:
 
 	std::mutex mStateLock;
 	std::mutex mPlayerListLock;
-	std::mutex mObjectListLock;
+	// 객체를 재사용하지 않고 삭제, 생성하기 때문에 shared_mutex 사용
+	// 생성/삭제할 때 unique_lock
+	std::shared_mutex mObjectListLock;
 	std::array<Player*, MAXPLAYER> mPlayerList;
 	std::array<Object*, MAXOBJECT> mObjectList;
 

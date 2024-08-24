@@ -234,9 +234,9 @@ void Server::SendBombSpawnPacket(int roomID, int spawnCount)
 
     std::set<int> unique_idx;
 
-    room->GetObjectListLock().lock();
+    room->GetObjectListLock().lock_shared();
     std::array<Object*, MAXOBJECT>& object_list = room->GetObjects();
-    room->GetObjectListLock().unlock();
+    room->GetObjectListLock().unlock_shared();
     while (unique_idx.size() < spawnCount) {
         int idx = idx_distrib(gen);
         int x = spawnPoses[idx].first;
@@ -271,6 +271,7 @@ void Server::SendBombSpawnPacket(int roomID, int spawnCount)
 
 void Server::SendBombExplosionPacket(int roomID, int bombID)
 {
+    // 이 함수가 호출되는 부분에 이미 lock이 걸려있어서 lock 사용 X
     Object* object = mRooms[roomID]->GetObjects()[bombID];
     if (object == nullptr) return;
     Vector3f pos = object->GetPosition();

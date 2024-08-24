@@ -12,6 +12,7 @@
 #include <cmath>
 #include <memory>
 #include <mutex>
+#include <shared_mutex>
 
 #define _WINSOCKAPI_
 #include <windows.h>  

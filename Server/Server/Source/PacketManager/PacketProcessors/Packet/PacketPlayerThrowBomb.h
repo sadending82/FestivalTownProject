@@ -17,12 +17,15 @@ public:
 			int roomid = p->GetRoomID();
 			int bombid = read->bomb_id();
 
-			Bomb* bomb = dynamic_cast<Bomb*>(pServer->GetRooms()[roomid]->GetObjects()[bombid]);
-
-			if (bomb == nullptr) return;
-
+			Room* room = pServer->GetRooms()[roomid];
+			room->GetObjectListLock().lock_shared();
+			Bomb* bomb = dynamic_cast<Bomb*>(room->GetObjects()[bombid]);
+			if (bomb == nullptr) {
+				room->GetObjectListLock().unlock_shared();
+				return;
+			}
 			bomb->SetIsGrabbed(false);
-
+			room->GetObjectListLock().unlock_shared();
 			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYERTHROWBOMB, data, size);
 			pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomid);
 		}

@@ -19,14 +19,19 @@ public:
 			int roomid = p->GetRoomID();
 			int bombid = read->id();
 
-			Bomb* bomb = dynamic_cast<Bomb*>(pServer->GetRooms()[roomid]->GetObjects()[bombid]);
-
-			if (bomb == nullptr) return;
+			Room* room = pServer->GetRooms()[roomid];
+			room->GetObjectListLock().lock_shared();
+			Bomb* bomb = dynamic_cast<Bomb*>(room->GetObjects()[bombid]);
+			if (bomb == nullptr) {
+				room->GetObjectListLock().unlock_shared();
+				return;
+			}
 
 			bomb->SetPosition(Vector3f(read->pos()->x(), read->pos()->y(), read->pos()->z()));
 
 			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_BOMBPOSSYNC, data, size);
 			pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomid);
+			room->GetObjectListLock().unlock_shared();
 		}
 	}
 
