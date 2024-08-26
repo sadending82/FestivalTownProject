@@ -43,8 +43,8 @@ public class PacketMaker
     public byte[] MakePlayerMovePacket(Vector3 position, Vector3 direction, int id, ePlayerState state)
     {
         var builder = new FlatBufferBuilder(1);
-        var pos = Vec3.CreateVec3(builder, position.x, position.y, position.z);
-        var dir = Vec3.CreateVec3(builder, direction.x, direction.y, direction.z);
+        var pos = Vec3f.CreateVec3f(builder, position.x, position.y, position.z);
+        var dir = Vec3f.CreateVec3f(builder, direction.x, direction.y, direction.z);
         PlayerMove.StartPlayerMove(builder);
         PlayerMove.AddPos(builder, pos);
         PlayerMove.AddDirection(builder, dir);
@@ -76,8 +76,8 @@ public class PacketMaker
     public byte[] MakePlayerStopPacket(Vector3 position, Vector3 direction, int id, ePlayerState state)
     {
         var builder = new FlatBufferBuilder(1);
-        var pos = Vec3.CreateVec3(builder, position.x, position.y, position.z);
-        var dir = Vec3.CreateVec3(builder, direction.x, direction.y, direction.z);
+        var pos = Vec3f.CreateVec3f(builder, position.x, position.y, position.z);
+        var dir = Vec3f.CreateVec3f(builder, direction.x, direction.y, direction.z);
         PlayerStop.StartPlayerStop(builder);
         PlayerStop.AddPos(builder, pos);
         PlayerStop.AddDirection(builder, dir);
@@ -108,8 +108,8 @@ public class PacketMaker
     public byte[] MakePlayerPosSyncPacket(Vector3 position, Vector3 direction, int id)
     {
         var builder = new FlatBufferBuilder(1);
-        var pos = Vec3.CreateVec3(builder, position.x, position.y, position.z);
-        var dir = Vec3.CreateVec3(builder, direction.x, direction.y, direction.z);
+        var pos = Vec3f.CreateVec3f(builder, position.x, position.y, position.z);
+        var dir = Vec3f.CreateVec3f(builder, direction.x, direction.y, direction.z);
         PlayerPos.StartPlayerPos(builder);
         PlayerPos.AddPos(builder, pos);
         PlayerPos.AddDirection(builder, dir);
@@ -191,8 +191,8 @@ public class PacketMaker
     public byte[] MakePlayerGrabBombPacket(Vector3 position, Vector3 direction, int playerID, int BombID)
     {
         var builder = new FlatBufferBuilder(1);
-        var pos = Vec3.CreateVec3(builder, position.x, position.y, position.z);
-        var dir = Vec3.CreateVec3(builder, direction.x, direction.y, direction.z);
+        var pos = Vec3f.CreateVec3f(builder, position.x, position.y, position.z);
+        var dir = Vec3f.CreateVec3f(builder, direction.x, direction.y, direction.z);
         PlayerGrabBomb.StartPlayerGrabBomb(builder);
         PlayerGrabBomb.AddId(builder, playerID);
         PlayerGrabBomb.AddPos(builder, pos);
@@ -215,8 +215,8 @@ public class PacketMaker
     public byte[] MakePlayerThrowBombPacket(Vector3 position, Vector3 direction, int playerID, int BombID)
     {
         var builder = new FlatBufferBuilder(1);
-        var pos = Vec3.CreateVec3(builder, position.x, position.y, position.z);
-        var dir = Vec3.CreateVec3(builder, direction.x, direction.y, direction.z);
+        var pos = Vec3f.CreateVec3f(builder, position.x, position.y, position.z);
+        var dir = Vec3f.CreateVec3f(builder, direction.x, direction.y, direction.z);
         PlayerThrowBomb.StartPlayerThrowBomb(builder);
         PlayerThrowBomb.AddId(builder, playerID);
         PlayerThrowBomb.AddPos(builder, pos);

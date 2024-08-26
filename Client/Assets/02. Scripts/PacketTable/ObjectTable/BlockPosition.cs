@@ -9,39 +9,39 @@ using global::System;
 using global::System.Collections.Generic;
 using global::Google.FlatBuffers;
 
-public struct BombPosition : IFlatbufferObject
+public struct BlockPosition : IFlatbufferObject
 {
   private Table __p;
   public ByteBuffer ByteBuffer { get { return __p.bb; } }
   public static void ValidateVersion() { FlatBufferConstants.FLATBUFFERS_24_3_25(); }
-  public static BombPosition GetRootAsBombPosition(ByteBuffer _bb) { return GetRootAsBombPosition(_bb, new BombPosition()); }
-  public static BombPosition GetRootAsBombPosition(ByteBuffer _bb, BombPosition obj) { return (obj.__assign(_bb.GetInt(_bb.Position) + _bb.Position, _bb)); }
+  public static BlockPosition GetRootAsBlockPosition(ByteBuffer _bb) { return GetRootAsBlockPosition(_bb, new BlockPosition()); }
+  public static BlockPosition GetRootAsBlockPosition(ByteBuffer _bb, BlockPosition obj) { return (obj.__assign(_bb.GetInt(_bb.Position) + _bb.Position, _bb)); }
   public void __init(int _i, ByteBuffer _bb) { __p = new Table(_i, _bb); }
-  public BombPosition __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
+  public BlockPosition __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public PacketTable.UtilitiesTable.Vec3f? Pos { get { int o = __p.__offset(4); return o != 0 ? (PacketTable.UtilitiesTable.Vec3f?)(new PacketTable.UtilitiesTable.Vec3f()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
   public int Id { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
 
-  public static Offset<PacketTable.ObjectTable.BombPosition> CreateBombPosition(FlatBufferBuilder builder,
+  public static Offset<PacketTable.ObjectTable.BlockPosition> CreateBlockPosition(FlatBufferBuilder builder,
       Offset<PacketTable.UtilitiesTable.Vec3f> posOffset = default(Offset<PacketTable.UtilitiesTable.Vec3f>),
       int id = 0) {
     builder.StartTable(2);
-    BombPosition.AddId(builder, id);
-    BombPosition.AddPos(builder, posOffset);
-    return BombPosition.EndBombPosition(builder);
+    BlockPosition.AddId(builder, id);
+    BlockPosition.AddPos(builder, posOffset);
+    return BlockPosition.EndBlockPosition(builder);
   }
 
-  public static void StartBombPosition(FlatBufferBuilder builder) { builder.StartTable(2); }
+  public static void StartBlockPosition(FlatBufferBuilder builder) { builder.StartTable(2); }
   public static void AddPos(FlatBufferBuilder builder, Offset<PacketTable.UtilitiesTable.Vec3f> posOffset) { builder.AddOffset(0, posOffset.Value, 0); }
   public static void AddId(FlatBufferBuilder builder, int id) { builder.AddInt(1, id, 0); }
-  public static Offset<PacketTable.ObjectTable.BombPosition> EndBombPosition(FlatBufferBuilder builder) {
+  public static Offset<PacketTable.ObjectTable.BlockPosition> EndBlockPosition(FlatBufferBuilder builder) {
     int o = builder.EndTable();
-    return new Offset<PacketTable.ObjectTable.BombPosition>(o);
+    return new Offset<PacketTable.ObjectTable.BlockPosition>(o);
   }
 }
 
 
-static public class BombPositionVerify
+static public class BlockPositionVerify
 {
   static public bool Verify(Google.FlatBuffers.Verifier verifier, uint tablePos)
   {

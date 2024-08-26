@@ -13,7 +13,7 @@ std::vector<uint8_t> PacketMaker::MakePlayerRespawnPacket(int inGameID, int room
 {
 	flatbuffers::FlatBufferBuilder Builder;
 	Builder.Clear();
-	auto pos = PacketTable::PlayerTable::CreateVec3(Builder, x, y);
+	auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, x, y);
 	Builder.Finish(PacketTable::PlayerTable::CreatePlayerRespawn(Builder, inGameID, pos));
 	return MakeBuffer(ePacketType::S2C_PLAYERRESPAWN, Builder.GetBufferPointer(), Builder.GetSize());
 }
@@ -40,7 +40,7 @@ std::vector<uint8_t> PacketMaker::MakeBlockDropPacket(int x, int y, int type)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 	Builder.Clear();
-	auto pos = PacketTable::ObjectTable::CreateVec2i(Builder, x, y);
+	auto pos = PacketTable::UtilitiesTable::CreateVec2i(Builder, x, y);
 	Builder.Finish(PacketTable::ObjectTable::CreateBlockDrop(Builder, pos, type));
 	return MakeBuffer(ePacketType::S2C_BLOCKDROP, Builder.GetBufferPointer(), Builder.GetSize());
 }
@@ -49,7 +49,7 @@ std::vector<uint8_t> PacketMaker::MakeBombSpawnPacket(int x, int y, int bombid)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 	Builder.Clear();
-	auto pos = PacketTable::ObjectTable::CreateVec2i(Builder, x, y);
+	auto pos = PacketTable::UtilitiesTable::CreateVec2i(Builder, x, y);
 	Builder.Finish(PacketTable::ObjectTable::CreateBombSpawn(Builder, pos, bombid));
 	return MakeBuffer(ePacketType::S2C_BOMBSPAWN, Builder.GetBufferPointer(), Builder.GetSize());
 }
@@ -58,7 +58,7 @@ std::vector<uint8_t> PacketMaker::MakeBombExplosionPacket(int bombID, Vector3f p
 {
 	flatbuffers::FlatBufferBuilder Builder;
 	Builder.Clear();
-	auto pos = PacketTable::ObjectTable::CreateVec3f(Builder, position.x, position.y, position.x);
+	auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, position.x, position.y, position.x);
 	Builder.Finish(PacketTable::ObjectTable::CreateBombExplosion(Builder, pos, bombID));
 	return MakeBuffer(ePacketType::S2C_BOMBEXPLOSION, Builder.GetBufferPointer(), Builder.GetSize());
 }

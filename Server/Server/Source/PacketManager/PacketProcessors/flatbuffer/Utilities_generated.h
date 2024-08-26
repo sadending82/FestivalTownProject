@@ -22,6 +22,12 @@ struct UtilitiesBuilder;
 struct HeartBeat;
 struct HeartBeatBuilder;
 
+struct Vec2i;
+struct Vec2iBuilder;
+
+struct Vec3f;
+struct Vec3fBuilder;
+
 struct Utilities FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef UtilitiesBuilder Builder;
   bool Verify(::flatbuffers::Verifier &verifier) const {
@@ -89,6 +95,118 @@ inline ::flatbuffers::Offset<HeartBeat> CreateHeartBeat(
     int64_t time = 0) {
   HeartBeatBuilder builder_(_fbb);
   builder_.add_time(time);
+  return builder_.Finish();
+}
+
+struct Vec2i FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef Vec2iBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_X = 4,
+    VT_Y = 6
+  };
+  int32_t x() const {
+    return GetField<int32_t>(VT_X, 0);
+  }
+  int32_t y() const {
+    return GetField<int32_t>(VT_Y, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_X, 4) &&
+           VerifyField<int32_t>(verifier, VT_Y, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct Vec2iBuilder {
+  typedef Vec2i Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_x(int32_t x) {
+    fbb_.AddElement<int32_t>(Vec2i::VT_X, x, 0);
+  }
+  void add_y(int32_t y) {
+    fbb_.AddElement<int32_t>(Vec2i::VT_Y, y, 0);
+  }
+  explicit Vec2iBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<Vec2i> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<Vec2i>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<Vec2i> CreateVec2i(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t x = 0,
+    int32_t y = 0) {
+  Vec2iBuilder builder_(_fbb);
+  builder_.add_y(y);
+  builder_.add_x(x);
+  return builder_.Finish();
+}
+
+struct Vec3f FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef Vec3fBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_X = 4,
+    VT_Y = 6,
+    VT_Z = 8
+  };
+  float x() const {
+    return GetField<float>(VT_X, 0.0f);
+  }
+  float y() const {
+    return GetField<float>(VT_Y, 0.0f);
+  }
+  float z() const {
+    return GetField<float>(VT_Z, 0.0f);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<float>(verifier, VT_X, 4) &&
+           VerifyField<float>(verifier, VT_Y, 4) &&
+           VerifyField<float>(verifier, VT_Z, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct Vec3fBuilder {
+  typedef Vec3f Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_x(float x) {
+    fbb_.AddElement<float>(Vec3f::VT_X, x, 0.0f);
+  }
+  void add_y(float y) {
+    fbb_.AddElement<float>(Vec3f::VT_Y, y, 0.0f);
+  }
+  void add_z(float z) {
+    fbb_.AddElement<float>(Vec3f::VT_Z, z, 0.0f);
+  }
+  explicit Vec3fBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<Vec3f> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<Vec3f>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<Vec3f> CreateVec3f(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    float x = 0.0f,
+    float y = 0.0f,
+    float z = 0.0f) {
+  Vec3fBuilder builder_(_fbb);
+  builder_.add_z(z);
+  builder_.add_y(y);
+  builder_.add_x(x);
   return builder_.Finish();
 }
 
