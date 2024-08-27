@@ -1,6 +1,6 @@
 #pragma once
-#include "../PacketProcessor.h"
-#include "../../../Event/Event.h"
+#include "../../PacketProcessor.h"
+#include "../../../../Event/Event.h"
 
 using namespace PacketTable::PlayerTable;
 

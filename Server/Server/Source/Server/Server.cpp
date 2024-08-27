@@ -206,6 +206,12 @@ void Server::SendGameStart(int roomID)
     SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
 
+void Server::SendAllPlayerReady(int roomID)
+{
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakeAllPlayerReadyPacket();
+    SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
+}
+
 void Server::SendHeartBeatPacket(int sessionID)
 {
     std::vector<uint8_t> send_buffer = mPacketMaker->MakeHeartBeatPacket();

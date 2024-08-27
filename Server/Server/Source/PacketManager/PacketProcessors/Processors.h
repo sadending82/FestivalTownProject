@@ -1,11 +1,12 @@
 #pragma once
+// Packet
+#include "Packet/Utilities/PacketHeartBeat.h"
+
 #include "Packet/Player/PacketPlayerMove.h"
 #include "Packet/Player/PacketPlayerStop.h"
 #include "Packet/Player/PacketPlayerPosSync.h"
 #include "Packet/Player/PacketPlayerGrabBomb.h"
 #include "Packet/Player/PacketPlayerThrowBomb.h"
-
-#include "Packet/Utilities/PacketHeartBeat.h"
 
 #include "Packet/Object/PacketBombInput.h"
 #include "Packet/Object/PacketBombPositionSync.h"
@@ -15,9 +16,15 @@
 
 #include "Packet/Lobby/PacketGameMatchingRequest.h"
 
-#include "Event/EventHeartBeat.h"
-#include "Event/EventBlockDrop.h"
-#include "Event/EventBombSpawn.h"
-#include "Event/EventRemainTimeSync.h"
-#include "Event/EventBombExplosion.h"
-#include "Event/EventTimeOverCheck.h"
+
+// Event
+#include "Event/Utilities/EventHeartBeat.h"
+
+#include "Event/Object/EventBlockDrop.h"
+#include "Event/Object/EventBombSpawn.h"
+#include "Event/Object/EventBombExplosion.h"
+
+#include "Event/Game/EventRemainTimeSync.h"
+#include "Event/Game/EventTimeOverCheck.h"
+#include "Event/Game/EventPlayerRespawn.h"
+#include "Event/Game/EventGameStart.h"

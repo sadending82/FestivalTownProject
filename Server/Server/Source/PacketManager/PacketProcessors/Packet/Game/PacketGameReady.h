@@ -19,11 +19,15 @@ public:
 			}
 			int roomid = player->GetRoomID();
 			Room* room = pServer->GetRooms()[roomid];
+			if (room == nullptr) {
+				return;
+			}
 
 			room->AddReadyCnt();
 
 			if (room->GetReadyCnt() == room->GetPlayerCnt()) {
-				pServer->StartGame(roomid);
+				pServer->SendAllPlayerReady(roomid);
+				PushEventGameStart(pServer->GetTimer(), roomid, room->GetRoomCode());
 			}
 		}
 	}

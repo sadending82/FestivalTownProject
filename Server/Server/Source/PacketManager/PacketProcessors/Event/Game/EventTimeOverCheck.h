@@ -1,6 +1,6 @@
 #pragma once
-#include "../PacketProcessor.h"
-#include "../../../Event/Event.h"
+#include "../../PacketProcessor.h"
+#include "../../../../Event/Event.h"
 
 class EventTimeOverCheck : public PacketProcessor {
 
@@ -11,6 +11,9 @@ public:
 
 		int roomid = event->roomID;
 		Room* room = pServer->GetRooms()[roomid];
+		if (room == nullptr) {
+			return;
+		}
 		long long roomCode = room->GetRoomCode();
 		if (roomCode != event->roomCode) {
 			return;

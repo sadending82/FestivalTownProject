@@ -1,18 +1,19 @@
 #pragma once
-#include "../PacketProcessor.h"
-#include "../../../Event/Event.h"
+#include "../../PacketProcessor.h"
+#include "../../../../Event/Event.h"
 
-using namespace PacketTable::ObjectTable;
-
-class EventBombSpawn : public PacketProcessor {
+class EventRemainTimeSync : public PacketProcessor {
 
 public:
 
 	virtual void Process(Server* pServer, unsigned char* buf) {
-		EV_BOMB_SPAWN* event = reinterpret_cast<EV_BOMB_SPAWN*>(buf);
+		EV_TIME_SYNC* event = reinterpret_cast<EV_TIME_SYNC*>(buf);
 
 		int roomid = event->roomID;
 		Room* room = pServer->GetRooms()[roomid];
+		if (room == nullptr) {
+			return;
+		}
 		long long roomCode = room->GetRoomCode();
 		if (roomCode != event->roomCode) {
 			return;
@@ -20,15 +21,15 @@ public:
 		if (room->GetState() == eRoomState::RS_FREE) {
 			return;
 		}
+
 		GameCode gameMode = room->GetGameMode();
-		int nextEventTime = pServer->GetTableManager()->getFITH_Data()[gameMode].Bomb_Spawn_Time; // seconds
+		
 		int spawnCnt = pServer->GetTableManager()->getFITH_Data()[gameMode].Bomb_Spawn_Count;
 
-		PushEventBombSpawn(pServer->GetTimer(), event->roomID, event->roomCode, nextEventTime);
-		pServer->SendBombSpawnPacket(roomid, spawnCnt);
+		PushEventRemainTimeSync(pServer->GetTimer(), roomid, event->roomCode);
+		pServer->SendRemainTimeSync(roomid);
 	}
 
 private:
-
 	flatbuffers::FlatBufferBuilder mBuilder;
 };

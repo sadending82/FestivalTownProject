@@ -17,6 +17,23 @@ bool PushEventHeartBeat(Timer* pTimer, int sessionID) {
 	return true;
 }
 
+bool PushEventGameStart(Timer* pTimer, int roomID, long long roomCode)
+{
+	EV_GAME_START e;
+	e.size = sizeof(EV_GAME_START);
+	e.type = eEventType::GAMESTART;
+	e.roomID = roomID;
+	e.roomCode = roomCode;
+
+	EVENT_HEADER header;
+	header.start_time = std::chrono::system_clock::now() + std::chrono::milliseconds(GAMESTARTINTERVAL);
+	memcpy(header.message, reinterpret_cast<char*>(&e), sizeof(EV_PLAYER_RESPAWN));
+
+	pTimer->PushEvent(header);
+
+	return true;
+}
+
 bool PushEventBlockDrop(Timer* pTimer, int roomID, long long roomCode, int intervalSecond) {
 	EV_OBJECT_DROP e;
 	e.size = sizeof(EV_OBJECT_DROP);

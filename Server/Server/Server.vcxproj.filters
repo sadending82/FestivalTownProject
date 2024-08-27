@@ -19,7 +19,7 @@
     <ClCompile Include="Source\Thread\TestThread\TestThread.cpp" />
     <ClCompile Include="Source\Object\Bomb\Bomb.cpp" />
     <ClCompile Include="Source\Object\Object.cpp" />
-    <ClCompile Include="Source\PacketManager\PacketProcessors\Event\EventPlayerRespawn.h" />
+    <ClCompile Include="Source\PacketManager\PacketProcessors\Event\Game\EventPlayerRespawn.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DB\DB.h" />
@@ -46,9 +46,9 @@
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\Player_generated.h" />
     <ClInclude Include="Source\Event.h" />
     <ClInclude Include="Source\Event\Event.h" />
-    <ClInclude Include="Source\PacketManager\PacketProcessors\Event\EventBlockDrop.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Event\Object\EventBlockDrop.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Player\PacketPlayerPosSync.h" />
-    <ClInclude Include="Source\PacketManager\PacketProcessors\Event\EventHeartBeat.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Event\Utilities\EventHeartBeat.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Utilities\PacketHeartBeat.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\Utilities_generated.h" />
     <ClInclude Include="Source\TableManager\Tables\FITH.h" />
@@ -56,19 +56,19 @@
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\Game_generated.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Object\PacketBombInput.h" />
     <ClInclude Include="Source\Room\Team\Team.h" />
-    <ClInclude Include="Source\PacketManager\PacketProcessors\Event\EventBombSpawn.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Event\Object\EventBombSpawn.h" />
     <ClInclude Include="Source\PacketManager\PacketMaker\PacketMaker.h" />
     <ClInclude Include="Source\Thread\TestThread\TestThread.h" />
-    <ClInclude Include="Source\PacketManager\PacketProcessors\Event\EventRemainTimeSync.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Event\Game\EventRemainTimeSync.h" />
     <ClInclude Include="Source\Object\Bomb\Bomb.h" />
     <ClInclude Include="Source\protocol.h" />
     <ClInclude Include="Source\Object\Object.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Player\PacketPlayerGrabBomb.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Player\PacketPlayerThrowBomb.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Object\PacketBombPositionSync.h" />
-    <ClInclude Include="Source\PacketManager\PacketProcessors\Event\EventBombExplosion.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Event\Object\EventBombExplosion.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Object\PacketBombExplosion.h" />
-    <ClInclude Include="Source\PacketManager\PacketProcessors\Event\EventTimeOverCheck.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Event\Game\EventTimeOverCheck.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\Bomb_generated.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\block_generated.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\Lobby_generated.h" />
@@ -81,6 +81,7 @@
     <ClInclude Include="Source\PacketManager\flatbuffer\Lobby_generated.h" />
     <ClInclude Include="Source\PacketManager\flatbuffer\Player_generated.h" />
     <ClInclude Include="Source\PacketManager\flatbuffer\Utilities_generated.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Event\Game\EventGameStart.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

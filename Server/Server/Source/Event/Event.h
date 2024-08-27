@@ -1,10 +1,12 @@
 #pragma once
 #include "../utility.h"
 
+// miliseconds
 constexpr int HEARTBEATINTERVAL = 6000;
 constexpr int BLOCKDROPINTERVAL = 10000;
 constexpr int REMAINTIMESYNCINTERVAL = 30000;
 constexpr int TIMEOVERCHECKINTERVAL = 5000;
+constexpr int GAMESTARTINTERVAL = 4000;
 
 class Timer;
 
@@ -13,6 +15,7 @@ enum eEventType {
 	HEARTBEAT,
 	
 	// InGmae Event
+	GAMESTART,
 	BLOCKDROP,
 	BOMBSPAWN,
 	BOMBEXPLOSION,
@@ -38,6 +41,10 @@ struct EVENT {
 	char type;
 };
 
+struct EV_GAME_START : EVENT {
+	int roomID;
+	long long roomCode;
+};
 
 struct EV_HEART_BEAT : EVENT {
 	int sessionID;
@@ -81,6 +88,7 @@ struct EV_PLAYER_RESPAWN : EVENT {
 bool PushEventHeartBeat(Timer* pTimer, int sessionID);
 
 // InGameEvent
+bool PushEventGameStart(Timer* pTimer, int roomID, long long roomCode);
 bool PushEventBlockDrop(Timer* pTimer, int roomID, long long roomCode, int intervalSecond);
 bool PushEventBombSpawn(Timer* pTimer, int roomID, long long roomCode, int intervalSecond);
 bool PushEventRemainTimeSync(Timer* pTimer, int roomID, long long roomCode);

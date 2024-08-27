@@ -1,17 +1,19 @@
 #pragma once
-#include "../PacketProcessor.h"
-#include "../../../Event/Event.h"
+#include "../../PacketProcessor.h"
+#include "../../../../Event/Event.h"
 
-class EventPlayerRespawn : public PacketProcessor {
+class EventGameStart : public PacketProcessor {
 
 public:
 
 	virtual void Process(Server* pServer, unsigned char* buf) {
-		EV_PLAYER_RESPAWN* event = reinterpret_cast<EV_PLAYER_RESPAWN*>(buf);
+		EV_GAME_START* event = reinterpret_cast<EV_GAME_START*>(buf);
 
 		int roomid = event->roomID;
-		int playerid = event->playerID;
 		Room* room = pServer->GetRooms()[roomid];
+		if (room == nullptr) {
+			return;
+		}
 		long long roomCode = room->GetRoomCode();
 		if (roomCode != event->roomCode) {
 			return;
@@ -20,7 +22,7 @@ public:
 			return;
 		}
 
-		pServer->SendPlayerRespawn(playerid, roomid);
+		pServer->StartGame(roomid);
 	}
 
 private:
