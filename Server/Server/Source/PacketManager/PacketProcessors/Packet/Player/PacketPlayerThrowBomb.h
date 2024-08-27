@@ -1,23 +1,21 @@
 #pragma once
-#include "../PacketProcessor.h"
+#include "../../PacketProcessor.h"
 
-using namespace PacketTable::ObjectTable;
+using namespace PacketTable::PlayerTable;
 
-class PacketBombPositionSync: public PacketProcessor {
+class PacketPlayerThrowBomb : public PacketProcessor {
 
 public:
 	virtual void Process(Server* pServer, const uint8_t* data, const int size, const int key) {
 
 		mBuilder.Clear();
-
-		// 지금은 버퍼 내용은 사용 X 유효한 버퍼인지만 확인해서 처리
 		flatbuffers::Verifier verifier(data, size);
-		if (verifier.VerifyBuffer<BombPosition>(nullptr)) {
-			const BombPosition* read = flatbuffers::GetRoot<BombPosition>(data);
+		if (verifier.VerifyBuffer<PlayerThrowBomb>(nullptr)) {
+			const PlayerThrowBomb* read = flatbuffers::GetRoot<PlayerThrowBomb>(data);
 
 			Player* p = dynamic_cast<Player*>(pServer->GetSessions()[key]);
 			int roomid = p->GetRoomID();
-			int bombid = read->id();
+			int bombid = read->bomb_id();
 
 			Room* room = pServer->GetRooms()[roomid];
 			room->GetObjectListLock().lock_shared();
@@ -26,12 +24,10 @@ public:
 				room->GetObjectListLock().unlock_shared();
 				return;
 			}
-
-			bomb->SetPosition(Vector3f(read->pos()->x(), read->pos()->y(), read->pos()->z()));
-
-			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_BOMBPOSSYNC, data, size);
-			pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomid);
+			bomb->SetIsGrabbed(false);
 			room->GetObjectListLock().unlock_shared();
+			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYERTHROWBOMB, data, size);
+			pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomid);
 		}
 	}
 

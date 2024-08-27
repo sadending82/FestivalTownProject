@@ -19,7 +19,6 @@ namespace NetworkProtocol
         // Server -> Client
         S2C_HEARTBEAT,
         S2C_PLAYERADD,
-        S2C_GAMEINFO,
         S2C_PLAYERMOVE,
         S2C_PLAYERSTOP,
         S2C_PLAYERPOSSYNC,
@@ -31,6 +30,9 @@ namespace NetworkProtocol
         S2C_BOMBSPAWN,
         S2C_BOMBEXPLOSION,
         S2C_BOMBPOSSYNC,
+
+        S2C_MATCHINGRESPONSE,
+        S2C_ALLPLAYERREADY,
         S2C_GAMESTART,
         S2C_GAMEEND,
 
@@ -47,8 +49,17 @@ namespace NetworkProtocol
 
         C2S_BOMBINPUT,
         C2S_BOMBPOSSYNC,
-        C2S_BOMBEXPLOSION
+        C2S_BOMBEXPLOSION,
 
+        C2S_MATCHINGREQUEST,
+        C2S_GAMEREADY
+    };
+
+    public enum GameCode
+    {
+        FITH_Team_battle_One,
+        FITH_Team_battle_Two,
+        FITH_Team_battle_Three,
     };
 
     public enum ePlayerState

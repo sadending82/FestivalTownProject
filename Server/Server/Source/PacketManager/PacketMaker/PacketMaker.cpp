@@ -18,12 +18,12 @@ std::vector<uint8_t> PacketMaker::MakePlayerRespawnPacket(int inGameID, int room
 	return MakeBuffer(ePacketType::S2C_PLAYERRESPAWN, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakeGameInfo(int inGameID, int roomID, int team, int gameMode, bool isHost)
+std::vector<uint8_t> PacketMaker::MakeGameMatchingResponsePacket(int inGameID, int roomID, int team, int gameMode, bool isHost)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 	Builder.Clear();
-	Builder.Finish(PacketTable::GameTable::CreateGameInfo(Builder, inGameID, roomID, team, gameMode, isHost));
-	return MakeBuffer(ePacketType::S2C_GAMEINFO, Builder.GetBufferPointer(), Builder.GetSize());
+	Builder.Finish(PacketTable::LobbyTable::CreateGameMatchingResponse(Builder, inGameID, roomID, team, gameMode, isHost));
+	return MakeBuffer(ePacketType::S2C_MATCHINGRESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
 std::vector<uint8_t> PacketMaker::MakeHeartBeatPacket()

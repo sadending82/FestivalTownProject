@@ -11,6 +11,7 @@ using PacketTable.PlayerTable;
 using PacketTable.UtilitiesTable;
 using PacketTable.GameTable;
 using PacketTable.ObjectTable;
+using PacketTable.LobbyTable;
 
 public class PacketMaker
 {
@@ -269,6 +270,24 @@ public class PacketMaker
 
         byte[] data = builder.SizedByteArray();
         HEADER header = new HEADER { type = (ushort)ePacketType.C2S_BOMBEXPLOSION, flatBufferSize = (ushort)data.Length };
+        byte[] headerdata = Serialize<HEADER>(header);
+        byte[] result = new byte[data.Length + headerdata.Length];
+
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
+
+        return result;
+    }
+
+    public byte[] MakeGameMatchingRequestPacket()
+    {
+        var builder = new FlatBufferBuilder(1);
+        GameMatchingRequest.StartGameMatchingRequest(builder);
+        var offset = GameMatchingRequest.EndGameMatchingRequest(builder);
+        builder.Finish(offset.Value);
+
+        byte[] data = builder.SizedByteArray();
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_MATCHINGREQUEST, flatBufferSize = (ushort)data.Length };
         byte[] headerdata = Serialize<HEADER>(header);
         byte[] result = new byte[data.Length + headerdata.Length];
 

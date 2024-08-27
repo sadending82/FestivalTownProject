@@ -1,5 +1,5 @@
 #pragma once
-#include "../PacketProcessor.h"
+#include "../../PacketProcessor.h"
 
 using namespace PacketTable::ObjectTable;
 

@@ -3,6 +3,7 @@
 #include "../Object/Map/Map.h"
 #include "../Object/Object.h"
 #include "../Object/Bomb/Bomb.h"
+#include "../protocol.h"
 
 class Room
 {

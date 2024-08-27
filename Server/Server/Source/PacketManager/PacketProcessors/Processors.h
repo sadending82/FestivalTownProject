@@ -1,13 +1,19 @@
 #pragma once
-#include "Packet/PacketPlayerMove.h"
-#include "Packet/PacketPlayerStop.h"
-#include "Packet/PacketPlayerPosSync.h"
-#include "Packet/PacketHeartBeat.h"
-#include "Packet/PacketBombInput.h"
-#include "Packet/PacketPlayerGrabBomb.h"
-#include "Packet/PacketPlayerThrowBomb.h"
-#include "Packet/PacketBombPositionSync.h"
-#include "Packet/PacketBombExplosion.h"
+#include "Packet/Player/PacketPlayerMove.h"
+#include "Packet/Player/PacketPlayerStop.h"
+#include "Packet/Player/PacketPlayerPosSync.h"
+#include "Packet/Player/PacketPlayerGrabBomb.h"
+#include "Packet/Player/PacketPlayerThrowBomb.h"
+
+#include "Packet/Utilities/PacketHeartBeat.h"
+
+#include "Packet/Object/PacketBombInput.h"
+#include "Packet/Object/PacketBombPositionSync.h"
+#include "Packet/Object/PacketBombExplosion.h"
+
+#include "Packet/Game/PacketGameReady.h"
+
+#include "Packet/Lobby/PacketGameMatchingRequest.h"
 
 #include "Event/EventHeartBeat.h"
 #include "Event/EventBlockDrop.h"

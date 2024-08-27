@@ -1,7 +1,7 @@
 #pragma once
 #include "../../utility.h"
 #include "../../protocol.h"
-#include "../PacketProcessors/flatbuffer/FlatBufferManager.h"
+#include "../flatbuffer/FlatBufferManager.h"
 
 class PacketMaker
 {
@@ -11,7 +11,7 @@ public:
 
 	std::vector<uint8_t> MakePlayerAdd(int inGameID);
 	std::vector<uint8_t> MakePlayerRespawnPacket(int inGameID, int roomID, int x, int y);
-	std::vector<uint8_t> MakeGameInfo(int inGameID, int roomID, int team, int gameMode, bool isHost = false);
+	std::vector<uint8_t> MakeGameMatchingResponsePacket(int inGameID, int roomID, int team, int gameMode, bool isHost = false);
 	std::vector<uint8_t> MakeHeartBeatPacket();
 	std::vector<uint8_t> MakeBlockDropPacket(int x, int y, int type);
 	std::vector<uint8_t> MakeBombSpawnPacket(int x, int y, int bombid);

@@ -1,5 +1,6 @@
 ﻿using Google.FlatBuffers;
 using PacketTable.GameTable;
+using PacketTable.LobbyTable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +10,14 @@ using UnityEngine;
 
 namespace Network.PacketProcessor
 {
-    public class GameInfoProcessor : PacketProcessor
+    public class GameMatchingResponseProcessor : PacketProcessor
     {
         public override void Process(PacketManager packetmanager, byte[] data)
         {
             // 여기에 처리    
             var bb = new ByteBuffer(data);
 
-            var Data = GameInfo.GetRootAsGameInfo(bb);
+            var Data = GameMatchingResponse.GetRootAsGameMatchingResponse(bb);
 
             int id = Data.Ingameid;
             int roomID = Data.Roomid;

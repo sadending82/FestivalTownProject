@@ -26,6 +26,7 @@ public class UI_HomeStart : UI_PopUp
 
         Get<GameObject>((int)GameObjects.GameStartButton).BindEvent((PointerEventData) => { 
             Debug.Log($"게임 시작 버튼을 클릭했군요!");
+            Managers.Network.GetPacketManager().SendGameMatchingRequest();
             Managers.Scene.LoadScene(Define.Scene.Game);
         });
 

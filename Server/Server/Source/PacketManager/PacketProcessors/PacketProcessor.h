@@ -1,6 +1,6 @@
 #pragma once
 #include "../../DB/DB.h"
-#include "flatbuffer/FlatBufferManager.h"
+#include "../flatbuffer/FlatBufferManager.h"
 #include "../../Network/Session/Session.h"
 #include "../../Server/Server.h"
 #include "../../Thread/TimerThread/TimerThread.h"

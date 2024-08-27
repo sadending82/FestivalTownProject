@@ -174,7 +174,7 @@ void Server::SendPlayerAdd(int sessionID, int destination)
     GetSessions()[destination]->DoSend(send_buffer.data(), send_buffer.size());
 }
 
-void Server::SendGameInfo(int sessionID)
+void Server::SendGameMatchingResponse(int sessionID)
 {
     Player* player = dynamic_cast<Player*>(GetSessions()[sessionID]);
     int inGameID = player->GetInGameID();
@@ -183,10 +183,10 @@ void Server::SendGameInfo(int sessionID)
     Room* room = mRooms[roomID];
     std::vector<uint8_t> send_buffer;
     if (inGameID == room->GetHostID()) {
-        send_buffer = mPacketMaker->MakeGameInfo(inGameID, roomID, team, room->GetGameMode(), true);
+        send_buffer = mPacketMaker->MakeGameMatchingResponsePacket(inGameID, roomID, team, room->GetGameMode(), true);
     }
     else {
-        send_buffer = mPacketMaker->MakeGameInfo(inGameID, roomID, team, room->GetGameMode());
+        send_buffer = mPacketMaker->MakeGameMatchingResponsePacket(inGameID, roomID, team, room->GetGameMode());
     }
 
     GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
@@ -349,7 +349,8 @@ void Server::StartGame(int roomID)
         if (room->GetPlayerCnt() == room->GetPlayerLimit()) {
             break;
         }
-        if (s->GetState() == eSessionState::ST_ACCEPTED) {
+        s->GetStateLock().lock();
+        if (s->GetState() == eSessionState::ST_GAMEREADY) {
             Player* p = dynamic_cast<Player*>(s);
 
             // юс╫ц
@@ -367,9 +368,10 @@ void Server::StartGame(int roomID)
                     room->SetHost(p->GetInGameID());
                 }
                 room->AddPlayerCnt();
-                SendGameInfo(sessionID);
+                SendGameMatchingResponse(sessionID);
             }
         }
+        s->GetStateLock().unlock();
     }
 
     // Send Each Player's Info

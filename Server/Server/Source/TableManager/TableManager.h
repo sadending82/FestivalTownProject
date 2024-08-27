@@ -4,6 +4,7 @@
 #include "Tables/Tables.h"
 #include "../utility.h"
 #include "../Object/Map/Map.h"
+#include "../protocol.h"
 
 constexpr int variableNameIdx = 0;
 

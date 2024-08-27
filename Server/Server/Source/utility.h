@@ -52,7 +52,7 @@ const uint8_t DEFAULT_8BITFLAG = 0b00000000;
 
 enum eSessionState
 {
-	ST_FREE, ST_ACCEPTED, ST_INGAME
+	ST_FREE, ST_ACCEPTED, ST_GAMEREADY, ST_INGAME
 };
 
 enum ePlayerState {
@@ -64,12 +64,6 @@ enum ePlayerState {
 enum eRoomState {
 	RS_FREE,
 	RS_INGAME
-};
-
-enum GameCode {
-	FITH_Team_battle_One,
-	FITH_Team_battle_Two,
-	FITH_Team_battle_Three,
 };
 
 enum TeamCode {
