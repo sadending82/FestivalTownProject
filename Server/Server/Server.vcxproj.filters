@@ -82,6 +82,7 @@
     <ClInclude Include="Source\PacketManager\flatbuffer\Player_generated.h" />
     <ClInclude Include="Source\PacketManager\flatbuffer\Utilities_generated.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Event\Game\EventGameStart.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Event\Lobby\EventGameMatching.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

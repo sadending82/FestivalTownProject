@@ -29,6 +29,8 @@ void PacketManager::Init(Server* server)
     // event
     EventProcessorMap[eEventType::HEARTBEAT] = std::make_unique<EventHeartBeat>();
 
+    EventProcessorMap[eEventType::GAMEMATCHING] = std::make_unique<EventGameMatching>();
+
     EventProcessorMap[eEventType::BLOCKDROP] = std::make_unique<EventBlockDrop>();
     EventProcessorMap[eEventType::BOMBSPAWN] = std::make_unique<EventBombSpawn>();
     EventProcessorMap[eEventType::BOMBEXPLOSION] = std::make_unique<EventBombExplosion>();

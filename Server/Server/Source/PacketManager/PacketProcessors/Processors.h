@@ -20,6 +20,8 @@
 // Event
 #include "Event/Utilities/EventHeartBeat.h"
 
+#include "Event/Lobby/EventGameMatching.h"
+
 #include "Event/Object/EventBlockDrop.h"
 #include "Event/Object/EventBombSpawn.h"
 #include "Event/Object/EventBombExplosion.h"

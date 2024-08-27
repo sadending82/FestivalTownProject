@@ -13,6 +13,12 @@ Server::Server()
 
 Server::~Server()
 {
+    for (int i = 0; i < MAXSESSION; ++i) {
+        delete mSessions[i];
+    }
+    for (int i = 0; i < MAXROOM; ++i) {
+        delete mRooms[i];
+    }
 }
 
 int Server::SetSessionID()
@@ -131,6 +137,7 @@ void Server::Init(class TableManager* pTableManager, class DB* pDB)
     mTestThread = std::thread(&TestThread::RunWorker, pTestThreadRef);
 #endif
     DEBUGMSGNOPARAM("Thread Ready\n");
+    PushEventGameMatching(mTimer);
 }
 
 void Server::ThreadJoin()
@@ -276,11 +283,11 @@ void Server::SendBombSpawnPacket(int roomID, int spawnCount)
             unique_idx.emplace(idx);
         }
     }
-
     for (const auto& idx : unique_idx) {
         int x = spawnPoses[idx].first;
         int y = spawnPoses[idx].second;
         int bombid = room->AddBomb(new Bomb, Vector3f(x, y, 0));
+        std::cout << "bomb spawn - " << bombid << std::endl;
         if (bombid == INVALIDKEY) continue;
         std::vector<uint8_t> send_buffer = mPacketMaker->MakeBombSpawnPacket(x, y, bombid);
         SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
@@ -291,10 +298,14 @@ void Server::SendBombSpawnPacket(int roomID, int spawnCount)
 
 void Server::SendBombExplosionPacket(int roomID, int bombID)
 {
-    // 이 함수가 호출되는 부분에 이미 lock이 걸려있어서 lock 사용 X
+    mRooms[roomID]->GetObjectListLock().lock_shared();
     Object* object = mRooms[roomID]->GetObjects()[bombID];
-    if (object == nullptr) return;
+    if (object == nullptr) {
+        mRooms[roomID]->GetObjectListLock().unlock_shared();
+        return;
+    }
     Vector3f pos = object->GetPosition();
+    mRooms[roomID]->GetObjectListLock().unlock_shared();
     std::vector<uint8_t> send_buffer = mPacketMaker->MakeBombExplosionPacket(bombID, pos);
     SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }

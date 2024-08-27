@@ -36,6 +36,7 @@ constexpr int BUFSIZE = 1000;
 constexpr int MAXSESSION = 1000;
 constexpr int MAXROOM = 100;
 constexpr int MAXPLAYER = 6;
+constexpr int MINPLAYER = 2;
 constexpr int MAXOBJECT = 100;
 
 const uint8_t DEFAULT_8BITFLAG = 0b00000000;

@@ -194,6 +194,7 @@ xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     <ClInclude Include="Source\Network\ExOver.h" />
     <ClInclude Include="Source\Network\Session\Session.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Event\Game\EventGameStart.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Event\Lobby\EventGameMatching.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Event\Object\EventBombExplosion.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Event\Object\EventBombSpawn.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Event\Utilities\EventHeartBeat.h" />

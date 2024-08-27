@@ -7,13 +7,15 @@ constexpr int BLOCKDROPINTERVAL = 10000;
 constexpr int REMAINTIMESYNCINTERVAL = 30000;
 constexpr int TIMEOVERCHECKINTERVAL = 5000;
 constexpr int GAMESTARTINTERVAL = 4000;
+constexpr int GAMEMATCHINGINTERVAL = 10000;
 
 class Timer;
 
 #pragma pack (push, 1)
 enum eEventType {
 	HEARTBEAT,
-	
+	GAMEMATCHING,
+
 	// InGmae Event
 	GAMESTART,
 	BLOCKDROP,
@@ -39,6 +41,10 @@ struct EVENT_HEADER {
 struct EVENT {
 	char size;
 	char type;
+};
+
+struct EV_GAME_MATCHING : EVENT {
+	
 };
 
 struct EV_GAME_START : EVENT {
@@ -86,6 +92,7 @@ struct EV_PLAYER_RESPAWN : EVENT {
 #pragma pack(pop)
 
 bool PushEventHeartBeat(Timer* pTimer, int sessionID);
+bool PushEventGameMatching(Timer* pTimer);
 
 // InGameEvent
 bool PushEventGameStart(Timer* pTimer, int roomID, long long roomCode);

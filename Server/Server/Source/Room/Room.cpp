@@ -2,6 +2,9 @@
 
 Room::~Room()
 {
+	for (int i = 0; i < MAXOBJECT; ++i) {
+		delete mObjectList[i];
+	}
 }
 
 void Room::Reset()
@@ -11,6 +14,10 @@ void Room::Reset()
 	mPlayerLimit = 0;
 	mHostID = INVALIDKEY;
 	mRoomCode = 0;
+
+	for (int i = 0; i < MAXOBJECT; ++i) {
+		delete mObjectList[i];
+	}
 	std::fill(mPlayerList.begin(), mPlayerList.end(), nullptr);
 	std::fill(mObjectList.begin(), mObjectList.end(), nullptr);
 	mTeams.clear();
@@ -25,6 +32,10 @@ void Room::Init(int id, int teamLifeCount, int playerLimit)
 	mPlayerCnt = 0;
 	mPlayerLimit = playerLimit;
 	mHostID = INVALIDKEY;
+
+	for (int i = 0; i < MAXOBJECT; ++i) {
+		delete mObjectList[i];
+	}
 	std::fill(mPlayerList.begin(), mPlayerList.end(), nullptr);
 	std::fill(mObjectList.begin(), mObjectList.end(), nullptr);
 	mTeams.clear();
@@ -104,10 +115,10 @@ int Room::AddBomb(Bomb* object, Vector3f position, Vector3f direction)
 
 bool Room::DeleteObject(int id)
 {
-	if (mObjectList[id] == nullptr) {
-		return false;
-	}
+	mObjectListLock.lock();
+	delete mObjectList[id];
 	mObjectList[id] = nullptr;
+	mObjectListLock.unlock();
 	return true;
 }
 

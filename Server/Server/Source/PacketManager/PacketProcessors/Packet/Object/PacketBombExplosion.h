@@ -17,10 +17,16 @@ public:
 			int roomid = dynamic_cast<Player*>(pServer->GetSessions()[key])->GetRoomID();
 			int bombid = read->id();
 
-			if (pServer->GetRooms()[roomid]->GetObjects()[bombid] == nullptr) {
+			Room* room = pServer->GetRooms()[roomid];
+			if (room == nullptr) {
+				return;
+			}
+			if (room->GetState() == eRoomState::RS_FREE) {
 				return;
 			}
 
+			pServer->SendBombExplosionPacket(roomid, bombid);
+			room->DeleteObject(bombid);
 		}
 	}
 
