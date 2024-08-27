@@ -54,13 +54,13 @@ public class PacketManager : MonoBehaviour
             { ePacketType.S2C_BOMBSPAWN, new BombSpawnProcessor() },
             { ePacketType.S2C_BOMBEXPLOSION, new BombExplosionProcessor() },
             { ePacketType.S2C_BOMBPOSSYNC, new BombPositionSyncProcessor() },
-            { ePacketType.S2C_GAMEEND, new GameEndProcessor() },
-
 
             { ePacketType.S2C_LIFEREDUCE, new LifeReduceProcessor() },
             { ePacketType.S2C_REMAINTIMESYNC, new RemainTimeSyncProcessor() },
 
             { ePacketType.S2C_MATCHINGRESPONSE, new GameMatchingResponseProcessor() },
+            { ePacketType.S2C_GAMESTART, new GameStartProcessor() },
+            { ePacketType.S2C_GAMEEND, new GameEndProcessor() },
         };
     }
 
@@ -167,6 +167,13 @@ public class PacketManager : MonoBehaviour
     public void SendGameMatchingRequest()
     {
         byte[] packet = _packetMaker.MakeGameMatchingRequestPacket();
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+
+    public void SendGameReady()
+    {
+        byte[] packet = _packetMaker.MakeGameReadyPacket();
         if (packet == null) { return; }
         SendPacket(packet);
     }

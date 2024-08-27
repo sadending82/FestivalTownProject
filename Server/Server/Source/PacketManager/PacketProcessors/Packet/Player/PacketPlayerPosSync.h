@@ -16,6 +16,9 @@ public:
 			const PlayerPosSync* read = flatbuffers::GetRoot<PlayerPosSync>(data);
 			
 			Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
+			if (player == nullptr) {
+				return;
+			}
 
 			player->SetPosition(read->pos()->x(), read->pos()->y(), read->pos()->z());
 			player->SetDirection(read->direction()->x(), read->direction()->y(), read->direction()->z());

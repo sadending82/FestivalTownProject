@@ -7,6 +7,14 @@
 #include "../TableManager/TableManager.h"
 #include "../Event/Event.h"
 
+Server::Server()
+{
+}
+
+Server::~Server()
+{
+}
+
 int Server::SetSessionID()
 {
     for (int i = STARTKEY; i < MAXSESSION; ++i) {
@@ -192,6 +200,12 @@ void Server::SendGameMatchingResponse(int sessionID)
     GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
 }
 
+void Server::SendGameStart(int roomID)
+{
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakeGameStartPacket(roomID);
+    SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
+}
+
 void Server::SendHeartBeatPacket(int sessionID)
 {
     std::vector<uint8_t> send_buffer = mPacketMaker->MakeHeartBeatPacket();
@@ -331,16 +345,14 @@ void Server::StartHeartBeat(int sessionID)
     PushEventHeartBeat(mTimer, sessionID);
 }
 
-void Server::StartGame(int roomID)
+void Server::MatchingComplete(int roomID, int playerCnt)
 {
-    // Activate New Room
     Room* room = GetRooms()[roomID];
-
     room->Init(roomID, GetTableManager()->getFITH_Data()[GameCode::FITH_Team_battle_Three].Team_Life_Count);
     room->SetGameMode(GameCode::FITH_Team_battle_Three);
     room->InitMap(GetTableManager()->getMapData()[TEST]);
-    room->SetPlayerLimit(6); // 임시
-    room->SetIsRun(true);
+
+    room->SetPlayerLimit(playerCnt); // 임시
 
     int tFlag = 0;
 
@@ -354,7 +366,7 @@ void Server::StartGame(int roomID)
             Player* p = dynamic_cast<Player*>(s);
 
             // 임시
-            p->SetTeam(tFlag%2);
+            p->SetTeam(tFlag % 2);
             tFlag++;
             //
 
@@ -374,7 +386,8 @@ void Server::StartGame(int roomID)
         s->GetStateLock().unlock();
     }
 
-    // Send Each Player's Info
+    room->SetPlayerLimit(room->GetPlayerCnt()); // 임시
+
     for (Player* p : room->GetPlayerList()) {
         if (p == nullptr) continue;
         for (Player* other : room->GetPlayerList()) {
@@ -382,17 +395,26 @@ void Server::StartGame(int roomID)
             SendPlayerAdd(p->GetSessionID(), other->GetSessionID());
         }
     }
+}
 
-    // Push Event
-    long long roomCode = room->GetRoomCode();
-    GameCode gameCode = room->GetGameMode();
-    int eventTime = GetTableManager()->getFITH_Data()[gameCode].Block_Spawn_Time;
-    PushEventBlockDrop(mTimer, roomID, roomCode, eventTime);
-    PushEventBombSpawn(mTimer, roomID, roomCode, GetTableManager()->getFITH_Data()[gameCode].Bomb_Spawn_Time);
-    PushEventRemainTimeSync(mTimer, roomID, roomCode);
-    PushEventTimeOverCheck(mTimer, roomID, roomCode);
+void Server::StartGame(int roomID)
+{
+    Room* room = GetRooms()[roomID];
+    if (room->SetIsRun(true) == true) {
 
-    GetRooms()[roomID]->SetStartTime(std::chrono::system_clock::now());
+        SendGameStart(roomID);
+
+        // Push Event
+        long long roomCode = room->GetRoomCode();
+        GameCode gameCode = room->GetGameMode();
+        int eventTime = GetTableManager()->getFITH_Data()[gameCode].Block_Spawn_Time;
+        PushEventBlockDrop(mTimer, roomID, roomCode, eventTime);
+        PushEventBombSpawn(mTimer, roomID, roomCode, GetTableManager()->getFITH_Data()[gameCode].Bomb_Spawn_Time);
+        PushEventRemainTimeSync(mTimer, roomID, roomCode);
+        PushEventTimeOverCheck(mTimer, roomID, roomCode);
+
+        GetRooms()[roomID]->SetStartTime(std::chrono::system_clock::now());
+    }
 }
 
 void Server::CheckGameEnd(int roomID)

@@ -26,6 +26,22 @@ std::vector<uint8_t> PacketMaker::MakeGameMatchingResponsePacket(int inGameID, i
 	return MakeBuffer(ePacketType::S2C_MATCHINGRESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
+std::vector<uint8_t> PacketMaker::MakeAllPlayerReadyPacket()
+{
+	flatbuffers::FlatBufferBuilder Builder;
+	Builder.Clear();
+	Builder.Finish(PacketTable::GameTable::CreateAllPlayerReady(Builder));
+	return MakeBuffer(ePacketType::S2C_ALLPLAYERREADY, Builder.GetBufferPointer(), Builder.GetSize());
+}
+
+std::vector<uint8_t> PacketMaker::MakeGameStartPacket(int roomid, long time)
+{
+	flatbuffers::FlatBufferBuilder Builder;
+	Builder.Clear();
+	Builder.Finish(PacketTable::GameTable::CreateGameStart(Builder, roomid, time));
+	return MakeBuffer(ePacketType::S2C_GAMESTART, Builder.GetBufferPointer(), Builder.GetSize());
+}
+
 std::vector<uint8_t> PacketMaker::MakeHeartBeatPacket()
 {
 	flatbuffers::FlatBufferBuilder Builder;

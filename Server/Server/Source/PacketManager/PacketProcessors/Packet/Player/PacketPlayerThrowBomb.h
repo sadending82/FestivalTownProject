@@ -13,8 +13,11 @@ public:
 		if (verifier.VerifyBuffer<PlayerThrowBomb>(nullptr)) {
 			const PlayerThrowBomb* read = flatbuffers::GetRoot<PlayerThrowBomb>(data);
 
-			Player* p = dynamic_cast<Player*>(pServer->GetSessions()[key]);
-			int roomid = p->GetRoomID();
+			Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
+			if (player == nullptr) {
+				return;
+			}
+			int roomid = player->GetRoomID();
 			int bombid = read->bomb_id();
 
 			Room* room = pServer->GetRooms()[roomid];

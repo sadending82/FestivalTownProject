@@ -13,8 +13,8 @@ class Timer;
 class Server
 {
 public:
-	Server() {};
-	~Server() {};
+	Server();
+	~Server();
 
 	int SetSessionID();
 	int SetRoomID();
@@ -28,6 +28,7 @@ public:
 
 	void SendPlayerAdd(int sessionID, int destination);
 	void SendGameMatchingResponse(int sessionID);
+	void SendGameStart(int roomID);
 	void SendHeartBeatPacket(int sessionID);
 	void SendBlockDropPacket(int roomID, int spawnCount);
 	void SendBombSpawnPacket(int roomID, int spawnCount);
@@ -39,6 +40,7 @@ public:
 	void SendPlayerRespawn(int sessionID, int roomID);
 
 	void StartHeartBeat(int sessionID);
+	void MatchingComplete(int roomID, int playerCnt);
 	void StartGame(int roomID);
 	void CheckGameEnd(int roomID);
 	void TimeoverGameEnd(int roomID);

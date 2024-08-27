@@ -21,12 +21,17 @@ void TestThread::RunWorker()
         switch (command) {
             // 게임 시작
         case GameStartCommand: {
+            int playerCnt = GetReadyPlayerCnt();
+            if (playerCnt == 0) {
+                continue;
+            }
+
             int roomid = m_pServer->SetRoomID();
             if (roomid == INVALIDKEY) {
                 std::cout << "Fali Create New Room\n";
             }
             else {
-                m_pServer->StartGame(roomid);
+                m_pServer->MatchingComplete(roomid, playerCnt);
                 std::cout << "Start Game room - " << roomid << std::endl;
             }
         }
@@ -53,6 +58,21 @@ void TestThread::RunWorker()
         break;
         }
     }
+}
+
+int TestThread::GetReadyPlayerCnt()
+{
+    int cnt = 0;
+    for (Session* s : m_pServer->GetSessions()) {
+        s->GetStateLock().lock();
+        if (s->GetState() == eSessionState::ST_GAMEREADY) {
+            cnt++;
+        }
+        s->GetStateLock().unlock();
+
+        if (cnt >= 6) return cnt;
+    }
+    return cnt;
 }
 
 #endif RunTest

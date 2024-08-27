@@ -16,6 +16,9 @@ public:
 			const PlayerStop* read = flatbuffers::GetRoot<PlayerStop>(data);
 
 			Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
+			if (player == nullptr) {
+				return;
+			}
 
 			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYERSTOP, data, size);
 

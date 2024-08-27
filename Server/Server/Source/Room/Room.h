@@ -28,6 +28,7 @@ public:
 	std::unordered_map<int, Team>& GetTeams() { return mTeams; }
 	std::array<Object*, MAXOBJECT>& GetObjects() { return mObjectList; }
 	int GetPlayerCnt() { return mPlayerCnt; }
+	int GetReadyCnt() { return mPlayerCnt; }
 	int GetPlayerLimit() { return mPlayerLimit; }
 	GameCode GetGameMode() { return mGameMode; }
 	Map& GetMap() { return mMap; }
@@ -42,6 +43,7 @@ public:
 	
 
 	void AddPlayerCnt() { mPlayerCnt++; }
+	void AddReadyCnt() { mPlayerCnt++; }
 	void SetPlayerLimit(int num) { mPlayerLimit = num; }
 	void SetGameMode(GameCode gamecode) { mGameMode = gamecode; }
 	void SetStartTime(TIMEPOINT time) { mStartTime = time; }
@@ -67,6 +69,7 @@ private:
 
 	int mRoomID; // room array index
 	int mPlayerCnt = 0;
+	int mReadyCnt = 0;
 	int mPlayerLimit = 6;
 	int mHostID = INVALIDKEY;
 	TIMEPOINT mStartTime;

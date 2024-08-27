@@ -12,6 +12,7 @@ using PacketTable.UtilitiesTable;
 using PacketTable.GameTable;
 using PacketTable.ObjectTable;
 using PacketTable.LobbyTable;
+using System.Diagnostics;
 
 public class PacketMaker
 {
@@ -153,7 +154,7 @@ public class PacketMaker
         var timeCheck = HeartBeat.GetRootAsHeartBeat(buf).Time;
         if (timeCheck != currTime)
         {
-            Debug.Log("invaild buf / CreateHeartBeatPacket");
+            UnityEngine.Debug.Log("invaild buf / CreateHeartBeatPacket");
 
             return null;
         }
@@ -288,6 +289,24 @@ public class PacketMaker
 
         byte[] data = builder.SizedByteArray();
         HEADER header = new HEADER { type = (ushort)ePacketType.C2S_MATCHINGREQUEST, flatBufferSize = (ushort)data.Length };
+        byte[] headerdata = Serialize<HEADER>(header);
+        byte[] result = new byte[data.Length + headerdata.Length];
+
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
+
+        return result;
+    }
+
+    public byte[] MakeGameReadyPacket()
+    {
+        var builder = new FlatBufferBuilder(1);
+        GameReady.StartGameReady(builder);
+        var offset = GameReady.EndGameReady(builder);
+        builder.Finish(offset.Value);
+
+        byte[] data = builder.SizedByteArray();
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_GAMEREADY, flatBufferSize = (ushort)data.Length };
         byte[] headerdata = Serialize<HEADER>(header);
         byte[] result = new byte[data.Length + headerdata.Length];
 

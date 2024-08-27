@@ -21,6 +21,8 @@ public:
 
 	void RunWorker();
 
+	int GetReadyPlayerCnt();
+
 private:
 	class Server* m_pServer;
 	PacketManager* m_pPacketManager;
