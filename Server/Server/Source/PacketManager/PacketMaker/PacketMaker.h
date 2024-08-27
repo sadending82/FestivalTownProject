@@ -11,7 +11,7 @@ public:
 
 	std::vector<uint8_t> MakePlayerAdd(int inGameID);
 	std::vector<uint8_t> MakePlayerRespawnPacket(int inGameID, int roomID, int x, int y);
-	std::vector<uint8_t> MakeGameMatchingResponsePacket(int inGameID, int roomID, int team, int gameMode, bool isHost = false);
+	std::vector<uint8_t> MakeGameMatchingResponsePacket(int inGameID, int roomID, int team, int gameMode, int totalPlayerCount, bool isHost = false);
 	std::vector<uint8_t> MakeAllPlayerReadyPacket();
 	std::vector<uint8_t> MakeGameStartPacket(int roomid, long time = 0);
 

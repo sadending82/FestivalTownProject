@@ -191,10 +191,10 @@ void Server::SendGameMatchingResponse(int sessionID)
     Room* room = mRooms[roomID];
     std::vector<uint8_t> send_buffer;
     if (inGameID == room->GetHostID()) {
-        send_buffer = mPacketMaker->MakeGameMatchingResponsePacket(inGameID, roomID, team, room->GetGameMode(), true);
+        send_buffer = mPacketMaker->MakeGameMatchingResponsePacket(inGameID, roomID, team, room->GetGameMode(), room->GetPlayerLimit(), true);
     }
     else {
-        send_buffer = mPacketMaker->MakeGameMatchingResponsePacket(inGameID, roomID, team, room->GetGameMode());
+        send_buffer = mPacketMaker->MakeGameMatchingResponsePacket(inGameID, roomID, team, room->GetGameMode(), room->GetPlayerLimit());
     }
 
     GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
