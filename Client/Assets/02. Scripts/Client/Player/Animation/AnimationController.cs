@@ -5,7 +5,7 @@ using eAnimationState;
 
 public class AnimationController : MonoBehaviour
 {
-    // 애니메이셔은 LowerBodyAnimationState 기준으로 관리
+    // 애니메이션은 상체는 서버와 상태를 교환하고 하체는 클라에서 관리한다.
     private UpperBodyAnimationState upperBodyAnimationState;
     private LowerBodyAnimationState lowerBodyAnimationState;
 
@@ -36,7 +36,7 @@ public class AnimationController : MonoBehaviour
     }
     private void OnAnimatorIK(int layerIndex)
     {
-        // test
+        // 잡기
         if (upperBodyAnimationState == UpperBodyAnimationState.HOLD)
         {
             animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1f);
@@ -51,66 +51,32 @@ public class AnimationController : MonoBehaviour
             animator.SetIKPosition(AvatarIKGoal.RightHand, rightHandTarget.position);
             animator.SetIKRotation(AvatarIKGoal.RightHand, rightHandTarget.rotation);
         }
+        // 일반 공격
+        else if (upperBodyAnimationState == UpperBodyAnimationState.ATTACK)
+        {
+
+        }
     }
 
     // ------------------- GETTERS & SETTERS -------------------
-    public void setUpperBodyAnimationState(UpperBodyAnimationState upperBodyAnimationState)
+    public void SetUpperBodyAnimationState(UpperBodyAnimationState upperBodyAnimationState)
     {
         this.upperBodyAnimationState = upperBodyAnimationState;
-        SetUseIKAndAnimationModule();
+        if(upperBodyAnimationState == UpperBodyAnimationState.NONE)
+        {
+            animationModule.SetUpdateUpperBodyAnimation(false);
+        }
+        else
+        {
+            animationModule.SetUpdateUpperBodyAnimation(true);
+        }
+    }
+    public void SetLowerBodyAnimationState(LowerBodyAnimationState lowerBodyAnimationState)
+    {
+        this.lowerBodyAnimationState = lowerBodyAnimationState;
         SetAnimation();
     }
-    public void setLowerBodyAnimationState(LowerBodyAnimationState lowerBodyAnimationState)
-    {
-        if (lowerBodyAnimationState != LowerBodyAnimationState.ROLL &&
-            lowerBodyAnimationState != LowerBodyAnimationState.FLYINGKICK)
-        {
-            this.lowerBodyAnimationState = lowerBodyAnimationState;
-            SetUseIKAndAnimationModule();
-            SetAnimation();
-        }
-    }
-    private void SetUseIKAndAnimationModule()
-    {
-        // upperBodyAnimationState와 lowerBodyAnimationState의 상태에 따라 IK와 Animation을 사용할지에 대한 코드
-        switch (upperBodyAnimationState)
-        {
-            case UpperBodyAnimationState.ATTACK:
-            case UpperBodyAnimationState.POWERATTACK:
-            case UpperBodyAnimationState.HOLD:
-            case UpperBodyAnimationState.THROW:
-            case UpperBodyAnimationState.HEADATTACK:
-                {
-                    animationModule.SetUseIK(true);
-                    break;
-                }
-            default:
-                {
-                    animationModule.SetUseIK(false);
-                    break;
-                }
-        }
-        switch (lowerBodyAnimationState)
-        {
-            case LowerBodyAnimationState.JUMP:
-                {
-                    animationModule.SetUseAnimationModule(false);
-                    break;
-                }
-            case LowerBodyAnimationState.ROLL:
-            case LowerBodyAnimationState.FLYINGKICK:
-                {
-                    animationModule.SetUseIK(false);
-                    animationModule.SetUseAnimationModule(false);
-                    break;
-                }
-            default:
-                {
-                    animationModule.SetUseAnimationModule(true);
-                    break;
-                }
-        }
-    }
+
     // 애니메이션 상태에 따라 한번 정리
     private void SetAnimation()
     {
@@ -126,12 +92,7 @@ public class AnimationController : MonoBehaviour
                     ChangeAnimation("Run");
                     break;
                 }
-            case LowerBodyAnimationState.ROLL:
-            case LowerBodyAnimationState.FLYINGKICK:
-                {
-                    break;
-                }
-            default:
+            case LowerBodyAnimationState.IDLE:
                 {
                     ChangeAnimation("Idle");
                     break;

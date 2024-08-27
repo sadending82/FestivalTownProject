@@ -27,26 +27,28 @@ namespace Network.PacketProcessor
 
             PlayerController pController = Managers.Player.transform.GetChild(id).GetComponent<PlayerController>();
 
+            pController.SetPosition(pos);
+            pController.SetDirection(dir);
+
             if (pController != null)
             {
                 switch (state)
                 {
-                    case (int)ePlayerState.PS_MOVESTOP:
+                    case (int)ePlayerMoveState.PS_MOVESTOP:
                         {
-                            pController.SetPosition(pos);
-                            pController.SetDirection(dir);
                             pController.SetIsMove(false);
+                            pController.s_SetAnimation(ePlayerMoveState.PS_MOVESTOP);
                         }
                         break;
 
-                    case (int)ePlayerState.PS_JUMPSTOP:
+                    case (int)ePlayerMoveState.PS_JUMPSTOP:
                         {
-                            pController.SetPosition(pos);
-                            pController.SetDirection(dir);
+                            pController.s_SetAnimation(ePlayerMoveState.PS_JUMPSTOP);
                         }
                         break;
                     default:
                         {
+                            Debug.Log("ERROR!! : PlayerStop.cs, Wrong MoveState !!!");
                         }
                         break;
                 }

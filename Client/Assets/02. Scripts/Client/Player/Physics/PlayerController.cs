@@ -94,7 +94,14 @@ public class PlayerController : MonoBehaviour
             }
             if (isMove == true)
             {
-                pelvis.transform.position += moveDirection * walkSpeed * Time.deltaTime;
+                if (playerStatus.GetLowerBodyAnimationState() == LowerBodyAnimationState.WALK)
+                {
+                    pelvis.transform.position += moveDirection * walkSpeed * Time.deltaTime;
+                }
+                else if(playerStatus.GetLowerBodyAnimationState() == LowerBodyAnimationState.RUN)
+                {
+                    pelvis.transform.position += moveDirection * runSpeed * Time.deltaTime;
+                }
             }
         }
     }
@@ -143,7 +150,7 @@ public class PlayerController : MonoBehaviour
                 {
                     if (pelvis != null)
                     {
-                        packetManager.SendPlayerStopPacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerState.PS_JUMPSTOP);
+                        packetManager.SendPlayerStopPacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_JUMPSTOP);
                     }
                     else
                     {
@@ -158,7 +165,7 @@ public class PlayerController : MonoBehaviour
                 {
                     if (pelvis != null)
                     {
-                        packetManager.SendPlayerStopPacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerState.PS_JUMPSTOP);
+                        packetManager.SendPlayerStopPacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_JUMPSTOP);
                     }
                     else
                     {
@@ -198,7 +205,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (pelvis != null)
                 {
-                    packetManager.SendPlayerStopPacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerState.PS_MOVESTOP);
+                    packetManager.SendPlayerStopPacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_MOVESTOP);
                 }
                 else
                 {
@@ -209,7 +216,14 @@ public class PlayerController : MonoBehaviour
             {
                 if (pelvis != null)
                 {
-                    packetManager.SendPlayerMovePacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerState.PS_RUN);
+                    if (isLeftShiftKeyDown == true)
+                    {
+                        packetManager.SendPlayerMovePacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_RUN);
+                    }
+                    else
+                    {
+                        packetManager.SendPlayerMovePacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_WALK);
+                    }
                 }
                 else
                 {
@@ -228,7 +242,7 @@ public class PlayerController : MonoBehaviour
                 if (isGrounded == true && nowLowerBodyAnimationState != LowerBodyAnimationState.RUN)
                 {
                     nowLowerBodyAnimationState = LowerBodyAnimationState.RUN;
-                    playerStatus.setLowerBodyAnimationState(LowerBodyAnimationState.RUN);
+                    playerStatus.SetLowerBodyAnimationState(LowerBodyAnimationState.RUN);
                 }
             }
             else
@@ -237,16 +251,16 @@ public class PlayerController : MonoBehaviour
                 if (isGrounded == true && nowLowerBodyAnimationState != LowerBodyAnimationState.WALK)
                 {
                     nowLowerBodyAnimationState = LowerBodyAnimationState.WALK;
-                    playerStatus.setLowerBodyAnimationState(LowerBodyAnimationState.WALK);
+                    playerStatus.SetLowerBodyAnimationState(LowerBodyAnimationState.WALK);
                 }
             }
         }
-        else 
+        else
         {
-            if (isGrounded == true && nowLowerBodyAnimationState != LowerBodyAnimationState.IDLE)
+            if (nowLowerBodyAnimationState != LowerBodyAnimationState.IDLE)
             {
                 nowLowerBodyAnimationState = LowerBodyAnimationState.IDLE;
-                playerStatus.setLowerBodyAnimationState(LowerBodyAnimationState.IDLE);
+                playerStatus.SetLowerBodyAnimationState(LowerBodyAnimationState.IDLE);
             }
         }
 
@@ -256,7 +270,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (pelvis != null)
                 {
-                    packetManager.SendPlayerMovePacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerState.PS_JUMP);
+                    packetManager.SendPlayerMovePacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_JUMP);
                 }
                 else
                 {
@@ -315,11 +329,11 @@ public class PlayerController : MonoBehaviour
             {
                 if (isGrounded == true)
                 {
-                    playerStatus.setUpperBodyAnimationState(UpperBodyAnimationState.POWERATTACK);
+                    playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.POWERATTACK);
                 }
                 else
                 {
-                    playerStatus.setLowerBodyAnimationState(LowerBodyAnimationState.FLYINGKICK);
+                    playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.FLYINGKICK);
                 }
             }
         }
@@ -338,7 +352,7 @@ public class PlayerController : MonoBehaviour
                 {
                     // 잡기 애니메이션 작동
                     isHold = true;
-                    playerStatus.setUpperBodyAnimationState(UpperBodyAnimationState.HOLD);
+                    playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.HOLD);
                 }
             }
             // 마우스 좌클릭 업
@@ -347,11 +361,11 @@ public class PlayerController : MonoBehaviour
                 if (isHold == true)
                 {
                     isHold = false;
-                    playerStatus.setUpperBodyAnimationState(UpperBodyAnimationState.NONE);
+                    playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
                 }
                 else
                 {
-                    playerStatus.setUpperBodyAnimationState(UpperBodyAnimationState.ATTACK);
+                    playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.ATTACK);
                 }
                 leftMouseClickTimer = 0f;
             }
@@ -360,18 +374,18 @@ public class PlayerController : MonoBehaviour
         // 마우스 휠클릭 다운
         if (Input.GetMouseButtonDown(2))
         {
-            playerStatus.setUpperBodyAnimationState(UpperBodyAnimationState.HEADATTACK);
+            playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.HEADATTACK);
         }
         // 마우스 휠클릭 업
         if (Input.GetMouseButtonUp(2))
         {
-            playerStatus.setUpperBodyAnimationState(UpperBodyAnimationState.NONE);
+            playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
         }
 
         // 마우스 우클릭 다운
         if (Input.GetMouseButtonDown(1))
         {
-            playerStatus.setUpperBodyAnimationState(UpperBodyAnimationState.THROW);
+            playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.THROW);
             Throw();
         }
     }
@@ -403,7 +417,6 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void s_PickUpItem(int playerId, int bombId)
     {
-        //Debug.Log("PickUp!! Target Bomb : " + bombId + " Player ID : " + myId);
         // 폭탄과 플레이어 붙여주기
         Bomb targetBomb = Managers.BombObject.FindBombById(bombId).GetComponent<Bomb>();
         targetBomb.PickUp(playerId, bombInvenTransform);
@@ -413,8 +426,6 @@ public class PlayerController : MonoBehaviour
     {
         isGrounded = false;
         pelvisRigidbody.velocity = Vector3.up * jumpForce;
-        nowLowerBodyAnimationState = LowerBodyAnimationState.JUMP;
-        playerStatus.setLowerBodyAnimationState(LowerBodyAnimationState.JUMP);
     }
 
     public void Throw()
@@ -425,10 +436,8 @@ public class PlayerController : MonoBehaviour
             {
                 GameObject targetBomb = Managers.BombObject.FindBombById(playerStatus.GetItemId());
                 targetBomb.GetComponent<Bomb>().Throw(stabillizerDirection, playerStatus.GetStrength());
-                /// <summary>
-                /// 서버에 여기서 플레이어 위치, 폭탄 발사 방향, 폭탄 위치, 플레이어 아이디, 폭탄 아이디 보내줌
-                /// </summary>
-                
+
+                // 서버에 플레이어 위치, 폭탄 발사 방향, 폭탄 위치, 플레이어 아이디, 폭탄 아이디 보내줌
                 packetManager.SendPlayerThrowBombPacket(targetBomb.transform.position, stabillizerDirection, myId, targetBomb.GetComponent<Bomb>().GetId());
                 playerStatus.SetIsHaveItem(false);
             }
@@ -464,9 +473,19 @@ public class PlayerController : MonoBehaviour
     {
         if(amIPlayer == true)
         {
+            Debug.Log("Player " + playerStatus.GetId() + "Goal! Bomb " + bombId + " Team " + teamNumber + "Goaled!!!");
             packetManager.SendBombInputPacket(bombId, teamNumber);
         }
     }
+    //private void IdleCheck()
+    //{
+    //    if(Input.GetAxisRaw("Horizontal") == 0 && Input.GetAxisRaw("Vertical") == 0
+    //        && playerStatus.GetLowerBodyAnimationState() != LowerBodyAnimationState.IDLE)
+    //    {
+    //        nowLowerBodyAnimationState = LowerBodyAnimationState.IDLE;
+    //        playerStatus.SetLowerBodyAnimationState(LowerBodyAnimationState.IDLE);
+    //    }
+    //}
 
     // ------- Setter Getter -------
     public void SetAmIPlayer(bool amIPlayer)
@@ -493,5 +512,29 @@ public class PlayerController : MonoBehaviour
     public void SetMyId(int myId)
     {
         this.myId = myId;
+    }
+    public void s_SetAnimation(ePlayerMoveState playerMoveState)
+    {
+        switch(playerMoveState)
+        {
+            case ePlayerMoveState.PS_WALK:
+                {
+                    nowLowerBodyAnimationState = LowerBodyAnimationState.WALK;
+                    playerStatus.SetLowerBodyAnimationState(LowerBodyAnimationState.WALK);
+                }
+                break;
+            case ePlayerMoveState.PS_RUN:
+                {
+                    nowLowerBodyAnimationState = LowerBodyAnimationState.RUN;
+                    playerStatus.SetLowerBodyAnimationState(LowerBodyAnimationState.RUN);
+                }
+                break;
+            default:
+                {
+                    nowLowerBodyAnimationState = LowerBodyAnimationState.IDLE;
+                    playerStatus.SetLowerBodyAnimationState(LowerBodyAnimationState.IDLE);
+                }
+                break;
+        }
     }
 }

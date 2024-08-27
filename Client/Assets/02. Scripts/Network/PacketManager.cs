@@ -100,7 +100,7 @@ public class PacketManager : MonoBehaviour
         return buffer;
     }
 
-    public void SendPlayerMovePacket(Vector3 position, Vector3 direction, int id, ePlayerState state)
+    public void SendPlayerMovePacket(Vector3 position, Vector3 direction, int id, ePlayerMoveState state)
     {
 
         byte[] packet = _packetMaker.MakePlayerMovePacket(position, direction, id, state);
@@ -108,7 +108,7 @@ public class PacketManager : MonoBehaviour
         SendPacket(packet);
     }
 
-    public void SendPlayerStopPacket(Vector3 position, Vector3 direction, int id, ePlayerState state)
+    public void SendPlayerStopPacket(Vector3 position, Vector3 direction, int id, ePlayerMoveState state)
     {
 
         byte[] packet = _packetMaker.MakePlayerStopPacket(position, direction, id, state);

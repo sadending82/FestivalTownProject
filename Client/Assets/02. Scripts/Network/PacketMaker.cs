@@ -42,7 +42,7 @@ public class PacketMaker
         return buffer;
     }
 
-    public byte[] MakePlayerMovePacket(Vector3 position, Vector3 direction, int id, ePlayerState state)
+    public byte[] MakePlayerMovePacket(Vector3 position, Vector3 direction, int id, ePlayerMoveState state)
     {
         var builder = new FlatBufferBuilder(1);
         var pos = Vec3f.CreateVec3f(builder, position.x, position.y, position.z);
@@ -75,7 +75,7 @@ public class PacketMaker
         return result;
     }
 
-    public byte[] MakePlayerStopPacket(Vector3 position, Vector3 direction, int id, ePlayerState state)
+    public byte[] MakePlayerStopPacket(Vector3 position, Vector3 direction, int id, ePlayerMoveState state)
     {
         var builder = new FlatBufferBuilder(1);
         var pos = Vec3f.CreateVec3f(builder, position.x, position.y, position.z);

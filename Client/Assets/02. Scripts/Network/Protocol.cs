@@ -62,8 +62,9 @@ namespace NetworkProtocol
         FITH_Team_battle_Three,
     };
 
-    public enum ePlayerState
+    public enum ePlayerMoveState
     {
+        PS_WALK,
         PS_RUN,
         PS_JUMP,
         PS_MOVESTOP,

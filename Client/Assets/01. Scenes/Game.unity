@@ -1423,10 +1423,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Chibi_Cat 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7030460111568531602, guid: 6e8d3e60da090c24ab76cdf4f8881739, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
