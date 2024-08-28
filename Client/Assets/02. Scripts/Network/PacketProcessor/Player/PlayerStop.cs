@@ -23,7 +23,7 @@ namespace Network.PacketProcessor
             Vector3 dir = new Vector3(stopData.Direction.Value.X, stopData.Direction.Value.Y, stopData.Direction.Value.Z);
             int state = stopData.State;
 
-            if (Managers.Player != null) { return; }
+            if (Managers.Player == null) { return; }
 
             PlayerController pController = Managers.Player.transform.GetChild(id).GetComponent<PlayerController>();
 

@@ -15,8 +15,21 @@ public class AnimationController : MonoBehaviour
     public Animator animator;
 
     [Header("--- IK ---")]
-    public Transform leftHandTarget;
-    public Transform rightHandTarget;
+    // 타겟
+    public Transform targetLeftHand;
+    public Transform targetRightHand;
+    public Transform targetLeftHint;
+    public Transform targetRightHint;
+    // 일반 공격 관련
+    public Transform attackLeftHand;
+    public Transform attackRightHand;
+    public Transform attackLeftHint;
+    public Transform attackRightHint;
+
+    public CharacterStatus playerStatus;
+    private float attackSpeed;
+    private float attackTime;
+    private bool isLeftAttack;
 
     private void Awake()
     {   
@@ -27,12 +40,24 @@ public class AnimationController : MonoBehaviour
         {
             animator = GetComponent<Animator>();
         }
+
+        attackTime = 0;
+        isLeftAttack = false;
     }
     void Start()
     {
+        attackSpeed = playerStatus.GetAttackSpeed();
     }
     void Update()
     {
+        attackTime += Time.deltaTime;
+        if (attackTime >= attackSpeed)
+        {
+            playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
+            attackTime = 0;
+            // 손 바꿔주기
+            isLeftAttack = !isLeftAttack;
+        }
     }
     private void OnAnimatorIK(int layerIndex)
     {
@@ -41,20 +66,69 @@ public class AnimationController : MonoBehaviour
         {
             animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1f);
             animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1f);
-        
-            animator.SetIKPosition(AvatarIKGoal.LeftHand, leftHandTarget.position);
-            animator.SetIKRotation(AvatarIKGoal.LeftHand, leftHandTarget.rotation);
-        
+            animator.SetIKHintPositionWeight(AvatarIKHint.LeftElbow, 1f);
+
+            animator.SetIKPosition(AvatarIKGoal.LeftHand, targetLeftHand.position);
+            animator.SetIKRotation(AvatarIKGoal.LeftHand, targetLeftHand.rotation);
+            animator.SetIKHintPosition(AvatarIKHint.LeftElbow, targetLeftHint.position);
+
             animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
             animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
-        
-            animator.SetIKPosition(AvatarIKGoal.RightHand, rightHandTarget.position);
-            animator.SetIKRotation(AvatarIKGoal.RightHand, rightHandTarget.rotation);
+            animator.SetIKHintPositionWeight(AvatarIKHint.RightElbow, 1f);
+
+            animator.SetIKPosition(AvatarIKGoal.RightHand, targetRightHand.position);
+            animator.SetIKRotation(AvatarIKGoal.RightHand, targetRightHand.rotation);
+            animator.SetIKHintPosition(AvatarIKHint.LeftElbow, targetRightHint.position);
         }
         // 일반 공격
         else if (upperBodyAnimationState == UpperBodyAnimationState.ATTACK)
         {
+            if (isLeftAttack == true)
+            {
+                if (attackTime < (attackSpeed / 2))
+                {
+                    animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1f);
+                    animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1f);
+                    animator.SetIKHintPositionWeight(AvatarIKHint.LeftElbow, 1f);
 
+                    animator.SetIKPosition(AvatarIKGoal.LeftHand, attackLeftHand.position);
+                    animator.SetIKRotation(AvatarIKGoal.LeftHand, attackLeftHand.rotation);
+                    animator.SetIKHintPosition(AvatarIKHint.LeftElbow, attackLeftHint.position);
+                }
+                else
+                {
+                    animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1f);
+                    animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1f);
+                    animator.SetIKHintPositionWeight(AvatarIKHint.LeftElbow, 1f);
+
+                    animator.SetIKPosition(AvatarIKGoal.LeftHand, targetLeftHand.position);
+                    animator.SetIKRotation(AvatarIKGoal.LeftHand, targetLeftHand.rotation);
+                    animator.SetIKHintPosition(AvatarIKHint.LeftElbow, targetLeftHint.position);
+                }
+            }
+            else
+            {
+                if (attackTime < (attackSpeed / 2))
+                {
+                    animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
+                    animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
+                    animator.SetIKHintPositionWeight(AvatarIKHint.RightElbow, 1f);
+
+                    animator.SetIKPosition(AvatarIKGoal.RightHand, attackRightHand.position);
+                    animator.SetIKRotation(AvatarIKGoal.RightHand, attackRightHand.rotation);
+                    animator.SetIKHintPosition(AvatarIKHint.RightElbow, attackRightHint.position);
+                }
+                else
+                {
+                    animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
+                    animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
+                    animator.SetIKHintPositionWeight(AvatarIKHint.RightElbow, 1f);
+
+                    animator.SetIKPosition(AvatarIKGoal.RightHand, targetRightHand.position);
+                    animator.SetIKRotation(AvatarIKGoal.RightHand, targetRightHand.rotation);
+                    animator.SetIKHintPosition(AvatarIKHint.LeftElbow, targetRightHint.position);
+                }
+            }
         }
     }
 
@@ -70,6 +144,11 @@ public class AnimationController : MonoBehaviour
         {
             animationModule.SetUpdateUpperBodyAnimation(true);
         }
+
+        if (upperBodyAnimationState == UpperBodyAnimationState.ATTACK)
+        {
+            attackTime = 0f;
+        }
     }
     public void SetLowerBodyAnimationState(LowerBodyAnimationState lowerBodyAnimationState)
     {
@@ -77,7 +156,6 @@ public class AnimationController : MonoBehaviour
         SetAnimation();
     }
 
-    // 애니메이션 상태에 따라 한번 정리
     private void SetAnimation()
     {
         switch (lowerBodyAnimationState)

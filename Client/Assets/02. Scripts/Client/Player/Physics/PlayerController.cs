@@ -308,7 +308,6 @@ public class PlayerController : MonoBehaviour
                 if (targetItem.tag == "Bomb")
                 {
                     Bomb targetBomb = targetItem.GetComponent<Bomb>();
-                    //Debug.Log("Target Bomb : " + targetBomb.GetId() + " Player ID : " + myId);
                     packetManager.SendPlayerGrabBombPacket(pelvis.transform.position, stabillizerDirection, myId, targetBomb.GetId());
                 }
                 // 클라 테스트용
@@ -440,6 +439,8 @@ public class PlayerController : MonoBehaviour
                 // 서버에 플레이어 위치, 폭탄 발사 방향, 폭탄 위치, 플레이어 아이디, 폭탄 아이디 보내줌
                 packetManager.SendPlayerThrowBombPacket(targetBomb.transform.position, stabillizerDirection, myId, targetBomb.GetComponent<Bomb>().GetId());
                 playerStatus.SetIsHaveItem(false);
+
+                playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
             }
         }
         else
@@ -473,19 +474,9 @@ public class PlayerController : MonoBehaviour
     {
         if(amIPlayer == true)
         {
-            Debug.Log("Player " + playerStatus.GetId() + "Goal! Bomb " + bombId + " Team " + teamNumber + "Goaled!!!");
             packetManager.SendBombInputPacket(bombId, teamNumber);
         }
     }
-    //private void IdleCheck()
-    //{
-    //    if(Input.GetAxisRaw("Horizontal") == 0 && Input.GetAxisRaw("Vertical") == 0
-    //        && playerStatus.GetLowerBodyAnimationState() != LowerBodyAnimationState.IDLE)
-    //    {
-    //        nowLowerBodyAnimationState = LowerBodyAnimationState.IDLE;
-    //        playerStatus.SetLowerBodyAnimationState(LowerBodyAnimationState.IDLE);
-    //    }
-    //}
 
     // ------- Setter Getter -------
     public void SetAmIPlayer(bool amIPlayer)
@@ -515,7 +506,7 @@ public class PlayerController : MonoBehaviour
     }
     public void s_SetAnimation(ePlayerMoveState playerMoveState)
     {
-        switch(playerMoveState)
+        switch (playerMoveState)
         {
             case ePlayerMoveState.PS_WALK:
                 {

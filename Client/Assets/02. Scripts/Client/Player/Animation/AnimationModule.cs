@@ -48,21 +48,21 @@ namespace ActiveRagdoll
         private void UpdateJointTargets()
         {
             // 전신에 애니메이션 적용
-            if (updateUpperBodyAnimation == true)
+            //if (updateUpperBodyAnimation == true)
             {
                 for (int i = 0; i < _joints.Length; i++)
                 {
                     ConfigurableJointExtensions.SetTargetRotationLocal(_joints[i], _animatedBones[i + 1].localRotation, _initialJointsRotation[i]);
                 }
             }
-            // 하체에만 애니메이션 적용
-            else
-            {
-                for (int i = 20; i < _joints.Length; i++)
-                {
-                    ConfigurableJointExtensions.SetTargetRotationLocal(_joints[i], _animatedBones[i + 1].localRotation, _initialJointsRotation[i]);
-                }
-            }
+            //// 하체에만 애니메이션 적용
+            //else
+            //{
+            //    for (int i = 20; i < _joints.Length; i++)
+            //    {
+            //        ConfigurableJointExtensions.SetTargetRotationLocal(_joints[i], _animatedBones[i + 1].localRotation, _initialJointsRotation[i]);
+            //    }
+            //}
         }
 
         // ------------------- GETTERS & SETTERS -------------------

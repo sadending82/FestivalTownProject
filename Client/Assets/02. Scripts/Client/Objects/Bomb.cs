@@ -78,7 +78,6 @@ public class Bomb : MonoBehaviour
         this.lastPickUpPlayerId = pickUpPlayerId;
         this.targetTransform = targetTransform;
         SetRigidBodyPickUp();
-        Debug.Log("Bomb " + this.id + " Pick Up to Player " + pickUpPlayerId);
     }
     public void PickUpOff()
     {

@@ -15,6 +15,7 @@ public class CharacterStatus : MonoBehaviour
     public float staminaRecoverySpeed;
     public int strength;
     public int speed;
+    public float attackSpeed;
     public float runSpeedRatio;
     private float rollSpeed;
     public bool isDie = false;
@@ -90,6 +91,10 @@ public class CharacterStatus : MonoBehaviour
     {
         return this.lowerBodyAnimationState;
     }
+    public UpperBodyAnimationState GetUpperBodyAnimationState()
+    {
+        return this.upperBodyAnimationState;
+    }
     public void SetIsHaveItem(bool isHaveItem, string itemTag = "NULL", int itemId = -1)
     {
         this.isHaveItem = isHaveItem;
@@ -121,5 +126,9 @@ public class CharacterStatus : MonoBehaviour
     public int GetStrength()
     {
         return strength;
+    }
+    public float GetAttackSpeed()
+    {
+        return attackSpeed;
     }
 }
