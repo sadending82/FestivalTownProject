@@ -15,9 +15,12 @@ public:
 			const PlayerMove* read = flatbuffers::GetRoot<PlayerMove>(data);
 
 			Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
-			if (player == nullptr) {
+			if (player == nullptr && player->GetInGameID() != read->id()) {
 				return;
 			}
+
+			player->SetPosition(read->pos()->x(), read->pos()->y(), read->pos()->z());
+			player->SetDirection(read->direction()->x(), read->direction()->y(), read->direction()->z());
 
 			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYERMOVE, data, size);
 			

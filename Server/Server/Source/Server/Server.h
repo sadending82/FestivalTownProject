@@ -40,7 +40,9 @@ public:
 	void SendGameStartPacket(int roomID);
 	void SendGameEndPacket(int roomID, uint8_t winningTeams_flag);
 	void SendGameHostChange(int sessionID);
-	void SendPlayerRespawn(int sessionID, int roomID);
+	void SendPlayerDeadPacket(int inGameID, int roomID);
+	void SendPlayerRespawn(int inGameID, int roomID);
+	void SendPlayerCalculatedDamage(int targetID, int roomID, int attackType, int hp, int damageAmount);
 
 	void StartHeartBeat(int sessionID);
 	void MatchingComplete(int roomID, int playerCnt);

@@ -24,6 +24,7 @@ public:
 	Vector3f GetDirection() { return mDirection; }
 	ePlayerState GetPlayerState() { return mPlayerState; }
 	std::mutex& GetPlayerStateLock() { return mPlayerStateLock; }
+	int GetHP() { return mHP; }
 
 	void SetRoomID(int id) { mRoomID = id; }
 	void SetInGameID(int id) { mInGameID = id; }
@@ -33,6 +34,10 @@ public:
 	void SetDirection(float x, float y, float z) { mDirection = Vector3f(x, y, z); }
 	void SetDirection(Vector3f v3f) { mDirection = v3f; }
 	void SetPlayerState(ePlayerState state) { mPlayerState = state; }
+	void SetHP(int hp) { mHP = hp; }
+
+	void RecoverHP(int value) { mHP += value; }
+	void ReduceHP(int value) { mHP -= value; }
 
 protected:
 	std::mutex      mPlayerStateLock;
@@ -44,4 +49,6 @@ protected:
 	
 	Vector3f		mPosition;
 	Vector3f		mDirection;
+
+	int				mHP;
 };

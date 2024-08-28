@@ -71,7 +71,7 @@ bool Room::AddPlayer(Player* player)
 			player->SetState(eSessionState::ST_INGAME);
 
 			player->GetPlayerStateLock().lock();
-			player->SetPlayerState(ePlayerState::PS_RUNNING);
+			player->SetPlayerState(ePlayerState::PS_ALIVE);
 			player->GetPlayerStateLock().unlock();
 			return true;
 		}

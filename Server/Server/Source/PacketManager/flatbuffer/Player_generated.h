@@ -39,6 +39,9 @@ struct PlayerGrabBombBuilder;
 struct PlayerThrowBomb;
 struct PlayerThrowBombBuilder;
 
+struct PlayerAttack;
+struct PlayerAttackBuilder;
+
 struct PlayerDead;
 struct PlayerDeadBuilder;
 
@@ -532,6 +535,89 @@ inline ::flatbuffers::Offset<PlayerThrowBomb> CreatePlayerThrowBomb(
   return builder_.Finish();
 }
 
+struct PlayerAttack FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef PlayerAttackBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ID = 4,
+    VT_POS = 6,
+    VT_DIRECTION = 8,
+    VT_WEAPON = 10,
+    VT_ANIMATION = 12
+  };
+  int32_t id() const {
+    return GetField<int32_t>(VT_ID, 0);
+  }
+  const PacketTable::UtilitiesTable::Vec3f *pos() const {
+    return GetPointer<const PacketTable::UtilitiesTable::Vec3f *>(VT_POS);
+  }
+  const PacketTable::UtilitiesTable::Vec3f *direction() const {
+    return GetPointer<const PacketTable::UtilitiesTable::Vec3f *>(VT_DIRECTION);
+  }
+  int32_t weapon() const {
+    return GetField<int32_t>(VT_WEAPON, 0);
+  }
+  int32_t animation() const {
+    return GetField<int32_t>(VT_ANIMATION, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_ID, 4) &&
+           VerifyOffset(verifier, VT_POS) &&
+           verifier.VerifyTable(pos()) &&
+           VerifyOffset(verifier, VT_DIRECTION) &&
+           verifier.VerifyTable(direction()) &&
+           VerifyField<int32_t>(verifier, VT_WEAPON, 4) &&
+           VerifyField<int32_t>(verifier, VT_ANIMATION, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct PlayerAttackBuilder {
+  typedef PlayerAttack Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_id(int32_t id) {
+    fbb_.AddElement<int32_t>(PlayerAttack::VT_ID, id, 0);
+  }
+  void add_pos(::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> pos) {
+    fbb_.AddOffset(PlayerAttack::VT_POS, pos);
+  }
+  void add_direction(::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> direction) {
+    fbb_.AddOffset(PlayerAttack::VT_DIRECTION, direction);
+  }
+  void add_weapon(int32_t weapon) {
+    fbb_.AddElement<int32_t>(PlayerAttack::VT_WEAPON, weapon, 0);
+  }
+  void add_animation(int32_t animation) {
+    fbb_.AddElement<int32_t>(PlayerAttack::VT_ANIMATION, animation, 0);
+  }
+  explicit PlayerAttackBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<PlayerAttack> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<PlayerAttack>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<PlayerAttack> CreatePlayerAttack(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t id = 0,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> pos = 0,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> direction = 0,
+    int32_t weapon = 0,
+    int32_t animation = 0) {
+  PlayerAttackBuilder builder_(_fbb);
+  builder_.add_animation(animation);
+  builder_.add_weapon(weapon);
+  builder_.add_direction(direction);
+  builder_.add_pos(pos);
+  builder_.add_id(id);
+  return builder_.Finish();
+}
+
 struct PlayerDead FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef PlayerDeadBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -600,13 +686,17 @@ struct PlayerDamageReceive FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Tabl
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_TARGET_ID = 4,
     VT_ATTACKER_ID = 6,
-    VT_ATTACK_TYPE = 8
+    VT_WEAPON = 8,
+    VT_ATTACK_TYPE = 10
   };
   int32_t target_id() const {
     return GetField<int32_t>(VT_TARGET_ID, 0);
   }
   int32_t attacker_id() const {
     return GetField<int32_t>(VT_ATTACKER_ID, 0);
+  }
+  int32_t weapon() const {
+    return GetField<int32_t>(VT_WEAPON, 0);
   }
   int32_t attack_type() const {
     return GetField<int32_t>(VT_ATTACK_TYPE, 0);
@@ -615,6 +705,7 @@ struct PlayerDamageReceive FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Tabl
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_TARGET_ID, 4) &&
            VerifyField<int32_t>(verifier, VT_ATTACKER_ID, 4) &&
+           VerifyField<int32_t>(verifier, VT_WEAPON, 4) &&
            VerifyField<int32_t>(verifier, VT_ATTACK_TYPE, 4) &&
            verifier.EndTable();
   }
@@ -629,6 +720,9 @@ struct PlayerDamageReceiveBuilder {
   }
   void add_attacker_id(int32_t attacker_id) {
     fbb_.AddElement<int32_t>(PlayerDamageReceive::VT_ATTACKER_ID, attacker_id, 0);
+  }
+  void add_weapon(int32_t weapon) {
+    fbb_.AddElement<int32_t>(PlayerDamageReceive::VT_WEAPON, weapon, 0);
   }
   void add_attack_type(int32_t attack_type) {
     fbb_.AddElement<int32_t>(PlayerDamageReceive::VT_ATTACK_TYPE, attack_type, 0);
@@ -648,9 +742,11 @@ inline ::flatbuffers::Offset<PlayerDamageReceive> CreatePlayerDamageReceive(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t target_id = 0,
     int32_t attacker_id = 0,
+    int32_t weapon = 0,
     int32_t attack_type = 0) {
   PlayerDamageReceiveBuilder builder_(_fbb);
   builder_.add_attack_type(attack_type);
+  builder_.add_weapon(weapon);
   builder_.add_attacker_id(attacker_id);
   builder_.add_target_id(target_id);
   return builder_.Finish();

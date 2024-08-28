@@ -23,6 +23,17 @@ public:
 			return;
 		}
 
+		room->GetPlayerListLock().lock_shared();
+		Player* player = room->GetPlayerList()[playerid];
+		room->GetPlayerListLock().unlock_shared();
+		if (player == nullptr) {
+			return;
+		}
+
+		player->GetPlayerStateLock().lock();
+		player->SetPlayerState(ePlayerState::PS_ALIVE);
+		player->GetPlayerStateLock().unlock();
+
 		pServer->SendPlayerRespawn(playerid, roomid);
 	}
 

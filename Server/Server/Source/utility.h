@@ -57,8 +57,8 @@ enum eSessionState
 };
 
 enum ePlayerState {
-	PS_IDLE,
-	PS_RUNNING,
+	PS_NONE,
+	PS_ALIVE,
 	PS_DEAD
 };
 

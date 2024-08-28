@@ -21,23 +21,27 @@ public struct PlayerDamageReceive : IFlatbufferObject
 
   public int TargetId { get { int o = __p.__offset(4); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
   public int AttackerId { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public int AttackType { get { int o = __p.__offset(8); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int Weapon { get { int o = __p.__offset(8); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int AttackType { get { int o = __p.__offset(10); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
 
   public static Offset<PacketTable.PlayerTable.PlayerDamageReceive> CreatePlayerDamageReceive(FlatBufferBuilder builder,
       int target_id = 0,
       int attacker_id = 0,
+      int weapon = 0,
       int attack_type = 0) {
-    builder.StartTable(3);
+    builder.StartTable(4);
     PlayerDamageReceive.AddAttackType(builder, attack_type);
+    PlayerDamageReceive.AddWeapon(builder, weapon);
     PlayerDamageReceive.AddAttackerId(builder, attacker_id);
     PlayerDamageReceive.AddTargetId(builder, target_id);
     return PlayerDamageReceive.EndPlayerDamageReceive(builder);
   }
 
-  public static void StartPlayerDamageReceive(FlatBufferBuilder builder) { builder.StartTable(3); }
+  public static void StartPlayerDamageReceive(FlatBufferBuilder builder) { builder.StartTable(4); }
   public static void AddTargetId(FlatBufferBuilder builder, int targetId) { builder.AddInt(0, targetId, 0); }
   public static void AddAttackerId(FlatBufferBuilder builder, int attackerId) { builder.AddInt(1, attackerId, 0); }
-  public static void AddAttackType(FlatBufferBuilder builder, int attackType) { builder.AddInt(2, attackType, 0); }
+  public static void AddWeapon(FlatBufferBuilder builder, int weapon) { builder.AddInt(2, weapon, 0); }
+  public static void AddAttackType(FlatBufferBuilder builder, int attackType) { builder.AddInt(3, attackType, 0); }
   public static Offset<PacketTable.PlayerTable.PlayerDamageReceive> EndPlayerDamageReceive(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<PacketTable.PlayerTable.PlayerDamageReceive>(o);
@@ -52,7 +56,8 @@ static public class PlayerDamageReceiveVerify
     return verifier.VerifyTableStart(tablePos)
       && verifier.VerifyField(tablePos, 4 /*TargetId*/, 4 /*int*/, 4, false)
       && verifier.VerifyField(tablePos, 6 /*AttackerId*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 8 /*AttackType*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 8 /*Weapon*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 10 /*AttackType*/, 4 /*int*/, 4, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }

@@ -2,7 +2,7 @@
 
 void Player::Init()
 {
-	mPlayerState = ePlayerState::PS_IDLE;
+	mPlayerState = ePlayerState::PS_NONE;
 
 	mRoomID = INVALIDKEY;
 	mInGameID = INVALIDKEY;

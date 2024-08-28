@@ -88,14 +88,6 @@ public class PacketMaker
         var offset = PlayerStop.EndPlayerStop(builder);
         builder.Finish(offset.Value);
 
-        //var buf = builder.DataBuffer;
-        //var verifier = new Verifier(buf);
-        //if (PlayerStopVerify.Verify(verifier, (uint)offset.Value) == false)
-        //{
-        //    Debug.Log("invaild buf / CreatePlayerStopPacket");
-        //    return null;
-        //}
-
         byte[] data = builder.SizedByteArray();
         HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERSTOP, flatBufferSize = (ushort)data.Length };
         byte[] headerdata = Serialize<HEADER>(header);
@@ -119,16 +111,55 @@ public class PacketMaker
         var offset = PlayerPos.EndPlayerPos(builder);
         builder.Finish(offset.Value);
 
-        //var buf = builder.DataBuffer;
-        //var verifier = new Verifier(buf);
-        //if (PlayerPosSyncVerify.Verify(verifier, (uint)offset.Value) == false)
-        //{
-        //    Debug.Log("invaild buf / CreatePlayerPosSyncPacket");
-        //    return null;
-        //}
-
         byte[] data = builder.SizedByteArray();
         HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERPOSSYNC, flatBufferSize = (ushort)data.Length };
+
+        byte[] headerdata = Serialize<HEADER>(header);
+        byte[] result = new byte[data.Length + headerdata.Length];
+
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
+
+        return result;
+    }
+
+    public byte[] MakePlayerAttackPacket(Vector3 position, Vector3 direction, int id, int weapon, int animation)
+    {
+        var builder = new FlatBufferBuilder(1);
+        var pos = Vec3f.CreateVec3f(builder, position.x, position.y, position.z);
+        var dir = Vec3f.CreateVec3f(builder, direction.x, direction.y, direction.z);
+        PlayerAttack.StartPlayerAttack(builder);
+        PlayerAttack.AddPos(builder, pos);
+        PlayerAttack.AddDirection(builder, dir);
+        PlayerAttack.AddId(builder, id);
+        var offset = PlayerAttack.EndPlayerAttack(builder);
+        builder.Finish(offset.Value);
+
+        byte[] data = builder.SizedByteArray();
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERATTACK, flatBufferSize = (ushort)data.Length };
+
+        byte[] headerdata = Serialize<HEADER>(header);
+        byte[] result = new byte[data.Length + headerdata.Length];
+
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
+
+        return result;
+    }
+
+    public byte[] MakePlayerDamageReceivePacket(int attacker_id, int target_id, int weapon, int attack_type)
+    {
+        var builder = new FlatBufferBuilder(1);
+        PlayerDamageReceive.StartPlayerDamageReceive(builder);
+        PlayerDamageReceive.AddAttackerId(builder, attacker_id);
+        PlayerDamageReceive.AddTargetId(builder, target_id);
+        PlayerDamageReceive.AddWeapon(builder, weapon);
+        PlayerDamageReceive.AddAttackType(builder, attack_type);
+        var offset = PlayerDamageReceive.EndPlayerDamageReceive(builder);
+        builder.Finish(offset.Value);
+
+        byte[] data = builder.SizedByteArray();
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERDAMAGERECEIVE, flatBufferSize = (ushort)data.Length };
 
         byte[] headerdata = Serialize<HEADER>(header);
         byte[] result = new byte[data.Length + headerdata.Length];

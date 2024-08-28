@@ -374,6 +374,19 @@ void Server::SendGameHostChange(int sessionID)
     player->DoSend(send_buffer.data(), send_buffer.size());
 }
 
+void Server::SendPlayerDeadPacket(int inGameID, int roomID)
+{
+    mRooms[roomID]->GetPlayerListLock().lock_shared();
+    Player* player = dynamic_cast<Player*>(mRooms[roomID]->GetPlayerList()[inGameID]);
+    mRooms[roomID]->GetPlayerListLock().unlock_shared();
+    if (player == nullptr) {
+        return;
+    }
+
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerDeadPacket(inGameID, roomID, player->GetPosition(), player->GetDirection());
+    SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
+}
+
 void Server::SendPlayerRespawn(int inGameID, int roomID)
 {
     mRooms[roomID]->GetPlayerListLock().lock_shared();
@@ -393,6 +406,12 @@ void Server::SendPlayerRespawn(int inGameID, int roomID)
     int posY = spawnPoses[idx].second;
 
     std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerRespawnPacket(inGameID, roomID, posX, posY);
+    SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
+}
+
+void Server::SendPlayerCalculatedDamage(int targetID, int roomID, int attackType, int hp, int damageAmount)
+{
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerCalculatedDamagePacket(targetID, attackType, hp, damageAmount);
     SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
 
@@ -425,6 +444,7 @@ void Server::MatchingComplete(int roomID, int playerCnt)
 
             // 임시
             p->SetTeam(tFlag % 2);
+            p->SetHP(100);
             tFlag++;
             //
 
@@ -443,8 +463,6 @@ void Server::MatchingComplete(int roomID, int playerCnt)
         }
         s->GetStateLock().unlock();
     }
-
-    room->SetPlayerLimit(room->GetPlayerCnt()); // 임시
 
     room->GetPlayerListLock().lock_shared();
     for (Player* p : room->GetPlayerList()) {

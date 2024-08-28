@@ -14,13 +14,14 @@ public:
 			const PlayerThrowBomb* read = flatbuffers::GetRoot<PlayerThrowBomb>(data);
 
 			Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
-			if (player == nullptr) {
+			if (player == nullptr && player->GetInGameID() != read->id()) {
 				return;
 			}
+
 			int roomid = player->GetRoomID();
 			int bombid = read->bomb_id();
-
 			Room* room = pServer->GetRooms()[roomid];
+
 			room->GetObjectListLock().lock_shared();
 			Bomb* bomb = dynamic_cast<Bomb*>(room->GetObjects()[bombid]);
 			if (bomb == nullptr) {
@@ -29,6 +30,7 @@ public:
 			}
 			bomb->SetIsGrabbed(false);
 			room->GetObjectListLock().unlock_shared();
+
 			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYERTHROWBOMB, data, size);
 			pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomid);
 		}

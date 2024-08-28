@@ -48,6 +48,10 @@ public class PacketManager : MonoBehaviour
             { ePacketType.S2C_PLAYERPOSSYNC, new PlayerPosSyncProcessor() },
             { ePacketType.S2C_PLAYERGRABBOMB, new PlayerGrabBombProcessor() },
             { ePacketType.S2C_PLAYERTHROWBOMB, new PlayerThrowBombProcessor() },
+            { ePacketType.S2C_PLAYERATTACK, new PlayerAttackProcessor() },
+            { ePacketType.S2C_PLAYERCALCULATEDDAMAGE, new PlayerCalculatedDamageProcessor() },
+            { ePacketType.S2C_PLAYERDEAD, new PlayerDeadProcessor() },
+            { ePacketType.S2C_PLAYERRESPAWN, new PlayerRespawnProcessor() },
 
 
             { ePacketType.S2C_BLOCKDROP, new BlockDropProcessor() },
@@ -148,6 +152,20 @@ public class PacketManager : MonoBehaviour
     public void SendPlayerThrowBombPacket(Vector3 position, Vector3 direction, int playerID, int BombID)
     {
         byte[] packet = _packetMaker.MakePlayerThrowBombPacket(position, direction, playerID, BombID);
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+
+    public void SendPlayerAttackPacke(Vector3 position, Vector3 direction, int playerID, int weapon, int animation)
+    {
+        byte[] packet = _packetMaker.MakePlayerAttackPacket(position, direction, playerID, weapon, animation);
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+
+    public void SendPlayerDamageReceivePacket(int attackerID, int targetID, int weapon, int attackType)
+    {
+        byte[] packet = _packetMaker.MakePlayerDamageReceivePacket(attackerID, targetID, weapon, attackType);
         if (packet == null) { return; }
         SendPacket(packet);
     }

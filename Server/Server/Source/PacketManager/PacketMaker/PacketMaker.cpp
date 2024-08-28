@@ -9,6 +9,16 @@ std::vector<uint8_t> PacketMaker::MakePlayerAdd(int inGameID)
 	return MakeBuffer(ePacketType::S2C_PLAYERADD, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
+std::vector<uint8_t> PacketMaker::MakePlayerDeadPacket(int inGameID, int roomID, Vector3f position, Vector3f direction)
+{
+	flatbuffers::FlatBufferBuilder Builder;
+	Builder.Clear();
+	auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, position.x, position.y, position.x);
+	auto dir = PacketTable::UtilitiesTable::CreateVec3f(Builder, direction.x, direction.y, direction.x);
+	Builder.Finish(PacketTable::PlayerTable::CreatePlayerDead(Builder, inGameID, pos, dir));
+	return MakeBuffer(ePacketType::S2C_PLAYERDEAD, Builder.GetBufferPointer(), Builder.GetSize());
+}
+
 std::vector<uint8_t> PacketMaker::MakePlayerRespawnPacket(int inGameID, int roomID, int x, int y)
 {
 	flatbuffers::FlatBufferBuilder Builder;
@@ -16,6 +26,14 @@ std::vector<uint8_t> PacketMaker::MakePlayerRespawnPacket(int inGameID, int room
 	auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, x, y);
 	Builder.Finish(PacketTable::PlayerTable::CreatePlayerRespawn(Builder, inGameID, pos));
 	return MakeBuffer(ePacketType::S2C_PLAYERRESPAWN, Builder.GetBufferPointer(), Builder.GetSize());
+}
+
+std::vector<uint8_t> PacketMaker::MakePlayerCalculatedDamagePacket(int targetID, int attackType, int hp, int damageAmount)
+{
+	flatbuffers::FlatBufferBuilder Builder;
+	Builder.Clear();
+	Builder.Finish(PacketTable::PlayerTable::CreatePlayerCalculatedDamage(Builder, targetID, attackType, hp, damageAmount));
+	return MakeBuffer(ePacketType::S2C_PLAYERCALCULATEDDAMAGE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
 std::vector<uint8_t> PacketMaker::MakeGameMatchingResponsePacket(int inGameID, int roomID, int team, int gameMode, int totalPlayerCount, bool isHost)
