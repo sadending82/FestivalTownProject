@@ -137,7 +137,7 @@ void Server::Init(class TableManager* pTableManager, class DB* pDB)
     mTestThread = std::thread(&TestThread::RunWorker, pTestThreadRef);
 #endif
     DEBUGMSGNOPARAM("Thread Ready\n");
-    PushEventGameMatching(mTimer);
+    //PushEventGameMatching(mTimer);
 }
 
 void Server::ThreadJoin()
@@ -287,7 +287,6 @@ void Server::SendBombSpawnPacket(int roomID, int spawnCount)
         int x = spawnPoses[idx].first;
         int y = spawnPoses[idx].second;
         int bombid = room->AddBomb(new Bomb, Vector3f(x, y, 0));
-        std::cout << "bomb spawn - " << bombid << std::endl;
         if (bombid == INVALIDKEY) continue;
         std::vector<uint8_t> send_buffer = mPacketMaker->MakeBombSpawnPacket(x, y, bombid);
         SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
@@ -333,7 +332,6 @@ void Server::SendGameStartPacket(int roomID)
 
 void Server::SendGameEndPacket(int roomID, uint8_t winningTeams_flag)
 {
-    std::cout << "win - " << (int)winningTeams_flag << std::endl;
     std::vector<uint8_t> send_buffer = mPacketMaker->MakeGameEndPacket(winningTeams_flag);
     SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }

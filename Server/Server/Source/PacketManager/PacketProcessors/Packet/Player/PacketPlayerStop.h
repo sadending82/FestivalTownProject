@@ -21,7 +21,6 @@ public:
 			}
 
 			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYERSTOP, data, size);
-
 			pServer->SendAllPlayerInRoomExceptSender(send_buffer.data(), send_buffer.size(), key);
 		}
 	}

@@ -7,6 +7,7 @@ public class PlayerManager : MonoBehaviour
     private int myId;
     private int maxPlayerNum;
     private int nowPlayerNum;
+    private bool isHost;
 
     private void Awake()
     {
@@ -26,6 +27,20 @@ public class PlayerManager : MonoBehaviour
     public int GetMyId()
     {
         return this.myId;
+    }
+
+    public void SetIsHost(bool flag)
+    {
+        this.isHost = flag;
+        if (flag)
+        {
+            Debug.Log("I'm Game Host ");
+        }
+    }
+
+    public bool GetIsHost()
+    {
+        return this.isHost;
     }
 
     public void AddPlayer(int id)

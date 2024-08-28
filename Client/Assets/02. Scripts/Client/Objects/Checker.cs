@@ -22,7 +22,11 @@ public class Checker : MonoBehaviour
         }
         if (other.gameObject.tag == "Bomb")
         {
-            other.gameObject.GetComponent<Bomb>().Boom();
+            if (Managers.Player.GetIsHost() == true)
+            {
+                Managers.Network.GetPacketManager().SendBombExplosionPacket(other.gameObject.GetComponent<Bomb>().transform.position, other.gameObject.GetComponent<Bomb>().GetId());
+                //other.gameObject.GetComponent<Bomb>().Boom();
+            }
         }
     }
 }

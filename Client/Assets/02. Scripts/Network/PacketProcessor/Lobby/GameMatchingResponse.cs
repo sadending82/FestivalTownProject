@@ -21,8 +21,10 @@ namespace Network.PacketProcessor
 
             int id = Data.Ingameid;
             int roomID = Data.Roomid;
+            bool isHost = Data.IsHost;
 
             Managers.Player.GetComponent<PlayerManager>().SetMyId(id);
+            Managers.Player.GetComponent<PlayerManager>().SetIsHost(isHost);
             Managers.Network.GetPacketManager().SendGameReady();
         }
 

@@ -16,7 +16,9 @@ public:
 
 			int roomid = dynamic_cast<Player*>(pServer->GetSessions()[key])->GetRoomID();
 			int bombid = read->id();
-
+			if (bombid <= INVALIDKEY) {
+				return;
+			}
 			Room* room = pServer->GetRooms()[roomid];
 			if (room == nullptr) {
 				return;
