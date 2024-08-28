@@ -127,3 +127,19 @@ bool Room::SetIsRun(bool desired)
 	bool expected = !desired;
 	return mIsRun.compare_exchange_strong(expected, desired);
 }
+
+int Room::ChangeHost()
+{
+	int sessionid = INVALIDKEY;
+	mPlayerListLock.lock();
+	for (Player* player : mPlayerList) {
+		if (player == nullptr) {
+			continue;
+		}
+		mHostID = player->GetInGameID();
+		sessionid = player->GetSessionID();
+		break;
+	}
+	mPlayerListLock.unlock();
+	return sessionid;
+}

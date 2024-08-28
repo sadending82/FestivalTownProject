@@ -39,6 +39,7 @@ public:
 	void SendRemainTimeSync(int roomID);
 	void SendGameStartPacket(int roomID);
 	void SendGameEndPacket(int roomID, uint8_t winningTeams_flag);
+	void SendGameHostChange(int sessionID);
 	void SendPlayerRespawn(int sessionID, int roomID);
 
 	void StartHeartBeat(int sessionID);

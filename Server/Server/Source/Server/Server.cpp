@@ -63,9 +63,16 @@ void Server::Disconnect(int key)
     }
 
     // Delete Player In Room
-    int roomID;
-    if (roomID = player->GetRoomID() != INVALIDKEY) {
-        mRooms[roomID]->DeletePlayer(player->GetInGameID());
+    if (player->GetState() == eSessionState::ST_INGAME) {
+        int roomID;
+        int inGameID = player->GetInGameID();
+        if (roomID = player->GetRoomID() != INVALIDKEY) {
+            mRooms[roomID]->DeletePlayer(inGameID);
+        }
+        if (inGameID == mRooms[roomID]->GetHostID()) {
+            int newHostSessionID = mRooms[roomID]->ChangeHost();
+            SendGameHostChange(newHostSessionID);
+        }
     }
     player->Disconnect();
 }
@@ -154,34 +161,46 @@ void Server::ThreadJoin()
 void Server::SendAllPlayerInRoomBySessionID(void* packet, int size, int sessionID)
 {
     int roomID = dynamic_cast<Player*>(GetSessions()[sessionID])->GetRoomID();
+    mRooms[roomID]->GetPlayerListLock().lock_shared();
     for (Player* p : GetRooms()[roomID]->GetPlayerList()) {
         if (p == nullptr) continue;
         p->DoSend(packet, size);
     }
+    mRooms[roomID]->GetPlayerListLock().unlock_shared();
 }
 
 void Server::SendAllPlayerInRoom(void* packet, int size, int roomID)
 {
+    mRooms[roomID]->GetPlayerListLock().lock_shared();
     for (Player* p : GetRooms()[roomID]->GetPlayerList()) {
         if (p == nullptr) continue;
         p->DoSend(packet, size);
     }
+    mRooms[roomID]->GetPlayerListLock().unlock_shared();
 }
 
 void Server::SendAllPlayerInRoomExceptSender(void* packet, int size, int sessionID)
 {
     Player* player = dynamic_cast<Player*>(GetSessions()[sessionID]);
+    if (player == nullptr) {
+        return;
+    }
     int roomID = player->GetRoomID();
+    mRooms[roomID]->GetPlayerListLock().lock_shared();
     for (Player* p : GetRooms()[roomID]->GetPlayerList()) {
         if (p == nullptr) continue;
         if (p->GetSessionID() == sessionID) continue;
         p->DoSend(packet, size);
     }
+    mRooms[roomID]->GetPlayerListLock().unlock_shared();
 }
 
 void Server::SendPlayerAdd(int sessionID, int destination)
 {
     Player* player = dynamic_cast<Player*>(GetSessions()[sessionID]);
+    if (player == nullptr) {
+        return;
+    }
     int inGameID = player->GetInGameID();
     int roomID = player->GetRoomID();
     std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerAdd(inGameID);
@@ -192,6 +211,9 @@ void Server::SendPlayerAdd(int sessionID, int destination)
 void Server::SendGameMatchingResponse(int sessionID)
 {
     Player* player = dynamic_cast<Player*>(GetSessions()[sessionID]);
+    if (player == nullptr) {
+        return;
+    }
     int inGameID = player->GetInGameID();
     int roomID = player->GetRoomID();
     int team = player->GetTeam();
@@ -336,9 +358,30 @@ void Server::SendGameEndPacket(int roomID, uint8_t winningTeams_flag)
     SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
 
+void Server::SendGameHostChange(int sessionID)
+{
+    if (sessionID == INVALIDKEY) {
+        return;
+    }
+    Player* player = dynamic_cast<Player*>(GetSessions()[sessionID]);
+    if (player == nullptr) {
+        return;
+    }
+    int inGameID = player->GetInGameID();
+    int roomID = player->GetRoomID();
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakeGameHostChangePacket(inGameID, roomID);
+
+    player->DoSend(send_buffer.data(), send_buffer.size());
+}
+
 void Server::SendPlayerRespawn(int inGameID, int roomID)
 {
+    mRooms[roomID]->GetPlayerListLock().lock_shared();
     Player* player = dynamic_cast<Player*>(mRooms[roomID]->GetPlayerList()[inGameID]);
+    mRooms[roomID]->GetPlayerListLock().unlock_shared();
+    if (player == nullptr) {
+        return;
+    }
     int team = player->GetTeam();
     std::vector<std::pair<int, int>>& spawnPoses = mRooms[roomID]->GetMap().GetPlayerSpawnIndexes(team);
 
@@ -403,6 +446,7 @@ void Server::MatchingComplete(int roomID, int playerCnt)
 
     room->SetPlayerLimit(room->GetPlayerCnt()); // 임시
 
+    room->GetPlayerListLock().lock_shared();
     for (Player* p : room->GetPlayerList()) {
         if (p == nullptr) continue;
         for (Player* other : room->GetPlayerList()) {
@@ -410,6 +454,7 @@ void Server::MatchingComplete(int roomID, int playerCnt)
             SendPlayerAdd(p->GetSessionID(), other->GetSessionID());
         }
     }
+    room->GetPlayerListLock().unlock_shared();
 }
 
 void Server::StartGame(int roomID)
@@ -450,12 +495,14 @@ void Server::CheckGameEnd(int roomID)
     if (loseTeamCnt = teamCnt - 1) {
         if (room->SetIsRun(false) == true) {
             SendGameEndPacket(roomID, winningTeams_flag);
+            room->GetPlayerListLock().lock_shared();
             for (auto player : room->GetPlayerList()) {
                 if (player == nullptr) continue;
                 player->GetStateLock().lock();
                 player->SetState(eSessionState::ST_ACCEPTED);
                 player->GetStateLock().unlock();
             }
+            room->GetPlayerListLock().unlock_shared();
 
             // 종료하자마자 바로 초기화 하는데 나중에 어떻게 해야할지 고민해야할듯
             GetRooms()[roomID]->Reset();
@@ -482,12 +529,14 @@ void Server::TimeoverGameEnd(int roomID) {
 
     if (room->SetIsRun(false) == true) {
         SendGameEndPacket(roomID, winningTeams_flag);
+        room->GetPlayerListLock().lock_shared();
         for (auto player : room->GetPlayerList()) {
             if (player == nullptr) continue;
             player->GetStateLock().lock();
             player->SetState(eSessionState::ST_ACCEPTED);
             player->GetStateLock().unlock();
         }
+        room->GetPlayerListLock().unlock_shared();
 
         // 종료하자마자 바로 초기화 하는데 나중에 어떻게 해야할지 고민해야할듯
         GetRooms()[roomID]->Reset();

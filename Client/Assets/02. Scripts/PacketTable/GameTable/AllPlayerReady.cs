@@ -19,17 +19,8 @@ public struct AllPlayerReady : IFlatbufferObject
   public void __init(int _i, ByteBuffer _bb) { __p = new Table(_i, _bb); }
   public AllPlayerReady __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public int Roomid { get { int o = __p.__offset(4); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
 
-  public static Offset<PacketTable.GameTable.AllPlayerReady> CreateAllPlayerReady(FlatBufferBuilder builder,
-      int roomid = 0) {
-    builder.StartTable(1);
-    AllPlayerReady.AddRoomid(builder, roomid);
-    return AllPlayerReady.EndAllPlayerReady(builder);
-  }
-
-  public static void StartAllPlayerReady(FlatBufferBuilder builder) { builder.StartTable(1); }
-  public static void AddRoomid(FlatBufferBuilder builder, int roomid) { builder.AddInt(0, roomid, 0); }
+  public static void StartAllPlayerReady(FlatBufferBuilder builder) { builder.StartTable(0); }
   public static Offset<PacketTable.GameTable.AllPlayerReady> EndAllPlayerReady(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<PacketTable.GameTable.AllPlayerReady>(o);
@@ -42,7 +33,6 @@ static public class AllPlayerReadyVerify
   static public bool Verify(Google.FlatBuffers.Verifier verifier, uint tablePos)
   {
     return verifier.VerifyTableStart(tablePos)
-      && verifier.VerifyField(tablePos, 4 /*Roomid*/, 4 /*int*/, 4, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }

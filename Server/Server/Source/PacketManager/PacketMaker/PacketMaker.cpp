@@ -95,6 +95,14 @@ std::vector<uint8_t> PacketMaker::MakeGameEndPacket(uint8_t winningTeams_flag)
 	return MakeBuffer(ePacketType::S2C_GAMEEND, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
+std::vector<uint8_t> PacketMaker::MakeGameHostChangePacket(int inGameID, int roomID)
+{
+	flatbuffers::FlatBufferBuilder Builder;
+	Builder.Clear();
+	Builder.Finish(PacketTable::GameTable::CreateGameHostChange(Builder, inGameID, roomID));
+	return MakeBuffer(ePacketType::S2C_GAMEHOSTCHANGE, Builder.GetBufferPointer(), Builder.GetSize());
+}
+
 std::vector<uint8_t> PacketMaker::MakeLifeReducePacket(int team, int lifeCount)
 {
 	flatbuffers::FlatBufferBuilder Builder;

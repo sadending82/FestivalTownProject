@@ -21,6 +21,7 @@ public:
 	std::vector<uint8_t> MakeBombExplosionPacket(int bombID, Vector3f position);
 	std::vector<uint8_t> MakeGameStartPacket(int roomID, int startTime);
 	std::vector<uint8_t> MakeGameEndPacket(uint8_t winningTeams_flag);
+	std::vector<uint8_t> MakeGameHostChangePacket(int inGameID, int roomID);
 
 	std::vector<uint8_t> MakeLifeReducePacket(int team, int lifeCount);
 	std::vector<uint8_t> MakeRemainTimeSyncPacket(int roomID, TIMEPOINT time, int gameEndTime);
