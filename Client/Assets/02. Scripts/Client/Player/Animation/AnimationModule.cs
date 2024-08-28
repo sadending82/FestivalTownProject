@@ -15,13 +15,13 @@ namespace ActiveRagdoll
 
         [Header("--- AnimationControll ---")]
         [SerializeField]
-        private bool useIK;
+        private bool updateUpperBodyAnimation;  // 상체가 아무런 동작을 하지않으면 끈다.
         [SerializeField]
-        private bool useAnimationModule;
+        private bool useAnimationModule;        // 그로기 모드일때 꺼야한다.
 
         private void Awake()
         {
-            useIK = false;
+            updateUpperBodyAnimation = false;
             useAnimationModule = true;
         }
         private void Start()
@@ -47,28 +47,28 @@ namespace ActiveRagdoll
 
         private void UpdateJointTargets()
         {
-            //// 하체에만 애니메이션 적용
-            //if (useIK == true)
-            //{
-            //    for (int i = 20; i < _joints.Length; i++)
-            //    {
-            //        ConfigurableJointExtensions.SetTargetRotationLocal(_joints[i], _animatedBones[i + 1].localRotation, _initialJointsRotation[i]);
-            //    }
-            //}
-            //// 전신에 애니메이션 적용
-            //else
-            //{
+            // 전신에 애니메이션 적용
+            if (updateUpperBodyAnimation == true)
+            {
                 for (int i = 0; i < _joints.Length; i++)
                 {
                     ConfigurableJointExtensions.SetTargetRotationLocal(_joints[i], _animatedBones[i + 1].localRotation, _initialJointsRotation[i]);
                 }
-            //}
+            }
+            // 하체에만 애니메이션 적용
+            else
+            {
+                for (int i = 20; i < _joints.Length; i++)
+                {
+                    ConfigurableJointExtensions.SetTargetRotationLocal(_joints[i], _animatedBones[i + 1].localRotation, _initialJointsRotation[i]);
+                }
+            }
         }
 
         // ------------------- GETTERS & SETTERS -------------------
-        public void SetUseIK(bool useIK)
+        public void SetUpdateUpperBodyAnimation(bool updateUpperBodyAnimation)
         {
-            this.useIK = useIK;
+            this.updateUpperBodyAnimation = updateUpperBodyAnimation;
         }
         public void SetUseAnimationModule(bool useAnimationModule)
         {

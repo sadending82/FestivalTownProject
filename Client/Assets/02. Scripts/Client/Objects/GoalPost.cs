@@ -10,6 +10,7 @@ public class GoalPost : MonoBehaviour
     {
         if(other.gameObject.tag == "Bomb")
         {
+            Debug.Log(teamNumber + " is Goaled!!!");
             Bomb targetBomb = other.GetComponent<Bomb>();
             int playerId = targetBomb.GetLastPickUpPlayerId();
 

@@ -818,6 +818,7 @@ MonoBehaviour:
   groggyNum: 0
   groggyTime: 0
   myCamera: {fileID: 5473471763455073464}
+  isHaveItem: 0
   isGroggy: 0
   animationController: {fileID: 2404611995629400342}
 --- !u!114 &3426677121305557922
@@ -889,7 +890,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _activeRagdoll: {fileID: 3426677121305557922}
-  useIK: 0
+  updateUpperBodyAnimation: 0
   useAnimationModule: 0
 --- !u!1001 &2516551554161385915
 PrefabInstance:

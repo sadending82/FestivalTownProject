@@ -31,7 +31,9 @@ public class CharacterStatus : MonoBehaviour
     public bool isGroggy;
     public AnimationController animationController;
     private ActiveRagdoll.AnimationModule animationMoudule;
+    // 상체의 상태는 서버와 교환
     private UpperBodyAnimationState upperBodyAnimationState;
+    // 하체의 상태는 클라가 관리(이동 관련해서는 이미 서버와 교환하고 있기 때문)
     private LowerBodyAnimationState lowerBodyAnimationState;
 
     private void Awake()
@@ -65,25 +67,28 @@ public class CharacterStatus : MonoBehaviour
             Managers.Game.isTimerStart = true;
         }
     }
-    public void setUpperBodyAnimationState(UpperBodyAnimationState upperBodyAnimationState)
+    public void SetUpperBodyAnimationState(UpperBodyAnimationState upperBodyAnimationState)
     {
-        this.upperBodyAnimationState = upperBodyAnimationState;
-        animationController.setUpperBodyAnimationState(upperBodyAnimationState);
-        ///<summary>
-        ///서버에 상태 전달하는 부분 여기에 추가
-        ///</summary>
-    }
-    public void setLowerBodyAnimationState(LowerBodyAnimationState lowerBodyAnimationState)
-    {
-        if (lowerBodyAnimationState != LowerBodyAnimationState.ROLL &&
-            lowerBodyAnimationState != LowerBodyAnimationState.FLYINGKICK)
+        //if (this.upperBodyAnimationState != upperBodyAnimationState)
         {
-            this.lowerBodyAnimationState = lowerBodyAnimationState;
-            animationController.setLowerBodyAnimationState(lowerBodyAnimationState);
+            this.upperBodyAnimationState = upperBodyAnimationState;
+            animationController.SetUpperBodyAnimationState(upperBodyAnimationState);
             ///<summary>
             ///서버에 상태 전달하는 부분 여기에 추가
             ///</summary>
         }
+    }
+    public void SetLowerBodyAnimationState(LowerBodyAnimationState lowerBodyAnimationState)
+    {
+        //if (this.lowerBodyAnimationState != lowerBodyAnimationState)
+        {
+            this.lowerBodyAnimationState = lowerBodyAnimationState;
+            animationController.SetLowerBodyAnimationState(lowerBodyAnimationState);
+        }
+    }
+    public LowerBodyAnimationState GetLowerBodyAnimationState()
+    {
+        return this.lowerBodyAnimationState;
     }
     public void SetIsHaveItem(bool isHaveItem, string itemTag = "NULL", int itemId = -1)
     {

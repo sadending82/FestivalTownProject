@@ -25,29 +25,34 @@ namespace Network.PacketProcessor
 
             PlayerController pController = Managers.Player.transform.GetChild(id).GetComponent<PlayerController>();
 
+            pController.SetDirection(dir);
+            pController.SetPosition(pos);
             if (pController != null)
             {
                 switch (state)
                 {
-                    case (int)ePlayerState.PS_RUN:
+                    case (int)ePlayerMoveState.PS_WALK:
                         {
-                            pController.SetDirection(dir);
-                            pController.SetPosition(pos);
                             pController.SetIsMove(true);
+                            pController.s_SetAnimation(ePlayerMoveState.PS_WALK);
+                        }
+                        break;
+                    case (int)ePlayerMoveState.PS_RUN:
+                        {
+                            pController.SetIsMove(true);
+                            pController.s_SetAnimation(ePlayerMoveState.PS_RUN);
                         }
                         break;
 
-                    case (int)ePlayerState.PS_JUMP:
+                    case (int)ePlayerMoveState.PS_JUMP:
                         {
-                            pController.SetDirection(dir);
-                            pController.SetPosition(pos);
                             pController.Jump();
                         }
                         break;
 
                     default:
                         {
-
+                            Debug.Log("ERROR!! : PlayerMove.cs, Wrong MoveState !!!");
                         }
                         break;
                 }
