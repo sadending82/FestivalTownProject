@@ -1,3 +1,0 @@
-ODBC: PartyPeople
-ID: hh
-PW: tjdwo104
