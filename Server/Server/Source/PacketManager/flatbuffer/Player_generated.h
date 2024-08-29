@@ -39,8 +39,8 @@ struct PlayerGrabBombBuilder;
 struct PlayerThrowBomb;
 struct PlayerThrowBombBuilder;
 
-struct PlayerAttack;
-struct PlayerAttackBuilder;
+struct PlayerAnimation;
+struct PlayerAnimationBuilder;
 
 struct PlayerDead;
 struct PlayerDeadBuilder;
@@ -535,14 +535,13 @@ inline ::flatbuffers::Offset<PlayerThrowBomb> CreatePlayerThrowBomb(
   return builder_.Finish();
 }
 
-struct PlayerAttack FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef PlayerAttackBuilder Builder;
+struct PlayerAnimation FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef PlayerAnimationBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_ID = 4,
     VT_POS = 6,
     VT_DIRECTION = 8,
-    VT_WEAPON = 10,
-    VT_ANIMATION = 12
+    VT_ANIMATION = 10
   };
   int32_t id() const {
     return GetField<int32_t>(VT_ID, 0);
@@ -552,9 +551,6 @@ struct PlayerAttack FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   }
   const PacketTable::UtilitiesTable::Vec3f *direction() const {
     return GetPointer<const PacketTable::UtilitiesTable::Vec3f *>(VT_DIRECTION);
-  }
-  int32_t weapon() const {
-    return GetField<int32_t>(VT_WEAPON, 0);
   }
   int32_t animation() const {
     return GetField<int32_t>(VT_ANIMATION, 0);
@@ -566,52 +562,46 @@ struct PlayerAttack FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            verifier.VerifyTable(pos()) &&
            VerifyOffset(verifier, VT_DIRECTION) &&
            verifier.VerifyTable(direction()) &&
-           VerifyField<int32_t>(verifier, VT_WEAPON, 4) &&
            VerifyField<int32_t>(verifier, VT_ANIMATION, 4) &&
            verifier.EndTable();
   }
 };
 
-struct PlayerAttackBuilder {
-  typedef PlayerAttack Table;
+struct PlayerAnimationBuilder {
+  typedef PlayerAnimation Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
   void add_id(int32_t id) {
-    fbb_.AddElement<int32_t>(PlayerAttack::VT_ID, id, 0);
+    fbb_.AddElement<int32_t>(PlayerAnimation::VT_ID, id, 0);
   }
   void add_pos(::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> pos) {
-    fbb_.AddOffset(PlayerAttack::VT_POS, pos);
+    fbb_.AddOffset(PlayerAnimation::VT_POS, pos);
   }
   void add_direction(::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> direction) {
-    fbb_.AddOffset(PlayerAttack::VT_DIRECTION, direction);
-  }
-  void add_weapon(int32_t weapon) {
-    fbb_.AddElement<int32_t>(PlayerAttack::VT_WEAPON, weapon, 0);
+    fbb_.AddOffset(PlayerAnimation::VT_DIRECTION, direction);
   }
   void add_animation(int32_t animation) {
-    fbb_.AddElement<int32_t>(PlayerAttack::VT_ANIMATION, animation, 0);
+    fbb_.AddElement<int32_t>(PlayerAnimation::VT_ANIMATION, animation, 0);
   }
-  explicit PlayerAttackBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+  explicit PlayerAnimationBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  ::flatbuffers::Offset<PlayerAttack> Finish() {
+  ::flatbuffers::Offset<PlayerAnimation> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<PlayerAttack>(end);
+    auto o = ::flatbuffers::Offset<PlayerAnimation>(end);
     return o;
   }
 };
 
-inline ::flatbuffers::Offset<PlayerAttack> CreatePlayerAttack(
+inline ::flatbuffers::Offset<PlayerAnimation> CreatePlayerAnimation(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t id = 0,
     ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> pos = 0,
     ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> direction = 0,
-    int32_t weapon = 0,
     int32_t animation = 0) {
-  PlayerAttackBuilder builder_(_fbb);
+  PlayerAnimationBuilder builder_(_fbb);
   builder_.add_animation(animation);
-  builder_.add_weapon(weapon);
   builder_.add_direction(direction);
   builder_.add_pos(pos);
   builder_.add_id(id);

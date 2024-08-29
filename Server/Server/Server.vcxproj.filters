@@ -83,7 +83,7 @@
     <ClInclude Include="Source\PacketManager\flatbuffer\Utilities_generated.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Event\Game\EventGameStart.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Event\Lobby\EventGameMatching.h" />
-    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Player\PacketPlayerAttack.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Player\PacketPlayerAnimation.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Player\PacketPlayerDamageReceive.h" />
   </ItemGroup>
   <ItemGroup>

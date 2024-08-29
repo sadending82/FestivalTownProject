@@ -7,7 +7,7 @@
 #include "Packet/Player/PacketPlayerPosSync.h"
 #include "Packet/Player/PacketPlayerGrabBomb.h"
 #include "Packet/Player/PacketPlayerThrowBomb.h"
-#include "Packet/Player/PacketPlayerAttack.h"
+#include "Packet/Player/PacketPlayerAnimation.h"
 #include "Packet/Player/PacketPlayerDamageReceive.h"
 
 #include "Packet/Object/PacketBombInput.h"

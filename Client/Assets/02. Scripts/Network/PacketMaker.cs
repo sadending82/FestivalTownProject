@@ -123,22 +123,21 @@ public class PacketMaker
         return result;
     }
 
-    public byte[] MakePlayerAttackPacket(Vector3 position, Vector3 direction, int id, int weapon, int animation)
+    public byte[] MakePlayerAnimationPacket(Vector3 position, Vector3 direction, int id, int animation)
     {
         var builder = new FlatBufferBuilder(1);
         var pos = Vec3f.CreateVec3f(builder, position.x, position.y, position.z);
         var dir = Vec3f.CreateVec3f(builder, direction.x, direction.y, direction.z);
-        PlayerAttack.StartPlayerAttack(builder);
-        PlayerAttack.AddPos(builder, pos);
-        PlayerAttack.AddDirection(builder, dir);
-        PlayerAttack.AddId(builder, id);
-        PlayerAttack.AddWeapon(builder, weapon);
-        PlayerAttack.AddAnimation(builder, animation);
-        var offset = PlayerAttack.EndPlayerAttack(builder);
+        PlayerAnimation.StartPlayerAnimation(builder);
+        PlayerAnimation.AddPos(builder, pos);
+        PlayerAnimation.AddDirection(builder, dir);
+        PlayerAnimation.AddId(builder, id);
+        PlayerAnimation.AddAnimation(builder, animation);
+        var offset = PlayerAnimation.EndPlayerAnimation(builder);
         builder.Finish(offset.Value);
 
         byte[] data = builder.SizedByteArray();
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERATTACK, flatBufferSize = (ushort)data.Length };
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERANIMATION, flatBufferSize = (ushort)data.Length };
 
         byte[] headerdata = Serialize<HEADER>(header);
         byte[] result = new byte[data.Length + headerdata.Length];

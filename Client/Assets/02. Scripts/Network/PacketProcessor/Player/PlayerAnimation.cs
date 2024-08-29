@@ -10,13 +10,13 @@ using UnityEngine;
 
 namespace Network.PacketProcessor
 {
-    public class PlayerAttackProcessor : PacketProcessor
+    public class PlayerAnimationProcessor : PacketProcessor
     {
         public override void Process(PacketManager packetmanager, byte[] data)
         {
             var bb = new ByteBuffer(data);
 
-            var Data = PlayerAttack.GetRootAsPlayerAttack(bb);
+            var Data = PlayerAnimation.GetRootAsPlayerAnimation(bb);
            
         }
 

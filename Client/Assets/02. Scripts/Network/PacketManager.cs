@@ -48,7 +48,7 @@ public class PacketManager : MonoBehaviour
             { ePacketType.S2C_PLAYERPOSSYNC, new PlayerPosSyncProcessor() },
             { ePacketType.S2C_PLAYERGRABBOMB, new PlayerGrabBombProcessor() },
             { ePacketType.S2C_PLAYERTHROWBOMB, new PlayerThrowBombProcessor() },
-            { ePacketType.S2C_PLAYERATTACK, new PlayerAttackProcessor() },
+            { ePacketType.C2S_PLAYERANIMATION, new PlayerAnimationProcessor() },
             { ePacketType.S2C_PLAYERCALCULATEDDAMAGE, new PlayerCalculatedDamageProcessor() },
             { ePacketType.S2C_PLAYERDEAD, new PlayerDeadProcessor() },
             { ePacketType.S2C_PLAYERRESPAWN, new PlayerRespawnProcessor() },
@@ -156,9 +156,9 @@ public class PacketManager : MonoBehaviour
         SendPacket(packet);
     }
 
-    public void SendPlayerAttackPacke(Vector3 position, Vector3 direction, int playerID, int weapon, int animation)
+    public void SendPlayerAnimationPacke(Vector3 position, Vector3 direction, int playerID, int weapon, int animation)
     {
-        byte[] packet = _packetMaker.MakePlayerAttackPacket(position, direction, playerID, weapon, animation);
+        byte[] packet = _packetMaker.MakePlayerAnimationPacket(position, direction, playerID, animation);
         if (packet == null) { return; }
         SendPacket(packet);
     }
