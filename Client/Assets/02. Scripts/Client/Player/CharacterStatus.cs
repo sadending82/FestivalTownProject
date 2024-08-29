@@ -37,6 +37,12 @@ public class CharacterStatus : MonoBehaviour
     // 하체의 상태는 클라가 관리(이동 관련해서는 이미 서버와 교환하고 있기 때문)
     private LowerBodyAnimationState lowerBodyAnimationState;
 
+    private PlayerController playerController;
+
+    //------ Server -------
+    private NetworkManager network;
+    private PacketManager packetManager;
+
     private void Awake()
     {
         amIPlayer = false;
@@ -44,6 +50,10 @@ public class CharacterStatus : MonoBehaviour
     }
     private void Start()
     {
+        network = Managers.Network;
+        packetManager = network.GetPacketManager();
+
+        playerController = GetComponent<PlayerController>();
     }
     private void Update()
     {
@@ -72,13 +82,24 @@ public class CharacterStatus : MonoBehaviour
     {
         if (this.upperBodyAnimationState != upperBodyAnimationState)
         {
-            this.upperBodyAnimationState = upperBodyAnimationState;
-            animationController.SetUpperBodyAnimationState(upperBodyAnimationState);
             ///<summary>
             ///서버에 상태 전달하는 부분 여기에 추가
             ///</summary>
+            packetManager.SendPlayerAnimationPacket(playerController.GetPosition(), playerController.GetDirection(), id, upperBodyAnimationState);
+
+            this.upperBodyAnimationState = upperBodyAnimationState;
+            animationController.SetUpperBodyAnimationState(upperBodyAnimationState);
         }
     }
+    public void s_SetUpperBodyAnimationState(UpperBodyAnimationState upperBodyAnimationState)
+    {
+        if (this.upperBodyAnimationState != upperBodyAnimationState)
+        {
+            this.upperBodyAnimationState = upperBodyAnimationState;
+            animationController.SetUpperBodyAnimationState(upperBodyAnimationState);
+        }
+    }
+
     public void SetLowerBodyAnimationState(LowerBodyAnimationState lowerBodyAnimationState)
     {
         if (this.lowerBodyAnimationState != lowerBodyAnimationState)

@@ -323,16 +323,19 @@ public class PlayerController : MonoBehaviour
     {
         if (isLeftShiftKeyDown == true)
         {
-            // 마우스 좌클릭 다운
-            if (Input.GetMouseButtonDown(0))
+            if (playerStatus.GetUpperBodyAnimationState() == UpperBodyAnimationState.NONE)
             {
-                if (isGrounded == true)
+                // 마우스 좌클릭 다운
+                if (Input.GetMouseButtonDown(0))
                 {
-                    playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.POWERATTACK);
-                }
-                else
-                {
-                    playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.FLYINGKICK);
+                    if (isGrounded == true)
+                    {
+                        playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.POWERATTACK);
+                    }
+                    else
+                    {
+                        playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.FLYINGKICK);
+                    }
                 }
             }
         }
@@ -362,7 +365,7 @@ public class PlayerController : MonoBehaviour
                     isHold = false;
                     playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
                 }
-                else
+                else if (playerStatus.GetUpperBodyAnimationState() == UpperBodyAnimationState.NONE)
                 {
                     playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.ATTACK);
                 }
@@ -370,22 +373,25 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        // 마우스 휠클릭 다운
-        if (Input.GetMouseButtonDown(2))
+        if (playerStatus.GetUpperBodyAnimationState() == UpperBodyAnimationState.NONE)
         {
-            playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.HEADATTACK);
-        }
-        // 마우스 휠클릭 업
-        if (Input.GetMouseButtonUp(2))
-        {
-            playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
-        }
+            // 마우스 휠클릭 다운
+            if (Input.GetMouseButtonDown(2))
+            {
+                playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.HEADATTACK);
+            }
+            // 마우스 휠클릭 업
+            if (Input.GetMouseButtonUp(2))
+            {
+                playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
+            }
 
-        // 마우스 우클릭 다운
-        if (Input.GetMouseButtonDown(1))
-        {
-            playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.THROW);
-            Throw();
+            // 마우스 우클릭 다운
+            if (Input.GetMouseButtonDown(1))
+            {
+                playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.THROW);
+                Throw();
+            }
         }
     }
     private void PickUpItem()
@@ -492,9 +498,17 @@ public class PlayerController : MonoBehaviour
 
         pelvis.transform.position = position;
     }
+    public Vector3 GetPosition()
+    {
+        return pelvis.transform.position;
+    }
     public void SetDirection(Vector3 direction)
     {
         moveDirection = direction;
+    }
+    public Vector3 GetDirection()
+    {
+        return moveDirection;
     }
     public void SetIsMove(bool isMove)
     {

@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using NetworkProtocol;
+using eAnimationState;
 using Network.PacketProcessor;
 using UnityEngine.UIElements;
 using PacketTable.GameTable;
@@ -156,9 +157,9 @@ public class PacketManager : MonoBehaviour
         SendPacket(packet);
     }
 
-    public void SendPlayerAnimationPacke(Vector3 position, Vector3 direction, int playerID, int weapon, int animation)
+    public void SendPlayerAnimationPacket(Vector3 position, Vector3 direction, int playerID, UpperBodyAnimationState animation)
     {
-        byte[] packet = _packetMaker.MakePlayerAnimationPacket(position, direction, playerID, animation);
+        byte[] packet = _packetMaker.MakePlayerAnimationPacket(position, direction, playerID, (int)animation);
         if (packet == null) { return; }
         SendPacket(packet);
     }
