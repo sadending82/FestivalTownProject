@@ -70,7 +70,7 @@ public class CharacterStatus : MonoBehaviour
     }
     public void SetUpperBodyAnimationState(UpperBodyAnimationState upperBodyAnimationState)
     {
-        //if (this.upperBodyAnimationState != upperBodyAnimationState)
+        if (this.upperBodyAnimationState != upperBodyAnimationState)
         {
             this.upperBodyAnimationState = upperBodyAnimationState;
             animationController.SetUpperBodyAnimationState(upperBodyAnimationState);
@@ -81,7 +81,7 @@ public class CharacterStatus : MonoBehaviour
     }
     public void SetLowerBodyAnimationState(LowerBodyAnimationState lowerBodyAnimationState)
     {
-        //if (this.lowerBodyAnimationState != lowerBodyAnimationState)
+        if (this.lowerBodyAnimationState != lowerBodyAnimationState)
         {
             this.lowerBodyAnimationState = lowerBodyAnimationState;
             animationController.SetLowerBodyAnimationState(lowerBodyAnimationState);
