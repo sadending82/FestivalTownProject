@@ -132,6 +132,8 @@ public class PacketMaker
         PlayerAttack.AddPos(builder, pos);
         PlayerAttack.AddDirection(builder, dir);
         PlayerAttack.AddId(builder, id);
+        PlayerAttack.AddWeapon(builder, weapon);
+        PlayerAttack.AddAnimation(builder, animation);
         var offset = PlayerAttack.EndPlayerAttack(builder);
         builder.Finish(offset.Value);
 
