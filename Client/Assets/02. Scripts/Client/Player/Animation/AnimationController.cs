@@ -50,13 +50,16 @@ public class AnimationController : MonoBehaviour
     }
     void Update()
     {
-        attackTime += Time.deltaTime;
-        if (attackTime >= attackSpeed)
+        if (upperBodyAnimationState == UpperBodyAnimationState.ATTACK)
         {
-            playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
-            attackTime = 0;
-            // º’ πŸ≤„¡÷±‚
-            isLeftAttack = !isLeftAttack;
+            attackTime += Time.deltaTime;
+            if (attackTime >= attackSpeed)
+            {
+                playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
+                attackTime = 0;
+                // º’ πŸ≤„¡÷±‚
+                isLeftAttack = !isLeftAttack;
+            }
         }
     }
     private void OnAnimatorIK(int layerIndex)
