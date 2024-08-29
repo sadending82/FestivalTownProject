@@ -26,7 +26,7 @@ public:
 
 			// 살아있는지 확인
 			target->GetPlayerStateLock().lock();
-			if (target->GetState() != ePlayerState::PS_ALIVE) {
+			if (target->GetPlayerState() != ePlayerState::PS_ALIVE) {
 				target->GetPlayerStateLock().unlock();
 				return;
 			}
