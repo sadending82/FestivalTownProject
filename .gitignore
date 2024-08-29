@@ -95,4 +95,4 @@ ipch
 *sdf
 
 #DB config file
-DBconfig.txt
+/DBconfig.txt
