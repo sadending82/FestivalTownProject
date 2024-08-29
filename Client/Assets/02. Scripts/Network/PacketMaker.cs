@@ -147,14 +147,16 @@ public class PacketMaker
         return result;
     }
 
-    public byte[] MakePlayerDamageReceivePacket(int attacker_id, int target_id, int weapon, int attack_type)
+    public byte[] MakePlayerDamageReceivePacket(int attacker_id, int target_id, int weapon, int attack_type, Vector3 knockback_direction)
     {
         var builder = new FlatBufferBuilder(1);
+        var dir = Vec3f.CreateVec3f(builder, knockback_direction.x, knockback_direction.y, knockback_direction.z);
         PlayerDamageReceive.StartPlayerDamageReceive(builder);
         PlayerDamageReceive.AddAttackerId(builder, attacker_id);
         PlayerDamageReceive.AddTargetId(builder, target_id);
         PlayerDamageReceive.AddWeapon(builder, weapon);
         PlayerDamageReceive.AddAttackType(builder, attack_type);
+        PlayerDamageReceive.AddKnockbackDirection(builder, dir);
         var offset = PlayerDamageReceive.EndPlayerDamageReceive(builder);
         builder.Finish(offset.Value);
 

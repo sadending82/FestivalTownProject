@@ -687,7 +687,8 @@ struct PlayerDamageReceive FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Tabl
     VT_TARGET_ID = 4,
     VT_ATTACKER_ID = 6,
     VT_WEAPON = 8,
-    VT_ATTACK_TYPE = 10
+    VT_ATTACK_TYPE = 10,
+    VT_KNOCKBACK_DIRECTION = 12
   };
   int32_t target_id() const {
     return GetField<int32_t>(VT_TARGET_ID, 0);
@@ -701,12 +702,17 @@ struct PlayerDamageReceive FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Tabl
   int32_t attack_type() const {
     return GetField<int32_t>(VT_ATTACK_TYPE, 0);
   }
+  const PacketTable::UtilitiesTable::Vec3f *knockback_direction() const {
+    return GetPointer<const PacketTable::UtilitiesTable::Vec3f *>(VT_KNOCKBACK_DIRECTION);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_TARGET_ID, 4) &&
            VerifyField<int32_t>(verifier, VT_ATTACKER_ID, 4) &&
            VerifyField<int32_t>(verifier, VT_WEAPON, 4) &&
            VerifyField<int32_t>(verifier, VT_ATTACK_TYPE, 4) &&
+           VerifyOffset(verifier, VT_KNOCKBACK_DIRECTION) &&
+           verifier.VerifyTable(knockback_direction()) &&
            verifier.EndTable();
   }
 };
@@ -727,6 +733,9 @@ struct PlayerDamageReceiveBuilder {
   void add_attack_type(int32_t attack_type) {
     fbb_.AddElement<int32_t>(PlayerDamageReceive::VT_ATTACK_TYPE, attack_type, 0);
   }
+  void add_knockback_direction(::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> knockback_direction) {
+    fbb_.AddOffset(PlayerDamageReceive::VT_KNOCKBACK_DIRECTION, knockback_direction);
+  }
   explicit PlayerDamageReceiveBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -743,8 +752,10 @@ inline ::flatbuffers::Offset<PlayerDamageReceive> CreatePlayerDamageReceive(
     int32_t target_id = 0,
     int32_t attacker_id = 0,
     int32_t weapon = 0,
-    int32_t attack_type = 0) {
+    int32_t attack_type = 0,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> knockback_direction = 0) {
   PlayerDamageReceiveBuilder builder_(_fbb);
+  builder_.add_knockback_direction(knockback_direction);
   builder_.add_attack_type(attack_type);
   builder_.add_weapon(weapon);
   builder_.add_attacker_id(attacker_id);
@@ -758,7 +769,8 @@ struct PlayerCalculatedDamage FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::T
     VT_TARGET_ID = 4,
     VT_ATTACK_TYPE = 6,
     VT_HP = 8,
-    VT_DAMAGE_AMOUNT = 10
+    VT_DAMAGE_AMOUNT = 10,
+    VT_KNOCKBACK_DIRECTION = 12
   };
   int32_t target_id() const {
     return GetField<int32_t>(VT_TARGET_ID, 0);
@@ -772,12 +784,17 @@ struct PlayerCalculatedDamage FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::T
   int32_t damage_amount() const {
     return GetField<int32_t>(VT_DAMAGE_AMOUNT, 0);
   }
+  const PacketTable::UtilitiesTable::Vec3f *knockback_direction() const {
+    return GetPointer<const PacketTable::UtilitiesTable::Vec3f *>(VT_KNOCKBACK_DIRECTION);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_TARGET_ID, 4) &&
            VerifyField<int32_t>(verifier, VT_ATTACK_TYPE, 4) &&
            VerifyField<int32_t>(verifier, VT_HP, 4) &&
            VerifyField<int32_t>(verifier, VT_DAMAGE_AMOUNT, 4) &&
+           VerifyOffset(verifier, VT_KNOCKBACK_DIRECTION) &&
+           verifier.VerifyTable(knockback_direction()) &&
            verifier.EndTable();
   }
 };
@@ -798,6 +815,9 @@ struct PlayerCalculatedDamageBuilder {
   void add_damage_amount(int32_t damage_amount) {
     fbb_.AddElement<int32_t>(PlayerCalculatedDamage::VT_DAMAGE_AMOUNT, damage_amount, 0);
   }
+  void add_knockback_direction(::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> knockback_direction) {
+    fbb_.AddOffset(PlayerCalculatedDamage::VT_KNOCKBACK_DIRECTION, knockback_direction);
+  }
   explicit PlayerCalculatedDamageBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -814,8 +834,10 @@ inline ::flatbuffers::Offset<PlayerCalculatedDamage> CreatePlayerCalculatedDamag
     int32_t target_id = 0,
     int32_t attack_type = 0,
     int32_t hp = 0,
-    int32_t damage_amount = 0) {
+    int32_t damage_amount = 0,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> knockback_direction = 0) {
   PlayerCalculatedDamageBuilder builder_(_fbb);
+  builder_.add_knockback_direction(knockback_direction);
   builder_.add_damage_amount(damage_amount);
   builder_.add_hp(hp);
   builder_.add_attack_type(attack_type);

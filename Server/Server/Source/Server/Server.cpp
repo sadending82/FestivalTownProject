@@ -409,9 +409,9 @@ void Server::SendPlayerRespawn(int inGameID, int roomID)
     SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
 
-void Server::SendPlayerCalculatedDamage(int targetID, int roomID, int attackType, int hp, int damageAmount)
+void Server::SendPlayerCalculatedDamage(int targetID, int roomID, int attackType, int hp, int damageAmount, Vector3f knockback_direction)
 {
-    std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerCalculatedDamagePacket(targetID, attackType, hp, damageAmount);
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerCalculatedDamagePacket(targetID, attackType, hp, damageAmount, knockback_direction);
     SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
 

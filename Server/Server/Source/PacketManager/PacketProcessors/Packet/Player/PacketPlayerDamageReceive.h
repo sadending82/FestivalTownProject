@@ -42,7 +42,8 @@ public:
 				PushEventPlayerRespawn(pServer->GetTimer(), read->target_id(), roomid, room->GetRoomCode(), spawnTime);
 			}
 			else {
-				pServer->SendPlayerCalculatedDamage(read->target_id(), roomid, read->attack_type(), target->GetHP(), damageAmount);
+				Vector3f knockback_direction(read->knockback_direction()->x(), read->knockback_direction()->y(), read->knockback_direction()->z());
+				pServer->SendPlayerCalculatedDamage(read->target_id(), roomid, read->attack_type(), target->GetHP(), damageAmount, knockback_direction);
 			}
 			target->GetPlayerStateLock().unlock();
 		}

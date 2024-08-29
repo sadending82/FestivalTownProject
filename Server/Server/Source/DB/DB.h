@@ -15,6 +15,9 @@ public:
 	int Init();
     bool Connect();
 
+    bool UseAccountDB(SQLHSTMT& hStmt);
+    bool UseGameDB(SQLHSTMT& hStmt);
+
     bool InsertNewAcccount(const char* id, const char* pw);
 
 private:

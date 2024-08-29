@@ -42,7 +42,7 @@ public:
 	void SendGameHostChange(int sessionID);
 	void SendPlayerDeadPacket(int inGameID, int roomID);
 	void SendPlayerRespawn(int inGameID, int roomID);
-	void SendPlayerCalculatedDamage(int targetID, int roomID, int attackType, int hp, int damageAmount);
+	void SendPlayerCalculatedDamage(int targetID, int roomID, int attackType, int hp, int damageAmount, Vector3f knockback_direction);
 
 	void StartHeartBeat(int sessionID);
 	void MatchingComplete(int roomID, int playerCnt);

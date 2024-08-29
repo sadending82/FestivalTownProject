@@ -33,15 +33,15 @@ bool DB::ReadConfig()
 
 	while (line < 3 && std::getline(file, txt)) {
 		if (line == 0) {
-			std::string tmp = txt.substr(6);
+			std::string tmp = txt.substr(5);
 			odbc.assign(tmp.begin(), tmp.end());
 		}
 		if (line == 1) {
-			std::string tmp = txt.substr(4);
+			std::string tmp = txt.substr(3);
 			id.assign(tmp.begin(), tmp.end());
 		}
 		if (line == 2) {
-			std::string tmp = txt.substr(4);
+			std::string tmp = txt.substr(3);
 			pw.assign(tmp.begin(), tmp.end());
 		}
 		line++;
@@ -89,10 +89,7 @@ bool DB::Connect()
 		return false;
 	}
 
-	retcode = SQLConnect(hDbc, (wchar_t*)odbc.c_str(), SQL_NTS, nullptr, 0, nullptr, 0);
-
-	// ID와 PW 입력하는 경우
-	//retcode = SQLConnect(hDbc, (wchar_t*)odbc.c_str(), SQL_NTS, (wchar_t*)id.c_str(), SQL_NTS, (wchar_t*)pw.c_str(), SQL_NTS);
+	retcode = SQLConnect(hDbc, (wchar_t*)odbc.c_str(), SQL_NTS, (wchar_t*)id.c_str(), SQL_NTS, (wchar_t*)pw.c_str(), SQL_NTS);
 
 	if (retcode == SQL_ERROR) {
 		DEBUGMSGNOPARAM("DB Connect Fail\n");
@@ -104,10 +101,38 @@ bool DB::Connect()
 	return true;
 }
 
+bool DB::UseAccountDB(SQLHSTMT& hStmt)
+{
+	SQLRETURN retcode;
+
+	if ((retcode = SQLExecDirect(hStmt, (SQLWCHAR*)L"USE AccountDB", SQL_NTS)) == SQL_ERROR) {
+		DEBUGMSGNOPARAM("hStmt Error : Can't Use AccountDB \n");
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return false;
+	}
+	return true;
+}
+
+bool DB::UseGameDB(SQLHSTMT& hStmt)
+{
+	SQLRETURN retcode;
+
+	if ((retcode = SQLExecDirect(hStmt, (SQLWCHAR*)L"USE GameDB", SQL_NTS)) == SQL_ERROR) {
+		DEBUGMSGNOPARAM("hStmt Error : Can't Use GameDB \n");
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return false;
+	}
+	return true;
+}
+
 bool DB::InsertNewAcccount(const char* id, const char* pw)
 {
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
+
+	if (UseAccountDB(hStmt) == false) {
+		return false;
+	}
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR){
 		DEBUGMSGNOPARAM("hStmt Error : (InsertNewAcccount) \n");

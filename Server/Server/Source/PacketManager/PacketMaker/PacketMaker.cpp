@@ -28,7 +28,7 @@ std::vector<uint8_t> PacketMaker::MakePlayerRespawnPacket(int inGameID, int room
 	return MakeBuffer(ePacketType::S2C_PLAYERRESPAWN, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakePlayerCalculatedDamagePacket(int targetID, int attackType, int hp, int damageAmount)
+std::vector<uint8_t> PacketMaker::MakePlayerCalculatedDamagePacket(int targetID, int attackType, int hp, int damageAmount, Vector3f knockback_direction)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 	Builder.Clear();

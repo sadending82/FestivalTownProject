@@ -23,13 +23,16 @@ public struct PlayerCalculatedDamage : IFlatbufferObject
   public int AttackType { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
   public int Hp { get { int o = __p.__offset(8); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
   public int DamageAmount { get { int o = __p.__offset(10); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public PacketTable.UtilitiesTable.Vec3f? KnockbackDirection { get { int o = __p.__offset(12); return o != 0 ? (PacketTable.UtilitiesTable.Vec3f?)(new PacketTable.UtilitiesTable.Vec3f()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
 
   public static Offset<PacketTable.PlayerTable.PlayerCalculatedDamage> CreatePlayerCalculatedDamage(FlatBufferBuilder builder,
       int target_id = 0,
       int attack_type = 0,
       int hp = 0,
-      int damage_amount = 0) {
-    builder.StartTable(4);
+      int damage_amount = 0,
+      Offset<PacketTable.UtilitiesTable.Vec3f> knockback_directionOffset = default(Offset<PacketTable.UtilitiesTable.Vec3f>)) {
+    builder.StartTable(5);
+    PlayerCalculatedDamage.AddKnockbackDirection(builder, knockback_directionOffset);
     PlayerCalculatedDamage.AddDamageAmount(builder, damage_amount);
     PlayerCalculatedDamage.AddHp(builder, hp);
     PlayerCalculatedDamage.AddAttackType(builder, attack_type);
@@ -37,11 +40,12 @@ public struct PlayerCalculatedDamage : IFlatbufferObject
     return PlayerCalculatedDamage.EndPlayerCalculatedDamage(builder);
   }
 
-  public static void StartPlayerCalculatedDamage(FlatBufferBuilder builder) { builder.StartTable(4); }
+  public static void StartPlayerCalculatedDamage(FlatBufferBuilder builder) { builder.StartTable(5); }
   public static void AddTargetId(FlatBufferBuilder builder, int targetId) { builder.AddInt(0, targetId, 0); }
   public static void AddAttackType(FlatBufferBuilder builder, int attackType) { builder.AddInt(1, attackType, 0); }
   public static void AddHp(FlatBufferBuilder builder, int hp) { builder.AddInt(2, hp, 0); }
   public static void AddDamageAmount(FlatBufferBuilder builder, int damageAmount) { builder.AddInt(3, damageAmount, 0); }
+  public static void AddKnockbackDirection(FlatBufferBuilder builder, Offset<PacketTable.UtilitiesTable.Vec3f> knockbackDirectionOffset) { builder.AddOffset(4, knockbackDirectionOffset.Value, 0); }
   public static Offset<PacketTable.PlayerTable.PlayerCalculatedDamage> EndPlayerCalculatedDamage(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<PacketTable.PlayerTable.PlayerCalculatedDamage>(o);
@@ -58,6 +62,7 @@ static public class PlayerCalculatedDamageVerify
       && verifier.VerifyField(tablePos, 6 /*AttackType*/, 4 /*int*/, 4, false)
       && verifier.VerifyField(tablePos, 8 /*Hp*/, 4 /*int*/, 4, false)
       && verifier.VerifyField(tablePos, 10 /*DamageAmount*/, 4 /*int*/, 4, false)
+      && verifier.VerifyTable(tablePos, 12 /*KnockbackDirection*/, PacketTable.UtilitiesTable.Vec3fVerify.Verify, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }
