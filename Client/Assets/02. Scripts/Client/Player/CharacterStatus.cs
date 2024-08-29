@@ -152,4 +152,13 @@ public class CharacterStatus : MonoBehaviour
     {
         return attackSpeed;
     }
+
+    public void Attacked()
+    {
+
+    }
+    public void Damaged(float damage)
+    {
+
+    }
 }
