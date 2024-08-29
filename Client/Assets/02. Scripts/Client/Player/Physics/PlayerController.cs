@@ -372,26 +372,22 @@ public class PlayerController : MonoBehaviour
                 leftMouseClickTimer = 0f;
             }
         }
-
-        if (playerStatus.GetUpperBodyAnimationState() == UpperBodyAnimationState.NONE)
+        // 마우스 휠클릭 다운
+        if (Input.GetMouseButtonDown(2))
         {
-            // 마우스 휠클릭 다운
-            if (Input.GetMouseButtonDown(2))
-            {
-                playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.HEADATTACK);
-            }
-            // 마우스 휠클릭 업
-            if (Input.GetMouseButtonUp(2))
-            {
-                playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
-            }
+            playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.HEADATTACK);
+        }
+        // 마우스 휠클릭 업
+        if (Input.GetMouseButtonUp(2))
+        {
+            playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
+        }
 
-            // 마우스 우클릭 다운
-            if (Input.GetMouseButtonDown(1))
-            {
-                playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.THROW);
-                Throw();
-            }
+        // 마우스 우클릭 다운
+        if (Input.GetMouseButtonDown(1))
+        {
+            playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.THROW);
+            Throw();
         }
     }
     private void PickUpItem()

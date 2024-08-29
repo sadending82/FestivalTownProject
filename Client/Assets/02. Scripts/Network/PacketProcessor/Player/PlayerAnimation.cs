@@ -24,12 +24,10 @@ namespace Network.PacketProcessor
             int aniState = Data.Animation;
 
             PlayerController pController = Managers.Player.transform.GetChild(id).GetComponent<PlayerController>();
-
             pController.SetDirection(dir);
             pController.SetPosition(pos);
 
             CharacterStatus pState = Managers.Player.transform.GetChild(id).GetComponent<CharacterStatus>();
-
             pState.s_SetUpperBodyAnimationState((UpperBodyAnimationState)aniState);
         }
 
