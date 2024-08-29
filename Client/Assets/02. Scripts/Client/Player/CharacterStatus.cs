@@ -38,6 +38,8 @@ public class CharacterStatus : MonoBehaviour
     private LowerBodyAnimationState lowerBodyAnimationState;
 
     private PlayerController playerController;
+    public Rigidbody headRig;
+    public float attackedStrength = 10;
 
     //------ Server -------
     private NetworkManager network;
@@ -153,12 +155,13 @@ public class CharacterStatus : MonoBehaviour
         return attackSpeed;
     }
 
-    public void Attacked()
+    public void Attacked(Vector3 direction)
     {
-
+        Debug.Log("³ª ¸ÂÀ½;;");
+        headRig.AddForce(direction * attackedStrength, ForceMode.Impulse);
     }
-    public void Damaged(float damage)
+    public void SetHp(int hp)
     {
-
+        this.hp = hp;
     }
 }
