@@ -49,7 +49,7 @@ public class PacketManager : MonoBehaviour
             { ePacketType.S2C_PLAYERPOSSYNC, new PlayerPosSyncProcessor() },
             { ePacketType.S2C_PLAYERGRABBOMB, new PlayerGrabBombProcessor() },
             { ePacketType.S2C_PLAYERTHROWBOMB, new PlayerThrowBombProcessor() },
-            { ePacketType.C2S_PLAYERANIMATION, new PlayerAnimationProcessor() },
+            { ePacketType.S2C_PLAYERANIMATION, new PlayerAnimationProcessor() },
             { ePacketType.S2C_PLAYERCALCULATEDDAMAGE, new PlayerCalculatedDamageProcessor() },
             { ePacketType.S2C_PLAYERDEAD, new PlayerDeadProcessor() },
             { ePacketType.S2C_PLAYERRESPAWN, new PlayerRespawnProcessor() },
