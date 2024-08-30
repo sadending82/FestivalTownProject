@@ -17,6 +17,10 @@ public class PlayerManager : MonoBehaviour
 
     private void Start()
     {
+        for(int i = 0; i < maxPlayerNum; ++i)
+        {
+            transform.GetChild(i).gameObject.GetComponent<CharacterStatus>().SetId(i);
+        }
     }   
     public void SetMyId(int myId)
     {
@@ -59,7 +63,6 @@ public class PlayerManager : MonoBehaviour
                     transform.GetChild(id).gameObject.GetComponent<CharacterStatus>().SetAmIPlayer(true);
                     transform.GetChild(id).gameObject.GetComponent<PlayerController>().SetMyId(myId);
                 }
-                Debug.Log("Add Player ID : " + nowPlayerNum);
                 nowPlayerNum++;
                 Debug.Log("Now Players Number " + nowPlayerNum);
             }

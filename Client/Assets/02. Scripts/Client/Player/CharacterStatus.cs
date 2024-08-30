@@ -80,6 +80,10 @@ public class CharacterStatus : MonoBehaviour
             Managers.Game.isTimerStart = true;
         }
     }
+    public bool GetAmIPlayer()
+    {
+        return amIPlayer;
+    }
     public void SetUpperBodyAnimationState(UpperBodyAnimationState upperBodyAnimationState)
     {
         if (this.upperBodyAnimationState != upperBodyAnimationState)
@@ -141,6 +145,10 @@ public class CharacterStatus : MonoBehaviour
         this.isDie = isDie;
         // 플레이어 그로기 및 죽음 처리 전까지 확인용 로그
         Debug.Log(this.name + " is Die? : " + isDie);
+    }
+    public void SetId(int id)
+    {
+        this.id = id;
     }
     public int GetId()
     {

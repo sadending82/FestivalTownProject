@@ -50,9 +50,6 @@ public class AnimationController : MonoBehaviour
     void Start()
     {
         attackSpeed = playerStatus.GetAttackSpeed();
-
-        leftAttackChecker.SetAttackWithLeftHand(isLeftAttack);
-        rightAttackChecker.SetAttackWithLeftHand(isLeftAttack);
     }
     void Update()
     {
@@ -65,8 +62,6 @@ public class AnimationController : MonoBehaviour
                 attackTime = 0;
                 // º’ πŸ≤„¡÷±‚
                 isLeftAttack = !isLeftAttack;
-                leftAttackChecker.SetAttackWithLeftHand(isLeftAttack);
-                rightAttackChecker.SetAttackWithLeftHand(isLeftAttack);
                 leftAttackChecker.SetIsAttackState(false);
                 rightAttackChecker.SetIsAttackState(false);
             }
@@ -110,6 +105,8 @@ public class AnimationController : MonoBehaviour
                 }
                 else
                 {
+                    leftAttackChecker.SetIsAttackState(true);
+
                     animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1f);
                     animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1f);
                     animator.SetIKHintPositionWeight(AvatarIKHint.LeftElbow, 1f);
@@ -117,9 +114,6 @@ public class AnimationController : MonoBehaviour
                     animator.SetIKPosition(AvatarIKGoal.LeftHand, targetLeftHand.position);
                     animator.SetIKRotation(AvatarIKGoal.LeftHand, targetLeftHand.rotation);
                     animator.SetIKHintPosition(AvatarIKHint.LeftElbow, targetLeftHint.position);
-
-                    leftAttackChecker.SetIsAttackState(true);
-                    rightAttackChecker.SetIsAttackState(true);
                 }
             }
             else
@@ -136,6 +130,8 @@ public class AnimationController : MonoBehaviour
                 }
                 else
                 {
+                    rightAttackChecker.SetIsAttackState(true);
+
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
                     animator.SetIKHintPositionWeight(AvatarIKHint.RightElbow, 1f);
@@ -143,9 +139,6 @@ public class AnimationController : MonoBehaviour
                     animator.SetIKPosition(AvatarIKGoal.RightHand, targetRightHand.position);
                     animator.SetIKRotation(AvatarIKGoal.RightHand, targetRightHand.rotation);
                     animator.SetIKHintPosition(AvatarIKHint.LeftElbow, targetRightHint.position);
-
-                    leftAttackChecker.SetIsAttackState(true);
-                    rightAttackChecker.SetIsAttackState(true);
                 }
             }
         }
