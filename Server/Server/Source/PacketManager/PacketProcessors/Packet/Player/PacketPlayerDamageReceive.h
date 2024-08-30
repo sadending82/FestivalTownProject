@@ -32,7 +32,13 @@ public:
 			}
 
 			// Game Data를 가지고 데미지 계산 필요
-			int damageAmount = 10; // 임시
+			int damageAmount;
+			if (read->attack_type() == AT_FALLDOWN) {
+				damageAmount = 999;
+			}
+			else {
+				damageAmount = 10; // 임시
+			}
 			target->ReduceHP(damageAmount);
 
 			if (target->GetHP() <= 0) {

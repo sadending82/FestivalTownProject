@@ -53,3 +53,14 @@ enum GameCode {
     FITH_Team_battle_Two,
     FITH_Team_battle_Three,
 };
+
+enum eWeaponType
+{
+    WT_HAND
+};
+
+enum eAttackType
+{
+    AT_FALLDOWN,
+    AT_BASIC
+};

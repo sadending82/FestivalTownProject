@@ -77,4 +77,15 @@ namespace NetworkProtocol
         PS_MOVESTOP,
         PS_JUMPSTOP
     };
+
+    public enum eWeaponType
+    {
+        WT_HAND
+    };
+
+    public enum eAttackType
+    {
+        AT_FALLDOWN,
+        AT_BASIC
+    };
 }
