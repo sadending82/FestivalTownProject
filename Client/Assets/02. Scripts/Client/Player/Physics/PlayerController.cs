@@ -56,6 +56,11 @@ public class PlayerController : MonoBehaviour
     private bool isPickUpMode = false;
     private GameObject targetItem;
 
+    [Header("--- Respawn ---")]
+    private float createHeight = 4;
+    private float offsetX = 19;
+    private float offsetY = 9;
+
     private void Awake()
     {
         leftMouseClickTimer = 0f;
@@ -80,52 +85,59 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (amIPlayer == true)
+        if (playerStatus.GetIsDie() == false)
         {
-            Move();
-        }
-        else
-        {
-            if (stabillizerDirection != moveDirection && moveDirection != Vector3.zero)
+            if (amIPlayer == true)
             {
-                stabillizerDirection = moveDirection;
-                rotationQuaternion = Quaternion.LookRotation(moveDirection);
-                stabilizer.rotation = rotationQuaternion;
+                Move();
+                FallDownCheck();
             }
-            if (isMove == true)
+            else
             {
-                if (playerStatus.GetLowerBodyAnimationState() == LowerBodyAnimationState.WALK)
+                if (stabillizerDirection != moveDirection && moveDirection != Vector3.zero)
                 {
-                    pelvis.transform.position += moveDirection * walkSpeed * Time.deltaTime;
+                    stabillizerDirection = moveDirection;
+                    rotationQuaternion = Quaternion.LookRotation(moveDirection);
+                    stabilizer.rotation = rotationQuaternion;
                 }
-                else if(playerStatus.GetLowerBodyAnimationState() == LowerBodyAnimationState.RUN)
+                if (isMove == true)
                 {
-                    pelvis.transform.position += moveDirection * runSpeed * Time.deltaTime;
+                    if (playerStatus.GetLowerBodyAnimationState() == LowerBodyAnimationState.WALK)
+                    {
+                        pelvis.transform.position += moveDirection * walkSpeed * Time.deltaTime;
+                    }
+                    else if (playerStatus.GetLowerBodyAnimationState() == LowerBodyAnimationState.RUN)
+                    {
+                        pelvis.transform.position += moveDirection * runSpeed * Time.deltaTime;
+                    }
                 }
             }
         }
     }
     private void Update()
     {
-        if (amIPlayer == true)
+        if (playerStatus.GetIsDie() == false)
         {
-            KeyboardInput();
-            if (isPickUpMode == false)
+            if (amIPlayer == true)
             {
-                MouseInput();
-            }
-            if (gameObject != null)
-            {
-                curTime += Time.deltaTime;
-                if (curTime > sendInterval)
+                KeyboardInput();
+                if (isPickUpMode == false)
                 {
-                    curTime -= sendInterval;
-                    SendForSync();
+                    MouseInput();
+                }
+                if (gameObject != null)
+                {
+                    curTime += Time.deltaTime;
+                    if (curTime > sendInterval)
+                    {
+                        curTime -= sendInterval;
+                        SendForSync();
+                    }
                 }
             }
+
+            CheckIsGround();
         }
-        
-        CheckIsGround();
     }
 
     private void SendForSync()
@@ -538,4 +550,27 @@ public class PlayerController : MonoBehaviour
                 break;
         }
     }
+    private void FallDownCheck()
+    {
+        if(pelvis.transform.position.y < -20f)
+        {
+            packetManager.SendPlayerDamageReceivePacket(playerStatus.GetId(), playerStatus.GetId(), 1, eAttackType.AT_FALLDOWN, Vector3.zero);
+        }
+    }
+
+    public void Respawn(float x, float y)
+    {
+        playerStatus.SetIsDie(false);
+        this.gameObject.SetActive(true);
+
+        // 위치 단위 맞추기
+        x *= -2;
+        y *= -2;
+        x += offsetX;
+        y += offsetY;
+
+        Vector3 targetPos = new Vector3(x, createHeight, y);
+
+        SetPosition(targetPos);
+    }    
 }

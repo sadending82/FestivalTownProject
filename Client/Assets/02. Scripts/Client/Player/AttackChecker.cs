@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using NetworkProtocol;
 
 public class AttackChecker : MonoBehaviour
 {
@@ -45,7 +46,7 @@ public class AttackChecker : MonoBehaviour
                 /// <summary>
                 /// 여기서 서버로 피격관련 전해줌
                 /// </summary>
-                packetManager.SendPlayerDamageReceivePacket(playerState.GetId(), targetId, 1, 1, direction.normalized);
+                packetManager.SendPlayerDamageReceivePacket(playerState.GetId(), targetId, 1, eAttackType.AT_BASIC, direction.normalized);
             }
         }
     }

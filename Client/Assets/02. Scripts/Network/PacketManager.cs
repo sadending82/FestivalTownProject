@@ -164,9 +164,9 @@ public class PacketManager : MonoBehaviour
         SendPacket(packet);
     }
 
-    public void SendPlayerDamageReceivePacket(int attackerID, int targetID, int weapon, int attackType, Vector3 knockback_direction)
+    public void SendPlayerDamageReceivePacket(int attackerID, int targetID, int weapon, eAttackType attackType, Vector3 knockback_direction)
     {
-        byte[] packet = _packetMaker.MakePlayerDamageReceivePacket(attackerID, targetID, weapon, attackType, knockback_direction);
+        byte[] packet = _packetMaker.MakePlayerDamageReceivePacket(attackerID, targetID, weapon, (int)attackType, knockback_direction);
         if (packet == null) { return; }
         SendPacket(packet);
     }

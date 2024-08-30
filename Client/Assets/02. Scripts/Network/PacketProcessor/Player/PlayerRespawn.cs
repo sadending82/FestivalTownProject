@@ -15,9 +15,14 @@ namespace Network.PacketProcessor
         public override void Process(PacketManager packetmanager, byte[] data)
         {
             var bb = new ByteBuffer(data);
-
             var Data = PlayerRespawn.GetRootAsPlayerRespawn(bb);
 
+            float x = Data.Pos.Value.X;
+            float y = Data.Pos.Value.Y;
+            int targetId = Data.Id;
+
+            PlayerController pCtr = Managers.Player.transform.GetChild(targetId).GetComponent<PlayerController>();
+            pCtr.Respawn(x, y);
         }
 
         private FlatBufferBuilder mBuilder;

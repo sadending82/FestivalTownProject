@@ -143,8 +143,17 @@ public class CharacterStatus : MonoBehaviour
     public void SetIsDie(bool isDie)
     {
         this.isDie = isDie;
+        if(isDie == true)
+        {
+            hp = 0;
+            this.gameObject.SetActive(false);
+        }
         // 플레이어 그로기 및 죽음 처리 전까지 확인용 로그
         Debug.Log(this.name + " is Die? : " + isDie);
+    }
+    public bool GetIsDie()
+    {
+        return isDie;
     }
     public void SetId(int id)
     {

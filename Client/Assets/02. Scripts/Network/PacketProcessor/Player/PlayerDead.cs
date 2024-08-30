@@ -15,9 +15,11 @@ namespace Network.PacketProcessor
         public override void Process(PacketManager packetmanager, byte[] data)
         {
             var bb = new ByteBuffer(data);
-
             var Data = PlayerDead.GetRootAsPlayerDead(bb);
 
+            int targetId = Data.Id;
+            CharacterStatus pState = Managers.Player.transform.GetChild(targetId).GetComponent<CharacterStatus>();
+            pState.SetIsDie(true);
         }
 
         private FlatBufferBuilder mBuilder;
