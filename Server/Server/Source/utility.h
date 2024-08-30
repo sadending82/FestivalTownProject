@@ -51,29 +51,33 @@ const uint8_t DEFAULT_8BITFLAG = 0b00000000;
 
 #define RunTest
 
-enum eSessionState
+enum class eSessionState
 {
 	ST_FREE, ST_ACCEPTED, ST_GAMEREADY, ST_INGAME
 };
 
-enum ePlayerState {
+enum class ePlayerState {
 	PS_NONE,
 	PS_ALIVE,
 	PS_DEAD
 };
 
-enum eRoomState {
+enum class eRoomState {
 	RS_FREE,
 	RS_INGAME
 };
 
-enum TeamCode {
+enum class TeamCode {
 	RED,
 	BLUE
 };
 
-enum MapCode {
+enum class MapCode {
 	TEST
+};
+
+enum class CharacterType {
+	TEST = 1000
 };
 
 #pragma pack (push, 1)

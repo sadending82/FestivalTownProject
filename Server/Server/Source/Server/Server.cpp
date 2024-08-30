@@ -427,7 +427,7 @@ void Server::MatchingComplete(int roomID, int playerCnt)
     Room* room = GetRooms()[roomID];
     room->Init(roomID, GetTableManager()->getFITH_Data()[GameCode::FITH_Team_battle_Three].Team_Life_Count);
     room->SetGameMode(GameCode::FITH_Team_battle_Three);
-    room->InitMap(GetTableManager()->getMapData()[TEST]);
+    room->InitMap(GetTableManager()->getMapData()[MapCode::TEST]);
 
     room->SetPlayerLimit(playerCnt); // 임시
 
@@ -444,7 +444,7 @@ void Server::MatchingComplete(int roomID, int playerCnt)
 
             // 임시
             p->SetTeam(tFlag % 2);
-            p->SetHP(100);
+            p->SetHP(GetTableManager()->getCharacterStats()[(int)CharacterType::TEST].hp);
             tFlag++;
             //
 

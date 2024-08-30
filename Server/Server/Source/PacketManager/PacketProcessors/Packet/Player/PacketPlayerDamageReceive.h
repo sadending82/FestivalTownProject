@@ -37,12 +37,12 @@ public:
 				damageAmount = 999;
 			}
 			else {
-				damageAmount = 10; // 임시
+				damageAmount = pServer->GetTableManager()->getCharacterStats()[(int)CharacterType::TEST].strength; // 임시
 			}
 			target->ReduceHP(damageAmount);
 
 			if (target->GetHP() <= 0) {
-				target->SetPlayerState(PS_DEAD);
+				target->SetPlayerState(ePlayerState::PS_DEAD);
 				int spawnTime = pServer->GetTableManager()->getFITH_Data()[room->GetGameMode()].Player_Spawn_Time;
 				pServer->SendPlayerDeadPacket(read->target_id(), roomid);
 				PushEventPlayerRespawn(pServer->GetTimer(), read->target_id(), roomid, room->GetRoomCode(), spawnTime);

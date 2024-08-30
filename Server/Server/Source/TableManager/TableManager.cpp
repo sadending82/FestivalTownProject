@@ -19,7 +19,7 @@ void TableManager::ClearAllTable()
 void TableManager::ReadAllDataTable()
 {
     //ReadItemTable();
-    //ReadCharacterStat();
+    ReadCharacterStat();
     ReadFITHModeTable();
     ReadMapData();
 }
@@ -182,10 +182,10 @@ void TableManager::ReadMapData()
                 MapData[MapCode::TEST].GetBombSpawnIndexes().push_back({ colCnt, lineCnt });
             }break;
             case 'R': {
-                MapData[MapCode::TEST].GetPlayerSpawnIndexes(TeamCode::RED).push_back({colCnt, lineCnt});
+                MapData[MapCode::TEST].GetPlayerSpawnIndexes((int)TeamCode::RED).push_back({colCnt, lineCnt});
             }break;
             case 'B': {
-                MapData[MapCode::TEST].GetPlayerSpawnIndexes(TeamCode::BLUE).push_back({ colCnt, lineCnt });
+                MapData[MapCode::TEST].GetPlayerSpawnIndexes((int)TeamCode::BLUE).push_back({ colCnt, lineCnt });
             }break;
             default: {
 

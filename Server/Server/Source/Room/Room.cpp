@@ -41,8 +41,8 @@ void Room::Init(int id, int teamLifeCount, int playerLimit)
 	mTeams.clear();
 
 	// team game
-	mTeams[TeamCode::RED].Init(teamLifeCount);
-	mTeams[TeamCode::BLUE].Init(teamLifeCount);
+	mTeams[(int)TeamCode::RED].Init(teamLifeCount);
+	mTeams[(int)TeamCode::BLUE].Init(teamLifeCount);
 
 	InitRoomCode();
 }
