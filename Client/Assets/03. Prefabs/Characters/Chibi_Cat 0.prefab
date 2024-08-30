@@ -1757,7 +1757,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: def2771a13b7ff049947992a699b7106, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 5
+  id: 0
   maxHp: 0
   hp: 0
   maxStamina: 0
@@ -5915,6 +5915,7 @@ MonoBehaviour:
   isLeftHand: 1
   pelvis: {fileID: 3822561884829185608}
   playerState: {fileID: 2716655589875357465}
+  amIPlayer: 0
 --- !u!54 &7037164976181755881
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -6085,6 +6086,7 @@ MonoBehaviour:
   isLeftHand: 0
   pelvis: {fileID: 3822561884829185608}
   playerState: {fileID: 2716655589875357465}
+  amIPlayer: 0
 --- !u!54 &4012010102829894511
 Rigidbody:
   m_ObjectHideFlags: 0
