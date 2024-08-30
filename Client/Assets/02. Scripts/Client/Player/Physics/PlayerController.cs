@@ -63,15 +63,9 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        leftMouseClickTimer = 0f;
-        isHold = false;
-        isLeftShiftKeyDown = false;
-        beforeAxisRawH = 0;
-        beforeAxisRawV = 0;
+        ResetPlayerControllerSetting();
         amIPlayer = false;
-        SetIsMove(false);
         stabillizerDirection = Vector3.zero;
-        nowLowerBodyAnimationState = LowerBodyAnimationState.IDLE;
     }
     void Start()
     {
@@ -561,7 +555,6 @@ public class PlayerController : MonoBehaviour
     public void Respawn(float x, float y)
     {
         playerStatus.SetIsDie(false);
-        this.gameObject.SetActive(true);
 
         // 위치 단위 맞추기
         x *= -2;
@@ -572,5 +565,18 @@ public class PlayerController : MonoBehaviour
         Vector3 targetPos = new Vector3(x, createHeight, y);
 
         SetPosition(targetPos);
-    }    
+    }
+    public void ResetPlayerControllerSetting()
+    {
+        leftMouseClickTimer = 0f;
+        isHold = false;
+        isGrounded = false;
+        isLeftShiftKeyDown = false;
+        beforeAxisRawH = 0;
+        beforeAxisRawV = 0;
+        SetIsMove(false);
+        nowLowerBodyAnimationState = LowerBodyAnimationState.IDLE;
+        isPickUpMode = false;
+        targetItem = null;
+    }
 }

@@ -27,6 +27,7 @@ public class CharacterStatus : MonoBehaviour
     private bool isHaveItem = false;
     private string itemTag;
     private int itemId;
+    public GameObject playerMesh;
 
     [Header("--- AnimationControll ---")]
     public bool isGroggy;
@@ -146,7 +147,12 @@ public class CharacterStatus : MonoBehaviour
         if(isDie == true)
         {
             hp = 0;
-            this.gameObject.SetActive(false);
+            playerMesh.SetActive(false);
+        }
+        else
+        {
+            ResetCharacterState();
+            playerMesh.SetActive(true);
         }
         // 플레이어 그로기 및 죽음 처리 전까지 확인용 로그
         Debug.Log(this.name + " is Die? : " + isDie);
@@ -174,11 +180,19 @@ public class CharacterStatus : MonoBehaviour
 
     public void Attacked(Vector3 direction)
     {
-        Debug.Log("나 맞음;;");
         headRig.AddForce(direction * attackedStrength, ForceMode.Impulse);
     }
     public void SetHp(int hp)
     {
         this.hp = hp;
+    }
+
+    public void ResetCharacterState()
+    {
+        SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
+        SetLowerBodyAnimationState(LowerBodyAnimationState.IDLE);
+        SetIsHaveItem(false);
+
+        playerController.ResetPlayerControllerSetting();
     }
 }

@@ -150,6 +150,9 @@ public class AnimationController : MonoBehaviour
         this.upperBodyAnimationState = upperBodyAnimationState;
         if(upperBodyAnimationState == UpperBodyAnimationState.NONE)
         {
+            leftAttackChecker.SetIsAttackState(false);
+            rightAttackChecker.SetIsAttackState(false);
+
             animationModule.SetUpdateUpperBodyAnimation(false);
         }
         else
