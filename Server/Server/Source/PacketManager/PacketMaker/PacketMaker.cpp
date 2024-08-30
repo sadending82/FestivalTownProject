@@ -24,7 +24,7 @@ std::vector<uint8_t> PacketMaker::MakePlayerRespawnPacket(int inGameID, int room
 	flatbuffers::FlatBufferBuilder Builder;
 	Builder.Clear();
 	auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, x, y);
-	Builder.Finish(PacketTable::PlayerTable::CreatePlayerRespawn(Builder, inGameID, pos));
+	Builder.Finish(PacketTable::PlayerTable::CreatePlayerRespawn(Builder, inGameID, hp, pos));
 	return MakeBuffer(ePacketType::S2C_PLAYERRESPAWN, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
