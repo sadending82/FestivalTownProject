@@ -19,7 +19,7 @@ std::vector<uint8_t> PacketMaker::MakePlayerDeadPacket(int inGameID, int roomID,
 	return MakeBuffer(ePacketType::S2C_PLAYERDEAD, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakePlayerRespawnPacket(int inGameID, int roomID, int x, int y)
+std::vector<uint8_t> PacketMaker::MakePlayerRespawnPacket(int inGameID, int roomID, int x, int y, int hp)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 	Builder.Clear();

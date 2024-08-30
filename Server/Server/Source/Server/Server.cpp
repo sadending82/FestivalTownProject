@@ -405,7 +405,7 @@ void Server::SendPlayerRespawn(int inGameID, int roomID)
     int posX = spawnPoses[idx].first;
     int posY = spawnPoses[idx].second;
 
-    std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerRespawnPacket(inGameID, roomID, posX, posY);
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerRespawnPacket(inGameID, roomID, posX, posY, player->GetHP());
     SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
 

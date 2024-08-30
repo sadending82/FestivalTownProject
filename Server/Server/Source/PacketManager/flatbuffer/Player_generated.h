@@ -839,11 +839,15 @@ struct PlayerRespawn FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef PlayerRespawnBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_ID = 4,
-    VT_POS = 6,
-    VT_DIRECTION = 8
+    VT_HP = 6,
+    VT_POS = 8,
+    VT_DIRECTION = 10
   };
   int32_t id() const {
     return GetField<int32_t>(VT_ID, 0);
+  }
+  int32_t hp() const {
+    return GetField<int32_t>(VT_HP, 0);
   }
   const PacketTable::UtilitiesTable::Vec3f *pos() const {
     return GetPointer<const PacketTable::UtilitiesTable::Vec3f *>(VT_POS);
@@ -854,6 +858,7 @@ struct PlayerRespawn FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_ID, 4) &&
+           VerifyField<int32_t>(verifier, VT_HP, 4) &&
            VerifyOffset(verifier, VT_POS) &&
            verifier.VerifyTable(pos()) &&
            VerifyOffset(verifier, VT_DIRECTION) &&
@@ -868,6 +873,9 @@ struct PlayerRespawnBuilder {
   ::flatbuffers::uoffset_t start_;
   void add_id(int32_t id) {
     fbb_.AddElement<int32_t>(PlayerRespawn::VT_ID, id, 0);
+  }
+  void add_hp(int32_t hp) {
+    fbb_.AddElement<int32_t>(PlayerRespawn::VT_HP, hp, 0);
   }
   void add_pos(::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> pos) {
     fbb_.AddOffset(PlayerRespawn::VT_POS, pos);
@@ -889,11 +897,13 @@ struct PlayerRespawnBuilder {
 inline ::flatbuffers::Offset<PlayerRespawn> CreatePlayerRespawn(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t id = 0,
+    int32_t hp = 0,
     ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> pos = 0,
     ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> direction = 0) {
   PlayerRespawnBuilder builder_(_fbb);
   builder_.add_direction(direction);
   builder_.add_pos(pos);
+  builder_.add_hp(hp);
   builder_.add_id(id);
   return builder_.Finish();
 }
