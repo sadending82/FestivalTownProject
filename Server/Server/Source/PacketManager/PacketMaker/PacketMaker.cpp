@@ -32,7 +32,8 @@ std::vector<uint8_t> PacketMaker::MakePlayerCalculatedDamagePacket(int targetID,
 {
 	flatbuffers::FlatBufferBuilder Builder;
 	Builder.Clear();
-	Builder.Finish(PacketTable::PlayerTable::CreatePlayerCalculatedDamage(Builder, targetID, attackType, hp, damageAmount));
+	auto dir = PacketTable::UtilitiesTable::CreateVec3f(Builder, knockback_direction.x, knockback_direction.y, knockback_direction.z);
+	Builder.Finish(PacketTable::PlayerTable::CreatePlayerCalculatedDamage(Builder, targetID, attackType, hp, damageAmount, dir));
 	return MakeBuffer(ePacketType::S2C_PLAYERCALCULATEDDAMAGE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
