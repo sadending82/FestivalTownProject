@@ -9,6 +9,7 @@ DB::~DB()
 	SQLDisconnect(hDbc);
 	SQLFreeHandle(SQL_HANDLE_DBC, hDbc);
 	SQLFreeHandle(SQL_HANDLE_ENV, hEnv);
+	delete mSecurity;
 }
 
 void DB::ShowError(SQLHANDLE handle, SQLSMALLINT handleType, RETCODE retcode) {
@@ -51,6 +52,8 @@ bool DB::ReadConfig()
 
 int DB::Init()
 {
+	mSecurity = new Security;
+
 	SQLRETURN retcode;
 
 	if (ReadConfig() == false) {
@@ -98,6 +101,8 @@ bool DB::Connect()
 
 	DEBUGMSGNOPARAM("DB Connect Success\n");
 
+	InsertNewAcccount("test", "testpassword");
+
 	return true;
 }
 
@@ -130,6 +135,9 @@ bool DB::InsertNewAcccount(const char* id, const char* pw)
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
+	std::string salt = mSecurity->GenerateSalt();
+	std::string hashedPassword = mSecurity->HashingPassword(pw, salt);
+
 	if (UseAccountDB(hStmt) == false) {
 		return false;
 	}
@@ -140,10 +148,13 @@ bool DB::InsertNewAcccount(const char* id, const char* pw)
 		return false;
 	}
 
-	SQLPrepare(hStmt, (SQLWCHAR*)L"INSERT INTO ACCOUNT VALUES (?, ?)", SQL_NTS);
+	UseAccountDB(hStmt);
+
+	SQLPrepare(hStmt, (SQLWCHAR*)L"INSERT INTO ACCOUNT VALUES (?, ?, ?)", SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, 50, 0, (SQLCHAR*)id, 0, NULL);
-	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, 50, 0, (SQLCHAR*)pw, 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, 256, 0, (SQLCHAR*)hashedPassword.c_str(), 0, NULL);
+	SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, 50, 0, (SQLCHAR*)salt.c_str(), 0, NULL);
 
 	retcode = SQLExecute(hStmt);
 
