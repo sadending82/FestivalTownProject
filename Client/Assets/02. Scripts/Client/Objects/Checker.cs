@@ -8,25 +8,33 @@ public class Checker : MonoBehaviour
     public GameObject pusher;
     private void OnEnable()
     {
-        check = false;
+        check = true;
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Player" && check == false)
+        if (check == true)
         {
-            check = true;
-
-            // Pusher 작동
-            pusher.SetActive(true);
-            pusher.transform.position = new Vector3(this.transform.position.x, 5, this.transform.position.z);
-        }
-        if (other.gameObject.tag == "Bomb")
-        {
-            if (Managers.Player.GetIsHost() == true)
+            if (other.gameObject.tag == "Player")
             {
-                Managers.Network.GetPacketManager().SendBombExplosionPacket(other.gameObject.GetComponent<Bomb>().transform.position, other.gameObject.GetComponent<Bomb>().GetId());
-                //other.gameObject.GetComponent<Bomb>().Boom();
+                check = false;
+
+                // Pusher 작동
+                pusher.SetActive(true);
+                pusher.transform.position = new Vector3(this.transform.position.x, 5, this.transform.position.z);
+            }
+            if (other.gameObject.tag == "Bomb")
+            {
+                if (Managers.Player.GetIsHost() == true)
+                {
+                    Managers.Network.GetPacketManager().SendBombExplosionPacket(other.gameObject.GetComponent<Bomb>().transform.position, other.gameObject.GetComponent<Bomb>().GetId());
+                    //other.gameObject.GetComponent<Bomb>().Boom();
+                }
             }
         }
+    }
+
+    public void SetCheck(bool check)
+    {
+        this.check = check;
     }
 }

@@ -44,7 +44,7 @@ public class Bomb : MonoBehaviour
         if (collision.gameObject.tag == "Ground" && isPickUp == false)
         {
             rig.constraints = RigidbodyConstraints.FreezePosition |
-                                    RigidbodyConstraints.FreezeRotation;
+                              RigidbodyConstraints.FreezeRotation;
         }
     }
     public void Boom()
@@ -63,6 +63,7 @@ public class Bomb : MonoBehaviour
 
             PickUpOff();
         }
+        rig.velocity = Vector3.zero;
 
         Managers.Resource.Destroy(this.gameObject);
     }
@@ -101,7 +102,7 @@ public class Bomb : MonoBehaviour
 
     private void SetRigidBodyPickUp()
     {
-        rig.constraints = RigidbodyConstraints.None;
+        rig.constraints = RigidbodyConstraints.FreezeRotation;
         rig.useGravity = false;
         rig.mass = 0;
         rig.angularDrag = 0;

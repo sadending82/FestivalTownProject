@@ -7,6 +7,15 @@ public class Cube : MonoBehaviour
     private float targetHeight;
     private bool heightChecker = false;
 
+    public Checker checker;
+
+    private void Start()
+    {
+        if(checker == null)
+        {
+            checker = this.transform.GetChild(0).GetComponent<Checker>();
+        }
+    }
     private void FixedUpdate()
     {
         if(heightChecker == false)
@@ -32,6 +41,7 @@ public class Cube : MonoBehaviour
                                     RigidbodyConstraints.FreezeRotationX |
                                     RigidbodyConstraints.FreezeRotationY |
                                     RigidbodyConstraints.FreezeRotationZ;
+            checker.SetCheck(false);
         }
     }
     public void SetTargetHeight(float targetHeight)
