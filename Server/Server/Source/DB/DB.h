@@ -1,5 +1,5 @@
 #pragma once
-#include "../utility.h"
+#include "../DB/Security/Security.h"
 #include <sql.h>
 #include <sqlext.h>
 #include <sqltypes.h>
@@ -27,4 +27,6 @@ private:
     std::wstring odbc = L"";
     std::wstring id = L"";
     std::wstring pw = L"";
+
+    Security* mSecurity = nullptr;
 };

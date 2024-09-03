@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
 
     //------ timer for send ------
     private float curTime= 0.0f;
-    private float sendInterval = 0.01666666666f;
+    private float sendInterval = 0.01666666666f * 3;
 
     [Header("--- Pick Up ---")]
     public NearObjectChecker nearObjectChecker;

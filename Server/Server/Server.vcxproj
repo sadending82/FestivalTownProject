@@ -72,11 +72,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
-    <IncludePath>$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\OpenSSL-Win64\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)\OpenSSL-Win64\lib;$(ProjectDir)\OpenSSL-Win64\lib\VC;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
-    <IncludePath>$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\OpenSSL-Win64\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)\OpenSSL-Win64\lib;$(ProjectDir)\OpenSSL-Win64\lib\VC;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -120,7 +122,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)\xlnt\xlnt_Debug\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>xlntd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>xlntd.lib;%(AdditionalDependencies);libcrypto64MD.lib;libcrypto64MDd.lib;libcrypto64MT.lib;libcrypto64MTd.lib;libssl64MD.lib;libssl64MDd.lib;libssl64MT.lib;libssl64MTd.lib;capi.lib;dasync.lib;ec_internal_test.lib;libapps.lib;libcrypto.lib;libcrypto_static.lib;libssl.lib;libssl_static.lib;libtestutil.lib;openssl.lib;ossltest.lib;padlock.lib;uitest.lib</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
       <Command>xcopy /y /d "$(ProjectDir)\xlnt\xlnt_Debug\bin\xlntd.dll" "$(OutDir)"
@@ -146,7 +148,7 @@ xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir);$(ProjectDir)\xlnt\xlnt_Release\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>xlnt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>xlnt.lib;%(AdditionalDependencies);libcrypto64MD.lib;libcrypto64MDd.lib;libcrypto64MT.lib;libcrypto64MTd.lib;libssl64MD.lib;libssl64MDd.lib;libssl64MT.lib;libssl64MTd.lib;capi.lib;dasync.lib;ec_internal_test.lib;libapps.lib;libcrypto.lib;libcrypto_static.lib;libssl.lib;libssl_static.lib;libtestutil.lib;openssl.lib;ossltest.lib;padlock.lib;uitest.lib</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
       <Command>xcopy /y /d "$(ProjectDir)\xlnt\xlnt_Release\bin\xlnt.dll" "$(OutDir)"
@@ -155,6 +157,7 @@ xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\DB\Security\Security.cpp" />
     <ClCompile Include="Source\Object\Bomb\Bomb.cpp" />
     <ClCompile Include="Source\Event\Event.cpp" />
     <ClCompile Include="Source\Network\ExOver.cpp" />
@@ -176,6 +179,7 @@ xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     <ClCompile Include="Source\utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\DB\Security\Security.h" />
     <ClInclude Include="Source\Object\Bomb\Bomb.h" />
     <ClInclude Include="Source\Event.h" />
     <ClInclude Include="Source\Event\Event.h" />
