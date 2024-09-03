@@ -39,6 +39,8 @@ constexpr int MAXPLAYER = 6;
 constexpr int MINPLAYER = 2;
 constexpr int MAXOBJECT = 100;
 
+constexpr int BLOCKSIZE = 2; // meter
+
 const uint8_t DEFAULT_8BITFLAG = 0b00000000;
 
 #ifdef _DEBUG
@@ -96,14 +98,22 @@ struct Vector3f {
 	Vector3f() : x(0), y(0), z(0) {};
 	Vector3f(float fx, float fy, float fz) : x(fx), y(fy), z(fz) {};
 
-	bool operator == (const Vector3f other) const {
+	bool operator == (const Vector3f& other) const {
 		if (x == other.x && y == other.y && z == other.z) {
 			return true;
 		}
 		return false;
+	}
+
+	bool operator < (const Vector3f& other) const {
+		if (x != other.x) return x < other.x;
+		if (y != other.y) return y < other.y;
+		return z < other.z;
 	}
 };
 
 #pragma pack(pop)
 
 std::vector<uint8_t> MakeBuffer(const int type, const uint8_t* data, const int size);
+
+Vector3f ConvertVec2iToVec3f(int x, int y);

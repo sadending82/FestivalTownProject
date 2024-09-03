@@ -179,7 +179,13 @@ void TableManager::ReadMapData()
                 MapData[MapCode::TEST].GetBlockDropIndexes().push_back({ colCnt, lineCnt });
             }break;
             case 'b': {
-                MapData[MapCode::TEST].GetBombSpawnIndexes().push_back({ colCnt, lineCnt });
+                MapData[MapCode::TEST].GetObjectSpawnIndexes().push_back({ colCnt, lineCnt });
+                if (colCnt < 10) {
+                    MapData[MapCode::TEST].GetRedObjectSpawnIndexes().push_back({ colCnt, lineCnt });
+                }
+                else {
+                    MapData[MapCode::TEST].GetBlueObjectSpawnIndexes().push_back({ colCnt, lineCnt });
+                }
             }break;
             case 'R': {
                 MapData[MapCode::TEST].GetPlayerSpawnIndexes((int)TeamCode::RED).push_back({colCnt, lineCnt});

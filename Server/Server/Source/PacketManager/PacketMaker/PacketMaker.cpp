@@ -80,11 +80,11 @@ std::vector<uint8_t> PacketMaker::MakeBlockDropPacket(int x, int y, int type)
 	return MakeBuffer(ePacketType::S2C_BLOCKDROP, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakeBombSpawnPacket(int x, int y, int bombid)
+std::vector<uint8_t> PacketMaker::MakeBombSpawnPacket(Vector3f Positon, int bombid)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 	Builder.Clear();
-	auto pos = PacketTable::UtilitiesTable::CreateVec2i(Builder, x, y);
+	auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, Positon.x, Positon.y, Positon.z);
 	Builder.Finish(PacketTable::ObjectTable::CreateBombSpawn(Builder, pos, bombid));
 	return MakeBuffer(ePacketType::S2C_BOMBSPAWN, Builder.GetBufferPointer(), Builder.GetSize());
 }

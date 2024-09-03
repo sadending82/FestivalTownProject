@@ -14,8 +14,8 @@ namespace Network.PacketProcessor
             var bb = new ByteBuffer(data);
             var Data = BombSpawn.GetRootAsBombSpawn(bb);
 
-            int posX = Data.Pos.Value.X;
-            int posY = Data.Pos.Value.Y;
+            float posX = Data.Pos.Value.X;
+            float posY = Data.Pos.Value.Y;
             int id = Data.Id;
 
             // 폭탄 생성

@@ -85,8 +85,8 @@ struct BombSpawn FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_POS = 4,
     VT_ID = 6
   };
-  const PacketTable::UtilitiesTable::Vec2i *pos() const {
-    return GetPointer<const PacketTable::UtilitiesTable::Vec2i *>(VT_POS);
+  const PacketTable::UtilitiesTable::Vec3f *pos() const {
+    return GetPointer<const PacketTable::UtilitiesTable::Vec3f *>(VT_POS);
   }
   int32_t id() const {
     return GetField<int32_t>(VT_ID, 0);
@@ -104,7 +104,7 @@ struct BombSpawnBuilder {
   typedef BombSpawn Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_pos(::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec2i> pos) {
+  void add_pos(::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> pos) {
     fbb_.AddOffset(BombSpawn::VT_POS, pos);
   }
   void add_id(int32_t id) {
@@ -123,7 +123,7 @@ struct BombSpawnBuilder {
 
 inline ::flatbuffers::Offset<BombSpawn> CreateBombSpawn(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec2i> pos = 0,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> pos = 0,
     int32_t id = 0) {
   BombSpawnBuilder builder_(_fbb);
   builder_.add_id(id);

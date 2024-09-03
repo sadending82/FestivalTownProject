@@ -273,45 +273,16 @@ void Server::SendBlockDropPacket(int roomID, int spawnCount)
 
 void Server::SendBombSpawnPacket(int roomID, int spawnCount)
 {
-    std::vector<std::pair<int, int>>& spawnPoses = mRooms[roomID]->GetMap().GetBombSpawnIndexes();
     Room* room = mRooms[roomID];
     GameCode gameMode = room->GetGameMode();
     int explosionInterval = mTableManager->getFITH_Data()[gameMode].Bomb_Delay_Time;
+   
+    std::set<Vector3f> spawnPoses = SetObjectSpawnPos(roomID, spawnCount);
 
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> idx_distrib(0, spawnPoses.size() - 1);
-
-    std::set<int> unique_idx;
-
-    room->GetObjectListLock().lock_shared();
-    std::array<Object*, MAXOBJECT>& object_list = room->GetObjects();
-    room->GetObjectListLock().unlock_shared();
-    while (unique_idx.size() < spawnCount) {
-        int idx = idx_distrib(gen);
-        int x = spawnPoses[idx].first;
-        int y = spawnPoses[idx].second;
-        bool invalid_pos = false;
-        for (int i = 0; i < MAXOBJECT; ++i) {
-            if (object_list[i] == nullptr) {
-                continue;
-            }
-            if (x == object_list[i]->GetPosition().x 
-                && y == object_list[i]->GetPosition().y) {
-                invalid_pos = true;
-                break;
-            }
-        }
-        if (invalid_pos == false) {
-            unique_idx.emplace(idx);
-        }
-    }
-    for (const auto& idx : unique_idx) {
-        int x = spawnPoses[idx].first;
-        int y = spawnPoses[idx].second;
-        int bombid = room->AddBomb(new Bomb, Vector3f(x, y, 0));
+    for (const auto& pos : spawnPoses) {
+        int bombid = room->AddBomb(new Bomb, pos);
         if (bombid == INVALIDKEY) continue;
-        std::vector<uint8_t> send_buffer = mPacketMaker->MakeBombSpawnPacket(x, y, bombid);
+        std::vector<uint8_t> send_buffer = mPacketMaker->MakeBombSpawnPacket(pos, bombid);
         SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
         PushEventBombExplosion(mTimer, roomID, bombid, room->GetRoomCode(), explosionInterval);
     }
@@ -414,6 +385,55 @@ void Server::SendPlayerCalculatedDamage(int targetID, int roomID, int attackType
 {
     std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerCalculatedDamagePacket(targetID, attackType, hp, damageAmount, knockback_direction);
     SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
+}
+
+std::set<Vector3f> Server::SetObjectSpawnPos(int roomID, int spawnCount)
+{
+    int RedLife = mRooms[roomID]->GetTeams()[(int)TeamCode::RED].GetLife();
+    int BlueLife = mRooms[roomID]->GetTeams()[(int)TeamCode::BLUE].GetLife();
+    std::vector<std::pair<int, int>>& spawnPoses = mRooms[roomID]->GetMap().GetObjectSpawnIndexes();
+    if (RedLife > BlueLife) {
+        spawnPoses = mRooms[roomID]->GetMap().GetBlueObjectSpawnIndexes();
+    }
+    else if (RedLife < BlueLife) {
+        spawnPoses = mRooms[roomID]->GetMap().GetRedObjectSpawnIndexes();
+    }
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<>idx_distrib(0, spawnPoses.size() - 1);
+
+    std::set<Vector3f> unique_pos;
+
+    Room* room = mRooms[roomID];
+    room->GetObjectListLock().lock_shared();
+    std::array<Object*, MAXOBJECT>& object_list = room->GetObjects();
+    room->GetObjectListLock().unlock_shared();
+
+    while (unique_pos.size() < spawnCount) {
+        int idx = idx_distrib(gen);
+        Vector3f pos = ConvertVec2iToVec3f(spawnPoses[idx].first, spawnPoses[idx].second);
+        if (RedLife == BlueLife) {
+            pos.x = 20;
+        }
+
+        bool invalid_pos = false;
+        for (int i = 0; i < MAXOBJECT; ++i) {
+            if (object_list[i] == nullptr) {
+                continue;
+            }
+            /*if (pos.x == object_list[i]->GetPosition().x
+                && pos.y == object_list[i]->GetPosition().y) {
+                invalid_pos = true;
+                break;
+            }*/
+        }
+        if (invalid_pos == false) {
+            unique_pos.emplace(pos);
+        }
+    }
+
+    return unique_pos;
 }
 
 void Server::StartHeartBeat(int sessionID)

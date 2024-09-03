@@ -36,7 +36,7 @@ void TestThread::RunWorker()
 
             int playerCount = readyPlayers.size();
 
-            while (readyPlayers.empty()) {
+            while (!readyPlayers.empty()) {
                 int roomid = m_pServer->CreateNewRoom((playerCount > MAXPLAYER) ? MAXPLAYER : playerCount, GameCode::FITH_Team_battle_Three);
                 if (roomid == INVALIDKEY) {
                     std::cout << "Fali Create New Room\n";
@@ -46,6 +46,9 @@ void TestThread::RunWorker()
                 std::vector<Player*> playerList;
                 int matchingPlayerCount = MAXPLAYER;
                 for (int i = 0; i < matchingPlayerCount; ++i) {
+                    if (readyPlayers.empty()) {
+                        break;
+                    }
                     playerList.push_back(readyPlayers.front());
                     readyPlayers.pop();
                     playerCount--;

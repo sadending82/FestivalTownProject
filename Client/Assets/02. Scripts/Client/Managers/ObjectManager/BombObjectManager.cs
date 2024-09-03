@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class BombObjectManager : MonoBehaviour
 {
-    private float offsetX = 19;
-    private float offsetY = 9;
+    private float offsetX = 20;
+    private float offsetY = 10;
     private float createHeight = 8;
 
     public static BombObjectManager instance;
@@ -37,11 +37,11 @@ public class BombObjectManager : MonoBehaviour
 
         }
     }
-    public void SpawnBomb(int x, int y, int id)
+    public void SpawnBomb(float x, float y, int id)
     {
         // 단위 맞춰주기
-        x *= -2;
-        y *= -2;
+        x *= -1;
+        y *= -1;
         GameObject reusedBomb = null;
 
         reusedBomb = Managers.ObjectPool.Pop(Managers.ObjectPool.GetOrigin("Bomb"), transform).gameObject;
