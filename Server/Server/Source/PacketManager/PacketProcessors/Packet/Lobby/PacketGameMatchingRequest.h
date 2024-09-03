@@ -17,6 +17,8 @@ public:
 
 			Session* session = pServer->GetSessions()[key];
 
+			session->SetMatchingRequestTime(std::chrono::duration_cast<std::chrono::seconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count());
+
 			session->GetStateLock().lock();
 			session->SetState(eSessionState::ST_GAMEREADY);
 			session->GetStateLock().unlock();
