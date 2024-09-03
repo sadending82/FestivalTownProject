@@ -27,6 +27,7 @@
 #include "Event/Object/EventBlockDrop.h"
 #include "Event/Object/EventBombSpawn.h"
 #include "Event/Object/EventBombExplosion.h"
+#include "Event/Object/EventWeaponSpawn.h"
 
 #include "Event/Game/EventRemainTimeSync.h"
 #include "Event/Game/EventTimeOverCheck.h"

@@ -113,6 +113,24 @@ int Room::AddBomb(Bomb* object, Vector3f position, Vector3f direction)
 	return INVALIDKEY;
 }
 
+int Room::AddWeapon(Weapon* object, Vector3f position, Vector3f direction)
+{
+	for (int i = 0; i < MAXOBJECT; ++i) {
+		mObjectListLock.lock();
+		if (mObjectList[i] == nullptr) {
+			mObjectList[i] = object;
+			mObjectListLock.unlock();
+			object->SetID(i);
+			object->SetPosition(position);
+			object->SetDirection(direction);
+			return i;
+		}
+		mObjectListLock.unlock();
+	}
+
+	return INVALIDKEY;
+}
+
 bool Room::DeleteObject(int id)
 {
 	mObjectListLock.lock();

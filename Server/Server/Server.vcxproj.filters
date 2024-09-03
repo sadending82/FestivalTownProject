@@ -21,6 +21,7 @@
     <ClCompile Include="Source\Object\Object.cpp" />
     <ClCompile Include="Source\PacketManager\PacketProcessors\Event\Game\EventPlayerRespawn.h" />
     <ClCompile Include="Source\DB\Security\Security.cpp" />
+    <ClCompile Include="Source\Object\Weapon\Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DB\DB.h" />
@@ -87,6 +88,9 @@
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Player\PacketPlayerAnimation.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Player\PacketPlayerDamageReceive.h" />
     <ClInclude Include="Source\DB\Security\Security.h" />
+    <ClInclude Include="Source\PacketManager\flatbuffer\Weapon_generated.h" />
+    <ClInclude Include="Source\Object\Weapon\Weapon.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Event\Object\EventWeaponSpawn.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

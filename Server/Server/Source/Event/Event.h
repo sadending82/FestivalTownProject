@@ -23,6 +23,7 @@ enum eEventType {
 	BOMBEXPLOSION,
 	TIMEOVERCHECK,
 	PLAYERRESPAWN,
+	WEAPONSPAWN,
 
 	TIMESYNC
 };
@@ -89,6 +90,11 @@ struct EV_PLAYER_RESPAWN : EVENT {
 	long long roomCode;
 };
 
+struct EV_WEAPON_SPAWN : EVENT {
+	int roomID;
+	long long roomCode;
+};
+
 #pragma pack(pop)
 
 bool PushEventHeartBeat(Timer* pTimer, int sessionID);
@@ -98,6 +104,7 @@ bool PushEventGameMatching(Timer* pTimer);
 bool PushEventGameStart(Timer* pTimer, int roomID, long long roomCode);
 bool PushEventBlockDrop(Timer* pTimer, int roomID, long long roomCode, int intervalSecond);
 bool PushEventBombSpawn(Timer* pTimer, int roomID, long long roomCode, int intervalSecond);
+bool PushEventWeaponSpawn(Timer* pTimer, int roomID, long long roomCode, int intervalSecond);
 bool PushEventRemainTimeSync(Timer* pTimer, int roomID, long long roomCode);
 bool PushEventBombExplosion(Timer* pTimer, int roomID, int bombID, long long roomCode, int intervalSecond);
 bool PushEventTimeOverCheck(Timer* pTimer, int roomID, long long roomCode);

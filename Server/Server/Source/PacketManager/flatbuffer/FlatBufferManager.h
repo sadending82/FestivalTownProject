@@ -6,3 +6,4 @@
 #include "Game_generated.h"
 #include "Bomb_generated.h"
 #include "Lobby_generated.h"
+#include "Weapon_generated.h"

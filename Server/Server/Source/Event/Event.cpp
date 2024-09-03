@@ -82,6 +82,23 @@ bool PushEventBombSpawn(Timer* pTimer, int roomID, long long roomCode, int inter
 	return true;
 }
 
+bool PushEventWeaponSpawn(Timer* pTimer, int roomID, long long roomCode, int intervalSecond)
+{
+	EV_WEAPON_SPAWN e;
+	e.size = sizeof(EV_WEAPON_SPAWN);
+	e.type = eEventType::WEAPONSPAWN;
+	e.roomID = roomID;
+	e.roomCode = roomCode;
+
+	EVENT_HEADER header;
+	header.start_time = std::chrono::system_clock::now() + std::chrono::seconds(intervalSecond);
+	memcpy(header.message, reinterpret_cast<char*>(&e), sizeof(EV_WEAPON_SPAWN));
+
+	pTimer->PushEvent(header);
+
+	return true;
+}
+
 bool PushEventRemainTimeSync(Timer* pTimer, int roomID, long long roomCode)
 {
 	EV_TIME_SYNC e;

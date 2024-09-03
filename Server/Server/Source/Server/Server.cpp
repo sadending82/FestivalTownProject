@@ -381,6 +381,20 @@ void Server::SendPlayerRespawn(int inGameID, int roomID)
     SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
 
+void Server::SendWeaponSpawnPacket(int roomID, int spawnCount)
+{
+    Room* room = mRooms[roomID];
+
+    std::set<Vector3f> spawnPoses = SetObjectSpawnPos(roomID, spawnCount);
+
+    for (const auto& pos : spawnPoses) {
+        int weaponid = room->AddWeapon(new Weapon, pos);
+        if (weaponid == INVALIDKEY) continue;
+        std::vector<uint8_t> send_buffer = mPacketMaker->MakeWeaponSpawnPacket(pos, weaponid);
+        SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
+    }
+}
+
 void Server::SendPlayerCalculatedDamage(int targetID, int roomID, int attackType, int hp, int damageAmount, Vector3f knockback_direction)
 {
     std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerCalculatedDamagePacket(targetID, attackType, hp, damageAmount, knockback_direction);
@@ -519,6 +533,7 @@ void Server::StartGame(int roomID)
         int eventTime = GetTableManager()->getFITH_Data()[gameCode].Block_Spawn_Time;
         PushEventBlockDrop(mTimer, roomID, roomCode, eventTime);
         PushEventBombSpawn(mTimer, roomID, roomCode, GetTableManager()->getFITH_Data()[gameCode].Bomb_Spawn_Time);
+        PushEventWeaponSpawn(mTimer, roomID, roomCode, GetTableManager()->getFITH_Data()[gameCode].Weapon_Spawn_Time);
         PushEventRemainTimeSync(mTimer, roomID, roomCode);
         PushEventTimeOverCheck(mTimer, roomID, roomCode);
 

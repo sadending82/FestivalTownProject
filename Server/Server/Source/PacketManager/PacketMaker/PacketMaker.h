@@ -21,6 +21,7 @@ public:
 	std::vector<uint8_t> MakeHeartBeatPacket();
 	std::vector<uint8_t> MakeBlockDropPacket(int x, int y, int type);
 	std::vector<uint8_t> MakeBombSpawnPacket(Vector3f position, int bombid);
+	std::vector<uint8_t> MakeWeaponSpawnPacket(Vector3f Positon, int weaponid);
 	std::vector<uint8_t> MakeBombExplosionPacket(int bombID, Vector3f position);
 	std::vector<uint8_t> MakeGameStartPacket(int roomID, int startTime);
 	std::vector<uint8_t> MakeGameEndPacket(uint8_t winningTeams_flag);

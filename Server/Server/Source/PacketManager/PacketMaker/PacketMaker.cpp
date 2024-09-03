@@ -89,6 +89,15 @@ std::vector<uint8_t> PacketMaker::MakeBombSpawnPacket(Vector3f Positon, int bomb
 	return MakeBuffer(ePacketType::S2C_BOMBSPAWN, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
+std::vector<uint8_t> PacketMaker::MakeWeaponSpawnPacket(Vector3f Positon, int weaponid)
+{
+	flatbuffers::FlatBufferBuilder Builder;
+	Builder.Clear();
+	auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, Positon.x, Positon.y, Positon.z);
+	Builder.Finish(PacketTable::ObjectTable::CreateWeaponSpawn(Builder, pos, weaponid));
+	return MakeBuffer(ePacketType::S2C_WEAPONSPAWN, Builder.GetBufferPointer(), Builder.GetSize());
+}
+
 std::vector<uint8_t> PacketMaker::MakeBombExplosionPacket(int bombID, Vector3f position)
 {
 	flatbuffers::FlatBufferBuilder Builder;

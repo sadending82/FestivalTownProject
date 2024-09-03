@@ -3,6 +3,7 @@
 #include "../Object/Map/Map.h"
 #include "../Object/Object.h"
 #include "../Object/Bomb/Bomb.h"
+#include "../Object/Weapon/Weapon.h"
 #include "../protocol.h"
 
 class Room
@@ -22,6 +23,7 @@ public:
 	bool DeletePlayer(int playerID);
 
 	int  AddBomb(Bomb* object, Vector3f position, Vector3f direction = Vector3f(0, 0, 0));
+	int  AddWeapon(Weapon* object, Vector3f position, Vector3f direction = Vector3f(0, 0, 0));
 	bool DeleteObject(int id);
 
 	std::array<Player*, MAXPLAYER>& GetPlayerList() { return mPlayerList; }
