@@ -45,7 +45,8 @@ public:
 	void SendPlayerCalculatedDamage(int targetID, int roomID, int attackType, int hp, int damageAmount, Vector3f knockback_direction);
 
 	void StartHeartBeat(int sessionID);
-	void MatchingComplete(int roomID, int playerCnt);
+	int CreateNewRoom(int playerCount, GameCode gameMode);
+	void MatchingComplete(int roomID, int playerCnt, std::vector<Player*>& players);
 	void StartGame(int roomID);
 	void CheckGameEnd(int roomID);
 	void TimeoverGameEnd(int roomID);

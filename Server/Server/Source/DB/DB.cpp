@@ -101,8 +101,6 @@ bool DB::Connect()
 
 	DEBUGMSGNOPARAM("DB Connect Success\n");
 
-	InsertNewAcccount("test", "testpassword");
-
 	return true;
 }
 

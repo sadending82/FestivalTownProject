@@ -144,7 +144,8 @@ void Server::Init(class TableManager* pTableManager, class DB* pDB)
     mTestThread = std::thread(&TestThread::RunWorker, pTestThreadRef);
 #endif
     DEBUGMSGNOPARAM("Thread Ready\n");
-    //PushEventGameMatching(mTimer);
+    // matching start
+    PushEventGameMatching(mTimer);
 }
 
 void Server::ThreadJoin()
@@ -422,46 +423,56 @@ void Server::StartHeartBeat(int sessionID)
     PushEventHeartBeat(mTimer, sessionID);
 }
 
-void Server::MatchingComplete(int roomID, int playerCnt)
+int Server::CreateNewRoom(int playerCount, GameCode gameMode)
 {
+    int roomID = SetRoomID();
+    if (roomID == INVALIDKEY) {
+        std::cout << "Fali Create New Room\n";
+        return INVALIDKEY;
+    }
     Room* room = GetRooms()[roomID];
-    room->Init(roomID, GetTableManager()->getFITH_Data()[GameCode::FITH_Team_battle_Three].Team_Life_Count);
-    room->SetGameMode(GameCode::FITH_Team_battle_Three);
+    room->Init(roomID, GetTableManager()->getFITH_Data()[gameMode].Team_Life_Count);
+    room->SetGameMode(gameMode);
     room->InitMap(GetTableManager()->getMapData()[MapCode::TEST]);
 
-    room->SetPlayerLimit(playerCnt); // 임시
+    room->SetPlayerLimit(playerCount); // 임시
+
+    return roomID;
+}
+
+void Server::MatchingComplete(int roomID, int playerCnt, std::vector<Player*>& players)
+{
+    Room* room = GetRooms()[roomID];
 
     int tFlag = 0;
 
     // Player Add Into New Room
-    for (Session* s : GetSessions()) {
+    for (Player* player : players) {
         if (room->GetPlayerCnt() == room->GetPlayerLimit()) {
             break;
         }
-        s->GetStateLock().lock();
-        if (s->GetState() == eSessionState::ST_GAMEREADY) {
-            Player* p = dynamic_cast<Player*>(s);
-
+        player->GetStateLock().lock();
+        if (player->GetState() == eSessionState::ST_GAMEREADY) {
             // 임시
-            p->SetTeam(tFlag % 2);
-            p->SetHP(GetTableManager()->getCharacterStats()[(int)CharacterType::TEST].hp);
+            player->SetTeam(tFlag % 2);
+            player->SetHP(GetTableManager()->getCharacterStats()[(int)CharacterType::TEST].hp);
             tFlag++;
             //
 
-            int sessionID = p->GetSessionID();
-            bool AddPlayerOk = room->AddPlayer(p);
+            int sessionID = player->GetSessionID();
+            bool AddPlayerOk = room->AddPlayer(player);
             if (AddPlayerOk == false) {
                 std::cout << "AddPlayer fail: Already Player Max\n";
             }
             else {
                 if (room->GetHostID() == INVALIDKEY) {
-                    room->SetHost(p->GetInGameID());
+                    room->SetHost(player->GetInGameID());
                 }
                 room->AddPlayerCnt();
                 SendGameMatchingResponse(sessionID);
             }
         }
-        s->GetStateLock().unlock();
+        player->GetStateLock().unlock();
     }
 
     room->GetPlayerListLock().lock_shared();
@@ -558,5 +569,7 @@ void Server::TimeoverGameEnd(int roomID) {
 
         // 종료하자마자 바로 초기화 하는데 나중에 어떻게 해야할지 고민해야할듯
         GetRooms()[roomID]->Reset();
+
+        std::cout << "Game End - " << roomID << std::endl;
     }
 }
