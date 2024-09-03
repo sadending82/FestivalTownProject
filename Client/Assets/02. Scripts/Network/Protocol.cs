@@ -89,3 +89,18 @@ namespace NetworkProtocol
         AT_BASIC
     };
 }
+
+namespace ClientProtocol
+{
+    public enum UpperBodyAnimationState
+    {
+        NONE,
+        ATTACK, POWERATTACK, HOLD, THROW, HEADATTACK, ROLL, FLYINGKICK
+    }
+
+    // 서버에 전달 X 클라가 관리
+    public enum LowerBodyAnimationState
+    {
+        IDLE, WALK, RUN
+    }
+}

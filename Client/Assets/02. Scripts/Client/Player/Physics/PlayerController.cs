@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using eAnimationState;
+using ClientProtocol;
 using NetworkProtocol;
 
 public class PlayerController : MonoBehaviour

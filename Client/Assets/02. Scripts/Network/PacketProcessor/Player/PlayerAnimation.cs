@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
-using eAnimationState;
+using ClientProtocol;
 
 namespace Network.PacketProcessor
 {

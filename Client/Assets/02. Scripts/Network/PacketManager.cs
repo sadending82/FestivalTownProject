@@ -4,7 +4,7 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using NetworkProtocol;
-using eAnimationState;
+using ClientProtocol;
 using Network.PacketProcessor;
 using UnityEngine.UIElements;
 using PacketTable.GameTable;
