@@ -11,12 +11,14 @@ public:
 		EV_GAME_MATCHING* event = reinterpret_cast<EV_GAME_MATCHING*>(buf);
         std::cout << "Matching......\n";
 
-        std::queue<Player*> readyPlayers;
+        std::priority_queue<std::pair<int, Player*>
+            , std::vector<std::pair<int, Player*>>
+            , std::greater<std::pair<int, Player*>>> readyPlayers;
 
         for (Session* s : pServer->GetSessions()) {
             s->GetStateLock().lock();
             if (s->GetState() == eSessionState::ST_GAMEREADY) {
-                readyPlayers.push(dynamic_cast<Player*>(s));
+                readyPlayers.push({s->GetMatchingRequestTime(), dynamic_cast<Player*>(s)});
             }
             s->GetStateLock().unlock();
         }
@@ -36,7 +38,8 @@ public:
                 if (readyPlayers.empty()) {
                     break;
                 }
-                playerList.push_back(readyPlayers.front());
+                std::cout << readyPlayers.top().second->GetSessionID() << std::endl;
+                playerList.push_back(readyPlayers.top().second);
                 readyPlayers.pop();
                 playerCount--;
             }

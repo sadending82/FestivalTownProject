@@ -9,6 +9,7 @@ public:
 		, mSessionID(INVALIDKEY)
 		,mPrevData(0)
 		,mIsHeartbeatAck(false)
+		,mMatchingRequestTime(0)
 	{
 	}
 	virtual ~Session() {}
@@ -26,6 +27,7 @@ public:
 	SOCKET GetSocket() { return mSocket; }
 	int GetPrevData() { return mPrevData; }
 	bool GetIsHeartbeatAck() { return mIsHeartbeatAck; }
+	unsigned int GetMatchingRequestTime() { return mMatchingRequestTime; }
 
 	void SetExOver(ExOver over) { mExOver = over; }
 	void SetState(eSessionState state) { mState = state; }
@@ -33,14 +35,16 @@ public:
 	void SetSocket(SOCKET sock) { mSocket = sock; }
 	void SetPrevData(int prevData) { mPrevData = prevData; }
 	void SetIsHeartbeatAck(bool flag) { mIsHeartbeatAck = flag; }
+	void SetMatchingRequestTime(int time) { mMatchingRequestTime = time; }
 
 protected:
-	ExOver mExOver;
-	std::mutex	mStateLock;
-	eSessionState mState;
-	int mSessionID;
-	SOCKET mSocket;
-	int	mPrevData;
-	bool mIsHeartbeatAck;
+	ExOver			mExOver;
+	std::mutex		mStateLock;
+	eSessionState	mState;
+	int				mSessionID;
+	SOCKET			mSocket;
+	int				mPrevData;
+	bool			mIsHeartbeatAck;
+	unsigned int	mMatchingRequestTime;
 };
 
