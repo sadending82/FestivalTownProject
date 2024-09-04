@@ -49,6 +49,8 @@ public class PacketManager : MonoBehaviour
             { ePacketType.S2C_PLAYER_POS_SYNC, new PlayerPosSyncProcessor() },
             { ePacketType.S2C_PLAYER_GRAB_BOMB, new PlayerGrabBombProcessor() },
             { ePacketType.S2C_PLAYER_THROW_BOMB, new PlayerThrowBombProcessor() },
+            { ePacketType.S2C_PLAYER_GRAB_WEAPON, new PlayerGrabWeaponProcessor() },
+            { ePacketType.S2C_PLAYER_DROP_WEAPON, new PlayerDropWeaponProcessor() },
             { ePacketType.S2C_PLAYER_ANIMATION, new PlayerAnimationProcessor() },
             { ePacketType.S2C_PLAYER_CALCULATED_DAMAGE, new PlayerCalculatedDamageProcessor() },
             { ePacketType.S2C_PLAYER_DEAD, new PlayerDeadProcessor() },
@@ -196,6 +198,20 @@ public class PacketManager : MonoBehaviour
     public void SendGameReady()
     {
         byte[] packet = _packetMaker.MakeGameReadyPacket();
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+
+    public void SendPlayerGrabWeaponPacket(Vector3 position, Vector3 direction, int playerID, int weaponID)
+    {
+        byte[] packet = _packetMaker.MakePlayerGrabWeaponPacket(position, direction, playerID, weaponID);
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+
+    public void SendPlayerDropWeaponPacket(Vector3 position, int weaponID)
+    {
+        byte[] packet = _packetMaker.MakePlayerDropWeaponPacket(position, weaponID);
         if (packet == null) { return; }
         SendPacket(packet);
     }

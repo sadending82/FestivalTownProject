@@ -9,6 +9,8 @@
 #include "Packet/Player/PacketPlayerThrowBomb.h"
 #include "Packet/Player/PacketPlayerAnimation.h"
 #include "Packet/Player/PacketPlayerDamageReceive.h"
+#include "Packet/Player/PacketPlayerDropWeapon.h"
+#include "Packet/Player/PacketPlayerGrabWeapon.h"
 
 #include "Packet/Object/PacketBombInput.h"
 #include "Packet/Object/PacketBombPositionSync.h"

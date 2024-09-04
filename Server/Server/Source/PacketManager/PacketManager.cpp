@@ -21,6 +21,8 @@ void PacketManager::Init(Server* server)
         PacketProcessorMap[ePacketType::C2S_PLAYER_POS_SYNC] = std::make_unique<PacketPlayerPosSync>();
         PacketProcessorMap[ePacketType::C2S_PLAYER_GRAB_BOMB] = std::make_unique<PacketPlayerGrabBomb>();
         PacketProcessorMap[ePacketType::C2S_PLAYER_THROW_BOMB] = std::make_unique<PacketPlayerThrowBomb>();
+        PacketProcessorMap[ePacketType::C2S_PLAYER_GRAB_WEAPON] = std::make_unique<PacketPlayerGrabWeapon>();
+        PacketProcessorMap[ePacketType::C2S_PLAYER_DROP_WEAPON] = std::make_unique<PacketPlayerDropWeapon>();
         PacketProcessorMap[ePacketType::C2S_PLAYER_ANIMATION] = std::make_unique<PacketPlayerAnimation>();
         PacketProcessorMap[ePacketType::C2S_PLAYER_DAMAGE_RECEIVE] = std::make_unique<PacketPlayerDamageReceive>();
 

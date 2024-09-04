@@ -17,14 +17,27 @@ public:
 				return;
 			}
 
-			if (player->GetBomb() != nullptr) {
+			if (player->GetWeapon() != nullptr) {
 				return;
 			}
 
 			int roomid = player->GetRoomID();
 			int weaponid = read->weapon_id();
 
-			
+			Room* room = pServer->GetRooms()[roomid];
+			room->GetObjectListLock().lock_shared();
+			Weapon* weapon = dynamic_cast<Weapon*>(room->GetObjects()[weaponid]);
+			if (weapon == nullptr) {
+				room->GetObjectListLock().unlock_shared();
+				return;
+			}
+			if (weapon->SetIsGrabbed(true) == true) {
+				weapon->SetOwenrID(player->GetInGameID());
+				player->SetWeapon(weapon);
+				std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYER_GRAB_WEAPON, data, size);
+				pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomid);
+			}
+			room->GetObjectListLock().unlock_shared();
 		}
 	}
 
