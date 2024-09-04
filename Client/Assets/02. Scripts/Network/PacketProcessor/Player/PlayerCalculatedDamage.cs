@@ -23,7 +23,7 @@ namespace Network.PacketProcessor
 
             Debug.Log("맞은 사람 ID : " + targetId);
 
-            CharacterStatus pState = Managers.Player.transform.GetChild(targetId).GetComponent<CharacterStatus>();
+            CharacterStatus pState = Managers.Player.GetPlayers().transform.GetChild(targetId).GetComponent<CharacterStatus>();
             pState.Attacked(dir);
             pState.SetHp(hp);
         }

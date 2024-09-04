@@ -22,7 +22,7 @@ namespace Network.PacketProcessor
             Vector3 dir = new Vector3(Data.Direction.Value.X, Data.Direction.Value.Y, Data.Direction.Value.Z);
             int bombID = Data.BombId;
 
-            PlayerController pController = Managers.Player.transform.GetChild(playerID).GetComponent<PlayerController>();
+            PlayerController pController = Managers.Player.GetPlayers().transform.GetChild(playerID).GetComponent<PlayerController>();
             pController.SetDirection(dir);
             pController.SetPosition(pos);
             pController.s_PickUpItem(playerID, bombID);

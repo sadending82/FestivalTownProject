@@ -25,7 +25,7 @@ namespace Network.PacketProcessor
 
             if (Managers.Player == null) { return; }
 
-            PlayerController pController = Managers.Player.transform.GetChild(id).GetComponent<PlayerController>();
+            PlayerController pController = Managers.Player.GetPlayers().transform.GetChild(id).GetComponent<PlayerController>();
 
             pController.SetPosition(pos);
             pController.SetDirection(dir);

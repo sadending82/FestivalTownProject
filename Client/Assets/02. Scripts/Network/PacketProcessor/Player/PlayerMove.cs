@@ -23,7 +23,7 @@ namespace Network.PacketProcessor
             Vector3 dir = new Vector3(moveData.Direction.Value.X, moveData.Direction.Value.Y, moveData.Direction.Value.Z);
             int state = moveData.State;
 
-            PlayerController pController = Managers.Player.transform.GetChild(id).GetComponent<PlayerController>();
+            PlayerController pController = Managers.Player.GetPlayers().transform.GetChild(id).GetComponent<PlayerController>();
 
             pController.SetDirection(dir);
             pController.SetPosition(pos);

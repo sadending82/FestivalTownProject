@@ -14,7 +14,7 @@ public class GoalPost : MonoBehaviour
             Bomb targetBomb = other.GetComponent<Bomb>();
             int playerId = targetBomb.GetLastPickUpPlayerId();
 
-            Managers.Player.transform.GetChild(playerId).GetComponent<PlayerController>().SendToServerGoalTeamNumber(targetBomb.GetId(), teamNumber);
+            Managers.Player.GetPlayers().transform.GetChild(playerId).GetComponent<PlayerController>().SendToServerGoalTeamNumber(targetBomb.GetId(), teamNumber);
             targetBomb.Boom();
         }
     }

@@ -10,7 +10,7 @@ public class Managers : MonoBehaviour
     UIManager _ui = new UIManager();
     ResourceManager _resource = new ResourceManager();
     NetworkManager _network;
-    PlayerManager _player;
+    PlayerManager _player = new PlayerManager();
     ObjectPoolManager _objPool = new ObjectPoolManager();
     DataManager _data = new DataManager();
     SceneManagerEx _scene = new SceneManagerEx();
@@ -42,24 +42,13 @@ public class Managers : MonoBehaviour
         _weaponObject = gameObject.AddComponent<WeaponObjectManager>();
         _cubeObject = gameObject.AddComponent<CubeObjectManager>();
         _bombObject = gameObject.AddComponent<BombObjectManager>();
+        _player = gameObject.AddComponent<PlayerManager>();
 
         Init();
         _game.Init();
 
         // TODO : 나중에는 아래의 매니저 들도 Managers에서 생성하는 것이 바람직해 보입니다.
         _network = gameObject.AddComponent<NetworkManager>();
-    }
-
-    public static void SetInGameManagers()
-    {
-        // 이런 문제 때문에 기본적으로 Managers에서 생성하는 것이 바람직하다고 한 것이긴 합니다.
-        // 게임 내부에서만 필요한 매니저들의 경우 Scene에서 생성해서 관리해야 할 텐데...
-        s_instance._player = GameObject.Find("PlayerManager").GetComponent<PlayerManager>();
-    }
-
-    public static void DeleteInGameManagers()
-    {
-        s_instance._player = null;
     }
 
     static void Init()
@@ -89,6 +78,5 @@ public class Managers : MonoBehaviour
 
         Scene.Clear();
         UI.Clear();
-        DeleteInGameManagers();
     }
 }
