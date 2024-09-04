@@ -8,6 +8,8 @@ TagManager:
   - PlayerManager
   - Bomb
   - HitBox
+  - Undefined
+  - Weapon
   layers:
   - Default
   - TransparentFX
@@ -26,7 +28,7 @@ TagManager:
   - Player3
   - Player4
   - Player5
-  - 
+  - Weapon
   - 
   - 
   - 

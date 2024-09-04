@@ -10,14 +10,15 @@ public class WeaponObjectManager : MonoBehaviour
 
     public int initialWeapons = 10;
 
-    public GameObject weaponObjectManager;
+    [SerializeField]
+    private GameObject weapons;
 
     public void Init()
     {
-        weaponObjectManager = GameObject.Find("@Weapons");
-        if(weaponObjectManager == null)
+        weapons = GameObject.Find("@Weapons");
+        if(weapons == null)
         {
-            weaponObjectManager = new GameObject { name = "@Weapons" };
+            weapons = new GameObject { name = "@Weapons" };
         }
     }
     public void SpawnWeapon(float x, float y, int id)
@@ -27,7 +28,7 @@ public class WeaponObjectManager : MonoBehaviour
         y *= -1;
         GameObject reusedWeapon = null;
 
-        reusedWeapon = Managers.ObjectPool.Pop(Managers.ObjectPool.GetOrigin("Weapon"), weaponObjectManager.transform).gameObject;
+        reusedWeapon = Managers.ObjectPool.Pop(Managers.ObjectPool.GetOrigin("Weapon"), weapons.transform).gameObject;
 
         reusedWeapon.gameObject.SetActive(true);
         reusedWeapon.gameObject.GetComponent<Weapon>().SetId(id);
@@ -35,12 +36,12 @@ public class WeaponObjectManager : MonoBehaviour
     }
     public GameObject FindWeaponById(int targetId)
     {
-        int numOfChild = weaponObjectManager.transform.childCount;
+        int numOfChild = weapons.transform.childCount;
         for (int i = 0; i < numOfChild; ++i)
         {
-            if (weaponObjectManager.transform.GetChild(i).GetComponent<Weapon>().GetId() == targetId)
+            if (weapons.transform.GetChild(i).GetComponent<Weapon>().GetId() == targetId)
             {
-                return weaponObjectManager.transform.GetChild(i).gameObject;
+                return weapons.transform.GetChild(i).gameObject;
             }
         }
 
