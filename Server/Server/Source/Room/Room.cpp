@@ -154,7 +154,6 @@ bool Room::DeleteBomb(int id)
 	// 어떤 플레이어가 이 오브젝트를 가지고 있으면 해제시켜줘야함
 	int OwnerID = mObjectList[id]->GetOwenrID();
 	if (OwnerID > INVALIDKEY) {
-		std::cout << "들고있는 채로 터진다!\n";
 		mPlayerListLock.lock_shared();
 		mPlayerList[OwnerID]->SetBomb(nullptr);
 		mPlayerListLock.unlock_shared();

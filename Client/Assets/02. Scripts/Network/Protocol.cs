@@ -40,6 +40,7 @@ namespace NetworkProtocol
         S2C_WEAPON_DELETE,
 
         S2C_MATCHING_RESPONSE,
+        S2C_MATCHING_CANCEL,
         S2C_ALL_PLAYER_READY,
         S2C_GAME_START,
         S2C_GAME_END,
@@ -66,6 +67,7 @@ namespace NetworkProtocol
         C2S_WEAPON_DELETE,
 
         C2S_MATCHING_REQUEST,
+        C2S_MATCHING_CANCEL,
         C2S_GAME_READY
     };
 
@@ -87,7 +89,9 @@ namespace NetworkProtocol
 
     public enum eWeaponType
     {
-        WT_HAND
+        WT_HAND,
+        WT_FRYING_PAN,
+        WT_BAT
     };
 
     public enum eAttackType

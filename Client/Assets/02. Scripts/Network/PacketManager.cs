@@ -62,11 +62,13 @@ public class PacketManager : MonoBehaviour
             { ePacketType.S2C_BOMB_EXPLOSION, new BombExplosionProcessor() },
             { ePacketType.S2C_BOMB_POS_SYNC, new BombPositionSyncProcessor() },
             { ePacketType.S2C_WEAPON_SPAWN, new WeaponSpawnProcessor() },
+            { ePacketType.S2C_WEAPON_DELETE, new WeaponDeleteProcessor() },
 
             { ePacketType.S2C_LIFE_REDUCE, new LifeReduceProcessor() },
             { ePacketType.S2C_REMAIN_TIME_SYNC, new RemainTimeSyncProcessor() },
 
             { ePacketType.S2C_MATCHING_RESPONSE, new GameMatchingResponseProcessor() },
+            { ePacketType.S2C_MATCHING_CANCEL, new GameMatchingCancelProcessor() },
             { ePacketType.S2C_ALL_PLAYER_READY, new AllPlayerReadyProcessor() },
             { ePacketType.S2C_GAME_START, new GameStartProcessor() },
             { ePacketType.S2C_GAME_END, new GameEndProcessor() },
@@ -212,6 +214,13 @@ public class PacketManager : MonoBehaviour
     public void SendPlayerDropWeaponPacket(Vector3 position, int weaponID)
     {
         byte[] packet = _packetMaker.MakePlayerDropWeaponPacket(position, weaponID);
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+
+    public void SendWeaponDeletePacket(int weaponID)
+    {
+        byte[] packet = _packetMaker.MakeWeaponDeletePacket(weaponID);
         if (packet == null) { return; }
         SendPacket(packet);
     }

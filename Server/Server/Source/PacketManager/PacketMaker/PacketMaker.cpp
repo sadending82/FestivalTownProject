@@ -89,12 +89,12 @@ std::vector<uint8_t> PacketMaker::MakeBombSpawnPacket(Vector3f Positon, int bomb
 	return MakeBuffer(ePacketType::S2C_BOMB_SPAWN, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakeWeaponSpawnPacket(Vector3f Positon, int weaponid)
+std::vector<uint8_t> PacketMaker::MakeWeaponSpawnPacket(Vector3f Positon, int weaponid, int weaponType)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 	Builder.Clear();
 	auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, Positon.x, Positon.y, Positon.z);
-	Builder.Finish(PacketTable::ObjectTable::CreateWeaponSpawn(Builder, pos, weaponid));
+	Builder.Finish(PacketTable::ObjectTable::CreateWeaponSpawn(Builder, pos, weaponid, weaponType));
 	return MakeBuffer(ePacketType::S2C_WEAPON_SPAWN, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
