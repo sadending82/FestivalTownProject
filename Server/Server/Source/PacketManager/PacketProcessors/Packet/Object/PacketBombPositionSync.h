@@ -32,7 +32,7 @@ public:
 
 			bomb->SetPosition(Vector3f(read->pos()->x(), read->pos()->y(), read->pos()->z()));
 
-			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_BOMBPOSSYNC, data, size);
+			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_BOMB_POS_SYNC, data, size);
 			pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomid);
 			room->GetObjectListLock().unlock_shared();
 		}

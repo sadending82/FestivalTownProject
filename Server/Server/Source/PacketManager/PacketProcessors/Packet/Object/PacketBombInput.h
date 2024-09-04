@@ -20,7 +20,7 @@ public:
 			int roomid = dynamic_cast<Player*>(pServer->GetSessions()[key])->GetRoomID();
 			Room* room = pServer->GetRooms()[roomid];
 
-			room->DeleteObject(bombid);
+			room->DeleteBomb(bombid);
 
 			pServer->GetRooms()[roomid]->GetTeams()[team].ReduceLife();
 			int lifeCount = pServer->GetRooms()[roomid]->GetTeams()[team].GetLife();

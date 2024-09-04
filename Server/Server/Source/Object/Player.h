@@ -25,6 +25,8 @@ public:
 	ePlayerState GetPlayerState() { return mPlayerState; }
 	std::mutex& GetPlayerStateLock() { return mPlayerStateLock; }
 	int GetHP() { return mHP; }
+	class Bomb* GetBomb() { return mBomb; }
+	class Weapon* GetWeapon() { return mWeapon; }
 
 	void SetRoomID(int id) { mRoomID = id; }
 	void SetInGameID(int id) { mInGameID = id; }
@@ -35,6 +37,8 @@ public:
 	void SetDirection(Vector3f v3f) { mDirection = v3f; }
 	void SetPlayerState(ePlayerState state) { mPlayerState = state; }
 	void SetHP(int hp) { mHP = hp; }
+	void SetBomb(class Bomb* bomb) { mBomb = bomb; }
+	void SetWeapon(class Weapon* weapon) { mWeapon = weapon; }
 
 	void RecoverHP(int value) { mHP += value; }
 	void ReduceHP(int value) { mHP -= value; }
@@ -44,11 +48,13 @@ protected:
 	ePlayerState	mPlayerState;
 
 	int				mRoomID;
-	int				mInGameID;
+	int				mInGameID; // 클라와 함께 인게임 내에서 구분하기 위한 id
 	int				mTeam;
 	
 	Vector3f		mPosition;
 	Vector3f		mDirection;
 
 	int				mHP;
+	class Bomb*     mBomb = nullptr;
+	class Weapon*	mWeapon = nullptr;
 };

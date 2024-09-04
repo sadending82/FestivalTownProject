@@ -64,7 +64,7 @@ public class PacketMaker
         //}
 
         byte[] data = builder.SizedByteArray();
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERMOVE, flatBufferSize = (ushort)data.Length };
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYER_MOVE, flatBufferSize = (ushort)data.Length };
 
         byte[] headerdata = Serialize<HEADER>(header);
         byte[] result = new byte[data.Length + headerdata.Length];
@@ -89,7 +89,7 @@ public class PacketMaker
         builder.Finish(offset.Value);
 
         byte[] data = builder.SizedByteArray();
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERSTOP, flatBufferSize = (ushort)data.Length };
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYER_STOP, flatBufferSize = (ushort)data.Length };
         byte[] headerdata = Serialize<HEADER>(header);
         byte[] result = new byte[data.Length + headerdata.Length];
 
@@ -112,7 +112,7 @@ public class PacketMaker
         builder.Finish(offset.Value);
 
         byte[] data = builder.SizedByteArray();
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERPOSSYNC, flatBufferSize = (ushort)data.Length };
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYER_POS_SYNC, flatBufferSize = (ushort)data.Length };
 
         byte[] headerdata = Serialize<HEADER>(header);
         byte[] result = new byte[data.Length + headerdata.Length];
@@ -137,7 +137,7 @@ public class PacketMaker
         builder.Finish(offset.Value);
 
         byte[] data = builder.SizedByteArray();
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERANIMATION, flatBufferSize = (ushort)data.Length };
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYER_ANIMATION, flatBufferSize = (ushort)data.Length };
 
         byte[] headerdata = Serialize<HEADER>(header);
         byte[] result = new byte[data.Length + headerdata.Length];
@@ -162,7 +162,7 @@ public class PacketMaker
         builder.Finish(offset.Value);
 
         byte[] data = builder.SizedByteArray();
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERDAMAGERECEIVE, flatBufferSize = (ushort)data.Length };
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYER_DAMAGE_RECEIVE, flatBufferSize = (ushort)data.Length };
 
         byte[] headerdata = Serialize<HEADER>(header);
         byte[] result = new byte[data.Length + headerdata.Length];
@@ -194,7 +194,7 @@ public class PacketMaker
         }
 
         byte[] data = builder.SizedByteArray();
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_HEARTBEAT, flatBufferSize = (ushort)data.Length };
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_HEART_BEAT, flatBufferSize = (ushort)data.Length };
         byte[] headerdata = Serialize<HEADER>(header);
 
         byte[] result = new byte[data.Length + headerdata.Length];
@@ -214,7 +214,7 @@ public class PacketMaker
         builder.Finish(offset.Value);
 
         byte[] data = builder.SizedByteArray();
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_BOMBINPUT, flatBufferSize = (ushort)data.Length };
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_BOMB_INPUT, flatBufferSize = (ushort)data.Length };
         byte[] headerdata = Serialize<HEADER>(header);
         byte[] result = new byte[data.Length + headerdata.Length];
 
@@ -238,7 +238,7 @@ public class PacketMaker
         builder.Finish(offset.Value);
 
         byte[] data = builder.SizedByteArray();
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERGRABBOMB, flatBufferSize = (ushort)data.Length };
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYER_GRAB_BOMB, flatBufferSize = (ushort)data.Length };
         byte[] headerdata = Serialize<HEADER>(header);
         byte[] result = new byte[data.Length + headerdata.Length];
 
@@ -262,7 +262,7 @@ public class PacketMaker
         builder.Finish(offset.Value);
 
         byte[] data = builder.SizedByteArray();
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYERTHROWBOMB, flatBufferSize = (ushort)data.Length };
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYER_THROW_BOMB, flatBufferSize = (ushort)data.Length };
         byte[] headerdata = Serialize<HEADER>(header);
         byte[] result = new byte[data.Length + headerdata.Length];
 
@@ -283,7 +283,7 @@ public class PacketMaker
         builder.Finish(offset.Value);
 
         byte[] data = builder.SizedByteArray();
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_BOMBPOSSYNC, flatBufferSize = (ushort)data.Length };
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_BOMB_POS_SYNC, flatBufferSize = (ushort)data.Length };
         byte[] headerdata = Serialize<HEADER>(header);
         byte[] result = new byte[data.Length + headerdata.Length];
 
@@ -304,7 +304,7 @@ public class PacketMaker
         builder.Finish(offset.Value);
 
         byte[] data = builder.SizedByteArray();
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_BOMBEXPLOSION, flatBufferSize = (ushort)data.Length };
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_BOMB_EXPLOSION, flatBufferSize = (ushort)data.Length };
         byte[] headerdata = Serialize<HEADER>(header);
         byte[] result = new byte[data.Length + headerdata.Length];
 
@@ -322,7 +322,7 @@ public class PacketMaker
         builder.Finish(offset.Value);
 
         byte[] data = builder.SizedByteArray();
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_MATCHINGREQUEST, flatBufferSize = (ushort)data.Length };
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_MATCHING_REQUEST, flatBufferSize = (ushort)data.Length };
         byte[] headerdata = Serialize<HEADER>(header);
         byte[] result = new byte[data.Length + headerdata.Length];
 
@@ -340,7 +340,7 @@ public class PacketMaker
         builder.Finish(offset.Value);
 
         byte[] data = builder.SizedByteArray();
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_GAMEREADY, flatBufferSize = (ushort)data.Length };
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_GAME_READY, flatBufferSize = (ushort)data.Length };
         byte[] headerdata = Serialize<HEADER>(header);
         byte[] result = new byte[data.Length + headerdata.Length];
 

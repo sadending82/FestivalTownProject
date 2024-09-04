@@ -40,35 +40,35 @@ public class PacketManager : MonoBehaviour
     {
         processorDict = new Dictionary<ePacketType, PacketProcessor>
         {
-            { ePacketType.S2C_HEARTBEAT, new HeartBeatProcessor() },
+            { ePacketType.S2C_HEART_BEAT, new HeartBeatProcessor() },
 
 
-            { ePacketType.S2C_PLAYERADD, new PlayerAddProcessor() },
-            { ePacketType.S2C_PLAYERMOVE, new PlayerMoveProcessor() },
-            { ePacketType.S2C_PLAYERSTOP, new PlayerStopProcessor() },
-            { ePacketType.S2C_PLAYERPOSSYNC, new PlayerPosSyncProcessor() },
-            { ePacketType.S2C_PLAYERGRABBOMB, new PlayerGrabBombProcessor() },
-            { ePacketType.S2C_PLAYERTHROWBOMB, new PlayerThrowBombProcessor() },
-            { ePacketType.S2C_PLAYERANIMATION, new PlayerAnimationProcessor() },
-            { ePacketType.S2C_PLAYERCALCULATEDDAMAGE, new PlayerCalculatedDamageProcessor() },
-            { ePacketType.S2C_PLAYERDEAD, new PlayerDeadProcessor() },
-            { ePacketType.S2C_PLAYERRESPAWN, new PlayerRespawnProcessor() },
+            { ePacketType.S2C_PLAYER_ADD, new PlayerAddProcessor() },
+            { ePacketType.S2C_PLAYER_MOVE, new PlayerMoveProcessor() },
+            { ePacketType.S2C_PLAYER_STOP, new PlayerStopProcessor() },
+            { ePacketType.S2C_PLAYER_POS_SYNC, new PlayerPosSyncProcessor() },
+            { ePacketType.S2C_PLAYER_GRAB_BOMB, new PlayerGrabBombProcessor() },
+            { ePacketType.S2C_PLAYER_THROW_BOMB, new PlayerThrowBombProcessor() },
+            { ePacketType.S2C_PLAYER_ANIMATION, new PlayerAnimationProcessor() },
+            { ePacketType.S2C_PLAYER_CALCULATED_DAMAGE, new PlayerCalculatedDamageProcessor() },
+            { ePacketType.S2C_PLAYER_DEAD, new PlayerDeadProcessor() },
+            { ePacketType.S2C_PLAYER_RESPAWN, new PlayerRespawnProcessor() },
 
 
-            { ePacketType.S2C_BLOCKDROP, new BlockDropProcessor() },
-            { ePacketType.S2C_BOMBSPAWN, new BombSpawnProcessor() },
-            { ePacketType.S2C_BOMBEXPLOSION, new BombExplosionProcessor() },
-            { ePacketType.S2C_BOMBPOSSYNC, new BombPositionSyncProcessor() },
-            { ePacketType.S2C_WEAPONSPAWN, new WeaponSpawnProcessor() },
+            { ePacketType.S2C_BLOCK_DROP, new BlockDropProcessor() },
+            { ePacketType.S2C_BOMB_SPAWN, new BombSpawnProcessor() },
+            { ePacketType.S2C_BOMB_EXPLOSION, new BombExplosionProcessor() },
+            { ePacketType.S2C_BOMB_POS_SYNC, new BombPositionSyncProcessor() },
+            { ePacketType.S2C_WEAPON_SPAWN, new WeaponSpawnProcessor() },
 
-            { ePacketType.S2C_LIFEREDUCE, new LifeReduceProcessor() },
-            { ePacketType.S2C_REMAINTIMESYNC, new RemainTimeSyncProcessor() },
+            { ePacketType.S2C_LIFE_REDUCE, new LifeReduceProcessor() },
+            { ePacketType.S2C_REMAIN_TIME_SYNC, new RemainTimeSyncProcessor() },
 
-            { ePacketType.S2C_MATCHINGRESPONSE, new GameMatchingResponseProcessor() },
-            { ePacketType.S2C_ALLPLAYERREADY, new AllPlayerReadyProcessor() },
-            { ePacketType.S2C_GAMESTART, new GameStartProcessor() },
-            { ePacketType.S2C_GAMEEND, new GameEndProcessor() },
-            { ePacketType.S2C_GAMEHOSTCHANGE, new GameHostChangeProcessor() }
+            { ePacketType.S2C_MATCHING_RESPONSE, new GameMatchingResponseProcessor() },
+            { ePacketType.S2C_ALL_PLAYER_READY, new AllPlayerReadyProcessor() },
+            { ePacketType.S2C_GAME_START, new GameStartProcessor() },
+            { ePacketType.S2C_GAME_END, new GameEndProcessor() },
+            { ePacketType.S2C_GAME_HOST_CHANGE, new GameHostChangeProcessor() }
         };
     }
 

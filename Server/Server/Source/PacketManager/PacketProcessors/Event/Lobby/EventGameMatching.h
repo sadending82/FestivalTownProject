@@ -9,7 +9,6 @@ public:
 
 	virtual void Process(Server* pServer, unsigned char* buf) {
 		EV_GAME_MATCHING* event = reinterpret_cast<EV_GAME_MATCHING*>(buf);
-        std::cout << "Matching......\n";
 
         std::priority_queue<std::pair<int, Player*>
             , std::vector<std::pair<int, Player*>>
