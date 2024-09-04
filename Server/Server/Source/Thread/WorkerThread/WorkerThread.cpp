@@ -1,6 +1,11 @@
 #include "WorkerThread.h"
 #include"../../Server/Server.h"
 
+WorkerThread::~WorkerThread()
+{
+    delete m_pPacketManager;
+}
+
 void WorkerThread::RunWorker()
 {
     m_pPacketManager = new PacketManager();
@@ -93,6 +98,7 @@ void WorkerThread::RunWorker()
         case eOpType::OP_EVENT:{
             EVENT* event = reinterpret_cast<EVENT*>(exOver->mMessageBuf);
             m_pPacketManager->ProcessEvent((eEventType)event->type, exOver->mMessageBuf);
+            delete exOver;
             break;
         }
         }

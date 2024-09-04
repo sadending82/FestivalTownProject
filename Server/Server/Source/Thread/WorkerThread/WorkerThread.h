@@ -8,7 +8,7 @@ public:
 		:m_pServer(pServer),
 		m_pPacketManager(nullptr)
 	{};
-	~WorkerThread() {};
+	~WorkerThread();
 
 	void RunWorker();
 
