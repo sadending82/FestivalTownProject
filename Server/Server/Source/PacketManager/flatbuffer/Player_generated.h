@@ -39,6 +39,9 @@ struct PlayerGrabBombBuilder;
 struct PlayerThrowBomb;
 struct PlayerThrowBombBuilder;
 
+struct PlayerGrabWeapon;
+struct PlayerGrabWeaponBuilder;
+
 struct PlayerAnimation;
 struct PlayerAnimationBuilder;
 
@@ -529,6 +532,79 @@ inline ::flatbuffers::Offset<PlayerThrowBomb> CreatePlayerThrowBomb(
     int32_t bomb_id = 0) {
   PlayerThrowBombBuilder builder_(_fbb);
   builder_.add_bomb_id(bomb_id);
+  builder_.add_direction(direction);
+  builder_.add_pos(pos);
+  builder_.add_id(id);
+  return builder_.Finish();
+}
+
+struct PlayerGrabWeapon FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef PlayerGrabWeaponBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ID = 4,
+    VT_POS = 6,
+    VT_DIRECTION = 8,
+    VT_WEAPON_ID = 10
+  };
+  int32_t id() const {
+    return GetField<int32_t>(VT_ID, 0);
+  }
+  const PacketTable::UtilitiesTable::Vec3f *pos() const {
+    return GetPointer<const PacketTable::UtilitiesTable::Vec3f *>(VT_POS);
+  }
+  const PacketTable::UtilitiesTable::Vec3f *direction() const {
+    return GetPointer<const PacketTable::UtilitiesTable::Vec3f *>(VT_DIRECTION);
+  }
+  int32_t weapon_id() const {
+    return GetField<int32_t>(VT_WEAPON_ID, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_ID, 4) &&
+           VerifyOffset(verifier, VT_POS) &&
+           verifier.VerifyTable(pos()) &&
+           VerifyOffset(verifier, VT_DIRECTION) &&
+           verifier.VerifyTable(direction()) &&
+           VerifyField<int32_t>(verifier, VT_WEAPON_ID, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct PlayerGrabWeaponBuilder {
+  typedef PlayerGrabWeapon Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_id(int32_t id) {
+    fbb_.AddElement<int32_t>(PlayerGrabWeapon::VT_ID, id, 0);
+  }
+  void add_pos(::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> pos) {
+    fbb_.AddOffset(PlayerGrabWeapon::VT_POS, pos);
+  }
+  void add_direction(::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> direction) {
+    fbb_.AddOffset(PlayerGrabWeapon::VT_DIRECTION, direction);
+  }
+  void add_weapon_id(int32_t weapon_id) {
+    fbb_.AddElement<int32_t>(PlayerGrabWeapon::VT_WEAPON_ID, weapon_id, 0);
+  }
+  explicit PlayerGrabWeaponBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<PlayerGrabWeapon> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<PlayerGrabWeapon>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<PlayerGrabWeapon> CreatePlayerGrabWeapon(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t id = 0,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> pos = 0,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> direction = 0,
+    int32_t weapon_id = 0) {
+  PlayerGrabWeaponBuilder builder_(_fbb);
+  builder_.add_weapon_id(weapon_id);
   builder_.add_direction(direction);
   builder_.add_pos(pos);
   builder_.add_id(id);
