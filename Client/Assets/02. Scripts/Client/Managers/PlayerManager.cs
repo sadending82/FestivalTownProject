@@ -5,23 +5,38 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
     private int myId;
-    private int maxPlayerNum;
-    private int nowPlayerNum;
+    private int maxPlayerNum = 6;
+    private int nowPlayerNum = 0;
     private bool isHost;
 
-    private void Awake()
-    {
-        nowPlayerNum = 0;
-        maxPlayerNum = 6;
-    }
+    [SerializeField]
+    private GameObject players;
 
-    private void Start()
+    public void Init()
     {
-        for(int i = 0; i < maxPlayerNum; ++i)
+        players = GameObject.Find("@Players");
+        if (players == null)
         {
-            transform.GetChild(i).gameObject.GetComponent<CharacterStatus>().SetId(i);
+            players = new GameObject { name = "@Players" };
         }
-    }   
+        GameObject playerPrefeb = Managers.Resource.Load<GameObject>($"Prefabs/Chibi_Cat");
+        if (playerPrefeb == null)
+        {
+            Debug.Log("Error!! PlayerManager Init() Thers is no Prefeb !!!");
+        }
+        for (int i = 0; i < maxPlayerNum; i++)
+        {
+            GameObject player = Object.Instantiate(playerPrefeb, players.transform);
+            player.name = playerPrefeb.name + " " + i;
+            player.GetComponent<CharacterStatus>().SetId(i);
+            player.GetComponent<CharacterStatus>().SetLayer(i);
+            player.SetActive(false);
+        }
+    }
+    public GameObject GetPlayers()
+    {
+        return players;
+    }
     public void SetMyId(int myId)
     {
         this.myId = myId;
@@ -55,16 +70,15 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
-            if (transform.GetChild(id).gameObject.activeSelf == false)
+            if (players.transform.GetChild(id).gameObject.activeSelf == false)
             {
-                transform.GetChild(id).gameObject.SetActive(true);
+                players.transform.GetChild(id).gameObject.SetActive(true);
                 if (myId == id)
                 {
-                    transform.GetChild(id).gameObject.GetComponent<CharacterStatus>().SetAmIPlayer(true);
-                    transform.GetChild(id).gameObject.GetComponent<PlayerController>().SetMyId(myId);
+                    players.transform.GetChild(id).gameObject.GetComponent<CharacterStatus>().SetAmIPlayer(true);
+                    players.transform.GetChild(id).gameObject.GetComponent<PlayerController>().SetMyId(myId);
                 }
                 nowPlayerNum++;
-                Debug.Log("Now Players Number " + nowPlayerNum);
             }
         }
     }

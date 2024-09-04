@@ -82,7 +82,7 @@ public class Bomb : MonoBehaviour
     }
     public void PickUpOff()
     {
-        CharacterStatus pickUpPlayerStatus = Managers.Player.transform.GetChild(pickUpPlayerId).GetComponent<CharacterStatus>();
+        CharacterStatus pickUpPlayerStatus = Managers.Player.GetPlayers().transform.GetChild(pickUpPlayerId).GetComponent<CharacterStatus>();
         pickUpPlayerStatus.SetIsHaveItem(false);
 
         isPickUp = false;

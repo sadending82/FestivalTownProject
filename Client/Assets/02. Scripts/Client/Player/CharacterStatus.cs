@@ -46,6 +46,11 @@ public class CharacterStatus : MonoBehaviour
     private NetworkManager network;
     private PacketManager packetManager;
 
+    // 레이어 관련
+    [Header("--- LayerControl ---")]
+    public GameObject pelvis;
+    public GameObject Hitbox;
+
     private void Awake()
     {
         amIPlayer = false;
@@ -84,6 +89,25 @@ public class CharacterStatus : MonoBehaviour
     public bool GetAmIPlayer()
     {
         return amIPlayer;
+    }
+
+    public void SetLayer(int id)
+    {
+        string layerName = "Player" + id;
+        int layer = LayerMask.NameToLayer(layerName);
+        Hitbox.layer = layer;
+
+        ChangeLayerRecursively(pelvis, layer);
+    }
+    // 모든 자식 오브젝트에 접근해 레이어를 바꾸는 함수
+    private void ChangeLayerRecursively(GameObject obj, int layer)
+    {
+        obj.layer = layer;
+
+        foreach (Transform child in obj.transform)
+        {
+            ChangeLayerRecursively(child.gameObject, layer);
+        }
     }
     public void SetUpperBodyAnimationState(UpperBodyAnimationState upperBodyAnimationState)
     {

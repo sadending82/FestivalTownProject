@@ -12,16 +12,15 @@ public class GameScene : BaseScene
 
         SceneType = Define.Scene.Game;
 
-        // 일단은 인게임에서 관리하도록 설정해보자.
-        Managers.SetInGameManagers();
-
         LoadStatue();
 
         Managers.UI.ShowPopUpUI<UI_Loading>();
 
+        Managers.Player.Init();
+
         LoadCubes();
 
-        LoadBomb();
+        LoadBombs();
 
         LoadWeapons();
 
@@ -58,7 +57,7 @@ public class GameScene : BaseScene
         }
     }
 
-    public void LoadBomb()
+    public void LoadBombs()
     {
         Managers.BombObject.Init();
 

@@ -22,10 +22,10 @@ namespace Network.PacketProcessor
 
             if (Managers.Player == null) return;
 
-            if (Managers.Player.transform.GetChild(id) != null)
+            if (Managers.Player.GetPlayers().transform.GetChild(id) != null)
             {
-                Managers.Player.transform.GetChild(id).GetComponent<PlayerController>().SetDirection(dir);
-                Managers.Player.transform.GetChild(id).GetComponent<PlayerController>().SetPosition(pos);
+                Managers.Player.GetPlayers().transform.GetChild(id).GetComponent<PlayerController>().SetDirection(dir);
+                Managers.Player.GetPlayers().transform.GetChild(id).GetComponent<PlayerController>().SetPosition(pos);
             }
         }
 

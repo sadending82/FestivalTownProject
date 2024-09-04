@@ -21,7 +21,7 @@ namespace Network.PacketProcessor
             float y = Data.Pos.Value.Y;
             int targetId = Data.Id;
 
-            PlayerController pCtr = Managers.Player.transform.GetChild(targetId).GetComponent<PlayerController>();
+            PlayerController pCtr = Managers.Player.GetPlayers().transform.GetChild(targetId).GetComponent<PlayerController>();
             pCtr.Respawn(x, y);
         }
 
