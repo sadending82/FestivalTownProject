@@ -134,6 +134,51 @@ int Room::AddWeapon(Weapon* object, Vector3f position, Vector3f direction)
 bool Room::DeleteObject(int id)
 {
 	mObjectListLock.lock();
+	if (mObjectList[id] == nullptr) {
+		mObjectListLock.unlock();
+		return false;
+	}
+	delete mObjectList[id];
+	mObjectList[id] = nullptr;
+	mObjectListLock.unlock();
+	return true;
+}
+
+bool Room::DeleteBomb(int id)
+{
+	mObjectListLock.lock();
+	if (mObjectList[id] == nullptr) {
+		mObjectListLock.unlock();
+		return false;
+	}
+	// 어떤 플레이어가 이 오브젝트를 가지고 있으면 해제시켜줘야함
+	int OwnerID = mObjectList[id]->GetOwenrID();
+	if (OwnerID > INVALIDKEY) {
+		std::cout << "들고있는 채로 터진다!\n";
+		mPlayerListLock.lock_shared();
+		mPlayerList[OwnerID]->SetBomb(nullptr);
+		mPlayerListLock.unlock_shared();
+	}
+	delete mObjectList[id];
+	mObjectList[id] = nullptr;
+	mObjectListLock.unlock();
+	return true;
+}
+
+bool Room::DeleteWeapon(int id)
+{
+	mObjectListLock.lock();
+	if (mObjectList[id] == nullptr) {
+		mObjectListLock.unlock();
+		return false;
+	}
+	// 어떤 플레이어가 이 오브젝트를 가지고 있으면 해제시켜줘야함
+	int OwnerID = mObjectList[id]->GetOwenrID();
+	if (OwnerID > INVALIDKEY) {
+		mPlayerListLock.lock_shared();
+		mPlayerList[OwnerID]->SetWeapon(nullptr);
+		mPlayerListLock.unlock_shared();
+	}
 	delete mObjectList[id];
 	mObjectList[id] = nullptr;
 	mObjectListLock.unlock();

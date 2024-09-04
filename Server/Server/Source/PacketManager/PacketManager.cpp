@@ -11,22 +11,22 @@ void PacketManager::Init(Server* server)
 
     // packet
     {
-        PacketProcessorMap[ePacketType::C2S_HEARTBEAT] = std::make_unique<PacketHeartBeat>();
+        PacketProcessorMap[ePacketType::C2S_HEART_BEAT] = std::make_unique<PacketHeartBeat>();
 
-        PacketProcessorMap[ePacketType::C2S_MATCHINGREQUEST] = std::make_unique<PacketGameMatchingRequest>();
-        PacketProcessorMap[ePacketType::C2S_GAMEREADY] = std::make_unique<PacketGameReady>();
+        PacketProcessorMap[ePacketType::C2S_MATCHING_REQUEST] = std::make_unique<PacketGameMatchingRequest>();
+        PacketProcessorMap[ePacketType::C2S_GAME_READY] = std::make_unique<PacketGameReady>();
 
-        PacketProcessorMap[ePacketType::C2S_PLAYERMOVE] = std::make_unique<PacketPlayerMove>();
-        PacketProcessorMap[ePacketType::C2S_PLAYERSTOP] = std::make_unique<PacketPlayerStop>();
-        PacketProcessorMap[ePacketType::C2S_PLAYERPOSSYNC] = std::make_unique<PacketPlayerPosSync>();
-        PacketProcessorMap[ePacketType::C2S_PLAYERGRABBOMB] = std::make_unique<PacketPlayerGrabBomb>();
-        PacketProcessorMap[ePacketType::C2S_PLAYERTHROWBOMB] = std::make_unique<PacketPlayerThrowBomb>();
-        PacketProcessorMap[ePacketType::C2S_PLAYERANIMATION] = std::make_unique<PacketPlayerAnimation>();
-        PacketProcessorMap[ePacketType::C2S_PLAYERDAMAGERECEIVE] = std::make_unique<PacketPlayerDamageReceive>();
+        PacketProcessorMap[ePacketType::C2S_PLAYER_MOVE] = std::make_unique<PacketPlayerMove>();
+        PacketProcessorMap[ePacketType::C2S_PLAYER_STOP] = std::make_unique<PacketPlayerStop>();
+        PacketProcessorMap[ePacketType::C2S_PLAYER_POS_SYNC] = std::make_unique<PacketPlayerPosSync>();
+        PacketProcessorMap[ePacketType::C2S_PLAYER_GRAB_BOMB] = std::make_unique<PacketPlayerGrabBomb>();
+        PacketProcessorMap[ePacketType::C2S_PLAYER_THROW_BOMB] = std::make_unique<PacketPlayerThrowBomb>();
+        PacketProcessorMap[ePacketType::C2S_PLAYER_ANIMATION] = std::make_unique<PacketPlayerAnimation>();
+        PacketProcessorMap[ePacketType::C2S_PLAYER_DAMAGE_RECEIVE] = std::make_unique<PacketPlayerDamageReceive>();
 
-        PacketProcessorMap[ePacketType::C2S_BOMBINPUT] = std::make_unique<PacketBombInput>();
-        PacketProcessorMap[ePacketType::C2S_BOMBPOSSYNC] = std::make_unique<PacketBombPositionSync>();
-        PacketProcessorMap[ePacketType::C2S_BOMBEXPLOSION] = std::make_unique<PacketBombExplosion>();
+        PacketProcessorMap[ePacketType::C2S_BOMB_INPUT] = std::make_unique<PacketBombInput>();
+        PacketProcessorMap[ePacketType::C2S_BOMB_POS_SYNC] = std::make_unique<PacketBombPositionSync>();
+        PacketProcessorMap[ePacketType::C2S_BOMB_EXPLOSION] = std::make_unique<PacketBombExplosion>();
     }
 
 

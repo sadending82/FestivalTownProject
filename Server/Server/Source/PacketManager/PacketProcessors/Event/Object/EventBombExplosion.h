@@ -26,7 +26,7 @@ public:
 		}
 
 		pServer->SendBombExplosionPacket(roomid, bombid);
-		room->DeleteObject(bombid);
+		room->DeleteBomb(bombid);
 	}
 
 private:

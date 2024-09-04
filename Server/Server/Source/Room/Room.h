@@ -25,6 +25,8 @@ public:
 	int  AddBomb(Bomb* object, Vector3f position, Vector3f direction = Vector3f(0, 0, 0));
 	int  AddWeapon(Weapon* object, Vector3f position, Vector3f direction = Vector3f(0, 0, 0));
 	bool DeleteObject(int id);
+	bool DeleteBomb(int id);
+	bool DeleteWeapon(int id);
 
 	std::array<Player*, MAXPLAYER>& GetPlayerList() { return mPlayerList; }
 	std::unordered_map<int, Team>& GetTeams() { return mTeams; }

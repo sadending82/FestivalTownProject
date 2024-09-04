@@ -41,7 +41,7 @@ protected:
 	ExOver			mExOver;
 	std::mutex		mStateLock;
 	eSessionState	mState;
-	int				mSessionID;
+	int				mSessionID; // 서버 내에서 구분하기 위한 id
 	SOCKET			mSocket;
 	int				mPrevData;
 	bool			mIsHeartbeatAck;

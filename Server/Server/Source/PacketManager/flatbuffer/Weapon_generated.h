@@ -24,6 +24,9 @@ struct WeaponPositionBuilder;
 struct WeaponSpawn;
 struct WeaponSpawnBuilder;
 
+struct WeaponDelete;
+struct WeaponDeleteBuilder;
+
 struct WeaponPosition FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef WeaponPositionBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -133,6 +136,58 @@ inline ::flatbuffers::Offset<WeaponSpawn> CreateWeaponSpawn(
     int32_t type = 0) {
   WeaponSpawnBuilder builder_(_fbb);
   builder_.add_type(type);
+  builder_.add_id(id);
+  builder_.add_pos(pos);
+  return builder_.Finish();
+}
+
+struct WeaponDelete FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef WeaponDeleteBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_POS = 4,
+    VT_ID = 6
+  };
+  const PacketTable::UtilitiesTable::Vec3f *pos() const {
+    return GetPointer<const PacketTable::UtilitiesTable::Vec3f *>(VT_POS);
+  }
+  int32_t id() const {
+    return GetField<int32_t>(VT_ID, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_POS) &&
+           verifier.VerifyTable(pos()) &&
+           VerifyField<int32_t>(verifier, VT_ID, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct WeaponDeleteBuilder {
+  typedef WeaponDelete Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_pos(::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> pos) {
+    fbb_.AddOffset(WeaponDelete::VT_POS, pos);
+  }
+  void add_id(int32_t id) {
+    fbb_.AddElement<int32_t>(WeaponDelete::VT_ID, id, 0);
+  }
+  explicit WeaponDeleteBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<WeaponDelete> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<WeaponDelete>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<WeaponDelete> CreateWeaponDelete(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> pos = 0,
+    int32_t id = 0) {
+  WeaponDeleteBuilder builder_(_fbb);
   builder_.add_id(id);
   builder_.add_pos(pos);
   return builder_.Finish();

@@ -17,21 +17,20 @@ public:
 			if (player == nullptr && player->GetInGameID() != read->id()) {
 				return;
 			}
+			Bomb* bomb = player->GetBomb();
+			if (bomb == nullptr) {
+				return;
+			}
 
 			int roomid = player->GetRoomID();
 			int bombid = read->bomb_id();
 			Room* room = pServer->GetRooms()[roomid];
 
-			room->GetObjectListLock().lock_shared();
-			Bomb* bomb = dynamic_cast<Bomb*>(room->GetObjects()[bombid]);
-			if (bomb == nullptr) {
-				room->GetObjectListLock().unlock_shared();
-				return;
-			}
 			bomb->SetIsGrabbed(false);
-			room->GetObjectListLock().unlock_shared();
+			bomb->SetOwenrID(INVALIDKEY);
+			player->SetBomb(nullptr);
 
-			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYERTHROWBOMB, data, size);
+			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYER_THROW_BOMB, data, size);
 			pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomid);
 		}
 	}
