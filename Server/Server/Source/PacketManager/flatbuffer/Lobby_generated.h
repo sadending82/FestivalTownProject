@@ -22,6 +22,9 @@ struct GameMatchingRequestBuilder;
 struct GameMatchingResponse;
 struct GameMatchingResponseBuilder;
 
+struct GameMatchingCancel;
+struct GameMatchingCancelBuilder;
+
 struct GameMatchingRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef GameMatchingRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -151,6 +154,47 @@ inline ::flatbuffers::Offset<GameMatchingResponse> CreateGameMatchingResponse(
   builder_.add_roomid(roomid);
   builder_.add_ingameid(ingameid);
   builder_.add_is_host(is_host);
+  return builder_.Finish();
+}
+
+struct GameMatchingCancel FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef GameMatchingCancelBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ID = 4
+  };
+  int32_t id() const {
+    return GetField<int32_t>(VT_ID, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_ID, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct GameMatchingCancelBuilder {
+  typedef GameMatchingCancel Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_id(int32_t id) {
+    fbb_.AddElement<int32_t>(GameMatchingCancel::VT_ID, id, 0);
+  }
+  explicit GameMatchingCancelBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<GameMatchingCancel> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<GameMatchingCancel>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<GameMatchingCancel> CreateGameMatchingCancel(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t id = 0) {
+  GameMatchingCancelBuilder builder_(_fbb);
+  builder_.add_id(id);
   return builder_.Finish();
 }
 

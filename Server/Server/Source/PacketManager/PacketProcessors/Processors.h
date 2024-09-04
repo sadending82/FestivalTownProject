@@ -19,6 +19,7 @@
 #include "Packet/Game/PacketGameReady.h"
 
 #include "Packet/Lobby/PacketGameMatchingRequest.h"
+#include "Packet/Lobby/PacketGameMatchingCancel.h"
 
 
 // Event

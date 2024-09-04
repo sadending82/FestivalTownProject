@@ -68,6 +68,7 @@ public class PacketManager : MonoBehaviour
             { ePacketType.S2C_REMAIN_TIME_SYNC, new RemainTimeSyncProcessor() },
 
             { ePacketType.S2C_MATCHING_RESPONSE, new GameMatchingResponseProcessor() },
+            { ePacketType.S2C_MATCHING_CANCEL, new GameMatchingCancelProcessor() },
             { ePacketType.S2C_ALL_PLAYER_READY, new AllPlayerReadyProcessor() },
             { ePacketType.S2C_GAME_START, new GameStartProcessor() },
             { ePacketType.S2C_GAME_END, new GameEndProcessor() },
