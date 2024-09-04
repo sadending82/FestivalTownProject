@@ -92,6 +92,8 @@
     <ClInclude Include="Source\Object\Weapon\Weapon.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Event\Object\EventWeaponSpawn.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Player\PacketPlayerGrabWeapon.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Player\PacketPlayerDropWeapon.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Object\PacketWeaponDelete.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

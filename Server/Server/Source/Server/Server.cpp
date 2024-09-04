@@ -387,10 +387,14 @@ void Server::SendWeaponSpawnPacket(int roomID, int spawnCount)
 
     std::set<Vector3f> spawnPoses = SetObjectSpawnPos(roomID, spawnCount);
 
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> type_distrib((int)eWeaponType::WT_FRYING_PAN, (int)eWeaponType::WT_BAT);
+
     for (const auto& pos : spawnPoses) {
         int weaponid = room->AddWeapon(new Weapon, pos);
         if (weaponid == INVALIDKEY) continue;
-        std::vector<uint8_t> send_buffer = mPacketMaker->MakeWeaponSpawnPacket(pos, weaponid);
+        std::vector<uint8_t> send_buffer = mPacketMaker->MakeWeaponSpawnPacket(pos, weaponid, type_distrib(gen));
         SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
     }
 }

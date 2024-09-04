@@ -87,7 +87,9 @@ namespace NetworkProtocol
 
     public enum eWeaponType
     {
-        WT_HAND
+        WT_HAND,
+        WT_FRYING_PAN,
+        WT_BAT
     };
 
     public enum eAttackType
