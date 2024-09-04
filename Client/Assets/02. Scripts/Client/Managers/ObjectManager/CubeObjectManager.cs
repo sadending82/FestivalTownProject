@@ -8,47 +8,25 @@ public class CubeObjectManager : MonoBehaviour
     private float offsetY = 9;
     private float createHeight = 8;
 
-    public static CubeObjectManager instance;
     public int initialCubes = 10;
     public int cubeTypes = 2;
 
     private float[,] aMapHeight = new float[30, 30];
 
-    // ------ Test -------
-    public int testXY = 0;
+    [SerializeField]
+    private GameObject cubes;
 
-    private void Awake()
+    public void Init()
     {
-        if (instance == null)
+        cubes = GameObject.Find("@Cubes");
+        if (cubes == null)
         {
-            instance = this;
+            cubes = new GameObject { name = "@Cubes" };
         }
-
-        MakeCubes();
     }
 
-    private void MakeCubes()
-    {
-        List<GameObject> list = new List<GameObject>();
-
-        for(int i=0;i<initialCubes;++i)
-        {
-            list.Add(Managers.Resource.Instantiate("Cube"));
-        }
-
-        foreach(GameObject obj in list)
-        {
-            Managers.Resource.Destroy(obj);
-        }
-    }
     private void Update()
     {
-        if(Input.GetKeyUp(KeyCode.R))
-        {
-            SpawnCube(testXY, testXY, testXY % 2);
-            testXY++;
-            testXY %= 10;
-        }
     }
 
     public void SpawnCube(int x, int y, int type = 1)
@@ -80,7 +58,7 @@ public class CubeObjectManager : MonoBehaviour
         x *= -2;
         y *= -2;
 
-        reusedCube = Managers.ObjectPool.Pop(Managers.ObjectPool.GetOrigin("Cube"), transform).gameObject;
+        reusedCube = Managers.ObjectPool.Pop(Managers.ObjectPool.GetOrigin("Cube"), cubes.transform).gameObject;
 
         // 큐브 생성 위치와 큐브 타입 설정, 플레이어를 밀어내는 Pusher 작동
         reusedCube.SetActive(true);

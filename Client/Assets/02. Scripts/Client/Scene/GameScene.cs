@@ -19,10 +19,9 @@ public class GameScene : BaseScene
 
         Managers.UI.ShowPopUpUI<UI_Loading>();
 
+        LoadCubes();
 
-        //LoadCube();
-
-        //LoadBomb();
+        LoadBomb();
 
         LoadWeapons();
 
@@ -42,8 +41,10 @@ public class GameScene : BaseScene
         Statue2.GetComponent<Statue>().SetTeam(1);
     }
 
-    public void LoadCube()
+    public void LoadCubes()
     {
+        Managers.CubeObject.Init();
+
         List<GameObject> list = new();
 
         for (int i = 0; i < 30; i++)
@@ -59,6 +60,8 @@ public class GameScene : BaseScene
 
     public void LoadBomb()
     {
+        Managers.BombObject.Init();
+
         List<GameObject> list = new();
 
         for (int i = 0; i < 30; i++)
@@ -74,6 +77,8 @@ public class GameScene : BaseScene
 
     public void LoadWeapons()
     {
+        Managers.WeaponObject.Init();
+
         List<GameObject> list = new();
 
         for (int i = 0; i < 10; i++)
