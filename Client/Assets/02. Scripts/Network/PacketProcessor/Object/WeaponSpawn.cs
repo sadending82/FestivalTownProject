@@ -18,6 +18,8 @@ namespace Network.PacketProcessor
             float posY = Data.Pos.Value.Y;
             int id = Data.Id;
 
+            // 무기 생성
+            Managers.WeaponObject.SpawnWeapon(posX, posY, id);
         }
 
         private FlatBufferBuilder mBuilder;

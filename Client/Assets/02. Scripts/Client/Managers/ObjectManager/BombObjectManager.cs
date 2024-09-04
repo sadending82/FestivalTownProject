@@ -52,7 +52,6 @@ public class BombObjectManager : MonoBehaviour
         reusedBomb.gameObject.GetComponent<Bomb>().SetId(id);
         // 타입에 해당하는 큐브 활성화, 포지션 설정
         reusedBomb.gameObject.transform.position = new Vector3(x + offsetX, createHeight, y + offsetY);
-        reusedBomb.gameObject.SetActive(true);
     }
 
     public GameObject FindBombById(int targetBombId)
