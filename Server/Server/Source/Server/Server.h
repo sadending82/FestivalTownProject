@@ -19,7 +19,7 @@ public:
 	int SetSessionID();
 	int SetRoomID();
 	void Disconnect(int key);
-	void Init(class TableManager* pTableManager, class DB* pDB);
+	void Run(class TableManager* pTableManager, class DB* pDB);
 	void ThreadJoin();
 
 	void SendAllPlayerInRoomBySessionID(void* packet, int size, int sessionID);
@@ -76,6 +76,9 @@ private:
 	std::vector<std::thread> mWorkerThreads;
 	std::thread mTimerThread;
 	std::thread mTestThread;
+
+	class TestThread* mTestThreadRef;
+	std::vector<class WorkerThread*> mWorkerThreadRefs;
 
 	int testUID = 1;
 };

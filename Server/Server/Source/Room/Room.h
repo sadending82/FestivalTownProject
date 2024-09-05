@@ -16,7 +16,7 @@ public:
 	void Reset();
 	void Init(int id, int teamLifeCount, int playerLimit = MAXPLAYER);
 
-	void InitMap(Map& map) { mMap = map; }
+	void InitMap(Map* map) { mMap = new Map(*map); }
 	void InitRoomCode();
 
 	bool AddPlayer(Player* player);
@@ -35,7 +35,7 @@ public:
 	int GetReadyCnt() { return mPlayerCnt; }
 	int GetPlayerLimit() { return mPlayerLimit; }
 	GameCode GetGameMode() { return mGameMode; }
-	Map& GetMap() { return mMap; }
+	Map* GetMap() { return mMap; }
 	TIMEPOINT GetStartTime() { return mStartTime; }
 	eRoomState GetState() { return mState; }
 	std::mutex& GetStateLock() { return mStateLock; }
@@ -60,7 +60,7 @@ public:
 private:
 	eRoomState mState;
 	GameCode mGameMode;
-	Map mMap;
+	Map* mMap = nullptr;
 
 	std::mutex mStateLock;
 	std::shared_mutex mPlayerListLock;

@@ -8,12 +8,39 @@ TableManager::TableManager()
 
 TableManager::~TableManager()
 {
-
+    for (auto& pair : ItemInfos) {
+        delete pair.second;
+    }
+    for (auto& pair : CharacterStats) {
+        delete pair.second;
+    }
+    for (auto& pair : FITH_Data) {
+        delete pair.second;
+    }
+    for (auto& pair : MapData) {
+        delete pair.second;
+    }
 }
 
 void TableManager::ClearAllTable()
 {
+    for (auto& pair : ItemInfos) {
+        delete pair.second;
+    }
+    for (auto& pair : CharacterStats) {
+        delete pair.second;
+    }
+    for (auto& pair : FITH_Data) {
+        delete pair.second;
+    }
+    for (auto& pair : MapData) {
+        delete pair.second;
+    }
+
     ItemInfos.clear();
+    CharacterStats.clear();
+    FITH_Data.clear();
+    MapData.clear();
 }
 
 void TableManager::ReadAllDataTable()
@@ -48,7 +75,7 @@ void TableManager::ReadItemTable()
                 name = (std::string)row[1].to_string();
                 price = (int)row[2].value<int>();
             }
-            ItemInfos[uid] = ItemTable(uid, name, price);
+            ItemInfos[uid] = new ItemTable(uid, name, price);
 
             idx++;
         }
@@ -77,7 +104,7 @@ void TableManager::ReadCharacterStat()
 
             if (!row.empty()) {
                 CharacterStats[(int)row[0].value<int>()]
-                    = CharacterStat{
+                    = new CharacterStat{
                     (int)row[0].value<int>(),   // index
                     (std::string)row[1].to_string(),         // name
                     (int)row[2].value<int>(),   // hp
@@ -123,7 +150,7 @@ void TableManager::ReadFITHModeTable()
 
                 if (!row.empty()) {
                     FITH_Data[(GameCode)i]
-                        = FITH{
+                        = new FITH{
                         row[FITH_Field::Play_Time].value<int>(),
                         row[FITH_Field::Player_Spawn_Time].value<int>(),
                         row[FITH_Field::Team_Life_Count].value<int>(),
@@ -165,6 +192,7 @@ void TableManager::ReadMapData()
 
     std::string line;
     int lineCnt = 0;
+    MapData[MapCode::TEST] = new Map;
     while (std::getline(inputFile, line)) {
         std::vector<char> row;
         char character;
@@ -176,22 +204,22 @@ void TableManager::ReadMapData()
 
             switch (character) {
             case 'n': {
-                MapData[MapCode::TEST].GetBlockDropIndexes().push_back({ colCnt, lineCnt });
+                MapData[MapCode::TEST]->GetBlockDropIndexes().push_back({ colCnt, lineCnt });
             }break;
             case 'b': {
-                MapData[MapCode::TEST].GetObjectSpawnIndexes().push_back({ colCnt, lineCnt });
+                MapData[MapCode::TEST]->GetObjectSpawnIndexes().push_back({ colCnt, lineCnt });
                 if (colCnt < 10) {
-                    MapData[MapCode::TEST].GetRedObjectSpawnIndexes().push_back({ colCnt, lineCnt });
+                    MapData[MapCode::TEST]->GetRedObjectSpawnIndexes().push_back({ colCnt, lineCnt });
                 }
                 else {
-                    MapData[MapCode::TEST].GetBlueObjectSpawnIndexes().push_back({ colCnt, lineCnt });
+                    MapData[MapCode::TEST]->GetBlueObjectSpawnIndexes().push_back({ colCnt, lineCnt });
                 }
             }break;
             case 'R': {
-                MapData[MapCode::TEST].GetPlayerSpawnIndexes((int)TeamCode::RED).push_back({colCnt, lineCnt});
+                MapData[MapCode::TEST]->GetPlayerSpawnIndexes((int)TeamCode::RED).push_back({colCnt, lineCnt});
             }break;
             case 'B': {
-                MapData[MapCode::TEST].GetPlayerSpawnIndexes((int)TeamCode::BLUE).push_back({ colCnt, lineCnt });
+                MapData[MapCode::TEST]->GetPlayerSpawnIndexes((int)TeamCode::BLUE).push_back({ colCnt, lineCnt });
             }break;
             default: {
 
@@ -201,7 +229,7 @@ void TableManager::ReadMapData()
             colCnt++;
         }
 
-        MapData[MapCode::TEST].GetStructure().push_back(row);
+        MapData[MapCode::TEST]->GetStructure().push_back(row);
         lineCnt++;
     }
 

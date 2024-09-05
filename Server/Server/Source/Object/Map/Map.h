@@ -5,6 +5,14 @@ class Map {
 
 public:
 	Map() {}
+	Map(const Map& other) {
+		this->Structure = other.Structure;
+		this->ObjectSpawnIndexes = other.ObjectSpawnIndexes;
+		this->RedObjectSpawnIndexes = other.RedObjectSpawnIndexes;
+		this->BlueObjectSpawnIndexes = other.BlueObjectSpawnIndexes;
+		this->BlockDropIndexes = other.BlockDropIndexes;
+		this->PlayerSpawnIndexes = other.PlayerSpawnIndexes;
+	}
 	~Map() {}
 
 	std::vector<std::vector<char>>& GetStructure() { return Structure; }

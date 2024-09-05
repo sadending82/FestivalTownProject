@@ -5,6 +5,7 @@ Room::~Room()
 	for (int i = 0; i < MAXOBJECT; ++i) {
 		delete mObjectList[i];
 	}
+	delete mMap;
 }
 
 void Room::Reset()
@@ -18,6 +19,7 @@ void Room::Reset()
 	for (int i = 0; i < MAXOBJECT; ++i) {
 		delete mObjectList[i];
 	}
+	delete mMap;
 	std::fill(mPlayerList.begin(), mPlayerList.end(), nullptr);
 	std::fill(mObjectList.begin(), mObjectList.end(), nullptr);
 	mTeams.clear();

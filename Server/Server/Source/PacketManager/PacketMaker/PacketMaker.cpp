@@ -1,7 +1,7 @@
 #pragma once
 #include "PacketMaker.h"
 
-std::vector<uint8_t> PacketMaker::MakePlayerAdd(int inGameID)
+std::vector<uint8_t> PacketMaker::MakePlayerAdd(int inGameID, Vector3f position)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 	Builder.Clear();

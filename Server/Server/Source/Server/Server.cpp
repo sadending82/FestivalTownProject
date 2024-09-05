@@ -19,6 +19,14 @@ Server::~Server()
     for (int i = 0; i < MAXROOM; ++i) {
         delete mRooms[i];
     }
+    delete mTimer;
+    delete mTableManager;
+    delete mPacketMaker;
+
+    delete mTestThreadRef;
+    for (WorkerThread* pWorkerThreadRef : mWorkerThreadRefs) {
+        delete pWorkerThreadRef;
+    }
 }
 
 int Server::SetSessionID()
@@ -77,7 +85,7 @@ void Server::Disconnect(int key)
     player->Disconnect();
 }
 
-void Server::Init(class TableManager* pTableManager, class DB* pDB)
+void Server::Run(class TableManager* pTableManager, class DB* pDB)
 {
     mTableManager = pTableManager;
 
@@ -136,16 +144,25 @@ void Server::Init(class TableManager* pTableManager, class DB* pDB)
     GetSystemInfo(&si);
     for (int i = 0; i < (int)si.dwNumberOfProcessors; ++i) {
         WorkerThread* pWorkerThreadRef = new WorkerThread(this);
+        mWorkerThreadRefs.push_back(pWorkerThreadRef);
         mWorkerThreads.emplace_back(std::thread(&WorkerThread::RunWorker, pWorkerThreadRef));
     }
 
 #ifdef RunTest
-    TestThread* pTestThreadRef = new TestThread(this, mTimer);
-    mTestThread = std::thread(&TestThread::RunWorker, pTestThreadRef);
+    mTestThreadRef = new TestThread(this, mTimer);
+    mTestThread = std::thread(&TestThread::RunWorker, mTestThreadRef);
 #endif
     DEBUGMSGNOPARAM("Thread Ready\n");
     // matching start
     PushEventGameMatching(mTimer);
+
+    for (auto& th : mWorkerThreads) {
+        th.join();
+    }
+    mTimerThread.join();
+#ifdef RunTest
+    mTestThread.join();
+#endif
 }
 
 void Server::ThreadJoin()
@@ -204,7 +221,17 @@ void Server::SendPlayerAdd(int sessionID, int destination)
     }
     int inGameID = player->GetInGameID();
     int roomID = player->GetRoomID();
-    std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerAdd(inGameID);
+
+    std::vector<std::pair<int, int>>& spawnPoses = mRooms[roomID]->GetMap()->GetPlayerSpawnIndexes(player->GetTeam());
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> idx_distrib(0, spawnPoses.size() - 1);
+    int idx = idx_distrib(gen);
+    int posX = spawnPoses[idx].first;
+    int posY = spawnPoses[idx].second;
+
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerAdd(inGameID, Vector3f(posX, posY, 0));
 
     GetSessions()[destination]->DoSend(send_buffer.data(), send_buffer.size());
 }
@@ -250,7 +277,7 @@ void Server::SendHeartBeatPacket(int sessionID)
 
 void Server::SendBlockDropPacket(int roomID, int spawnCount)
 {
-    std::vector<std::pair<int, int>>& spawnPoses = mRooms[roomID]->GetMap().GetBlockDropIndexes();
+    std::vector<std::pair<int, int>>& spawnPoses = mRooms[roomID]->GetMap()->GetBlockDropIndexes();
     GameCode gameMode = mRooms[roomID]->GetGameMode();
 
     std::random_device rd;
@@ -275,7 +302,7 @@ void Server::SendBombSpawnPacket(int roomID, int spawnCount)
 {
     Room* room = mRooms[roomID];
     GameCode gameMode = room->GetGameMode();
-    int explosionInterval = mTableManager->getFITH_Data()[gameMode].Bomb_Delay_Time;
+    int explosionInterval = mTableManager->getFITH_Data()[gameMode]->Bomb_Delay_Time;
    
     std::set<Vector3f> spawnPoses = SetObjectSpawnPos(roomID, spawnCount);
 
@@ -312,7 +339,7 @@ void Server::SendRemainTimeSync(int roomID)
 {
     TIMEPOINT startTime = GetRooms()[roomID]->GetStartTime();
     GameCode gameCode = GetRooms()[roomID]->GetGameMode();
-    int playTime = mTableManager->getFITH_Data()[gameCode].Play_Time;
+    int playTime = mTableManager->getFITH_Data()[gameCode]->Play_Time;
     std::vector<uint8_t> send_buffer = mPacketMaker->MakeRemainTimeSyncPacket(roomID, startTime, playTime);
     SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
@@ -368,7 +395,7 @@ void Server::SendPlayerRespawn(int inGameID, int roomID)
         return;
     }
     int team = player->GetTeam();
-    std::vector<std::pair<int, int>>& spawnPoses = mRooms[roomID]->GetMap().GetPlayerSpawnIndexes(team);
+    std::vector<std::pair<int, int>>& spawnPoses = mRooms[roomID]->GetMap()->GetPlayerSpawnIndexes(team);
 
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -392,7 +419,8 @@ void Server::SendWeaponSpawnPacket(int roomID, int spawnCount)
     std::uniform_int_distribution<> type_distrib((int)eWeaponType::WT_FRYING_PAN, (int)eWeaponType::WT_BAT);
 
     for (const auto& pos : spawnPoses) {
-        int weaponid = room->AddWeapon(new Weapon, pos);
+        int type = type_distrib(gen);
+        int weaponid = room->AddWeapon(new Weapon((eWeaponType)type, nullptr), pos);
         if (weaponid == INVALIDKEY) continue;
         std::vector<uint8_t> send_buffer = mPacketMaker->MakeWeaponSpawnPacket(pos, weaponid, type_distrib(gen));
         SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
@@ -409,12 +437,12 @@ std::set<Vector3f> Server::SetObjectSpawnPos(int roomID, int spawnCount)
 {
     int RedLife = mRooms[roomID]->GetTeams()[(int)TeamCode::RED].GetLife();
     int BlueLife = mRooms[roomID]->GetTeams()[(int)TeamCode::BLUE].GetLife();
-    std::vector<std::pair<int, int>>& spawnPoses = mRooms[roomID]->GetMap().GetObjectSpawnIndexes();
+    std::vector<std::pair<int, int>>& spawnPoses = mRooms[roomID]->GetMap()->GetObjectSpawnIndexes();
     if (RedLife > BlueLife) {
-        spawnPoses = mRooms[roomID]->GetMap().GetBlueObjectSpawnIndexes();
+        spawnPoses = mRooms[roomID]->GetMap()->GetBlueObjectSpawnIndexes();
     }
     else if (RedLife < BlueLife) {
-        spawnPoses = mRooms[roomID]->GetMap().GetRedObjectSpawnIndexes();
+        spawnPoses = mRooms[roomID]->GetMap()->GetRedObjectSpawnIndexes();
     }
 
     std::random_device rd;
@@ -469,7 +497,7 @@ int Server::CreateNewRoom(int playerCount, GameCode gameMode)
         return INVALIDKEY;
     }
     Room* room = GetRooms()[roomID];
-    room->Init(roomID, GetTableManager()->getFITH_Data()[gameMode].Team_Life_Count);
+    room->Init(roomID, GetTableManager()->getFITH_Data()[gameMode]->Team_Life_Count);
     room->SetGameMode(gameMode);
     room->InitMap(GetTableManager()->getMapData()[MapCode::TEST]);
 
@@ -493,7 +521,7 @@ void Server::MatchingComplete(int roomID, int playerCnt, std::vector<Player*>& p
         if (player->GetState() == eSessionState::ST_GAMEREADY) {
             // 임시
             player->SetTeam(tFlag % 2);
-            player->SetHP(GetTableManager()->getCharacterStats()[(int)CharacterType::TEST].hp);
+            player->SetHP(GetTableManager()->getCharacterStats()[(int)CharacterType::TEST]->hp);
             tFlag++;
             //
 
@@ -534,10 +562,10 @@ void Server::StartGame(int roomID)
         // Push Event
         long long roomCode = room->GetRoomCode();
         GameCode gameCode = room->GetGameMode();
-        int eventTime = GetTableManager()->getFITH_Data()[gameCode].Block_Spawn_Time;
+        int eventTime = GetTableManager()->getFITH_Data()[gameCode]->Block_Spawn_Time;
         PushEventBlockDrop(mTimer, roomID, roomCode, eventTime);
-        PushEventBombSpawn(mTimer, roomID, roomCode, GetTableManager()->getFITH_Data()[gameCode].Bomb_Spawn_Time);
-        PushEventWeaponSpawn(mTimer, roomID, roomCode, GetTableManager()->getFITH_Data()[gameCode].Weapon_Spawn_Time);
+        PushEventBombSpawn(mTimer, roomID, roomCode, GetTableManager()->getFITH_Data()[gameCode]->Bomb_Spawn_Time);
+        PushEventWeaponSpawn(mTimer, roomID, roomCode, GetTableManager()->getFITH_Data()[gameCode]->Weapon_Spawn_Time);
         PushEventRemainTimeSync(mTimer, roomID, roomCode);
         PushEventTimeOverCheck(mTimer, roomID, roomCode);
 
@@ -574,6 +602,8 @@ void Server::CheckGameEnd(int roomID)
 
             // 종료하자마자 바로 초기화 하는데 나중에 어떻게 해야할지 고민해야할듯
             GetRooms()[roomID]->Reset();
+
+            std::cout << "Game End - " << roomID << std::endl;
         }
     }
 }
