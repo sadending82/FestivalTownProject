@@ -540,16 +540,6 @@ void Server::MatchingComplete(int roomID, int playerCnt, std::vector<Player*>& p
         }
         player->GetStateLock().unlock();
     }
-
-    room->GetPlayerListLock().lock_shared();
-    for (Player* p : room->GetPlayerList()) {
-        if (p == nullptr) continue;
-        for (Player* other : room->GetPlayerList()) {
-            if (other == nullptr) continue;
-            SendPlayerAdd(p->GetSessionID(), other->GetSessionID());
-        }
-    }
-    room->GetPlayerListLock().unlock_shared();
 }
 
 void Server::StartGame(int roomID)

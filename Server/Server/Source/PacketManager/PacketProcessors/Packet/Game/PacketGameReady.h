@@ -27,6 +27,17 @@ public:
 
 			if (room->GetReadyCnt() == room->GetPlayerCnt()) {
 				pServer->SendAllPlayerReady(roomid);
+
+				room->GetPlayerListLock().lock_shared();
+				for (Player* p : room->GetPlayerList()) {
+					if (p == nullptr) continue;
+					for (Player* other : room->GetPlayerList()) {
+						if (other == nullptr) continue;
+						pServer->SendPlayerAdd(p->GetSessionID(), other->GetSessionID());
+					}
+				}
+				room->GetPlayerListLock().unlock_shared();
+
 				PushEventGameStart(pServer->GetTimer(), roomid, room->GetRoomCode());
 			}
 		}
