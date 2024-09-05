@@ -167,6 +167,7 @@ xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     <ClCompile Include="Source\PacketManager\PacketMaker\PacketMaker.cpp" />
     <ClCompile Include="Source\PacketManager\PacketManager.cpp" />
     <ClCompile Include="Source\PacketManager\PacketProcessors\Event\Game\EventPlayerRespawn.h" />
+    <ClCompile Include="Source\PacketManager\PacketSender\PacketSender.cpp" />
     <ClCompile Include="Source\Room\Team\Team.cpp" />
     <ClCompile Include="Source\Server\Server.cpp" />
     <ClCompile Include="Source\Room\Room.cpp" />
@@ -235,6 +236,7 @@ xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Player\PacketPlayerThrowBomb.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Processors.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\PacketProcessor.h" />
+    <ClInclude Include="Source\PacketManager\PacketSender\PacketSender.h" />
     <ClInclude Include="Source\PacketManager\test_generated.h" />
     <ClInclude Include="Source\protocol.h" />
     <ClInclude Include="Source\Room\Team\Team.h" />

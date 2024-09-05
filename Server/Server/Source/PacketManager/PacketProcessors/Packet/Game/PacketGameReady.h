@@ -26,7 +26,7 @@ public:
 			room->AddReadyCnt();
 
 			if (room->GetReadyCnt() == room->GetPlayerCnt()) {
-				pServer->SendAllPlayerReady(roomid);
+				pServer->GetPacketSender()->SendAllPlayerReady(roomid);
 				PushEventGameStart(pServer->GetTimer(), roomid, room->GetRoomCode());
 			}
 		}

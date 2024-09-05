@@ -24,7 +24,7 @@ public:
 
 			pServer->GetRooms()[roomid]->GetTeams()[team].ReduceLife();
 			int lifeCount = pServer->GetRooms()[roomid]->GetTeams()[team].GetLife();
-			pServer->SendLifeReducePacket(team, lifeCount, roomid);
+			pServer->GetPacketSender()->SendLifeReducePacket(team, lifeCount, roomid);
 
 			if (lifeCount <= 0) {
 				pServer->CheckGameEnd(roomid);

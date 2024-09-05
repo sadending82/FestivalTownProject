@@ -71,7 +71,7 @@ void TestThread::RunWorker()
             int roomID;
             std::cout << "Input roomID" << std::endl;
             std::cin >> roomID;
-            m_pServer->SendLifeReducePacket(0, 0, roomID);
+            m_pServer->GetPacketSender()->SendLifeReducePacket(0, 0, roomID);
         }
         break;
         case DeleteRoom: {
