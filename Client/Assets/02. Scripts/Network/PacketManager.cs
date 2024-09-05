@@ -197,6 +197,13 @@ public class PacketManager : MonoBehaviour
         SendPacket(packet);
     }
 
+    public void SendGameMatchingCancle()
+    {
+        byte[] packet = _packetMaker.MakeGameMatchingCancelPacket();
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+
     public void SendGameReady()
     {
         byte[] packet = _packetMaker.MakeGameReadyPacket();

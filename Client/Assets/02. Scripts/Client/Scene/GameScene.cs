@@ -14,9 +14,13 @@ public class GameScene : BaseScene
 
         LoadStatue();
 
-        Managers.UI.ShowPopUpUI<UI_Loading>();
+        Managers.UI.ShowSceneUI<UI_OneVersusOneSceneUI>();
 
         Managers.Player.Init();
+
+        Managers.Player.SetMyId(Managers.Game.inGameID);
+        Managers.Player.SetIsHost(Managers.Game.isHost);
+        Managers.Player.SetMyPlayerEnable();
 
         LoadCubes();
 

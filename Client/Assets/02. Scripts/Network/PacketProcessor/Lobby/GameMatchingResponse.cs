@@ -22,9 +22,10 @@ namespace Network.PacketProcessor
             int roomID = Data.Roomid;
             bool isHost = Data.IsHost;
 
-            Managers.Player.GetComponent<PlayerManager>().SetMyId(id);
-            Managers.Player.GetComponent<PlayerManager>().SetIsHost(isHost);
-            Managers.Network.GetPacketManager().SendGameReady();
+            Managers.Scene.LoadScene(Define.Scene.Loading);
+            Managers.Game.RoomID = roomID;
+            Managers.Game.inGameID = id;
+            Managers.Game.isHost = isHost;
         }
 
         private FlatBufferBuilder mBuilder;

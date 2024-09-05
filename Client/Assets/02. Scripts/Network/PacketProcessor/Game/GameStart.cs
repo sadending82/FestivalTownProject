@@ -17,6 +17,7 @@ namespace Network.PacketProcessor
 
             var Data = GameStart.GetRootAsGameStart(bb);
 
+            Debug.Log("GameStartPacket");
         }
 
         private FlatBufferBuilder mBuilder;

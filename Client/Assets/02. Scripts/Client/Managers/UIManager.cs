@@ -10,6 +10,10 @@ public class UIManager
     Stack<UI_PopUp> _popupStack = new Stack<UI_PopUp>(); // UI를 스택에 담아두면 뺄때 편하겠지?
     UI_Scene _sceneUI = null; // 팝업으로 여는거 말고 고정되어 있는 놈이 누구임
 
+    //TODO:
+    // 나중에 가장 위에 고정되는 UI도 하나 따로 두는게 맞을 것 같습니다.
+    // 매칭 중 UI 같은 경우 항상 가장 위에 떠야 하니까요
+
     public GameObject Root
     {
         get
@@ -55,6 +59,12 @@ public class UIManager
         go.transform.SetParent(Root.transform);
 
         return sceneUI;
+    }
+
+    public void CloseSceneUI()
+    {
+        Managers.Resource.Destroy(_sceneUI.gameObject);
+        _sceneUI = null;
     }
 
     public T ShowPopUpUI<T>(string name = null) where T : UI_PopUp
@@ -106,6 +116,6 @@ public class UIManager
     public void Clear()
     {
         CloseAllPopUpUI();
-        _sceneUI = null;
+        CloseSceneUI();
     }
 }

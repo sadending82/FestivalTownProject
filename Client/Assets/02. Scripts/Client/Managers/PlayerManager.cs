@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    private int myId;
+    private int myId = -1;
     private int maxPlayerNum = 6;
     private int nowPlayerNum = 0;
     private bool isHost;
@@ -32,6 +32,14 @@ public class PlayerManager : MonoBehaviour
             player.GetComponent<CharacterStatus>().SetLayer(i);
             player.SetActive(false);
         }
+
+        if(Managers.Game.inGameID != -1)
+        {
+            myId = Managers.Game.inGameID;
+            isHost = Managers.Game.isHost;
+        }
+
+        
     }
     public GameObject GetPlayers()
     {
@@ -64,22 +72,27 @@ public class PlayerManager : MonoBehaviour
 
     public void AddPlayer(int id)
     {
+        if (players == null) Init();
+
         if (nowPlayerNum + 1 > maxPlayerNum)
         {
             Debug.Log("Error!!! : You Can't Add Player, Maximum Number of Players");
         }
         else
         {
-            if (players.transform.GetChild(id).gameObject.activeSelf == false)
-            {
-                players.transform.GetChild(id).gameObject.SetActive(true);
-                if (myId == id)
-                {
-                    players.transform.GetChild(id).gameObject.GetComponent<CharacterStatus>().SetAmIPlayer(true);
-                    players.transform.GetChild(id).gameObject.GetComponent<PlayerController>().SetMyId(myId);
-                }
-                nowPlayerNum++;
-            }
+            players.transform.GetChild(id).gameObject.SetActive(true);
+            nowPlayerNum++;          
         }
+    }
+
+    public void SetMyPlayerEnable()
+    {
+        if (myId != -1)
+        {
+            players.transform.GetChild(myId).gameObject.SetActive(true);
+            players.transform.GetChild(myId).gameObject.GetComponent<CharacterStatus>().SetAmIPlayer(true);
+            players.transform.GetChild(myId).gameObject.GetComponent<PlayerController>().SetMyId(myId);
+        }
+
     }
 }

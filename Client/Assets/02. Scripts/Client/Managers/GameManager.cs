@@ -16,6 +16,9 @@ public class GameManager : MonoBehaviour
     public float GameRemainTime = 300.0f;
     public float GameEndTime = 300.0f;
     public Dictionary<int, int> TeamLife = new();
+    public bool isHost = false;
+    public int inGameID = -1;
+    public int RoomID = -1;
 
     public void Init()
     {

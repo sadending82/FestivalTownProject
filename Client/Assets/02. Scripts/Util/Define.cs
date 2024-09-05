@@ -9,6 +9,7 @@ public class Define
         None,
         Login,
         Home,
+        Loading,
         Game,
     }
     public enum GameMode

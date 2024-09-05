@@ -12,6 +12,7 @@ public class SceneManagerEx
 {
 
     public BaseScene CurrentScene { get { return GameObject.FindObjectOfType<BaseScene>(); } }
+    AsyncOperation AsyncOp;
 
     string GetSceneName(Define.Scene type)
     {
@@ -25,6 +26,7 @@ public class SceneManagerEx
 
         SceneManager.LoadScene(GetSceneName(type));
     }
+
 
     public void Clear()
     {
