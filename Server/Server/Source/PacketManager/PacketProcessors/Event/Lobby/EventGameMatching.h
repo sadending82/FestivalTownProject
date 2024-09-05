@@ -16,7 +16,7 @@ public:
 
         for (Session* s : pServer->GetSessions()) {
             s->GetStateLock().lock();
-            if (s->GetState() == eSessionState::ST_GAMEREADY) {
+            if (s->GetState() == eSessionState::ST_MATCHWAITING) {
                 readyPlayers.push({s->GetMatchingRequestTime(), dynamic_cast<Player*>(s)});
             }
             s->GetStateLock().unlock();

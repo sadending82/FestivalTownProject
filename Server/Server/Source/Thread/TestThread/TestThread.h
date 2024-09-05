@@ -17,7 +17,7 @@ public:
 		m_pTimer(pTimer),
 		m_pPacketManager(nullptr)
 	{};
-	~TestThread() {};
+	~TestThread();
 
 	void RunWorker();
 

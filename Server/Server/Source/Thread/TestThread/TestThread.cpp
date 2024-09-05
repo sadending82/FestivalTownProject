@@ -3,6 +3,11 @@
 
 #ifdef RunTest
 
+TestThread::~TestThread()
+{
+    delete m_pPacketManager;
+}
+
 void TestThread::RunWorker()
 {
     m_pPacketManager = new PacketManager();
@@ -28,7 +33,7 @@ void TestThread::RunWorker()
             std::queue<Player*> readyPlayers;
             for (Session* s : m_pServer->GetSessions()) {
                 s->GetStateLock().lock();
-                if (s->GetState() == eSessionState::ST_GAMEREADY) {
+                if (s->GetState() == eSessionState::ST_MATCHWAITING) {
                     readyPlayers.push(dynamic_cast<Player*>(s));
                 }
                 s->GetStateLock().unlock();
@@ -90,7 +95,7 @@ int TestThread::GetReadyPlayerCnt()
     int cnt = 0;
     for (Session* s : m_pServer->GetSessions()) {
         s->GetStateLock().lock();
-        if (s->GetState() == eSessionState::ST_GAMEREADY) {
+        if (s->GetState() == eSessionState::ST_MATCHWAITING) {
             cnt++;
         }
         s->GetStateLock().unlock();

@@ -20,7 +20,7 @@ public:
 			session->SetMatchingRequestTime(std::chrono::duration_cast<std::chrono::seconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count());
 
 			session->GetStateLock().lock();
-			session->SetState(eSessionState::ST_GAMEREADY);
+			session->SetState(eSessionState::ST_MATCHWAITING);
 			session->GetStateLock().unlock();
 		}
 	}

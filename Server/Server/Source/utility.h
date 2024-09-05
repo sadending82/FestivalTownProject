@@ -55,7 +55,7 @@ const uint8_t DEFAULT_8BITFLAG = 0b00000000;
 
 enum class eSessionState
 {
-	ST_FREE, ST_ACCEPTED, ST_GAMEREADY, ST_INGAME
+	ST_FREE, ST_ACCEPTED, ST_MATCHWAITING, ST_INGAME
 };
 
 enum class ePlayerState {
