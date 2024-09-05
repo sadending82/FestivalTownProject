@@ -5,7 +5,9 @@ std::vector<uint8_t> PacketMaker::MakePlayerAdd(int inGameID, Vector3f position)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 	Builder.Clear();
-	Builder.Finish(PacketTable::PlayerTable::CreatePlayerAdd(Builder, inGameID));
+	auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, position.x, position.y, position.x);
+	auto dir = PacketTable::UtilitiesTable::CreateVec3f(Builder, 0, 0, 0);
+	Builder.Finish(PacketTable::PlayerTable::CreatePlayerAdd(Builder, inGameID, pos, dir));
 	return MakeBuffer(ePacketType::S2C_PLAYER_ADD, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
