@@ -25,7 +25,7 @@ namespace Network.PacketProcessor
             PlayerController pController = Managers.Player.GetPlayers().transform.GetChild(playerID).GetComponent<PlayerController>();
             pController.SetDirection(dir);
             pController.SetPosition(pos);
-            //pController.s_PickUpItem(playerID, WeaponID);
+            pController.s_PickUpWeapon(playerID, WeaponID);
         }
 
         private FlatBufferBuilder mBuilder;

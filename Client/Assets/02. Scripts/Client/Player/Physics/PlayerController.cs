@@ -55,6 +55,7 @@ public class PlayerController : MonoBehaviour
     private float fKeyDownTimer;
     private bool isPickUpMode = false;
     private GameObject targetItem;
+    private bool isDropMode = false;
 
     [Header("--- Respawn ---")]
     private float createHeight = 4;
@@ -292,37 +293,66 @@ public class PlayerController : MonoBehaviour
         /// F 키를 눌렀을때 플레이어가 아이템을 가지지 않고 
         /// 주울 수 있는 범위 내에 아이템이 존재하면 픽업모드 시작
         /// </summary>
-        if (Input.GetKeyDown(KeyCode.F) &&
-            nearObjectChecker.GetNearObject() != null &&
-            playerStatus.GetIsHaveItem() == false)
+        if (Input.GetKeyDown(KeyCode.F))
         {
-            fKeyDownTimer = 0;
-            isPickUpMode = true;
-            targetItem = nearObjectChecker.GetNearObject();
-        }
-        if(Input.GetKey(KeyCode.F) && isPickUpMode == true)
-        {
-            fKeyDownTimer += Time.deltaTime;
-            // 목표 아이템이 사라졌거나 변경 됐으면 픽업모드 초기화
-            if(nearObjectChecker.GetNearObject() == null || targetItem != nearObjectChecker.GetNearObject())
+            if (nearObjectChecker.GetNearObject() != null &&
+                ((nearObjectChecker.GetNearObject().tag == "Bomb" && playerStatus.GetIsHaveBomb() == false) ||
+                (nearObjectChecker.GetNearObject().tag == "Weapon" && playerStatus.GetIsHaveWeapon() == false)))
             {
                 fKeyDownTimer = 0;
-                isPickUpMode = false;
+                isPickUpMode = true;
+                targetItem = nearObjectChecker.GetNearObject();
             }
-            else if (fKeyDownTimer >= 1f && playerStatus.GetIsHaveItem() == false)
+            else if (playerStatus.GetIsHaveWeapon() == true)
             {
-                if (targetItem.tag == "Bomb")
-                {
-                    Bomb targetBomb = targetItem.GetComponent<Bomb>();
-                    packetManager.SendPlayerGrabBombPacket(pelvis.transform.position, stabillizerDirection, myId, targetBomb.GetId());
-                }
-                // 클라 테스트용
-                //PickUpItem();
+                fKeyDownTimer = 0;
+                isDropMode = true;
             }
         }
-        if(Input.GetKeyUp(KeyCode.F) && isPickUpMode == true)
+        if (Input.GetKey(KeyCode.F))
         {
-            isPickUpMode = false;
+            if (isPickUpMode == true)
+            {
+                fKeyDownTimer += Time.deltaTime;
+                // 목표 아이템이 사라졌거나 변경 됐으면 픽업모드 초기화
+                if (nearObjectChecker.GetNearObject() == null || targetItem != nearObjectChecker.GetNearObject())
+                {
+                    fKeyDownTimer = 0;
+                    isPickUpMode = false;
+                }
+                else if (fKeyDownTimer >= 1f)
+                {
+                    if (targetItem.tag == "Bomb" && playerStatus.GetIsHaveBomb() == false)
+                    {
+                        Bomb targetBomb = targetItem.GetComponent<Bomb>();
+                        packetManager.SendPlayerGrabBombPacket(pelvis.transform.position, stabillizerDirection, myId, targetBomb.GetId());
+                    }
+                    else if (targetItem.tag == "Weapon" && playerStatus.GetIsHaveWeapon() == false)
+                    {
+                        Weapon targetWeapon = targetItem.GetComponent<Weapon>();
+                        packetManager.SendPlayerGrabWeaponPacket(pelvis.transform.position, stabillizerDirection, myId, targetWeapon.GetId());
+                    }
+                }
+            }
+            else if (isDropMode == true)
+            {
+                fKeyDownTimer += Time.deltaTime;
+                if (fKeyDownTimer >= 1f)
+                {
+                    packetManager.SendPlayerDropWeaponPacket(GetPosition(), playerStatus.GetWeaponId());
+                }
+            }
+        }
+        if (Input.GetKeyUp(KeyCode.F))
+        {
+            if (isPickUpMode == true)
+            {
+                isPickUpMode = false;
+            }
+            else if (isDropMode == true)
+            {
+                isDropMode = false;
+            }
         }
     }
     private void MouseInput()
@@ -396,7 +426,7 @@ public class PlayerController : MonoBehaviour
             Throw();
         }
     }
-    private void PickUpItem()
+    private void PickUpBomb()
     {
         if (targetItem == null)
         {
@@ -406,12 +436,9 @@ public class PlayerController : MonoBehaviour
         {
             if (targetItem.tag == "Bomb")
             {
-                //-----------------------------------------------------------------------------------
-                // 나중에 오브젝트 풀링 적용하면 폭탄 직접 자식객체로 넣었다가 돌려주도록 설정하자!!
-                //-----------------------------------------------------------------------------------
                 Bomb targetBomb = targetItem.GetComponent<Bomb>();
                 targetBomb.PickUp(playerStatus.GetId(), bombInvenTransform);
-                playerStatus.SetIsHaveItem(true, "Bomb", targetBomb.GetId());
+                playerStatus.SetIsHaveBomb(true, targetBomb.GetId());
             }
             else
             {
@@ -422,12 +449,19 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// 이것도 게임 매니저에서 관리해야하지 않을까???
     /// </summary>
-    public void s_PickUpItem(int playerId, int bombId)
+    public void s_PickUpBomb(int playerId, int bombId)
     {
         // 폭탄과 플레이어 붙여주기
         Bomb targetBomb = Managers.BombObject.FindBombById(bombId).GetComponent<Bomb>();
         targetBomb.PickUp(playerId, bombInvenTransform);
-        playerStatus.SetIsHaveItem(true, "Bomb", bombId);
+        playerStatus.SetIsHaveBomb(true, bombId);
+    }
+    public void s_PickUpWeapon(int playerId, int weaponId)
+    {
+        // 무기와 플레이어 붙여주기
+        Weapon targetWeapon = Managers.WeaponObject.FindWeaponById(weaponId).GetComponent<Weapon>();
+        targetWeapon.PickUp(playerId);
+        playerStatus.SetIsHaveWeapon(true, weaponId);
     }
     public void Jump()
     {
@@ -437,19 +471,16 @@ public class PlayerController : MonoBehaviour
 
     public void Throw()
     {
-        if(playerStatus.GetIsHaveItem() == true)
+        if(playerStatus.GetIsHaveBomb() == true)
         {
-            if(playerStatus.GetItemTag() == "Bomb")
-            {
-                GameObject targetBomb = Managers.BombObject.FindBombById(playerStatus.GetItemId());
-                targetBomb.GetComponent<Bomb>().Throw(stabillizerDirection, playerStatus.GetStrength());
+            GameObject targetBomb = Managers.BombObject.FindBombById(playerStatus.GetBombId());
+            targetBomb.GetComponent<Bomb>().Throw(stabillizerDirection, playerStatus.GetStrength());
 
-                // 서버에 플레이어 위치, 폭탄 발사 방향, 폭탄 위치, 플레이어 아이디, 폭탄 아이디 보내줌
-                packetManager.SendPlayerThrowBombPacket(targetBomb.transform.position, stabillizerDirection, myId, targetBomb.GetComponent<Bomb>().GetId());
-                playerStatus.SetIsHaveItem(false);
+            // 서버에 플레이어 위치, 폭탄 발사 방향, 폭탄 위치, 플레이어 아이디, 폭탄 아이디 보내줌
+            packetManager.SendPlayerThrowBombPacket(targetBomb.transform.position, stabillizerDirection, myId, targetBomb.GetComponent<Bomb>().GetId());
+            playerStatus.SetIsHaveBomb(false);
 
-                playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
-            }
+            playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
         }
         else
         {
@@ -458,16 +489,13 @@ public class PlayerController : MonoBehaviour
     }
     public void s_Throw(Vector3 bombPosition, int bombId)
     {
-        if (playerStatus.GetIsHaveItem() == true)
+        if (playerStatus.GetIsHaveBomb() == true)
         {
-            if (playerStatus.GetItemTag() == "Bomb")
-            {
-                GameObject targetBomb = Managers.BombObject.FindBombById(bombId);
-                targetBomb.transform.position = bombPosition;
-                targetBomb.GetComponent<Bomb>().Throw(moveDirection, playerStatus.GetStrength());
+            GameObject targetBomb = Managers.BombObject.FindBombById(bombId);
+            targetBomb.transform.position = bombPosition;
+            targetBomb.GetComponent<Bomb>().Throw(moveDirection, playerStatus.GetStrength());
 
-                playerStatus.SetIsHaveItem(false);
-            }
+            playerStatus.SetIsHaveBomb(false);
         }
         else
         {

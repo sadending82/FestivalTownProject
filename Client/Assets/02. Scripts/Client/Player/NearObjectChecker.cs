@@ -43,6 +43,25 @@ public class NearObjectChecker : MonoBehaviour
                     }
                 }
             }
+            else if(other.tag == "Weapon")
+            {
+                Weapon targetWeapon = other.GetComponent<Weapon>();
+                if(targetWeapon.GetIsPickUp() == false)
+                {
+                    if (nearObject == null)
+                    {
+                        nearObject = other.gameObject;
+                    }
+                    else
+                    {
+                        // other이 현재 nearObject보다 가깝다면 교체
+                        if (Vector3.Distance(this.transform.position, other.transform.position) < Vector3.Distance(this.transform.position, nearObject.transform.position))
+                        {
+                            nearObject = other.gameObject;
+                        }
+                    }
+                }
+            }
         }
     }
     private void OnTriggerExit(Collider other)

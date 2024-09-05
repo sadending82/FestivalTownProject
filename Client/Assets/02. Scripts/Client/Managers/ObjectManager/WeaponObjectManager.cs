@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using NetworkProtocol;
 
 public class WeaponObjectManager : MonoBehaviour
 {
@@ -21,14 +22,31 @@ public class WeaponObjectManager : MonoBehaviour
             weapons = new GameObject { name = "@Weapons" };
         }
     }
-    public void SpawnWeapon(float x, float y, int id)
+    public void SpawnWeapon(float x, float y, eWeaponType type, int id)
     {
         // 단위 맞춰주기
         x *= -1;
         y *= -1;
         GameObject reusedWeapon = null;
 
-        reusedWeapon = Managers.ObjectPool.Pop(Managers.ObjectPool.GetOrigin("Weapon"), weapons.transform).gameObject;
+        switch(type)
+        {
+            case eWeaponType.WT_BAT:
+                {
+                    reusedWeapon = Managers.ObjectPool.Pop(Managers.ObjectPool.GetOrigin("Bat"), weapons.transform).gameObject;
+                }
+                break;
+            case eWeaponType.WT_FRYING_PAN:
+                {
+                    reusedWeapon = Managers.ObjectPool.Pop(Managers.ObjectPool.GetOrigin("Frypan"), weapons.transform).gameObject;
+                }
+                break;
+            default:
+                {
+                    Debug.Log("Error !!! SpawnWeapon, Wrong Weapon Type !!!");
+                }
+                break;
+        }
 
         reusedWeapon.gameObject.SetActive(true);
         reusedWeapon.gameObject.GetComponent<Weapon>().SetId(id);

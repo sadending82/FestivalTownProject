@@ -23,11 +23,18 @@ public class CharacterStatus : MonoBehaviour
     public float groggyTime;
     public Camera myCamera;
     private bool amIPlayer;
-    [SerializeField]
-    private bool isHaveItem = false;
-    private string itemTag;
-    private int itemId;
     public GameObject playerMesh;
+
+    // 픽업관련
+    [Header("--- PickUp ---")]
+    [SerializeField]
+    private bool isHaveBomb = false;
+    private int bombId;
+    [SerializeField]
+    private bool isHaveWeapon = false;
+    private int weaponId;
+    public GameObject weaponInven;
+
 
     [Header("--- AnimationControll ---")]
     public bool isGroggy;
@@ -147,24 +154,33 @@ public class CharacterStatus : MonoBehaviour
     {
         return this.upperBodyAnimationState;
     }
-    public void SetIsHaveItem(bool isHaveItem, string itemTag = "NULL", int itemId = -1)
+    public void SetIsHaveBomb(bool isHaveBomb, int bombId = -1)
     {
-        this.isHaveItem = isHaveItem;
-        this.itemTag = itemTag;
-        this.itemId = itemId;
+        this.isHaveBomb = isHaveBomb;
+        this.bombId = bombId;
     }
-    public bool GetIsHaveItem()
+    public bool GetIsHaveBomb()
     {
-        return isHaveItem;
+        return isHaveBomb;
     }
-    public string GetItemTag()
+    public int GetBombId()
     {
-        return itemTag;
+        return bombId;
     }
-    public int GetItemId()
+    public void SetIsHaveWeapon(bool isHaveWeapon, int weaponId = -1)
     {
-        return itemId;
+        this.isHaveWeapon = isHaveWeapon;
+        this.weaponId = weaponId;
     }
+    public bool GetIsHaveWeapon()
+    {
+        return isHaveWeapon;
+    }
+    public int GetWeaponId()
+    {
+        return weaponId;
+    }
+
     public void SetIsDie(bool isDie)
     {
         this.isDie = isDie;
@@ -215,8 +231,13 @@ public class CharacterStatus : MonoBehaviour
     {
         SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
         SetLowerBodyAnimationState(LowerBodyAnimationState.IDLE);
-        SetIsHaveItem(false);
+        SetIsHaveBomb(false);
 
         playerController.ResetPlayerControllerSetting();
+    }
+
+    public GameObject GetWeaponInven()
+    {
+        return weaponInven;
     }
 }

@@ -95,4 +95,17 @@ public class PlayerManager : MonoBehaviour
         }
 
     }
+    public GameObject FindPlayerById(int targetId)
+    {
+        for (int i=0;i<maxPlayerNum;++i)
+        {
+            if (players.transform.GetChild(i).GetComponent<CharacterStatus>().GetId() == targetId)
+            {
+                return players.transform.GetChild(i).gameObject;
+            }
+        }
+
+        Debug.Log("ERROR!!! : FindPlayerById(), Can't Find Target Player By Id : " + targetId);
+        return null;
+    }
 }

@@ -86,7 +86,8 @@ public class GameScene : BaseScene
 
         for (int i = 0; i < 10; i++)
         {
-            list.Add(Managers.Resource.Instantiate("Weapon"));
+            list.Add(Managers.Resource.Instantiate("Frypan"));
+            list.Add(Managers.Resource.Instantiate("Bat"));
         }
 
         foreach (GameObject obj in list)
