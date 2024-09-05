@@ -1,7 +1,7 @@
 #pragma once
 #include "../Network/Session/Session.h"
 #include "../Room/Room.h"
-#include "../PacketManager/PacketMaker/PacketMaker.h"
+#include "../PacketManager/PacketSender/PacketSender.h"
 
 #define SESSION_ARRAY std::array<Session*, MAXSESSION>
 #define ROOM_ARRAY std::array<Room*, MAXROOM>
@@ -9,6 +9,8 @@
 constexpr int SERVERPORT = 45872;
 
 class Timer;
+class TableManager;
+
 
 class Server
 {
@@ -26,25 +28,6 @@ public:
 	void SendAllPlayerInRoom(void* packet, int size, int roomID);
 	void SendAllPlayerInRoomExceptSender(void* packet, int size, int sessionID);
 
-	void SendPlayerAdd(int sessionID, int destination);
-	void SendGameMatchingResponse(int sessionID);
-	void SendGameStart(int roomID);
-	void SendAllPlayerReady(int roomID);
-
-	void SendHeartBeatPacket(int sessionID);
-	void SendBlockDropPacket(int roomID, int spawnCount);
-	void SendBombSpawnPacket(int roomID, int spawnCount);
-	void SendBombExplosionPacket(int roomID, int bombID);
-	void SendLifeReducePacket(int team, int lifeCount, int roomID);
-	void SendRemainTimeSync(int roomID);
-	void SendGameStartPacket(int roomID);
-	void SendGameEndPacket(int roomID, uint8_t winningTeams_flag);
-	void SendGameHostChange(int sessionID);
-	void SendPlayerDeadPacket(int inGameID, int roomID);
-	void SendPlayerRespawn(int inGameID, int roomID);
-	void SendWeaponSpawnPacket(int roomID, int spawnCount);
-	void SendPlayerCalculatedDamage(int targetID, int roomID, int attackType, int hp, int damageAmount, Vector3f knockback_direction);
-
 	std::set<Vector3f> SetObjectSpawnPos(int roomID, int spawnCount);
 
 	void StartHeartBeat(int sessionID);
@@ -61,6 +44,7 @@ public:
 	ROOM_ARRAY& GetRooms() { return mRooms; }
 	Timer* GetTimer() { return mTimer; }
 	TableManager* GetTableManager() { return mTableManager; }
+	PacketSender* GetPacketSender() { return mPacketSender; }
 
 private:
 	SOCKADDR_IN mServerAddr;
@@ -70,6 +54,7 @@ private:
 	Timer* mTimer = nullptr;
 	TableManager* mTableManager = nullptr;
 	PacketMaker* mPacketMaker = nullptr;
+	PacketSender* mPacketSender = nullptr;
 
 	SESSION_ARRAY mSessions;
 	ROOM_ARRAY mRooms;

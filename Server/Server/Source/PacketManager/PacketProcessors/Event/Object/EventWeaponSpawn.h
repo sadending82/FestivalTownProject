@@ -29,7 +29,7 @@ public:
 		int spawnCnt = pServer->GetTableManager()->getFITH_Data()[gameMode]->Weapon_Spawn_Count;
 
 		PushEventWeaponSpawn(pServer->GetTimer(), event->roomID, event->roomCode, nextEventTime);
-		pServer->SendWeaponSpawnPacket(roomid, spawnCnt);
+		pServer->GetPacketSender()->SendWeaponSpawnPacket(roomid, spawnCnt);
 	}
 
 private:

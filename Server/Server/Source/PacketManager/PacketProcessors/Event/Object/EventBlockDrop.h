@@ -29,7 +29,7 @@ public:
 		int spawnCnt = pServer->GetTableManager()->getFITH_Data()[gameMode]->Block_Spawn_Count;
 		PushEventBlockDrop(pServer->GetTimer(), event->roomID, event->roomCode, nextEventTime);
 
-		pServer->SendBlockDropPacket(event->roomID, spawnCnt);
+		pServer->GetPacketSender()->SendBlockDropPacket(event->roomID, spawnCnt);
 	}
 
 private:
