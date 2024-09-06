@@ -28,5 +28,5 @@ private:
     std::wstring id = L"";
     std::wstring pw = L"";
 
-    //Security* mSecurity = nullptr;
+    Security* mSecurity = nullptr;
 };
