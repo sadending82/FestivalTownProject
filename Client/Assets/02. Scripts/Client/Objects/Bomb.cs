@@ -6,7 +6,6 @@ public class Bomb : MonoBehaviour
 {
     private bool isPickUp = false;
     private int pickUpPlayerId;
-    private int lastPickUpPlayerId;
     private Transform targetTransform;
 
     private Vector3 throwDirection;
@@ -14,11 +13,18 @@ public class Bomb : MonoBehaviour
 
     // ------ Server -------
     [SerializeField]
-    private int id;
+    private int Id;
+    private PacketManager packetManager;
 
     private void Awake()
     {
+        isPickUp = false;
+        pickUpPlayerId = -1;
         rig = this.GetComponent<Rigidbody>();
+    }
+    private void Start()
+    {
+        packetManager = Managers.Network.GetPacketManager();
     }
     private void OnEnable()
     {
@@ -34,6 +40,10 @@ public class Bomb : MonoBehaviour
         if (isPickUp == true)
         {
             transform.position = targetTransform.position;
+        }
+        if (Managers.Player.GetIsHost() == true && this.transform.position.y <= -10f)
+        {
+            packetManager.SendBombExplosionPacket(transform.position, Id);
         }
     }
     private void OnCollisionEnter(Collision collision)
@@ -76,7 +86,7 @@ public class Bomb : MonoBehaviour
     {
         isPickUp = true;
         this.pickUpPlayerId = pickUpPlayerId;
-        this.lastPickUpPlayerId = pickUpPlayerId;
+
         this.targetTransform = targetTransform;
         SetRigidBodyPickUp();
     }
@@ -118,16 +128,12 @@ public class Bomb : MonoBehaviour
     {
         transform.position = position;
     }
-    public void SetId(int id)
+    public void SetId(int Id)
     {
-        this.id = id;
+        this.Id = Id;
     }
     public int GetId()
     {
-        return id;
-    }
-    public int GetLastPickUpPlayerId()
-    {
-        return lastPickUpPlayerId;
+        return Id;
     }
 }

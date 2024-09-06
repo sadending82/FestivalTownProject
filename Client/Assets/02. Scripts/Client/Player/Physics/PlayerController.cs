@@ -406,7 +406,14 @@ public class PlayerController : MonoBehaviour
                 }
                 else if (playerStatus.GetUpperBodyAnimationState() == UpperBodyAnimationState.NONE)
                 {
-                    playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.ATTACK);
+                    if (playerStatus.GetIsHaveWeapon() == false)
+                    {
+                        playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.ATTACK);
+                    }
+                    else
+                    {
+                        playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.WEAPONATTACK);
+                    }
                 }
                 leftMouseClickTimer = 0f;
             }
@@ -429,29 +436,6 @@ public class PlayerController : MonoBehaviour
             Throw();
         }
     }
-    private void PickUpBomb()
-    {
-        if (targetItem == null)
-        {
-            Debug.Log("Error!! PickUpItem(), You don't Have Target Item !!!");
-        }
-        else
-        {
-            if (targetItem.tag == "Bomb")
-            {
-                Bomb targetBomb = targetItem.GetComponent<Bomb>();
-                targetBomb.PickUp(playerStatus.GetId(), bombInvenTransform);
-                playerStatus.SetIsHaveBomb(true, targetBomb.GetId());
-            }
-            else
-            {
-                Debug.Log("Error!! PickUpItem(), Target Item Tag is Wrong !!!");
-            }
-        }
-    }
-    /// <summary>
-    /// 이것도 게임 매니저에서 관리해야하지 않을까???
-    /// </summary>
     public void s_PickUpBomb(int playerId, int bombId)
     {
         // 폭탄과 플레이어 붙여주기
@@ -506,15 +490,9 @@ public class PlayerController : MonoBehaviour
         }
     }
     
-    /// <summary> --------------------------------------
-    /// 이거 제발 게임 매니저로 나중에 꼭 옮겨줘...ㅠㅠ
-    /// </summary> -------------------------------------
     public void SendToServerGoalTeamNumber(int bombId, int teamNumber)
     {
-        if(amIPlayer == true)
-        {
-            packetManager.SendBombInputPacket(bombId, teamNumber);
-        }
+        packetManager.SendBombInputPacket(bombId, teamNumber);
     }
 
     // ------- Setter Getter -------

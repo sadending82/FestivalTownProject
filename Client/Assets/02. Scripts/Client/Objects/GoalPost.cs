@@ -11,9 +11,11 @@ public class GoalPost : MonoBehaviour
         if(other.gameObject.tag == "Bomb")
         {
             Bomb targetBomb = other.GetComponent<Bomb>();
-            int playerId = targetBomb.GetLastPickUpPlayerId();
 
-            Managers.Player.GetPlayers().transform.GetChild(playerId).GetComponent<PlayerController>().SendToServerGoalTeamNumber(targetBomb.GetId(), teamNumber);
+            if (Managers.Player.GetIsHost() == true)
+            {
+                Managers.Game.SendToServerGoalTeamNumber(targetBomb.GetId(), teamNumber);
+            }
             targetBomb.Boom();
         }
     }
