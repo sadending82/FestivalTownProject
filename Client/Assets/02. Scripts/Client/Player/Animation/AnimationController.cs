@@ -25,11 +25,16 @@ public class AnimationController : MonoBehaviour
     public Transform attackRightHand;
     public Transform attackLeftHint;
     public Transform attackRightHint;
+    // 무기 공격 관련
+    public Transform WeaponAttackRightHand;
+    public Transform WeaponAttackRightHint;
 
     public CharacterStatus playerStatus;
     private float attackSpeed;
-    private float attackTime;
+    private float attackTimer;
     private bool isLeftAttack;
+    private float weaponAttackTimer;
+    private float weaponAttackSpeed;
 
     public AttackChecker leftAttackChecker;
     public AttackChecker rightAttackChecker;
@@ -44,26 +49,37 @@ public class AnimationController : MonoBehaviour
             animator = GetComponent<Animator>();
         }
 
-        attackTime = 0;
+        attackTimer = 0;
+        weaponAttackTimer = 0;
         isLeftAttack = false;
     }
     void Start()
     {
         attackSpeed = playerStatus.GetAttackSpeed();
+        weaponAttackSpeed = attackSpeed * 2;
     }
     void Update()
     {
         if (upperBodyAnimationState == UpperBodyAnimationState.ATTACK)
         {
-            attackTime += Time.deltaTime;
-            if (attackTime >= attackSpeed)
+            attackTimer += Time.deltaTime;
+            if (attackTimer >= attackSpeed)
             {
                 playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
-                attackTime = 0;
+                attackTimer = 0;
                 // 손 바꿔주기
                 isLeftAttack = !isLeftAttack;
                 leftAttackChecker.SetIsAttackState(false);
                 rightAttackChecker.SetIsAttackState(false);
+            }
+        }
+        else if(upperBodyAnimationState == UpperBodyAnimationState.WEAPONATTACK)
+        {
+            weaponAttackTimer += Time.deltaTime;
+            if(weaponAttackTimer >= weaponAttackSpeed)
+            {
+                playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
+                weaponAttackTimer = 0;
             }
         }
     }
@@ -93,7 +109,7 @@ public class AnimationController : MonoBehaviour
         {
             if (isLeftAttack == true)
             {
-                if (attackTime < (attackSpeed / 2))
+                if (attackTimer < (attackSpeed / 2))
                 {
                     animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1f);
                     animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1f);
@@ -118,7 +134,7 @@ public class AnimationController : MonoBehaviour
             }
             else
             {
-                if (attackTime < (attackSpeed / 2))
+                if (attackTimer < (attackSpeed / 2))
                 {
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
@@ -142,6 +158,29 @@ public class AnimationController : MonoBehaviour
                 }
             }
         }
+        else if(upperBodyAnimationState == UpperBodyAnimationState.WEAPONATTACK)
+        {
+            if (weaponAttackTimer < (weaponAttackSpeed / 2))
+            {
+                animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
+                animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
+                animator.SetIKHintPositionWeight(AvatarIKHint.RightElbow, 1f);
+
+                animator.SetIKPosition(AvatarIKGoal.RightHand, WeaponAttackRightHand.position);
+                animator.SetIKRotation(AvatarIKGoal.RightHand, WeaponAttackRightHand.rotation);
+                animator.SetIKHintPosition(AvatarIKHint.RightElbow, WeaponAttackRightHint.position);
+            }
+            else
+            {
+                animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
+                animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
+                animator.SetIKHintPositionWeight(AvatarIKHint.RightElbow, 1f);
+
+                animator.SetIKPosition(AvatarIKGoal.RightHand, targetRightHand.position);
+                animator.SetIKRotation(AvatarIKGoal.RightHand, targetRightHand.rotation);
+                animator.SetIKHintPosition(AvatarIKHint.LeftElbow, targetRightHint.position);
+            }
+        }
     }
 
     // ------------------- GETTERS & SETTERS -------------------
@@ -162,7 +201,11 @@ public class AnimationController : MonoBehaviour
 
         if (upperBodyAnimationState == UpperBodyAnimationState.ATTACK)
         {
-            attackTime = 0f;
+            attackTimer = 0f;
+        }
+        else if (upperBodyAnimationState == UpperBodyAnimationState.WEAPONATTACK)
+        {
+            weaponAttackTimer = 0f;
         }
     }
     public void SetLowerBodyAnimationState(LowerBodyAnimationState lowerBodyAnimationState)

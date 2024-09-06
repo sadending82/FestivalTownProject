@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     public int inGameID = -1;
     public int RoomID = -1;
 
+
     public void Init()
     {
         // 이건 임시로 만든 거라서 나중에 바꿔줘야 합니당
@@ -89,5 +90,10 @@ public class GameManager : MonoBehaviour
         {
             GameRemainTime -= Time.deltaTime;
         }
+    }
+    public void SendToServerGoalTeamNumber(int bombId, int teamNumber)
+    {
+        PacketManager packetManager = Managers.Network.GetPacketManager();
+        packetManager.SendBombInputPacket(bombId, teamNumber);
     }
 }
