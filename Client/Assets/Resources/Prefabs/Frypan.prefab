@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe1de26817e89d4994c5bfb978397dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 0
+  Id: 0
 --- !u!114 &4301149700899721232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145,7 +145,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4973808567259408329}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: cfa67788e6fb0ac41b2ecc41f7f66ef2, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

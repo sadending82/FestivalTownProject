@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations;
 
@@ -8,6 +9,7 @@ public class Weapon : MonoBehaviour
     // ------ Server -------
     [SerializeField]
     private int Id;
+    private PacketManager packetManager;
 
     // ------ Client -------
     private bool isPickUp = false;
@@ -26,11 +28,19 @@ public class Weapon : MonoBehaviour
     private void Start()
     {
         parentConstraint = GetComponent<ParentConstraint>();
+        packetManager = Managers.Network.GetPacketManager();
     }
     private void OnEnable()
     {
         isPickUp = false;
         pickUpPlayerId = -1;
+    }
+    private void FixedUpdate()
+    {
+        if(Managers.Player.GetIsHost() == true && this.transform.position.y <= -10f)
+        {
+            packetManager.SendWeaponDeletePacket(Id);
+        }
     }
 
     public void PickUp(int pickUpPlayerId)
@@ -74,13 +84,9 @@ public class Weapon : MonoBehaviour
     {
         if(isPickUp == true)
         {
-            Debug.Log("Error!!! DeleteWeapon(), Cant Delete Weapon !!!");
+            Drop(transform.position);
         }
-        else
-        {
-            Debug.Log("Im Deleted : " + Id);
-            Managers.Resource.Destroy(this.gameObject);
-        }
+        Managers.Resource.Destroy(this.gameObject);
     }
 
     public void SetId(int Id)
