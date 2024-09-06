@@ -41,16 +41,14 @@ public class Bomb : MonoBehaviour
         // 바닥에 도달했을때 더이상 움직이지 않도록 고정
         if (collision.gameObject.tag == "Ground" && isPickUp == false)
         {
-            rig.constraints = RigidbodyConstraints.FreezePosition |
+            rig.constraints = RigidbodyConstraints.FreezePositionX |
+                              RigidbodyConstraints.FreezePositionZ |
                               RigidbodyConstraints.FreezeRotation;
         }
     }
     public void Boom()
     {
-        Debug.Log("Boom !!!");
         GameObject pusher = Managers.Resource.Instantiate("BombPusher");
-
-        Debug.Log("Boom Bomb Pos : " + transform.position.x + ", " + transform.position.y + ", " + transform.position.z);
 
         pusher.transform.position = transform.position;
         pusher.SetActive(true);
