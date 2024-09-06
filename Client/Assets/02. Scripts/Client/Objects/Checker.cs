@@ -6,6 +6,12 @@ public class Checker : MonoBehaviour
 {
     private bool check;
     public GameObject pusher;
+
+    private PacketManager packetManager;
+    private void Start()
+    {
+        packetManager = Managers.Network.GetPacketManager();
+    }
     private void OnEnable()
     {
         check = true;
@@ -26,8 +32,15 @@ public class Checker : MonoBehaviour
             {
                 if (Managers.Player.GetIsHost() == true)
                 {
-                    Managers.Network.GetPacketManager().SendBombExplosionPacket(other.gameObject.GetComponent<Bomb>().transform.position, other.gameObject.GetComponent<Bomb>().GetId());
-                    //other.gameObject.GetComponent<Bomb>().Boom();
+                    packetManager.SendBombExplosionPacket(other.gameObject.GetComponent<Bomb>().transform.position, other.gameObject.GetComponent<Bomb>().GetId());
+                }
+            }
+            if (other.gameObject.tag == "Weapon" && other.gameObject.GetComponent<Weapon>().GetIsPickUp() == false)
+            {
+                if (Managers.Player.GetIsHost() == true)
+                {
+                    Debug.Log("Delete Weapon ID : " + other.gameObject.GetComponent<Weapon>().GetId());
+                    packetManager.SendWeaponDeletePacket(other.gameObject.GetComponent<Weapon>().GetId());
                 }
             }
         }
