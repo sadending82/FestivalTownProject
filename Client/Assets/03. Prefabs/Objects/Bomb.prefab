@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 04b7fca4f97333a42aa08ade5f4737de, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 15
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 04b7fca4f97333a42aa08ade5f4737de, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 04b7fca4f97333a42aa08ade5f4737de, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 7
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 04b7fca4f97333a42aa08ade5f4737de, type: 3}
       propertyPath: m_LocalRotation.w
@@ -147,6 +147,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bombPusher: {fileID: 7518384200073937346, guid: 3c261f4a5f4941e48bc06beade267ccc, type: 3}
+  id: 0
 --- !u!114 &-7847603341010984816
 MonoBehaviour:
   m_ObjectHideFlags: 0

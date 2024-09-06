@@ -21,9 +21,7 @@ namespace Network.PacketProcessor
             GameObject targetBomb = Managers.BombObject.FindBombById(bombId);
             if (targetBomb != null)
             {
-                targetBomb.transform.position = pos;
                 targetBomb.GetComponent<Bomb>().Boom();
-                //Debug.Log("bomb Explosion!!!! - " + bombId);
             }
             else
             {

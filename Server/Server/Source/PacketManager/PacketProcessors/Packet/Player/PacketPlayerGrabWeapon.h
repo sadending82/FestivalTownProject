@@ -38,6 +38,8 @@ public:
 				pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomid);
 			}
 			room->GetObjectListLock().unlock_shared();
+
+			//std::cout << "pickup: " << weaponid << std::endl;
 		}
 	}
 

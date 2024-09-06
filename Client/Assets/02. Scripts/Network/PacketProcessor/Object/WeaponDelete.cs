@@ -15,6 +15,9 @@ namespace Network.PacketProcessor
             var Data = WeaponDelete.GetRootAsWeaponDelete(bb);
             int id = Data.Id;
 
+            Weapon targetWeapon = Managers.WeaponObject.FindWeaponById(id).GetComponent<Weapon>();
+            targetWeapon.DeleteWeapon();
+            Debug.Log("Delete Weapon ID : " + id);
         }
 
         private FlatBufferBuilder mBuilder;

@@ -7,7 +7,7 @@ public class Weapon : MonoBehaviour
 {
     // ------ Server -------
     [SerializeField]
-    private int id;
+    private int Id;
 
     // ------ Client -------
     private bool isPickUp = false;
@@ -70,13 +70,26 @@ public class Weapon : MonoBehaviour
         ps.SetIsHaveWeapon(false);
     }
 
-    public void SetId(int id)
+    public void DeleteWeapon()
     {
-        this.id = id;
+        if(isPickUp == true)
+        {
+            Debug.Log("Error!!! DeleteWeapon(), Cant Delete Weapon !!!");
+        }
+        else
+        {
+            Debug.Log("Im Deleted : " + Id);
+            Managers.Resource.Destroy(this.gameObject);
+        }
+    }
+
+    public void SetId(int Id)
+    {
+        this.Id = Id;
     }
     public int GetId()
     {
-        return id;
+        return Id;
     }
     public bool GetIsPickUp()
     {

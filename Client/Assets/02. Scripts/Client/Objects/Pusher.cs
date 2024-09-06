@@ -6,16 +6,12 @@ public class Pusher : MonoBehaviour
 {
     public float maxScale = 3;
     public float pushSpeed = 0.5f;
-    private bool isStartPush;
-    public bool useAgain = true;
+    private bool isStartPush = false;
 
-    private void Awake()
-    {
-        isStartPush = false;
-    }
-    private void OnEnable()
+    public void StartPush()
     {
         isStartPush = true;
+        this.transform.localScale = Vector3.zero;
     }
     private void FixedUpdate()
     {
@@ -26,21 +22,16 @@ public class Pusher : MonoBehaviour
     }
     private void GetBigger()
     {
-        this.transform.localScale = new Vector3(this.transform.localScale.x + pushSpeed,
-                                                this.transform.localScale.y,
-                                                this.transform.localScale.z + pushSpeed);
+        this.transform.localScale += new Vector3(pushSpeed, pushSpeed, pushSpeed);
         if(this.transform.localScale.x >= maxScale)
         {
-            if (useAgain == true)
-            {
-                this.transform.localScale = new Vector3(0, this.transform.localScale.y, 0);
-                isStartPush = false;
-                this.gameObject.SetActive(false);
-            }
-            else
-            {
-                Managers.Resource.Destroy(this.gameObject);
-            }
+            DeletePusher();
         }
+    }
+    private void DeletePusher()
+    {
+        isStartPush = false;
+        this.transform.localScale = Vector3.zero;
+        Managers.Resource.Destroy(this.gameObject);
     }
 }

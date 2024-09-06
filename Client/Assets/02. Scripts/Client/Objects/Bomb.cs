@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Bomb : MonoBehaviour
 {
-    public GameObject bombPusher;
-
     private bool isPickUp = false;
     private int pickUpPlayerId;
     private int lastPickUpPlayerId;
@@ -35,7 +33,7 @@ public class Bomb : MonoBehaviour
     {
         if (isPickUp == true)
         {
-            this.transform.position = targetTransform.position;
+            transform.position = targetTransform.position;
         }
     }
     private void OnCollisionEnter(Collision collision)
@@ -43,7 +41,8 @@ public class Bomb : MonoBehaviour
         // 바닥에 도달했을때 더이상 움직이지 않도록 고정
         if (collision.gameObject.tag == "Ground" && isPickUp == false)
         {
-            rig.constraints = RigidbodyConstraints.FreezePosition |
+            rig.constraints = RigidbodyConstraints.FreezePositionX |
+                              RigidbodyConstraints.FreezePositionZ |
                               RigidbodyConstraints.FreezeRotation;
         }
     }
@@ -51,8 +50,9 @@ public class Bomb : MonoBehaviour
     {
         GameObject pusher = Managers.Resource.Instantiate("BombPusher");
 
-        pusher.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z);
+        pusher.transform.position = transform.position;
         pusher.SetActive(true);
+        pusher.GetComponent<Pusher>().StartPush();
 
         if(isPickUp == true)
         {
