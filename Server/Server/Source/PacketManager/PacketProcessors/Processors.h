@@ -15,6 +15,7 @@
 #include "Packet/Object/PacketBombInput.h"
 #include "Packet/Object/PacketBombPositionSync.h"
 #include "Packet/Object/PacketBombExplosion.h"
+#include "Packet/Object/PacketWeaponDelete.h"
 
 #include "Packet/Game/PacketGameReady.h"
 

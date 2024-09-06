@@ -39,7 +39,6 @@ public class Checker : MonoBehaviour
             {
                 if (Managers.Player.GetIsHost() == true)
                 {
-                    Debug.Log("Delete Weapon ID : " + other.gameObject.GetComponent<Weapon>().GetId());
                     packetManager.SendWeaponDeletePacket(other.gameObject.GetComponent<Weapon>().GetId());
                 }
             }

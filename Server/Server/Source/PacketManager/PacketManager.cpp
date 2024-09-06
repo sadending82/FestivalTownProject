@@ -30,6 +30,7 @@ void PacketManager::Init(Server* server)
         PacketProcessorMap[ePacketType::C2S_BOMB_INPUT] = std::make_unique<PacketBombInput>();
         PacketProcessorMap[ePacketType::C2S_BOMB_POS_SYNC] = std::make_unique<PacketBombPositionSync>();
         PacketProcessorMap[ePacketType::C2S_BOMB_EXPLOSION] = std::make_unique<PacketBombExplosion>();
+        PacketProcessorMap[ePacketType::C2S_WEAPON_DELETE] = std::make_unique<PacketWeaponDelete>();
     }
 
 
