@@ -10,12 +10,15 @@ void Player::Init()
 
 	mPosition = Vector3f(0, 0, 0);
 	mDirection = Vector3f(0, 0, 0);
+
+	mBomb = nullptr;
+	mWeapon = nullptr;
 }
 
 void Player::Disconnect()
 {
-	__super::Disconnect();
 	Init();
+	__super::Disconnect();
 }
 
 void Player::DoRecv()

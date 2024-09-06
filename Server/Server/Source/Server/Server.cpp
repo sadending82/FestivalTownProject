@@ -73,7 +73,7 @@ void Server::Disconnect(int key)
 
     // Delete Player In Room
     if (player->GetState() == eSessionState::ST_INGAME) {
-        int roomID;
+        int roomID = player->GetRoomID();
         int inGameID = player->GetInGameID();
         if (roomID = player->GetRoomID() != INVALIDKEY) {
             mRooms[roomID]->DeletePlayer(inGameID);
@@ -410,6 +410,7 @@ void Server::TimeoverGameEnd(int roomID) {
         for (auto player : room->GetPlayerList()) {
             if (player == nullptr) continue;
             player->GetStateLock().lock();
+            player->Init();
             player->SetState(eSessionState::ST_ACCEPTED);
             player->GetStateLock().unlock();
         }
