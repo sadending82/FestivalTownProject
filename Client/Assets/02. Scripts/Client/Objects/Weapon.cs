@@ -72,7 +72,7 @@ public class Weapon : MonoBehaviour
 
     public void DeleteWeapon()
     {
-        if(isPickUp == false)
+        if(isPickUp == true)
         {
             Debug.Log("Error!!! DeleteWeapon(), Cant Delete Weapon !!!");
         }

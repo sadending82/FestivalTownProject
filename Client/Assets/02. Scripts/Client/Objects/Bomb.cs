@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Bomb : MonoBehaviour
 {
-    public GameObject bombPusher;
-
     private bool isPickUp = false;
     private int pickUpPlayerId;
     private int lastPickUpPlayerId;
@@ -35,7 +33,7 @@ public class Bomb : MonoBehaviour
     {
         if (isPickUp == true)
         {
-            this.transform.position = targetTransform.position;
+            transform.position = targetTransform.position;
         }
     }
     private void OnCollisionEnter(Collision collision)
@@ -49,10 +47,14 @@ public class Bomb : MonoBehaviour
     }
     public void Boom()
     {
+        Debug.Log("Boom !!!");
         GameObject pusher = Managers.Resource.Instantiate("BombPusher");
 
-        pusher.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z);
+        Debug.Log("Boom Bomb Pos : " + transform.position.x + ", " + transform.position.y + ", " + transform.position.z);
+
+        pusher.transform.position = transform.position;
         pusher.SetActive(true);
+        pusher.GetComponent<Pusher>().StartPush();
 
         if(isPickUp == true)
         {
