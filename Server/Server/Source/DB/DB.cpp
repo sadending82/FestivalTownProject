@@ -9,7 +9,7 @@ DB::~DB()
 	SQLDisconnect(hDbc);
 	SQLFreeHandle(SQL_HANDLE_DBC, hDbc);
 	SQLFreeHandle(SQL_HANDLE_ENV, hEnv);
-	//delete mSecurity;
+	delete mSecurity;
 }
 
 void DB::ShowError(SQLHANDLE handle, SQLSMALLINT handleType, RETCODE retcode) {
@@ -52,7 +52,7 @@ bool DB::ReadConfig()
 
 int DB::Init()
 {
-	//mSecurity = new Security;
+	mSecurity = new Security;
 
 	SQLRETURN retcode;
 
@@ -79,6 +79,8 @@ int DB::Init()
 	if (Connect() == false) {
 		return -1;
 	}
+
+	//InsertNewAcccount("newtest", "good");
 
 	return 1;
 }
@@ -130,7 +132,7 @@ bool DB::UseGameDB(SQLHSTMT& hStmt)
 
 bool DB::InsertNewAcccount(const char* id, const char* pw)
 {
-	/*SQLHSTMT hStmt = NULL;
+	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
 	std::string salt = mSecurity->GenerateSalt();
@@ -164,6 +166,5 @@ bool DB::InsertNewAcccount(const char* id, const char* pw)
 
 	DEBUGMSGNOPARAM("Execute Query Error\n");
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-	return false;*/
-	return true;
+	return false;
 }

@@ -22,6 +22,8 @@
     <ClCompile Include="Source\PacketManager\PacketProcessors\Event\Game\EventPlayerRespawn.h" />
     <ClCompile Include="Source\DB\Security\Security.cpp" />
     <ClCompile Include="Source\Object\Weapon\Weapon.cpp" />
+    <ClCompile Include="Source\PacketManager\PacketSender\PacketSender.cpp" />
+    <ClCompile Include="KISA_SHA256\KISA_SHA256.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DB\DB.h" />
@@ -96,6 +98,8 @@
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Object\PacketWeaponDelete.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\PacketGameMatchingCancel.h" />
     <ClInclude Include="Source\TableManager\Tables\WeaponStat.h" />
+    <ClInclude Include="Source\PacketManager\PacketSender\PacketSender.h" />
+    <ClInclude Include="KISA_SHA256\KISA_SHA256.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />
