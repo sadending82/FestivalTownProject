@@ -339,7 +339,10 @@ public class PlayerController : MonoBehaviour
                 fKeyDownTimer += Time.deltaTime;
                 if (fKeyDownTimer >= 1f)
                 {
-                    packetManager.SendPlayerDropWeaponPacket(GetPosition(), playerStatus.GetWeaponId());
+                    if (playerStatus.GetWeaponId() >= 0)
+                    {
+                        packetManager.SendPlayerDropWeaponPacket(GetPosition(), playerStatus.GetWeaponId());
+                    }
                 }
             }
         }

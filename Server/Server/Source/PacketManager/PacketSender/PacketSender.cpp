@@ -114,14 +114,14 @@ void PacketSender::SendBombSpawnPacket(int roomID, int spawnCount)
 
 void PacketSender::SendBombExplosionPacket(int roomID, int bombID)
 {
-    mServer->GetRooms()[roomID]->GetObjectListLock().lock_shared();
-    Object* object = mServer->GetRooms()[roomID]->GetObjects()[bombID];
+    mServer->GetRooms()[roomID]->GetBombListLock().lock_shared();
+    Object* object = mServer->GetRooms()[roomID]->GetBombList()[bombID];
     if (object == nullptr) {
-        mServer->GetRooms()[roomID]->GetObjectListLock().unlock_shared();
+        mServer->GetRooms()[roomID]->GetBombListLock().unlock_shared();
         return;
     }
     Vector3f pos = object->GetPosition();
-    mServer->GetRooms()[roomID]->GetObjectListLock().unlock_shared();
+    mServer->GetRooms()[roomID]->GetBombListLock().unlock_shared();
     std::vector<uint8_t> send_buffer = mPacketMaker->MakeBombExplosionPacket(bombID, pos);
     mServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
@@ -220,6 +220,8 @@ void PacketSender::SendWeaponSpawnPacket(int roomID, int spawnCount)
         if (weaponid == INVALIDKEY) continue;
         std::vector<uint8_t> send_buffer = mPacketMaker->MakeWeaponSpawnPacket(pos, weaponid, type_distrib(gen));
         mServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
+
+        std::cout << "spawn: " << weaponid << std::endl;
     }
 }
 

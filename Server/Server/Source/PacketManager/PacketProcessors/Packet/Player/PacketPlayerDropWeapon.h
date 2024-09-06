@@ -33,7 +33,7 @@ public:
 			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYER_DROP_WEAPON, data, size);
 			pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomid);
 
-			//std::cout << "drop: " << weaponid << std::endl;
+			std::cout << "drop: " << weaponid << std::endl;
 		}
 	}
 

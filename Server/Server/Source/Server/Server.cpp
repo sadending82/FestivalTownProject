@@ -217,15 +217,15 @@ void Server::SendAllPlayerInRoomExceptSender(void* packet, int size, int session
 
 std::set<Vector3f> Server::SetObjectSpawnPos(int roomID, int spawnCount)
 {
-    int RedLife = mRooms[roomID]->GetTeams()[(int)TeamCode::RED].GetLife();
-    int BlueLife = mRooms[roomID]->GetTeams()[(int)TeamCode::BLUE].GetLife();
+    /*int RedLife = mRooms[roomID]->GetTeams()[(int)TeamCode::RED].GetLife();
+    int BlueLife = mRooms[roomID]->GetTeams()[(int)TeamCode::BLUE].GetLife();*/
     std::vector<std::pair<int, int>>& spawnPoses = mRooms[roomID]->GetMap()->GetObjectSpawnIndexes();
-    if (RedLife > BlueLife) {
+   /* if (RedLife > BlueLife) {
         spawnPoses = mRooms[roomID]->GetMap()->GetBlueObjectSpawnIndexes();
     }
     else if (RedLife < BlueLife) {
         spawnPoses = mRooms[roomID]->GetMap()->GetRedObjectSpawnIndexes();
-    }
+    }*/
 
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -234,30 +234,37 @@ std::set<Vector3f> Server::SetObjectSpawnPos(int roomID, int spawnCount)
     std::set<Vector3f> unique_pos;
 
     Room* room = mRooms[roomID];
-    room->GetObjectListLock().lock_shared();
-    std::array<Object*, MAXOBJECT>& object_list = room->GetObjects();
-    room->GetObjectListLock().unlock_shared();
+    std::vector<Object*> object_list;
+    room->GetAllObjects(object_list);
 
     while (unique_pos.size() < spawnCount) {
         int idx = idx_distrib(gen);
         Vector3f pos = ConvertVec2iToVec3f(spawnPoses[idx].first, spawnPoses[idx].second);
-        if (RedLife == BlueLife) {
+       /* if (RedLife == BlueLife) {
             pos.x = 20;
-        }
-
+        }*/
+        int invalid_pos_cnt = 0;
         bool invalid_pos = false;
         for (int i = 0; i < MAXOBJECT; ++i) {
             if (object_list[i] == nullptr) {
                 continue;
             }
-            /*if (pos.x == object_list[i]->GetPosition().x
+            if (object_list[i]->GetIsGrabbed() == true) {
+                continue;
+            }
+            if (pos.x == object_list[i]->GetPosition().x
                 && pos.y == object_list[i]->GetPosition().y) {
                 invalid_pos = true;
+                invalid_pos_cnt++;
                 break;
-            }*/
+            }
         }
         if (invalid_pos == false) {
             unique_pos.emplace(pos);
+        }
+
+        if (invalid_pos_cnt >= spawnPoses.size()) {
+            break;
         }
     }
 

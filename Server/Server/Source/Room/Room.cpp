@@ -3,7 +3,10 @@
 Room::~Room()
 {
 	for (int i = 0; i < MAXOBJECT; ++i) {
-		delete mObjectList[i];
+		delete mBombList[i];
+	}
+	for (int i = 0; i < MAXOBJECT; ++i) {
+		delete mWeaponList[i];
 	}
 	delete mMap;
 }
@@ -16,12 +19,16 @@ void Room::Reset()
 	mHostID = INVALIDKEY;
 	mRoomCode = 0;
 
-	for (int i = 0; i < MAXOBJECT; ++i) {
-		delete mObjectList[i];
-	}
 	delete mMap;
+	for (int i = 0; i < MAXOBJECT; ++i) {
+		delete mBombList[i];
+	}
+	for (int i = 0; i < MAXOBJECT; ++i) {
+		delete mWeaponList[i];
+	}
 	std::fill(mPlayerList.begin(), mPlayerList.end(), nullptr);
-	std::fill(mObjectList.begin(), mObjectList.end(), nullptr);
+	std::fill(mBombList.begin(), mBombList.end(), nullptr);
+	std::fill(mWeaponList.begin(), mWeaponList.end(), nullptr);
 	mTeams.clear();
 	mStateLock.lock();
 	mState = eRoomState::RS_FREE;
@@ -36,10 +43,14 @@ void Room::Init(int id, int teamLifeCount, int playerLimit)
 	mHostID = INVALIDKEY;
 
 	for (int i = 0; i < MAXOBJECT; ++i) {
-		delete mObjectList[i];
+		delete mBombList[i];
+	}
+	for (int i = 0; i < MAXOBJECT; ++i) {
+		delete mWeaponList[i];
 	}
 	std::fill(mPlayerList.begin(), mPlayerList.end(), nullptr);
-	std::fill(mObjectList.begin(), mObjectList.end(), nullptr);
+	std::fill(mBombList.begin(), mBombList.end(), nullptr);
+	std::fill(mWeaponList.begin(), mWeaponList.end(), nullptr);
 	mTeams.clear();
 
 	// team game
@@ -100,16 +111,16 @@ bool Room::DeletePlayer(int playerID)
 int Room::AddBomb(Bomb* object, Vector3f position, Vector3f direction)
 {
 	for (int i = 0; i < MAXOBJECT; ++i) {
-		mObjectListLock.lock();
-		if (mObjectList[i] == nullptr) {
-			mObjectList[i] = object;
-			mObjectListLock.unlock();
+		mBombListLock.lock();
+		if (mBombList[i] == nullptr) {
+			mBombList[i] = object;
+			mBombListLock.unlock();
 			object->SetID(i);
 			object->SetPosition(position);
 			object->SetDirection(direction);
 			return i;
 		}
-		mObjectListLock.unlock();
+		mBombListLock.unlock();
 	}
 
 	return INVALIDKEY;
@@ -118,72 +129,70 @@ int Room::AddBomb(Bomb* object, Vector3f position, Vector3f direction)
 int Room::AddWeapon(Weapon* object, Vector3f position, Vector3f direction)
 {
 	for (int i = 0; i < MAXOBJECT; ++i) {
-		mObjectListLock.lock();
-		if (mObjectList[i] == nullptr) {
-			mObjectList[i] = object;
-			mObjectListLock.unlock();
+		mWeaponListLock.lock();
+		if (mWeaponList[i] == nullptr) {
+			mWeaponList[i] = object;
+			mWeaponListLock.unlock();
 			object->SetID(i);
 			object->SetPosition(position);
 			object->SetDirection(direction);
 			return i;
 		}
-		mObjectListLock.unlock();
+		mWeaponListLock.unlock();
 	}
 
 	return INVALIDKEY;
 }
 
-bool Room::DeleteObject(int id)
-{
-	mObjectListLock.lock();
-	if (mObjectList[id] == nullptr) {
-		mObjectListLock.unlock();
-		return false;
-	}
-	delete mObjectList[id];
-	mObjectList[id] = nullptr;
-	mObjectListLock.unlock();
-	return true;
-}
-
 bool Room::DeleteBomb(int id)
 {
-	mObjectListLock.lock();
-	if (mObjectList[id] == nullptr) {
-		mObjectListLock.unlock();
+	mBombListLock.lock();
+	if (mBombList[id] == nullptr) {
+		mBombListLock.unlock();
 		return false;
 	}
 	// 어떤 플레이어가 이 오브젝트를 가지고 있으면 해제시켜줘야함
-	int OwnerID = mObjectList[id]->GetOwenrID();
+	int OwnerID = mBombList[id]->GetOwenrID();
 	if (OwnerID > INVALIDKEY) {
 		mPlayerListLock.lock_shared();
 		mPlayerList[OwnerID]->SetBomb(nullptr);
 		mPlayerListLock.unlock_shared();
 	}
-	delete mObjectList[id];
-	mObjectList[id] = nullptr;
-	mObjectListLock.unlock();
+	delete mBombList[id];
+	mBombList[id] = nullptr;
+	mBombListLock.unlock();
 	return true;
 }
 
 bool Room::DeleteWeapon(int id)
 {
-	mObjectListLock.lock();
-	if (mObjectList[id] == nullptr) {
-		mObjectListLock.unlock();
+	mWeaponListLock.lock();
+	if (mWeaponList[id] == nullptr) {
+		mWeaponListLock.unlock();
 		return false;
 	}
 	// 어떤 플레이어가 이 오브젝트를 가지고 있으면 해제시켜줘야함
-	int OwnerID = mObjectList[id]->GetOwenrID();
+	int OwnerID = mWeaponList[id]->GetOwenrID();
 	if (OwnerID > INVALIDKEY) {
 		mPlayerListLock.lock_shared();
 		mPlayerList[OwnerID]->SetWeapon(nullptr);
 		mPlayerListLock.unlock_shared();
 	}
-	delete mObjectList[id];
-	mObjectList[id] = nullptr;
-	mObjectListLock.unlock();
+	delete mWeaponList[id];
+	mWeaponList[id] = nullptr;
+	mWeaponListLock.unlock();
 	return true;
+}
+
+void Room::GetAllObjects(std::vector<Object*>& objectList)
+{
+	mBombListLock.lock_shared();
+	objectList.insert(objectList.end(), mBombList.begin(), mBombList.end());
+	mBombListLock.unlock_shared();
+
+	mWeaponListLock.lock_shared();
+	objectList.insert(objectList.end(), mWeaponList.begin(), mWeaponList.end());
+	mWeaponListLock.unlock_shared();
 }
 
 bool Room::SetIsRun(bool desired)

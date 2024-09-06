@@ -25,10 +25,10 @@ public:
 			int weaponid = read->weapon_id();
 
 			Room* room = pServer->GetRooms()[roomid];
-			room->GetObjectListLock().lock_shared();
-			Weapon* weapon = dynamic_cast<Weapon*>(room->GetObjects()[weaponid]);
+			room->GetWeaponListLock().lock_shared();
+			Weapon* weapon = dynamic_cast<Weapon*>(room->GetWeaponList()[weaponid]);
 			if (weapon == nullptr) {
-				room->GetObjectListLock().unlock_shared();
+				room->GetWeaponListLock().unlock_shared();
 				return;
 			}
 			if (weapon->SetIsGrabbed(true) == true) {
@@ -37,9 +37,9 @@ public:
 				std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYER_GRAB_WEAPON, data, size);
 				pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomid);
 			}
-			room->GetObjectListLock().unlock_shared();
+			room->GetWeaponListLock().unlock_shared();
 
-			//std::cout << "pickup: " << weaponid << std::endl;
+			std::cout << "pickup: " << weaponid << std::endl;
 		}
 	}
 

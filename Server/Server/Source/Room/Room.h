@@ -24,13 +24,15 @@ public:
 
 	int  AddBomb(Bomb* object, Vector3f position, Vector3f direction = Vector3f(0, 0, 0));
 	int  AddWeapon(Weapon* object, Vector3f position, Vector3f direction = Vector3f(0, 0, 0));
-	bool DeleteObject(int id);
+
 	bool DeleteBomb(int id);
 	bool DeleteWeapon(int id);
 
 	std::array<Player*, MAXPLAYER>& GetPlayerList() { return mPlayerList; }
 	std::unordered_map<int, Team>& GetTeams() { return mTeams; }
-	std::array<Object*, MAXOBJECT>& GetObjects() { return mObjectList; }
+	std::array<Bomb*, MAXOBJECT>& GetBombList() { return mBombList; }
+	std::array<Weapon*, MAXOBJECT>& GetWeaponList() { return mWeaponList; }
+	void GetAllObjects(std::vector<Object*>& objectList);
 	int GetPlayerCnt() { return mPlayerCnt; }
 	int GetReadyCnt() { return mPlayerCnt; }
 	int GetPlayerLimit() { return mPlayerLimit; }
@@ -40,7 +42,8 @@ public:
 	eRoomState GetState() { return mState; }
 	std::mutex& GetStateLock() { return mStateLock; }
 	std::shared_mutex& GetPlayerListLock() { return mPlayerListLock; }
-	std::shared_mutex& GetObjectListLock() { return mObjectListLock; }
+	std::shared_mutex& GetBombListLock() { return mBombListLock; }
+	std::shared_mutex& GetWeaponListLock() { return mWeaponListLock; }
 	int GetHostID() { return mHostID; }
 	long long GetRoomCode() { return mRoomCode; }
 	bool GetIsRun() { return mIsRun.load(); }
@@ -64,13 +67,12 @@ private:
 
 	std::mutex mStateLock;
 	std::shared_mutex mPlayerListLock;
-	// 객체를 재사용하지 않고 삭제, 생성하기 때문에 shared_mutex 사용
-	// 생성/삭제할 때 unique_lock
-	std::shared_mutex mObjectListLock;
+	std::shared_mutex mBombListLock;
+	std::shared_mutex mWeaponListLock;
 	std::array<Player*, MAXPLAYER> mPlayerList;
-	std::array<Object*, MAXOBJECT> mObjectList;
+	std::array<Bomb*, MAXOBJECT> mBombList;
+	std::array<Weapon*, MAXOBJECT> mWeaponList;
 
-	std::mutex mPlayerSessionIDsLock;
 	std::unordered_map<int, Team> mTeams;
 
 	int mRoomID; // room array index
