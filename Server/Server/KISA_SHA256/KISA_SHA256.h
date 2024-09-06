@@ -41,12 +41,6 @@ extern "C" {
 	#endif
 #endif
 
-typedef unsigned long ULONG;
-typedef ULONG* ULONG_PTR;
-
-typedef unsigned int UINT;
-typedef UINT* UINT_PTR;
-
 typedef signed int SINT;
 typedef SINT* SINT_PTR;
 
@@ -59,10 +53,10 @@ typedef unsigned char BYTE;
 #define SHA256_DIGEST_VALUELEN	32
 
 typedef struct{
-	UINT uChainVar[SHA256_DIGEST_VALUELEN / 4];
-	UINT uHighLength;
-	UINT uLowLength;
-	UINT remain_num;
+	unsigned int uChainVar[SHA256_DIGEST_VALUELEN / 4];
+	unsigned int uHighLength;
+	unsigned int uLowLength;
+	unsigned int remain_num;
 	BYTE szBuffer[SHA256_DIGEST_BLOCKLEN];
 } SHA256_INFO;
 
@@ -78,7 +72,7 @@ void SHA256_Init( OUT SHA256_INFO *Info );
 @param pszMessage : 사용자 입력 평문
 @param inLen : 사용자 입력 평문 길이
 */
-void SHA256_Process( OUT SHA256_INFO *Info, IN const BYTE *pszMessage, IN UINT uDataLen );
+void SHA256_Process( OUT SHA256_INFO *Info, IN const BYTE *pszMessage, IN unsigned int uDataLen );
 
 /**
 @brief 메시지 덧붙이기와 길이 덧붙이기를 수행한 후 마지막 메시지 블록을 가지고 압축함수를 호출하는 함수
@@ -93,7 +87,7 @@ void SHA256_Close( OUT SHA256_INFO *Info, OUT BYTE *pszDigest );
 @param pszDigest : 암호문
 @remarks 내부적으로 SHA256_Init, SHA256_Process, SHA256_Close를 호출한다.
 */
-void SHA256_Encrpyt( IN const BYTE *pszMessage, IN UINT uPlainTextLen, OUT BYTE *pszDigest );
+void SHA256_Encrpyt( IN const BYTE *pszMessage, IN unsigned int uPlainTextLen, OUT BYTE *pszDigest );
 
 #ifdef  __cplusplus
 }

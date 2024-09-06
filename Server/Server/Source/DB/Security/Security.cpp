@@ -21,7 +21,7 @@ std::string Security::GenerateSalt()
 std::string Security::HashingPassword(const std::string password, const std::string salt)
 {
 	std::string str = password + salt;
-	/*unsigned char hash[32];
+	unsigned char hash[32];
 
 	SHA256_Encrpyt(reinterpret_cast<const unsigned char*>(str.c_str()), str.size(), hash);
 
@@ -33,8 +33,7 @@ std::string Security::HashingPassword(const std::string password, const std::str
 		hashedStr += hex;
 	}
 
-	return hashedStr;*/
-	return str;
+	return hashedStr;
 }
 
 bool Security::VerifyPassword(std::string password, std::string hashedPassword, std::string salt)

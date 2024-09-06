@@ -80,8 +80,6 @@ int DB::Init()
 		return -1;
 	}
 
-	//InsertNewAcccount("newtest", "good");
-
 	return 1;
 }
 
