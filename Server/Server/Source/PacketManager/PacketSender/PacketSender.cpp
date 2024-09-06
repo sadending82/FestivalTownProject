@@ -220,9 +220,13 @@ void PacketSender::SendWeaponSpawnPacket(int roomID, int spawnCount)
         if (weaponid == INVALIDKEY) continue;
         std::vector<uint8_t> send_buffer = mPacketMaker->MakeWeaponSpawnPacket(pos, weaponid, type_distrib(gen));
         mServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
-
-        std::cout << "spawn: " << weaponid << std::endl;
     }
+}
+
+void PacketSender::SendWeaponDropPacket(Vector3f position, int roomID, int weaponID)
+{
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakeWeaponDropPacket(position, weaponID);
+    mServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
 
 void PacketSender::SendPlayerCalculatedDamage(int targetID, int roomID, int attackType, int hp, int damageAmount, Vector3f knockback_direction)

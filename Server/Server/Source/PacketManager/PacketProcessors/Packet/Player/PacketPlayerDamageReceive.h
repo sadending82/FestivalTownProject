@@ -34,6 +34,7 @@ public:
 			// Game Data를 가지고 데미지 계산 필요
 			int damageAmount;
 			if (read->attack_type() == AT_FALLDOWN) {
+				// 낙사 시 즉사
 				damageAmount = 999;
 			}
 			else {
@@ -45,6 +46,14 @@ public:
 				target->SetPlayerState(ePlayerState::PS_DEAD);
 				int spawnTime = pServer->GetTableManager()->getFITH_Data()[room->GetGameMode()]->Player_Spawn_Time;
 				pServer->GetPacketSender()->SendPlayerDeadPacket(read->target_id(), roomid);
+				if (target->GetWeapon() != nullptr) {
+					if (target->GetWeapon()->SetIsGrabbed(false) == true) {
+						int weaponID = target->GetWeapon()->GetID();
+						target->GetWeapon()->SetOwenrID(INVALIDKEY);
+						target->SetWeapon(nullptr);
+						pServer->GetPacketSender()->SendWeaponDropPacket(target->GetPosition(), roomid, weaponID);
+					}
+				}
 				PushEventPlayerRespawn(pServer->GetTimer(), read->target_id(), roomid, room->GetRoomCode(), spawnTime);
 			}
 			else {

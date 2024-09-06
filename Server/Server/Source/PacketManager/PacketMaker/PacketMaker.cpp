@@ -91,13 +91,22 @@ std::vector<uint8_t> PacketMaker::MakeBombSpawnPacket(Vector3f Positon, int bomb
 	return MakeBuffer(ePacketType::S2C_BOMB_SPAWN, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakeWeaponSpawnPacket(Vector3f Positon, int weaponid, int weaponType)
+std::vector<uint8_t> PacketMaker::MakeWeaponSpawnPacket(Vector3f position, int weaponid, int weaponType)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 	Builder.Clear();
-	auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, Positon.x, Positon.y, Positon.z);
+	auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, position.x, position.y, position.z);
 	Builder.Finish(PacketTable::ObjectTable::CreateWeaponSpawn(Builder, pos, weaponid, weaponType));
 	return MakeBuffer(ePacketType::S2C_WEAPON_SPAWN, Builder.GetBufferPointer(), Builder.GetSize());
+}
+
+std::vector<uint8_t> PacketMaker::MakeWeaponDropPacket(Vector3f position, int weaponid)
+{
+	flatbuffers::FlatBufferBuilder Builder;
+	Builder.Clear();
+	auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, position.x, position.y, position.z);
+	Builder.Finish(PacketTable::ObjectTable::CreateWeaponPosition(Builder, pos, weaponid));
+	return MakeBuffer(ePacketType::S2C_PLAYER_DROP_WEAPON, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
 std::vector<uint8_t> PacketMaker::MakeBombExplosionPacket(int bombID, Vector3f position)

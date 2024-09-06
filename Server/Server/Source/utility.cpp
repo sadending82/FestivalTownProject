@@ -13,6 +13,11 @@ std::vector<uint8_t> MakeBuffer(const int type, const uint8_t* data, const int s
 	return buf;
 }
 
+Vector3f ConvertVec3fToVec2i(int x, int y)
+{
+	return Vector3f();
+}
+
 Vector3f ConvertVec2iToVec3f(int x, int y)
 {
 	Vector3f pos;

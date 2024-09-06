@@ -39,7 +39,7 @@ public:
 			}
 			room->GetWeaponListLock().unlock_shared();
 
-			std::cout << "pickup: " << weaponid << std::endl;
+			//std::cout << "pickup: " << weaponid << std::endl;
 		}
 	}
 
