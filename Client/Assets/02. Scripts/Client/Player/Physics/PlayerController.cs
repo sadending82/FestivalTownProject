@@ -67,15 +67,17 @@ public class PlayerController : MonoBehaviour
         ResetPlayerControllerSetting();
         amIPlayer = false;
         stabillizerDirection = Vector3.zero;
-    }
-    void Start()
-    {
+
         network = Managers.Network;
         pelvisRigidbody = pelvis.GetComponent<Rigidbody>();
         playerStatus = this.GetComponent<CharacterStatus>();
 
         packetManager = network.GetPacketManager();
         receiveManager = network.GetReceiveManager();
+    }
+    void Start()
+    {
+
     }
 
     private void FixedUpdate()

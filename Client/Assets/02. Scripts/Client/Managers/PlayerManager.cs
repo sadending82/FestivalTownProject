@@ -80,6 +80,7 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
+            Debug.Log($"Add Player {id}");
             players.transform.GetChild(id).gameObject.SetActive(true);
             nowPlayerNum++;          
         }
