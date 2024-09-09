@@ -33,7 +33,7 @@ public:
 		player->GetPlayerStateLock().lock();
 		player->SetPlayerState(ePlayerState::PS_ALIVE);
 		player->GetPlayerStateLock().unlock();
-		player->SetHP(pServer->GetTableManager()->getCharacterStats()[(int)CharacterType::TEST]->hp);
+		player->SetHP(pServer->GetTableManager()->GetCharacterStats()[(int)eCharacterType::CT_TEST]->hp);
 		pServer->GetPacketSender()->SendPlayerRespawn(playerid, roomid);
 	}
 

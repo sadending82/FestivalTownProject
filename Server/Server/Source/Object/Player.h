@@ -24,6 +24,7 @@ public:
 	Vector3f GetDirection() { return mDirection; }
 	ePlayerState GetPlayerState() { return mPlayerState; }
 	std::mutex& GetPlayerStateLock() { return mPlayerStateLock; }
+	eCharacterType GetChacracterType() { return mCharacterType; }
 	int GetHP() { return mHP; }
 	class Bomb* GetBomb() { return mBomb; }
 	class Weapon* GetWeapon() { return mWeapon; }
@@ -36,6 +37,7 @@ public:
 	void SetDirection(float x, float y, float z) { mDirection = Vector3f(x, y, z); }
 	void SetDirection(Vector3f v3f) { mDirection = v3f; }
 	void SetPlayerState(ePlayerState state) { mPlayerState = state; }
+	void SetChacracterType(eCharacterType type) { mCharacterType = type; }
 	void SetHP(int hp) { mHP = hp; }
 	void SetBomb(class Bomb* bomb) { mBomb = bomb; }
 	void SetWeapon(class Weapon* weapon) { mWeapon = weapon; }
@@ -54,6 +56,7 @@ protected:
 	Vector3f		mPosition;
 	Vector3f		mDirection;
 
+	eCharacterType	mCharacterType = eCharacterType::CT_TEST;
 	int				mHP;
 	class Bomb*     mBomb = nullptr;
 	class Weapon*	mWeapon = nullptr;

@@ -14,6 +14,9 @@ TableManager::~TableManager()
     for (auto& pair : CharacterStats) {
         delete pair.second;
     }
+    for (auto& pair : WeaponStats) {
+        delete pair.second;
+    }
     for (auto& pair : FITH_Data) {
         delete pair.second;
     }
@@ -30,6 +33,9 @@ void TableManager::ClearAllTable()
     for (auto& pair : CharacterStats) {
         delete pair.second;
     }
+    for (auto& pair : WeaponStats) {
+        delete pair.second;
+    }
     for (auto& pair : FITH_Data) {
         delete pair.second;
     }
@@ -39,6 +45,7 @@ void TableManager::ClearAllTable()
 
     ItemInfos.clear();
     CharacterStats.clear();
+    WeaponStats.clear();
     FITH_Data.clear();
     MapData.clear();
 }
@@ -47,6 +54,7 @@ void TableManager::ReadAllDataTable()
 {
     //ReadItemTable();
     ReadCharacterStat();
+    ReadWeaponStat();
     ReadFITHModeTable();
     ReadMapData();
 }
@@ -103,21 +111,21 @@ void TableManager::ReadCharacterStat()
             }
 
             if (!row.empty()) {
-                CharacterStats[(int)row[0].value<int>()]
+                CharacterStats[(int)row[static_cast<int>(CharacterStat_Field::index)].value<int>()]
                     = new CharacterStat{
-                    (int)row[0].value<int>(),   // index
-                    (std::string)row[1].to_string(),         // name
-                    (int)row[2].value<int>(),   // hp
-                    (int)row[3].value<int>(),   // stamina
-                    (int)row[4].value<int>(),   // strength
-                    (int)row[5].value<int>(),   // speed
-                    (int)row[6].value<int>(),   // attack
-                    (int)row[7].value<int>(),   // headAttack
-                    (int)row[8].value<int>(),   // jumpKick
-                    (int)row[9].value<int>(),   // powerAttack
-                    (int)row[10].value<int>(),  // walkSpeed
-                    (int)row[11].value<int>(),  // runSpeed
-                    (int)row[12].value<int>(),  // rollSpeed
+                    (int)row[static_cast<int>(CharacterStat_Field::index)].value<int>(),
+                    (std::string)row[static_cast<int>(CharacterStat_Field::name)].to_string(),  
+                    (int)row[static_cast<int>(CharacterStat_Field::hp)].value<int>(), 
+                    (int)row[static_cast<int>(CharacterStat_Field::stamina)].value<int>(), 
+                    (int)row[static_cast<int>(CharacterStat_Field::strength)].value<int>(), 
+                    (int)row[static_cast<int>(CharacterStat_Field::speed)].value<int>(), 
+                    (int)row[static_cast<int>(CharacterStat_Field::attack)].value<int>(),
+                    (int)row[static_cast<int>(CharacterStat_Field::headAttack)].value<int>(),
+                    (int)row[static_cast<int>(CharacterStat_Field::jumpKick)].value<int>(),
+                    (int)row[static_cast<int>(CharacterStat_Field::powerAttack)].value<int>(), 
+                    (int)row[static_cast<int>(CharacterStat_Field::walkSpeed)].value<int>(), 
+                    (int)row[static_cast<int>(CharacterStat_Field::runSpeed)].value<int>(), 
+                    (int)row[static_cast<int>(CharacterStat_Field::rollSpeed)].value<int>()
                 };
             }
 
@@ -126,6 +134,44 @@ void TableManager::ReadCharacterStat()
     }
     catch (const xlnt::exception& e) {
         std::cerr << "Excel File Load Fail: " << e.what() << std::endl;
+    }
+
+}
+
+void TableManager::ReadWeaponStat()
+{
+    try {
+        xlnt::workbook wb;
+        wb.load("GameData/Weapon_Stat.xlsx");
+
+        int idx = 0;
+
+        xlnt::worksheet ws = wb.active_sheet();
+
+        for (auto row : ws.rows(false)) {
+            if (idx < 2) {
+                idx++;
+                continue;
+            }
+
+            if (!row.empty()) {
+                WeaponStats[(int)row[static_cast<int>(WeaponStat_Field::index)].value<int>()]
+                    = new WeaponStat{
+                    (int)row[static_cast<int>(WeaponStat_Field::index)].value<int>(),
+                    (std::string)row[static_cast<int>(WeaponStat_Field::name)].to_string(),
+                    (int)row[static_cast<int>(WeaponStat_Field::Weapon_Power)].value<int>(),
+                    (int)row[static_cast<int>(WeaponStat_Field::Weapon_Limit)].value<int>(),
+                    (int)row[static_cast<int>(WeaponStat_Field::Weapon_Range)].value<int>(),
+                    (int)row[static_cast<int>(WeaponStat_Field::Weapon_Type)].value<int>(),
+                    (int)row[static_cast<int>(WeaponStat_Field::Weapon_StaminaConsume)].value<int>()
+                };
+            }
+
+            idx++;
+        }
+    }
+    catch (const xlnt::exception& e) {
+        std::cerr << "Excel Weapon File Load Fail: " << e.what() << std::endl;
     }
 
 }
@@ -139,7 +185,8 @@ void TableManager::ReadFITHModeTable()
         int idx = 0;
         int sheetIdx = 1;
 
-        for (int i = GameCode::FITH_Team_battle_One; i <= GameCode::FITH_Team_battle_Three; ++i) {
+        for (int i = GameMode::FITH_Team_battle_One; i <= GameMode::FITH_Team_battle_Three; ++i) {
+            MapListByMode[(GameMode)i].push_back(MapCode::TEST);
             xlnt::worksheet ws = wb.sheet_by_index(i);
 
             for (auto row : ws.rows(false)) {
@@ -149,26 +196,26 @@ void TableManager::ReadFITHModeTable()
                 }
 
                 if (!row.empty()) {
-                    FITH_Data[(GameCode)i]
+                    FITH_Data[(GameMode)i]
                         = new FITH{
-                        row[FITH_Field::Play_Time].value<int>(),
-                        row[FITH_Field::Player_Spawn_Time].value<int>(),
-                        row[FITH_Field::Team_Life_Count].value<int>(),
-                        row[FITH_Field::Bomb_Spawn_Count].value<int>(),
-                        row[FITH_Field::Bomb_Spawn_Time].value<int>(),
-                        row[FITH_Field::Bomb_Delay_Time].value<int>(),
-                        row[FITH_Field::Bomb_Spawn_Location_MinX].value<float>(),
-                        row[FITH_Field::Bomb_Spawn_Location_MaxX].value<float>(),
-                        row[FITH_Field::Bomb_Spawn_Location_MinY].value<float>(),
-                        row[FITH_Field::Bomb_Spawn_Location_MaxY].value<float>(),
-                        row[FITH_Field::Weapon_Spawn_Time].value<int>(),
-                        row[FITH_Field::Weapon_Spawn_Count].value<int>(),
-                        row[FITH_Field::Block_Spawn_Count].value<int>(),
-                        row[FITH_Field::Block_Spawn_Time].value<int>(),
-                        row[FITH_Field::Block_Spawn_Location_MinX].value<float>(),
-                        row[FITH_Field::Block_Spawn_Location_MaxX].value<float>(),
-                        row[FITH_Field::Block_Spawn_Location_MinY].value<float>(),
-                        row[FITH_Field::Block_Spawn_Location_MaxY].value<float>(),
+                        row[static_cast<int>(FITH_Field::Play_Time)].value<int>(),
+                        row[static_cast<int>(FITH_Field::Player_Spawn_Time)].value<int>(),
+                        row[static_cast<int>(FITH_Field::Team_Life_Count)].value<int>(),
+                        row[static_cast<int>(FITH_Field::Bomb_Spawn_Count)].value<int>(),
+                        row[static_cast<int>(FITH_Field::Bomb_Spawn_Time)].value<int>(),
+                        row[static_cast<int>(FITH_Field::Bomb_Delay_Time)].value<int>(),
+                        row[static_cast<int>(FITH_Field::Bomb_Spawn_Location_MinX)].value<float>(),
+                        row[static_cast<int>(FITH_Field::Bomb_Spawn_Location_MaxX)].value<float>(),
+                        row[static_cast<int>(FITH_Field::Bomb_Spawn_Location_MinY)].value<float>(),
+                        row[static_cast<int>(FITH_Field::Bomb_Spawn_Location_MaxY)].value<float>(),
+                        row[static_cast<int>(FITH_Field::Weapon_Spawn_Time)].value<int>(),
+                        row[static_cast<int>(FITH_Field::Weapon_Spawn_Count)].value<int>(),
+                        row[static_cast<int>(FITH_Field::Block_Spawn_Count)].value<int>(),
+                        row[static_cast<int>(FITH_Field::Block_Spawn_Time)].value<int>(),
+                        row[static_cast<int>(FITH_Field::Block_Spawn_Location_MinX)].value<float>(),
+                        row[static_cast<int>(FITH_Field::Block_Spawn_Location_MaxX)].value<float>(),
+                        row[static_cast<int>(FITH_Field::Block_Spawn_Location_MinY)].value<float>(),
+                        row[static_cast<int>(FITH_Field::Block_Spawn_Location_MaxY)].value<float>(),
                     };
                 }
 

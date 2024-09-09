@@ -32,19 +32,23 @@ public:
 			}
 
 			// Game Data를 가지고 데미지 계산 필요
-			int damageAmount;
+			int damageAmount = 0;
 			if (read->attack_type() == AT_FALLDOWN) {
 				// 낙사 시 즉사
 				damageAmount = 999;
 			}
 			else {
-				damageAmount = pServer->GetTableManager()->getCharacterStats()[(int)CharacterType::TEST]->strength; // 임시
+				damageAmount += pServer->GetTableManager()->GetCharacterStats()[(int)attacker->GetChacracterType()]->strength; // 임시
+				if (attacker->GetWeapon() != nullptr) {
+					damageAmount += pServer->GetTableManager()->GetWeaponStats()[(int)attacker->GetWeapon()->GetType()]->Weapon_Power;
+				}
 			}
+
 			target->ReduceHP(damageAmount);
 
 			if (target->GetHP() <= 0) {
 				target->SetPlayerState(ePlayerState::PS_DEAD);
-				int spawnTime = pServer->GetTableManager()->getFITH_Data()[room->GetGameMode()]->Player_Spawn_Time;
+				int spawnTime = pServer->GetTableManager()->GetGameModeData()[room->GetGameMode()]->Player_Spawn_Time;
 				pServer->GetPacketSender()->SendPlayerDeadPacket(read->target_id(), roomid);
 				if (target->GetWeapon() != nullptr) {
 					if (target->GetWeapon()->SetIsGrabbed(false) == true) {

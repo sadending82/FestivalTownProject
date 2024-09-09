@@ -57,10 +57,14 @@ enum ePacketType
     C2S_GAME_READY
 };
 
-enum GameCode {
+enum GameMode {
     FITH_Team_battle_One,
     FITH_Team_battle_Two,
     FITH_Team_battle_Three,
+};
+
+enum eCharacterType {
+    CT_TEST
 };
 
 enum eWeaponType

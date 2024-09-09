@@ -278,7 +278,7 @@ void Server::StartHeartBeat(int sessionID)
     PushEventHeartBeat(mTimer, sessionID);
 }
 
-int Server::CreateNewRoom(int playerCount, GameCode gameMode)
+int Server::CreateNewRoom(int playerCount, GameMode gameMode)
 {
     int roomID = SetRoomID();
     if (roomID == INVALIDKEY) {
@@ -286,9 +286,9 @@ int Server::CreateNewRoom(int playerCount, GameCode gameMode)
         return INVALIDKEY;
     }
     Room* room = GetRooms()[roomID];
-    room->Init(roomID, GetTableManager()->getFITH_Data()[gameMode]->Team_Life_Count);
+    room->Init(roomID, GetTableManager()-> GetGameModeData()[gameMode]->Team_Life_Count);
     room->SetGameMode(gameMode);
-    room->InitMap(GetTableManager()->getMapData()[MapCode::TEST]);
+    room->InitMap(GetTableManager()->GetMapData()[MapCode::TEST]);
 
     room->SetPlayerLimit(playerCount); // 임시
 
@@ -310,7 +310,7 @@ void Server::MatchingComplete(int roomID, int playerCnt, std::vector<Player*>& p
         if (player->GetState() == eSessionState::ST_MATCHWAITING) {
             // 임시
             player->SetTeam(tFlag % 2);
-            player->SetHP(GetTableManager()->getCharacterStats()[(int)CharacterType::TEST]->hp);
+            player->SetHP(GetTableManager()->GetCharacterStats()[(int)eCharacterType::CT_TEST]->hp);
             tFlag++;
             //
 
@@ -340,11 +340,11 @@ void Server::StartGame(int roomID)
 
         // Push Event
         long long roomCode = room->GetRoomCode();
-        GameCode gameCode = room->GetGameMode();
-        int eventTime = GetTableManager()->getFITH_Data()[gameCode]->Block_Spawn_Time;
+        GameMode GameMode = room->GetGameMode();
+        int eventTime = GetTableManager()-> GetGameModeData()[GameMode]->Block_Spawn_Time;
         PushEventBlockDrop(mTimer, roomID, roomCode, eventTime);
-        PushEventBombSpawn(mTimer, roomID, roomCode, GetTableManager()->getFITH_Data()[gameCode]->Bomb_Spawn_Time);
-        PushEventWeaponSpawn(mTimer, roomID, roomCode, GetTableManager()->getFITH_Data()[gameCode]->Weapon_Spawn_Time);
+        PushEventBombSpawn(mTimer, roomID, roomCode, GetTableManager()-> GetGameModeData()[GameMode]->Bomb_Spawn_Time);
+        PushEventWeaponSpawn(mTimer, roomID, roomCode, GetTableManager()-> GetGameModeData()[GameMode]->Weapon_Spawn_Time);
         PushEventRemainTimeSync(mTimer, roomID, roomCode);
         PushEventTimeOverCheck(mTimer, roomID, roomCode);
 

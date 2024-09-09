@@ -22,9 +22,9 @@ public:
 			return;
 		}
 
-		GameCode gameMode = room->GetGameMode();
+		GameMode gameMode = room->GetGameMode();
 		
-		int spawnCnt = pServer->GetTableManager()->getFITH_Data()[gameMode]->Bomb_Spawn_Count;
+		int spawnCnt = pServer->GetTableManager()-> GetGameModeData()[gameMode]->Bomb_Spawn_Count;
 
 		PushEventRemainTimeSync(pServer->GetTimer(), roomid, event->roomCode);
 		pServer->GetPacketSender()->SendRemainTimeSync(roomid);
