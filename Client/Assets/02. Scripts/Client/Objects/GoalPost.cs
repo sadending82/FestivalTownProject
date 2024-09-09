@@ -11,6 +11,7 @@ public class GoalPost : MonoBehaviour
         if(other.gameObject.tag == "Bomb")
         {
             Bomb targetBomb = other.GetComponent<Bomb>();
+            if (targetBomb == null) return;
 
             if (Managers.Player.GetIsHost() == true)
             {
