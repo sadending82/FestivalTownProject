@@ -133,7 +133,7 @@ void TableManager::ReadCharacterStat()
         }
     }
     catch (const xlnt::exception& e) {
-        std::cerr << "Excel File Load Fail: " << e.what() << std::endl;
+        std::cerr << "Excel Character_Stat File Load Fail: " << e.what() << std::endl;
     }
 
 }

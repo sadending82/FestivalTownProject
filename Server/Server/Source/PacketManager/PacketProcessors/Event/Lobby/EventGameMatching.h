@@ -37,7 +37,6 @@ public:
                 if (readyPlayers.empty()) {
                     break;
                 }
-                std::cout << readyPlayers.top().second->GetSessionID() << std::endl;
                 playerList.push_back(readyPlayers.top().second);
                 readyPlayers.pop();
                 playerCount--;

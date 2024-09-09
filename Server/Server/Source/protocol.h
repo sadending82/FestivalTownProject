@@ -64,14 +64,14 @@ enum GameMode {
 };
 
 enum eCharacterType {
-    CT_TEST
+    CT_TEST = 1000
 };
 
 enum eWeaponType
 {
     WT_HAND,
-    WT_FRYING_PAN,
-    WT_BAT
+    WT_FRYING_PAN = 2001,
+    WT_BAT = 2002
 };
 
 enum eAttackType
