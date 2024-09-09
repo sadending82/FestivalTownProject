@@ -57,17 +57,21 @@ enum ePacketType
     C2S_GAME_READY
 };
 
-enum GameCode {
+enum GameMode {
     FITH_Team_battle_One,
     FITH_Team_battle_Two,
     FITH_Team_battle_Three,
 };
 
+enum eCharacterType {
+    CT_TEST = 1000
+};
+
 enum eWeaponType
 {
     WT_HAND,
-    WT_FRYING_PAN,
-    WT_BAT
+    WT_FRYING_PAN = 2001,
+    WT_BAT = 2002
 };
 
 enum eAttackType

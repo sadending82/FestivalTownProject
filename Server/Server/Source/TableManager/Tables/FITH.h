@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-enum FITH_Field {
+enum class FITH_Field {
 	Play_Time,
 	Player_Spawn_Time,
 	Team_Life_Count,

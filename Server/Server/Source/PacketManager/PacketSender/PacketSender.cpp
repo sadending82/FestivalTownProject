@@ -74,7 +74,7 @@ void PacketSender::SendHeartBeatPacket(int sessionID)
 void PacketSender::SendBlockDropPacket(int roomID, int spawnCount)
 {
     std::vector<std::pair<int, int>>& spawnPoses = mServer->GetRooms()[roomID]->GetMap()->GetBlockDropIndexes();
-    GameCode gameMode = mServer->GetRooms()[roomID]->GetGameMode();
+    GameMode gameMode = mServer->GetRooms()[roomID]->GetGameMode();
 
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -97,8 +97,8 @@ void PacketSender::SendBlockDropPacket(int roomID, int spawnCount)
 void PacketSender::SendBombSpawnPacket(int roomID, int spawnCount)
 {
     Room* room = mServer->GetRooms()[roomID];
-    GameCode gameMode = room->GetGameMode();
-    int explosionInterval = mServer->GetTableManager()->getFITH_Data()[gameMode]->Bomb_Delay_Time;
+    GameMode gameMode = room->GetGameMode();
+    int explosionInterval = mServer->GetTableManager()-> GetGameModeData()[gameMode]->Bomb_Delay_Time;
 
     std::set<Vector3f> spawnPoses = mServer->SetObjectSpawnPos(roomID, spawnCount);
 
@@ -134,8 +134,8 @@ void PacketSender::SendLifeReducePacket(int team, int lifeCount, int roomID) {
 void PacketSender::SendRemainTimeSync(int roomID)
 {
     TIMEPOINT startTime = mServer->GetRooms()[roomID]->GetStartTime();
-    GameCode gameCode = mServer->GetRooms()[roomID]->GetGameMode();
-    int playTime = mServer->GetTableManager()->getFITH_Data()[gameCode]->Play_Time;
+    GameMode GameMode = mServer->GetRooms()[roomID]->GetGameMode();
+    int playTime = mServer->GetTableManager()-> GetGameModeData()[GameMode]->Play_Time;
     std::vector<uint8_t> send_buffer = mPacketMaker->MakeRemainTimeSyncPacket(roomID, startTime, playTime);
     mServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }

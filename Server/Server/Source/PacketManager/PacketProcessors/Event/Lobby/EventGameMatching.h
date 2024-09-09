@@ -25,7 +25,7 @@ public:
         int playerCount = readyPlayers.size();
 
         while(playerCount >= MINPLAYER) {
-            int roomid = pServer->CreateNewRoom((playerCount > MAXPLAYER) ? MAXPLAYER : playerCount, GameCode::FITH_Team_battle_Three);
+            int roomid = pServer->CreateNewRoom((playerCount > MAXPLAYER) ? MAXPLAYER : playerCount, GameMode::FITH_Team_battle_Three);
             if (roomid == INVALIDKEY) {
                 std::cout << "Fali Create New Room\n";
                 break;
@@ -37,7 +37,6 @@ public:
                 if (readyPlayers.empty()) {
                     break;
                 }
-                std::cout << readyPlayers.top().second->GetSessionID() << std::endl;
                 playerList.push_back(readyPlayers.top().second);
                 readyPlayers.pop();
                 playerCount--;

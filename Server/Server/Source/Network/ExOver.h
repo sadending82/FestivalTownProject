@@ -1,6 +1,7 @@
 #pragma once
 #include <mutex>
 #include "../utility.h"
+#include "../protocol.h"
 
 enum class eOpType
 {

@@ -78,10 +78,6 @@ enum class MapCode {
 	TEST
 };
 
-enum class CharacterType {
-	TEST = 1000
-};
-
 #pragma pack (push, 1)
 
 struct HEADER {

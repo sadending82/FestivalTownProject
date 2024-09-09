@@ -24,9 +24,9 @@ public:
 			return;
 		}
 
-		GameCode gameMode = room->GetGameMode();
-		int nextEventTime = pServer->GetTableManager()->getFITH_Data()[gameMode]->Weapon_Spawn_Time; // seconds
-		int spawnCnt = pServer->GetTableManager()->getFITH_Data()[gameMode]->Weapon_Spawn_Count;
+		GameMode gameMode = room->GetGameMode();
+		int nextEventTime = pServer->GetTableManager()-> GetGameModeData()[gameMode]->Weapon_Spawn_Time; // seconds
+		int spawnCnt = pServer->GetTableManager()-> GetGameModeData()[gameMode]->Weapon_Spawn_Count;
 
 		PushEventWeaponSpawn(pServer->GetTimer(), event->roomID, event->roomCode, nextEventTime);
 		pServer->GetPacketSender()->SendWeaponSpawnPacket(roomid, spawnCnt);

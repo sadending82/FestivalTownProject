@@ -20,15 +20,20 @@ public:
 	void ReadCharacterStat();
 	void ReadFITHModeTable();
 	void ReadMapData();
+	void ReadWeaponStat();
 
-	std::unordered_map<int, ItemTable*>& getItemInfos() { return ItemInfos; }
-	std::unordered_map<int, CharacterStat*>& getCharacterStats() { return CharacterStats; }
-	std::unordered_map<GameCode, FITH*>& getFITH_Data() { return FITH_Data; }
-	std::unordered_map<MapCode, Map*>& getMapData() { return MapData; }
+	std::unordered_map<int, ItemTable*>& GetItemInfos() { return ItemInfos; }
+	std::unordered_map<int, CharacterStat*>& GetCharacterStats() { return CharacterStats; }
+	std::unordered_map<int, WeaponStat*>& GetWeaponStats() { return WeaponStats; }
+	std::unordered_map<GameMode, FITH*>& GetGameModeData() { return FITH_Data; }
+	std::unordered_map<MapCode, Map*>& GetMapData() { return MapData; }
+	std::unordered_map<GameMode, std::vector<MapCode>>& getMapListByMode(){ return MapListByMode; }
 
 private:
 	std::unordered_map<int, ItemTable*> ItemInfos;
 	std::unordered_map<int, CharacterStat*> CharacterStats;
-	std::unordered_map<GameCode, FITH*> FITH_Data;
+	std::unordered_map<int, WeaponStat*> WeaponStats;
+	std::unordered_map<GameMode, FITH*> FITH_Data;
 	std::unordered_map<MapCode, Map*> MapData;
+	std::unordered_map<GameMode, std::vector<MapCode>> MapListByMode;
 };

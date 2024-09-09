@@ -2,6 +2,23 @@
 #include <string>
 
 #pragma pack (push, 1)
+
+enum class CharacterStat_Field {
+	index,
+	name,
+	hp,
+	stamina,
+	strength,
+	speed,
+	attack,
+	headAttack,
+	jumpKick,
+	powerAttack,
+	walkSpeed,
+	runSpeed,
+	rollSpeed,
+};
+
 struct CharacterStat {
 	int				index;
 	std::string		name;

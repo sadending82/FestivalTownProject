@@ -90,8 +90,8 @@ namespace NetworkProtocol
     public enum eWeaponType
     {
         WT_HAND,
-        WT_FRYING_PAN,
-        WT_BAT
+        WT_FRYING_PAN = 2001,
+        WT_BAT = 2002
     };
 
     public enum eAttackType

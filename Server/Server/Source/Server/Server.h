@@ -31,7 +31,7 @@ public:
 	std::set<Vector3f> SetObjectSpawnPos(int roomID, int spawnCount);
 
 	void StartHeartBeat(int sessionID);
-	int CreateNewRoom(int playerCount, GameCode gameMode);
+	int CreateNewRoom(int playerCount, GameMode gameMode);
 	void MatchingComplete(int roomID, int playerCnt, std::vector<Player*>& players);
 	void StartGame(int roomID);
 	void CheckGameEnd(int roomID);

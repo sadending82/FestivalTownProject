@@ -4,7 +4,6 @@
 #include "../Object/Object.h"
 #include "../Object/Bomb/Bomb.h"
 #include "../Object/Weapon/Weapon.h"
-#include "../protocol.h"
 
 class Room
 {
@@ -36,7 +35,7 @@ public:
 	int GetPlayerCnt() { return mPlayerCnt; }
 	int GetReadyCnt() { return mPlayerCnt; }
 	int GetPlayerLimit() { return mPlayerLimit; }
-	GameCode GetGameMode() { return mGameMode; }
+	GameMode GetGameMode() { return mGameMode; }
 	Map* GetMap() { return mMap; }
 	TIMEPOINT GetStartTime() { return mStartTime; }
 	eRoomState GetState() { return mState; }
@@ -52,7 +51,7 @@ public:
 	void AddPlayerCnt() { mPlayerCnt++; }
 	void AddReadyCnt() { mPlayerCnt++; }
 	void SetPlayerLimit(int num) { mPlayerLimit = num; }
-	void SetGameMode(GameCode gamecode) { mGameMode = gamecode; }
+	void SetGameMode(GameMode GameMode) { mGameMode = GameMode; }
 	void SetStartTime(TIMEPOINT time) { mStartTime = time; }
 	void SetState(eRoomState state) { mState = state; }
 	void SetHost(int ingameid) { mHostID = ingameid; }
@@ -62,7 +61,7 @@ public:
 
 private:
 	eRoomState mState;
-	GameCode mGameMode;
+	GameMode mGameMode;
 	Map* mMap = nullptr;
 
 	std::mutex mStateLock;
