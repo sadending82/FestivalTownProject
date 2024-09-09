@@ -74,6 +74,12 @@ public class PlayerManager : MonoBehaviour
     {
         if (players == null) Init();
 
+        if(Managers.Scene.CurrentScene.GetComponent<GameScene>() == null)
+        {
+            StartCoroutine(WaitAndAddPlayer(id));
+            return;
+        }
+
         if (nowPlayerNum + 1 > maxPlayerNum)
         {
             Debug.Log("Error!!! : You Can't Add Player, Maximum Number of Players");
@@ -84,6 +90,12 @@ public class PlayerManager : MonoBehaviour
             players.transform.GetChild(id).gameObject.SetActive(true);
             nowPlayerNum++;          
         }
+    }
+
+    IEnumerator WaitAndAddPlayer(int id)
+    {
+        yield return new WaitUntil(() => Managers.Scene.CurrentScene.GetComponent<GameScene>() != null);
+        AddPlayer(id);
     }
 
     public void SetMyPlayerEnable()

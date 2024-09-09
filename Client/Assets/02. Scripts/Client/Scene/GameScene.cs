@@ -16,6 +16,7 @@ public class GameScene : BaseScene
 
         Managers.UI.ShowSceneUI<UI_OneVersusOneSceneUI>();
 
+
         Managers.Player.Init();
 
         Managers.Player.SetMyId(Managers.Game.inGameID);
