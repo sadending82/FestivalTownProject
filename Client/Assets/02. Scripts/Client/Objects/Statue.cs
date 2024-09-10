@@ -7,6 +7,15 @@ public class Statue : MonoBehaviour
 
     public Define.StatueState _state = Define.StatueState.Fine;
 
+    [SerializeField]
+    GameObject[] AttackedOneTimeMesh;
+
+    [SerializeField]
+    GameObject[] AttackedTwoTimeMesh;
+
+    [SerializeField]
+    GameObject[] DestroyedMesh;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,17 +51,19 @@ public class Statue : MonoBehaviour
         switch(state)
         {
             case Define.StatueState.Fine:
-                transform.GetChild(0).gameObject.SetActive(true);
+                transform.GetChild(0).gameObject.SetActive(true);             
                 break;
             case Define.StatueState.AttackedOneTime:
                 transform.GetChild(1).gameObject.SetActive(true);
+                StartCoroutine(AfterDestroy(0));
                 break;
             case Define.StatueState.AttackedTwoTime:
                 transform.GetChild(2).gameObject.SetActive(true);
+                StartCoroutine(AfterDestroy(1));
                 break;
             case Define.StatueState.Destroyed:
                 transform.GetChild(3).gameObject.SetActive(true);
-                StartCoroutine(AfterDestroy(3));
+                StartCoroutine(AfterDestroy(2));
                 break;
             default:
                 break;
@@ -65,7 +76,27 @@ public class Statue : MonoBehaviour
     {
         yield return new WaitForSeconds(3);
 
-        transform.GetChild(childIndex).gameObject.SetActive(false);
+        switch(childIndex)
+        {
+            case 0:
+                foreach(GameObject go in AttackedOneTimeMesh)
+                {
+                    go.SetActive(false);
+                }
+                break;
+            case 1:
+                foreach (GameObject go in AttackedTwoTimeMesh)
+                {
+                    go.SetActive(false);
+                }
+                break;
+            case 2:
+                foreach (GameObject go in DestroyedMesh)
+                {
+                    go.SetActive(false);
+                }
+                break;
+        }
     }
 
     void AllObjectOff()
