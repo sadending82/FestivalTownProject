@@ -102,9 +102,10 @@ public class PlayerManager : MonoBehaviour
     {
         if (myId != -1)
         {
-            players.transform.GetChild(myId).gameObject.SetActive(true);
-            players.transform.GetChild(myId).gameObject.GetComponent<CharacterStatus>().SetAmIPlayer(true);
-            players.transform.GetChild(myId).gameObject.GetComponent<PlayerController>().SetMyId(myId);
+            GameObject tPlayer = FindPlayerById(myId);
+            tPlayer.SetActive(true);
+            tPlayer.GetComponent<CharacterStatus>().SetAmIPlayer(true);
+            tPlayer.GetComponent<PlayerController>().SetMyId(myId);
         }
 
     }
