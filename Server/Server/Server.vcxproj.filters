@@ -100,6 +100,7 @@
     <ClInclude Include="Source\TableManager\Tables\WeaponStat.h" />
     <ClInclude Include="Source\PacketManager\PacketSender\PacketSender.h" />
     <ClInclude Include="KISA_SHA256\KISA_SHA256.h" />
+    <ClInclude Include="Source\TableManager\Tables\ScoreCalculateConstant.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

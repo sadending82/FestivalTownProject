@@ -19,25 +19,23 @@ public struct PlayerAdd : IFlatbufferObject
   public void __init(int _i, ByteBuffer _bb) { __p = new Table(_i, _bb); }
   public PlayerAdd __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public int Id { get { int o = __p.__offset(4); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public PacketTable.UtilitiesTable.Vec3f? Pos { get { int o = __p.__offset(6); return o != 0 ? (PacketTable.UtilitiesTable.Vec3f?)(new PacketTable.UtilitiesTable.Vec3f()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
-  public PacketTable.UtilitiesTable.Vec3f? Direction { get { int o = __p.__offset(8); return o != 0 ? (PacketTable.UtilitiesTable.Vec3f?)(new PacketTable.UtilitiesTable.Vec3f()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
+  public PacketTable.PlayerTable.PlayerPos? Players(int j) { int o = __p.__offset(4); return o != 0 ? (PacketTable.PlayerTable.PlayerPos?)(new PacketTable.PlayerTable.PlayerPos()).__assign(__p.__indirect(__p.__vector(o) + j * 4), __p.bb) : null; }
+  public int PlayersLength { get { int o = __p.__offset(4); return o != 0 ? __p.__vector_len(o) : 0; } }
 
   public static Offset<PacketTable.PlayerTable.PlayerAdd> CreatePlayerAdd(FlatBufferBuilder builder,
-      int id = 0,
-      Offset<PacketTable.UtilitiesTable.Vec3f> posOffset = default(Offset<PacketTable.UtilitiesTable.Vec3f>),
-      Offset<PacketTable.UtilitiesTable.Vec3f> directionOffset = default(Offset<PacketTable.UtilitiesTable.Vec3f>)) {
-    builder.StartTable(3);
-    PlayerAdd.AddDirection(builder, directionOffset);
-    PlayerAdd.AddPos(builder, posOffset);
-    PlayerAdd.AddId(builder, id);
+      VectorOffset playersOffset = default(VectorOffset)) {
+    builder.StartTable(1);
+    PlayerAdd.AddPlayers(builder, playersOffset);
     return PlayerAdd.EndPlayerAdd(builder);
   }
 
-  public static void StartPlayerAdd(FlatBufferBuilder builder) { builder.StartTable(3); }
-  public static void AddId(FlatBufferBuilder builder, int id) { builder.AddInt(0, id, 0); }
-  public static void AddPos(FlatBufferBuilder builder, Offset<PacketTable.UtilitiesTable.Vec3f> posOffset) { builder.AddOffset(1, posOffset.Value, 0); }
-  public static void AddDirection(FlatBufferBuilder builder, Offset<PacketTable.UtilitiesTable.Vec3f> directionOffset) { builder.AddOffset(2, directionOffset.Value, 0); }
+  public static void StartPlayerAdd(FlatBufferBuilder builder) { builder.StartTable(1); }
+  public static void AddPlayers(FlatBufferBuilder builder, VectorOffset playersOffset) { builder.AddOffset(0, playersOffset.Value, 0); }
+  public static VectorOffset CreatePlayersVector(FlatBufferBuilder builder, Offset<PacketTable.PlayerTable.PlayerPos>[] data) { builder.StartVector(4, data.Length, 4); for (int i = data.Length - 1; i >= 0; i--) builder.AddOffset(data[i].Value); return builder.EndVector(); }
+  public static VectorOffset CreatePlayersVectorBlock(FlatBufferBuilder builder, Offset<PacketTable.PlayerTable.PlayerPos>[] data) { builder.StartVector(4, data.Length, 4); builder.Add(data); return builder.EndVector(); }
+  public static VectorOffset CreatePlayersVectorBlock(FlatBufferBuilder builder, ArraySegment<Offset<PacketTable.PlayerTable.PlayerPos>> data) { builder.StartVector(4, data.Count, 4); builder.Add(data); return builder.EndVector(); }
+  public static VectorOffset CreatePlayersVectorBlock(FlatBufferBuilder builder, IntPtr dataPtr, int sizeInBytes) { builder.StartVector(1, sizeInBytes, 1); builder.Add<Offset<PacketTable.PlayerTable.PlayerPos>>(dataPtr, sizeInBytes); return builder.EndVector(); }
+  public static void StartPlayersVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(4, numElems, 4); }
   public static Offset<PacketTable.PlayerTable.PlayerAdd> EndPlayerAdd(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<PacketTable.PlayerTable.PlayerAdd>(o);
@@ -50,9 +48,7 @@ static public class PlayerAddVerify
   static public bool Verify(Google.FlatBuffers.Verifier verifier, uint tablePos)
   {
     return verifier.VerifyTableStart(tablePos)
-      && verifier.VerifyField(tablePos, 4 /*Id*/, 4 /*int*/, 4, false)
-      && verifier.VerifyTable(tablePos, 6 /*Pos*/, PacketTable.UtilitiesTable.Vec3fVerify.Verify, false)
-      && verifier.VerifyTable(tablePos, 8 /*Direction*/, PacketTable.UtilitiesTable.Vec3fVerify.Verify, false)
+      && verifier.VerifyVectorOfTables(tablePos, 4 /*Players*/, PacketTable.PlayerTable.PlayerPosVerify.Verify, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }

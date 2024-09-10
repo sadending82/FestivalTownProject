@@ -9,27 +9,25 @@ PacketSender::~PacketSender()
 {
 }
 
-void PacketSender::SendPlayerAdd(int sessionID, int destination)
+void PacketSender::SendPlayerAdd(int roomID)
 {
-    Player* player = dynamic_cast<Player*>(mServer->GetSessions()[sessionID]);
-    if (player == nullptr) {
-        return;
-    }
-    int inGameID = player->GetInGameID();
-    int roomID = player->GetRoomID();
-
-    std::vector<std::pair<int, int>>& spawnPoses = mServer->GetRooms()[roomID]->GetMap()->GetPlayerSpawnIndexes(player->GetTeam());
+    Room* room = mServer->GetRooms()[roomID];
 
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> idx_distrib(0, spawnPoses.size() - 1);
-    int idx = idx_distrib(gen);
-    int posX = spawnPoses[idx].first;
-    int posY = spawnPoses[idx].second;
-
-    std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerAdd(inGameID, Vector3f(posX, posY, 0));
-
-    mServer->GetSessions()[destination]->DoSend(send_buffer.data(), send_buffer.size());
+    room->GetPlayerListLock().lock_shared();
+    for (Player* player : room->GetPlayerList()) {
+        if (player == nullptr) {
+            continue;
+        }
+        std::vector<std::pair<int, int>>& spawnPoses = room->GetMap()->GetPlayerSpawnIndexes(player->GetTeam());
+        std::uniform_int_distribution<> idx_distrib(0, spawnPoses.size() - 1);
+        int idx = idx_distrib(gen);
+        player->SetPosition(spawnPoses[idx].first, spawnPoses[idx].second, 0);
+    }
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerAdd(room->GetPlayerList());
+    room->GetPlayerListLock().unlock_shared();
+    mServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
 
 void PacketSender::SendGameMatchingResponse(int sessionID)

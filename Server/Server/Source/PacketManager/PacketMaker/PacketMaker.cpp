@@ -2,13 +2,31 @@
 #include "PacketMaker.h"
 #include "../../Object/Player.h"
 
-std::vector<uint8_t> PacketMaker::MakePlayerAdd(int inGameID, Vector3f position)
+std::vector<uint8_t> PacketMaker::MakePlayerAdd(std::array<class Player*, MAXPLAYER>& players)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 	Builder.Clear();
-	auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, position.x, position.y, position.x);
-	auto dir = PacketTable::UtilitiesTable::CreateVec3f(Builder, 0, 0, 0);
-	Builder.Finish(PacketTable::PlayerTable::CreatePlayerAdd(Builder, inGameID, pos, dir));
+
+	std::vector<flatbuffers::Offset<PacketTable::PlayerTable::PlayerPos>> player_vec;
+
+	for (Player* player : players) {
+		if (player == nullptr) {
+			continue;
+		}
+		Vector3f position = player->GetPosition();
+		auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, position.x, position.y, position.x);
+		auto dir = PacketTable::UtilitiesTable::CreateVec3f(Builder, 0, 0, 0);
+
+		auto playerInfo = PacketTable::PlayerTable::CreatePlayerPos(Builder
+			, player->GetInGameID()
+			, pos
+			, dir
+		);
+
+		player_vec.push_back(playerInfo);
+	}
+
+	Builder.Finish(PacketTable::PlayerTable::CreatePlayerAdd (Builder, Builder.CreateVector(player_vec)));
 	return MakeBuffer(ePacketType::S2C_PLAYER_ADD, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
@@ -135,14 +153,6 @@ std::vector<uint8_t> PacketMaker::MakeGameEndPacket(uint8_t winningTeams_flag)
 	return MakeBuffer(ePacketType::S2C_GAME_END, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakeGameHostChangePacket(int inGameID, int roomID)
-{
-	flatbuffers::FlatBufferBuilder Builder;
-	Builder.Clear();
-	Builder.Finish(PacketTable::GameTable::CreateGameHostChange(Builder, inGameID, roomID));
-	return MakeBuffer(ePacketType::S2C_GAME_HOST_CHANGE, Builder.GetBufferPointer(), Builder.GetSize());
-}
-
 std::vector<uint8_t> PacketMaker::MakeGameResultPacket(uint8_t winningTeams_flag, std::unordered_map<int, sPlayerGameRecord>& records, std::array<class Player*, MAXPLAYER>& players)
 {
 	flatbuffers::FlatBufferBuilder Builder;
@@ -172,6 +182,14 @@ std::vector<uint8_t> PacketMaker::MakeGameResultPacket(uint8_t winningTeams_flag
 		, Builder.CreateVector(record_vec)));
 
 	return MakeBuffer(ePacketType::S2C_GAME_RESULT, Builder.GetBufferPointer(), Builder.GetSize());
+}
+
+std::vector<uint8_t> PacketMaker::MakeGameHostChangePacket(int inGameID, int roomID)
+{
+	flatbuffers::FlatBufferBuilder Builder;
+	Builder.Clear();
+	Builder.Finish(PacketTable::GameTable::CreateGameHostChange(Builder, inGameID, roomID));
+	return MakeBuffer(ePacketType::S2C_GAME_HOST_CHANGE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
 std::vector<uint8_t> PacketMaker::MakeLifeReducePacket(int team, int lifeCount)

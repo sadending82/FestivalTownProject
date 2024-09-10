@@ -17,13 +17,13 @@ namespace Network.PacketProcessor
 
             var Data = PlayerAdd.GetRootAsPlayerAdd(bb);
 
-            int id = Data.Id;
-            
-            Vector3 pos = new Vector3(Data.Pos.Value.X, Data.Pos.Value.Y, 30);
-            //Vector3 dir = new Vector3(Data.Direction.Value.X, Data.Direction.Value.Y, Data.Direction.Value.Z);
-
-            Debug.Log("Add player");
-            Managers.Player.GetComponent<PlayerManager>().AddPlayer(id);
+            for (int i = 0; i < Data.PlayersLength; ++i)
+            {
+                var player = Data.Players(i);
+                int id = player.Value.Id;
+                Vector3 pos = new Vector3(player.Value.Pos.Value.X, player.Value.Pos.Value.Y, 30);
+                Managers.Player.GetComponent<PlayerManager>().AddPlayer(id);
+            }
         }
 
         private FlatBufferBuilder mBuilder;

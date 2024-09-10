@@ -251,6 +251,7 @@ xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     <ClInclude Include="Source\TableManager\TableManager.h" />
     <ClInclude Include="Source\TableManager\Tables\CharacterStat.h" />
     <ClInclude Include="Source\TableManager\Tables\ItemTable.h" />
+    <ClInclude Include="Source\TableManager\Tables\ScoreCalculateConstant.h" />
     <ClInclude Include="Source\TableManager\Tables\Tables.h" />
     <ClInclude Include="Source\TableManager\Tables\FITH.h" />
     <ClInclude Include="Source\TableManager\Tables\WeaponStat.h" />

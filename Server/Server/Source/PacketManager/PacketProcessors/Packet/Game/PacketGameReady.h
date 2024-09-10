@@ -31,15 +31,7 @@ public:
 
 					pServer->GetPacketSender()->SendAllPlayerReady(roomid);
 
-					room->GetPlayerListLock().lock_shared();
-					for (Player* p : room->GetPlayerList()) {
-						if (p == nullptr) continue;
-						for (Player* other : room->GetPlayerList()) {
-							if (other == nullptr) continue;
-							pServer->GetPacketSender()->SendPlayerAdd(p->GetSessionID(), other->GetSessionID());
-						}
-					}
-					room->GetPlayerListLock().unlock_shared();
+					pServer->GetPacketSender()->SendPlayerAdd(roomid);
 
 					PushEventGameStart(pServer->GetTimer(), roomid, room->GetRoomCode());
 				}

@@ -186,26 +186,16 @@ inline ::flatbuffers::Offset<PlayerPosSync> CreatePlayerPosSync(
 struct PlayerAdd FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef PlayerAddBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_ID = 4,
-    VT_POS = 6,
-    VT_DIRECTION = 8
+    VT_PLAYERS = 4
   };
-  int32_t id() const {
-    return GetField<int32_t>(VT_ID, 0);
-  }
-  const PacketTable::UtilitiesTable::Vec3f *pos() const {
-    return GetPointer<const PacketTable::UtilitiesTable::Vec3f *>(VT_POS);
-  }
-  const PacketTable::UtilitiesTable::Vec3f *direction() const {
-    return GetPointer<const PacketTable::UtilitiesTable::Vec3f *>(VT_DIRECTION);
+  const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::PlayerTable::PlayerPos>> *players() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::PlayerTable::PlayerPos>> *>(VT_PLAYERS);
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<int32_t>(verifier, VT_ID, 4) &&
-           VerifyOffset(verifier, VT_POS) &&
-           verifier.VerifyTable(pos()) &&
-           VerifyOffset(verifier, VT_DIRECTION) &&
-           verifier.VerifyTable(direction()) &&
+           VerifyOffset(verifier, VT_PLAYERS) &&
+           verifier.VerifyVector(players()) &&
+           verifier.VerifyVectorOfTables(players()) &&
            verifier.EndTable();
   }
 };
@@ -214,14 +204,8 @@ struct PlayerAddBuilder {
   typedef PlayerAdd Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_id(int32_t id) {
-    fbb_.AddElement<int32_t>(PlayerAdd::VT_ID, id, 0);
-  }
-  void add_pos(::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> pos) {
-    fbb_.AddOffset(PlayerAdd::VT_POS, pos);
-  }
-  void add_direction(::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> direction) {
-    fbb_.AddOffset(PlayerAdd::VT_DIRECTION, direction);
+  void add_players(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::PlayerTable::PlayerPos>>> players) {
+    fbb_.AddOffset(PlayerAdd::VT_PLAYERS, players);
   }
   explicit PlayerAddBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -236,14 +220,19 @@ struct PlayerAddBuilder {
 
 inline ::flatbuffers::Offset<PlayerAdd> CreatePlayerAdd(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    int32_t id = 0,
-    ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> pos = 0,
-    ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> direction = 0) {
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::PlayerTable::PlayerPos>>> players = 0) {
   PlayerAddBuilder builder_(_fbb);
-  builder_.add_direction(direction);
-  builder_.add_pos(pos);
-  builder_.add_id(id);
+  builder_.add_players(players);
   return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<PlayerAdd> CreatePlayerAddDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<::flatbuffers::Offset<PacketTable::PlayerTable::PlayerPos>> *players = nullptr) {
+  auto players__ = players ? _fbb.CreateVector<::flatbuffers::Offset<PacketTable::PlayerTable::PlayerPos>>(*players) : 0;
+  return PacketTable::PlayerTable::CreatePlayerAdd(
+      _fbb,
+      players__);
 }
 
 struct PlayerMove FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
