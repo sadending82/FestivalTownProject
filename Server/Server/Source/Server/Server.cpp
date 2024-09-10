@@ -70,6 +70,7 @@ void Server::Disconnect(int key)
 
     player->GetDisconnectLock().lock();
     if (player->GetState() == eSessionState::ST_FREE) {
+        player->GetDisconnectLock().unlock();
         return;
     }
 
