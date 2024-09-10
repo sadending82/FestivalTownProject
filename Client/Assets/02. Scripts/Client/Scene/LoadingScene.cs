@@ -37,6 +37,11 @@ public class LoadingScene : BaseScene
 
         Debug.Log("loadTime End");
 
+        while (AsyncOp.progress < 0.9f)
+        {
+            yield return null;
+        }
+
         Managers.Network.GetPacketManager().SendGameReady();
 
         while (!NextSceneActivate)
