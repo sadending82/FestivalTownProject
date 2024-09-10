@@ -35,11 +35,12 @@ public class LoadingScene : BaseScene
             loadTime += Time.unscaledDeltaTime;
         }
 
-        Debug.Log("loadTime End");
+        Debug.Log($"loadTime End, progress { AsyncOp.progress * 100 }%");
 
         while (AsyncOp.progress < 0.9f)
         {
             yield return null;
+            Debug.Log($"Scene Load Progress {AsyncOp.progress * 100}%");
         }
 
         Managers.Network.GetPacketManager().SendGameReady();
@@ -47,8 +48,10 @@ public class LoadingScene : BaseScene
         while (!NextSceneActivate)
         {
             yield return null;
+            Debug.Log($"Scene Load Progress {AsyncOp.progress * 100}%");
             if (NextSceneActivate)
             {
+                Debug.Log($"Scene Load Progress {AsyncOp.progress * 100}%");
                 AsyncOp.allowSceneActivation = true;
                 break;
             }
