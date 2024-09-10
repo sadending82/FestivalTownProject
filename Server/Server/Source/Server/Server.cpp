@@ -211,6 +211,9 @@ void Server::SendAllPlayerInRoomExceptSender(void* packet, int size, int session
         return;
     }
     int roomID = player->GetRoomID();
+    if (roomID == INVALIDKEY) {
+        return;
+    }
     mRooms[roomID]->GetPlayerListLock().lock_shared();
     for (Player* p : GetRooms()[roomID]->GetPlayerList()) {
         if (p == nullptr) continue;
