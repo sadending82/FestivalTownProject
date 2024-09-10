@@ -18,8 +18,11 @@ public:
 	void SendBombExplosionPacket(int roomID, int bombID);
 	void SendLifeReducePacket(int team, int lifeCount, int roomID);
 	void SendRemainTimeSync(int roomID);
+
 	void SendGameStartPacket(int roomID);
 	void SendGameEndPacket(int roomID, uint8_t winningTeams_flag);
+	void SendGameResultPacket(int roomID, uint8_t winningTeams_flag);
+
 	void SendGameHostChange(int sessionID);
 	void SendPlayerDeadPacket(int inGameID, int roomID);
 	void SendPlayerRespawn(int inGameID, int roomID);

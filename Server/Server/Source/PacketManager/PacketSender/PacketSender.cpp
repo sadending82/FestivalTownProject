@@ -153,6 +153,15 @@ void PacketSender::SendGameEndPacket(int roomID, uint8_t winningTeams_flag)
     mServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
 
+void PacketSender::SendGameResultPacket(int roomID, uint8_t winningTeams_flag)
+{
+    Room* room = mServer->GetRooms()[roomID];
+    room->GetPlayerListLock().lock_shared();
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakeGameResultPacket(winningTeams_flag, room->GetPlayerRecordList(), room->GetPlayerList());
+    room->GetPlayerListLock().unlock_shared();
+    mServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
+}
+
 void PacketSender::SendGameHostChange(int sessionID)
 {
     if (sessionID == INVALIDKEY) {

@@ -111,7 +111,8 @@ struct PlayerGameRecord FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_DEATH_COUNT = 12,
     VT_BOMB_INSERT_COUNT = 14,
     VT_EARN_GOLD = 16,
-    VT_IS_MVP = 18
+    VT_POINT = 18,
+    VT_IS_MVP = 20
   };
   int32_t id() const {
     return GetField<int32_t>(VT_ID, 0);
@@ -134,6 +135,9 @@ struct PlayerGameRecord FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   int32_t earn_gold() const {
     return GetField<int32_t>(VT_EARN_GOLD, 0);
   }
+  int32_t point() const {
+    return GetField<int32_t>(VT_POINT, 0);
+  }
   bool is_mvp() const {
     return GetField<uint8_t>(VT_IS_MVP, 0) != 0;
   }
@@ -147,6 +151,7 @@ struct PlayerGameRecord FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            VerifyField<int32_t>(verifier, VT_DEATH_COUNT, 4) &&
            VerifyField<int32_t>(verifier, VT_BOMB_INSERT_COUNT, 4) &&
            VerifyField<int32_t>(verifier, VT_EARN_GOLD, 4) &&
+           VerifyField<int32_t>(verifier, VT_POINT, 4) &&
            VerifyField<uint8_t>(verifier, VT_IS_MVP, 1) &&
            verifier.EndTable();
   }
@@ -177,6 +182,9 @@ struct PlayerGameRecordBuilder {
   void add_earn_gold(int32_t earn_gold) {
     fbb_.AddElement<int32_t>(PlayerGameRecord::VT_EARN_GOLD, earn_gold, 0);
   }
+  void add_point(int32_t point) {
+    fbb_.AddElement<int32_t>(PlayerGameRecord::VT_POINT, point, 0);
+  }
   void add_is_mvp(bool is_mvp) {
     fbb_.AddElement<uint8_t>(PlayerGameRecord::VT_IS_MVP, static_cast<uint8_t>(is_mvp), 0);
   }
@@ -200,8 +208,10 @@ inline ::flatbuffers::Offset<PlayerGameRecord> CreatePlayerGameRecord(
     int32_t death_count = 0,
     int32_t bomb_insert_count = 0,
     int32_t earn_gold = 0,
+    int32_t point = 0,
     bool is_mvp = false) {
   PlayerGameRecordBuilder builder_(_fbb);
+  builder_.add_point(point);
   builder_.add_earn_gold(earn_gold);
   builder_.add_bomb_insert_count(bomb_insert_count);
   builder_.add_death_count(death_count);
@@ -222,6 +232,7 @@ inline ::flatbuffers::Offset<PlayerGameRecord> CreatePlayerGameRecordDirect(
     int32_t death_count = 0,
     int32_t bomb_insert_count = 0,
     int32_t earn_gold = 0,
+    int32_t point = 0,
     bool is_mvp = false) {
   auto name__ = name ? _fbb.CreateString(name) : 0;
   return PacketTable::UtilitiesTable::CreatePlayerGameRecord(
@@ -233,6 +244,7 @@ inline ::flatbuffers::Offset<PlayerGameRecord> CreatePlayerGameRecordDirect(
       death_count,
       bomb_insert_count,
       earn_gold,
+      point,
       is_mvp);
 }
 

@@ -36,6 +36,9 @@ public:
 	void StartGame(int roomID);
 	void CheckGameEnd(int roomID);
 	void TimeoverGameEnd(int roomID);
+	int CalculatePoint(sPlayerGameRecord record);
+	int CalculateGoldReward(int point, bool isMvp);
+	void CalculateGameResult(int roomID, uint8_t winningTeams_flag);
 
 	HANDLE GetHcp() { return mHcp; }
 	SOCKADDR_IN GetServerAddr() { return mServerAddr; }

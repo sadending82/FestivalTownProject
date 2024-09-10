@@ -1,5 +1,6 @@
 #pragma once
 #include "PacketMaker.h"
+#include "../../Object/Player.h"
 
 std::vector<uint8_t> PacketMaker::MakePlayerAdd(int inGameID, Vector3f position)
 {
@@ -140,6 +141,37 @@ std::vector<uint8_t> PacketMaker::MakeGameHostChangePacket(int inGameID, int roo
 	Builder.Clear();
 	Builder.Finish(PacketTable::GameTable::CreateGameHostChange(Builder, inGameID, roomID));
 	return MakeBuffer(ePacketType::S2C_GAME_HOST_CHANGE, Builder.GetBufferPointer(), Builder.GetSize());
+}
+
+std::vector<uint8_t> PacketMaker::MakeGameResultPacket(uint8_t winningTeams_flag, std::unordered_map<int, sPlayerGameRecord>& records, std::array<class Player*, MAXPLAYER>& players)
+{
+	flatbuffers::FlatBufferBuilder Builder;
+	Builder.Clear();
+
+	std::vector<flatbuffers::Offset<PacketTable::UtilitiesTable::PlayerGameRecord>> record_vec;
+
+	for (auto& pair : records) {
+		int id = pair.first;
+		sPlayerGameRecord record = pair.second;
+		auto fRecord = PacketTable::UtilitiesTable::CreatePlayerGameRecord(Builder
+			, id
+			, Builder.CreateString(players[id]->GetName())
+			, players[id]->GetTeam()
+			, record.kill_count
+			, record.death_count
+			, record.bomb_insert_count
+			, record.earn_gold
+			, record.point
+			, record.is_mvp);
+
+		record_vec.push_back(fRecord);
+	}
+
+	Builder.Finish(PacketTable::GameTable::CreateGameResult(Builder
+		, winningTeams_flag
+		, Builder.CreateVector(record_vec)));
+
+	return MakeBuffer(ePacketType::S2C_GAME_RESULT, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
 std::vector<uint8_t> PacketMaker::MakeLifeReducePacket(int team, int lifeCount)

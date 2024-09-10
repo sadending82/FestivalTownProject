@@ -32,7 +32,8 @@ public struct PlayerGameRecord : IFlatbufferObject
   public int DeathCount { get { int o = __p.__offset(12); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
   public int BombInsertCount { get { int o = __p.__offset(14); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
   public int EarnGold { get { int o = __p.__offset(16); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public bool IsMvp { get { int o = __p.__offset(18); return o != 0 ? 0!=__p.bb.Get(o + __p.bb_pos) : (bool)false; } }
+  public int Point { get { int o = __p.__offset(18); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public bool IsMvp { get { int o = __p.__offset(20); return o != 0 ? 0!=__p.bb.Get(o + __p.bb_pos) : (bool)false; } }
 
   public static Offset<PacketTable.UtilitiesTable.PlayerGameRecord> CreatePlayerGameRecord(FlatBufferBuilder builder,
       int id = 0,
@@ -42,8 +43,10 @@ public struct PlayerGameRecord : IFlatbufferObject
       int death_count = 0,
       int bomb_insert_count = 0,
       int earn_gold = 0,
+      int point = 0,
       bool is_mvp = false) {
-    builder.StartTable(8);
+    builder.StartTable(9);
+    PlayerGameRecord.AddPoint(builder, point);
     PlayerGameRecord.AddEarnGold(builder, earn_gold);
     PlayerGameRecord.AddBombInsertCount(builder, bomb_insert_count);
     PlayerGameRecord.AddDeathCount(builder, death_count);
@@ -55,7 +58,7 @@ public struct PlayerGameRecord : IFlatbufferObject
     return PlayerGameRecord.EndPlayerGameRecord(builder);
   }
 
-  public static void StartPlayerGameRecord(FlatBufferBuilder builder) { builder.StartTable(8); }
+  public static void StartPlayerGameRecord(FlatBufferBuilder builder) { builder.StartTable(9); }
   public static void AddId(FlatBufferBuilder builder, int id) { builder.AddInt(0, id, 0); }
   public static void AddName(FlatBufferBuilder builder, StringOffset nameOffset) { builder.AddOffset(1, nameOffset.Value, 0); }
   public static void AddTeam(FlatBufferBuilder builder, int team) { builder.AddInt(2, team, 0); }
@@ -63,7 +66,8 @@ public struct PlayerGameRecord : IFlatbufferObject
   public static void AddDeathCount(FlatBufferBuilder builder, int deathCount) { builder.AddInt(4, deathCount, 0); }
   public static void AddBombInsertCount(FlatBufferBuilder builder, int bombInsertCount) { builder.AddInt(5, bombInsertCount, 0); }
   public static void AddEarnGold(FlatBufferBuilder builder, int earnGold) { builder.AddInt(6, earnGold, 0); }
-  public static void AddIsMvp(FlatBufferBuilder builder, bool isMvp) { builder.AddBool(7, isMvp, false); }
+  public static void AddPoint(FlatBufferBuilder builder, int point) { builder.AddInt(7, point, 0); }
+  public static void AddIsMvp(FlatBufferBuilder builder, bool isMvp) { builder.AddBool(8, isMvp, false); }
   public static Offset<PacketTable.UtilitiesTable.PlayerGameRecord> EndPlayerGameRecord(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<PacketTable.UtilitiesTable.PlayerGameRecord>(o);
@@ -83,7 +87,8 @@ static public class PlayerGameRecordVerify
       && verifier.VerifyField(tablePos, 12 /*DeathCount*/, 4 /*int*/, 4, false)
       && verifier.VerifyField(tablePos, 14 /*BombInsertCount*/, 4 /*int*/, 4, false)
       && verifier.VerifyField(tablePos, 16 /*EarnGold*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 18 /*IsMvp*/, 1 /*bool*/, 1, false)
+      && verifier.VerifyField(tablePos, 18 /*Point*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 20 /*IsMvp*/, 1 /*bool*/, 1, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }

@@ -113,15 +113,17 @@ struct sPlayerGameRecord {
 	int death_count;
 	int bomb_insert_count;
 	int earn_gold;
+	int point;
 	int is_mvp;
 
-	sPlayerGameRecord() : kill_count(0), death_count(0), bomb_insert_count(0), earn_gold(0), is_mvp(false) {};
+	sPlayerGameRecord() : kill_count(0), death_count(0), bomb_insert_count(0), earn_gold(0), point(0), is_mvp(false) {};
 
 	void Init() {
 		kill_count = 0;
 		death_count = 0;
 		bomb_insert_count = 0;
 		earn_gold = 0;
+		point = 0;
 		is_mvp = false;
 	}
 };

@@ -20,6 +20,7 @@ public:
 	int GetRoomID() { return mRoomID; }
 	int GetInGameID() { return mInGameID; }
 	int GetTeam() { return mTeam; }
+	std::string GetName() { return mName; }
 	Vector3f GetPosition() { return mPosition; }
 	Vector3f GetDirection() { return mDirection; }
 	ePlayerState GetPlayerState() { return mPlayerState; }
@@ -32,6 +33,7 @@ public:
 	void SetRoomID(int id) { mRoomID = id; }
 	void SetInGameID(int id) { mInGameID = id; }
 	void SetTeam(int team) { mTeam = team; }
+	void SetName(std::string name) { mName = name; }
 	void SetPosition(float x, float y, float z) { mPosition = Vector3f(x, y, z); }
 	void SetPosition(Vector3f v3f) { mPosition = v3f; }
 	void SetDirection(float x, float y, float z) { mDirection = Vector3f(x, y, z); }

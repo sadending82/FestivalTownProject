@@ -378,6 +378,9 @@ void Server::CheckGameEnd(int roomID)
     if (loseTeamCnt = teamCnt - 1) {
         if (room->SetIsRun(false) == true) {
             mPacketSender->SendGameEndPacket(roomID, winningTeams_flag);
+
+            CalculateGameResult(roomID, winningTeams_flag);
+
             room->GetPlayerListLock().lock_shared();
             for (auto player : room->GetPlayerList()) {
                 if (player == nullptr) continue;
@@ -414,6 +417,9 @@ void Server::TimeoverGameEnd(int roomID) {
 
     if (room->SetIsRun(false) == true) {
         mPacketSender->SendGameEndPacket(roomID, winningTeams_flag);
+
+        CalculateGameResult(roomID, winningTeams_flag);
+
         room->GetPlayerListLock().lock_shared();
         for (auto player : room->GetPlayerList()) {
             if (player == nullptr) continue;
@@ -429,4 +435,47 @@ void Server::TimeoverGameEnd(int roomID) {
 
         std::cout << "Game End - " << roomID << std::endl;
     }
+}
+
+int Server::CalculatePoint(sPlayerGameRecord record)
+{
+    int point = 0;
+
+    point += (record.kill_count * 1) - (record.death_count * 0.5) + (record.bomb_insert_count * 2);
+
+    return (point < 0 ) ? 0 : point;
+}
+
+int Server::CalculateGoldReward(int point, bool isMvp)
+{
+    return (isMvp == true) ? 500 + (point*200) : 500 + (point * 100);
+}
+
+void Server::CalculateGameResult(int roomID, uint8_t winningTeams_flag)
+{
+    Room* room = GetRooms()[roomID];
+    std::unordered_map<int, sPlayerGameRecord>& records = room->GetPlayerRecordList();
+
+    int mvp_id = INVALIDKEY;
+    int mvp_point = -1;
+
+    for (auto& pair : records) {
+        int id = pair.first;
+
+        int point =  CalculatePoint(pair.second);
+        pair.second.point = point;
+        pair.second.earn_gold = CalculateGoldReward(point, false);
+
+        if (point > mvp_point) {
+            mvp_id = id;
+            mvp_point = point;
+        }
+    }
+
+    if (mvp_id !=INVALIDKEY) {
+        records[mvp_id].earn_gold = CalculateGoldReward(records[mvp_id].point, true);
+        records[mvp_id].is_mvp = true;
+    }
+
+    mPacketSender->SendGameResultPacket(roomID, winningTeams_flag);
 }

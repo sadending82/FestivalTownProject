@@ -72,6 +72,7 @@ public class PacketManager : MonoBehaviour
             { ePacketType.S2C_ALL_PLAYER_READY, new AllPlayerReadyProcessor() },
             { ePacketType.S2C_GAME_START, new GameStartProcessor() },
             { ePacketType.S2C_GAME_END, new GameEndProcessor() },
+            { ePacketType.S2C_GAME_RESULT, new GameResultProcessor() },
             { ePacketType.S2C_GAME_HOST_CHANGE, new GameHostChangeProcessor() }
         };
     }

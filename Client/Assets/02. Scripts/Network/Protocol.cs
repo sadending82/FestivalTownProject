@@ -44,6 +44,7 @@ namespace NetworkProtocol
         S2C_ALL_PLAYER_READY,
         S2C_GAME_START,
         S2C_GAME_END,
+        S2C_GAME_RESULT,
         S2C_GAME_HOST_CHANGE,
 
         S2C_LIFE_REDUCE,
