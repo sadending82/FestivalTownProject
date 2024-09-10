@@ -34,6 +34,9 @@ void Room::Reset()
 	mStateLock.lock();
 	mState = eRoomState::RS_FREE;
 	mStateLock.unlock();
+
+	mAllPlayerReady = false;
+	mIsRun = false;
 }
 
 void Room::Init(int id, int teamLifeCount, int playerLimit)
@@ -59,6 +62,9 @@ void Room::Init(int id, int teamLifeCount, int playerLimit)
 	// team game
 	mTeams[(int)TeamCode::RED].Init(teamLifeCount);
 	mTeams[(int)TeamCode::BLUE].Init(teamLifeCount);
+
+	mAllPlayerReady = false;
+	mIsRun = false;
 
 	InitRoomCode();
 }
@@ -204,6 +210,12 @@ bool Room::SetIsRun(bool desired)
 {
 	bool expected = !desired;
 	return mIsRun.compare_exchange_strong(expected, desired);
+}
+
+bool Room::SetAllPlayerReady(bool desired)
+{
+	bool expected = !desired;
+	return mAllPlayerReady.compare_exchange_strong(expected, desired);
 }
 
 int Room::ChangeHost()

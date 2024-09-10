@@ -26,19 +26,23 @@ public:
 			room->AddReadyCnt();
 
 			if (room->GetReadyCnt() == room->GetPlayerCnt()) {
-				pServer->GetPacketSender()->SendAllPlayerReady(roomid);
 
-				room->GetPlayerListLock().lock_shared();
-				for (Player* p : room->GetPlayerList()) {
-					if (p == nullptr) continue;
-					for (Player* other : room->GetPlayerList()) {
-						if (other == nullptr) continue;
-						pServer->GetPacketSender()->SendPlayerAdd(p->GetSessionID(), other->GetSessionID());
+				if (room->SetAllPlayerReady(true) == true) {
+
+					pServer->GetPacketSender()->SendAllPlayerReady(roomid);
+
+					room->GetPlayerListLock().lock_shared();
+					for (Player* p : room->GetPlayerList()) {
+						if (p == nullptr) continue;
+						for (Player* other : room->GetPlayerList()) {
+							if (other == nullptr) continue;
+							pServer->GetPacketSender()->SendPlayerAdd(p->GetSessionID(), other->GetSessionID());
+						}
 					}
-				}
-				room->GetPlayerListLock().unlock_shared();
+					room->GetPlayerListLock().unlock_shared();
 
-				PushEventGameStart(pServer->GetTimer(), roomid, room->GetRoomCode());
+					PushEventGameStart(pServer->GetTimer(), roomid, room->GetRoomCode());
+				}
 			}
 		}
 	}

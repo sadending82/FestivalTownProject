@@ -46,6 +46,7 @@ public:
 	std::shared_mutex& GetWeaponListLock() { return mWeaponListLock; }
 	int GetHostID() { return mHostID; }
 	long long GetRoomCode() { return mRoomCode; }
+	bool GetAllPlayerReady() { return mAllPlayerReady.load(); }
 	bool GetIsRun() { return mIsRun.load(); }
 	
 
@@ -57,6 +58,7 @@ public:
 	void SetState(eRoomState state) { mState = state; }
 	void SetHost(int ingameid) { mHostID = ingameid; }
 	bool SetIsRun(bool desired);
+	bool SetAllPlayerReady(bool desired);
 
 	int ChangeHost();
 
@@ -82,6 +84,8 @@ private:
 	int mHostID = INVALIDKEY;
 	TIMEPOINT mStartTime;
 	long long mRoomCode = 0; // 이벤트 처리용 고유 식별 번호
-	std::atomic<bool> mIsRun = 0;
+
+	std::atomic<bool> mAllPlayerReady = false;
+	std::atomic<bool> mIsRun = false;
 };
 
