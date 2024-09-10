@@ -20,6 +20,9 @@ namespace Network.PacketProcessor
             byte flag = Data.WinningteamsFlag;
 
             Managers.Scene.LoadScene(Define.Scene.Home);
+            Managers.ObjectPool.Clear();
+            Managers.Game.Clear();
+            Managers.CubeObject.Clear();
         }
 
         private FlatBufferBuilder mBuilder;

@@ -67,4 +67,15 @@ public class CubeObjectManager : MonoBehaviour
         reusedCube.gameObject.transform.GetChild(type).gameObject.GetComponent<Cube>().SetTargetHeight(targetHeight);
         reusedCube.gameObject.transform.GetChild(type).gameObject.transform.position = new Vector3(x + offsetX, createHeight, y + offsetY);
     }
+
+    public void Clear()
+    {
+        for (int i = 0; i < 30; ++i)
+        {
+            for (int j = 0; j < 30; ++j)
+            {
+                aMapHeight[i, j] = 0f;
+            }
+        }
+    }
 }
