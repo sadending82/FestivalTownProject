@@ -1,13 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using ClientProtocol;
+using UnityEngine;
 
 public class CharacterStatus : MonoBehaviour
 {
     [Header("--- Status ---")]
     [SerializeField]
-    private int id;
+    private int Id;
     public int maxHp;
     public int hp;
     public float maxStamina;
@@ -125,7 +123,7 @@ public class CharacterStatus : MonoBehaviour
             ///<summary>
             ///서버에 상태 전달하는 부분 여기에 추가
             ///</summary>
-            packetManager.SendPlayerAnimationPacket(playerController.GetPosition(), playerController.GetDirection(), id, upperBodyAnimationState);
+            packetManager.SendPlayerAnimationPacket(playerController.GetPosition(), playerController.GetDirection(), Id, upperBodyAnimationState);
 
             this.upperBodyAnimationState = upperBodyAnimationState;
             animationController.SetUpperBodyAnimationState(upperBodyAnimationState);
@@ -203,13 +201,14 @@ public class CharacterStatus : MonoBehaviour
     {
         return isDie;
     }
-    public void SetId(int id)
+    public void SetId(int Id)
     {
-        this.id = id;
+        this.Id = Id;
+        playerController.SetMyId(Id);
     }
     public int GetId()
     {
-        return id;
+        return Id;
     }
     public int GetStrength()
     {
