@@ -22,6 +22,9 @@ struct UtilitiesBuilder;
 struct HeartBeat;
 struct HeartBeatBuilder;
 
+struct PlayerGameRecord;
+struct PlayerGameRecordBuilder;
+
 struct Vec2i;
 struct Vec2iBuilder;
 
@@ -96,6 +99,141 @@ inline ::flatbuffers::Offset<HeartBeat> CreateHeartBeat(
   HeartBeatBuilder builder_(_fbb);
   builder_.add_time(time);
   return builder_.Finish();
+}
+
+struct PlayerGameRecord FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef PlayerGameRecordBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ID = 4,
+    VT_NAME = 6,
+    VT_TEAM = 8,
+    VT_KILL_COUNT = 10,
+    VT_DEATH_COUNT = 12,
+    VT_BOMB_INSERT_COUNT = 14,
+    VT_EARN_GOLD = 16,
+    VT_IS_MVP = 18
+  };
+  int32_t id() const {
+    return GetField<int32_t>(VT_ID, 0);
+  }
+  const ::flatbuffers::String *name() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_NAME);
+  }
+  int32_t team() const {
+    return GetField<int32_t>(VT_TEAM, 0);
+  }
+  int32_t kill_count() const {
+    return GetField<int32_t>(VT_KILL_COUNT, 0);
+  }
+  int32_t death_count() const {
+    return GetField<int32_t>(VT_DEATH_COUNT, 0);
+  }
+  int32_t bomb_insert_count() const {
+    return GetField<int32_t>(VT_BOMB_INSERT_COUNT, 0);
+  }
+  int32_t earn_gold() const {
+    return GetField<int32_t>(VT_EARN_GOLD, 0);
+  }
+  bool is_mvp() const {
+    return GetField<uint8_t>(VT_IS_MVP, 0) != 0;
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_ID, 4) &&
+           VerifyOffset(verifier, VT_NAME) &&
+           verifier.VerifyString(name()) &&
+           VerifyField<int32_t>(verifier, VT_TEAM, 4) &&
+           VerifyField<int32_t>(verifier, VT_KILL_COUNT, 4) &&
+           VerifyField<int32_t>(verifier, VT_DEATH_COUNT, 4) &&
+           VerifyField<int32_t>(verifier, VT_BOMB_INSERT_COUNT, 4) &&
+           VerifyField<int32_t>(verifier, VT_EARN_GOLD, 4) &&
+           VerifyField<uint8_t>(verifier, VT_IS_MVP, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct PlayerGameRecordBuilder {
+  typedef PlayerGameRecord Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_id(int32_t id) {
+    fbb_.AddElement<int32_t>(PlayerGameRecord::VT_ID, id, 0);
+  }
+  void add_name(::flatbuffers::Offset<::flatbuffers::String> name) {
+    fbb_.AddOffset(PlayerGameRecord::VT_NAME, name);
+  }
+  void add_team(int32_t team) {
+    fbb_.AddElement<int32_t>(PlayerGameRecord::VT_TEAM, team, 0);
+  }
+  void add_kill_count(int32_t kill_count) {
+    fbb_.AddElement<int32_t>(PlayerGameRecord::VT_KILL_COUNT, kill_count, 0);
+  }
+  void add_death_count(int32_t death_count) {
+    fbb_.AddElement<int32_t>(PlayerGameRecord::VT_DEATH_COUNT, death_count, 0);
+  }
+  void add_bomb_insert_count(int32_t bomb_insert_count) {
+    fbb_.AddElement<int32_t>(PlayerGameRecord::VT_BOMB_INSERT_COUNT, bomb_insert_count, 0);
+  }
+  void add_earn_gold(int32_t earn_gold) {
+    fbb_.AddElement<int32_t>(PlayerGameRecord::VT_EARN_GOLD, earn_gold, 0);
+  }
+  void add_is_mvp(bool is_mvp) {
+    fbb_.AddElement<uint8_t>(PlayerGameRecord::VT_IS_MVP, static_cast<uint8_t>(is_mvp), 0);
+  }
+  explicit PlayerGameRecordBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<PlayerGameRecord> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<PlayerGameRecord>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<PlayerGameRecord> CreatePlayerGameRecord(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t id = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> name = 0,
+    int32_t team = 0,
+    int32_t kill_count = 0,
+    int32_t death_count = 0,
+    int32_t bomb_insert_count = 0,
+    int32_t earn_gold = 0,
+    bool is_mvp = false) {
+  PlayerGameRecordBuilder builder_(_fbb);
+  builder_.add_earn_gold(earn_gold);
+  builder_.add_bomb_insert_count(bomb_insert_count);
+  builder_.add_death_count(death_count);
+  builder_.add_kill_count(kill_count);
+  builder_.add_team(team);
+  builder_.add_name(name);
+  builder_.add_id(id);
+  builder_.add_is_mvp(is_mvp);
+  return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<PlayerGameRecord> CreatePlayerGameRecordDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t id = 0,
+    const char *name = nullptr,
+    int32_t team = 0,
+    int32_t kill_count = 0,
+    int32_t death_count = 0,
+    int32_t bomb_insert_count = 0,
+    int32_t earn_gold = 0,
+    bool is_mvp = false) {
+  auto name__ = name ? _fbb.CreateString(name) : 0;
+  return PacketTable::UtilitiesTable::CreatePlayerGameRecord(
+      _fbb,
+      id,
+      name__,
+      team,
+      kill_count,
+      death_count,
+      bomb_insert_count,
+      earn_gold,
+      is_mvp);
 }
 
 struct Vec2i FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {

@@ -17,7 +17,6 @@ namespace Network.PacketProcessor
 
             var Data = GameEnd.GetRootAsGameEnd(bb);
 
-            byte flag = Data.WinningteamsFlag;
 
             Managers.Scene.LoadScene(Define.Scene.Home);
         }

@@ -130,7 +130,7 @@ std::vector<uint8_t> PacketMaker::MakeGameEndPacket(uint8_t winningTeams_flag)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 	Builder.Clear();
-	Builder.Finish(PacketTable::GameTable::CreateGameEnd(Builder, winningTeams_flag));
+	Builder.Finish(PacketTable::GameTable::CreateGameEnd(Builder));
 	return MakeBuffer(ePacketType::S2C_GAME_END, Builder.GetBufferPointer(), Builder.GetSize());
 }
 

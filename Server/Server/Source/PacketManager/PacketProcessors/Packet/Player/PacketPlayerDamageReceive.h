@@ -58,6 +58,13 @@ public:
 						pServer->GetPacketSender()->SendWeaponDropPacket(target->GetPosition(), roomid, weaponID);
 					}
 				}
+
+				// record update
+				room->GetPlayerRecordList()[read->target_id()].death_count++;
+				if (read->attack_type() != AT_FALLDOWN) {
+					room->GetPlayerRecordList()[read->attacker_id()].kill_count++;
+				}
+
 				PushEventPlayerRespawn(pServer->GetTimer(), read->target_id(), roomid, room->GetRoomCode(), spawnTime);
 			}
 			else {

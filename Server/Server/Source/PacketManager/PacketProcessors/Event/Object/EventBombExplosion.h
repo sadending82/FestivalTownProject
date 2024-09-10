@@ -21,6 +21,7 @@ public:
 		if (roomCode != event->roomCode) {
 			return;
 		}
+
 		if (room->GetState() == eRoomState::RS_FREE) {
 			return;
 		}

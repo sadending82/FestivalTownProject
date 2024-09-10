@@ -29,6 +29,7 @@ void Room::Reset()
 	std::fill(mPlayerList.begin(), mPlayerList.end(), nullptr);
 	std::fill(mBombList.begin(), mBombList.end(), nullptr);
 	std::fill(mWeaponList.begin(), mWeaponList.end(), nullptr);
+	mPlayerRecordList.clear();
 	mTeams.clear();
 	mStateLock.lock();
 	mState = eRoomState::RS_FREE;
@@ -51,6 +52,8 @@ void Room::Init(int id, int teamLifeCount, int playerLimit)
 	std::fill(mPlayerList.begin(), mPlayerList.end(), nullptr);
 	std::fill(mBombList.begin(), mBombList.end(), nullptr);
 	std::fill(mWeaponList.begin(), mWeaponList.end(), nullptr);
+
+	mPlayerRecordList.clear();
 	mTeams.clear();
 
 	// team game
@@ -86,6 +89,8 @@ bool Room::AddPlayer(Player* player)
 			player->GetPlayerStateLock().lock();
 			player->SetPlayerState(ePlayerState::PS_ALIVE);
 			player->GetPlayerStateLock().unlock();
+			mPlayerRecordList[i].Init();
+
 			return true;
 		}
 		mPlayerListLock.unlock();

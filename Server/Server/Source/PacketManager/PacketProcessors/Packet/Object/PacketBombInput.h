@@ -26,6 +26,9 @@ public:
 			int lifeCount = pServer->GetRooms()[roomid]->GetTeams()[team].GetLife();
 			pServer->GetPacketSender()->SendLifeReducePacket(team, lifeCount, roomid);
 
+			// record update
+			room->GetPlayerRecordList()[playerid].bomb_insert_count++;
+
 			if (lifeCount <= 0) {
 				pServer->CheckGameEnd(roomid);
 			}

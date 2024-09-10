@@ -73,9 +73,10 @@ void Server::Disconnect(int key)
 
     // Delete Player In Room
     if (player->GetState() == eSessionState::ST_INGAME) {
+        std::cout << "tlqkf?\n";
         int roomID = player->GetRoomID();
         int inGameID = player->GetInGameID();
-        if (roomID = player->GetRoomID() != INVALIDKEY) {
+        if (player->GetRoomID() != INVALIDKEY) {
             mRooms[roomID]->DeletePlayer(inGameID);
         }
         if (inGameID == mRooms[roomID]->GetHostID()) {

@@ -29,6 +29,7 @@ public:
 
 	std::array<Player*, MAXPLAYER>& GetPlayerList() { return mPlayerList; }
 	std::unordered_map<int, Team>& GetTeams() { return mTeams; }
+	std::unordered_map<int, sPlayerGameRecord>& GetPlayerRecordList() { return mPlayerRecordList; }
 	std::array<Bomb*, MAXOBJECT>& GetBombList() { return mBombList; }
 	std::array<Weapon*, MAXOBJECT>& GetWeaponList() { return mWeaponList; }
 	void GetAllObjects(std::vector<Object*>& objectList);
@@ -71,7 +72,7 @@ private:
 	std::array<Player*, MAXPLAYER> mPlayerList;
 	std::array<Bomb*, MAXOBJECT> mBombList;
 	std::array<Weapon*, MAXOBJECT> mWeaponList;
-
+	std::unordered_map<int, sPlayerGameRecord> mPlayerRecordList;
 	std::unordered_map<int, Team> mTeams;
 
 	int mRoomID; // room array index

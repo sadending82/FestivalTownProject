@@ -19,17 +19,8 @@ public struct GameEnd : IFlatbufferObject
   public void __init(int _i, ByteBuffer _bb) { __p = new Table(_i, _bb); }
   public GameEnd __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public byte WinningteamsFlag { get { int o = __p.__offset(4); return o != 0 ? __p.bb.Get(o + __p.bb_pos) : (byte)0; } }
 
-  public static Offset<PacketTable.GameTable.GameEnd> CreateGameEnd(FlatBufferBuilder builder,
-      byte winningteams_flag = 0) {
-    builder.StartTable(1);
-    GameEnd.AddWinningteamsFlag(builder, winningteams_flag);
-    return GameEnd.EndGameEnd(builder);
-  }
-
-  public static void StartGameEnd(FlatBufferBuilder builder) { builder.StartTable(1); }
-  public static void AddWinningteamsFlag(FlatBufferBuilder builder, byte winningteamsFlag) { builder.AddByte(0, winningteamsFlag, 0); }
+  public static void StartGameEnd(FlatBufferBuilder builder) { builder.StartTable(0); }
   public static Offset<PacketTable.GameTable.GameEnd> EndGameEnd(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<PacketTable.GameTable.GameEnd>(o);
@@ -42,7 +33,6 @@ static public class GameEndVerify
   static public bool Verify(Google.FlatBuffers.Verifier verifier, uint tablePos)
   {
     return verifier.VerifyTableStart(tablePos)
-      && verifier.VerifyField(tablePos, 4 /*WinningteamsFlag*/, 1 /*byte*/, 1, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }
