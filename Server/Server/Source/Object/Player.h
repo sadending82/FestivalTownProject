@@ -51,6 +51,7 @@ protected:
 
 	int				mRoomID;
 	int				mInGameID; // 클라와 함께 인게임 내에서 구분하기 위한 id
+	std::string		mName = "test"; // 임시 닉네임
 	int				mTeam;
 	
 	Vector3f		mPosition;
