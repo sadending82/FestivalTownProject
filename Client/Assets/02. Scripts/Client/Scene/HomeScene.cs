@@ -10,6 +10,8 @@ public class HomeScene : BaseScene
 
         SceneType = Define.Scene.Home;
 
+        Managers.Sound.Play("Sfx_BGM_Lobby", Define.Sound.Bgm);
+
         Managers.UI.ShowSceneUI<UI_HomeScene>();
         Managers.UI.ShowPopUpUI<UI_HomeStart>();
 

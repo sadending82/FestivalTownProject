@@ -91,9 +91,21 @@ public class GameManager : MonoBehaviour
             GameRemainTime -= Time.deltaTime;
         }
     }
+
+
     public void SendToServerGoalTeamNumber(int bombId, int teamNumber)
     {
         PacketManager packetManager = Managers.Network.GetPacketManager();
         packetManager.SendBombInputPacket(bombId, teamNumber);
     }
+
+    public void Clear()
+    {
+        isTimerStart = false;
+        GameRemainTime = 300.0f;
+        TeamLife = new();
+        isHost = false;
+        inGameID = -1;
+        RoomID = -1;
+    }    
 }

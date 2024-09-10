@@ -14,6 +14,8 @@ public class GameScene : BaseScene
 
         LoadStatue();
 
+        Managers.Sound.Play("Sfx_BGM_Ingame", Define.Sound.Bgm);
+
         Managers.UI.ShowSceneUI<UI_OneVersusOneSceneUI>();
 
 
