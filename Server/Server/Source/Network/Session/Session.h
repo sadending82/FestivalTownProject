@@ -23,6 +23,7 @@ public:
 	ExOver GetExOver() { return mExOver; }
 	eSessionState GetState() { return mState; }
 	std::mutex& GetStateLock() { return mStateLock; }
+	std::mutex& GetDisconnectLock() { return mDisconnectLock; }
 	int GetSessionID() { return mSessionID; }
 	SOCKET GetSocket() { return mSocket; }
 	int GetPrevData() { return mPrevData; }
@@ -40,6 +41,7 @@ public:
 protected:
 	ExOver			mExOver;
 	std::mutex		mStateLock;
+	std::mutex		mDisconnectLock;
 	eSessionState	mState;
 	int				mSessionID; // 서버 내에서 구분하기 위한 id
 	SOCKET			mSocket;

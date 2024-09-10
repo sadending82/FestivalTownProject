@@ -67,6 +67,8 @@ int Server::SetRoomID()
 void Server::Disconnect(int key)
 {
     Player* player = dynamic_cast<Player*>(GetSessions()[key]);
+
+    player->GetDisconnectLock().lock();
     if (player->GetState() == eSessionState::ST_FREE) {
         return;
     }
@@ -75,7 +77,8 @@ void Server::Disconnect(int key)
     if (player->GetState() == eSessionState::ST_INGAME) {
         int roomID = player->GetRoomID();
         int inGameID = player->GetInGameID();
-        if (player->GetRoomID() != INVALIDKEY) {
+
+        if (roomID != INVALIDKEY) {
             mRooms[roomID]->DeletePlayer(inGameID);
         }
         if (inGameID == mRooms[roomID]->GetHostID()) {
@@ -84,6 +87,7 @@ void Server::Disconnect(int key)
         }
     }
     player->Disconnect();
+    player->GetDisconnectLock().unlock();
 }
 
 void Server::Run(class TableManager* pTableManager, class DB* pDB)
