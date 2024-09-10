@@ -18,9 +18,9 @@ namespace Network.PacketProcessor
             var Data = AllPlayerReady.GetRootAsAllPlayerReady(bb);
 
             Debug.Log("All Player Ready!");
-            if (Managers.Scene.CurrentScene.GetComponent<LoadingScene>() != null)
+            if (Managers.Scene.CurrentScene.GetComponent<GameScene>() != null)
             {
-                Managers.Scene.CurrentScene.GetComponent<LoadingScene>().ChangeNextScene();
+                Managers.Scene.CurrentScene.GetComponent<GameScene>().GameStart();
             }
         }
 
