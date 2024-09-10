@@ -158,7 +158,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (hitInfoL.collider.gameObject.tag == "Ground")
                 {
-                    if (pelvis != null)
+                    if (pelvis != null && amIPlayer == true)
                     {
                         packetManager.SendPlayerStopPacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_JUMPSTOP);
                     }
@@ -173,7 +173,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (hitinfoR.collider.gameObject.tag == "Ground")
                 {
-                    if (pelvis != null)
+                    if (pelvis != null && amIPlayer == true)
                     {
                         packetManager.SendPlayerStopPacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_JUMPSTOP);
                     }
