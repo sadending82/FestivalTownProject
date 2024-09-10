@@ -204,7 +204,6 @@ public class CharacterStatus : MonoBehaviour
     public void SetId(int Id)
     {
         this.Id = Id;
-        playerController.SetMyId(Id);
     }
     public int GetId()
     {

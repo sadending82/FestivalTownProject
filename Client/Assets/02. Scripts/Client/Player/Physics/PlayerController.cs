@@ -71,6 +71,7 @@ public class PlayerController : MonoBehaviour
         network = Managers.Network;
         pelvisRigidbody = pelvis.GetComponent<Rigidbody>();
         playerStatus = this.GetComponent<CharacterStatus>();
+        myId = playerStatus.GetId();
 
         packetManager = network.GetPacketManager();
         receiveManager = network.GetReceiveManager();
