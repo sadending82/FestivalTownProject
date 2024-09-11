@@ -18,7 +18,11 @@ namespace Network.PacketProcessor
             var Data = GameStart.GetRootAsGameStart(bb);
 
             Debug.Log("GameStartPacket");
-            Managers.Game.isTimerStart = true;
+
+            if (Managers.Player.GetIsHost() == true)
+            {
+                Managers.Game.GameStart();
+            }
         }
 
         private FlatBufferBuilder mBuilder;
