@@ -25,6 +25,11 @@ public class BombObjectManager : MonoBehaviour
 
     public void SpawnBomb(float x, float y, int id)
     {
+        if (Managers.BombObject.FindBombById(id) != null)
+        {
+            return;
+        }
+
         // 단위 맞춰주기
         x *= -1;
         y *= -1;
