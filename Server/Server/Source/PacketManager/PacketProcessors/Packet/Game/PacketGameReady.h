@@ -31,8 +31,6 @@ public:
 
 					pServer->GetPacketSender()->SendAllPlayerReady(roomid);
 
-					pServer->GetPacketSender()->SendPlayerAdd(roomid);
-
 					PushEventGameStart(pServer->GetTimer(), roomid, room->GetRoomCode());
 				}
 			}
