@@ -1291,7 +1291,6 @@ GameObject:
   - component: {fileID: 2103632674421261722}
   - component: {fileID: -6865849756492790611}
   - component: {fileID: 4885904523204411648}
-  - component: {fileID: 8468386204167849344}
   m_Layer: 0
   m_Name: Chibi_Cat
   m_TagString: Untagged
@@ -1540,14 +1539,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!81 &8468386204167849344
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5680927581145501185}
-  m_Enabled: 0
 --- !u!1 &6365189286445172577
 GameObject:
   m_ObjectHideFlags: 0
@@ -3060,6 +3051,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5213974553170885808, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2843552239630365927}
+    - targetCorrespondingSourceObject: {fileID: 5213974553170885808, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9012134486717774036}
     - targetCorrespondingSourceObject: {fileID: 2146386573063180970, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6475294737863765334}
@@ -4567,6 +4561,14 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.45
   m_Center: {x: -0.35, y: 0, z: 0}
+--- !u!81 &9012134486717774036
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2421253405512057171}
+  m_Enabled: 0
 --- !u!1 &2494826194896390755 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5430954307942807424, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}
