@@ -337,6 +337,8 @@ void Server::MatchingComplete(int roomID, int playerCnt, std::vector<Player*>& p
         }
         player->GetStateLock().unlock();
     }
+
+    mPacketSender->SendPlayerAdd(roomID);
 }
 
 void Server::StartGame(int roomID)

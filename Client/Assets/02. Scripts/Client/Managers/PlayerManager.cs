@@ -1,5 +1,7 @@
+using Google.FlatBuffers;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
@@ -70,13 +72,13 @@ public class PlayerManager : MonoBehaviour
         return this.isHost;
     }
 
-    public void AddPlayer(int id)
+    public void AddPlayer(int id, Vector3 position)
     {
         if (players == null) Init();
 
         if(Managers.Scene.CurrentScene.GetComponent<GameScene>() == null)
         {
-            StartCoroutine(WaitAndAddPlayer(id));
+            StartCoroutine(WaitAndAddPlayer(id, position));
             return;
         }
 
@@ -87,15 +89,18 @@ public class PlayerManager : MonoBehaviour
         else
         {
             Debug.Log($"Add Player {id}");
-            players.transform.GetChild(id).gameObject.SetActive(true);
+
+            var playerObject = players.transform.GetChild(id).gameObject;
+            playerObject.SetActive(true);
+            playerObject.GetComponent<PlayerController>().Respawn(position.x, position.y);
             nowPlayerNum++;          
         }
     }
 
-    IEnumerator WaitAndAddPlayer(int id)
+    IEnumerator WaitAndAddPlayer(int id, Vector3 position)
     {
         yield return new WaitUntil(() => Managers.Scene.CurrentScene.GetComponent<GameScene>() != null);
-        AddPlayer(id);
+        AddPlayer(id, position);
     }
 
     public void SetMyPlayerEnable()

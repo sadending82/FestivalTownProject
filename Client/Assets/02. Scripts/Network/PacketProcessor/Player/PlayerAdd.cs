@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 namespace Network.PacketProcessor
 {
@@ -21,8 +22,8 @@ namespace Network.PacketProcessor
             {
                 var player = Data.Players(i);
                 int id = player.Value.Id;
-                Vector3 pos = new Vector3(player.Value.Pos.Value.X, player.Value.Pos.Value.Y, 30);
-                Managers.Player.GetComponent<PlayerManager>().AddPlayer(id);
+                Vector3 pos = new Vector3(player.Value.Pos.Value.X, player.Value.Pos.Value.Y, player.Value.Pos.Value.Z);
+                Managers.Player.GetComponent<PlayerManager>().AddPlayer(id, pos);
             }
         }
 

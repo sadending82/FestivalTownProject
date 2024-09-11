@@ -40,11 +40,11 @@ std::vector<uint8_t> PacketMaker::MakePlayerDeadPacket(int inGameID, int roomID,
 	return MakeBuffer(ePacketType::S2C_PLAYER_DEAD, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakePlayerRespawnPacket(int inGameID, int roomID, int x, int y, int hp)
+std::vector<uint8_t> PacketMaker::MakePlayerRespawnPacket(int inGameID, int roomID, Vector3f position, int hp)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 	Builder.Clear();
-	auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, x, y, 0);
+	auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, position.x, position.y, position.z);
 	Builder.Finish(PacketTable::PlayerTable::CreatePlayerRespawn(Builder, inGameID, hp, pos));
 	return MakeBuffer(ePacketType::S2C_PLAYER_RESPAWN, Builder.GetBufferPointer(), Builder.GetSize());
 }

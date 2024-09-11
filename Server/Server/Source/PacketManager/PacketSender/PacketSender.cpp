@@ -23,7 +23,10 @@ void PacketSender::SendPlayerAdd(int roomID)
         std::vector<std::pair<int, int>>& spawnPoses = room->GetMap()->GetPlayerSpawnIndexes(player->GetTeam());
         std::uniform_int_distribution<> idx_distrib(0, spawnPoses.size() - 1);
         int idx = idx_distrib(gen);
-        player->SetPosition(spawnPoses[idx].first, spawnPoses[idx].second, 0);
+
+        Vector3f pos = ConvertVec2iToVec3f(spawnPoses[idx].first, spawnPoses[idx].second);
+
+        player->SetPosition(pos);
     }
     std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerAdd(room->GetPlayerList());
     room->GetPlayerListLock().unlock_shared();
@@ -206,8 +209,9 @@ void PacketSender::SendPlayerRespawn(int inGameID, int roomID)
     int idx = idx_distrib(gen);
     int posX = spawnPoses[idx].first;
     int posY = spawnPoses[idx].second;
+    Vector3f pos = ConvertVec2iToVec3f(posX, posY);
 
-    std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerRespawnPacket(inGameID, roomID, posX, posY, player->GetHP());
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerRespawnPacket(inGameID, roomID, pos, player->GetHP());
     mServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
 

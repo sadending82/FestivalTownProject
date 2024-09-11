@@ -62,8 +62,8 @@ public class PlayerController : MonoBehaviour
 
     [Header("--- Respawn ---")]
     private float createHeight = 4;
-    private float offsetX = 19;
-    private float offsetY = 9;
+    private float offsetX = 20;
+    private float offsetY = 10;
 
     private void Awake()
     {
@@ -569,9 +569,9 @@ public class PlayerController : MonoBehaviour
     {
         playerStatus.SetIsDie(false);
 
-        // 위치 단위 맞추기
-        x *= -2;
-        y *= -2;
+        //// 위치 단위 맞추기
+        x *= -1;
+        y *= -1;
         x += offsetX;
         y += offsetY;
 
