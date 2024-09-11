@@ -1,6 +1,7 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static Unity.VisualScripting.Member;
 
 /// <summary>
 /// 사운드 제어 매니저
@@ -9,8 +10,15 @@ using UnityEngine;
 /// </summary>
 public class SoundManager
 {
+    // 2d 사운드 관리를 위한 데이터
     AudioSource[] _audioSources = new AudioSource[2];
     Dictionary<string, AudioClip> _audioClips = new Dictionary<string, AudioClip>();
+
+    // 3d 사운드 관리를 위한 데이터
+    Dictionary<GameObject, AudioSource> _3dAudioSource = new();
+
+    public float _bgmVolume = 0.5f;
+    public float _effVolume = 0.3f;
 
     public void Init()
     {
@@ -18,7 +26,7 @@ public class SoundManager
         if (root == null)
         {
             root = new GameObject { name = "@Sound" };
-            Object.DontDestroyOnLoad(root);
+            UnityEngine.Object.DontDestroyOnLoad(root);
 
             string[] sounds = System.Enum.GetNames(typeof(Define.Sound)); // 이젠 리플렉션인거 아시겠죠?
             for (int i = 0; i < sounds.Length - 1; ++i)
@@ -60,6 +68,7 @@ public class SoundManager
                     if (source.isPlaying) source.Stop();
 
                     source.clip = audioClip;
+                    source.volume = _bgmVolume;
                     source.Play();
                 }
                 break;
@@ -68,6 +77,7 @@ public class SoundManager
                     // 효과음의 경우 중첩되어도 문제 없으므로
                     // 그냥 재생하기
                     AudioSource source = _audioSources[(int)Define.Sound.Effect];
+                    source.volume = _effVolume;
                     source.PlayOneShot(audioClip);
                 }
                 break;
@@ -80,6 +90,72 @@ public class SoundManager
     {
         AudioClip clip = GetOrAddAudioClip(path, type);
         Play(clip, type);
+    }
+
+    public void Play3D(string path, GameObject sourceObj, Define.Sound type = Define.Sound.Effect)
+    {
+        AudioSource source = null;
+
+        if (_3dAudioSource.TryGetValue(sourceObj, out source) == false)
+        {
+            source = Util.GetOrAddComponent<AudioSource>(sourceObj);
+            _3dAudioSource.Add(sourceObj, source);
+        }
+
+        AudioClip clip = GetOrAddAudioClip(path, type);
+
+        if (clip == null) return;
+
+        switch(type)
+        {
+            case Define.Sound.Bgm:
+                if (source.isPlaying) source.Stop();
+
+                source.clip = clip;
+                source.volume = _bgmVolume;
+                source.Play();
+                break;
+            case Define.Sound.Effect:
+                source.volume = _effVolume;
+                source.PlayOneShot(clip);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void Stop(Define.Sound type = Define.Sound.Effect)
+    {
+        switch (type)
+        {
+            case Define.Sound.Bgm:
+                {
+                    // Bgm의 경우 중첩되어 재생하는 경우는 없어야 하므로
+                    // 이미 재생중이면 멈추고 새로운거 실행
+                    AudioSource source = _audioSources[(int)Define.Sound.Bgm];
+                    source.Stop();
+                }
+                break;
+            case Define.Sound.Effect:
+                {
+                    // 효과음의 경우 중첩되어도 문제 없으므로
+                    // 그냥 재생하기
+                    AudioSource source = _audioSources[(int)Define.Sound.Effect];
+                    source.Stop();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void Stop3D(GameObject sourceObj)
+    {
+        AudioSource source;
+
+        if (_3dAudioSource.TryGetValue(sourceObj, out source) == false) return;
+
+        source.Stop();
     }
 
     AudioClip GetOrAddAudioClip(string path, Define.Sound type = Define.Sound.Effect)

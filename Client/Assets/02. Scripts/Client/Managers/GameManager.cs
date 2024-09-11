@@ -107,5 +107,10 @@ public class GameManager : MonoBehaviour
         isHost = false;
         inGameID = -1;
         RoomID = -1;
-    }    
+    }
+    public void GameStart()
+    {
+        isTimerStart = true;
+        Managers.Player.GameStart();
+    }
 }

@@ -47,6 +47,7 @@ public class PlayerController : MonoBehaviour
     private float AxisRawH, AxisRawV;
     private bool amIPlayer;
     private int myId;
+    private bool gameStart = false;
 
     //------ timer for send ------
     private float curTime= 0.0f;
@@ -87,7 +88,7 @@ public class PlayerController : MonoBehaviour
     {
         if (playerStatus.GetIsDie() == false)
         {
-            if (amIPlayer == true)
+            if (amIPlayer == true && gameStart == true)
             {
                 Move();
                 FallDownCheck();
@@ -132,7 +133,7 @@ public class PlayerController : MonoBehaviour
     {
         if (playerStatus.GetIsDie() == false)
         {
-            if (amIPlayer == true)
+            if (amIPlayer == true && gameStart == true)
             {
                 KeyboardInput();
                 if (isPickUpMode == false)
@@ -664,5 +665,10 @@ public class PlayerController : MonoBehaviour
         {
             pelvisRigidbody.constraints = RigidbodyConstraints.None;
         }
+    }
+
+    public void GameStart()
+    {
+        gameStart = true;
     }
 }

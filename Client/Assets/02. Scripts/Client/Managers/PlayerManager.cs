@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -126,5 +127,17 @@ public class PlayerManager : MonoBehaviour
 
         Debug.Log("ERROR!!! : FindPlayerById(), Can't Find Target Player By Id : " + targetId);
         return null;
+    }
+
+    public void GameStart()
+    {
+        for (int i = 0; i < maxPlayerNum; ++i)
+        {
+            GameObject tPlayer = players.transform.GetChild(i).gameObject;
+            if (tPlayer.activeSelf == true)
+            {
+                tPlayer.GetComponent<PlayerController>().GameStart();
+            }
+        }
     }
 }
