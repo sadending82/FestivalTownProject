@@ -1412,9 +1412,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62972f8c6c1ae0e499e5d1ec5f57a1f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  camera: {fileID: 8248348564705223245}
   rotationSpeed: 10
   cameraArm: {fileID: 8242880226395056167}
   pelvis: {fileID: 1058806054782018136}
+  zoomSpeed: 15
+  minimum: 30
+  maximum: 60
 --- !u!114 &2103632674421261722
 MonoBehaviour:
   m_ObjectHideFlags: 0
