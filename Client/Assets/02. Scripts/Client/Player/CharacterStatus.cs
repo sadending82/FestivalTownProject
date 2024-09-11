@@ -43,7 +43,7 @@ public class CharacterStatus : MonoBehaviour
     // 하체의 상태는 클라가 관리(이동 관련해서는 이미 서버와 교환하고 있기 때문)
     private LowerBodyAnimationState lowerBodyAnimationState;
 
-    private PlayerController playerController;
+    public PlayerController playerController;
     public Rigidbody headRig;
     public float attackedStrength = 10;
 
@@ -65,8 +65,6 @@ public class CharacterStatus : MonoBehaviour
     {
         network = Managers.Network;
         packetManager = network.GetPacketManager();
-
-        playerController = GetComponent<PlayerController>();
     }
     private void Update()
     {

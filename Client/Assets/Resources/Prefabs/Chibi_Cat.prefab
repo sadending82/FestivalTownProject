@@ -1352,6 +1352,7 @@ MonoBehaviour:
   weaponInven: {fileID: 6241508891433731045}
   isGroggy: 0
   animationController: {fileID: 106592914044289826}
+  playerController: {fileID: 2266266892710373593}
   headRig: {fileID: 71571893083169489}
   attackedStrength: 50
   pelvis: {fileID: 4437203293968950405}

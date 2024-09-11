@@ -19,10 +19,7 @@ namespace Network.PacketProcessor
 
             Debug.Log("GameStartPacket");
 
-            if (Managers.Player.GetIsHost() == true)
-            {
-                Managers.Game.GameStart();
-            }
+            Managers.Game.GameStart();
         }
 
         private FlatBufferBuilder mBuilder;
