@@ -437,18 +437,29 @@ void Server::TimeoverGameEnd(int roomID) {
     }
 }
 
-int Server::CalculatePoint(sPlayerGameRecord record)
+int Server::CalculatePoint(GameMode mode, sPlayerGameRecord record)
 {
     int point = 0;
 
-    point += (record.kill_count * 1) - (record.death_count * 0.5) + (record.bomb_insert_count * 2);
+    FITH_ScoreConstant* constants = mTableManager->GetScoreConstantList()[mode];
+    if (constants == nullptr) {
+        return 0;
+    }
+
+    point += (record.kill_count * constants->Kill_Point) - (record.death_count * constants->Death_Point) + (record.bomb_insert_count * constants->Bomb_Point);
 
     return (point < 0 ) ? 0 : point;
 }
 
-int Server::CalculateGoldReward(int point, bool isMvp)
+int Server::CalculateGoldReward(GameMode mode, int point, bool isMvp)
 {
-    return (isMvp == true) ? 500 + (point*200) : 500 + (point * 100);
+    FITH_ScoreConstant* constants = mTableManager->GetScoreConstantList()[mode];
+
+    if (constants == nullptr) {
+        return 0;
+    }
+
+    return (isMvp == true) ? constants->Gold_Basic + (point* constants->MVP_Gold_Point) : constants->Gold_Basic + (point * constants->Gold_Point);
 }
 
 void Server::CalculateGameResult(int roomID, uint8_t winningTeams_flag)
@@ -456,15 +467,17 @@ void Server::CalculateGameResult(int roomID, uint8_t winningTeams_flag)
     Room* room = GetRooms()[roomID];
     std::unordered_map<int, sPlayerGameRecord>& records = room->GetPlayerRecordList();
 
+    GameMode mode = room->GetGameMode();
+
     int mvp_id = INVALIDKEY;
     int mvp_point = -1;
 
     for (auto& pair : records) {
         int id = pair.first;
 
-        int point =  CalculatePoint(pair.second);
+        int point =  CalculatePoint(mode, pair.second);
         pair.second.point = point;
-        pair.second.earn_gold = CalculateGoldReward(point, false);
+        pair.second.earn_gold = CalculateGoldReward(mode, point, false);
 
         if (point > mvp_point) {
             mvp_id = id;
@@ -473,7 +486,7 @@ void Server::CalculateGameResult(int roomID, uint8_t winningTeams_flag)
     }
 
     if (mvp_id !=INVALIDKEY) {
-        records[mvp_id].earn_gold = CalculateGoldReward(records[mvp_id].point, true);
+        records[mvp_id].earn_gold = CalculateGoldReward(mode, records[mvp_id].point, true);
         records[mvp_id].is_mvp = true;
     }
 

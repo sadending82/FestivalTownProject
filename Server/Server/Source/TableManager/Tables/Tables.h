@@ -3,3 +3,4 @@
 #include "CharacterStat.h"
 #include "FITH.h"
 #include "WeaponStat.h"
+#include "ScoreCalculateConstant.h"

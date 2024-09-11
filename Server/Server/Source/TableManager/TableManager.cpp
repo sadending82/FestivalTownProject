@@ -3,26 +3,12 @@
 
 TableManager::TableManager()
 {
-    ItemInfos.clear();
+
 }
 
 TableManager::~TableManager()
 {
-    for (auto& pair : ItemInfos) {
-        delete pair.second;
-    }
-    for (auto& pair : CharacterStats) {
-        delete pair.second;
-    }
-    for (auto& pair : WeaponStats) {
-        delete pair.second;
-    }
-    for (auto& pair : FITH_Data) {
-        delete pair.second;
-    }
-    for (auto& pair : MapData) {
-        delete pair.second;
-    }
+    ClearAllTable();
 }
 
 void TableManager::ClearAllTable()
@@ -42,6 +28,9 @@ void TableManager::ClearAllTable()
     for (auto& pair : MapData) {
         delete pair.second;
     }
+    for (auto& pair : ScoreConstantList) {
+        delete pair.second;
+    }
 
     ItemInfos.clear();
     CharacterStats.clear();
@@ -57,6 +46,7 @@ void TableManager::ReadAllDataTable()
     ReadWeaponStat();
     ReadFITHModeTable();
     ReadMapData();
+    ReadScoreConstantTable();
 }
 
 void TableManager::ReadItemTable()
@@ -281,4 +271,44 @@ void TableManager::ReadMapData()
     }
 
     inputFile.close();
+}
+
+void TableManager::ReadScoreConstantTable()
+{
+    try {
+        xlnt::workbook wb;
+        wb.load("GameData/FITH_Result.xlsx");
+
+        int idx = 0;
+        int sheetIdx = 1;
+
+        xlnt::worksheet ws = wb.sheet_by_index(sheetIdx);
+
+        for (auto row : ws.rows(false)) {
+            if (idx == variableNameIdx) {
+                idx++;
+                continue;
+            }
+
+            if (!row.empty()) {
+                ScoreConstantList[GameMode::FITH_Team_battle_One]
+                    = new FITH_ScoreConstant{
+                    row[static_cast<int>(FITH_ScoreConstant_Field::Kill_Point)].value<float>(),
+                    row[static_cast<int>(FITH_ScoreConstant_Field::Death_Point)].value<float>(),
+                    row[static_cast<int>(FITH_ScoreConstant_Field::Bomb_Point)].value<float>(),
+                    row[static_cast<int>(FITH_ScoreConstant_Field::Gold_Basic)].value<float>(),
+                    row[static_cast<int>(FITH_ScoreConstant_Field::Gold_Point)].value<float>(),
+                    row[static_cast<int>(FITH_ScoreConstant_Field::MVP_Gold_Point)].value<float>(),
+                };
+            }
+
+            idx++;
+        }
+
+        ScoreConstantList[GameMode::FITH_Team_battle_Two] = ScoreConstantList[GameMode::FITH_Team_battle_One];
+        ScoreConstantList[GameMode::FITH_Team_battle_Three] = ScoreConstantList[GameMode::FITH_Team_battle_One];
+    }
+    catch (const xlnt::exception& e) {
+        std::cerr << "Excel File Load Fail: " << e.what() << std::endl;
+    }
 }
