@@ -83,7 +83,7 @@ private:
 	int mPlayerLimit = 6;
 	int mHostID = INVALIDKEY;
 	TIMEPOINT mStartTime;
-	long long mRoomCode = 0; // 이벤트 처리용 고유 식별 번호
+	long long mRoomCode = 0; // Room 고유 식별 번호
 
 	std::atomic<bool> mAllPlayerReady = false;
 	std::atomic<bool> mIsRun = false;

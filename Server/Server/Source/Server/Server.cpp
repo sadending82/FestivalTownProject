@@ -317,7 +317,8 @@ void Server::MatchingComplete(int roomID, int playerCnt, std::vector<Player*>& p
         player->GetStateLock().lock();
         if (player->GetState() == eSessionState::ST_MATCHWAITING) {
             // юс╫ц
-            player->SetTeam(tFlag % 2);
+            int team = tFlag % 2;
+            player->SetTeam(team);
             player->SetHP(GetTableManager()->GetCharacterStats()[(int)eCharacterType::CT_TEST]->hp);
             tFlag++;
             //

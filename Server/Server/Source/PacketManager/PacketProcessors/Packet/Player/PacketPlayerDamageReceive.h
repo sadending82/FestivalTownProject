@@ -50,6 +50,7 @@ public:
 				target->SetPlayerState(ePlayerState::PS_DEAD);
 				int spawnTime = pServer->GetTableManager()->GetGameModeData()[room->GetGameMode()]->Player_Spawn_Time;
 				pServer->GetPacketSender()->SendPlayerDeadPacket(read->target_id(), roomid);
+
 				if (target->GetWeapon() != nullptr) {
 					if (target->GetWeapon()->SetIsGrabbed(false) == true) {
 						int weaponID = target->GetWeapon()->GetID();

@@ -162,6 +162,9 @@ std::vector<uint8_t> PacketMaker::MakeGameResultPacket(uint8_t winningTeams_flag
 
 	for (auto& pair : records) {
 		int id = pair.first;
+		if (players[id] == nullptr) {
+			continue;
+		}
 		sPlayerGameRecord record = pair.second;
 		auto fRecord = PacketTable::UtilitiesTable::CreatePlayerGameRecord(Builder
 			, id
