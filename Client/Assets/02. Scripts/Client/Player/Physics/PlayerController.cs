@@ -597,11 +597,21 @@ public class PlayerController : MonoBehaviour
     {
         playerStatus.SetIsDie(false);
 
-        //// 위치 단위 맞추기
+        // 위치 단위 맞추기
         x *= -1;
         y *= -1;
         x += offsetX;
         y += offsetY;
+
+        // 팀에 따라 방향 설정
+        if(x <= 0)
+        {
+            stabilizer.transform.eulerAngles = new Vector3(0.0f, 90f, 0.0f);
+        }
+        else
+        {
+            stabilizer.transform.eulerAngles = new Vector3(0.0f, 270f, 0.0f);
+        }
 
         Vector3 targetPos = new Vector3(x, createHeight, y);
 
