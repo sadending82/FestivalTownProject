@@ -1,12 +1,20 @@
+using PacketTable.GameTable;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerCameraController : MonoBehaviour
 {
+    public Camera camera;
+
     public float rotationSpeed = 1;
     public Transform cameraArm;
     public Transform pelvis;
+
+    [Header("--- Zoom Controll ---")]
+    public float zoomSpeed;
+    public float minimum;
+    public float maximum;
 
     private bool amIPlayer;
 
@@ -20,6 +28,7 @@ public class PlayerCameraController : MonoBehaviour
     private void Start()
     {
         if (amIPlayer == true) Cursor.lockState = CursorLockMode.Locked;
+        camera.fieldOfView = maximum;
     }
 
     private void FixedUpdate()
@@ -28,6 +37,24 @@ public class PlayerCameraController : MonoBehaviour
         {
             Move();
             LookAround();
+        }
+    }
+    private void Update()
+    {
+        if (amIPlayer == true)
+        {
+            float scroll = Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
+
+            camera.fieldOfView -= scroll;
+        
+            if (camera.fieldOfView < minimum)
+            {
+                camera.fieldOfView = minimum;
+            }
+            else if (camera.fieldOfView > maximum)
+            {
+                camera.fieldOfView = maximum;
+            }
         }
     }
 
