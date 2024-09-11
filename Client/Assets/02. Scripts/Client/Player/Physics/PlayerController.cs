@@ -81,7 +81,6 @@ public class PlayerController : MonoBehaviour
     }
     void Start()
     {
-
     }
 
     private void FixedUpdate()
@@ -105,11 +104,25 @@ public class PlayerController : MonoBehaviour
                 {
                     if (playerStatus.GetLowerBodyAnimationState() == LowerBodyAnimationState.WALK)
                     {
-                        pelvisRigidbody.velocity = moveDirection * walkSpeed;
+                        if (isGrounded == false)
+                        {
+                            pelvisRigidbody.velocity = moveDirection * (walkSpeed - 2);
+                        }
+                        else
+                        {
+                            pelvisRigidbody.velocity = moveDirection * walkSpeed;
+                        }
                     }
                     else if (playerStatus.GetLowerBodyAnimationState() == LowerBodyAnimationState.RUN)
                     {
-                        pelvisRigidbody.velocity = moveDirection * runSpeed;
+                        if (isGrounded == false)
+                        {
+                            pelvisRigidbody.velocity = moveDirection * (runSpeed - 3);
+                        }
+                        else
+                        {
+                            pelvisRigidbody.velocity = moveDirection * runSpeed;
+                        }
                     }
                 }
             }
@@ -245,7 +258,14 @@ public class PlayerController : MonoBehaviour
             {
                 if (CheckHitWall() == false)
                 {
-                    pelvisRigidbody.velocity = moveDirection * runSpeed;
+                    if (isGrounded == false)
+                    {
+                        pelvisRigidbody.velocity = moveDirection * (runSpeed - 3);
+                    }
+                    else
+                    {
+                        pelvisRigidbody.velocity = moveDirection * runSpeed;
+                    }
                 }
                 if (isGrounded == true && nowLowerBodyAnimationState != LowerBodyAnimationState.RUN)
                 {
@@ -257,7 +277,14 @@ public class PlayerController : MonoBehaviour
             {
                 if (CheckHitWall() == false)
                 {
-                    pelvisRigidbody.velocity = moveDirection * walkSpeed;
+                    if (isGrounded == false)
+                    {
+                        pelvisRigidbody.velocity = moveDirection * (walkSpeed - 2);
+                    }
+                    else
+                    {
+                        pelvisRigidbody.velocity = moveDirection * walkSpeed;
+                    }
                 }
                 if (isGrounded == true && nowLowerBodyAnimationState != LowerBodyAnimationState.WALK)
                 {

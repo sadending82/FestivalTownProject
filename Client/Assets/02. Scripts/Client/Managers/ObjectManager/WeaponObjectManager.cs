@@ -24,6 +24,11 @@ public class WeaponObjectManager : MonoBehaviour
     }
     public void SpawnWeapon(float x, float y, eWeaponType type, int id)
     {
+        if(Managers.WeaponObject.FindWeaponById(id) != null)
+        {
+            return;
+        }
+
         // 단위 맞춰주기
         x *= -1;
         y *= -1;
