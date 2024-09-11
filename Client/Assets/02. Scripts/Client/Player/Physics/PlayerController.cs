@@ -11,6 +11,9 @@ public class PlayerController : MonoBehaviour
     public Transform stabilizer;
     public GameObject pelvis;
     private Rigidbody pelvisRigidbody;
+    public GameObject clavicleL;
+    public GameObject clavicleR;
+    public GameObject head;
 
     [Header("--- State ---")]
     private CharacterStatus playerStatus;
@@ -98,15 +101,15 @@ public class PlayerController : MonoBehaviour
                     rotationQuaternion = Quaternion.LookRotation(moveDirection);
                     stabilizer.rotation = rotationQuaternion;
                 }
-                if (isMove == true)
+                if (isMove == true && CheckHitWall() == false)
                 {
                     if (playerStatus.GetLowerBodyAnimationState() == LowerBodyAnimationState.WALK)
                     {
-                        pelvis.transform.position += moveDirection * walkSpeed * Time.deltaTime;
+                        pelvisRigidbody.velocity = moveDirection * walkSpeed;
                     }
                     else if (playerStatus.GetLowerBodyAnimationState() == LowerBodyAnimationState.RUN)
                     {
-                        pelvis.transform.position += moveDirection * runSpeed * Time.deltaTime;
+                        pelvisRigidbody.velocity = moveDirection * runSpeed;
                     }
                 }
             }
@@ -162,10 +165,6 @@ public class PlayerController : MonoBehaviour
                     {
                         packetManager.SendPlayerStopPacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_JUMPSTOP);
                     }
-                    else
-                    {
-                        Debug.Log("Not Send Jump Stop Packet, Pelvis is Null !!!");
-                    }
                     isGrounded = true;
                 }
             }
@@ -176,10 +175,6 @@ public class PlayerController : MonoBehaviour
                     if (pelvis != null && amIPlayer == true)
                     {
                         packetManager.SendPlayerStopPacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_JUMPSTOP);
-                    }
-                    else
-                    {
-                        Debug.Log("Not Send Jump Stop Packet, Pelvis is Null !!!");
                     }
                     isGrounded = true;
                 }
@@ -248,7 +243,10 @@ public class PlayerController : MonoBehaviour
         {
             if (isLeftShiftKeyDown)
             {
-                pelvis.transform.position += moveDirection * runSpeed * Time.deltaTime;
+                if (CheckHitWall() == false)
+                {
+                    pelvisRigidbody.velocity = moveDirection * runSpeed;
+                }
                 if (isGrounded == true && nowLowerBodyAnimationState != LowerBodyAnimationState.RUN)
                 {
                     nowLowerBodyAnimationState = LowerBodyAnimationState.RUN;
@@ -257,7 +255,10 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                pelvis.transform.position += moveDirection * walkSpeed * Time.deltaTime;
+                if (CheckHitWall() == false)
+                {
+                    pelvisRigidbody.velocity = moveDirection * walkSpeed;
+                }
                 if (isGrounded == true && nowLowerBodyAnimationState != LowerBodyAnimationState.WALK)
                 {
                     nowLowerBodyAnimationState = LowerBodyAnimationState.WALK;
@@ -590,5 +591,51 @@ public class PlayerController : MonoBehaviour
         nowLowerBodyAnimationState = LowerBodyAnimationState.IDLE;
         isPickUpMode = false;
         targetItem = null;
+    }
+
+    private bool CheckHitWall()
+    {
+        float scope = 0.7f;
+
+        // 레이 확인용
+        //Debug.DrawRay(pelvis.transform.position, moveDirection * scope, Color.red);
+
+        List<Vector3> rayPositions = new List<Vector3>();
+
+        rayPositions.Add(pelvis.transform.position);
+        rayPositions.Add(head.transform.position);
+        rayPositions.Add(clavicleL.transform.position);
+        rayPositions.Add(clavicleR.transform.position);
+
+        foreach (Vector3 pos in rayPositions)
+        {
+            if (Physics.Raycast(pos, moveDirection, out RaycastHit hit, scope) == true)
+            {
+                if (hit.collider.tag == "Ground")
+                {
+                    SetCanMove(false);
+                    return true;
+                }
+            }
+        }
+
+        SetCanMove(true);
+        return false;
+    }
+    private void SetCanMove(bool canImove)
+    {
+        if (canImove == false)
+        {
+            if (isGrounded == true)
+            {
+                pelvisRigidbody.constraints = RigidbodyConstraints.FreezePositionX |
+                                              RigidbodyConstraints.FreezePositionZ;
+            }
+            pelvisRigidbody.velocity = Vector3.zero;
+        }
+        else
+        {
+            pelvisRigidbody.constraints = RigidbodyConstraints.None;
+        }
     }
 }

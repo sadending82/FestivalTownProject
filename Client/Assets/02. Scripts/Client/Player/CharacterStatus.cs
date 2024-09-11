@@ -194,8 +194,6 @@ public class CharacterStatus : MonoBehaviour
             ResetCharacterState();
             playerMesh.SetActive(true);
         }
-        // 플레이어 그로기 및 죽음 처리 전까지 확인용 로그
-        Debug.Log(this.name + " is Die? : " + isDie);
     }
     public bool GetIsDie()
     {
