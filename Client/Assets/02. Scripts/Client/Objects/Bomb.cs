@@ -6,6 +6,7 @@ public class Bomb : MonoBehaviour
 {
     private bool isPickUp = false;
     private int pickUpPlayerId;
+    private int lastPickUpPlayerId;
     private Transform targetTransform;
 
     private Vector3 throwDirection;
@@ -20,6 +21,7 @@ public class Bomb : MonoBehaviour
     {
         isPickUp = false;
         pickUpPlayerId = -1;
+        lastPickUpPlayerId = -1;
         rig = this.GetComponent<Rigidbody>();
     }
     private void Start()
@@ -30,6 +32,7 @@ public class Bomb : MonoBehaviour
     {
         isPickUp = false;
         pickUpPlayerId = -1;
+        lastPickUpPlayerId = -1;
     }
     private void OnDisable()
     {
@@ -86,6 +89,7 @@ public class Bomb : MonoBehaviour
     {
         isPickUp = true;
         this.pickUpPlayerId = pickUpPlayerId;
+        this.lastPickUpPlayerId = pickUpPlayerId;
 
         this.targetTransform = targetTransform;
         SetRigidBodyPickUp();
@@ -136,4 +140,8 @@ public class Bomb : MonoBehaviour
     {
         return Id;
     }
+    public int GetLastPickUpPlayerId()
+    {
+        return lastPickUpPlayerId;
+    }    
 }

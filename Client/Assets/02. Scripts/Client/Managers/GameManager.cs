@@ -93,10 +93,10 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public void SendToServerGoalTeamNumber(int bombId, int teamNumber)
+    public void SendToServerGoalTeamNumber(int bombId, int teamNumber, int playerId)
     {
         PacketManager packetManager = Managers.Network.GetPacketManager();
-        packetManager.SendBombInputPacket(bombId, teamNumber);
+        packetManager.SendBombInputPacket(bombId, teamNumber, playerId);
     }
 
     public void Clear()

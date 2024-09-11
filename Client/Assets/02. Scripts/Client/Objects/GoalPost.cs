@@ -15,7 +15,7 @@ public class GoalPost : MonoBehaviour
 
             if (Managers.Player.GetIsHost() == true)
             {
-                Managers.Game.SendToServerGoalTeamNumber(targetBomb.GetId(), teamNumber);
+                Managers.Game.SendToServerGoalTeamNumber(targetBomb.GetId(), teamNumber, targetBomb.GetLastPickUpPlayerId());
             }
             targetBomb.Boom();
         }
