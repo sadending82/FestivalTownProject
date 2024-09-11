@@ -66,6 +66,8 @@ public class CubeObjectManager : MonoBehaviour
         reusedCube.gameObject.transform.GetChild(type).gameObject.SetActive(true);
         reusedCube.gameObject.transform.GetChild(type).gameObject.GetComponent<Cube>().SetTargetHeight(targetHeight);
         reusedCube.gameObject.transform.GetChild(type).gameObject.transform.position = new Vector3(x + offsetX, createHeight, y + offsetY);
+
+        Managers.Sound.Play3D("Sfx_Block_Falling", reusedCube);
     }
 
     public void Clear()

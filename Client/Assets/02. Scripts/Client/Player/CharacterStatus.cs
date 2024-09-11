@@ -87,10 +87,7 @@ public class CharacterStatus : MonoBehaviour
             // 씬 기본 UI 표시해주기
             Managers.UI.ShowSceneUI<UI_OneVersusOneSceneUI>();
 
-            myCamera.gameObject.GetComponent<AudioListener>().enabled = true;
-
-            // 타이머 스타트
-            Managers.Game.isTimerStart = true;
+            gameObject.GetComponent<AudioListener>().enabled = true;
         }
     }
     public bool GetAmIPlayer()

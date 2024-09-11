@@ -42,6 +42,9 @@ public class Cube : MonoBehaviour
                                     RigidbodyConstraints.FreezeRotationY |
                                     RigidbodyConstraints.FreezeRotationZ;
             checker.SetCheck(false);
+
+            int soundNum = Random.Range(1, 5);
+            Managers.Sound.Play3D($"Sfx_Block_Impact{soundNum}", gameObject);
         }
     }
     public void SetTargetHeight(float targetHeight)

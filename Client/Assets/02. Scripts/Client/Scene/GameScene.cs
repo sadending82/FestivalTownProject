@@ -106,6 +106,11 @@ public class GameScene : BaseScene
 
     }
 
+    public void GameEnd()
+    {
+
+    }
+
     public override void Clear()
     {
         
