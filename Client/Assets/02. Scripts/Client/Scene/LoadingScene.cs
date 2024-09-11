@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 public class LoadingScene : BaseScene
 {
     bool LoadStart = false;
-    bool NextSceneActivate = false;
 
     protected override void Init()
     {

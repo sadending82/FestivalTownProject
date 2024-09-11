@@ -310,6 +310,7 @@ public class PlayerController : MonoBehaviour
                 if (pelvis != null)
                 {
                     packetManager.SendPlayerMovePacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_JUMP);
+                    Managers.Sound.Play3D("Sfx_Ch_Jump", gameObject);
                 }
                 else
                 {
@@ -606,6 +607,8 @@ public class PlayerController : MonoBehaviour
         Vector3 targetPos = new Vector3(x, createHeight, y);
 
         SetPosition(targetPos);
+
+        Managers.Sound.Play("Sfx_Ch_Respawn");
     }
     public void ResetPlayerControllerSetting()
     {

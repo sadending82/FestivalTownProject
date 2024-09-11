@@ -56,14 +56,17 @@ public class Statue : MonoBehaviour
             case Define.StatueState.AttackedOneTime:
                 transform.GetChild(1).gameObject.SetActive(true);
                 StartCoroutine(AfterDestroy(0));
+                Managers.Sound.Play3D("Sfx_Statue_Explosion", gameObject);
                 break;
             case Define.StatueState.AttackedTwoTime:
                 transform.GetChild(2).gameObject.SetActive(true);
                 StartCoroutine(AfterDestroy(1));
+                Managers.Sound.Play3D("Sfx_Statue_Explosion", gameObject);
                 break;
             case Define.StatueState.Destroyed:
                 transform.GetChild(3).gameObject.SetActive(true);
                 StartCoroutine(AfterDestroy(2));
+                Managers.Sound.Play3D("Sfx_Statue_Explosion", gameObject);
                 break;
             default:
                 break;

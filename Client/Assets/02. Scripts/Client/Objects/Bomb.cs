@@ -61,11 +61,17 @@ public class Bomb : MonoBehaviour
     }
     public void Boom()
     {
+        Managers.Sound.Stop3D(gameObject);
+
         GameObject pusher = Managers.Resource.Instantiate("BombPusher");
 
         pusher.transform.position = transform.position;
         pusher.SetActive(true);
         pusher.GetComponent<Pusher>().StartPush();
+
+        GameObject sound = Managers.Resource.Instantiate("AudioSourceForDestroyingObj");
+
+        Managers.Sound.Play3D("Sfx_Bomb_Explosion", sound);
 
         if(isPickUp == true)
         {

@@ -29,7 +29,7 @@ public class SoundManager
             UnityEngine.Object.DontDestroyOnLoad(root);
 
             string[] sounds = System.Enum.GetNames(typeof(Define.Sound)); // 이젠 리플렉션인거 아시겠죠?
-            for (int i = 0; i < sounds.Length - 1; ++i)
+            for (int i = 0; i < sounds.Length; ++i)
             {
                 GameObject go = new GameObject { name = sounds[i] };
                 _audioSources[i] = go.AddComponent<AudioSource>();
@@ -57,6 +57,8 @@ public class SoundManager
     public void Play(AudioClip audioClip, Define.Sound type = Define.Sound.Effect)
     {
         if (audioClip == null) return;
+
+        
 
         switch(type)
         {

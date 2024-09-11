@@ -40,6 +40,8 @@ public class BombObjectManager : MonoBehaviour
         reusedBomb.gameObject.SetActive(true);
         reusedBomb.gameObject.GetComponent<Bomb>().SetId(id);
         reusedBomb.gameObject.transform.position = new Vector3(x + offsetX, createHeight, y + offsetY);
+
+        Managers.Sound.Play3D("Sfx_Bomb_Fuse", reusedBomb, Define.Sound.Bgm);
     }
 
     public GameObject FindBombById(int targetBombId)

@@ -183,6 +183,7 @@ public class CharacterStatus : MonoBehaviour
         {
             hp = 0;
             playerMesh.SetActive(false);
+            Managers.Sound.Play("Sfx_Ch_Die");
         }
         else
         {

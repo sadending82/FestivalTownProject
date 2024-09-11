@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     public bool isHost = false;
     public int inGameID = -1;
     public int RoomID = -1;
-
+    public bool isAnounnced15s = false;
 
     public void Init()
     {
@@ -89,6 +89,11 @@ public class GameManager : MonoBehaviour
         if (GameRemainTime > 0 && isTimerStart)
         {
             GameRemainTime -= Time.deltaTime;
+            if(GameRemainTime < 15.0f && isAnounnced15s == false)
+            {
+                isAnounnced15s = true;
+                Managers.Sound.Play("Sfx_15sec");
+            }
         }
     }
 
@@ -107,6 +112,7 @@ public class GameManager : MonoBehaviour
         isHost = false;
         inGameID = -1;
         RoomID = -1;
+        isAnounnced15s = false;
     }
     public void GameStart()
     {
