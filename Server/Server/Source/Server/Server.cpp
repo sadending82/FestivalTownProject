@@ -81,11 +81,15 @@ void Server::Disconnect(int key)
 
         if (roomID != INVALIDKEY) {
             mRooms[roomID]->DeletePlayer(inGameID);
+
+            mPacketSender->SendPlayerDelete(roomID, inGameID);
+
+            if (inGameID == mRooms[roomID]->GetHostID()) {
+                int newHostSessionID = mRooms[roomID]->ChangeHost();
+                mPacketSender->SendGameHostChange(newHostSessionID);
+            }
         }
-        if (inGameID == mRooms[roomID]->GetHostID()) {
-            int newHostSessionID = mRooms[roomID]->ChangeHost();
-            mPacketSender->SendGameHostChange(newHostSessionID);
-        }
+
     }
     player->Disconnect();
     player->GetDisconnectLock().unlock();

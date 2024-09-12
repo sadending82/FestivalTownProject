@@ -44,6 +44,7 @@ public class PacketManager : MonoBehaviour
 
 
             { ePacketType.S2C_PLAYER_ADD, new PlayerAddProcessor() },
+            { ePacketType.S2C_PLAYER_DELETE, new PlayerDeleteProcessor() },
             { ePacketType.S2C_PLAYER_MOVE, new PlayerMoveProcessor() },
             { ePacketType.S2C_PLAYER_STOP, new PlayerStopProcessor() },
             { ePacketType.S2C_PLAYER_POS_SYNC, new PlayerPosSyncProcessor() },

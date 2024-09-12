@@ -10,7 +10,8 @@ public:
 	PacketMaker() {};
 	~PacketMaker() {};
 
-	std::vector<uint8_t> MakePlayerAdd(std::array<class Player*, MAXPLAYER>& players);
+	std::vector<uint8_t> MakePlayerAddPacket(std::array<class Player*, MAXPLAYER>& players);
+	std::vector<uint8_t> MakePlayerDeletePacket (int inGameID);
 	std::vector<uint8_t> MakePlayerDeadPacket(int inGameID, int roomID, Vector3f position, Vector3f direction);
 	std::vector<uint8_t> MakePlayerRespawnPacket(int inGameID, int roomID, Vector3f position, int hp);
 	std::vector<uint8_t> MakePlayerCalculatedDamagePacket(int targetID, int attackType, int hp, int damageAmount, Vector3f knockback_direction);

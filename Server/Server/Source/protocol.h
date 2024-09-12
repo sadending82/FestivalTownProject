@@ -5,6 +5,7 @@ enum ePacketType
     // Server -> Client
     S2C_HEART_BEAT,
     S2C_PLAYER_ADD,
+    S2C_PLAYER_DELETE,
     S2C_PLAYER_MOVE,
     S2C_PLAYER_STOP,
     S2C_PLAYER_POS_SYNC,

@@ -27,6 +27,9 @@ struct PlayerPosSyncBuilder;
 struct PlayerAdd;
 struct PlayerAddBuilder;
 
+struct PlayerDelete;
+struct PlayerDeleteBuilder;
+
 struct PlayerMove;
 struct PlayerMoveBuilder;
 
@@ -233,6 +236,47 @@ inline ::flatbuffers::Offset<PlayerAdd> CreatePlayerAddDirect(
   return PacketTable::PlayerTable::CreatePlayerAdd(
       _fbb,
       players__);
+}
+
+struct PlayerDelete FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef PlayerDeleteBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ID = 4
+  };
+  int32_t id() const {
+    return GetField<int32_t>(VT_ID, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_ID, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct PlayerDeleteBuilder {
+  typedef PlayerDelete Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_id(int32_t id) {
+    fbb_.AddElement<int32_t>(PlayerDelete::VT_ID, id, 0);
+  }
+  explicit PlayerDeleteBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<PlayerDelete> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<PlayerDelete>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<PlayerDelete> CreatePlayerDelete(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t id = 0) {
+  PlayerDeleteBuilder builder_(_fbb);
+  builder_.add_id(id);
+  return builder_.Finish();
 }
 
 struct PlayerMove FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {

@@ -2,11 +2,9 @@
 #include "PacketMaker.h"
 #include "../../Object/Player.h"
 
-std::vector<uint8_t> PacketMaker::MakePlayerAdd(std::array<class Player*, MAXPLAYER>& players)
+std::vector<uint8_t> PacketMaker::MakePlayerAddPacket(std::array<class Player*, MAXPLAYER>& players)
 {
 	flatbuffers::FlatBufferBuilder Builder;
-	Builder.Clear();
-
 	std::vector<flatbuffers::Offset<PacketTable::PlayerTable::PlayerPos>> player_vec;
 
 	for (Player* player : players) {
@@ -30,10 +28,18 @@ std::vector<uint8_t> PacketMaker::MakePlayerAdd(std::array<class Player*, MAXPLA
 	return MakeBuffer(ePacketType::S2C_PLAYER_ADD, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
+std::vector<uint8_t> PacketMaker::MakePlayerDeletePacket(int inGameID)
+{
+	flatbuffers::FlatBufferBuilder Builder;
+
+	Builder.Finish(PacketTable::PlayerTable::CreatePlayerDelete(Builder, inGameID));
+	return MakeBuffer(ePacketType::S2C_PLAYER_DELETE, Builder.GetBufferPointer(), Builder.GetSize());
+}
+
 std::vector<uint8_t> PacketMaker::MakePlayerDeadPacket(int inGameID, int roomID, Vector3f position, Vector3f direction)
 {
 	flatbuffers::FlatBufferBuilder Builder;
-	Builder.Clear();
+	
 	auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, position.x, position.y, position.x);
 	auto dir = PacketTable::UtilitiesTable::CreateVec3f(Builder, direction.x, direction.y, direction.x);
 	Builder.Finish(PacketTable::PlayerTable::CreatePlayerDead(Builder, inGameID, pos, dir));
@@ -43,7 +49,7 @@ std::vector<uint8_t> PacketMaker::MakePlayerDeadPacket(int inGameID, int roomID,
 std::vector<uint8_t> PacketMaker::MakePlayerRespawnPacket(int inGameID, int roomID, Vector3f position, int hp)
 {
 	flatbuffers::FlatBufferBuilder Builder;
-	Builder.Clear();
+	
 	auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, position.x, position.y, position.z);
 	Builder.Finish(PacketTable::PlayerTable::CreatePlayerRespawn(Builder, inGameID, hp, pos));
 	return MakeBuffer(ePacketType::S2C_PLAYER_RESPAWN, Builder.GetBufferPointer(), Builder.GetSize());
@@ -52,7 +58,7 @@ std::vector<uint8_t> PacketMaker::MakePlayerRespawnPacket(int inGameID, int room
 std::vector<uint8_t> PacketMaker::MakePlayerCalculatedDamagePacket(int targetID, int attackType, int hp, int damageAmount, Vector3f knockback_direction)
 {
 	flatbuffers::FlatBufferBuilder Builder;
-	Builder.Clear();
+	
 	auto dir = PacketTable::UtilitiesTable::CreateVec3f(Builder, knockback_direction.x, knockback_direction.y, knockback_direction.z);
 	Builder.Finish(PacketTable::PlayerTable::CreatePlayerCalculatedDamage(Builder, targetID, attackType, hp, damageAmount, dir));
 	return MakeBuffer(ePacketType::S2C_PLAYER_CALCULATED_DAMAGE, Builder.GetBufferPointer(), Builder.GetSize());
@@ -61,7 +67,7 @@ std::vector<uint8_t> PacketMaker::MakePlayerCalculatedDamagePacket(int targetID,
 std::vector<uint8_t> PacketMaker::MakeGameMatchingResponsePacket(int inGameID, int roomID, int team, int gameMode, int totalPlayerCount, bool isHost)
 {
 	flatbuffers::FlatBufferBuilder Builder;
-	Builder.Clear();
+	
 	Builder.Finish(PacketTable::LobbyTable::CreateGameMatchingResponse(Builder, inGameID, roomID, team, gameMode, isHost, totalPlayerCount));
 	return MakeBuffer(ePacketType::S2C_MATCHING_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }
@@ -69,7 +75,7 @@ std::vector<uint8_t> PacketMaker::MakeGameMatchingResponsePacket(int inGameID, i
 std::vector<uint8_t> PacketMaker::MakeAllPlayerReadyPacket()
 {
 	flatbuffers::FlatBufferBuilder Builder;
-	Builder.Clear();
+	
 	Builder.Finish(PacketTable::GameTable::CreateAllPlayerReady(Builder));
 	return MakeBuffer(ePacketType::S2C_ALL_PLAYER_READY, Builder.GetBufferPointer(), Builder.GetSize());
 }
@@ -77,7 +83,7 @@ std::vector<uint8_t> PacketMaker::MakeAllPlayerReadyPacket()
 std::vector<uint8_t> PacketMaker::MakeGameStartPacket(int roomid, long time)
 {
 	flatbuffers::FlatBufferBuilder Builder;
-	Builder.Clear();
+	
 	Builder.Finish(PacketTable::GameTable::CreateGameStart(Builder, roomid, time));
 	return MakeBuffer(ePacketType::S2C_GAME_START, Builder.GetBufferPointer(), Builder.GetSize());
 }
@@ -85,7 +91,7 @@ std::vector<uint8_t> PacketMaker::MakeGameStartPacket(int roomid, long time)
 std::vector<uint8_t> PacketMaker::MakeHeartBeatPacket()
 {
 	flatbuffers::FlatBufferBuilder Builder;
-	Builder.Clear();
+	
 	long long currTime = std::chrono::duration_cast<std::chrono::milliseconds>(
 		std::chrono::system_clock::now().time_since_epoch()).count();
 	Builder.Finish(PacketTable::UtilitiesTable::CreateHeartBeat(Builder, currTime));
@@ -95,7 +101,7 @@ std::vector<uint8_t> PacketMaker::MakeHeartBeatPacket()
 std::vector<uint8_t> PacketMaker::MakeBlockDropPacket(int x, int y, int type)
 {
 	flatbuffers::FlatBufferBuilder Builder;
-	Builder.Clear();
+	
 	auto pos = PacketTable::UtilitiesTable::CreateVec2i(Builder, x, y);
 	Builder.Finish(PacketTable::ObjectTable::CreateBlockDrop(Builder, pos, type));
 	return MakeBuffer(ePacketType::S2C_BLOCK_DROP, Builder.GetBufferPointer(), Builder.GetSize());
@@ -104,7 +110,7 @@ std::vector<uint8_t> PacketMaker::MakeBlockDropPacket(int x, int y, int type)
 std::vector<uint8_t> PacketMaker::MakeBombSpawnPacket(Vector3f Positon, int bombid)
 {
 	flatbuffers::FlatBufferBuilder Builder;
-	Builder.Clear();
+	
 	auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, Positon.x, Positon.y, Positon.z);
 	Builder.Finish(PacketTable::ObjectTable::CreateBombSpawn(Builder, pos, bombid));
 	return MakeBuffer(ePacketType::S2C_BOMB_SPAWN, Builder.GetBufferPointer(), Builder.GetSize());
@@ -113,7 +119,7 @@ std::vector<uint8_t> PacketMaker::MakeBombSpawnPacket(Vector3f Positon, int bomb
 std::vector<uint8_t> PacketMaker::MakeWeaponSpawnPacket(Vector3f position, int weaponid, int weaponType)
 {
 	flatbuffers::FlatBufferBuilder Builder;
-	Builder.Clear();
+	
 	auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, position.x, position.y, position.z);
 	Builder.Finish(PacketTable::ObjectTable::CreateWeaponSpawn(Builder, pos, weaponid, weaponType));
 	return MakeBuffer(ePacketType::S2C_WEAPON_SPAWN, Builder.GetBufferPointer(), Builder.GetSize());
@@ -122,7 +128,7 @@ std::vector<uint8_t> PacketMaker::MakeWeaponSpawnPacket(Vector3f position, int w
 std::vector<uint8_t> PacketMaker::MakeWeaponDropPacket(Vector3f position, int weaponid)
 {
 	flatbuffers::FlatBufferBuilder Builder;
-	Builder.Clear();
+	
 	auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, position.x, position.y, position.z);
 	Builder.Finish(PacketTable::ObjectTable::CreateWeaponPosition(Builder, pos, weaponid));
 	return MakeBuffer(ePacketType::S2C_PLAYER_DROP_WEAPON, Builder.GetBufferPointer(), Builder.GetSize());
@@ -131,7 +137,7 @@ std::vector<uint8_t> PacketMaker::MakeWeaponDropPacket(Vector3f position, int we
 std::vector<uint8_t> PacketMaker::MakeBombExplosionPacket(int bombID, Vector3f position)
 {
 	flatbuffers::FlatBufferBuilder Builder;
-	Builder.Clear();
+	
 	auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, position.x, position.y, position.x);
 	Builder.Finish(PacketTable::ObjectTable::CreateBombExplosion(Builder, pos, bombID));
 	return MakeBuffer(ePacketType::S2C_BOMB_EXPLOSION, Builder.GetBufferPointer(), Builder.GetSize());
@@ -140,7 +146,7 @@ std::vector<uint8_t> PacketMaker::MakeBombExplosionPacket(int bombID, Vector3f p
 std::vector<uint8_t> PacketMaker::MakeGameStartPacket(int roomID, int startTime)
 {
 	flatbuffers::FlatBufferBuilder Builder;
-	Builder.Clear();
+	
 	Builder.Finish(PacketTable::GameTable::CreateGameStart(Builder, roomID, startTime));
 	return MakeBuffer(ePacketType::S2C_GAME_START, Builder.GetBufferPointer(), Builder.GetSize());
 }
@@ -148,7 +154,7 @@ std::vector<uint8_t> PacketMaker::MakeGameStartPacket(int roomID, int startTime)
 std::vector<uint8_t> PacketMaker::MakeGameEndPacket(uint8_t winningTeams_flag)
 {
 	flatbuffers::FlatBufferBuilder Builder;
-	Builder.Clear();
+	
 	Builder.Finish(PacketTable::GameTable::CreateGameEnd(Builder));
 	return MakeBuffer(ePacketType::S2C_GAME_END, Builder.GetBufferPointer(), Builder.GetSize());
 }
@@ -156,7 +162,7 @@ std::vector<uint8_t> PacketMaker::MakeGameEndPacket(uint8_t winningTeams_flag)
 std::vector<uint8_t> PacketMaker::MakeGameResultPacket(uint8_t winningTeams_flag, std::unordered_map<int, sPlayerGameRecord>& records, std::array<class Player*, MAXPLAYER>& players)
 {
 	flatbuffers::FlatBufferBuilder Builder;
-	Builder.Clear();
+	
 
 	std::vector<flatbuffers::Offset<PacketTable::UtilitiesTable::PlayerGameRecord>> record_vec;
 
@@ -190,7 +196,7 @@ std::vector<uint8_t> PacketMaker::MakeGameResultPacket(uint8_t winningTeams_flag
 std::vector<uint8_t> PacketMaker::MakeGameHostChangePacket(int inGameID, int roomID)
 {
 	flatbuffers::FlatBufferBuilder Builder;
-	Builder.Clear();
+	
 	Builder.Finish(PacketTable::GameTable::CreateGameHostChange(Builder, inGameID, roomID));
 	return MakeBuffer(ePacketType::S2C_GAME_HOST_CHANGE, Builder.GetBufferPointer(), Builder.GetSize());
 }
@@ -198,7 +204,7 @@ std::vector<uint8_t> PacketMaker::MakeGameHostChangePacket(int inGameID, int roo
 std::vector<uint8_t> PacketMaker::MakeLifeReducePacket(int team, int lifeCount)
 {
 	flatbuffers::FlatBufferBuilder Builder;
-	Builder.Clear();
+	
 	Builder.Finish(PacketTable::GameTable::CreateLifeReduce(Builder, team, lifeCount));
 	return MakeBuffer(ePacketType::S2C_LIFE_REDUCE, Builder.GetBufferPointer(), Builder.GetSize());
 }
@@ -206,7 +212,7 @@ std::vector<uint8_t> PacketMaker::MakeLifeReducePacket(int team, int lifeCount)
 std::vector<uint8_t> PacketMaker::MakeRemainTimeSyncPacket(int roomID, TIMEPOINT gameStartTime, int gameEndTime)
 {
 	flatbuffers::FlatBufferBuilder Builder;
-	Builder.Clear();
+	
 	TIMEPOINT currTime = std::chrono::system_clock::now();
 	int elapsedSeconds = std::chrono::duration_cast<std::chrono::seconds>(currTime - gameStartTime).count();
 	Builder.Finish(PacketTable::GameTable::CreateRemainTimeSync(Builder, gameEndTime - elapsedSeconds));

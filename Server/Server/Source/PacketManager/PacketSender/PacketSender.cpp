@@ -28,8 +28,14 @@ void PacketSender::SendPlayerAdd(int roomID)
 
         player->SetPosition(pos);
     }
-    std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerAdd(room->GetPlayerList());
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerAddPacket(room->GetPlayerList());
     room->GetPlayerListLock().unlock_shared();
+    mServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
+}
+
+void PacketSender::SendPlayerDelete(int roomID, int inGameID)
+{
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerDeletePacket(inGameID);
     mServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
 

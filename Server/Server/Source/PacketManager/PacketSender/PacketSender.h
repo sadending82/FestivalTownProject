@@ -8,6 +8,7 @@ public:
 	~PacketSender();
 
 	void SendPlayerAdd(int roomID);
+	void SendPlayerDelete(int roomID, int inGameID);
 	void SendGameMatchingResponse(int sessionID);
 	void SendGameStart(int roomID);
 	void SendAllPlayerReady(int roomID);
