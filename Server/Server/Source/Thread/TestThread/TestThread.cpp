@@ -62,8 +62,6 @@ void TestThread::RunWorker()
                 m_pServer->MatchingComplete(roomid, playerCount, playerList);
                 std::cout << "Start Game room - " << roomid << std::endl;
             }
-
-            PushEventGameMatching(m_pServer->GetTimer());
         }
         break;
             // 라이프 감소 전송

@@ -12,19 +12,18 @@ PacketSender::~PacketSender()
 void PacketSender::SendPlayerAdd(int roomID)
 {
     Room* room = mServer->GetRooms()[roomID];
-
-    std::random_device rd;
-    std::mt19937 gen(rd());
+    std::map<int, int> teamPlayerCnt;
     room->GetPlayerListLock().lock_shared();
+
     for (Player* player : room->GetPlayerList()) {
         if (player == nullptr) {
             continue;
         }
-        std::vector<std::pair<int, int>>& spawnPoses = room->GetMap()->GetPlayerSpawnIndexes(player->GetTeam());
-        std::uniform_int_distribution<> idx_distrib(0, spawnPoses.size() - 1);
-        int idx = idx_distrib(gen);
+        int team = player->GetTeam();
 
-        Vector3f pos = ConvertVec2iToVec3f(spawnPoses[idx].first, spawnPoses[idx].second);
+        std::vector<std::pair<int, int>>& spawnPoses = room->GetMap()->GetPlayerSpawnIndexes(player->GetTeam());
+
+        Vector3f pos = ConvertVec2iToVec3f(spawnPoses[teamPlayerCnt[team]].first, spawnPoses[teamPlayerCnt[team]++].second);
 
         player->SetPosition(pos);
     }
