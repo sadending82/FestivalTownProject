@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using ClientProtocol;
 using NetworkProtocol;
+using UnityEngine.Rendering;
 
 public class PlayerController : MonoBehaviour
 {
@@ -29,6 +30,7 @@ public class PlayerController : MonoBehaviour
     public Rigidbody leftFootRigidbody;
     public Rigidbody rightFootRigidbody;
     public bool isGrounded;
+    public bool isJump;
 
     private Quaternion rotationQuaternion;
     private Vector3 stabillizerDirection;
@@ -107,7 +109,7 @@ public class PlayerController : MonoBehaviour
                     {
                         if (isGrounded == false)
                         {
-                            pelvisRigidbody.velocity = moveDirection * (walkSpeed - 2);
+                            pelvisRigidbody.velocity = (moveDirection * (walkSpeed - 2));
                         }
                         else
                         {
@@ -123,6 +125,15 @@ public class PlayerController : MonoBehaviour
                         else
                         {
                             pelvisRigidbody.velocity = moveDirection * runSpeed;
+                        }
+                    }
+
+                    if (isJump == true)
+                    {
+                        if (isGrounded == true)
+                        {
+                            Jump();
+                            isJump = false;
                         }
                     }
                 }
@@ -262,6 +273,7 @@ public class PlayerController : MonoBehaviour
                     if (isGrounded == false)
                     {
                         pelvisRigidbody.velocity = moveDirection * (runSpeed - 3);
+                        Debug.Log("³ª´Ù- " + pelvisRigidbody.velocity);
                     }
                     else
                     {
@@ -557,6 +569,10 @@ public class PlayerController : MonoBehaviour
     public void SetIsMove(bool isMove)
     {
         this.isMove = isMove;
+    }
+    public void SetIsJump(bool isJump)
+    {
+        this.isJump = isJump;
     }
     public void SetMyId(int myId)
     {

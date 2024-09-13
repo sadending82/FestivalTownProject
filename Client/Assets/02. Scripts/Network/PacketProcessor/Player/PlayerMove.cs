@@ -3,6 +3,7 @@ using NetworkProtocol;
 using PacketTable.PlayerTable;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,13 +47,14 @@ namespace Network.PacketProcessor
 
                     case (int)ePlayerMoveState.PS_JUMP:
                         {
-                            pController.Jump();
+                            pController.SetIsMove(true);
+                            pController.SetIsJump(true);
                         }
                         break;
 
                     default:
                         {
-                            Debug.Log("ERROR!! : PlayerMove.cs, Wrong MoveState !!!");
+                            UnityEngine.Debug.Log("ERROR!! : PlayerMove.cs, Wrong MoveState !!!");
                         }
                         break;
                 }

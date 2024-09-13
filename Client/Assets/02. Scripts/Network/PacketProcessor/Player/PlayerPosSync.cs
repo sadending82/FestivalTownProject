@@ -18,7 +18,7 @@ namespace Network.PacketProcessor
             Vector3 pos = new Vector3(posData.Pos.Value.X, posData.Pos.Value.Y, posData.Pos.Value.Z);
             Vector3 dir = new Vector3(posData.Direction.Value.X, posData.Direction.Value.Y, posData.Direction.Value.Z);
 
-            Debug.Log("Player ID : " + id + ", PlayerPosSyncPacket");
+            //Debug.Log("Player ID : " + id + ", PlayerPosSyncPacket");
 
             if (Managers.Player == null) return;
 

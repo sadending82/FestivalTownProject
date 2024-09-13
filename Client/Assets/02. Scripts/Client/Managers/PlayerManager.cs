@@ -94,6 +94,7 @@ public class PlayerManager : MonoBehaviour
             var playerObject = players.transform.GetChild(id).gameObject;
             playerObject.SetActive(true);
             playerObject.GetComponent<PlayerController>().Respawn(position.x, position.y);
+            playerObject.GetComponent<PlayerController>().SetMyId(id);
             nowPlayerNum++;          
         }
     }
