@@ -3,15 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 현재 게임에 대한 데이터를 저장하고, 게임을 관리하는 녀석.
+/// 라이프라던지, 시간이라던지
+/// 현재 씬이 인게임이 아니라면 Clear 하고나서 관리 안 해도 됨.
+/// </summary>
 public class GameManager : MonoBehaviour 
 {
-    /// <summary>
-    /// 현재 게임에 대한 데이터를 저장하고, 게임을 관리하는 녀석.
-    /// 라이프라던지, 시간이라던지
-    /// 현재 씬이 인게임이 아니라면 Clear 하고나서 관리 안 해도 됨.
-    /// </summary>
 
     public bool isInGame = false;
+    public bool isGameEnd = false;
     public bool isTimerStart = false;
     public float GameRemainTime = 300.0f;
     public float GameEndTime = 300.0f;
@@ -20,6 +21,8 @@ public class GameManager : MonoBehaviour
     public int inGameID = -1;
     public int RoomID = -1;
     public bool isAnounnced15s = false;
+    public Dictionary<int, Define.PlayerResult> PlayerResultData = new();
+    
 
     public void Init()
     {
@@ -113,10 +116,22 @@ public class GameManager : MonoBehaviour
         inGameID = -1;
         RoomID = -1;
         isAnounnced15s = false;
+        isGameEnd = false;
+        PlayerResultData.Clear();
     }
     public void GameStart()
     {
         isTimerStart = true;
         Managers.Player.GameStart();
     }
+
+    public void GameEnd()
+    {
+        isTimerStart = false;
+        Managers.Player.GameEnd();
+
+        isGameEnd = true;
+    }
+
+
 }

@@ -141,4 +141,16 @@ public class PlayerManager : MonoBehaviour
             }
         }
     }
+
+    public void GameEnd()
+    {
+        for (int i = 0; i < maxPlayerNum; ++i)
+        {
+            GameObject tPlayer = players.transform.GetChild(i).gameObject;
+            if (tPlayer.activeSelf == true)
+            {
+                tPlayer.GetComponent<PlayerController>().GameEnd();
+            }
+        }
+    }
 }

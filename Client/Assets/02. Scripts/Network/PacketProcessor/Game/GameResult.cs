@@ -25,6 +25,21 @@ namespace Network.PacketProcessor
 
                 Debug.Log($"Player {playerRecord.Value.Id}:  Kill = {playerRecord.Value.KillCount}, Death = {playerRecord.Value.DeathCount}" +
                     $",  Gold = {playerRecord.Value.EarnGold}, Point = {playerRecord.Value.Point} Is MVP = {playerRecord.Value.IsMvp}");
+
+                Define.PlayerResult result;
+                result.kill = playerRecord.Value.KillCount;
+                result.death = playerRecord.Value.DeathCount;
+                result.bombInsert = playerRecord.Value.BombInsertCount;
+                result.gold = playerRecord.Value.EarnGold;
+
+                Managers.Game.PlayerResultData.Add(playerRecord.Value.Id, result);
+            }
+
+            
+
+            if(Managers.Scene.CurrentScene.GetComponent<GameScene>() != null)
+            {
+                Managers.Scene.CurrentScene.GetComponent<GameScene>().WaitAndShowResult();
             }
         }
 
