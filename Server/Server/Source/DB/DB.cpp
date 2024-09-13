@@ -162,6 +162,37 @@ bool DB::InsertNewAcccount(const char* id, const char* password)
 	return false;
 }
 
+bool DB::InsertNewUser(const char* id, const char* nickname)
+{
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGNOPARAM("hStmt Error : (InsertNewUser) \n");
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return false;
+	}
+
+	UseGameDB(hStmt);
+
+	SQLPrepare(hStmt, (SQLWCHAR*)L"INSERT INTO UserInfo (AccountID, NickName) VALUES (?, ?)", SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, strlen(id), 0, (SQLCHAR*)id, 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_WCHAR, strlen(nickname), 0, (SQLCHAR*)nickname, 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return true;
+	}
+
+	DEBUGMSGNOPARAM("Execute Query Error : (InsertNewUser)\n");
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	return false;
+}
+
 bool DB::CheckValidateLogin(const char* id, const char* password)
 {
 	SQLHSTMT hStmt = NULL;

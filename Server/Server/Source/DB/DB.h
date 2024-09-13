@@ -19,6 +19,7 @@ public:
     bool UseGameDB(SQLHSTMT& hStmt);
 
     bool InsertNewAcccount(const char* id, const char* password);
+    bool InsertNewUser(const char* id, const char* nickname);
     bool CheckValidateLogin(const char* id, const char* password);
 
 private:

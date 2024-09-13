@@ -17,6 +17,7 @@ public:
 
 	virtual void	DoSend(void* packet, const int size) override;
 
+	int				GetUID() { return mUID; }
 	std::string		GetAccountID() { return mAccountID; }
 	int				GetRoomID() { return mRoomID; }
 	int				GetInGameID() { return mInGameID; }
@@ -31,6 +32,7 @@ public:
 	class Bomb*		GetBomb() { return mBomb; }
 	class Weapon*	GetWeapon() { return mWeapon; }
 
+	int				SetUID() { return mUID; }
 	void			SetAccountID(std::string accountID) { mAccountID = accountID; }
 	void			SetRoomID(int id) { mRoomID = id; }
 	void			SetInGameID(int id) { mInGameID = id; }
@@ -53,7 +55,8 @@ protected:
 	std::mutex      mPlayerStateLock;
 	ePlayerState	mPlayerState;
 
-	std::string		mAccountID = "";
+	int				mUID;	// GameDB에서 PK로 사용하는 Unique ID
+	std::string		mAccountID = ""; // 계정 ID
 	int				mRoomID;
 	int				mInGameID; // 클라와 함께 인게임 내에서 구분하기 위한 id
 	std::string		mName = "test"; // 임시 닉네임
