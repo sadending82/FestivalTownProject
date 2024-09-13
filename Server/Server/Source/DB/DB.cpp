@@ -35,15 +35,15 @@ bool DB::ReadConfig()
 	while (line < 3 && std::getline(file, txt)) {
 		if (line == 0) {
 			std::string tmp = txt.substr(5);
-			odbc.assign(tmp.begin(), tmp.end());
+			mOdbc.assign(tmp.begin(), tmp.end());
 		}
 		if (line == 1) {
 			std::string tmp = txt.substr(3);
-			id.assign(tmp.begin(), tmp.end());
+			mID.assign(tmp.begin(), tmp.end());
 		}
 		if (line == 2) {
 			std::string tmp = txt.substr(3);
-			pw.assign(tmp.begin(), tmp.end());
+			mPassword.assign(tmp.begin(), tmp.end());
 		}
 		line++;
 	}
@@ -92,7 +92,7 @@ bool DB::Connect()
 		return false;
 	}
 
-	retcode = SQLConnect(hDbc, (wchar_t*)odbc.c_str(), SQL_NTS, (wchar_t*)id.c_str(), SQL_NTS, (wchar_t*)pw.c_str(), SQL_NTS);
+	retcode = SQLConnect(hDbc, (wchar_t*)mOdbc.c_str(), SQL_NTS, (wchar_t*)mID.c_str(), SQL_NTS, (wchar_t*)mPassword.c_str(), SQL_NTS);
 
 	if (retcode == SQL_ERROR) {
 		DEBUGMSGNOPARAM("DB Connect Fail\n");
@@ -128,31 +128,26 @@ bool DB::UseGameDB(SQLHSTMT& hStmt)
 	return true;
 }
 
-bool DB::InsertNewAcccount(const char* id, const char* pw)
+bool DB::InsertNewAcccount(const char* id, const char* password)
 {
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
 	std::string salt = mSecurity->GenerateSalt();
-	std::string hashedPassword = mSecurity->HashingPassword(pw, salt);
-
-	if (UseAccountDB(hStmt) == false) {
-		return false;
-	}
+	std::string hashedPassword = mSecurity->HashingPassword(password, salt);
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR){
 		DEBUGMSGNOPARAM("hStmt Error : (InsertNewAcccount) \n");
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 		return false;
 	}
-
 	UseAccountDB(hStmt);
 
 	SQLPrepare(hStmt, (SQLWCHAR*)L"INSERT INTO ACCOUNT VALUES (?, ?, ?)", SQL_NTS);
 
-	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, 50, 0, (SQLCHAR*)id, 0, NULL);
-	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, 256, 0, (SQLCHAR*)hashedPassword.c_str(), 0, NULL);
-	SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, 50, 0, (SQLCHAR*)salt.c_str(), 0, NULL);
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, strlen(id), 0, (SQLCHAR*)id, 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, hashedPassword.length(), 0, (SQLCHAR*)hashedPassword.c_str(), 0, NULL);
+	SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, salt.length(), 0, (SQLCHAR*)salt.c_str(), 0, NULL);
 
 	retcode = SQLExecute(hStmt);
 
@@ -162,7 +157,58 @@ bool DB::InsertNewAcccount(const char* id, const char* pw)
 		return true;
 	}
 
-	DEBUGMSGNOPARAM("Execute Query Error\n");
+	DEBUGMSGNOPARAM("Execute Query Error : (InsertNewAcccount)\n");
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	return false;
+}
+
+bool DB::CheckValidateLogin(const char* id, const char* password)
+{
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	std::string hashedPassword;
+	std::string salt;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGNOPARAM("hStmt Error : (CheckValidateLogin) \n");
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return false;
+	}
+	UseAccountDB(hStmt);
+
+	SQLPrepare(hStmt, (SQLWCHAR*)L"SELECT hashedPassword, salt FROM ACCOUNT WHERE ID = ?", SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, strlen(id), 0, (SQLCHAR*)id, 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		while (SQLFetch(hStmt) == SQL_SUCCESS) {
+			SQLLEN len1, len2;
+			SQLCHAR value1[256]; // hashedPassword
+			SQLCHAR value2[50]; // salt
+			SQLGetData(hStmt, 1, SQL_C_CHAR, value1, sizeof(value1), &len1);
+			hashedPassword.assign(reinterpret_cast<char*>(value1), len1);
+
+			SQLGetData(hStmt, 2, SQL_C_CHAR, value2, sizeof(value2), &len2);
+			salt.assign(reinterpret_cast<char*>(value2), len2);
+		}
+
+		std::cout << hashedPassword << " - " << salt << std::endl;
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	}
+	else {
+		DEBUGMSGNOPARAM("Execute Query Error : (CheckValidateLogin)\n");
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return false;
+	}
+
+	if (mSecurity->VerifyPassword(password, hashedPassword, salt)) {
+		return true;
+	}
+
 	return false;
 }

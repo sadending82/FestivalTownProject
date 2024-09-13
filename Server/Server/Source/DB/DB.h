@@ -18,15 +18,16 @@ public:
     bool UseAccountDB(SQLHSTMT& hStmt);
     bool UseGameDB(SQLHSTMT& hStmt);
 
-    bool InsertNewAcccount(const char* id, const char* pw);
+    bool InsertNewAcccount(const char* id, const char* password);
+    bool CheckValidateLogin(const char* id, const char* password);
 
 private:
     SQLHENV hEnv = NULL;
     SQLHDBC hDbc = NULL;
 
-    std::wstring odbc = L"";
-    std::wstring id = L"";
-    std::wstring pw = L"";
+    std::wstring mOdbc = L"";
+    std::wstring mID = L"";
+    std::wstring mPassword = L"";
 
     Security* mSecurity = nullptr;
 };
