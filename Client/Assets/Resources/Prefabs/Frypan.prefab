@@ -172,9 +172,9 @@ ParentConstraint:
   m_TranslationAtRest: {x: 0, y: 0, z: 0}
   m_RotationAtRest: {x: -90, y: 0, z: 0}
   m_TranslationOffsets:
-  - {x: 0, y: 0, z: 0.7}
+  - {x: 0.2, y: 0, z: 0.6}
   m_RotationOffsets:
-  - {x: -90, y: -90, z: 0}
+  - {x: -110, y: -70, z: 0}
   m_AffectTranslationX: 1
   m_AffectTranslationY: 1
   m_AffectTranslationZ: 1

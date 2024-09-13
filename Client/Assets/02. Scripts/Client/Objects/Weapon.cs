@@ -1,8 +1,11 @@
+using NetworkProtocol;
+using ParrelSync.NonCore;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations;
+using UnityEngine.Playables;
 
 public class Weapon : MonoBehaviour
 {
@@ -15,15 +18,28 @@ public class Weapon : MonoBehaviour
     private bool isPickUp = false;
     private int pickUpPlayerId;
     private int lastPickUpPlayerId;
+    private bool amIPlayer = false;
+    private bool isAttackState = false;
+    private int weaponType = -1;
 
     private ParentConstraint parentConstraint;
     private ConstraintSource weaponInvenSource;
 
     private Transform basicTransform;
+    private CharacterStatus playerState;
 
     private void Awake()
     {
         basicTransform = transform;
+
+        if(this.gameObject.name == "Frypan")
+        {
+            weaponType = (int)eWeaponType.WT_FRYING_PAN;
+        }
+        else if (this.gameObject.name == "Bat")
+        {
+            weaponType = (int)eWeaponType.WT_BAT;
+        }
     }
     private void Start()
     {
@@ -43,11 +59,27 @@ public class Weapon : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(amIPlayer == true)
+        {
+            if(collision.gameObject.tag == "HitBox" && isAttackState == true)
+            {
+                Vector3 attackedDirection = playerState.GetAttackedDirection(collision.transform.position);
+                int targetId = collision.transform.GetComponentInParent<CharacterStatus>().GetId();
+
+                packetManager.SendPlayerDamageReceivePacket(playerState.GetId(), targetId, weaponType, eAttackType.AT_BASIC, attackedDirection);
+            }
+        }
+    }
+
     public void PickUp(int pickUpPlayerId)
     {
         isPickUp = true;
         this.pickUpPlayerId = pickUpPlayerId;
         this.lastPickUpPlayerId = pickUpPlayerId;
+        playerState = Managers.Player.FindPlayerById(pickUpPlayerId).GetComponent<CharacterStatus>();
+        amIPlayer = playerState.GetAmIPlayer();
 
         GameObject pickUpPlayer = Managers.Player.FindPlayerById(pickUpPlayerId);
         GameObject weaponInven = pickUpPlayer.GetComponent<CharacterStatus>().GetWeaponInven();
@@ -64,8 +96,10 @@ public class Weapon : MonoBehaviour
     public void Drop(Vector3 position)
     {
         isPickUp = false;
-        this.pickUpPlayerId = -1;
-        this.gameObject.layer = LayerMask.NameToLayer("Weapon");
+        pickUpPlayerId = -1;
+        gameObject.layer = LayerMask.NameToLayer("Weapon");
+        amIPlayer = false;
+        playerState = null;
 
         // Parent Constraint 해제 - 무기가 손에서 떨어지게
         weaponInvenSource.sourceTransform = null;
@@ -100,5 +134,10 @@ public class Weapon : MonoBehaviour
     public bool GetIsPickUp()
     {
         return isPickUp;
+    }
+
+    public void SetIsAttackState(bool isAttackState)
+    {
+        this.isAttackState = isAttackState;
     }
 }

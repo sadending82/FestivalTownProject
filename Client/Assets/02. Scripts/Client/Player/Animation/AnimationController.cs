@@ -30,11 +30,14 @@ public class AnimationController : MonoBehaviour
     public Transform WeaponAttackRightHint;
 
     public CharacterStatus playerStatus;
+
     private float attackSpeed;
     private float attackTimer;
     private bool isLeftAttack;
+
     private float weaponAttackTimer;
     private float weaponAttackSpeed;
+    private GameObject myWeapon;
 
     public AttackChecker leftAttackChecker;
     public AttackChecker rightAttackChecker;
@@ -80,6 +83,7 @@ public class AnimationController : MonoBehaviour
             {
                 playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
                 weaponAttackTimer = 0;
+                myWeapon.GetComponent<Weapon>().SetIsAttackState(false);
             }
         }
     }
@@ -172,6 +176,8 @@ public class AnimationController : MonoBehaviour
             }
             else
             {
+                myWeapon.GetComponent<Weapon>().SetIsAttackState(true);
+
                 animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
                 animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
                 animator.SetIKHintPositionWeight(AvatarIKHint.RightElbow, 1f);
@@ -206,6 +212,7 @@ public class AnimationController : MonoBehaviour
         else if (upperBodyAnimationState == UpperBodyAnimationState.WEAPONATTACK)
         {
             weaponAttackTimer = 0f;
+            myWeapon = playerStatus.GetMyWeapon();
         }
     }
     public void SetLowerBodyAnimationState(LowerBodyAnimationState lowerBodyAnimationState)

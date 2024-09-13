@@ -32,6 +32,7 @@ public class CharacterStatus : MonoBehaviour
     private bool isHaveWeapon = false;
     private int weaponId;
     public GameObject weaponInven;
+    private GameObject myWeapon;
 
 
     [Header("--- AnimationControll ---")]
@@ -164,6 +165,14 @@ public class CharacterStatus : MonoBehaviour
     }
     public void SetIsHaveWeapon(bool isHaveWeapon, int weaponId = -1)
     {
+        if (isHaveWeapon == true)
+        {
+            myWeapon = Managers.WeaponObject.FindWeaponById(weaponId);
+        }
+        else
+        {
+            myWeapon = null;
+        }
         this.isHaveWeapon = isHaveWeapon;
         this.weaponId = weaponId;
     }
@@ -233,5 +242,18 @@ public class CharacterStatus : MonoBehaviour
     public GameObject GetWeaponInven()
     {
         return weaponInven;
+    }
+
+    public GameObject GetMyWeapon()
+    {
+        return myWeapon;
+    }
+
+    public Vector3 GetAttackedDirection(Vector3 attackerPosition)
+    {
+        Vector3 attackedDirection = attackerPosition - pelvis.transform.position;
+        attackedDirection.y = 0;
+
+        return attackedDirection.normalized;
     }
 }
