@@ -16,27 +16,46 @@ void TableManager::ClearAllTable()
     for (auto& pair : ItemInfos) {
         delete pair.second;
     }
+    ItemInfos.clear();
+
     for (auto& pair : CharacterStats) {
         delete pair.second;
     }
+    CharacterStats.clear();
+
     for (auto& pair : WeaponStats) {
         delete pair.second;
     }
+    WeaponStats.clear();
+
     for (auto& pair : FITH_Data) {
         delete pair.second;
     }
+    FITH_Data.clear();
+
     for (auto& pair : MapData) {
         delete pair.second;
     }
+    MapData.clear();
+
     for (auto& pair : ScoreConstantList) {
         delete pair.second;
     }
+    ScoreConstantList.clear();
 
-    ItemInfos.clear();
-    CharacterStats.clear();
-    WeaponStats.clear();
-    FITH_Data.clear();
-    MapData.clear();
+    for (auto& pair : RandomBoxList) {
+        delete pair.second;
+    }
+    RandomBoxList.clear();
+
+    for (auto& outer_pair : GachaItemList) {
+        for (auto& inner_pair : outer_pair.second) {
+            delete inner_pair.second;
+        }
+        outer_pair.second.clear();
+    }
+    GachaItemList.clear();
+    
 }
 
 void TableManager::ReadAllDataTable()
@@ -47,6 +66,7 @@ void TableManager::ReadAllDataTable()
     ReadFITHModeTable();
     ReadMapData();
     ReadScoreConstantTable();
+    ReadGachaTable();
 }
 
 void TableManager::ReadItemTable()
@@ -310,5 +330,69 @@ void TableManager::ReadScoreConstantTable()
     }
     catch (const xlnt::exception& e) {
         std::cerr << "Excel File Load Fail: " << e.what() << std::endl;
+    }
+}
+
+void TableManager::ReadGachaTable()
+{
+    try {
+        xlnt::workbook wb;
+        wb.load("GameData/Gacha.xlsx");
+
+        int rowIdx = 0;
+        int startRow = 2;
+
+        // Random Box Info
+        xlnt::worksheet ws = wb.sheet_by_index(0);
+        for (auto row : ws.rows(false)) {
+            if (rowIdx < startRow) {
+                rowIdx++;
+                continue;
+            }
+
+            if (!row.empty()) {
+                int index = row[static_cast<int>(RandomBox_Field::index)].value<int>();
+                RandomBoxList[index]
+                    = new RandomBox{
+                    index,
+                    (std::string)row[static_cast<int>(RandomBox_Field::name)].to_string(),
+                    row[static_cast<int>(RandomBox_Field::Gacha_Group)].value<int>(),
+                    row[static_cast<int>(RandomBox_Field::Pay_Item_Index)].value<int>(),
+                    row[static_cast<int>(RandomBox_Field::Pay_Item_Value)].value<int>(),
+                    row[static_cast<int>(RandomBox_Field::Open_Date)].value<int>(),
+                    row[static_cast<int>(RandomBox_Field::Close_Date)].value<int>(),
+                };
+            }
+            rowIdx++;
+        }
+
+        // Gacha Items
+        ws = wb.sheet_by_index(1);
+        rowIdx = 0;
+        for (auto row : ws.rows(false)) {
+            if (rowIdx < startRow) {
+                rowIdx++;
+                continue;
+            }
+
+            if (!row.empty()) {
+                int gachaGroup = row[static_cast<int>(GachaItem_Field::Gacha_Group)].value<int>();
+                int index = row[static_cast<int>(GachaItem_Field::index)].value<int>();
+
+                GachaItemList[gachaGroup][index]
+                    = new GachaItem{
+                    index,
+                    (std::string)row[static_cast<int>(GachaItem_Field::name)].to_string(),
+                    row[static_cast<int>(GachaItem_Field::Gacha_Group)].value<int>(),
+                    row[static_cast<int>(GachaItem_Field::Gacha_Weight)].value<int>(),
+                    row[static_cast<int>(GachaItem_Field::Reward_Item_Index)].value<int>(),
+                    row[static_cast<int>(GachaItem_Field::Reward_Item_Value)].value<int>(),
+                };
+            }
+            rowIdx++;
+        }
+    }
+    catch (const xlnt::exception& e) {
+        std::cerr << "Gacha.xlsx Excel File Load Fail: " << e.what() << std::endl;
     }
 }

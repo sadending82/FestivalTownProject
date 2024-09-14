@@ -101,6 +101,8 @@
     <ClInclude Include="Source\PacketManager\PacketSender\PacketSender.h" />
     <ClInclude Include="KISA_SHA256\KISA_SHA256.h" />
     <ClInclude Include="Source\TableManager\Tables\ScoreCalculateConstant.h" />
+    <ClInclude Include="Source\TableManager\Tables\GachaItem.h" />
+    <ClInclude Include="Source\TableManager\Tables\RandomBox.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

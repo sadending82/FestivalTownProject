@@ -4,3 +4,5 @@
 #include "FITH.h"
 #include "WeaponStat.h"
 #include "ScoreCalculateConstant.h"
+#include "RandomBox.h"
+#include "GachaItem.h"
