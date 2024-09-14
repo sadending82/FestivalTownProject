@@ -20,7 +20,7 @@ namespace Network.PacketProcessor
             Debug.Log("All Player Ready!");
             if (Managers.Scene.CurrentScene.GetComponent<GameScene>() != null)
             {
-                Managers.Scene.CurrentScene.GetComponent<GameScene>().GameStart();
+                Managers.Scene.CurrentScene.GetComponent<GameScene>().GameSceneStart();
             }
         }
 

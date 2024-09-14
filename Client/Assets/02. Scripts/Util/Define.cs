@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Define
 {
+
     public enum Sound
     {
         Bgm,
@@ -51,5 +52,13 @@ public class Define
     {
         Press,
         Click,
+    }
+
+    public struct PlayerResult
+    {
+        public int kill;
+        public int death;
+        public int bombInsert;
+        public int gold;
     }
 }

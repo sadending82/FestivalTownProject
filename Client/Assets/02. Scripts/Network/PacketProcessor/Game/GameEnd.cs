@@ -17,11 +17,7 @@ namespace Network.PacketProcessor
 
             var Data = GameEnd.GetRootAsGameEnd(bb);
 
-
-            Managers.Scene.LoadScene(Define.Scene.Home);
-            Managers.ObjectPool.Clear();
-            Managers.Game.Clear();
-            Managers.CubeObject.Clear();
+            Managers.Game.GameEnd();
         }
 
         private FlatBufferBuilder mBuilder;

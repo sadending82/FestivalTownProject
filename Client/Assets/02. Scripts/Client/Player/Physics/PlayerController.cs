@@ -700,4 +700,9 @@ public class PlayerController : MonoBehaviour
     {
         gameStart = true;
     }
+
+    public void GameEnd()
+    {
+        gameStart = false;
+    }
 }

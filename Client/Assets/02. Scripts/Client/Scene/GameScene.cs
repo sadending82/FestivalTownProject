@@ -92,7 +92,7 @@ public class GameScene : BaseScene
         }
     }
 
-    public void GameStart()
+    public void GameSceneStart()
     {
         Managers.Sound.Play("Sfx_BGM_Ingame", Define.Sound.Bgm);
 
@@ -106,9 +106,28 @@ public class GameScene : BaseScene
 
     }
 
-    public void GameEnd()
+    public void MoveToResult()
     {
+        Managers.UI.CloseAllPopUpUI();
+        Managers.UI.CloseSceneUI();
 
+        // TODO: 시상대를 비추기 위한 카메라 이동 및 캐릭터 애니메이션 설정 등이 필요합니다.
+        Managers.UI.ShowSceneUI<UI_Result>();
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    public void WaitAndShowResult()
+    {
+        StartCoroutine(WaitGameEnd());
+
+    }
+
+    IEnumerator WaitGameEnd()
+    {
+        yield return new WaitUntil(() => Managers.Game.isGameEnd);
+        MoveToResult();
     }
 
     public override void Clear()
