@@ -25,6 +25,7 @@ public:
     bool UpdateUserConnectionState(const int uid, const int state);
     bool UpdateUserGold(const int uid, const int valueOfChange);
     bool UpdateUserPoint(const int uid, const int valueOfChange);
+    bool UpdateRanking(const int uid, const int killCount, const int deathCount, const int point);
 
     bool CheckValidateLogin(const char* id, const char* password);
 

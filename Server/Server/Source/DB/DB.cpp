@@ -336,6 +336,41 @@ bool DB::UpdateUserPoint(const int uid, const int valueOfChange)
 	return false;
 }
 
+bool DB::UpdateRanking(const int uid, const int killCount, const int deathCount, const int point)
+{
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGNOPARAM("hStmt Error : (UpdateRanking) \n");
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return false;
+	}
+
+	UseGameDB(hStmt);
+
+	const WCHAR* query = L"UPDATE Ranking SET KillCount = KillCount + ?, deathCount = deathCount + ?, Point = Point + ?  WHERE UID = ?";
+
+	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&killCount), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&deathCount), 0, NULL);
+	SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&point), 0, NULL);
+	SQLBindParameter(hStmt, 4, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return true;
+	}
+
+	DEBUGMSGNOPARAM("Execute Query Error : (UpdateRanking)\n");
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	return false;
+}
+
 bool DB::CheckValidateLogin(const char* id, const char* password)
 {
 	SQLHSTMT hStmt = NULL;

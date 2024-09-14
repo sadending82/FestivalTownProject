@@ -273,7 +273,6 @@ public class PlayerController : MonoBehaviour
                     if (isGrounded == false)
                     {
                         pelvisRigidbody.velocity = moveDirection * (runSpeed - 3);
-                        Debug.Log("³ª´Ù- " + pelvisRigidbody.velocity);
                     }
                     else
                     {

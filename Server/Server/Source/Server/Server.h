@@ -8,6 +8,7 @@
 
 constexpr int SERVERPORT = 45872;
 
+class DB;
 class Timer;
 class TableManager;
 
@@ -45,6 +46,7 @@ public:
 	SOCKET GetListenSocket() { return mListenSocket; }
 	SESSION_ARRAY& GetSessions() { return mSessions; }
 	ROOM_ARRAY& GetRooms() { return mRooms; }
+	DB* GetDB() { return mDB; }
 	Timer* GetTimer() { return mTimer; }
 	TableManager* GetTableManager() { return mTableManager; }
 	PacketSender* GetPacketSender() { return mPacketSender; }
@@ -54,6 +56,7 @@ private:
 	HANDLE mHcp;
 	SOCKET mListenSocket;
 
+	DB* mDB = nullptr;
 	Timer* mTimer = nullptr;
 	TableManager* mTableManager = nullptr;
 	PacketMaker* mPacketMaker = nullptr;

@@ -142,7 +142,8 @@ void Server::Run(class TableManager* pTableManager, class DB* pDB)
         mRooms[i] = new Room();
     }
 
-    pDB->Init();
+    mDB = pDB;
+    mDB->Init();
 
     mPacketMaker = new PacketMaker;
     mPacketSender = new PacketSender(this, mPacketMaker);
@@ -496,6 +497,20 @@ void Server::CalculateGameResult(int roomID, uint8_t winningTeams_flag)
         records[mvp_id].earn_gold = CalculateGoldReward(mode, records[mvp_id].point, true);
         records[mvp_id].is_mvp = true;
     }
+
+    room->GetPlayerListLock().lock_shared();
+    for (auto& pair : records) {
+        if (room->GetPlayerList()[pair.first] == nullptr) {
+            continue;
+        }
+        sPlayerGameRecord record = pair.second;
+
+        // 테스트용
+        mDB->UpdateRanking(pair.first + 1001, record.kill_count, record.death_count, record.point);
+        mDB->UpdateUserGold(pair.first + 1001, record.earn_gold);
+        mDB->UpdateUserPoint(pair.first + 1001, record.point);
+    }
+    room->GetPlayerListLock().unlock_shared();
 
     mPacketSender->SendGameResultPacket(roomID, winningTeams_flag);
 }

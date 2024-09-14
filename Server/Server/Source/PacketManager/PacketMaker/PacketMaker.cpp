@@ -162,7 +162,6 @@ std::vector<uint8_t> PacketMaker::MakeGameEndPacket(uint8_t winningTeams_flag)
 std::vector<uint8_t> PacketMaker::MakeGameResultPacket(uint8_t winningTeams_flag, std::unordered_map<int, sPlayerGameRecord>& records, std::array<class Player*, MAXPLAYER>& players)
 {
 	flatbuffers::FlatBufferBuilder Builder;
-	
 
 	std::vector<flatbuffers::Offset<PacketTable::UtilitiesTable::PlayerGameRecord>> record_vec;
 
