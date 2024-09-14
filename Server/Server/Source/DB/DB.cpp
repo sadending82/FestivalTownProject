@@ -133,6 +133,10 @@ bool DB::InsertNewAcccount(const char* id, const char* password)
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
+	if (mSecurity->VerifyString(id) == false) {
+		return false;
+	}
+
 	std::string salt = mSecurity->GenerateSalt();
 	std::string hashedPassword = mSecurity->HashingPassword(password, salt);
 
@@ -143,7 +147,9 @@ bool DB::InsertNewAcccount(const char* id, const char* password)
 	}
 	UseAccountDB(hStmt);
 
-	SQLPrepare(hStmt, (SQLWCHAR*)L"INSERT INTO ACCOUNT VALUES (?, ?, ?)", SQL_NTS);
+	const WCHAR* query = L"INSERT INTO ACCOUNT VALUES (?, ?, ?)";
+
+	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, strlen(id), 0, (SQLCHAR*)id, 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, hashedPassword.length(), 0, (SQLCHAR*)hashedPassword.c_str(), 0, NULL);
@@ -167,6 +173,10 @@ bool DB::InsertNewUser(const char* id, const char* nickname)
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
+	if (mSecurity->VerifyString(id) == false || mSecurity->VerifyString(nickname) == false) {
+		return false;
+	}
+
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGNOPARAM("hStmt Error : (InsertNewUser) \n");
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
@@ -175,7 +185,9 @@ bool DB::InsertNewUser(const char* id, const char* nickname)
 
 	UseGameDB(hStmt);
 
-	SQLPrepare(hStmt, (SQLWCHAR*)L"INSERT INTO UserInfo (AccountID, NickName) VALUES (?, ?)", SQL_NTS);
+	const WCHAR* query = L"INSERT INTO UserInfo (AccountID, NickName) VALUES (?, ?)";
+
+	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, strlen(id), 0, (SQLCHAR*)id, 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_WCHAR, strlen(nickname), 0, (SQLCHAR*)nickname, 0, NULL);
@@ -189,6 +201,137 @@ bool DB::InsertNewUser(const char* id, const char* nickname)
 	}
 
 	DEBUGMSGNOPARAM("Execute Query Error : (InsertNewUser)\n");
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	return false;
+}
+
+bool DB::InsertRanking(const int uid)
+{
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGNOPARAM("hStmt Error : (InsertRanking) \n");
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return false;
+	}
+
+	UseGameDB(hStmt);
+
+	const WCHAR* query = L"INSERT INTO Ranking (UID) VALUES (?)";
+
+	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return true;
+	}
+
+	DEBUGMSGNOPARAM("Execute Query Error : (InsertRanking)\n");
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	return false;
+}
+
+bool DB::UpdateUserConnectionState(const int uid, const int state)
+{
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGNOPARAM("hStmt Error : (UpdateUserGold) \n");
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return false;
+	}
+
+	UseGameDB(hStmt);
+
+	const WCHAR* query = L"UPDATE UserInfo SET State = State + ? WHERE UID = ?";
+
+	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&state), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return true;
+	}
+
+	DEBUGMSGNOPARAM("Execute Query Error : (UpdateUserGold)\n");
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	return false;
+}
+
+bool DB::UpdateUserGold(const int uid, const int valueOfChange)
+{
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGNOPARAM("hStmt Error : (UpdateUserGold) \n");
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return false;
+	}
+
+	UseGameDB(hStmt);
+
+	const WCHAR* query = L"UPDATE UserInfo SET Gold = Gold + ? WHERE UID = ?";
+
+	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&valueOfChange), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return true;
+	}
+
+	DEBUGMSGNOPARAM("Execute Query Error : (UpdateUserGold)\n");
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	return false;
+}
+
+bool DB::UpdateUserPoint(const int uid, const int valueOfChange)
+{
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGNOPARAM("hStmt Error : (UpdateUserPoint) \n");
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return false;
+	}
+
+	UseGameDB(hStmt);
+
+	const WCHAR* query = L"UPDATE UserInfo SET Point = Point + ? WHERE UID = ?";
+
+	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&valueOfChange), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return true;
+	}
+
+	DEBUGMSGNOPARAM("Execute Query Error : (UpdateUserPoint)\n");
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	return false;
 }
@@ -218,8 +361,8 @@ bool DB::CheckValidateLogin(const char* id, const char* password)
 
 		while (SQLFetch(hStmt) == SQL_SUCCESS) {
 			SQLLEN len1, len2;
-			SQLCHAR value1[256]; // hashedPassword
-			SQLCHAR value2[50]; // salt
+			SQLCHAR value1[HASHED_PASSWORD_LENGTH]; // hashedPassword
+			SQLCHAR value2[SALT_LENGTH]; // salt
 			SQLGetData(hStmt, 1, SQL_C_CHAR, value1, sizeof(value1), &len1);
 			hashedPassword.assign(reinterpret_cast<char*>(value1), len1);
 

@@ -9,7 +9,7 @@ std::string Security::GenerateSalt()
 
 	std::string hexSalt;
 
-	for (int i = 0; i < SALT_LENGTH; ++i) {
+	for (int i = 0; i < SALT_LENGTH/2; ++i) {
 		char hex[3];
 		sprintf_s(hex, "%02x", distribution(generator));
 		hexSalt += hex;
@@ -40,6 +40,21 @@ bool Security::VerifyPassword(std::string password, std::string hashedPassword, 
 {
 	if (hashedPassword != HashingPassword(password, salt)) {
 		return false;
+	}
+
+	return true;
+}
+
+bool Security::VerifyString(const char* input)
+{
+	std::string str = input;
+
+	if (str.length() == 0) return false;
+
+	for (wchar_t c : str) {
+		if (c == ' ') return false;
+		if (iswpunct(c)) return false;
+		if (0xAC00 <= c && c <= 0xD7A3) return false;
 	}
 
 	return true;

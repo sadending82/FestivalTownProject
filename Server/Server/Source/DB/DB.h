@@ -20,6 +20,12 @@ public:
 
     bool InsertNewAcccount(const char* id, const char* password);
     bool InsertNewUser(const char* id, const char* nickname);
+    bool InsertRanking(const int uid);
+
+    bool UpdateUserConnectionState(const int uid, const int state);
+    bool UpdateUserGold(const int uid, const int valueOfChange);
+    bool UpdateUserPoint(const int uid, const int valueOfChange);
+
     bool CheckValidateLogin(const char* id, const char* password);
 
 private:
