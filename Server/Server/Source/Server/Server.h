@@ -56,20 +56,19 @@ private:
 	HANDLE mHcp;
 	SOCKET mListenSocket;
 
+	SESSION_ARRAY mSessions = { nullptr };
+	ROOM_ARRAY mRooms = { nullptr };
 	DB* mDB = nullptr;
 	Timer* mTimer = nullptr;
 	TableManager* mTableManager = nullptr;
 	PacketMaker* mPacketMaker = nullptr;
 	PacketSender* mPacketSender = nullptr;
+	class TestThread* mTestThreadRef = nullptr;
+	std::vector<class WorkerThread*> mWorkerThreadRefs;
 
-	SESSION_ARRAY mSessions;
-	ROOM_ARRAY mRooms;
 	std::vector<std::thread> mWorkerThreads;
 	std::thread mTimerThread;
 	std::thread mTestThread;
-
-	class TestThread* mTestThreadRef;
-	std::vector<class WorkerThread*> mWorkerThreadRefs;
 
 	int testUID = 1;
 };

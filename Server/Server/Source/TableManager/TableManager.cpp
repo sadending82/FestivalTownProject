@@ -55,7 +55,6 @@ void TableManager::ClearAllTable()
         outer_pair.second.clear();
     }
     GachaItemList.clear();
-    
 }
 
 void TableManager::ReadAllDataTable()
@@ -303,16 +302,15 @@ void TableManager::ReadScoreConstantTable()
         int sheetIdx = 1;
 
         xlnt::worksheet ws = wb.sheet_by_index(sheetIdx);
+        FITH_ScoreConstant tmp{};
 
         for (auto row : ws.rows(false)) {
             if (idx == variableNameIdx) {
                 idx++;
                 continue;
             }
-
             if (!row.empty()) {
-                ScoreConstantList[GameMode::FITH_Team_battle_One]
-                    = new FITH_ScoreConstant{
+                tmp = {
                     row[static_cast<int>(FITH_ScoreConstant_Field::Kill_Point)].value<float>(),
                     row[static_cast<int>(FITH_ScoreConstant_Field::Death_Point)].value<float>(),
                     row[static_cast<int>(FITH_ScoreConstant_Field::Bomb_Point)].value<float>(),
@@ -324,9 +322,9 @@ void TableManager::ReadScoreConstantTable()
 
             idx++;
         }
-
-        ScoreConstantList[GameMode::FITH_Team_battle_Two] = ScoreConstantList[GameMode::FITH_Team_battle_One];
-        ScoreConstantList[GameMode::FITH_Team_battle_Three] = ScoreConstantList[GameMode::FITH_Team_battle_One];
+        ScoreConstantList[GameMode::FITH_Team_battle_One] = new FITH_ScoreConstant(tmp);
+        ScoreConstantList[GameMode::FITH_Team_battle_Two] = new FITH_ScoreConstant(tmp);
+        ScoreConstantList[GameMode::FITH_Team_battle_Three] = new FITH_ScoreConstant(tmp);
     }
     catch (const xlnt::exception& e) {
         std::cerr << "Excel File Load Fail: " << e.what() << std::endl;

@@ -18,7 +18,7 @@ void TestThread::RunWorker()
     freopen_s(&fpOut, "CONOUT$", "w", stdout);
     freopen_s(&fpOut, "CONIN$", "r", stdin);
 
-    while (1) {
+    while (isRun) {
         char command;
         std::cout << "Please Input Command (s = GameStart)" << std::endl;
         std::cin >> command;

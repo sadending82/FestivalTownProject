@@ -14,7 +14,7 @@ public:
 	void Set_isRun(bool value) { mIsRun = value; }
 
 private:
-	int mIsRun;
+	bool mIsRun = true;
 	HANDLE mHiocp;
 	std::mutex mTimerLock;
 };

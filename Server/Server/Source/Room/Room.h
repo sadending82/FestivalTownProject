@@ -71,9 +71,9 @@ private:
 	std::shared_mutex mPlayerListLock;
 	std::shared_mutex mBombListLock;
 	std::shared_mutex mWeaponListLock;
-	std::array<Player*, MAXPLAYER> mPlayerList;
-	std::array<Bomb*, MAXOBJECT> mBombList;
-	std::array<Weapon*, MAXOBJECT> mWeaponList;
+	std::array<Player*, MAXPLAYER> mPlayerList = { nullptr };
+	std::array<Bomb*, MAXOBJECT> mBombList = { nullptr };
+	std::array<Weapon*, MAXOBJECT> mWeaponList = { nullptr };
 	std::unordered_map<int, sPlayerGameRecord> mPlayerRecordList;
 	std::unordered_map<int, Team> mTeams;
 

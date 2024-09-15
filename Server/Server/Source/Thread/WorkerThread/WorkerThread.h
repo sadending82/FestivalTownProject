@@ -13,6 +13,8 @@ public:
 	void RunWorker();
 
 private:
+	bool isRun = true;
+
 	class Server* m_pServer;
 	PacketManager* m_pPacketManager;
 };

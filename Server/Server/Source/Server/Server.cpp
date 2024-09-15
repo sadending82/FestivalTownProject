@@ -20,7 +20,6 @@ Server::~Server()
         delete mRooms[i];
     }
     delete mTimer;
-    delete mTableManager;
     delete mPacketMaker;
     delete mPacketSender;
 
@@ -167,14 +166,6 @@ void Server::Run(class TableManager* pTableManager, class DB* pDB)
     DEBUGMSGNOPARAM("Thread Ready\n");
     // matching start
     PushEventGameMatching(mTimer);
-
-    for (auto& th : mWorkerThreads) {
-        th.join();
-    }
-    mTimerThread.join();
-#ifdef RunTest
-    mTestThread.join();
-#endif
 }
 
 void Server::ThreadJoin()

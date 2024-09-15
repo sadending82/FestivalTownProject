@@ -24,9 +24,10 @@ public:
 	int GetReadyPlayerCnt();
 
 private:
-	class Server* m_pServer;
-	PacketManager* m_pPacketManager;
-	Timer* m_pTimer;
+	bool isRun = true;
+	class Server* m_pServer = nullptr;
+	PacketManager* m_pPacketManager = nullptr;
+	Timer* m_pTimer = nullptr;
 };
 
 #endif RunTest

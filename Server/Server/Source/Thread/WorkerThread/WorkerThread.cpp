@@ -11,7 +11,7 @@ void WorkerThread::RunWorker()
     m_pPacketManager = new PacketManager();
     m_pPacketManager->Init(m_pServer);
 
-    while (1) {
+    while (isRun) {
         DWORD Transferred;
         ULONG key;
         WSAOVERLAPPED* over;
@@ -102,6 +102,5 @@ void WorkerThread::RunWorker()
             break;
         }
         }
-
     }
 }
