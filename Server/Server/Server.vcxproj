@@ -222,6 +222,7 @@ xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\Lobby_generated.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\Player_generated.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\Utilities_generated.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\PacketGachaRequest.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\PacketGameMatchingCancel.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Object\PacketBombExplosion.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Object\PacketBombInput.h" />

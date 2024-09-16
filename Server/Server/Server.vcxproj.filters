@@ -103,6 +103,7 @@
     <ClInclude Include="Source\TableManager\Tables\ScoreCalculateConstant.h" />
     <ClInclude Include="Source\TableManager\Tables\GachaItem.h" />
     <ClInclude Include="Source\TableManager\Tables\RandomBox.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\PacketGachaRequest.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

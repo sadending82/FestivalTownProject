@@ -37,6 +37,9 @@ public:
 
 	std::unordered_map<GameMode, std::vector<MapCode>>& getMapListByMode() { return MapListByMode; }
 
+	std::unordered_map<INDEX, RandomBox*>& GetRandomBoxList(){return RandomBoxList;}
+	std::unordered_map<GACHA_GROUP, std::unordered_map<INDEX, GachaItem*>>& GetGachaItemList() { return GachaItemList; }
+
 private:
 	std::unordered_map<INDEX, ItemTable*> ItemInfos;
 	std::unordered_map<INDEX, CharacterStat*> CharacterStats;

@@ -80,6 +80,47 @@ void TestThread::RunWorker()
             std::cout << "Delete room - " << roomID << std::endl;
         }
         break;
+
+        case Gacha: {
+            int randomBox;
+            std::cout << "Input Random Box Index\n";
+            std::cin >> randomBox;
+
+            TableManager* tableManager = m_pServer->GetTableManager();
+
+            if (tableManager->GetRandomBoxList().find(randomBox) == tableManager->GetRandomBoxList().end()) {
+                break;
+            }
+            int GachaGroup = tableManager->GetRandomBoxList()[randomBox]->Gacha_Group;
+            std::unordered_map<INDEX, GachaItem*>& items = tableManager->GetGachaItemList()[GachaGroup];
+
+            int totalWeight = 0;
+
+            for (auto& item : items) {
+                totalWeight += item.second->Gacha_Weight;
+            }
+
+            std::random_device rd;
+            std::mt19937 gen(rd());
+            std::uniform_int_distribution<> dis(0, totalWeight);
+            int randomWeight = dis(gen);
+            int cumulativeWeight = 0;
+            int rewardItem = 0;
+            int rewardValue = 0;
+
+            for (auto& item : items) {
+                cumulativeWeight += item.second->Gacha_Weight;
+                if (randomWeight <= cumulativeWeight) {
+                    rewardItem = item.second->Reward_Item_Index;
+                    rewardValue = item.second->Reward_Item_Value;
+                    break;
+                }
+
+            }
+
+            std::cout << "Gacha Results!" << " -> Item: " << rewardItem  << " | Value: " << rewardValue <<std::endl;
+        }
+        break;
         default: {
             std::cout << "Wrong Command" << std::endl;
         }

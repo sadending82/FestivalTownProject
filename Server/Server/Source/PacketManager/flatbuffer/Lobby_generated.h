@@ -25,6 +25,12 @@ struct GameMatchingResponseBuilder;
 struct GameMatchingCancel;
 struct GameMatchingCancelBuilder;
 
+struct GachaRequest;
+struct GachaRequestBuilder;
+
+struct GachaResponse;
+struct GachaResponseBuilder;
+
 struct GameMatchingRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef GameMatchingRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -195,6 +201,88 @@ inline ::flatbuffers::Offset<GameMatchingCancel> CreateGameMatchingCancel(
     int32_t id = 0) {
   GameMatchingCancelBuilder builder_(_fbb);
   builder_.add_id(id);
+  return builder_.Finish();
+}
+
+struct GachaRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef GachaRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_RANDOM_BOX_INDEX = 4
+  };
+  int32_t random_box_index() const {
+    return GetField<int32_t>(VT_RANDOM_BOX_INDEX, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_RANDOM_BOX_INDEX, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct GachaRequestBuilder {
+  typedef GachaRequest Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_random_box_index(int32_t random_box_index) {
+    fbb_.AddElement<int32_t>(GachaRequest::VT_RANDOM_BOX_INDEX, random_box_index, 0);
+  }
+  explicit GachaRequestBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<GachaRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<GachaRequest>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<GachaRequest> CreateGachaRequest(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t random_box_index = 0) {
+  GachaRequestBuilder builder_(_fbb);
+  builder_.add_random_box_index(random_box_index);
+  return builder_.Finish();
+}
+
+struct GachaResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef GachaResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ITEM = 4
+  };
+  int32_t item() const {
+    return GetField<int32_t>(VT_ITEM, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_ITEM, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct GachaResponseBuilder {
+  typedef GachaResponse Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_item(int32_t item) {
+    fbb_.AddElement<int32_t>(GachaResponse::VT_ITEM, item, 0);
+  }
+  explicit GachaResponseBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<GachaResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<GachaResponse>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<GachaResponse> CreateGachaResponse(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t item = 0) {
+  GachaResponseBuilder builder_(_fbb);
+  builder_.add_item(item);
   return builder_.Finish();
 }
 
