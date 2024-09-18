@@ -181,6 +181,10 @@ public class PlayerController : MonoBehaviour
             Ray rayL = new Ray(leftFootRigidbody.position, Vector3.down);
             Ray rayR = new Ray(rightFootRigidbody.position, Vector3.down);
 
+            AxisRawH = Input.GetAxisRaw("Horizontal");
+            AxisRawV = Input.GetAxisRaw("Vertical");
+            Vector3 moveInput = new Vector3(AxisRawH, AxisRawV, 0);
+
             RaycastHit hitInfoL, hitinfoR;
             if (Physics.Raycast(rayL, out hitInfoL, floorDetectionDistance) == true)
             {
@@ -188,7 +192,35 @@ public class PlayerController : MonoBehaviour
                 {
                     if (pelvis != null && amIPlayer == true)
                     {
-                        packetManager.SendPlayerStopPacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_JUMPSTOP);
+                        if (moveInput == Vector3.zero)
+                        {
+                            if (pelvis != null)
+                            {
+                                packetManager.SendPlayerStopPacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_JUMPSTOP);
+                            }
+                            else
+                            {
+                                Debug.Log("Not Send Stop Packet, Pelvis is Null !!!");
+                            }
+                        }
+                        else
+                        {
+                            if (pelvis != null)
+                            {
+                                if (isLeftShiftKeyDown == true)
+                                {
+                                    packetManager.SendPlayerMovePacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_RUN);
+                                }
+                                else
+                                {
+                                    packetManager.SendPlayerMovePacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_WALK);
+                                }
+                            }
+                            else
+                            {
+                                Debug.Log("Not Send Run Packet, Pelvis is Null !!!");
+                            }
+                        }
                     }
                     isGrounded = true;
                 }
@@ -199,13 +231,42 @@ public class PlayerController : MonoBehaviour
                 {
                     if (pelvis != null && amIPlayer == true)
                     {
-                        packetManager.SendPlayerStopPacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_JUMPSTOP);
+                        if (moveInput == Vector3.zero)
+                        {
+                            if (pelvis != null)
+                            {
+                                packetManager.SendPlayerStopPacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_JUMPSTOP);
+                            }
+                            else
+                            {
+                                Debug.Log("Not Send Stop Packet, Pelvis is Null !!!");
+                            }
+                        }
+                        else
+                        {
+                            if (pelvis != null)
+                            {
+                                if (isLeftShiftKeyDown == true)
+                                {
+                                    packetManager.SendPlayerMovePacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_RUN);
+                                }
+                                else
+                                {
+                                    packetManager.SendPlayerMovePacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_WALK);
+                                }
+                            }
+                            else
+                            {
+                                Debug.Log("Not Send Run Packet, Pelvis is Null !!!");
+                            }
+                        }
                     }
                     isGrounded = true;
                 }
             }
         }
     }
+
     private void Move()
     {
         isLeftShiftKeyDown = false;

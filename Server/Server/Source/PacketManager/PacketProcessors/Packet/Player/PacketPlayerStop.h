@@ -13,6 +13,7 @@ public:
 		flatbuffers::Verifier verifier(data, size);
 		if (verifier.VerifyBuffer<PlayerStop>(nullptr)) {
 
+			
 			const PlayerStop* read = flatbuffers::GetRoot<PlayerStop>(data);
 
 			Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
