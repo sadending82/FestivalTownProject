@@ -13,6 +13,8 @@ public class UI_OneVersusOneSceneUI : UI_Scene
         PointPanelTeam1,
         PointPanelTeam2,
         TimerText,
+        StaminaBar,
+        HPBar,
     }
 
     void Start()
@@ -83,6 +85,24 @@ public class UI_OneVersusOneSceneUI : UI_Scene
             SetTimer(Managers.Game.GameRemainTime);
 
 
+
+            CharacterStatus character = null;
+
+            try
+            {
+                character = Managers.Player.GetPlayers().transform.
+                    GetChild(Managers.Player.GetMyId()).gameObject.GetComponent<CharacterStatus>();
+            }
+            catch
+            {
+                return;
+            }
+
+            if (character == null) return;
+
+            Get<GameObject>((int)GameObjects.HPBar).GetComponent<UI_HPBar>().SetHP(character.hp, character.maxHp);
+            Get<GameObject>((int)GameObjects.StaminaBar).GetComponent<UI_StaminaBar>().SetStamina(character.stamina, character.maxStamina);
+            
         }
     }
 }
