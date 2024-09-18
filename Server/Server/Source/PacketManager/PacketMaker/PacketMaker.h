@@ -28,7 +28,7 @@ public:
 	std::vector<uint8_t> MakeBombExplosionPacket(int bombID, Vector3f position);
 	std::vector<uint8_t> MakeGameStartPacket(int roomID, int startTime);
 	std::vector<uint8_t> MakeGameEndPacket(uint8_t winningTeams_flag);
-	std::vector<uint8_t> MakeGameResultPacket(uint8_t winningTeams_flag, std::unordered_map<int, sPlayerGameRecord>& records, std::array<class Player*, MAXPLAYER>& players);
+	std::vector<uint8_t> MakeGameResultPacket(std::vector<int>& winningTeams, std::unordered_map<int, sPlayerGameRecord>& records, std::array<class Player*, MAXPLAYER>& players);
 	std::vector<uint8_t> MakeGameHostChangePacket(int inGameID, int roomID);
 
 	std::vector<uint8_t> MakeLifeReducePacket(int team, int lifeCount);

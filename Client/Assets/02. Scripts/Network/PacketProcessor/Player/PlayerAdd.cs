@@ -22,6 +22,10 @@ namespace Network.PacketProcessor
             {
                 var player = Data.Players(i);
                 int id = player.Value.Id;
+                int team = player.Value.Team;
+                int characterType = player.Value.CharacterType;
+                string nickname = player.Value.Nickname;
+
                 Vector3 pos = new Vector3(player.Value.Pos.Value.X, player.Value.Pos.Value.Y, player.Value.Pos.Value.Z);
                 Managers.Player.GetComponent<PlayerManager>().AddPlayer(id, pos);
             }

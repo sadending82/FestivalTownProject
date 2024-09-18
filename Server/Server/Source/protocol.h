@@ -81,3 +81,10 @@ enum eAttackType
     AT_FALLDOWN,
     AT_BASIC
 };
+
+enum UpperBodyAnimationState
+{
+    NONE,
+    HOLD, THROW,
+    ATTACK, POWERATTACK, HEADATTACK, ROLL, FLYINGKICK, WEAPONATTACK
+};

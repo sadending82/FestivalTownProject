@@ -281,18 +281,19 @@ inline ::flatbuffers::Offset<GameEnd> CreateGameEnd(
 struct GameResult FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef GameResultBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_WINNINGTEAMS_FLAG = 4,
+    VT_WINING_TEAM = 4,
     VT_PLAYER_RECORDS = 6
   };
-  uint8_t winningteams_flag() const {
-    return GetField<uint8_t>(VT_WINNINGTEAMS_FLAG, 0);
+  const ::flatbuffers::Vector<int32_t> *wining_team() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_WINING_TEAM);
   }
   const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::PlayerGameRecord>> *player_records() const {
     return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::PlayerGameRecord>> *>(VT_PLAYER_RECORDS);
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_WINNINGTEAMS_FLAG, 1) &&
+           VerifyOffset(verifier, VT_WINING_TEAM) &&
+           verifier.VerifyVector(wining_team()) &&
            VerifyOffset(verifier, VT_PLAYER_RECORDS) &&
            verifier.VerifyVector(player_records()) &&
            verifier.VerifyVectorOfTables(player_records()) &&
@@ -304,8 +305,8 @@ struct GameResultBuilder {
   typedef GameResult Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_winningteams_flag(uint8_t winningteams_flag) {
-    fbb_.AddElement<uint8_t>(GameResult::VT_WINNINGTEAMS_FLAG, winningteams_flag, 0);
+  void add_wining_team(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> wining_team) {
+    fbb_.AddOffset(GameResult::VT_WINING_TEAM, wining_team);
   }
   void add_player_records(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::PlayerGameRecord>>> player_records) {
     fbb_.AddOffset(GameResult::VT_PLAYER_RECORDS, player_records);
@@ -323,22 +324,23 @@ struct GameResultBuilder {
 
 inline ::flatbuffers::Offset<GameResult> CreateGameResult(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    uint8_t winningteams_flag = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> wining_team = 0,
     ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::PlayerGameRecord>>> player_records = 0) {
   GameResultBuilder builder_(_fbb);
   builder_.add_player_records(player_records);
-  builder_.add_winningteams_flag(winningteams_flag);
+  builder_.add_wining_team(wining_team);
   return builder_.Finish();
 }
 
 inline ::flatbuffers::Offset<GameResult> CreateGameResultDirect(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    uint8_t winningteams_flag = 0,
+    const std::vector<int32_t> *wining_team = nullptr,
     const std::vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::PlayerGameRecord>> *player_records = nullptr) {
+  auto wining_team__ = wining_team ? _fbb.CreateVector<int32_t>(*wining_team) : 0;
   auto player_records__ = player_records ? _fbb.CreateVector<::flatbuffers::Offset<PacketTable::UtilitiesTable::PlayerGameRecord>>(*player_records) : 0;
   return PacketTable::GameTable::CreateGameResult(
       _fbb,
-      winningteams_flag,
+      wining_team__,
       player_records__);
 }
 

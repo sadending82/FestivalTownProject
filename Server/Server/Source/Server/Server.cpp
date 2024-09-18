@@ -315,7 +315,9 @@ void Server::MatchingComplete(int roomID, int playerCnt, std::vector<Player*>& p
             // 임시
             int team = tFlag % 2;
             player->SetTeam(team);
-            player->SetHP(GetTableManager()->GetCharacterStats()[(int)eCharacterType::CT_TEST]->hp);
+            player->SetChacracterType(eCharacterType::CT_TEST);
+            player->SetHP(GetTableManager()->GetCharacterStats()[(int)player->GetChacracterType()]->hp);
+            player->SetStamina(GetTableManager()->GetCharacterStats()[(int)player->GetChacracterType()]->stamina);
             tFlag++;
             //
 
@@ -364,21 +366,21 @@ void Server::CheckGameEnd(int roomID)
     Room* room = GetRooms()[roomID];
     int teamCnt = 2; // 팀 수 (임시 나중에 게임 데이터로 읽어야 함)
     int loseTeamCnt = 0;
-    uint8_t winningTeams_flag = DEFAULT_8BITFLAG;
+    std::vector<int> winningTeams;
     for (auto iter = room->GetTeams().begin(); iter != room->GetTeams().end(); ++iter) {
         if (iter->second.GetLife() <= 0) {
             loseTeamCnt++;
         }
         else {
-            winningTeams_flag = winningTeams_flag | (1 << iter->first);
+            winningTeams.push_back(iter->first);
         }
     }
 
     if (loseTeamCnt = teamCnt - 1) {
         if (room->SetIsRun(false) == true) {
-            mPacketSender->SendGameEndPacket(roomID, winningTeams_flag);
+            mPacketSender->SendGameEndPacket(roomID, 0);
 
-            CalculateGameResult(roomID, winningTeams_flag);
+            CalculateGameResult(roomID, winningTeams);
 
             room->GetPlayerListLock().lock_shared();
             for (auto player : room->GetPlayerList()) {
@@ -400,24 +402,25 @@ void Server::CheckGameEnd(int roomID)
 void Server::TimeoverGameEnd(int roomID) {
     Room* room = GetRooms()[roomID];
 
-    uint8_t winningTeams_flag = DEFAULT_8BITFLAG;
+    std::vector<int> winningTeams;
     int maxLife = 0;
 
     for (auto iter = room->GetTeams().begin(); iter != room->GetTeams().end(); ++iter) {
         int life = iter->second.GetLife();
         if (maxLife < life) {
-            winningTeams_flag = DEFAULT_8BITFLAG | (1 << iter->first);
+            winningTeams.clear();
+            winningTeams.push_back(iter->first);
             maxLife = life;
         }
         else if (maxLife == life) {
-            winningTeams_flag = winningTeams_flag | (1 << iter->first);
+            winningTeams.push_back(iter->first);
         }
     }
 
     if (room->SetIsRun(false) == true) {
-        mPacketSender->SendGameEndPacket(roomID, winningTeams_flag);
+        mPacketSender->SendGameEndPacket(roomID, 0);
 
-        CalculateGameResult(roomID, winningTeams_flag);
+        CalculateGameResult(roomID, winningTeams);
 
         room->GetPlayerListLock().lock_shared();
         for (auto player : room->GetPlayerList()) {
@@ -461,7 +464,7 @@ int Server::CalculateGoldReward(GameMode mode, int point, bool isMvp)
     return (isMvp == true) ? constants->Gold_Basic + (point* constants->MVP_Gold_Point) : constants->Gold_Basic + (point * constants->Gold_Point);
 }
 
-void Server::CalculateGameResult(int roomID, uint8_t winningTeams_flag)
+void Server::CalculateGameResult(int roomID, std::vector<int>& winningTeams)
 {
     Room* room = GetRooms()[roomID];
     std::unordered_map<int, sPlayerGameRecord>& records = room->GetPlayerRecordList();
@@ -503,5 +506,5 @@ void Server::CalculateGameResult(int roomID, uint8_t winningTeams_flag)
     }
     room->GetPlayerListLock().unlock_shared();
 
-    mPacketSender->SendGameResultPacket(roomID, winningTeams_flag);
+    mPacketSender->SendGameResultPacket(roomID, winningTeams);
 }

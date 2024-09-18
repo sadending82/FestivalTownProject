@@ -19,7 +19,7 @@ public struct PlayerAdd : IFlatbufferObject
   public void __init(int _i, ByteBuffer _bb) { __p = new Table(_i, _bb); }
   public PlayerAdd __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public PacketTable.PlayerTable.PlayerPos? Players(int j) { int o = __p.__offset(4); return o != 0 ? (PacketTable.PlayerTable.PlayerPos?)(new PacketTable.PlayerTable.PlayerPos()).__assign(__p.__indirect(__p.__vector(o) + j * 4), __p.bb) : null; }
+  public PacketTable.PlayerTable.PlayerInfo? Players(int j) { int o = __p.__offset(4); return o != 0 ? (PacketTable.PlayerTable.PlayerInfo?)(new PacketTable.PlayerTable.PlayerInfo()).__assign(__p.__indirect(__p.__vector(o) + j * 4), __p.bb) : null; }
   public int PlayersLength { get { int o = __p.__offset(4); return o != 0 ? __p.__vector_len(o) : 0; } }
 
   public static Offset<PacketTable.PlayerTable.PlayerAdd> CreatePlayerAdd(FlatBufferBuilder builder,
@@ -31,10 +31,10 @@ public struct PlayerAdd : IFlatbufferObject
 
   public static void StartPlayerAdd(FlatBufferBuilder builder) { builder.StartTable(1); }
   public static void AddPlayers(FlatBufferBuilder builder, VectorOffset playersOffset) { builder.AddOffset(0, playersOffset.Value, 0); }
-  public static VectorOffset CreatePlayersVector(FlatBufferBuilder builder, Offset<PacketTable.PlayerTable.PlayerPos>[] data) { builder.StartVector(4, data.Length, 4); for (int i = data.Length - 1; i >= 0; i--) builder.AddOffset(data[i].Value); return builder.EndVector(); }
-  public static VectorOffset CreatePlayersVectorBlock(FlatBufferBuilder builder, Offset<PacketTable.PlayerTable.PlayerPos>[] data) { builder.StartVector(4, data.Length, 4); builder.Add(data); return builder.EndVector(); }
-  public static VectorOffset CreatePlayersVectorBlock(FlatBufferBuilder builder, ArraySegment<Offset<PacketTable.PlayerTable.PlayerPos>> data) { builder.StartVector(4, data.Count, 4); builder.Add(data); return builder.EndVector(); }
-  public static VectorOffset CreatePlayersVectorBlock(FlatBufferBuilder builder, IntPtr dataPtr, int sizeInBytes) { builder.StartVector(1, sizeInBytes, 1); builder.Add<Offset<PacketTable.PlayerTable.PlayerPos>>(dataPtr, sizeInBytes); return builder.EndVector(); }
+  public static VectorOffset CreatePlayersVector(FlatBufferBuilder builder, Offset<PacketTable.PlayerTable.PlayerInfo>[] data) { builder.StartVector(4, data.Length, 4); for (int i = data.Length - 1; i >= 0; i--) builder.AddOffset(data[i].Value); return builder.EndVector(); }
+  public static VectorOffset CreatePlayersVectorBlock(FlatBufferBuilder builder, Offset<PacketTable.PlayerTable.PlayerInfo>[] data) { builder.StartVector(4, data.Length, 4); builder.Add(data); return builder.EndVector(); }
+  public static VectorOffset CreatePlayersVectorBlock(FlatBufferBuilder builder, ArraySegment<Offset<PacketTable.PlayerTable.PlayerInfo>> data) { builder.StartVector(4, data.Count, 4); builder.Add(data); return builder.EndVector(); }
+  public static VectorOffset CreatePlayersVectorBlock(FlatBufferBuilder builder, IntPtr dataPtr, int sizeInBytes) { builder.StartVector(1, sizeInBytes, 1); builder.Add<Offset<PacketTable.PlayerTable.PlayerInfo>>(dataPtr, sizeInBytes); return builder.EndVector(); }
   public static void StartPlayersVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(4, numElems, 4); }
   public static Offset<PacketTable.PlayerTable.PlayerAdd> EndPlayerAdd(FlatBufferBuilder builder) {
     int o = builder.EndTable();
@@ -48,7 +48,7 @@ static public class PlayerAddVerify
   static public bool Verify(Google.FlatBuffers.Verifier verifier, uint tablePos)
   {
     return verifier.VerifyTableStart(tablePos)
-      && verifier.VerifyVectorOfTables(tablePos, 4 /*Players*/, PacketTable.PlayerTable.PlayerPosVerify.Verify, false)
+      && verifier.VerifyVectorOfTables(tablePos, 4 /*Players*/, PacketTable.PlayerTable.PlayerInfoVerify.Verify, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }
