@@ -49,6 +49,8 @@ void PacketManager::Init(Server* server)
         EventProcessorMap[eEventType::PLAYERRESPAWN] = std::make_unique<EventPlayerRespawn>();
         EventProcessorMap[eEventType::TIMESYNC] = std::make_unique<EventRemainTimeSync>();
         EventProcessorMap[eEventType::TIMEOVERCHECK] = std::make_unique<EventTimeOverCheck>();
+
+        EventProcessorMap[eEventType::RECOVERYSTAMINA] = std::make_unique<EventRecoveryStamina>();
     }
 }
 

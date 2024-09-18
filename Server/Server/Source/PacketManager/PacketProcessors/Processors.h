@@ -37,3 +37,5 @@
 #include "Event/Game/EventTimeOverCheck.h"
 #include "Event/Game/EventPlayerRespawn.h"
 #include "Event/Game/EventGameStart.h"
+
+#include "Event/Player/EventRecoveryStamina.h"

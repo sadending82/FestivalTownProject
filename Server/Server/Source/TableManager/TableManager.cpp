@@ -159,7 +159,7 @@ void TableManager::ReadWeaponStat()
         xlnt::worksheet ws = wb.active_sheet();
 
         for (auto row : ws.rows(false)) {
-            if (idx < 2) {
+            if (idx < 1) {
                 idx++;
                 continue;
             }
