@@ -5,7 +5,7 @@
 std::vector<uint8_t> PacketMaker::MakePlayerAddPacket(std::array<class Player*, MAXPLAYER>& players)
 {
 	flatbuffers::FlatBufferBuilder Builder;
-	std::vector<flatbuffers::Offset<PacketTable::PlayerTable::PlayerPos>> player_vec;
+	std::vector<flatbuffers::Offset<PacketTable::PlayerTable::PlayerInfo>> player_vec;
 
 	for (Player* player : players) {
 		if (player == nullptr) {
@@ -14,14 +14,16 @@ std::vector<uint8_t> PacketMaker::MakePlayerAddPacket(std::array<class Player*, 
 		Vector3f position = player->GetPosition();
 		auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, position.x, position.y, position.x);
 		auto dir = PacketTable::UtilitiesTable::CreateVec3f(Builder, 0, 0, 0);
-
-		auto playerInfo = PacketTable::PlayerTable::CreatePlayerPos(Builder
+		auto pInfo = PacketTable::PlayerTable::CreatePlayerInfo(Builder
 			, player->GetInGameID()
 			, pos
 			, dir
+			, player->GetTeam()
+			, player->GetChacracterType()
+			, Builder.CreateString(player->GetName())
 		);
 
-		player_vec.push_back(playerInfo);
+		player_vec.push_back(pInfo);
 	}
 
 	Builder.Finish(PacketTable::PlayerTable::CreatePlayerAdd (Builder, Builder.CreateVector(player_vec)));
@@ -159,10 +161,9 @@ std::vector<uint8_t> PacketMaker::MakeGameEndPacket(uint8_t winningTeams_flag)
 	return MakeBuffer(ePacketType::S2C_GAME_END, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakeGameResultPacket(uint8_t winningTeams_flag, std::unordered_map<int, sPlayerGameRecord>& records, std::array<class Player*, MAXPLAYER>& players)
+std::vector<uint8_t> PacketMaker::MakeGameResultPacket(std::vector<int>& winningTeams, std::unordered_map<int, sPlayerGameRecord>& records, std::array<class Player*, MAXPLAYER>& players)
 {
 	flatbuffers::FlatBufferBuilder Builder;
-
 	std::vector<flatbuffers::Offset<PacketTable::UtilitiesTable::PlayerGameRecord>> record_vec;
 
 	for (auto& pair : records) {
@@ -186,7 +187,7 @@ std::vector<uint8_t> PacketMaker::MakeGameResultPacket(uint8_t winningTeams_flag
 	}
 
 	Builder.Finish(PacketTable::GameTable::CreateGameResult(Builder
-		, winningTeams_flag
+		, Builder.CreateVector(winningTeams)
 		, Builder.CreateVector(record_vec)));
 
 	return MakeBuffer(ePacketType::S2C_GAME_RESULT, Builder.GetBufferPointer(), Builder.GetSize());

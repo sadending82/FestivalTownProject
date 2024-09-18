@@ -11,12 +11,13 @@ enum class CharacterStat_Field {
 	strength,
 	speed,
 	attack,
-	headAttack,
+	headAttack = 8,
 	jumpKick,
 	powerAttack,
 	walkSpeed,
 	runSpeed,
 	rollSpeed,
+	staminaRecovery = 22
 };
 
 struct CharacterStat {
@@ -33,6 +34,7 @@ struct CharacterStat {
 	int				walkSpeed;
 	int				runSpeed;
 	int				rollSpeed;
+	int				staminaRecovery;
 };
 
 #pragma pack(pop) 

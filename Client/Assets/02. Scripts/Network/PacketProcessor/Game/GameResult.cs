@@ -18,7 +18,10 @@ namespace Network.PacketProcessor
 
             var Data = GameResult.GetRootAsGameResult(bb);
 
-            var winingTeam_Flag = Data.WinningteamsFlag;
+            for (int i = 0; i < Data.WiningTeamLength; ++i){
+                var winningTeam = Data.WiningTeam(i);
+
+            }
 
             for (int i = 0; i < Data.PlayerRecordsLength; ++i){
                 var playerRecord = Data.PlayerRecords(i);

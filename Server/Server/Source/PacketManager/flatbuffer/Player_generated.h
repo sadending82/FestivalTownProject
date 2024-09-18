@@ -21,6 +21,9 @@ namespace PlayerTable {
 struct PlayerPos;
 struct PlayerPosBuilder;
 
+struct PlayerInfo;
+struct PlayerInfoBuilder;
+
 struct PlayerPosSync;
 struct PlayerPosSyncBuilder;
 
@@ -59,6 +62,12 @@ struct PlayerCalculatedDamageBuilder;
 
 struct PlayerRespawn;
 struct PlayerRespawnBuilder;
+
+struct PlayerGroggy;
+struct PlayerGroggyBuilder;
+
+struct PlayerRecoveryGroggy;
+struct PlayerRecoveryGroggyBuilder;
 
 struct PlayerPos FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef PlayerPosBuilder Builder;
@@ -121,6 +130,119 @@ inline ::flatbuffers::Offset<PlayerPos> CreatePlayerPos(
   builder_.add_pos(pos);
   builder_.add_id(id);
   return builder_.Finish();
+}
+
+struct PlayerInfo FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef PlayerInfoBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ID = 4,
+    VT_POS = 6,
+    VT_DIRECTION = 8,
+    VT_TEAM = 10,
+    VT_CHARACTER_TYPE = 12,
+    VT_NICKNAME = 14
+  };
+  int32_t id() const {
+    return GetField<int32_t>(VT_ID, 0);
+  }
+  const PacketTable::UtilitiesTable::Vec3f *pos() const {
+    return GetPointer<const PacketTable::UtilitiesTable::Vec3f *>(VT_POS);
+  }
+  const PacketTable::UtilitiesTable::Vec3f *direction() const {
+    return GetPointer<const PacketTable::UtilitiesTable::Vec3f *>(VT_DIRECTION);
+  }
+  int32_t team() const {
+    return GetField<int32_t>(VT_TEAM, 0);
+  }
+  int32_t character_type() const {
+    return GetField<int32_t>(VT_CHARACTER_TYPE, 0);
+  }
+  const ::flatbuffers::String *nickname() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_NICKNAME);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_ID, 4) &&
+           VerifyOffset(verifier, VT_POS) &&
+           verifier.VerifyTable(pos()) &&
+           VerifyOffset(verifier, VT_DIRECTION) &&
+           verifier.VerifyTable(direction()) &&
+           VerifyField<int32_t>(verifier, VT_TEAM, 4) &&
+           VerifyField<int32_t>(verifier, VT_CHARACTER_TYPE, 4) &&
+           VerifyOffset(verifier, VT_NICKNAME) &&
+           verifier.VerifyString(nickname()) &&
+           verifier.EndTable();
+  }
+};
+
+struct PlayerInfoBuilder {
+  typedef PlayerInfo Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_id(int32_t id) {
+    fbb_.AddElement<int32_t>(PlayerInfo::VT_ID, id, 0);
+  }
+  void add_pos(::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> pos) {
+    fbb_.AddOffset(PlayerInfo::VT_POS, pos);
+  }
+  void add_direction(::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> direction) {
+    fbb_.AddOffset(PlayerInfo::VT_DIRECTION, direction);
+  }
+  void add_team(int32_t team) {
+    fbb_.AddElement<int32_t>(PlayerInfo::VT_TEAM, team, 0);
+  }
+  void add_character_type(int32_t character_type) {
+    fbb_.AddElement<int32_t>(PlayerInfo::VT_CHARACTER_TYPE, character_type, 0);
+  }
+  void add_nickname(::flatbuffers::Offset<::flatbuffers::String> nickname) {
+    fbb_.AddOffset(PlayerInfo::VT_NICKNAME, nickname);
+  }
+  explicit PlayerInfoBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<PlayerInfo> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<PlayerInfo>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<PlayerInfo> CreatePlayerInfo(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t id = 0,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> pos = 0,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> direction = 0,
+    int32_t team = 0,
+    int32_t character_type = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> nickname = 0) {
+  PlayerInfoBuilder builder_(_fbb);
+  builder_.add_nickname(nickname);
+  builder_.add_character_type(character_type);
+  builder_.add_team(team);
+  builder_.add_direction(direction);
+  builder_.add_pos(pos);
+  builder_.add_id(id);
+  return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<PlayerInfo> CreatePlayerInfoDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t id = 0,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> pos = 0,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> direction = 0,
+    int32_t team = 0,
+    int32_t character_type = 0,
+    const char *nickname = nullptr) {
+  auto nickname__ = nickname ? _fbb.CreateString(nickname) : 0;
+  return PacketTable::PlayerTable::CreatePlayerInfo(
+      _fbb,
+      id,
+      pos,
+      direction,
+      team,
+      character_type,
+      nickname__);
 }
 
 struct PlayerPosSync FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
@@ -191,8 +313,8 @@ struct PlayerAdd FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_PLAYERS = 4
   };
-  const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::PlayerTable::PlayerPos>> *players() const {
-    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::PlayerTable::PlayerPos>> *>(VT_PLAYERS);
+  const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::PlayerTable::PlayerInfo>> *players() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::PlayerTable::PlayerInfo>> *>(VT_PLAYERS);
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -207,7 +329,7 @@ struct PlayerAddBuilder {
   typedef PlayerAdd Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_players(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::PlayerTable::PlayerPos>>> players) {
+  void add_players(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::PlayerTable::PlayerInfo>>> players) {
     fbb_.AddOffset(PlayerAdd::VT_PLAYERS, players);
   }
   explicit PlayerAddBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
@@ -223,7 +345,7 @@ struct PlayerAddBuilder {
 
 inline ::flatbuffers::Offset<PlayerAdd> CreatePlayerAdd(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::PlayerTable::PlayerPos>>> players = 0) {
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::PlayerTable::PlayerInfo>>> players = 0) {
   PlayerAddBuilder builder_(_fbb);
   builder_.add_players(players);
   return builder_.Finish();
@@ -231,8 +353,8 @@ inline ::flatbuffers::Offset<PlayerAdd> CreatePlayerAdd(
 
 inline ::flatbuffers::Offset<PlayerAdd> CreatePlayerAddDirect(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    const std::vector<::flatbuffers::Offset<PacketTable::PlayerTable::PlayerPos>> *players = nullptr) {
-  auto players__ = players ? _fbb.CreateVector<::flatbuffers::Offset<PacketTable::PlayerTable::PlayerPos>>(*players) : 0;
+    const std::vector<::flatbuffers::Offset<PacketTable::PlayerTable::PlayerInfo>> *players = nullptr) {
+  auto players__ = players ? _fbb.CreateVector<::flatbuffers::Offset<PacketTable::PlayerTable::PlayerInfo>>(*players) : 0;
   return PacketTable::PlayerTable::CreatePlayerAdd(
       _fbb,
       players__);
@@ -650,7 +772,8 @@ struct PlayerAnimation FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_ID = 4,
     VT_POS = 6,
     VT_DIRECTION = 8,
-    VT_ANIMATION = 10
+    VT_ANIMATION = 10,
+    VT_REMAIN_STAMINA = 12
   };
   int32_t id() const {
     return GetField<int32_t>(VT_ID, 0);
@@ -664,6 +787,9 @@ struct PlayerAnimation FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   int32_t animation() const {
     return GetField<int32_t>(VT_ANIMATION, 0);
   }
+  int32_t remain_stamina() const {
+    return GetField<int32_t>(VT_REMAIN_STAMINA, 0);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_ID, 4) &&
@@ -672,6 +798,7 @@ struct PlayerAnimation FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            VerifyOffset(verifier, VT_DIRECTION) &&
            verifier.VerifyTable(direction()) &&
            VerifyField<int32_t>(verifier, VT_ANIMATION, 4) &&
+           VerifyField<int32_t>(verifier, VT_REMAIN_STAMINA, 4) &&
            verifier.EndTable();
   }
 };
@@ -692,6 +819,9 @@ struct PlayerAnimationBuilder {
   void add_animation(int32_t animation) {
     fbb_.AddElement<int32_t>(PlayerAnimation::VT_ANIMATION, animation, 0);
   }
+  void add_remain_stamina(int32_t remain_stamina) {
+    fbb_.AddElement<int32_t>(PlayerAnimation::VT_REMAIN_STAMINA, remain_stamina, 0);
+  }
   explicit PlayerAnimationBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -708,8 +838,10 @@ inline ::flatbuffers::Offset<PlayerAnimation> CreatePlayerAnimation(
     int32_t id = 0,
     ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> pos = 0,
     ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> direction = 0,
-    int32_t animation = 0) {
+    int32_t animation = 0,
+    int32_t remain_stamina = 0) {
   PlayerAnimationBuilder builder_(_fbb);
+  builder_.add_remain_stamina(remain_stamina);
   builder_.add_animation(animation);
   builder_.add_direction(direction);
   builder_.add_pos(pos);
@@ -1013,6 +1145,98 @@ inline ::flatbuffers::Offset<PlayerRespawn> CreatePlayerRespawn(
   builder_.add_direction(direction);
   builder_.add_pos(pos);
   builder_.add_hp(hp);
+  builder_.add_id(id);
+  return builder_.Finish();
+}
+
+struct PlayerGroggy FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef PlayerGroggyBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ID = 4
+  };
+  int32_t id() const {
+    return GetField<int32_t>(VT_ID, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_ID, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct PlayerGroggyBuilder {
+  typedef PlayerGroggy Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_id(int32_t id) {
+    fbb_.AddElement<int32_t>(PlayerGroggy::VT_ID, id, 0);
+  }
+  explicit PlayerGroggyBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<PlayerGroggy> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<PlayerGroggy>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<PlayerGroggy> CreatePlayerGroggy(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t id = 0) {
+  PlayerGroggyBuilder builder_(_fbb);
+  builder_.add_id(id);
+  return builder_.Finish();
+}
+
+struct PlayerRecoveryGroggy FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef PlayerRecoveryGroggyBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ID = 4,
+    VT_RECOVERY_VALUE = 6
+  };
+  int32_t id() const {
+    return GetField<int32_t>(VT_ID, 0);
+  }
+  int32_t recovery_value() const {
+    return GetField<int32_t>(VT_RECOVERY_VALUE, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_ID, 4) &&
+           VerifyField<int32_t>(verifier, VT_RECOVERY_VALUE, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct PlayerRecoveryGroggyBuilder {
+  typedef PlayerRecoveryGroggy Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_id(int32_t id) {
+    fbb_.AddElement<int32_t>(PlayerRecoveryGroggy::VT_ID, id, 0);
+  }
+  void add_recovery_value(int32_t recovery_value) {
+    fbb_.AddElement<int32_t>(PlayerRecoveryGroggy::VT_RECOVERY_VALUE, recovery_value, 0);
+  }
+  explicit PlayerRecoveryGroggyBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<PlayerRecoveryGroggy> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<PlayerRecoveryGroggy>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<PlayerRecoveryGroggy> CreatePlayerRecoveryGroggy(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t id = 0,
+    int32_t recovery_value = 0) {
+  PlayerRecoveryGroggyBuilder builder_(_fbb);
+  builder_.add_recovery_value(recovery_value);
   builder_.add_id(id);
   return builder_.Finish();
 }

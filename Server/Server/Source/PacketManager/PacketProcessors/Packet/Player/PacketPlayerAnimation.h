@@ -19,6 +19,18 @@ public:
 				return;
 			}
 
+			UpperBodyAnimationState animation = (UpperBodyAnimationState)read->animation();
+			if (UpperBodyAnimationState::ATTACK <= animation && animation <= UpperBodyAnimationState::WEAPONATTACK) {
+				if (player->GetWeapon() != nullptr) {
+					int weaponType = player->GetWeapon()->GetType();
+					int staminaConsume = pServer->GetTableManager()->GetWeaponStats()[weaponType]->Weapon_StaminaConsume;
+					if (player->GetStamina() - staminaConsume <= 0) {
+						return;
+					}
+					player->ReduceStamina(staminaConsume);
+				}
+			}
+
 			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYER_ANIMATION, data, size);
 
 			pServer->SendAllPlayerInRoomExceptSender(send_buffer.data(), send_buffer.size(), key);

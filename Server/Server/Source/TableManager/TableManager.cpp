@@ -134,7 +134,8 @@ void TableManager::ReadCharacterStat()
                     (int)row[static_cast<int>(CharacterStat_Field::powerAttack)].value<int>(), 
                     (int)row[static_cast<int>(CharacterStat_Field::walkSpeed)].value<int>(), 
                     (int)row[static_cast<int>(CharacterStat_Field::runSpeed)].value<int>(), 
-                    (int)row[static_cast<int>(CharacterStat_Field::rollSpeed)].value<int>()
+                    (int)row[static_cast<int>(CharacterStat_Field::rollSpeed)].value<int>(),
+                    (int)row[static_cast<int>(CharacterStat_Field::staminaRecovery)].value<int>()
                 };
             }
 
@@ -169,13 +170,11 @@ void TableManager::ReadWeaponStat()
                     (int)row[static_cast<int>(WeaponStat_Field::index)].value<int>(),
                     (std::string)row[static_cast<int>(WeaponStat_Field::name)].to_string(),
                     (int)row[static_cast<int>(WeaponStat_Field::Weapon_Power)].value<int>(),
-                    (int)row[static_cast<int>(WeaponStat_Field::Weapon_Limit)].value<int>(),
                     (int)row[static_cast<int>(WeaponStat_Field::Weapon_Range)].value<int>(),
                     (int)row[static_cast<int>(WeaponStat_Field::Weapon_Type)].value<int>(),
                     (int)row[static_cast<int>(WeaponStat_Field::Weapon_StaminaConsume)].value<int>()
                 };
             }
-
             idx++;
         }
     }

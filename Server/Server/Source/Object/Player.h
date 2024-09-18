@@ -29,6 +29,7 @@ public:
 	std::mutex&		GetPlayerStateLock() { return mPlayerStateLock; }
 	eCharacterType	GetChacracterType() { return mCharacterType; }
 	int				GetHP() { return mHP; }
+	int				GetStamina() { return mStamina; }
 	class Bomb*		GetBomb() { return mBomb; }
 	class Weapon*	GetWeapon() { return mWeapon; }
 
@@ -45,11 +46,14 @@ public:
 	void			SetPlayerState(ePlayerState state) { mPlayerState = state; }
 	void			SetChacracterType(eCharacterType type) { mCharacterType = type; }
 	void			SetHP(int hp) { mHP = hp; }
+	void			SetStamina(int stamina) { mStamina = stamina; }
 	void			SetBomb(class Bomb* bomb) { mBomb = bomb; }
 	void			SetWeapon(class Weapon* weapon) { mWeapon = weapon; }
 
-	void			RecoverHP(int value) { mHP += value; }
+	void			RecoveryHP(int value) { mHP += value; }
 	void			ReduceHP(int value) { mHP -= value; }
+	void			RecoveryStamina(int value) { mStamina += value; }
+	void			ReduceStamina(int value) { mStamina -= value; }
 
 protected:
 	std::mutex      mPlayerStateLock;
@@ -67,6 +71,7 @@ protected:
 
 	eCharacterType	mCharacterType = eCharacterType::CT_TEST;
 	int				mHP;
+	int				mStamina;
 	class Bomb*     mBomb = nullptr;
 	class Weapon*	mWeapon = nullptr;
 };

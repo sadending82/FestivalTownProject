@@ -108,7 +108,8 @@ namespace ClientProtocol
     public enum UpperBodyAnimationState
     {
         NONE,
-        ATTACK, POWERATTACK, HOLD, THROW, HEADATTACK, ROLL, FLYINGKICK, WEAPONATTACK
+        HOLD, THROW,
+        ATTACK, POWERATTACK, HEADATTACK, ROLL, FLYINGKICK, WEAPONATTACK
     }
 
     // 서버에 전달 X 클라가 관리

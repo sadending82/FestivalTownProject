@@ -19,21 +19,33 @@ public struct GameResult : IFlatbufferObject
   public void __init(int _i, ByteBuffer _bb) { __p = new Table(_i, _bb); }
   public GameResult __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public byte WinningteamsFlag { get { int o = __p.__offset(4); return o != 0 ? __p.bb.Get(o + __p.bb_pos) : (byte)0; } }
+  public int WiningTeam(int j) { int o = __p.__offset(4); return o != 0 ? __p.bb.GetInt(__p.__vector(o) + j * 4) : (int)0; }
+  public int WiningTeamLength { get { int o = __p.__offset(4); return o != 0 ? __p.__vector_len(o) : 0; } }
+#if ENABLE_SPAN_T
+  public Span<int> GetWiningTeamBytes() { return __p.__vector_as_span<int>(4, 4); }
+#else
+  public ArraySegment<byte>? GetWiningTeamBytes() { return __p.__vector_as_arraysegment(4); }
+#endif
+  public int[] GetWiningTeamArray() { return __p.__vector_as_array<int>(4); }
   public PacketTable.UtilitiesTable.PlayerGameRecord? PlayerRecords(int j) { int o = __p.__offset(6); return o != 0 ? (PacketTable.UtilitiesTable.PlayerGameRecord?)(new PacketTable.UtilitiesTable.PlayerGameRecord()).__assign(__p.__indirect(__p.__vector(o) + j * 4), __p.bb) : null; }
   public int PlayerRecordsLength { get { int o = __p.__offset(6); return o != 0 ? __p.__vector_len(o) : 0; } }
 
   public static Offset<PacketTable.GameTable.GameResult> CreateGameResult(FlatBufferBuilder builder,
-      byte winningteams_flag = 0,
+      VectorOffset wining_teamOffset = default(VectorOffset),
       VectorOffset player_recordsOffset = default(VectorOffset)) {
     builder.StartTable(2);
     GameResult.AddPlayerRecords(builder, player_recordsOffset);
-    GameResult.AddWinningteamsFlag(builder, winningteams_flag);
+    GameResult.AddWiningTeam(builder, wining_teamOffset);
     return GameResult.EndGameResult(builder);
   }
 
   public static void StartGameResult(FlatBufferBuilder builder) { builder.StartTable(2); }
-  public static void AddWinningteamsFlag(FlatBufferBuilder builder, byte winningteamsFlag) { builder.AddByte(0, winningteamsFlag, 0); }
+  public static void AddWiningTeam(FlatBufferBuilder builder, VectorOffset winingTeamOffset) { builder.AddOffset(0, winingTeamOffset.Value, 0); }
+  public static VectorOffset CreateWiningTeamVector(FlatBufferBuilder builder, int[] data) { builder.StartVector(4, data.Length, 4); for (int i = data.Length - 1; i >= 0; i--) builder.AddInt(data[i]); return builder.EndVector(); }
+  public static VectorOffset CreateWiningTeamVectorBlock(FlatBufferBuilder builder, int[] data) { builder.StartVector(4, data.Length, 4); builder.Add(data); return builder.EndVector(); }
+  public static VectorOffset CreateWiningTeamVectorBlock(FlatBufferBuilder builder, ArraySegment<int> data) { builder.StartVector(4, data.Count, 4); builder.Add(data); return builder.EndVector(); }
+  public static VectorOffset CreateWiningTeamVectorBlock(FlatBufferBuilder builder, IntPtr dataPtr, int sizeInBytes) { builder.StartVector(1, sizeInBytes, 1); builder.Add<int>(dataPtr, sizeInBytes); return builder.EndVector(); }
+  public static void StartWiningTeamVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(4, numElems, 4); }
   public static void AddPlayerRecords(FlatBufferBuilder builder, VectorOffset playerRecordsOffset) { builder.AddOffset(1, playerRecordsOffset.Value, 0); }
   public static VectorOffset CreatePlayerRecordsVector(FlatBufferBuilder builder, Offset<PacketTable.UtilitiesTable.PlayerGameRecord>[] data) { builder.StartVector(4, data.Length, 4); for (int i = data.Length - 1; i >= 0; i--) builder.AddOffset(data[i].Value); return builder.EndVector(); }
   public static VectorOffset CreatePlayerRecordsVectorBlock(FlatBufferBuilder builder, Offset<PacketTable.UtilitiesTable.PlayerGameRecord>[] data) { builder.StartVector(4, data.Length, 4); builder.Add(data); return builder.EndVector(); }
@@ -52,7 +64,7 @@ static public class GameResultVerify
   static public bool Verify(Google.FlatBuffers.Verifier verifier, uint tablePos)
   {
     return verifier.VerifyTableStart(tablePos)
-      && verifier.VerifyField(tablePos, 4 /*WinningteamsFlag*/, 1 /*byte*/, 1, false)
+      && verifier.VerifyVectorOfData(tablePos, 4 /*WiningTeam*/, 4 /*int*/, false)
       && verifier.VerifyVectorOfTables(tablePos, 6 /*PlayerRecords*/, PacketTable.UtilitiesTable.PlayerGameRecordVerify.Verify, false)
       && verifier.VerifyTableEnd(tablePos);
   }
