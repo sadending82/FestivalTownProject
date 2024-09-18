@@ -30,6 +30,7 @@ public:
 	eCharacterType	GetChacracterType() { return mCharacterType; }
 	int				GetHP() { return mHP; }
 	int				GetStamina() { return mStamina; }
+	int				GetGroggyCount() { return mGroggyCount; }
 	class Bomb*		GetBomb() { return mBomb; }
 	class Weapon*	GetWeapon() { return mWeapon; }
 
@@ -47,6 +48,7 @@ public:
 	void			SetChacracterType(eCharacterType type) { mCharacterType = type; }
 	void			SetHP(int hp) { mHP = hp; }
 	void			SetStamina(int stamina) { mStamina = stamina; }
+	void			SetGroggyCount(int count) { mGroggyCount = count; }
 	void			SetBomb(class Bomb* bomb) { mBomb = bomb; }
 	void			SetWeapon(class Weapon* weapon) { mWeapon = weapon; }
 
@@ -72,6 +74,7 @@ protected:
 	eCharacterType	mCharacterType = eCharacterType::CT_TEST;
 	int				mHP;
 	int				mStamina;
+	int				mGroggyCount;
 	class Bomb*     mBomb = nullptr;
 	class Weapon*	mWeapon = nullptr;
 };
