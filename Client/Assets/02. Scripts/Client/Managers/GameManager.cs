@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     public int RoomID = -1;
     public bool isAnounnced15s = false;
     public Dictionary<int, Define.PlayerResult> PlayerResultData = new();
+    private int winningTeam = -1;
     
 
     public void Init()
@@ -118,6 +119,7 @@ public class GameManager : MonoBehaviour
         isAnounnced15s = false;
         isGameEnd = false;
         PlayerResultData.Clear();
+        winningTeam = -1;
     }
     public void GameStart()
     {
@@ -133,5 +135,12 @@ public class GameManager : MonoBehaviour
         isGameEnd = true;
     }
 
-
+    public void SetWinningTeam(int winningTeam)
+    {
+        this.winningTeam = winningTeam;
+    }
+    public int GetWinningTeam()
+    {
+        return winningTeam;
+    }
 }

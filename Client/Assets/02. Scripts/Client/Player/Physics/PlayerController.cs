@@ -4,6 +4,7 @@ using UnityEngine;
 using ClientProtocol;
 using NetworkProtocol;
 using UnityEngine.Rendering;
+using TMPro.Examples;
 
 public class PlayerController : MonoBehaviour
 {
@@ -168,7 +169,7 @@ public class PlayerController : MonoBehaviour
 
     private void SendForSync()
     {
-        if (pelvis != null)
+        if (pelvis != null && gameStart == true)
         {
             packetManager.SendPlayerPosPacket(pelvis.transform.position, stabillizerDirection, myId);
         }
@@ -680,15 +681,7 @@ public class PlayerController : MonoBehaviour
         x += offsetX;
         y += offsetY;
 
-        // 팀에 따라 방향 설정
-        if(x <= 0)
-        {
-            stabilizer.transform.eulerAngles = new Vector3(0.0f, 90f, 0.0f);
-        }
-        else
-        {
-            stabilizer.transform.eulerAngles = new Vector3(0.0f, 270f, 0.0f);
-        }
+        SetDirectionByTeam();
 
         Vector3 targetPos = new Vector3(x, createHeight, y);
 
@@ -764,5 +757,32 @@ public class PlayerController : MonoBehaviour
     public void GameEnd()
     {
         gameStart = false;
+    }
+
+    public void SetDirectionByTeam()
+    {
+        int teamNumber = playerStatus.GetTeamNumber();
+        switch (teamNumber)
+        {
+            case 0:
+                {
+                    stabilizer.transform.eulerAngles = new Vector3(0.0f, 270f, 0.0f);
+                }
+                break;
+            case 1:
+                {
+                    stabilizer.transform.eulerAngles = new Vector3(0.0f, 90f, 0.0f);
+                }
+                break;
+            default:
+                {
+                    Debug.Log("ERORR!!! SetDirectionByTeam, Wrong Team Number !!!");
+                }
+                break;
+        }
+    }
+    public void SetDirectionInResultScene()
+    {
+        stabilizer.transform.eulerAngles = new Vector3(0.0f, 180f, 0.0f);
     }
 }

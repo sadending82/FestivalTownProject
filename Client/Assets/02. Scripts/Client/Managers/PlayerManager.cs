@@ -73,13 +73,13 @@ public class PlayerManager : MonoBehaviour
         return this.isHost;
     }
 
-    public void AddPlayer(int id, Vector3 position)
+    public void AddPlayer(int id, Vector3 position, int teamNumber)
     {
         if (players == null) Init();
 
         if(Managers.Scene.CurrentScene.GetComponent<GameScene>() == null)
         {
-            StartCoroutine(WaitAndAddPlayer(id, position));
+            StartCoroutine(WaitAndAddPlayer(id, position, teamNumber));
             return;
         }
 
@@ -93,16 +93,17 @@ public class PlayerManager : MonoBehaviour
 
             var playerObject = players.transform.GetChild(id).gameObject;
             playerObject.SetActive(true);
-            playerObject.GetComponent<PlayerController>().Respawn(position.x, position.y);
+            playerObject.GetComponent<CharacterStatus>().SetTeamNumber(teamNumber);
             playerObject.GetComponent<PlayerController>().SetMyId(id);
+            playerObject.GetComponent<PlayerController>().Respawn(position.x, position.y);
             nowPlayerNum++;          
         }
     }
 
-    IEnumerator WaitAndAddPlayer(int id, Vector3 position)
+    IEnumerator WaitAndAddPlayer(int id, Vector3 position, int teamNumber)
     {
         yield return new WaitUntil(() => Managers.Scene.CurrentScene.GetComponent<GameScene>() != null);
-        AddPlayer(id, position);
+        AddPlayer(id, position, teamNumber);
     }
 
     public void SetMyPlayerEnable()

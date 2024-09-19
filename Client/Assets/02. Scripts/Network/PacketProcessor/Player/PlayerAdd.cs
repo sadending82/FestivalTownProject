@@ -27,7 +27,7 @@ namespace Network.PacketProcessor
                 string nickname = player.Value.Nickname;
 
                 Vector3 pos = new Vector3(player.Value.Pos.Value.X, player.Value.Pos.Value.Y, player.Value.Pos.Value.Z);
-                Managers.Player.GetComponent<PlayerManager>().AddPlayer(id, pos);
+                Managers.Player.GetComponent<PlayerManager>().AddPlayer(id, pos, team);
             }
         }
 
