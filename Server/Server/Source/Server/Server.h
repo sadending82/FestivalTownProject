@@ -37,9 +37,9 @@ public:
 	void StartGame(int roomID);
 	void CheckGameEnd(int roomID);
 	void TimeoverGameEnd(int roomID);
-	int CalculatePoint(GameMode mode, sPlayerGameRecord record);
-	int CalculateGoldReward(GameMode mode, int point, bool isMvp);
-	void CalculateGameResult(int roomID, std::vector<int>& winningTeams);
+	int CalculatePoint(GameMode mode, sPlayerGameRecord record, bool isWin);
+	int CalculateGoldReward(GameMode mode, int point, bool isMvp, bool isWin);
+	void CalculateGameResult(int roomID, std::set<int>& winningTeams);
 
 	HANDLE GetHcp() { return mHcp; }
 	SOCKADDR_IN GetServerAddr() { return mServerAddr; }

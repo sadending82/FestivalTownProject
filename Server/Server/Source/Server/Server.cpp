@@ -290,7 +290,7 @@ int Server::CreateNewRoom(int playerCount, GameMode gameMode)
         return INVALIDKEY;
     }
     Room* room = GetRooms()[roomID];
-    room->Init(roomID, GetTableManager()->GetGameModeData()[gameMode]->Player_Count);
+    room->Init(roomID, GetTableManager()->GetGameModeData()[gameMode]->Life_Count, GetTableManager()->GetGameModeData()[gameMode]->Player_Count);
     room->SetGameMode(gameMode);
     room->InitMap(GetTableManager()->GetMapData()[MapCode::TEST]);
 
@@ -366,13 +366,13 @@ void Server::CheckGameEnd(int roomID)
     Room* room = GetRooms()[roomID];
     int teamCnt = 2; // 팀 수 (임시 나중에 게임 데이터로 읽어야 함)
     int loseTeamCnt = 0;
-    std::vector<int> winningTeams;
+    std::set<int> winningTeams;
     for (auto iter = room->GetTeams().begin(); iter != room->GetTeams().end(); ++iter) {
         if (iter->second.GetLife() <= 0) {
             loseTeamCnt++;
         }
         else {
-            winningTeams.push_back(iter->first);
+            winningTeams.insert(iter->first);
         }
     }
 
@@ -402,18 +402,18 @@ void Server::CheckGameEnd(int roomID)
 void Server::TimeoverGameEnd(int roomID) {
     Room* room = GetRooms()[roomID];
 
-    std::vector<int> winningTeams;
+    std::set<int> winningTeams;
     int maxLife = 0;
 
     for (auto iter = room->GetTeams().begin(); iter != room->GetTeams().end(); ++iter) {
         int life = iter->second.GetLife();
         if (maxLife < life) {
             winningTeams.clear();
-            winningTeams.push_back(iter->first);
+            winningTeams.insert(iter->first);
             maxLife = life;
         }
         else if (maxLife == life) {
-            winningTeams.push_back(iter->first);
+            winningTeams.insert(iter->first);
         }
     }
 
@@ -439,32 +439,38 @@ void Server::TimeoverGameEnd(int roomID) {
     }
 }
 
-int Server::CalculatePoint(GameMode mode, sPlayerGameRecord record)
+int Server::CalculatePoint(GameMode mode, sPlayerGameRecord record, bool isWin)
 {
     int point = 0;
 
-    FITH_ScoreConstant* constants = mTableManager->GetScoreConstantList()[mode];
-    if (constants == nullptr) {
-        return 0;
+    BattleResult result;
+    if (isWin) {
+        result = BattleResult::BR_Win;
+    }
+    else {
+        result = BattleResult::BR_Lose;
     }
 
-    point += (record.kill_count * constants->Kill_Point) - (record.death_count * constants->Death_Point) + (record.bomb_insert_count * constants->Bomb_Point);
+    std::unordered_map<ConstantType, ScoreConstant*>& constants = mTableManager->GetScoreConstantList()[mode][result];
+
+    point += (record.kill_count * constants[ConstantType::CT_Kill_Point]->Value) - (record.death_count * constants[ConstantType::CT_Death_Point]->Value) + (record.bomb_insert_count * constants[ConstantType::CT_Bomb_Point]->Value);
 
     return (point < 0 ) ? 0 : point;
 }
 
-int Server::CalculateGoldReward(GameMode mode, int point, bool isMvp)
+int Server::CalculateGoldReward(GameMode mode, int point, bool isMvp, bool isWin)
 {
-    FITH_ScoreConstant* constants = mTableManager->GetScoreConstantList()[mode];
+    /*FITH_ScoreConstant* constants = mTableManager->GetScoreConstantList()[mode];
 
     if (constants == nullptr) {
         return 0;
     }
 
-    return (isMvp == true) ? constants->Gold_Basic + (point* constants->MVP_Gold_Point) : constants->Gold_Basic + (point * constants->Gold_Point);
+    return (isMvp == true) ? constants->Gold_Basic + (point* constants->MVP_Gold_Point) : constants->Gold_Basic + (point * constants->Gold_Point);*/
+    return 0;
 }
 
-void Server::CalculateGameResult(int roomID, std::vector<int>& winningTeams)
+void Server::CalculateGameResult(int roomID, std::set<int>& winningTeams)
 {
     Room* room = GetRooms()[roomID];
     std::unordered_map<int, sPlayerGameRecord>& records = room->GetPlayerRecordList();
@@ -477,9 +483,14 @@ void Server::CalculateGameResult(int roomID, std::vector<int>& winningTeams)
     for (auto& pair : records) {
         int id = pair.first;
 
-        int point =  CalculatePoint(mode, pair.second);
+        room->GetPlayerListLock().lock_shared();
+        int team = room->GetPlayerList()[id]->GetTeam();
+        room->GetPlayerListLock().unlock_shared();
+
+        bool isWin = (winningTeams.find(team) != winningTeams.end()) ? true : false;
+        int point = CalculatePoint(mode, pair.second, isWin);
         pair.second.point = point;
-        pair.second.earn_gold = CalculateGoldReward(mode, point, false);
+        pair.second.earn_gold = CalculateGoldReward(mode, point, false, isWin);
 
         if (point > mvp_point) {
             mvp_id = id;
@@ -488,7 +499,7 @@ void Server::CalculateGameResult(int roomID, std::vector<int>& winningTeams)
     }
 
     if (mvp_id !=INVALIDKEY) {
-        records[mvp_id].earn_gold = CalculateGoldReward(mode, records[mvp_id].point, true);
+        records[mvp_id].earn_gold = CalculateGoldReward(mode, records[mvp_id].point, true, true);
         records[mvp_id].is_mvp = true;
     }
 

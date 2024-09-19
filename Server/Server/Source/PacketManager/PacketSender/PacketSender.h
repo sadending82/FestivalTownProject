@@ -22,7 +22,7 @@ public:
 
 	void SendGameStartPacket(int roomID);
 	void SendGameEndPacket(int roomID, uint8_t winningTeams_flag);
-	void SendGameResultPacket(int roomID, std::vector<int>& winningTeams);
+	void SendGameResultPacket(int roomID, std::set<int>& winningTeams);
 
 	void SendGameHostChange(int sessionID);
 	void SendPlayerDeadPacket(int inGameID, int roomID);

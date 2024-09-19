@@ -1,22 +1,38 @@
 #pragma once
 #pragma pack (push, 1)
 
-enum class FITH_ScoreConstant_Field {
-	Kill_Point,
-	Death_Point,
-	Bomb_Point,
-	Gold_Basic,
-	Gold_Point,
-	MVP_Gold_Point
+#define Mode_Point 2
+
+enum ScoreConstant_Field {
+	SC_Mode_Index = 2,	
+	SC_Battle_Result = 3,	
+	SC_Type = 4,	
+	SC_WorkType = 5,	
+	SC_Value = 6,
 };
 
-struct FITH_ScoreConstant {
-	float Kill_Point;
-	float Death_Point;
-	float Bomb_Point;
-	float Gold_Basic;
-	float Gold_Point;
-	float MVP_Gold_Point;
+enum BattleResult{
+	BR_Win = 1,
+	BR_Lose = 2
+};
+
+enum ConstantType {
+	CT_Kill_Point = 1,
+	CT_Death_Point = 2,
+	CT_Bomb_Point = 3
+};
+
+enum WorkType {
+	WT_Add = 1,
+	WT_Sub = 2,
+	WT_Mul = 3,
+	WT_Div = 4,
+};
+
+struct ScoreConstant {
+	int type;
+	int WorkType;
+	int Value;
 };
 
 #pragma pack(pop) 

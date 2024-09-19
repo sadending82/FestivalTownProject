@@ -159,7 +159,7 @@ void PacketSender::SendGameEndPacket(int roomID, uint8_t winningTeams_flag)
     mServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
 
-void PacketSender::SendGameResultPacket(int roomID, std::vector<int>& winningTeams)
+void PacketSender::SendGameResultPacket(int roomID, std::set<int>& winningTeams)
 {
     Room* room = mServer->GetRooms()[roomID];
     room->GetPlayerListLock().lock_shared();

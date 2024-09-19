@@ -161,10 +161,12 @@ std::vector<uint8_t> PacketMaker::MakeGameEndPacket(uint8_t winningTeams_flag)
 	return MakeBuffer(ePacketType::S2C_GAME_END, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakeGameResultPacket(std::vector<int>& winningTeams, std::unordered_map<int, sPlayerGameRecord>& records, std::array<class Player*, MAXPLAYER>& players)
+std::vector<uint8_t> PacketMaker::MakeGameResultPacket(std::set<int>& winningTeams, std::unordered_map<int, sPlayerGameRecord>& records, std::array<class Player*, MAXPLAYER>& players)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 	std::vector<flatbuffers::Offset<PacketTable::UtilitiesTable::PlayerGameRecord>> record_vec;
+	std::vector<int> winningTeams_vector(winningTeams.begin(), winningTeams.end());
+
 
 	for (auto& pair : records) {
 		int id = pair.first;
@@ -187,7 +189,7 @@ std::vector<uint8_t> PacketMaker::MakeGameResultPacket(std::vector<int>& winning
 	}
 
 	Builder.Finish(PacketTable::GameTable::CreateGameResult(Builder
-		, Builder.CreateVector(winningTeams)
+		, Builder.CreateVector(winningTeams_vector)
 		, Builder.CreateVector(record_vec)));
 
 	return MakeBuffer(ePacketType::S2C_GAME_RESULT, Builder.GetBufferPointer(), Builder.GetSize());

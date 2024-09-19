@@ -33,7 +33,7 @@ public:
 	std::unordered_map<INDEX, WeaponStat*>& GetWeaponStats() { return WeaponStats; }
 	std::unordered_map<GameMode, GameModeInfo*>& GetGameModeData() { return GameModeData; }
 	std::unordered_map<MapCode, Map*>& GetMapData() { return MapData; }
-	std::unordered_map<GameMode, FITH_ScoreConstant*>& GetScoreConstantList() { return ScoreConstantList; }
+	std::unordered_map<GameMode, std::unordered_map<BattleResult, std::unordered_map<ConstantType, ScoreConstant*>>>& GetScoreConstantList() { return ScoreConstantList; }
 
 	std::unordered_map<GameMode, std::vector<MapCode>>& getMapListByMode() { return MapListByMode; }
 
@@ -46,7 +46,7 @@ private:
 	std::unordered_map<INDEX, WeaponStat*> WeaponStats;
 	std::unordered_map<GameMode, GameModeInfo*> GameModeData;
 	std::unordered_map<MapCode, Map*> MapData;
-	std::unordered_map<GameMode, FITH_ScoreConstant*> ScoreConstantList;
+	std::unordered_map<GameMode, std::unordered_map<BattleResult, std::unordered_map<ConstantType, ScoreConstant*>>> ScoreConstantList;
 
 	std::unordered_map<INDEX, RandomBox*> RandomBoxList;
 	std::unordered_map<GACHA_GROUP, std::unordered_map<INDEX, GachaItem*>> GachaItemList;
