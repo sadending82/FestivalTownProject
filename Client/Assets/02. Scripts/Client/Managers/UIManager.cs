@@ -69,6 +69,8 @@ public class UIManager
 
     public void CloseSceneUI()
     {
+        if (_sceneUI == null) return;
+
         Managers.Resource.Destroy(_sceneUI.gameObject);
         _sceneUI = null;
     }
@@ -148,6 +150,7 @@ public class UIManager
     /// </summary>
     public void CloseAOTUI()
     {
+        if (_AlwaysOnTopUI != null) return;
         Managers.Resource.Destroy(_AlwaysOnTopUI.gameObject);
         _AlwaysOnTopUI = null;
     }
