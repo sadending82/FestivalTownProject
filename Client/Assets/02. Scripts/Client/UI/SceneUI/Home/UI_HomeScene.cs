@@ -31,12 +31,18 @@ public class UI_HomeScene : UI_Scene
         {
             if(isShopOpen)
             {
-
+                Managers.UI.CloseAllPopUpUI();
+                Managers.UI.ShowPopUpUI<UI_HomeStart>();
             }
             else
             {
-
+                Managers.UI.CloseAllPopUpUI();
+                Managers.UI.ShowPopUpUI<UI_Shop>();
             }
+
+            isShopOpen = !isShopOpen;
+            isPassOpen = false;
+            isAchieveOpen = false;
         });
 
         Get<GameObject>((int)GameObjects.PassButton).BindEvent((PointerEventData) =>

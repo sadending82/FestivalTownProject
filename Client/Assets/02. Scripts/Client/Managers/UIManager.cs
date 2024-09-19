@@ -171,6 +171,7 @@ public class UIManager
     public void Clear()
     {
         CloseAllPopUpUI();
+        CloseAOTUI();
         CloseSceneUI();
     }
 }

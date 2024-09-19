@@ -18,7 +18,13 @@ namespace Network.PacketProcessor
 
             var Data = GameMatchingCancel.GetRootAsGameMatchingCancel(bb);
 
+            if (Managers.Scene.CurrentScene.GetComponent<HomeScene>() != null)
+            {
+                Managers.Scene.CurrentScene.GetComponent<HomeScene>().isMatching = false;
+            }
+
             Managers.UI.CloseAOTUI();
+
         }
 
         private FlatBufferBuilder mBuilder;

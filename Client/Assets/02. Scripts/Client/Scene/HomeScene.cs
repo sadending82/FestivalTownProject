@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class HomeScene : BaseScene
 {
+
+    public bool isMatching = false;
     protected override void Init()
     {
         base.Init();
