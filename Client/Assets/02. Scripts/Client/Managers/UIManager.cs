@@ -10,7 +10,7 @@ public class UIManager
 
     Stack<UI_PopUp> _popupStack = new Stack<UI_PopUp>(); // UI를 스택에 담아두면 뺄때 편하겠지?
     UI_Scene _sceneUI = null; // 팝업으로 여는거 말고 고정되어 있는 놈이 누구임
-
+    UI_AlwaysOnTop _AlwaysOnTopUI = null; // 항상 가장 위에 있어야 하는 놈이 누구임
     //TODO:
     // 나중에 가장 위에 고정되는 UI도 하나 따로 두는게 맞을 것 같습니다.
     // 매칭 중 UI 같은 경우 항상 가장 위에 떠야 하니까요
@@ -29,11 +29,16 @@ public class UIManager
         }
     }
 
-    public void SetCanvas(GameObject go, bool sort = true)
+    public void SetCanvas(GameObject go, bool sort = true, bool alwaysOnTop = false)
     {
         Canvas canvas = Util.GetOrAddComponent<Canvas>(go);
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         canvas.overrideSorting = true; // 캔버스 두 개면 위에 겹쳐버리라구~
+
+        if(alwaysOnTop)
+        {
+            canvas.sortingOrder = 99;
+        }
 
         if (sort)
         {
@@ -83,6 +88,8 @@ public class UIManager
         return popup;
     }
 
+    
+
     public void ClosePopUpUI(UI_PopUp popUp)
     {
         if (_popupStack.Count == 0) return;
@@ -112,6 +119,37 @@ public class UIManager
         {
             ClosePopUpUI();
         }
+    }
+
+    /// <summary>
+    /// 항상 가장 위에 있는 (Always On Top) UI를 만들기
+    /// </summary>
+    /// <typeparam name="T">UI 타입</typeparam>
+    /// <param name="name">UI 이름</param>
+    /// <returns></returns>
+    public T ShowAOTUI<T>(string name = null) where T : UI_AlwaysOnTop
+    {
+        if (string.IsNullOrEmpty(name))
+            name = typeof(T).Name;
+
+        GameObject go = Managers.Resource.Instantiate($"UI/AlwaysOnTop/{name}");
+
+        T aotUI = Util.GetOrAddComponent<T>(go);
+
+        _AlwaysOnTopUI = aotUI;
+
+        go.transform.SetParent(Root.transform);
+
+        return aotUI;
+    }
+
+    /// <summary>
+    /// AlwaysOnTopUI 제거
+    /// </summary>
+    public void CloseAOTUI()
+    {
+        Managers.Resource.Destroy(_AlwaysOnTopUI.gameObject);
+        _AlwaysOnTopUI = null;
     }
 
     public T MakeWorldSpace<T>(Transform parent = null, string name = null) where T : UI_Base

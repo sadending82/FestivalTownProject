@@ -31,13 +31,15 @@ public class UI_HomeStart : UI_PopUp
             Debug.Log($"게임 시작 버튼을 클릭했군요!");
             if (isMatching)
             {
-                Managers.UI.ClosePopUpUI();
+                // 매칭 UI의 삭제는 패킷을 받은 이후
+                // 해당 패킷의 처리 과정에서 지워줄 것이기 때문에,
+                // 여기서 삭제하지 않아도 됩니다.
                 Managers.Network.GetPacketManager().SendGameMatchingCancle();
                 
             }
             else
             {
-                Managers.UI.ShowPopUpUI<UI_Matching>();
+                Managers.UI.ShowAOTUI<UI_Matching>();
                 Managers.Network.GetPacketManager().SendGameMatchingRequest();
             }
 

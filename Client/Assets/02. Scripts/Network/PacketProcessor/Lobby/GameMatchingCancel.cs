@@ -18,9 +18,7 @@ namespace Network.PacketProcessor
 
             var Data = GameMatchingCancel.GetRootAsGameMatchingCancel(bb);
 
-            // 나중에 특정 UI를 지운다는 느낌으로 변경해야 합니다.
-            // 이건 UIManager를 변경한 이후 할 예정입니다.
-            Managers.UI.ClosePopUpUI();
+            Managers.UI.CloseAOTUI();
         }
 
         private FlatBufferBuilder mBuilder;

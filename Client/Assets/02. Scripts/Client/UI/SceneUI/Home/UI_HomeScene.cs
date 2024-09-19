@@ -9,8 +9,14 @@ public class UI_HomeScene : UI_Scene
         Panel,
         PlayerImage,
         NickName,
-
+        ShopButton,
+        PassButton,
+        AchieveButton,
     }
+
+    bool isShopOpen = false;
+    bool isPassOpen = false;
+    bool isAchieveOpen = false;
 
     void Start()
     {
@@ -20,5 +26,31 @@ public class UI_HomeScene : UI_Scene
     public override void Init()
     {
         Bind<GameObject>(typeof(GameObjects));
+
+        Get<GameObject>((int)GameObjects.ShopButton).BindEvent((PointerEventData)=>
+        {
+            if(isShopOpen)
+            {
+
+            }
+            else
+            {
+
+            }
+        });
+
+        Get<GameObject>((int)GameObjects.PassButton).BindEvent((PointerEventData) =>
+        {
+
+        });
+
+        Get<GameObject>((int)GameObjects.AchieveButton).BindEvent((PointerEventData) =>
+        {
+
+        });
+
+
     }
+
+
 }
