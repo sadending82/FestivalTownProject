@@ -22,7 +22,7 @@ public:
 
 	void ReadItemTable();
 	void ReadCharacterStat();
-	void ReadFITHModeTable();
+	void ReadGameModeTable();
 	void ReadMapData();
 	void ReadWeaponStat();
 	void ReadScoreConstantTable();
@@ -31,7 +31,7 @@ public:
 	std::unordered_map<INDEX, ItemTable*>& GetItemInfos() { return ItemInfos; }
 	std::unordered_map<INDEX, CharacterStat*>& GetCharacterStats() { return CharacterStats; }
 	std::unordered_map<INDEX, WeaponStat*>& GetWeaponStats() { return WeaponStats; }
-	std::unordered_map<GameMode, FITH*>& GetGameModeData() { return FITH_Data; }
+	std::unordered_map<GameMode, GameModeInfo*>& GetGameModeData() { return GameModeData; }
 	std::unordered_map<MapCode, Map*>& GetMapData() { return MapData; }
 	std::unordered_map<GameMode, FITH_ScoreConstant*>& GetScoreConstantList() { return ScoreConstantList; }
 
@@ -44,7 +44,7 @@ private:
 	std::unordered_map<INDEX, ItemTable*> ItemInfos;
 	std::unordered_map<INDEX, CharacterStat*> CharacterStats;
 	std::unordered_map<INDEX, WeaponStat*> WeaponStats;
-	std::unordered_map<GameMode, FITH*> FITH_Data;
+	std::unordered_map<GameMode, GameModeInfo*> GameModeData;
 	std::unordered_map<MapCode, Map*> MapData;
 	std::unordered_map<GameMode, FITH_ScoreConstant*> ScoreConstantList;
 

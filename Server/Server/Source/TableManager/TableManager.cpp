@@ -28,10 +28,10 @@ void TableManager::ClearAllTable()
     }
     WeaponStats.clear();
 
-    for (auto& pair : FITH_Data) {
+    for (auto& pair : GameModeData) {
         delete pair.second;
     }
-    FITH_Data.clear();
+    GameModeData.clear();
 
     for (auto& pair : MapData) {
         delete pair.second;
@@ -62,7 +62,7 @@ void TableManager::ReadAllDataTable()
     //ReadItemTable();
     ReadCharacterStat();
     ReadWeaponStat();
-    ReadFITHModeTable();
+    ReadGameModeTable();
     ReadMapData();
     ReadScoreConstantTable();
     ReadGachaTable();
@@ -184,51 +184,72 @@ void TableManager::ReadWeaponStat()
 
 }
 
-void TableManager::ReadFITHModeTable()
+void TableManager::ReadGameModeTable()
 {
     try {
         xlnt::workbook wb;
-        wb.load("GameData/FITH_Mode.xlsx");
+        wb.load("GameData/Mode_Ver3.xlsx");
 
         int idx = 0;
-        int sheetIdx = 1;
+        xlnt::worksheet ws = wb.sheet_by_index(Mode_Out_Sheet);
 
-        for (int i = GameMode::FITH_Team_battle_One; i <= GameMode::FITH_Team_battle_Three; ++i) {
-            MapListByMode[(GameMode)i].push_back(MapCode::TEST);
-            xlnt::worksheet ws = wb.sheet_by_index(i);
+        for (auto row : ws.rows(false)) {
+            if (idx == variableNameIdx) {
+                idx++;
+                continue;
+            }
 
-            for (auto row : ws.rows(false)) {
-                if (idx == variableNameIdx) {
-                    idx++;
+            if (!row.empty()) {
+                int index = row[0].value<int>();
+
+               GameModeData[(GameMode)index]
+                    = new GameModeInfo{
+                    row[GameModeOut_Field::Player_Count].value<int>(),
+                    row[GameModeOut_Field::Team_Count].value<int>(),
+                    row[GameModeOut_Field::Team_Color].value<int>(),
+                    row[GameModeOut_Field::Play_Map].value<int>()
+                };
+            }
+
+            idx++;
+        }
+
+        idx = 0;
+        ws = wb.sheet_by_index(FITH_Mode_Sheet);
+
+        for (auto row : ws.rows(false)) {
+            if (idx == variableNameIdx) {
+                idx++;
+                continue;
+            }
+
+            if (!row.empty()) {
+                int index = row[0].value<int>();
+
+                if (GameModeData.find((GameMode)index) == GameModeData.end()) {
                     continue;
                 }
-
-                if (!row.empty()) {
-                    FITH_Data[(GameMode)i]
-                        = new FITH{
-                        row[static_cast<int>(FITH_Field::Play_Time)].value<int>(),
-                        row[static_cast<int>(FITH_Field::Player_Spawn_Time)].value<int>(),
-                        row[static_cast<int>(FITH_Field::Team_Life_Count)].value<int>(),
-                        row[static_cast<int>(FITH_Field::Bomb_Spawn_Count)].value<int>(),
-                        row[static_cast<int>(FITH_Field::Bomb_Spawn_Time)].value<int>(),
-                        row[static_cast<int>(FITH_Field::Bomb_Delay_Time)].value<int>(),
-                        row[static_cast<int>(FITH_Field::Bomb_Spawn_Location_MinX)].value<float>(),
-                        row[static_cast<int>(FITH_Field::Bomb_Spawn_Location_MaxX)].value<float>(),
-                        row[static_cast<int>(FITH_Field::Bomb_Spawn_Location_MinY)].value<float>(),
-                        row[static_cast<int>(FITH_Field::Bomb_Spawn_Location_MaxY)].value<float>(),
-                        row[static_cast<int>(FITH_Field::Weapon_Spawn_Time)].value<int>(),
-                        row[static_cast<int>(FITH_Field::Weapon_Spawn_Count)].value<int>(),
-                        row[static_cast<int>(FITH_Field::Block_Spawn_Count)].value<int>(),
-                        row[static_cast<int>(FITH_Field::Block_Spawn_Time)].value<int>(),
-                        row[static_cast<int>(FITH_Field::Block_Spawn_Location_MinX)].value<float>(),
-                        row[static_cast<int>(FITH_Field::Block_Spawn_Location_MaxX)].value<float>(),
-                        row[static_cast<int>(FITH_Field::Block_Spawn_Location_MinY)].value<float>(),
-                        row[static_cast<int>(FITH_Field::Block_Spawn_Location_MaxY)].value<float>(),
-                    };
-                }
-
-                idx++;
+                GameModeData[(GameMode)index]->Play_Time = row[GameModeInfo_Field::GM_Play_Time].value<int>();
+                GameModeData[(GameMode)index]->Player_Spawn_Time = row[GameModeInfo_Field::GM_Player_Spawn_Time].value<int>();
+                GameModeData[(GameMode)index]->Life_Count = row[GameModeInfo_Field::GM_Life_Count].value<int>();
+                GameModeData[(GameMode)index]->Bomb_Spawn_Count = row[GameModeInfo_Field::GM_Bomb_Spawn_Count].value<int>();
+                GameModeData[(GameMode)index]->Bomb_Spawn_Time = row[GameModeInfo_Field::GM_Bomb_Spawn_Time].value<int>();
+                GameModeData[(GameMode)index]->Bomb_Delay_Time = row[GameModeInfo_Field::GM_Bomb_Delay_Time].value<int>();
+                GameModeData[(GameMode)index]->Weapon1_Spawn_Index = row[GameModeInfo_Field::GM_Weapon1_Spawn_Index].value<int>();
+                GameModeData[(GameMode)index]->Weapon1_Spawn_Count = row[GameModeInfo_Field::GM_Weapon1_Spawn_Count].value<int>();
+                GameModeData[(GameMode)index]->Weapon1_Spawn_Time = row[GameModeInfo_Field::GM_Weapon1_Spawn_Time].value<int>();
+                GameModeData[(GameMode)index]->Weapon2_Spawn_Index = row[GameModeInfo_Field::GM_Weapon2_Spawn_Index].value<int>();
+                GameModeData[(GameMode)index]->Weapon2_Spawn_Count = row[GameModeInfo_Field::GM_Weapon2_Spawn_Count].value<int>();
+                GameModeData[(GameMode)index]->Weapon2_Spawn_Time = row[GameModeInfo_Field::GM_Weapon2_Spawn_Time].value<int>();
+                GameModeData[(GameMode)index]->Block1_Spawn_Index = row[GameModeInfo_Field::GM_Block1_Spawn_Index].value<int>();
+                GameModeData[(GameMode)index]->Block1_Spawn_Count = row[GameModeInfo_Field::GM_Block1_Spawn_Count].value<int>();
+                GameModeData[(GameMode)index]->Block1_Spawn_Time = row[GameModeInfo_Field::GM_Block1_Spawn_Time].value<int>();
+                GameModeData[(GameMode)index]->Block2_Spawn_Index = row[GameModeInfo_Field::GM_Block2_Spawn_Index].value<int>();
+                GameModeData[(GameMode)index]->Block2_Spawn_Count = row[GameModeInfo_Field::GM_Block2_Spawn_Count].value<int>();
+                GameModeData[(GameMode)index]->Block2_Spawn_Time = row[GameModeInfo_Field::GM_Block2_Spawn_Time].value<int>();
             }
+
+            idx++;
         }
     }
     catch (const xlnt::exception& e) {
@@ -321,9 +342,9 @@ void TableManager::ReadScoreConstantTable()
 
             idx++;
         }
-        ScoreConstantList[GameMode::FITH_Team_battle_One] = new FITH_ScoreConstant(tmp);
-        ScoreConstantList[GameMode::FITH_Team_battle_Two] = new FITH_ScoreConstant(tmp);
-        ScoreConstantList[GameMode::FITH_Team_battle_Three] = new FITH_ScoreConstant(tmp);
+        ScoreConstantList[GameMode::FITH_Indiv_Battle_2] = new FITH_ScoreConstant(tmp);
+        ScoreConstantList[GameMode::FITH_Team_Battle_4] = new FITH_ScoreConstant(tmp);
+        ScoreConstantList[GameMode::FITH_Team_Battle_6] = new FITH_ScoreConstant(tmp);
     }
     catch (const xlnt::exception& e) {
         std::cerr << "Excel File Load Fail: " << e.what() << std::endl;

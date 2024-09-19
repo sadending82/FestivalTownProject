@@ -1,47 +1,63 @@
 #pragma once
 #include <string>
 
-enum class FITH_Field {
-	Play_Time,
-	Player_Spawn_Time,
-	Team_Life_Count,
-	Bomb_Spawn_Count,
-	Bomb_Spawn_Time,
-	Bomb_Delay_Time,
-	Bomb_Spawn_Location_MinX,
-	Bomb_Spawn_Location_MaxX,
-	Bomb_Spawn_Location_MinY,
-	Bomb_Spawn_Location_MaxY,
-	Weapon_Spawn_Time,
-	Weapon_Spawn_Count,
-	Block_Spawn_Count,
-	Block_Spawn_Time,
-	Block_Spawn_Location_MinX,
-	Block_Spawn_Location_MaxX,
-	Block_Spawn_Location_MinY,
-	Block_Spawn_Location_MaxY
+#define Mode_Out_Sheet 0
+#define FITH_Mode_Sheet 1
+
+enum GameModeOut_Field {
+	Player_Count = 3,
+	Team_Count,
+	Team_Color,
+	Play_Map,
+};
+
+enum GameModeInfo_Field {
+	GM_Play_Time = 3,
+	GM_Player_Spawn_Time,
+	GM_Life_Count,
+	GM_Bomb_Spawn_Count,
+	GM_Bomb_Spawn_Time,
+	GM_Bomb_Delay_Time,
+	GM_Weapon1_Spawn_Index,
+	GM_Weapon1_Spawn_Count,
+	GM_Weapon1_Spawn_Time,
+	GM_Weapon2_Spawn_Index,
+	GM_Weapon2_Spawn_Count,
+	GM_Weapon2_Spawn_Time,
+	GM_Block1_Spawn_Index,
+	GM_Block1_Spawn_Count,
+	GM_Block1_Spawn_Time,
+	GM_Block2_Spawn_Index,
+	GM_Block2_Spawn_Count,
+	GM_Block2_Spawn_Time
 };
 
 #pragma pack (push, 1)
-struct FITH {
+struct GameModeInfo {
+	int Player_Count;
+	int Team_Count;
+	int	Team_Color;
+	int	Play_Map;
+
 	int Play_Time;
 	int Player_Spawn_Time;
-	int Team_Life_Count;
+	int Life_Count;
 	int Bomb_Spawn_Count;
 	int Bomb_Spawn_Time;
 	int Bomb_Delay_Time;
-	float Bomb_Spawn_Location_MinX;
-	float Bomb_Spawn_Location_MaxX;
-	float Bomb_Spawn_Location_MinY;
-	float Bomb_Spawn_Location_MaxY;
-	int Weapon_Spawn_Time;
-	int Weapon_Spawn_Count;
-	int Block_Spawn_Count;
-	int Block_Spawn_Time;
-	float Block_Spawn_Location_MinX;
-	float Block_Spawn_Location_MaxX;
-	float Block_Spawn_Location_MinY;
-	float Block_Spawn_Location_MaxY;
+	int Weapon1_Spawn_Index;
+	int Weapon1_Spawn_Count;
+	int Weapon1_Spawn_Time;
+	int Weapon2_Spawn_Index;
+	int Weapon2_Spawn_Count;
+	int Weapon2_Spawn_Time;
+	int Block1_Spawn_Index;	
+	int Block1_Spawn_Count;	
+	int Block1_Spawn_Time;	
+	int Block2_Spawn_Index;	
+	int Block2_Spawn_Count;	
+	int Block2_Spawn_Time;
+
 };
 
 #pragma pack(pop) 

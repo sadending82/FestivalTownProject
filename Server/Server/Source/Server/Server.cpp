@@ -290,7 +290,7 @@ int Server::CreateNewRoom(int playerCount, GameMode gameMode)
         return INVALIDKEY;
     }
     Room* room = GetRooms()[roomID];
-    room->Init(roomID, GetTableManager()-> GetGameModeData()[gameMode]->Team_Life_Count);
+    room->Init(roomID, GetTableManager()->GetGameModeData()[gameMode]->Player_Count);
     room->SetGameMode(gameMode);
     room->InitMap(GetTableManager()->GetMapData()[MapCode::TEST]);
 
@@ -350,10 +350,10 @@ void Server::StartGame(int roomID)
         // Push Event
         long long roomCode = room->GetRoomCode();
         GameMode GameMode = room->GetGameMode();
-        int eventTime = GetTableManager()-> GetGameModeData()[GameMode]->Block_Spawn_Time;
+        int eventTime = GetTableManager()-> GetGameModeData()[GameMode]->Block1_Spawn_Time;
         PushEventBlockDrop(mTimer, roomID, roomCode, eventTime);
         PushEventBombSpawn(mTimer, roomID, roomCode, GetTableManager()-> GetGameModeData()[GameMode]->Bomb_Spawn_Time);
-        PushEventWeaponSpawn(mTimer, roomID, roomCode, GetTableManager()-> GetGameModeData()[GameMode]->Weapon_Spawn_Time);
+        PushEventWeaponSpawn(mTimer, roomID, roomCode, GetTableManager()-> GetGameModeData()[GameMode]->Weapon1_Spawn_Time);
         PushEventRemainTimeSync(mTimer, roomID, roomCode);
         PushEventTimeOverCheck(mTimer, roomID, roomCode);
 

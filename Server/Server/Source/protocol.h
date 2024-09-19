@@ -60,9 +60,11 @@ enum ePacketType
 };
 
 enum GameMode {
-    FITH_Team_battle_One,
-    FITH_Team_battle_Two,
-    FITH_Team_battle_Three,
+    FITH_Indiv_Battle_2 = 111,
+    FITH_Indiv_Battle_3 = 112,
+    FITH_Indiv_Battle_5 = 113,
+    FITH_Team_Battle_4 = 121,
+    FITH_Team_Battle_6 = 122
 };
 
 enum eCharacterType {
@@ -74,6 +76,11 @@ enum eWeaponType
     WT_HAND,
     WT_FRYING_PAN = 2001,
     WT_BAT = 2002
+};
+
+enum eBlockType
+{
+    
 };
 
 enum eAttackType

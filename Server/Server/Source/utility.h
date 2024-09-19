@@ -26,6 +26,9 @@
 
 #define TIMEPOINT std::chrono::system_clock::time_point
 
+#define COUT std::cout
+#define ENDL std::endl;
+
 constexpr int SERVERKEY = 0;
 constexpr int STARTKEY = 1;
 constexpr int INVALIDKEY = -1;

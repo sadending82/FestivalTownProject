@@ -42,7 +42,7 @@ void TestThread::RunWorker()
             int playerCount = readyPlayers.size();
 
             while (!readyPlayers.empty()) {
-                int roomid = m_pServer->CreateNewRoom((playerCount > MAXPLAYER) ? MAXPLAYER : playerCount, GameMode::FITH_Team_battle_Three);
+                int roomid = m_pServer->CreateNewRoom((playerCount > MAXPLAYER) ? MAXPLAYER : playerCount, GameMode::FITH_Team_Battle_6);
                 if (roomid == INVALIDKEY) {
                     std::cout << "Fali Create New Room\n";
                     break;
