@@ -221,15 +221,7 @@ void Server::SendAllPlayerInRoomExceptSender(void* packet, int size, int session
 
 std::set<Vector3f> Server::SetObjectSpawnPos(int roomID, int spawnCount)
 {
-    /*int RedLife = mRooms[roomID]->GetTeams()[(int)TeamCode::RED].GetLife();
-    int BlueLife = mRooms[roomID]->GetTeams()[(int)TeamCode::BLUE].GetLife();*/
     std::vector<std::pair<int, int>>& spawnPoses = mRooms[roomID]->GetMap()->GetObjectSpawnIndexes();
-   /* if (RedLife > BlueLife) {
-        spawnPoses = mRooms[roomID]->GetMap()->GetBlueObjectSpawnIndexes();
-    }
-    else if (RedLife < BlueLife) {
-        spawnPoses = mRooms[roomID]->GetMap()->GetRedObjectSpawnIndexes();
-    }*/
 
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -244,9 +236,6 @@ std::set<Vector3f> Server::SetObjectSpawnPos(int roomID, int spawnCount)
     while (unique_pos.size() < spawnCount) {
         int idx = idx_distrib(gen);
         Vector3f pos = ConvertVec2iToVec3f(spawnPoses[idx].first, spawnPoses[idx].second);
-       /* if (RedLife == BlueLife) {
-            pos.x = 20;
-        }*/
         int invalid_pos_cnt = 0;
         bool invalid_pos = false;
         for (int i = 0; i < MAXOBJECT; ++i) {
@@ -376,7 +365,7 @@ void Server::CheckGameEnd(int roomID)
         }
     }
 
-    if (loseTeamCnt = teamCnt - 1) {
+    if (loseTeamCnt == teamCnt - 1) {
         if (room->SetIsRun(false) == true) {
             mPacketSender->SendGameEndPacket(roomID, 0);
 

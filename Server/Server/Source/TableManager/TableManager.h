@@ -40,6 +40,7 @@ public:
 	std::unordered_map<GameMode, PointConstants>& GetPointConstantList() { return PointConstantList; }
 
 	std::unordered_map <GameMode, GameReward>& GetGameRewardList() { return GameRewardList; }
+	// <GameMode, Point>
 	std::unordered_map<GameMode, std::unordered_map<int, BonusReward>>& GetGameBonusRewardList() { return GameBonusRewardList; }
 
 	std::unordered_map<INDEX, RandomBox>& GetRandomBoxList(){return RandomBoxList;}

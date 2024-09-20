@@ -31,7 +31,6 @@ void TableManager::ClearAllTable()
     // point constant
     PointConstantList.clear();
 
-
     // Game Reward
     GameRewardList.clear();
 
@@ -397,7 +396,6 @@ void TableManager::ReadPointConstantTable()
 void TableManager::ReadGameReward()
 {
     try {
-
         xlnt::workbook wb;
         wb.load("GameData/Mode_Ver3.xlsx");
 
