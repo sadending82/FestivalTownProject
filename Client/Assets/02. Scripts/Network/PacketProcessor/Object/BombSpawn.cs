@@ -22,6 +22,6 @@ namespace Network.PacketProcessor
             Managers.BombObject.SpawnBomb(posX, posY, id);
         }
 
-        private FlatBufferBuilder mBuilder;
+        
     }
 }

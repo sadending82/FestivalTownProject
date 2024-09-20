@@ -19,13 +19,14 @@ void PacketManager::Init(Server* server)
 
         PacketProcessorMap[ePacketType::C2S_PLAYER_MOVE] = std::make_unique<PacketPlayerMove>();
         PacketProcessorMap[ePacketType::C2S_PLAYER_STOP] = std::make_unique<PacketPlayerStop>();
-        PacketProcessorMap[ePacketType::C2S_PLAYER_POS_SYNC] = std::make_unique<PacketPlayerPosSync>();
+        PacketProcessorMap[ePacketType::C2S_PLAYER_SYNC] = std::make_unique<PacketPlayerSync>();
         PacketProcessorMap[ePacketType::C2S_PLAYER_GRAB_BOMB] = std::make_unique<PacketPlayerGrabBomb>();
         PacketProcessorMap[ePacketType::C2S_PLAYER_THROW_BOMB] = std::make_unique<PacketPlayerThrowBomb>();
         PacketProcessorMap[ePacketType::C2S_PLAYER_GRAB_WEAPON] = std::make_unique<PacketPlayerGrabWeapon>();
         PacketProcessorMap[ePacketType::C2S_PLAYER_DROP_WEAPON] = std::make_unique<PacketPlayerDropWeapon>();
         PacketProcessorMap[ePacketType::C2S_PLAYER_ANIMATION] = std::make_unique<PacketPlayerAnimation>();
         PacketProcessorMap[ePacketType::C2S_PLAYER_DAMAGE_RECEIVE] = std::make_unique<PacketPlayerDamageReceive>();
+        PacketProcessorMap[ePacketType::C2S_PLAYER_COLLISION_BLOCK] = std::make_unique<PacketPlayerCollisionToBlock>();
 
         PacketProcessorMap[ePacketType::C2S_BOMB_INPUT] = std::make_unique<PacketBombInput>();
         PacketProcessorMap[ePacketType::C2S_BOMB_POS_SYNC] = std::make_unique<PacketBombPositionSync>();
@@ -50,7 +51,7 @@ void PacketManager::Init(Server* server)
         EventProcessorMap[eEventType::TIMESYNC] = std::make_unique<EventRemainTimeSync>();
         EventProcessorMap[eEventType::TIMEOVERCHECK] = std::make_unique<EventTimeOverCheck>();
 
-        EventProcessorMap[eEventType::RECOVERYSTAMINA] = std::make_unique<EventRecoveryStamina>();
+        EventProcessorMap[eEventType::GROGGYRECOVERY] = std::make_unique<EventGroggyRecovery>();
     }
 }
 

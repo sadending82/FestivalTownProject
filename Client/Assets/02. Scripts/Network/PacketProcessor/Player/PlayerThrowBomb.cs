@@ -27,6 +27,6 @@ namespace Network.PacketProcessor
             pController.s_Throw(pos, bombID);
         }
 
-        private FlatBufferBuilder mBuilder;
+        
     }
 }

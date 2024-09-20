@@ -231,6 +231,7 @@ xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\PacketGameMatchingRequest.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Game\PacketGameReady.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Object\PacketWeaponDelete.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Player\PacketPlayerCollisionToBlock.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Player\PacketPlayerDamageReceive.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Player\PacketPlayerAnimation.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Player\PacketPlayerGrabWeapon.h" />
@@ -238,7 +239,7 @@ xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Utilities\PacketHeartBeat.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Player\PacketPlayerGrabBomb.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Player\PacketPlayerMove.h" />
-    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Player\PacketPlayerPosSync.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Player\PacketPlayerSync.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Player\PacketPlayerStop.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Player\PacketPlayerThrowBomb.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Processors.h" />

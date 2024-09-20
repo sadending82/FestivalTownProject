@@ -24,6 +24,6 @@ namespace Network.PacketProcessor
             Managers.Player.GetPlayers().transform.GetChild(id).GetComponent<PlayerController>().gameObject.SetActive(false);
         }
 
-        private FlatBufferBuilder mBuilder;
+        
     }
 }

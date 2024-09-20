@@ -24,6 +24,6 @@ namespace Network.PacketProcessor
             targetWeapon.Drop(pos);
         }
 
-        private FlatBufferBuilder mBuilder;
+        
     }
 }

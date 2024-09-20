@@ -28,6 +28,6 @@ namespace Network.PacketProcessor
             Managers.Game.isHost = isHost;
         }
 
-        private FlatBufferBuilder mBuilder;
+        
     }
 }

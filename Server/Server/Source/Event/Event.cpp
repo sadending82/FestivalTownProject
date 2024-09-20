@@ -169,18 +169,18 @@ bool PushEventPlayerRespawn(Timer* pTimer, int playerID, int roomID, long long r
 	return true;
 }
 
-bool PushEventRecoveryStamina(Timer* pTimer, int playerID, int roomID, long long roomCode, int intervalMilliseconds)
+bool PushEventGroggyRecovery(Timer* pTimer, int playerID, int roomID, long long roomCode, int intervalSecond)
 {
-	EV_RECOVERY_STAMINA e;
-	e.size = sizeof(EV_RECOVERY_STAMINA);
-	e.type = eEventType::RECOVERYSTAMINA;
+	EV_GROGGY_RECOVERY e;
+	e.size = sizeof(EV_GROGGY_RECOVERY);
+	e.type = eEventType::GROGGYRECOVERY;
 	e.playerID = playerID;
 	e.roomID = roomID;
 	e.roomCode = roomCode;
 
 	EVENT_HEADER header;
-	header.start_time = std::chrono::system_clock::now() + std::chrono::milliseconds(intervalMilliseconds);
-	memcpy(header.message, reinterpret_cast<char*>(&e), sizeof(EV_RECOVERY_STAMINA));
+	header.start_time = std::chrono::system_clock::now() + std::chrono::seconds(intervalSecond);
+	memcpy(header.message, reinterpret_cast<char*>(&e), sizeof(EV_GROGGY_RECOVERY));
 
 	pTimer->PushEvent(header);
 

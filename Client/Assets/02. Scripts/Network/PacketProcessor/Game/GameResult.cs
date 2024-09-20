@@ -18,10 +18,11 @@ namespace Network.PacketProcessor
 
             var Data = GameResult.GetRootAsGameResult(bb);
 
-            for (int i = 0; i < Data.WiningTeamLength; ++i){
+            for (int i = 0; i < Data.WiningTeamLength; ++i)
+            {
                 var winningTeam = Data.WiningTeam(i);
-
             }
+            Managers.Game.SetWinningTeam(0);
 
             for (int i = 0; i < Data.PlayerRecordsLength; ++i){
                 var playerRecord = Data.PlayerRecords(i);
@@ -46,6 +47,6 @@ namespace Network.PacketProcessor
             }
         }
 
-        private FlatBufferBuilder mBuilder;
+        
     }
 }

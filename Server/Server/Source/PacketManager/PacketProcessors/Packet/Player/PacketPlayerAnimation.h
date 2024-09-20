@@ -25,10 +25,10 @@ public:
 			}
 
 			UpperBodyAnimationState animation = (UpperBodyAnimationState)read->animation();
-			if (UpperBodyAnimationState::ATTACK <= animation && animation <= UpperBodyAnimationState::WEAPONATTACK) {
+			/*if (UpperBodyAnimationState::ATTACK <= animation && animation <= UpperBodyAnimationState::WEAPONATTACK) {
 				if (player->GetWeapon() != nullptr) {
 					int weaponType = player->GetWeapon()->GetType();
-					int staminaConsume = pServer->GetTableManager()->GetWeaponStats()[weaponType].Weapon_StaminaConsume;
+					int staminaConsume = pServer->GetTableManager()->GetWeaponStats()[weaponType]->Weapon_StaminaConsume;
 
 					if (player->GetStamina() - staminaConsume <= 0) {
 						return;
@@ -36,10 +36,10 @@ public:
 					player->ReduceStamina(staminaConsume);
 
 					if (player->GetStamina() <= 0) {
-						int maxStamina = pServer->GetTableManager()->GetCharacterStats()[player->GetChacracterType()].stamina;
-						int recoveryStamina = pServer->GetTableManager()->GetCharacterStats()[player->GetChacracterType()].staminaRecovery;
-						int recoveryTime = 1000 * maxStamina / recoveryStamina;
-						PushEventRecoveryStamina(pServer->GetTimer()
+						int maxStamina = pServer->GetTableManager()->GetCharacterStats()[player->GetChacracterType()]->stamina;
+						int recoveryValue = pServer->GetTableManager()->GetCharacterStats()[player->GetChacracterType()]->staminaRecovery;
+						int recoveryTime = 1000 * maxStamina / recoveryValue;
+						PushEventGroggyRecovery(pServer->GetTimer()
 							, player->GetInGameID()
 							, player->GetRoomID()
 							, room->GetRoomCode()
@@ -48,7 +48,7 @@ public:
 						std::cout << "push event recovery Stamina\n";
 					}
 				}
-			}
+			}*/
 
 			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYER_ANIMATION, data, size);
 

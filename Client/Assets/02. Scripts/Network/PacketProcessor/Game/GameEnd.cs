@@ -20,6 +20,6 @@ namespace Network.PacketProcessor
             Managers.Game.GameEnd();
         }
 
-        private FlatBufferBuilder mBuilder;
+        
     }
 }

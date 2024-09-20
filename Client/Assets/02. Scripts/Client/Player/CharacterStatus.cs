@@ -22,6 +22,7 @@ public class CharacterStatus : MonoBehaviour
     public Camera myCamera;
     private bool amIPlayer;
     public GameObject playerMesh;
+    public int teamNumber;
 
     // 픽업관련
     [Header("--- PickUp ---")]
@@ -252,5 +253,21 @@ public class CharacterStatus : MonoBehaviour
         attackedDirection.y = 0;
 
         return attackedDirection.normalized;
+    }
+    public void CameraOn()
+    {
+        myCamera.enabled = true;
+    }
+    public void CameraOff()
+    {
+        myCamera.enabled = false;
+    }
+    public void SetTeamNumber(int teamNumber)
+    {
+        this.teamNumber = teamNumber;
+    }
+    public int GetTeamNumber()
+    {
+        return teamNumber;
     }
 }

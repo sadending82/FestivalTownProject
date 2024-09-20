@@ -4,13 +4,14 @@
 
 #include "Packet/Player/PacketPlayerMove.h"
 #include "Packet/Player/PacketPlayerStop.h"
-#include "Packet/Player/PacketPlayerPosSync.h"
+#include "Packet/Player/PacketPlayerSync.h"
 #include "Packet/Player/PacketPlayerGrabBomb.h"
 #include "Packet/Player/PacketPlayerThrowBomb.h"
 #include "Packet/Player/PacketPlayerAnimation.h"
 #include "Packet/Player/PacketPlayerDamageReceive.h"
 #include "Packet/Player/PacketPlayerDropWeapon.h"
 #include "Packet/Player/PacketPlayerGrabWeapon.h"
+#include "Packet/Player/PacketPlayerCollisionToBlock.h"
 
 #include "Packet/Object/PacketBombInput.h"
 #include "Packet/Object/PacketBombPositionSync.h"
@@ -38,4 +39,4 @@
 #include "Event/Game/EventPlayerRespawn.h"
 #include "Event/Game/EventGameStart.h"
 
-#include "Event/Player/EventRecoveryStamina.h"
+#include "Event/Player/EventGroggyRecovery.h"

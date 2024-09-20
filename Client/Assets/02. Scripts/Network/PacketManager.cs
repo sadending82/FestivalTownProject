@@ -47,7 +47,7 @@ public class PacketManager : MonoBehaviour
             { ePacketType.S2C_PLAYER_DELETE, new PlayerDeleteProcessor() },
             { ePacketType.S2C_PLAYER_MOVE, new PlayerMoveProcessor() },
             { ePacketType.S2C_PLAYER_STOP, new PlayerStopProcessor() },
-            { ePacketType.S2C_PLAYER_POS_SYNC, new PlayerPosSyncProcessor() },
+            { ePacketType.S2C_PLAYER_SYNC, new PlayerSyncProcessor() },
             { ePacketType.S2C_PLAYER_GRAB_BOMB, new PlayerGrabBombProcessor() },
             { ePacketType.S2C_PLAYER_THROW_BOMB, new PlayerThrowBombProcessor() },
             { ePacketType.S2C_PLAYER_GRAB_WEAPON, new PlayerGrabWeaponProcessor() },
@@ -56,7 +56,8 @@ public class PacketManager : MonoBehaviour
             { ePacketType.S2C_PLAYER_CALCULATED_DAMAGE, new PlayerCalculatedDamageProcessor() },
             { ePacketType.S2C_PLAYER_DEAD, new PlayerDeadProcessor() },
             { ePacketType.S2C_PLAYER_RESPAWN, new PlayerRespawnProcessor() },
-
+            { ePacketType.S2C_PLAYER_GROGGY, new PlayerGroggyProcessor() },
+            { ePacketType.S2C_PLAYER_GROGGY_RECOVERY, new PlayerGroggyRecoveryProcessor() },
 
             { ePacketType.S2C_BLOCK_DROP, new BlockDropProcessor() },
             { ePacketType.S2C_BOMB_SPAWN, new BombSpawnProcessor() },
@@ -129,9 +130,9 @@ public class PacketManager : MonoBehaviour
         SendPacket(packet);
     }
 
-    public void SendPlayerPosPacket(Vector3 position, Vector3 direction, int id)
+    public void SendPlayerSyncPacket(Vector3 position, Vector3 direction, int stamina, int id)
     {
-        byte[] packet = _packetMaker.MakePlayerPosSyncPacket(position, direction, id);
+        byte[] packet = _packetMaker.MakePlayerSyncPacket(position, direction, stamina, id);
         if (packet == null) { return; }
         SendPacket(packet);
     }
@@ -177,6 +178,14 @@ public class PacketManager : MonoBehaviour
         if (packet == null) { return; }
         SendPacket(packet);
     }
+
+    public void SendPlayerCollisionToBlockPacket(int id)
+    {
+        byte[] packet = _packetMaker.MakePlayerCollisionToBlockPacket(id);
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+
 
     public void SendBombPositionSyncPacket(Vector3 position, int BombID)
     {

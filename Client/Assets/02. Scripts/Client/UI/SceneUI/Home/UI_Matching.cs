@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class UI_Matching : UI_PopUp
+public class UI_Matching : UI_AlwaysOnTop
 {
     enum GameObjects
     {

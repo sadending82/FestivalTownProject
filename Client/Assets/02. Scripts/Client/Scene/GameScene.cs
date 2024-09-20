@@ -98,6 +98,9 @@ public class GameScene : BaseScene
 
         Managers.UI.ShowSceneUI<UI_OneVersusOneSceneUI>();
 
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         Managers.Player.SetMyId(Managers.Game.inGameID);
         Managers.Player.SetIsHost(Managers.Game.isHost);
         Managers.Player.SetMyPlayerEnable();
@@ -112,6 +115,11 @@ public class GameScene : BaseScene
         Managers.UI.CloseSceneUI();
 
         // TODO: 시상대를 비추기 위한 카메라 이동 및 캐릭터 애니메이션 설정 등이 필요합니다.
+        int myId = Managers.Player.GetMyId();
+        GameObject tPlayer = Managers.Player.FindPlayerById(myId);
+        tPlayer.GetComponent<CharacterStatus>().CameraOff();
+        ResultObjectOn();
+
         Managers.UI.ShowSceneUI<UI_Result>();
 
         Cursor.lockState = CursorLockMode.None;
@@ -132,6 +140,27 @@ public class GameScene : BaseScene
 
     public override void Clear()
     {
-        
+        ResultObjectOff();
+    }
+
+    private void ResultObjectOn()
+    {
+        GameObject resultScene = GameObject.Find("ResultScene");
+        for(int i = 0;i< resultScene.transform.childCount;++i)
+        {
+            resultScene.transform.GetChild(i).gameObject.SetActive(true);
+        }
+        ResultPlayerController resultPlayerController = resultScene.transform.GetChild(0).GetComponent<ResultPlayerController>();
+        resultPlayerController.SetPlayer();
+    }
+    private void ResultObjectOff()
+    {
+        GameObject resultScene = GameObject.Find("ResultScene");
+        ResultPlayerController resultPlayerController = resultScene.transform.GetChild(0).GetComponent<ResultPlayerController>();
+        resultPlayerController.ResetPlayer();
+        for (int i = 0; i < resultScene.transform.childCount; ++i)
+        {
+            resultScene.transform.GetChild(i).gameObject.SetActive(false);
+        }
     }
 }

@@ -15,6 +15,8 @@ public:
 	std::vector<uint8_t> MakePlayerDeadPacket(int inGameID, int roomID, Vector3f position, Vector3f direction);
 	std::vector<uint8_t> MakePlayerRespawnPacket(int inGameID, int roomID, Vector3f position, int hp);
 	std::vector<uint8_t> MakePlayerCalculatedDamagePacket(int targetID, int attackType, int hp, int damageAmount, Vector3f knockback_direction);
+	std::vector<uint8_t> MakePlayerGroggyPacket(int id);
+	std::vector<uint8_t> MakePlayerGroggyRecoveryPacket(int id, int recoveredStamina);
 
 	std::vector<uint8_t> MakeGameMatchingResponsePacket(int inGameID, int roomID, int team, int gameMode, int totalPlayerCount, bool isHost = false);
 	std::vector<uint8_t> MakeAllPlayerReadyPacket();

@@ -2,12 +2,12 @@
 #include "../../PacketProcessor.h"
 #include "../../../../Event/Event.h"
 
-class EventRecoveryStamina : public PacketProcessor {
+class EventGroggyRecovery: public PacketProcessor {
 
 public:
 
 	virtual void Process(Server* pServer, unsigned char* buf) {
-		EV_RECOVERY_STAMINA* event = reinterpret_cast<EV_RECOVERY_STAMINA*>(buf);
+		EV_GROGGY_RECOVERY* event = reinterpret_cast<EV_GROGGY_RECOVERY*>(buf);
 
 		int roomid = event->roomID;
 		int playerid = event->playerID;
@@ -30,7 +30,14 @@ public:
 			return;
 		}
 
-		player->SetStamina(pServer->GetTableManager()->GetCharacterStats()[(int)eCharacterType::CT_TEST].stamina);
+		int staminaRecoveryValue = pServer->GetTableManager()->GetCharacterStats()[(int)eCharacterType::CT_TEST]->stamina;
+
+		player->SetStamina(pServer->GetTableManager()->GetCharacterStats()[(int)eCharacterType::CT_TEST]->stamina);
+		player->GetPlayerStateLock().lock();
+		player->SetPlayerState(ePlayerState::PS_ALIVE);
+		player->GetPlayerStateLock().unlock();
+
+		pServer->GetPacketSender()->SendPlayerGroggyRecoveryPacket(playerid, roomid, staminaRecoveryValue);
 	}
 
 private:

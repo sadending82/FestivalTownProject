@@ -21,6 +21,6 @@ namespace Network.PacketProcessor
             Managers.CubeObject.SpawnCube(posX, posY, objectID);
         }
 
-        private FlatBufferBuilder mBuilder;
+        
     }
 }
