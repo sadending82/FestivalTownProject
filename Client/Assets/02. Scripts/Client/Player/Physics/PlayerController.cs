@@ -171,7 +171,7 @@ public class PlayerController : MonoBehaviour
     {
         if (pelvis != null && gameStart == true)
         {
-            packetManager.SendPlayerPosPacket(pelvis.transform.position, stabillizerDirection, myId);
+            packetManager.SendPlayerSyncPacket(pelvis.transform.position, stabillizerDirection, 0, myId);
         }
     }
 

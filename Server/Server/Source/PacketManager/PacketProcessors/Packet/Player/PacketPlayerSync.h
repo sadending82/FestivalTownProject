@@ -3,7 +3,7 @@
 
 using namespace PacketTable::PlayerTable;
 
-class PacketPlayerPosSync : public PacketProcessor {
+class PacketPlayerSync : public PacketProcessor {
 
 public:
 	virtual void Process(Server* pServer, const uint8_t* data, const int size, const int key) {
@@ -11,9 +11,9 @@ public:
 		mBuilder.Clear();
 
 		flatbuffers::Verifier verifier(data, size);
-		if (verifier.VerifyBuffer<PlayerPosSync>(nullptr)) {
+		if (verifier.VerifyBuffer<PlayerSync>(nullptr)) {
 
-			const PlayerPosSync* read = flatbuffers::GetRoot<PlayerPosSync>(data);
+			const PlayerSync* read = flatbuffers::GetRoot<PlayerSync>(data);
 			
 			Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
 			if (player == nullptr && player->GetInGameID() != read->id()) {
@@ -22,8 +22,9 @@ public:
 
 			player->SetPosition(read->pos()->x(), read->pos()->y(), read->pos()->z());
 			player->SetDirection(read->direction()->x(), read->direction()->y(), read->direction()->z());
+			player->SetStamina(read->stamina());
 
-			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYER_POS_SYNC, data, size);
+			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYER_SYNC, data, size);
 
 			pServer->SendAllPlayerInRoomExceptSender(send_buffer.data(), send_buffer.size(), key);
 		}

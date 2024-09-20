@@ -4,7 +4,7 @@
 
 #include "Packet/Player/PacketPlayerMove.h"
 #include "Packet/Player/PacketPlayerStop.h"
-#include "Packet/Player/PacketPlayerPosSync.h"
+#include "Packet/Player/PacketPlayerSync.h"
 #include "Packet/Player/PacketPlayerGrabBomb.h"
 #include "Packet/Player/PacketPlayerThrowBomb.h"
 #include "Packet/Player/PacketPlayerAnimation.h"

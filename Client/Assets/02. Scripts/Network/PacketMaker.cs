@@ -99,20 +99,21 @@ public class PacketMaker
         return result;
     }
 
-    public byte[] MakePlayerPosSyncPacket(Vector3 position, Vector3 direction, int id)
+    public byte[] MakePlayerSyncPacket(Vector3 position, Vector3 direction, int stamina, int id)
     {
         var builder = new FlatBufferBuilder(1);
         var pos = Vec3f.CreateVec3f(builder, position.x, position.y, position.z);
         var dir = Vec3f.CreateVec3f(builder, direction.x, direction.y, direction.z);
-        PlayerPos.StartPlayerPos(builder);
-        PlayerPos.AddPos(builder, pos);
-        PlayerPos.AddDirection(builder, dir);
-        PlayerPos.AddId(builder, id);
-        var offset = PlayerPos.EndPlayerPos(builder);
+        PlayerSync.StartPlayerSync(builder);
+        PlayerSync.AddPos(builder, pos);
+        PlayerSync.AddDirection(builder, dir);
+        PlayerSync.AddStamina(builder, stamina);
+        PlayerSync.AddId(builder, id);
+        var offset = PlayerSync.EndPlayerSync(builder);
         builder.Finish(offset.Value);
 
         byte[] data = builder.SizedByteArray();
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYER_POS_SYNC, flatBufferSize = (ushort)data.Length };
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYER_SYNC, flatBufferSize = (ushort)data.Length };
 
         byte[] headerdata = Serialize<HEADER>(header);
         byte[] result = new byte[data.Length + headerdata.Length];
