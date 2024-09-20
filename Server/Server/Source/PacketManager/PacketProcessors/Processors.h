@@ -39,4 +39,4 @@
 #include "Event/Game/EventPlayerRespawn.h"
 #include "Event/Game/EventGameStart.h"
 
-#include "Event/Player/EventRecoveryStamina.h"
+#include "Event/Player/EventGroggyRecovery.h"

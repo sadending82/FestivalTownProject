@@ -250,3 +250,13 @@ void PacketSender::SendPlayerCalculatedDamage(int targetID, int roomID, int atta
     std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerCalculatedDamagePacket(targetID, attackType, hp, damageAmount, knockback_direction);
     mServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
+
+void PacketSender::SendPlayerGroggyPacket(int inGameID, int roomID)
+{
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerGroggyPacket(inGameID);
+    mServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
+}
+
+void PacketSender::SendPlayerGroggyRecoveryPacket(int inGameID, int roomID)
+{
+}

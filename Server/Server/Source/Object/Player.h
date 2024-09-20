@@ -54,8 +54,10 @@ public:
 
 	void			RecoveryHP(int value) { mHP += value; }
 	void			ReduceHP(int value) { mHP -= value; }
-	void			RecoveryStamina(int value) { mStamina += value; }
-	void			ReduceStamina(int value) { mStamina -= value; }
+
+	void			AddGroggyCount() { mGroggyCount++; }
+
+	int				GroggyRecoverTime();
 
 protected:
 	std::mutex      mPlayerStateLock;

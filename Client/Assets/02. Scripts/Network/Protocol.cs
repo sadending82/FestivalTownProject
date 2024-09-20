@@ -33,7 +33,7 @@ namespace NetworkProtocol
         S2C_PLAYER_DEAD,
         S2C_PLAYER_RESPAWN,
         S2C_PLAYER_GROGGY,
-        S2C_PLAYER_RECOVERY_GROGGY,
+        S2C_PLAYER_GROGGY_RECOVERY,
 
         S2C_BLOCK_DROP,
         S2C_BOMB_SPAWN,

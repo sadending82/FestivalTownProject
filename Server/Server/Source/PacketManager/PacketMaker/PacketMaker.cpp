@@ -66,6 +66,20 @@ std::vector<uint8_t> PacketMaker::MakePlayerCalculatedDamagePacket(int targetID,
 	return MakeBuffer(ePacketType::S2C_PLAYER_CALCULATED_DAMAGE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
+std::vector<uint8_t> PacketMaker::MakePlayerGroggyPacket(int id)
+{
+	flatbuffers::FlatBufferBuilder Builder;
+	Builder.Finish(PacketTable::PlayerTable::CreatePlayerGroggy(Builder, id));
+	return MakeBuffer(ePacketType::S2C_PLAYER_GROGGY, Builder.GetBufferPointer(), Builder.GetSize());
+}
+
+std::vector<uint8_t> PacketMaker::MakePlayerGroggyRecoveryPacket(int id, int recoveredStamina)
+{
+	flatbuffers::FlatBufferBuilder Builder;
+	Builder.Finish(PacketTable::PlayerTable::CreatePlayerGroggyRecovery(Builder, id, recoveredStamina));
+	return MakeBuffer(ePacketType::S2C_PLAYER_GROGGY_RECOVERY, Builder.GetBufferPointer(), Builder.GetSize());
+}
+
 std::vector<uint8_t> PacketMaker::MakeGameMatchingResponsePacket(int inGameID, int roomID, int team, int gameMode, int totalPlayerCount, bool isHost)
 {
 	flatbuffers::FlatBufferBuilder Builder;

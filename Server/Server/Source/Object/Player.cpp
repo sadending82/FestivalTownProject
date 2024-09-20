@@ -30,3 +30,10 @@ void Player::DoSend(void* packet, const int size)
 {
 	__super::DoSend(packet, size);
 }
+
+int Player::GroggyRecoverTime()
+{
+	if (mGroggyCount > 3 + 1) return 10;
+
+	return mGroggyCount * 2 + 1;
+}
