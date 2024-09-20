@@ -30,9 +30,9 @@ public:
 			return;
 		}
 
-		int staminaRecoveryValue = pServer->GetTableManager()->GetCharacterStats()[(int)eCharacterType::CT_TEST]->stamina;
+		int staminaRecoveryValue = pServer->GetTableManager()->GetCharacterStats()[(int)eCharacterType::CT_TEST].stamina;
 
-		player->SetStamina(pServer->GetTableManager()->GetCharacterStats()[(int)eCharacterType::CT_TEST]->stamina);
+		player->SetStamina(pServer->GetTableManager()->GetCharacterStats()[(int)eCharacterType::CT_TEST].stamina);
 		player->GetPlayerStateLock().lock();
 		player->SetPlayerState(ePlayerState::PS_ALIVE);
 		player->GetPlayerStateLock().unlock();

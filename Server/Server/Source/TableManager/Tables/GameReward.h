@@ -62,6 +62,14 @@ struct BonusReward {
 	int	Lose_Reward2_Value;
 	int	Lose_Reward3_Index;
 	int	Lose_Reward3_Value;
+
+	// MVP
+	int MVP_Reward1_Index;
+	int	MVP_Reward1_Value;
+	int	MVP_Reward2_Index;
+	int	MVP_Reward2_Value;
+	int	MVP_Reward3_Index;
+	int	MVP_Reward3_Value;
 };
 
 #pragma pack(pop) 

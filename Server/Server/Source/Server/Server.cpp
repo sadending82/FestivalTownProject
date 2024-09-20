@@ -443,31 +443,55 @@ int Server::CalculatePoint(GameMode mode, sPlayerGameRecord record, bool isWin)
 {
     int point = 0;
 
-    BattleResult result;
-    if (isWin) {
-        result = BattleResult::BR_Win;
-    }
-    else {
-        result = BattleResult::BR_Lose;
-    }
+    auto& constants = mTableManager->GetPointConstantList()[mode];
 
-    std::unordered_map<ConstantType, ScoreConstant>& constants = mTableManager->GetScoreConstantList()[mode][result];
-
-    point += (record.kill_count * constants[ConstantType::CT_Kill_Point].Value) - (record.death_count * constants[ConstantType::CT_Death_Point].Value) + (record.bomb_insert_count * constants[ConstantType::CT_Bomb_Point].Value);
+    switch (isWin) {
+    case true: {
+        point = (record.kill_count * constants.Win_Kill_Point.Value) - (record.death_count * constants.Win_Death_Point.Value) + (record.bomb_insert_count * constants.Win_Bomb_Point.Value);
+    }
+             break;
+    case false: {
+        point = (record.kill_count * constants.Lose_Kill_Point.Value) - (record.death_count * constants.Lose_Death_Point.Value) + (record.bomb_insert_count * constants.Lose_Bomb_Point.Value);
+    }
+              break;
+    default:
+        break;
+    }
 
     return (point < 0 ) ? 0 : point;
 }
 
 int Server::CalculateGoldReward(GameMode mode, int point, bool isMvp, bool isWin)
 {
-    /*FITH_ScoreConstant* constants = mTableManager->GetScoreConstantList()[mode];
+    int pointIdx = (point > 10) ? 10 : point;
 
-    if (constants == nullptr) {
-        return 0;
+    auto& rewards = mTableManager->GetGameRewardList()[mode];
+    auto& BonusRewards = mTableManager->GetGameBonusRewardList()[mode][(isMvp == true) ? 11 : pointIdx];
+
+    int gold = 0;
+
+    switch (isWin) {
+    case true:{
+        gold += rewards.Win_Reward1_Value;
+        if (isMvp) {
+            gold += BonusRewards.MVP_Reward1_Value;
+        }
+        else {
+            gold += BonusRewards.Win_Reward1_Value;
+        }
+    }
+    break;
+
+    case false: {
+        gold += rewards.Lose_Reward1_Value + BonusRewards.Lose_Reward1_Value;
+    }
+    break;
+
+    default:
+        break;
     }
 
-    return (isMvp == true) ? constants->Gold_Basic + (point* constants->MVP_Gold_Point) : constants->Gold_Basic + (point * constants->Gold_Point);*/
-    return 0;
+    return gold;
 }
 
 void Server::CalculateGameResult(int roomID, std::set<int>& winningTeams)
@@ -480,6 +504,7 @@ void Server::CalculateGameResult(int roomID, std::set<int>& winningTeams)
     int mvp_id = INVALIDKEY;
     int mvp_point = -1;
 
+    // 해당 게임 기록으로 결과 계산
     for (auto& pair : records) {
         int id = pair.first;
 
@@ -503,6 +528,7 @@ void Server::CalculateGameResult(int roomID, std::set<int>& winningTeams)
         records[mvp_id].is_mvp = true;
     }
 
+    // DB에 데이터 업데이트
     room->GetPlayerListLock().lock_shared();
     for (auto& pair : records) {
         if (room->GetPlayerList()[pair.first] == nullptr) {

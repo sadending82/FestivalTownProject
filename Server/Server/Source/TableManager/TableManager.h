@@ -25,7 +25,7 @@ public:
 	void ReadGameModeTable();
 	void ReadMapData();
 	void ReadWeaponStat();
-	void ReadScoreConstantTable();
+	void ReadPointConstantTable();
 
 	void ReadGameReward();
 
@@ -37,7 +37,7 @@ public:
 	std::unordered_map<GameMode, GameModeInfo>& GetGameModeData() { return GameModeData; }
 	std::unordered_map<MapCode, Map>& GetMapData() { return MapData; }
 
-	std::unordered_map<GameMode, std::unordered_map<BattleResult, std::unordered_map<ConstantType, ScoreConstant>>>& GetScoreConstantList() { return ScoreConstantList; }
+	std::unordered_map<GameMode, PointConstants>& GetPointConstantList() { return PointConstantList; }
 
 	std::unordered_map <GameMode, GameReward>& GetGameRewardList() { return GameRewardList; }
 	std::unordered_map<GameMode, std::unordered_map<int, BonusReward>>& GetGameBonusRewardList() { return GameBonusRewardList; }
@@ -54,7 +54,7 @@ private:
 	std::unordered_map<INDEX, WeaponStat> WeaponStats;
 	std::unordered_map<GameMode, GameModeInfo> GameModeData;
 	std::unordered_map<MapCode, Map> MapData;
-	std::unordered_map<GameMode, std::unordered_map<BattleResult, std::unordered_map<ConstantType, ScoreConstant>>> ScoreConstantList;
+	std::unordered_map<GameMode, PointConstants> PointConstantList;
 	
 
 	std::unordered_map<GameMode, GameReward> GameRewardList;
