@@ -61,7 +61,8 @@ enum class eSessionState
 enum class ePlayerState {
 	PS_NONE,
 	PS_ALIVE,
-	PS_DEAD
+	PS_DEAD,
+	PS_GROGGY
 };
 
 enum class eRoomState {

@@ -178,6 +178,14 @@ public class PacketManager : MonoBehaviour
         SendPacket(packet);
     }
 
+    public void SendPlayerCollisionToBlockPacket(int id)
+    {
+        byte[] packet = _packetMaker.MakePlayerCollisionToBlockPacket(id);
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+
+
     public void SendBombPositionSyncPacket(Vector3 position, int BombID)
     {
         byte[] packet = _packetMaker.MakeBombPositionSyncPacket(position, BombID);

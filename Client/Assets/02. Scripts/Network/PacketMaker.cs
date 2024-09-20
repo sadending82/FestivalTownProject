@@ -174,6 +174,26 @@ public class PacketMaker
         return result;
     }
 
+    public byte[] MakePlayerCollisionToBlockPacket(int id)
+    {
+        var builder = new FlatBufferBuilder(1);
+        PlayerCollisionToBlock.StartPlayerCollisionToBlock(builder);
+        PlayerCollisionToBlock.AddId(builder, id);
+        var offset = PlayerCollisionToBlock.EndPlayerCollisionToBlock(builder);
+        builder.Finish(offset.Value);
+
+        byte[] data = builder.SizedByteArray();
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYER_COLLISION_BLOCK, flatBufferSize = (ushort)data.Length };
+
+        byte[] headerdata = Serialize<HEADER>(header);
+        byte[] result = new byte[data.Length + headerdata.Length];
+
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
+
+        return result;
+    }
+
     public byte[] MakeHeartBeatPacket()
     {
         long currTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();

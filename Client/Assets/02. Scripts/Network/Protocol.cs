@@ -32,6 +32,8 @@ namespace NetworkProtocol
         S2C_PLAYER_CALCULATED_DAMAGE,
         S2C_PLAYER_DEAD,
         S2C_PLAYER_RESPAWN,
+        S2C_PLAYER_GROGGY,
+        S2C_PLAYER_RECOVERY_GROGGY,
 
         S2C_BLOCK_DROP,
         S2C_BOMB_SPAWN,
@@ -62,6 +64,7 @@ namespace NetworkProtocol
         C2S_PLAYER_DROP_WEAPON,
         C2S_PLAYER_ANIMATION,
         C2S_PLAYER_DAMAGE_RECEIVE,
+        C2S_PLAYER_COLLISION_BLOCK,
 
         C2S_BOMB_INPUT,
         C2S_BOMB_POS_SYNC,
