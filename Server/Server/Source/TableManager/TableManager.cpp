@@ -13,31 +13,37 @@ TableManager::~TableManager()
 
 void TableManager::ClearAllTable()
 {
+    // item
     for (auto& pair : ItemInfos) {
         delete pair.second;
     }
     ItemInfos.clear();
 
+    // character
     for (auto& pair : CharacterStats) {
         delete pair.second;
     }
     CharacterStats.clear();
 
+    // weapon
     for (auto& pair : WeaponStats) {
         delete pair.second;
     }
     WeaponStats.clear();
 
+    // gamemode
     for (auto& pair : GameModeData) {
         delete pair.second;
     }
     GameModeData.clear();
 
+    // map
     for (auto& pair : MapData) {
         delete pair.second;
     }
     MapData.clear();
 
+    // score constant
     for (auto& outer_pair : ScoreConstantList) {
         for (auto& inner_pair : outer_pair.second) {
             for (auto& pair : inner_pair.second) {
@@ -48,11 +54,13 @@ void TableManager::ClearAllTable()
     }
     ScoreConstantList.clear();
 
+    // random box
     for (auto& pair : RandomBoxList) {
         delete pair.second;
     }
     RandomBoxList.clear();
 
+    // gacha item
     for (auto& outer_pair : GachaItemList) {
         for (auto& inner_pair : outer_pair.second) {
             delete inner_pair.second;

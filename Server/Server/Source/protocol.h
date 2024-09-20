@@ -67,6 +67,11 @@ enum GameMode {
     FITH_Team_Battle_6 = 122
 };
 
+enum BattleResult {
+    BR_Win = 1,
+    BR_Lose = 2
+};
+
 enum eCharacterType {
     CT_TEST = 1000
 };

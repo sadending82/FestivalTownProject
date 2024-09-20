@@ -105,6 +105,7 @@
     <ClInclude Include="Source\TableManager\Tables\RandomBox.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\PacketGachaRequest.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Event\Player\EventRecoveryStamina.h" />
+    <ClInclude Include="Source\TableManager\Tables\GameReward.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />
