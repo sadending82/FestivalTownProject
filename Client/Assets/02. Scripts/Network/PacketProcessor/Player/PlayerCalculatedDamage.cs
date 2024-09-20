@@ -28,6 +28,6 @@ namespace Network.PacketProcessor
             pState.SetHp(hp);
         }
 
-        private FlatBufferBuilder mBuilder;
+        
     }
 }

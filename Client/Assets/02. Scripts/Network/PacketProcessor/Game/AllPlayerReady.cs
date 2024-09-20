@@ -24,6 +24,6 @@ namespace Network.PacketProcessor
             }
         }
 
-        private FlatBufferBuilder mBuilder;
+        
     }
 }

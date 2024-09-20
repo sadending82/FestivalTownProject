@@ -25,6 +25,6 @@ namespace Network.PacketProcessor
             pCtr.Respawn(x, y);
         }
 
-        private FlatBufferBuilder mBuilder;
+        
     }
 }

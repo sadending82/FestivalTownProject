@@ -22,6 +22,6 @@ namespace Network.PacketProcessor
             pState.SetIsDie(true);
         }
 
-        private FlatBufferBuilder mBuilder;
+        
     }
 }

@@ -23,6 +23,6 @@ namespace Network.PacketProcessor
             Debug.Log("change host!!");
         }
 
-        private FlatBufferBuilder mBuilder;
+        
     }
 }

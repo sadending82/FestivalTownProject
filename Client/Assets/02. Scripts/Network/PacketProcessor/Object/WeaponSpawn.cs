@@ -24,6 +24,6 @@ namespace Network.PacketProcessor
             Managers.WeaponObject.SpawnWeapon(posX, posY, type, id);
         }
 
-        private FlatBufferBuilder mBuilder;
+        
     }
 }

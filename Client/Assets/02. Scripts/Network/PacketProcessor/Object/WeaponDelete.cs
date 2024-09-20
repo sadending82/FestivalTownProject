@@ -20,6 +20,6 @@ namespace Network.PacketProcessor
             Debug.Log("Delete Weapon ID : " + id);
         }
 
-        private FlatBufferBuilder mBuilder;
+        
     }
 }

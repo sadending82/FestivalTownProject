@@ -20,6 +20,6 @@ namespace Network.PacketProcessor
             //Debug.Log($"Remain Time recv. {Data.RemainTime}");
         }
 
-        private FlatBufferBuilder mBuilder;
+        
     }
 }

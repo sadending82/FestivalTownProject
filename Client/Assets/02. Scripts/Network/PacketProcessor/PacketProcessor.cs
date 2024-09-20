@@ -14,6 +14,6 @@ namespace Network.PacketProcessor
     { 
         public virtual void Process(PacketManager packetmanager, byte[] data) { }
 
-        private FlatBufferBuilder mBuilder;
+        
     }
 }

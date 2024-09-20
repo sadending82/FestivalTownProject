@@ -7,20 +7,17 @@ using UnityEngine;
 
 namespace Network.PacketProcessor
 {
-    public class PlayerGroggyProcessor : PacketProcessor
+    public class PlayerGroggyRecoveryProcessor : PacketProcessor
     {
         public override void Process(PacketManager packetmanager, byte[] data)
         {
             var bb = new ByteBuffer(data);
-            var Data = PlayerGroggy.GetRootAsPlayerGroggy(bb);
+            var Data = PlayerGroggyRecovery.GetRootAsPlayerGroggyRecovery(bb);
 
             int id = Data.Id;
-
-            // 그로기 처리
+            int staminaRecoveryValue = Data.RecoveryValue;
 
 
         }
-
-        
     }
 }

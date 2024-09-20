@@ -31,6 +31,6 @@ namespace Network.PacketProcessor
             pState.s_SetUpperBodyAnimationState((UpperBodyAnimationState)aniState);
         }
 
-        private FlatBufferBuilder mBuilder;
+        
     }
 }

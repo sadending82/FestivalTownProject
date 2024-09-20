@@ -57,6 +57,7 @@ public class PacketManager : MonoBehaviour
             { ePacketType.S2C_PLAYER_DEAD, new PlayerDeadProcessor() },
             { ePacketType.S2C_PLAYER_RESPAWN, new PlayerRespawnProcessor() },
             { ePacketType.S2C_PLAYER_GROGGY, new PlayerGroggyProcessor() },
+            { ePacketType.S2C_PLAYER_GROGGY_RECOVERY, new PlayerGroggyRecoveryProcessor() },
 
             { ePacketType.S2C_BLOCK_DROP, new BlockDropProcessor() },
             { ePacketType.S2C_BOMB_SPAWN, new BombSpawnProcessor() },

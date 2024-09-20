@@ -28,6 +28,6 @@ namespace Network.PacketProcessor
             pController.s_PickUpBomb(playerID, bombID);
         }
 
-        private FlatBufferBuilder mBuilder;
+        
     }
 }
