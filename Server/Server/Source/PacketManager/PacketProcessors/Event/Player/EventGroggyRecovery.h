@@ -30,11 +30,10 @@ public:
 			return;
 		}
 
+		player->SetStamina(pServer->GetTableManager()->GetCharacterStats()[(int)eCharacterType::CT_TEST]->stamina);
 		player->GetPlayerStateLock().lock();
 		player->SetPlayerState(ePlayerState::PS_ALIVE);
 		player->GetPlayerStateLock().unlock();
-
-		player->SetStamina(pServer->GetTableManager()->GetCharacterStats()[(int)eCharacterType::CT_TEST]->stamina);
 	}
 
 private:
