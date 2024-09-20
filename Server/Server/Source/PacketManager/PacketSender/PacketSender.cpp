@@ -257,6 +257,8 @@ void PacketSender::SendPlayerGroggyPacket(int inGameID, int roomID)
     mServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
 
-void PacketSender::SendPlayerGroggyRecoveryPacket(int inGameID, int roomID)
+void PacketSender::SendPlayerGroggyRecoveryPacket(int inGameID, int roomID, int recoveredStamina)
 {
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerGroggyRecoveryPacket(inGameID, recoveredStamina);
+    mServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }

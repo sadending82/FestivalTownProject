@@ -31,7 +31,7 @@ public:
 	void SendWeaponDropPacket(Vector3f position, int roomID, int weaponID);
 	void SendPlayerCalculatedDamage(int targetID, int roomID, int attackType, int hp, int damageAmount, Vector3f knockback_direction);
 	void SendPlayerGroggyPacket(int inGameID, int roomID);
-	void SendPlayerGroggyRecoveryPacket(int inGameID, int roomID);
+	void SendPlayerGroggyRecoveryPacket(int inGameID, int roomID, int recoveredStamina);
 
 private:
 	class Server* mServer = nullptr;
