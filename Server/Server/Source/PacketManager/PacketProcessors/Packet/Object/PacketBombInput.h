@@ -36,7 +36,7 @@ public:
 				pServer->GetPacketSender()->SendPlayerDeadPacket(playerid, roomid);
 				// record update
 				room->GetPlayerRecordList()[playerid].death_count++;
-				int spawnTime = pServer->GetTableManager()->GetGameModeData()[room->GetGameMode()]->Player_Spawn_Time;
+				int spawnTime = pServer->GetTableManager()->GetGameModeData()[room->GetGameMode()].Player_Spawn_Time;
 				PushEventPlayerRespawn(pServer->GetTimer(), playerid, roomid, room->GetRoomCode(), spawnTime);
 				return;
 			}

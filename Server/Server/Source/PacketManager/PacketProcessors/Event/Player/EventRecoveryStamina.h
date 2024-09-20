@@ -30,7 +30,7 @@ public:
 			return;
 		}
 
-		player->SetStamina(pServer->GetTableManager()->GetCharacterStats()[(int)eCharacterType::CT_TEST]->stamina);
+		player->SetStamina(pServer->GetTableManager()->GetCharacterStats()[(int)eCharacterType::CT_TEST].stamina);
 	}
 
 private:

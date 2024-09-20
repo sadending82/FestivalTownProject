@@ -25,7 +25,7 @@ public:
 		GameMode gameMode = room->GetGameMode();
 
 		TIMEPOINT startTime = room->GetStartTime();
-		std::chrono::seconds playTime(pServer->GetTableManager()-> GetGameModeData()[gameMode]->Play_Time);
+		std::chrono::seconds playTime(pServer->GetTableManager()-> GetGameModeData()[gameMode].Play_Time);
 		TIMEPOINT endTime = startTime + playTime;
 		TIMEPOINT currTime = std::chrono::system_clock::now();
 		if (endTime <= currTime) {

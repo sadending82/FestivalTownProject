@@ -104,7 +104,7 @@ void PacketSender::SendBombSpawnPacket(int roomID, int spawnCount)
 {
     Room* room = mServer->GetRooms()[roomID];
     GameMode gameMode = room->GetGameMode();
-    int explosionInterval = mServer->GetTableManager()-> GetGameModeData()[gameMode]->Bomb_Delay_Time;
+    int explosionInterval = mServer->GetTableManager()-> GetGameModeData()[gameMode].Bomb_Delay_Time;
 
     std::set<Vector3f> spawnPoses = mServer->SetObjectSpawnPos(roomID, spawnCount);
 
@@ -141,7 +141,7 @@ void PacketSender::SendRemainTimeSync(int roomID)
 {
     TIMEPOINT startTime = mServer->GetRooms()[roomID]->GetStartTime();
     GameMode GameMode = mServer->GetRooms()[roomID]->GetGameMode();
-    int playTime = mServer->GetTableManager()-> GetGameModeData()[GameMode]->Play_Time;
+    int playTime = mServer->GetTableManager()-> GetGameModeData()[GameMode].Play_Time;
     std::vector<uint8_t> send_buffer = mPacketMaker->MakeRemainTimeSyncPacket(roomID, startTime, playTime);
     mServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }

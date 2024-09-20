@@ -38,9 +38,9 @@ public:
 				damageAmount = 999;
 			}
 			else {
-				damageAmount += pServer->GetTableManager()->GetCharacterStats()[(int)attacker->GetChacracterType()]->strength; // 임시
+				damageAmount += pServer->GetTableManager()->GetCharacterStats()[(int)attacker->GetChacracterType()].strength; // 임시
 				if (attacker->GetWeapon() != nullptr) {
-					damageAmount += pServer->GetTableManager()->GetWeaponStats()[(int)attacker->GetWeapon()->GetType()]->Weapon_Power;
+					damageAmount += pServer->GetTableManager()->GetWeaponStats()[(int)attacker->GetWeapon()->GetType()].Weapon_Power;
 				}
 			}
 
@@ -48,7 +48,7 @@ public:
 
 			if (target->GetHP() <= 0) {
 				target->SetPlayerState(ePlayerState::PS_DEAD);
-				int spawnTime = pServer->GetTableManager()->GetGameModeData()[room->GetGameMode()]->Player_Spawn_Time;
+				int spawnTime = pServer->GetTableManager()->GetGameModeData()[room->GetGameMode()].Player_Spawn_Time;
 				pServer->GetPacketSender()->SendPlayerDeadPacket(read->target_id(), roomid);
 
 				if (target->GetWeapon() != nullptr) {

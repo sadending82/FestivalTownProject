@@ -91,13 +91,13 @@ void TestThread::RunWorker()
             if (tableManager->GetRandomBoxList().find(randomBox) == tableManager->GetRandomBoxList().end()) {
                 break;
             }
-            int GachaGroup = tableManager->GetRandomBoxList()[randomBox]->Gacha_Group;
-            std::unordered_map<INDEX, GachaItem*>& items = tableManager->GetGachaItemList()[GachaGroup];
+            int GachaGroup = tableManager->GetRandomBoxList()[randomBox].Gacha_Group;
+            std::unordered_map<INDEX, GachaItem>& items = tableManager->GetGachaItemList()[GachaGroup];
 
             int totalWeight = 0;
 
             for (auto& item : items) {
-                totalWeight += item.second->Gacha_Weight;
+                totalWeight += item.second.Gacha_Weight;
             }
 
             std::random_device rd;
@@ -109,10 +109,10 @@ void TestThread::RunWorker()
             int rewardValue = 0;
 
             for (auto& item : items) {
-                cumulativeWeight += item.second->Gacha_Weight;
+                cumulativeWeight += item.second.Gacha_Weight;
                 if (randomWeight <= cumulativeWeight) {
-                    rewardItem = item.second->Reward_Item_Index;
-                    rewardValue = item.second->Reward_Item_Value;
+                    rewardItem = item.second.Reward_Item_Index;
+                    rewardValue = item.second.Reward_Item_Value;
                     break;
                 }
 

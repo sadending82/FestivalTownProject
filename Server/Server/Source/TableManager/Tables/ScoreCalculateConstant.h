@@ -1,7 +1,7 @@
 #pragma once
 #pragma pack (push, 1)
 
-#define Mode_Point 2
+#define Mode_Point_Sheet 2
 
 enum ScoreConstant_Field {
 	SC_Mode_Index = 2,	
@@ -9,11 +9,6 @@ enum ScoreConstant_Field {
 	SC_Type = 4,	
 	SC_WorkType = 5,	
 	SC_Value = 6,
-};
-
-enum BattleResult{
-	BR_Win = 1,
-	BR_Lose = 2
 };
 
 enum ConstantType {

@@ -290,9 +290,9 @@ int Server::CreateNewRoom(int playerCount, GameMode gameMode)
         return INVALIDKEY;
     }
     Room* room = GetRooms()[roomID];
-    room->Init(roomID, GetTableManager()->GetGameModeData()[gameMode]->Life_Count, GetTableManager()->GetGameModeData()[gameMode]->Player_Count);
+    room->Init(roomID, GetTableManager()->GetGameModeData()[gameMode].Life_Count, GetTableManager()->GetGameModeData()[gameMode].Player_Count);
     room->SetGameMode(gameMode);
-    room->InitMap(GetTableManager()->GetMapData()[MapCode::TEST]);
+    room->InitMap(&GetTableManager()->GetMapData()[MapCode::TEST]);
 
     room->SetPlayerLimit(playerCount); // юс╫ц
 
@@ -316,8 +316,8 @@ void Server::MatchingComplete(int roomID, int playerCnt, std::vector<Player*>& p
             int team = tFlag % 2;
             player->SetTeam(team);
             player->SetChacracterType(eCharacterType::CT_TEST);
-            player->SetHP(GetTableManager()->GetCharacterStats()[(int)player->GetChacracterType()]->hp);
-            player->SetStamina(GetTableManager()->GetCharacterStats()[(int)player->GetChacracterType()]->stamina);
+            player->SetHP(GetTableManager()->GetCharacterStats()[(int)player->GetChacracterType()].hp);
+            player->SetStamina(GetTableManager()->GetCharacterStats()[(int)player->GetChacracterType()].stamina);
             tFlag++;
             //
 
@@ -350,10 +350,10 @@ void Server::StartGame(int roomID)
         // Push Event
         long long roomCode = room->GetRoomCode();
         GameMode GameMode = room->GetGameMode();
-        int eventTime = GetTableManager()-> GetGameModeData()[GameMode]->Block1_Spawn_Time;
+        int eventTime = GetTableManager()-> GetGameModeData()[GameMode].Block1_Spawn_Time;
         PushEventBlockDrop(mTimer, roomID, roomCode, eventTime);
-        PushEventBombSpawn(mTimer, roomID, roomCode, GetTableManager()-> GetGameModeData()[GameMode]->Bomb_Spawn_Time);
-        PushEventWeaponSpawn(mTimer, roomID, roomCode, GetTableManager()-> GetGameModeData()[GameMode]->Weapon1_Spawn_Time);
+        PushEventBombSpawn(mTimer, roomID, roomCode, GetTableManager()-> GetGameModeData()[GameMode].Bomb_Spawn_Time);
+        PushEventWeaponSpawn(mTimer, roomID, roomCode, GetTableManager()-> GetGameModeData()[GameMode].Weapon1_Spawn_Time);
         PushEventRemainTimeSync(mTimer, roomID, roomCode);
         PushEventTimeOverCheck(mTimer, roomID, roomCode);
 
@@ -451,9 +451,9 @@ int Server::CalculatePoint(GameMode mode, sPlayerGameRecord record, bool isWin)
         result = BattleResult::BR_Lose;
     }
 
-    std::unordered_map<ConstantType, ScoreConstant*>& constants = mTableManager->GetScoreConstantList()[mode][result];
+    std::unordered_map<ConstantType, ScoreConstant>& constants = mTableManager->GetScoreConstantList()[mode][result];
 
-    point += (record.kill_count * constants[ConstantType::CT_Kill_Point]->Value) - (record.death_count * constants[ConstantType::CT_Death_Point]->Value) + (record.bomb_insert_count * constants[ConstantType::CT_Bomb_Point]->Value);
+    point += (record.kill_count * constants[ConstantType::CT_Kill_Point].Value) - (record.death_count * constants[ConstantType::CT_Death_Point].Value) + (record.bomb_insert_count * constants[ConstantType::CT_Bomb_Point].Value);
 
     return (point < 0 ) ? 0 : point;
 }

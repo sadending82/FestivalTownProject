@@ -28,7 +28,7 @@ public:
 			if (UpperBodyAnimationState::ATTACK <= animation && animation <= UpperBodyAnimationState::WEAPONATTACK) {
 				if (player->GetWeapon() != nullptr) {
 					int weaponType = player->GetWeapon()->GetType();
-					int staminaConsume = pServer->GetTableManager()->GetWeaponStats()[weaponType]->Weapon_StaminaConsume;
+					int staminaConsume = pServer->GetTableManager()->GetWeaponStats()[weaponType].Weapon_StaminaConsume;
 
 					if (player->GetStamina() - staminaConsume <= 0) {
 						return;
@@ -36,8 +36,8 @@ public:
 					player->ReduceStamina(staminaConsume);
 
 					if (player->GetStamina() <= 0) {
-						int maxStamina = pServer->GetTableManager()->GetCharacterStats()[player->GetChacracterType()]->stamina;
-						int recoveryStamina = pServer->GetTableManager()->GetCharacterStats()[player->GetChacracterType()]->staminaRecovery;
+						int maxStamina = pServer->GetTableManager()->GetCharacterStats()[player->GetChacracterType()].stamina;
+						int recoveryStamina = pServer->GetTableManager()->GetCharacterStats()[player->GetChacracterType()].staminaRecovery;
 						int recoveryTime = 1000 * maxStamina / recoveryStamina;
 						PushEventRecoveryStamina(pServer->GetTimer()
 							, player->GetInGameID()

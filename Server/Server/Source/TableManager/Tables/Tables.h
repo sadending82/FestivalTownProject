@@ -6,3 +6,4 @@
 #include "ScoreCalculateConstant.h"
 #include "RandomBox.h"
 #include "GachaItem.h"
+#include "GameReward.h"
