@@ -13,18 +13,21 @@ std::vector<uint8_t> MakeBuffer(const int type, const uint8_t* data, const int s
 	return buf;
 }
 
-Vector3f ConvertVec3fToVec2i(int x, int y)
+Vector3f ConvertVec3fToVec2i(Vector3f vec)
 {
-	return Vector3f();
+	float x = vec.x * (-1) + offsetX;
+	float z = vec.z * (-1) + offsetZ;
+
+	return Vector3f(std::trunc(x / BLOCKSIZE), 0, std::trunc(z / BLOCKSIZE));
 }
 
-Vector3f ConvertVec2iToVec3f(int x, int y)
+Vector3f ConvertVec2iToVec3f(int x, int z)
 {
 	Vector3f pos;
 
 	pos.x = x * BLOCKSIZE + (BLOCKSIZE / 2);
-	pos.y = y * BLOCKSIZE + (BLOCKSIZE / 2);
-	pos.z = 0;
+	pos.y = 0;
+	pos.z = z * BLOCKSIZE + (BLOCKSIZE / 2);
 
 	return pos;
 }

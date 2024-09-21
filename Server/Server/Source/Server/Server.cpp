@@ -230,30 +230,65 @@ std::set<Vector3f> Server::SetObjectSpawnPos(int roomID, int spawnCount)
     std::set<Vector3f> unique_pos;
 
     Room* room = mRooms[roomID];
-    std::vector<Object*> object_list;
-    room->GetAllObjects(object_list);
 
     while (unique_pos.size() < spawnCount) {
         int idx = idx_distrib(gen);
-        Vector3f pos = ConvertVec2iToVec3f(spawnPoses[idx].first, spawnPoses[idx].second);
+        Vector3f spawnIndex = Vector3f(spawnPoses[idx].first, 0, spawnPoses[idx].second);
         int invalid_pos_cnt = 0;
         bool invalid_pos = false;
-        for (int i = 0; i < MAXOBJECT; ++i) {
-            if (object_list[i] == nullptr) {
+
+        // 스폰 위치에 다른 오브젝트가 있는지 체크
+        room->GetBombListLock().lock_shared();
+        for (Bomb* bomb : room->GetBombList()) {
+            if (bomb == nullptr) {
                 continue;
             }
-            if (object_list[i]->GetIsGrabbed() == true) {
+            if (bomb->GetIsGrabbed() == true) {
                 continue;
             }
-            if (pos.x == object_list[i]->GetPosition().x
-                && pos.y == object_list[i]->GetPosition().y) {
+            Vector3f Index = ConvertVec3fToVec2i(bomb->GetPosition());
+
+            //COUT << "폭탄 - " << bomb->GetPosition().x << " " << bomb->GetPosition().z << ENDL;
+            if (spawnIndex.x == Index.x
+                && spawnIndex.z == Index.z) {
+
+                //COUT <<  "이미 있음;; " << spawnIndex.x << " " << spawnIndex.z << ENDL;
+
                 invalid_pos = true;
                 invalid_pos_cnt++;
                 break;
             }
         }
+        room->GetBombListLock().unlock_shared();
+
+        if (invalid_pos == true) {
+            continue;
+        }
+
+        room->GetWeaponListLock().lock_shared();
+        for (Weapon* weapon : room->GetWeaponList()) {
+            if (weapon == nullptr) {
+                continue;
+            }
+            if (weapon->GetIsGrabbed() == true) {
+                continue;
+            }
+            Vector3f Index = ConvertVec3fToVec2i(weapon->GetPosition());
+
+            if (spawnIndex.x == Index.x
+                && spawnIndex.z == Index.z) {
+
+               // COUT << "이미 있음;; " << spawnIndex.x << " " << spawnIndex.z << ENDL;
+
+                invalid_pos = true;
+                invalid_pos_cnt++;
+                break;
+            }
+        }
+        room->GetWeaponListLock().unlock_shared();
+
         if (invalid_pos == false) {
-            unique_pos.emplace(pos);
+            unique_pos.emplace(ConvertVec2iToVec3f(spawnIndex.x, spawnIndex.z));
         }
 
         if (invalid_pos_cnt >= spawnPoses.size()) {
@@ -342,7 +377,7 @@ void Server::StartGame(int roomID)
         int eventTime = GetTableManager()-> GetGameModeData()[GameMode].Block1_Spawn_Time;
         PushEventBlockDrop(mTimer, roomID, roomCode, eventTime);
         PushEventBombSpawn(mTimer, roomID, roomCode, GetTableManager()-> GetGameModeData()[GameMode].Bomb_Spawn_Time);
-        PushEventWeaponSpawn(mTimer, roomID, roomCode, GetTableManager()-> GetGameModeData()[GameMode].Weapon1_Spawn_Time);
+        PushEventWeaponSpawn(mTimer, roomID, roomCode, GetTableManager()->GetGameModeData()[GameMode].Weapon1_Spawn_Time);
         PushEventRemainTimeSync(mTimer, roomID, roomCode);
         PushEventTimeOverCheck(mTimer, roomID, roomCode);
 
@@ -498,7 +533,12 @@ void Server::CalculateGameResult(int roomID, std::set<int>& winningTeams)
         int id = pair.first;
 
         room->GetPlayerListLock().lock_shared();
-        int team = room->GetPlayerList()[id]->GetTeam();
+        Player* player = room->GetPlayerList()[id];
+        if (player == nullptr) {
+            room->GetPlayerListLock().unlock_shared();
+            continue;
+        }
+        int team = player->GetTeam();
         room->GetPlayerListLock().unlock_shared();
 
         bool isWin = (winningTeams.find(team) != winningTeams.end()) ? true : false;

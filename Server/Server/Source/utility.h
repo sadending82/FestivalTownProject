@@ -44,6 +44,9 @@ constexpr int MAXOBJECT = 100;
 
 constexpr int BLOCKSIZE = 2; // meter
 
+constexpr float offsetX = 20;
+constexpr float offsetZ = 10;
+
 const uint8_t DEFAULT_8BITFLAG = 0b00000000;
 
 #ifdef _DEBUG
@@ -136,5 +139,5 @@ struct sPlayerGameRecord {
 
 std::vector<uint8_t> MakeBuffer(const int type, const uint8_t* data, const int size);
 
-Vector3f ConvertVec3fToVec2i(int x, int y);
-Vector3f ConvertVec2iToVec3f(int x, int y);
+Vector3f ConvertVec3fToVec2i(Vector3f vec);
+Vector3f ConvertVec2iToVec3f(int x, int z);

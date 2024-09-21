@@ -95,7 +95,7 @@ public class PlayerManager : MonoBehaviour
             playerObject.SetActive(true);
             playerObject.GetComponent<CharacterStatus>().SetTeamNumber(teamNumber);
             playerObject.GetComponent<PlayerController>().SetMyId(id);
-            playerObject.GetComponent<PlayerController>().Respawn(position.x, position.y);
+            playerObject.GetComponent<PlayerController>().Respawn(position.x, position.z);
             nowPlayerNum++;          
         }
     }

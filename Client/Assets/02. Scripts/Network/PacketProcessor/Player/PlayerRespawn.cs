@@ -18,11 +18,11 @@ namespace Network.PacketProcessor
             var Data = PlayerRespawn.GetRootAsPlayerRespawn(bb);
 
             float x = Data.Pos.Value.X;
-            float y = Data.Pos.Value.Y;
+            float z = Data.Pos.Value.Z;
             int targetId = Data.Id;
 
             PlayerController pCtr = Managers.Player.GetPlayers().transform.GetChild(targetId).GetComponent<PlayerController>();
-            pCtr.Respawn(x, y);
+            pCtr.Respawn(x, z);
         }
 
         

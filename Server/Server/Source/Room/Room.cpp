@@ -198,11 +198,19 @@ bool Room::DeleteWeapon(int id)
 void Room::GetAllObjects(std::vector<Object*>& objectList)
 {
 	mBombListLock.lock_shared();
-	objectList.insert(objectList.end(), mBombList.begin(), mBombList.end());
+	for (Bomb* bomb : mBombList) {
+		if (bomb != nullptr) {
+			objectList.push_back(bomb);
+		}
+	}
 	mBombListLock.unlock_shared();
 
 	mWeaponListLock.lock_shared();
-	objectList.insert(objectList.end(), mWeaponList.begin(), mWeaponList.end());
+	for (Weapon* weapon : mWeaponList) {
+		if (weapon != nullptr) {
+			objectList.push_back(weapon);
+		}
+	}
 	mWeaponListLock.unlock_shared();
 }
 

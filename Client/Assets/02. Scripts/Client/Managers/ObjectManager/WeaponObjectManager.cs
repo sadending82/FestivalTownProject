@@ -6,7 +6,7 @@ using NetworkProtocol;
 public class WeaponObjectManager : MonoBehaviour
 {
     private float offsetX = 20;
-    private float offsetY = 10;
+    private float offsetZ = 10;
     private float createHeight = 8;
 
     public int initialWeapons = 10;
@@ -22,7 +22,7 @@ public class WeaponObjectManager : MonoBehaviour
             weapons = new GameObject { name = "@Weapons" };
         }
     }
-    public void SpawnWeapon(float x, float y, eWeaponType type, int id)
+    public void SpawnWeapon(float x, float z, eWeaponType type, int id)
     {
         if(Managers.WeaponObject.FindWeaponById(id) != null)
         {
@@ -31,7 +31,7 @@ public class WeaponObjectManager : MonoBehaviour
 
         // 단위 맞춰주기
         x *= -1;
-        y *= -1;
+        z *= -1;
         GameObject reusedWeapon = null;
 
         switch(type)
@@ -55,7 +55,7 @@ public class WeaponObjectManager : MonoBehaviour
 
         reusedWeapon.gameObject.SetActive(true);
         reusedWeapon.gameObject.GetComponent<Weapon>().SetId(id);
-        reusedWeapon.gameObject.transform.position = new Vector3(x + offsetX, createHeight, y + offsetY);
+        reusedWeapon.gameObject.transform.position = new Vector3(x + offsetX, createHeight, z + offsetZ);
     }
     public GameObject FindWeaponById(int targetId)
     {

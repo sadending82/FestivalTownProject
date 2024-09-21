@@ -5,7 +5,7 @@ using UnityEngine;
 public class BombObjectManager : MonoBehaviour
 {
     private float offsetX = 20;
-    private float offsetY = 10;
+    private float offsetZ = 10;
     private float createHeight = 8;
 
     public static BombObjectManager instance;
@@ -23,7 +23,7 @@ public class BombObjectManager : MonoBehaviour
         }
     }
 
-    public void SpawnBomb(float x, float y, int id)
+    public void SpawnBomb(float x, float z, int id)
     {
         if (Managers.BombObject.FindBombById(id) != null)
         {
@@ -32,14 +32,14 @@ public class BombObjectManager : MonoBehaviour
 
         // 단위 맞춰주기
         x *= -1;
-        y *= -1;
+        z *= -1;
         GameObject reusedBomb = null;
 
         reusedBomb = Managers.ObjectPool.Pop(Managers.ObjectPool.GetOrigin("Bomb"), bombs.transform).gameObject;
 
         reusedBomb.gameObject.SetActive(true);
         reusedBomb.gameObject.GetComponent<Bomb>().SetId(id);
-        reusedBomb.gameObject.transform.position = new Vector3(x + offsetX, createHeight, y + offsetY);
+        reusedBomb.gameObject.transform.position = new Vector3(x + offsetX, createHeight, z + offsetZ);
 
         Managers.Sound.Play3D("Sfx_Bomb_Fuse", reusedBomb, Define.Sound.Bgm);
     }

@@ -49,11 +49,13 @@ public:
 					pServer->GetPacketSender()->SendPlayerGroggyPacket(playerid, roomid);
 
 					// 들고있는 무기 해제
-					if (player->GetWeapon() != nullptr) {
-						if (player->GetWeapon()->SetIsGrabbed(false) == true) {
-							int weaponID = player->GetWeapon()->GetID();
-							player->GetWeapon()->SetOwenrID(INVALIDKEY);
+					Weapon* weapon = player->GetWeapon();
+					if (weapon != nullptr) {
+						if (weapon->SetIsGrabbed(false) == true) {
+							int weaponID = weapon->GetID();
+							weapon->SetOwenrID(INVALIDKEY);
 							player->SetWeapon(nullptr);
+							weapon->SetPosition(Vector3f(read->pos()->x(), read->pos()->y(), read->pos()->z()));
 							pServer->GetPacketSender()->SendWeaponDropPacket(player->GetPosition(), roomid, weaponID);
 						}
 					}

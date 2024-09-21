@@ -15,11 +15,11 @@ namespace Network.PacketProcessor
             var Data = BombSpawn.GetRootAsBombSpawn(bb);
 
             float posX = Data.Pos.Value.X;
-            float posY = Data.Pos.Value.Y;
+            float posZ = Data.Pos.Value.Z;
             int id = Data.Id;
 
             // 폭탄 생성
-            Managers.BombObject.SpawnBomb(posX, posY, id);
+            Managers.BombObject.SpawnBomb(posX, posZ, id);
         }
 
         
