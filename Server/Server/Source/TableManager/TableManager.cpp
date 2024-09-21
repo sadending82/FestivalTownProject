@@ -66,13 +66,12 @@ void TableManager::ReadAllDataTable()
 void TableManager::ReadItemTable()
 {
     try {
-        xlnt::workbook wb;
-        wb.load("GameData/ItemTable.xlsx");
-        xlnt::worksheet ws = wb.active_sheet();
+        mWorkbook.load("GameData/ItemTable.xlsx");
+        xlnt::worksheet ws = mWorkbook.active_sheet();
 
         int idx = 0;
 
-        for (auto row : ws.rows(false)) {
+        for (auto row : mWorksheet.rows(false)) {
             if (idx == 0) {
                 idx++;
                 continue;
@@ -100,15 +99,15 @@ void TableManager::ReadItemTable()
 void TableManager::ReadCharacterStat()
 {
     try {
-        xlnt::workbook wb;
-        wb.load("GameData/Character_Stat.xlsx");
+       
+        mWorkbook.load("GameData/Character_Stat.xlsx");
 
         int idx = 0;
         int sheetIdx = 1;
 
-        xlnt::worksheet ws = wb.sheet_by_index(sheetIdx);
+       mWorksheet = mWorkbook.sheet_by_index(sheetIdx);
 
-        for (auto row : ws.rows(false)) {
+        for (auto row : mWorksheet.rows(false)) {
             if (idx < 2) {
                 idx++;
                 continue;
@@ -146,14 +145,14 @@ void TableManager::ReadCharacterStat()
 void TableManager::ReadWeaponStat()
 {
     try {
-        xlnt::workbook wb;
-        wb.load("GameData/Weapon_Stat.xlsx");
+       
+        mWorkbook.load("GameData/Weapon_Stat.xlsx");
 
         int idx = 0;
 
-        xlnt::worksheet ws = wb.active_sheet();
+       mWorksheet = mWorkbook.active_sheet();
 
-        for (auto row : ws.rows(false)) {
+        for (auto row : mWorksheet.rows(false)) {
             if (idx < 1) {
                 idx++;
                 continue;
@@ -182,13 +181,12 @@ void TableManager::ReadWeaponStat()
 void TableManager::ReadGameModeTable()
 {
     try {
-        xlnt::workbook wb;
-        wb.load("GameData/Mode_Ver3.xlsx");
-
+       
+        mWorkbook.load("GameData/Mode_Ver3.xlsx");
         int idx = 0;
-        xlnt::worksheet ws = wb.sheet_by_index(Mode_Out_Sheet);
+        mWorksheet = mWorkbook.sheet_by_index(Mode_Out_Sheet);
 
-        for (auto row : ws.rows(false)) {
+        for (auto row : mWorksheet.rows(false)) {
             if (idx == variableNameIdx) {
                 idx++;
                 continue;
@@ -210,9 +208,9 @@ void TableManager::ReadGameModeTable()
         }
 
         idx = 0;
-        ws = wb.sheet_by_index(FITH_Mode_Sheet);
+        mWorksheet = mWorkbook.sheet_by_index(FITH_Mode_Sheet);
 
-        for (auto row : ws.rows(false)) {
+        for (auto row : mWorksheet.rows(false)) {
             if (idx == variableNameIdx) {
                 idx++;
                 continue;
@@ -310,14 +308,14 @@ void TableManager::ReadPointConstantTable()
 {
     try {
 
-        xlnt::workbook wb;
-        wb.load("GameData/Mode_Ver3.xlsx");
+       
+        mWorkbook.load("GameData/Mode_Ver3.xlsx");
 
         int idx = 0;
 
-        xlnt::worksheet ws = wb.sheet_by_index(Mode_Point_Sheet);
+       mWorksheet = mWorkbook.sheet_by_index(Mode_Point_Sheet);
 
-        for (auto row : ws.rows(false)) {
+        for (auto row : mWorksheet.rows(false)) {
             if (idx == variableNameIdx) {
                 idx++;
                 continue;
@@ -396,13 +394,13 @@ void TableManager::ReadPointConstantTable()
 void TableManager::ReadGameReward()
 {
     try {
-        xlnt::workbook wb;
-        wb.load("GameData/Mode_Ver3.xlsx");
+       
+        mWorkbook.load("GameData/Mode_Ver3.xlsx");
 
         // Mode_Reward_Sheet
         int idx = 0;
-        xlnt::worksheet ws = wb.sheet_by_index(Mode_Reward_Sheet);
-        for (auto row : ws.rows(false)) {
+       mWorksheet = mWorkbook.sheet_by_index(Mode_Reward_Sheet);
+        for (auto row : mWorksheet.rows(false)) {
             if (idx == variableNameIdx) {
                 idx++;
                 continue;
@@ -443,8 +441,8 @@ void TableManager::ReadGameReward()
 
         // Mode_BonusReward
         idx = 0;
-        ws = wb.sheet_by_index(Mode_BonusReward_Sheet);
-        for (auto row : ws.rows(false)) {
+        mWorksheet = mWorkbook.sheet_by_index(Mode_BonusReward_Sheet);
+        for (auto row : mWorksheet.rows(false)) {
             if (idx == variableNameIdx) {
                 idx++;
                 continue;
@@ -507,15 +505,15 @@ void TableManager::ReadGameReward()
 void TableManager::ReadGachaTable()
 {
     try {
-        xlnt::workbook wb;
-        wb.load("GameData/Gacha.xlsx");
+       
+        mWorkbook.load("GameData/Gacha.xlsx");
 
         int rowIdx = 0;
         int startRow = 2;
 
         // Random Box Info
-        xlnt::worksheet ws = wb.sheet_by_index(0);
-        for (auto row : ws.rows(false)) {
+       mWorksheet = mWorkbook.sheet_by_index(0);
+        for (auto row : mWorksheet.rows(false)) {
             if (rowIdx < startRow) {
                 rowIdx++;
                 continue;
@@ -538,9 +536,9 @@ void TableManager::ReadGachaTable()
         }
 
         // Gacha Items
-        ws = wb.sheet_by_index(1);
+        mWorksheet = mWorkbook.sheet_by_index(1);
         rowIdx = 0;
-        for (auto row : ws.rows(false)) {
+        for (auto row : mWorksheet.rows(false)) {
             if (rowIdx < startRow) {
                 rowIdx++;
                 continue;

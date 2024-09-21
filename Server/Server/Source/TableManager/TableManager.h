@@ -50,6 +50,9 @@ public:
 	std::unordered_map<GameMode, std::vector<MapCode>>& getMapListByMode() { return MapListByMode; }
 
 private:
+	xlnt::workbook mWorkbook;
+	xlnt::worksheet mWorksheet;
+
 	std::unordered_map<INDEX, ItemTable> ItemInfos;
 	std::unordered_map<INDEX, CharacterStat> CharacterStats;
 	std::unordered_map<INDEX, WeaponStat> WeaponStats;
