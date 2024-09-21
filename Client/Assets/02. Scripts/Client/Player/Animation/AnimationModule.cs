@@ -1,45 +1,46 @@
-﻿using System;
+﻿using ClientProtocol;
+using System;
 using UnityEditor;
 using UnityEngine;
 
 namespace ActiveRagdoll
 {
-
     public class AnimationModule : Module
     {
         [Header("--- Body ---")]
-        private Quaternion[] _initialJointsRotation;
-        private ConfigurableJoint[] _joints;
-        private Transform[] _animatedBones;
+        private Quaternion[] initialJointsRotation;
+        private ConfigurableJoint[] joints;
+        public ConfigurableJoint stabillizer;
+        private Transform[] animatedBones;
         public Animator Animator { get; private set; }
 
         [Header("--- AnimationControll ---")]
         [SerializeField]
         private bool updateUpperBodyAnimation;  // 상체가 아무런 동작을 하지않으면 끈다.
         [SerializeField]
-        private bool useAnimationModule;        // 그로기 모드일때 꺼야한다.
+        private bool isGroggy;                  // 그로기 모드일때 꺼야한다.
 
         private void Awake()
         {
             updateUpperBodyAnimation = false;
-            useAnimationModule = true;
+            isGroggy = false;
         }
         private void Start()
         {
-            _joints = _activeRagdoll.Joints;
-            _animatedBones = _activeRagdoll.AnimatedBones;
+            joints = _activeRagdoll.Joints;
+            animatedBones = _activeRagdoll.AnimatedBones;
             Animator = _activeRagdoll.AnimatedAnimator;
 
-            _initialJointsRotation = new Quaternion[_joints.Length];
-            for (int i = 0; i < _joints.Length; i++)
+            initialJointsRotation = new Quaternion[joints.Length];
+            for (int i = 0; i < joints.Length; i++)
             {
-                _initialJointsRotation[i] = _joints[i].transform.localRotation;
+                initialJointsRotation[i] = joints[i].transform.localRotation;
             }
         }
 
         void FixedUpdate()
         {
-            if (useAnimationModule == true)
+            if (isGroggy == false)
             {
                 UpdateJointTargets();
             }
@@ -50,9 +51,9 @@ namespace ActiveRagdoll
             // 전신에 애니메이션 적용
             //if (updateUpperBodyAnimation == true)
             {
-                for (int i = 0; i < _joints.Length; i++)
+                for (int i = 0; i < joints.Length; i++)
                 {
-                    ConfigurableJointExtensions.SetTargetRotationLocal(_joints[i], _animatedBones[i + 1].localRotation, _initialJointsRotation[i]);
+                    ConfigurableJointExtensions.SetTargetRotationLocal(joints[i], animatedBones[i + 1].localRotation, initialJointsRotation[i]);
                 }
             }
             //// 하체에만 애니메이션 적용
@@ -70,9 +71,55 @@ namespace ActiveRagdoll
         {
             this.updateUpperBodyAnimation = updateUpperBodyAnimation;
         }
-        public void SetUseAnimationModule(bool useAnimationModule)
+        public void GroggyOn()
         {
-            this.useAnimationModule = useAnimationModule;
+            Debug.Log("Groggy On");
+            isGroggy = true;
+
+            JointDrive driveJoint = new JointDrive();
+
+            driveJoint.positionSpring = 50;
+            driveJoint.positionDamper = 0;
+            driveJoint.maximumForce = 10000;
+            driveJoint.useAcceleration = false;
+            for (int i = 0; i < joints.Length; ++i)
+            {
+                joints[i].angularXDrive = joints[i].angularYZDrive = driveJoint;
+            }
+
+            driveJoint.positionSpring = 0;
+            driveJoint.positionDamper = 0;
+            driveJoint.maximumForce = 1000;
+            stabillizer.angularXDrive = stabillizer.angularYZDrive = driveJoint;
+        }
+        public void GroggyOff()
+        {
+            Debug.Log("Groggy Off");
+            isGroggy = false;
+
+            JointDrive driveJoint = new JointDrive();
+
+            driveJoint.positionSpring = 1000;
+            driveJoint.positionDamper = 0;
+            driveJoint.maximumForce = 10000;
+            driveJoint.useAcceleration = false;
+            for (int i = 0; i < joints.Length; ++i)
+            {
+                if (joints[i].name == "tail01" ||
+                    joints[i].name == "tail02" ||
+                    joints[i].name == "tail03" ||
+                    joints[i].name == "tail04" ||
+                    joints[i].name == "tail05")
+                {
+                    driveJoint.positionSpring = 100;
+                }
+                joints[i].angularXDrive = joints[i].angularYZDrive = driveJoint;
+                driveJoint.positionSpring = 1000;
+            }
+
+            driveJoint.positionDamper = 50;
+            driveJoint.maximumForce = 1000;
+            stabillizer.angularXDrive = stabillizer.angularYZDrive = driveJoint;
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Network.PacketProcessor
             int id = Data.Id;
             int staminaRecoveryValue = Data.RecoveryValue;
 
-
+            Managers.Player.FindPlayerById(id).GetComponent<CharacterStatus>().GroggyOff();
         }
     }
 }
