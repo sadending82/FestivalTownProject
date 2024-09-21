@@ -148,15 +148,15 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         // 그로기 테스트
-        if (Input.GetKeyUp(KeyCode.G))
+        if (Input.GetKeyUp(KeyCode.G) && amIPlayer == true)
         {
             if(playerStatus.GetIsGroggy() == false)
             {
-                playerStatus.GroggyOn();
+                playerStatus.SetStamina(0);
             }
             else
             {
-                playerStatus.GroggyOff();
+                playerStatus.SetStamina(100);
             }
         }
 

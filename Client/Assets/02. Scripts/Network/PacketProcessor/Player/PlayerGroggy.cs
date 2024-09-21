@@ -16,11 +16,7 @@ namespace Network.PacketProcessor
 
             int id = Data.Id;
 
-            // 그로기 처리
-
-
-        }
-
-        
+            Managers.Player.FindPlayerById(id).GetComponent<CharacterStatus>().GroggyOn();
+        }        
     }
 }

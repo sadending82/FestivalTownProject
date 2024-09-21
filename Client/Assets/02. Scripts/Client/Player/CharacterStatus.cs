@@ -297,6 +297,10 @@ public class CharacterStatus : MonoBehaviour
     {
         return isGroggy;
     }
+    public void SetStamina(int stamina)
+    {
+        this.stamina = stamina;
+    }
     public int GetStamina()
     {
         return stamina;
