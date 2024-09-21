@@ -91,66 +91,86 @@ public class PlayerController : MonoBehaviour
     {
         if (playerStatus.GetIsDie() == false)
         {
-            if (amIPlayer == true && gameStart == true)
+            // 살아있고 그로기 상태가 아님
+            if (playerStatus.GetIsGroggy() == false)
             {
-                Move();
-                FallDownCheck();
-            }
-            else
-            {
-                if (stabillizerDirection != moveDirection && moveDirection != Vector3.zero)
+                if (amIPlayer == true && gameStart == true)
                 {
-                    stabillizerDirection = moveDirection;
-                    rotationQuaternion = Quaternion.LookRotation(moveDirection);
-                    stabilizer.rotation = rotationQuaternion;
+                    Move();
                 }
-                if (isMove == true && CheckHitWall() == false)
+                else
                 {
-                    if (playerStatus.GetLowerBodyAnimationState() == LowerBodyAnimationState.WALK)
+                    if (stabillizerDirection != moveDirection && moveDirection != Vector3.zero)
                     {
-                        if (isGrounded == false)
-                        {
-                            pelvisRigidbody.velocity = (moveDirection * (walkSpeed - 2));
-                        }
-                        else
-                        {
-                            pelvisRigidbody.velocity = moveDirection * walkSpeed;
-                        }
+                        stabillizerDirection = moveDirection;
+                        rotationQuaternion = Quaternion.LookRotation(moveDirection);
+                        stabilizer.rotation = rotationQuaternion;
                     }
-                    else if (playerStatus.GetLowerBodyAnimationState() == LowerBodyAnimationState.RUN)
+                    if (isMove == true && CheckHitWall() == false)
                     {
-                        if (isGrounded == false)
+                        if (playerStatus.GetLowerBodyAnimationState() == LowerBodyAnimationState.WALK)
                         {
-                            pelvisRigidbody.velocity = moveDirection * (runSpeed - 3);
+                            if (isGrounded == false)
+                            {
+                                pelvisRigidbody.velocity = (moveDirection * (walkSpeed - 2));
+                            }
+                            else
+                            {
+                                pelvisRigidbody.velocity = moveDirection * walkSpeed;
+                            }
                         }
-                        else
+                        else if (playerStatus.GetLowerBodyAnimationState() == LowerBodyAnimationState.RUN)
                         {
-                            pelvisRigidbody.velocity = moveDirection * runSpeed;
+                            if (isGrounded == false)
+                            {
+                                pelvisRigidbody.velocity = moveDirection * (runSpeed - 3);
+                            }
+                            else
+                            {
+                                pelvisRigidbody.velocity = moveDirection * runSpeed;
+                            }
                         }
-                    }
 
-                    if (isJump == true)
-                    {
-                        if (isGrounded == true)
+                        if (isJump == true)
                         {
-                            Jump();
-                            isJump = false;
+                            if (isGrounded == true)
+                            {
+                                Jump();
+                                isJump = false;
+                            }
                         }
                     }
                 }
             }
+            FallDownCheck();
         }
     }
     private void Update()
     {
+        // 그로기 테스트
+        if (Input.GetKeyUp(KeyCode.G))
+        {
+            if(playerStatus.GetIsGroggy() == false)
+            {
+                playerStatus.GroggyOn();
+            }
+            else
+            {
+                playerStatus.GroggyOff();
+            }
+        }
+
         if (playerStatus.GetIsDie() == false)
         {
             if (amIPlayer == true && gameStart == true)
             {
-                KeyboardInput();
-                if (isPickUpMode == false)
+                if (playerStatus.GetIsGroggy() == false)
                 {
-                    MouseInput();
+                    KeyboardInput();
+                    if (isPickUpMode == false)
+                    {
+                        MouseInput();
+                    }
                 }
                 if (gameObject != null)
                 {
@@ -171,7 +191,7 @@ public class PlayerController : MonoBehaviour
     {
         if (pelvis != null && gameStart == true)
         {
-            packetManager.SendPlayerSyncPacket(pelvis.transform.position, stabillizerDirection, 0, myId);
+            packetManager.SendPlayerSyncPacket(pelvis.transform.position, stabillizerDirection, playerStatus.GetStamina(), myId);
         }
     }
 
@@ -409,11 +429,17 @@ public class PlayerController : MonoBehaviour
                 isPickUpMode = true;
                 targetItem = nearObjectChecker.GetNearObject();
             }
-            else if (playerStatus.GetIsHaveWeapon() == true)
+            else if (playerStatus.GetIsHaveWeapon() == true && isPickUpMode == false)
             {
                 fKeyDownTimer = 0;
                 isDropMode = true;
             }
+        }
+        if (Input.GetKeyUp(KeyCode.F))
+        {
+            isPickUpMode = false;
+            isDropMode = false;
+            fKeyDownTimer = 0;
         }
         if (Input.GetKey(KeyCode.F))
         {
@@ -431,11 +457,13 @@ public class PlayerController : MonoBehaviour
                     if (targetItem.tag == "Bomb" && playerStatus.GetIsHaveBomb() == false)
                     {
                         Bomb targetBomb = targetItem.GetComponent<Bomb>();
+                        fKeyDownTimer = 0;
                         packetManager.SendPlayerGrabBombPacket(pelvis.transform.position, stabillizerDirection, myId, targetBomb.GetId());
                     }
                     else if (targetItem.tag == "Weapon" && playerStatus.GetIsHaveWeapon() == false)
                     {
                         Weapon targetWeapon = targetItem.GetComponent<Weapon>();
+                        fKeyDownTimer = 0;
                         packetManager.SendPlayerGrabWeaponPacket(pelvis.transform.position, stabillizerDirection, myId, targetWeapon.GetId());
                     }
                 }
@@ -445,22 +473,12 @@ public class PlayerController : MonoBehaviour
                 fKeyDownTimer += Time.deltaTime;
                 if (fKeyDownTimer >= 1f)
                 {
-                    if (playerStatus.GetWeaponId() >= 0)
+                    if (playerStatus.GetIsHaveWeapon() == true)
                     {
+                        fKeyDownTimer = 0;
                         packetManager.SendPlayerDropWeaponPacket(GetPosition(), playerStatus.GetWeaponId());
                     }
                 }
-            }
-        }
-        if (Input.GetKeyUp(KeyCode.F))
-        {
-            if (isPickUpMode == true)
-            {
-                isPickUpMode = false;
-            }
-            else if (isDropMode == true)
-            {
-                isDropMode = false;
             }
         }
     }

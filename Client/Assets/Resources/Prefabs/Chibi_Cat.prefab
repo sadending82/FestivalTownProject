@@ -1346,11 +1346,12 @@ MonoBehaviour:
   groggyTime: 0
   myCamera: {fileID: 8248348564705223245}
   playerMesh: {fileID: 8491244148625121900}
+  teamNumber: 0
   isHaveBomb: 0
   isHaveWeapon: 0
   weaponInven: {fileID: 6241508891433731045}
-  isGroggy: 0
   animationController: {fileID: 106592914044289826}
+  animationMoudule: {fileID: 0}
   playerController: {fileID: 2266266892710373593}
   headRig: {fileID: 71571893083169489}
   attackedStrength: 50
@@ -1398,6 +1399,7 @@ MonoBehaviour:
   leftFootRigidbody: {fileID: 6490085632441195103}
   rightFootRigidbody: {fileID: 5402061227843248073}
   isGrounded: 0
+  isJump: 0
   nearObjectChecker: {fileID: 7949501394121076264}
   bombInvenTransform: {fileID: 4805236475303947220}
 --- !u!114 &1415633369511455486
@@ -1432,8 +1434,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _activeRagdoll: {fileID: 7513450559464735725}
+  stabillizer: {fileID: 8056821081526049708}
   updateUpperBodyAnimation: 0
-  useAnimationModule: 0
+  isGroggy: 0
 --- !u!114 &-6865849756492790611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3233,11 +3236,11 @@ ConfigurableJoint:
     spring: 0
     damper: 0
   m_AngularYLimit:
-    limit: 177
+    limit: 0
     bounciness: 0
     contactDistance: 0
   m_AngularZLimit:
-    limit: 3
+    limit: 0
     bounciness: 0
     contactDistance: 0
   m_TargetPosition: {x: 0, y: 0, z: 0}
@@ -3267,13 +3270,13 @@ ConfigurableJoint:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_SlerpDrive:
     serializedVersion: 4
@@ -3422,13 +3425,13 @@ ConfigurableJoint:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_SlerpDrive:
     serializedVersion: 4
@@ -3577,13 +3580,13 @@ ConfigurableJoint:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_SlerpDrive:
     serializedVersion: 4
@@ -3732,15 +3735,15 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 4
-    positionSpring: 200
+    positionSpring: 100
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
-    positionSpring: 200
+    positionSpring: 100
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_SlerpDrive:
     serializedVersion: 4
@@ -3894,13 +3897,13 @@ ConfigurableJoint:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_SlerpDrive:
     serializedVersion: 4
@@ -4047,15 +4050,15 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 4
-    positionSpring: 200
+    positionSpring: 100
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
-    positionSpring: 200
+    positionSpring: 100
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_SlerpDrive:
     serializedVersion: 4
@@ -4204,13 +4207,13 @@ ConfigurableJoint:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_SlerpDrive:
     serializedVersion: 4
@@ -4334,7 +4337,7 @@ ConfigurableJoint:
     bounciness: 0
     contactDistance: 0
   m_AngularZLimit:
-    limit: 90
+    limit: 0
     bounciness: 0
     contactDistance: 0
   m_TargetPosition: {x: 0, y: 0, z: 0}
@@ -4364,13 +4367,13 @@ ConfigurableJoint:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_SlerpDrive:
     serializedVersion: 4
@@ -4519,13 +4522,13 @@ ConfigurableJoint:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_SlerpDrive:
     serializedVersion: 4
@@ -4682,13 +4685,13 @@ ConfigurableJoint:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_SlerpDrive:
     serializedVersion: 4
@@ -4816,13 +4819,13 @@ ConfigurableJoint:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_SlerpDrive:
     serializedVersion: 4
@@ -4939,11 +4942,11 @@ ConfigurableJoint:
     spring: 0
     damper: 0
   m_AngularYLimit:
-    limit: 131.06241
+    limit: 0
     bounciness: 0
     contactDistance: 0
   m_AngularZLimit:
-    limit: 90
+    limit: 0
     bounciness: 0
     contactDistance: 0
   m_TargetPosition: {x: 0, y: 0, z: 0}
@@ -4973,13 +4976,13 @@ ConfigurableJoint:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_SlerpDrive:
     serializedVersion: 4
@@ -5128,13 +5131,13 @@ ConfigurableJoint:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_SlerpDrive:
     serializedVersion: 4
@@ -5285,13 +5288,13 @@ ConfigurableJoint:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_SlerpDrive:
     serializedVersion: 4
@@ -5498,15 +5501,15 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 4
-    positionSpring: 200
+    positionSpring: 100
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
-    positionSpring: 200
+    positionSpring: 100
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_SlerpDrive:
     serializedVersion: 4
@@ -5655,13 +5658,13 @@ ConfigurableJoint:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_SlerpDrive:
     serializedVersion: 4
@@ -5810,13 +5813,13 @@ ConfigurableJoint:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_SlerpDrive:
     serializedVersion: 4
@@ -5879,7 +5882,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isLeftHand: 1
-  pelvis: {fileID: 4437203293968950405}
   playerState: {fileID: 11744454538213894}
   amIPlayer: 0
 --- !u!54 &4139916830881699547
@@ -5986,13 +5988,13 @@ ConfigurableJoint:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_SlerpDrive:
     serializedVersion: 4
@@ -6050,7 +6052,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isLeftHand: 0
-  pelvis: {fileID: 4437203293968950405}
   playerState: {fileID: 11744454538213894}
   amIPlayer: 0
 --- !u!54 &1114045697641998533
@@ -6157,13 +6158,13 @@ ConfigurableJoint:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_SlerpDrive:
     serializedVersion: 4
@@ -6312,13 +6313,13 @@ ConfigurableJoint:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_SlerpDrive:
     serializedVersion: 4
@@ -6467,15 +6468,15 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 4
-    positionSpring: 200
+    positionSpring: 100
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
-    positionSpring: 200
+    positionSpring: 100
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_SlerpDrive:
     serializedVersion: 4
@@ -6622,15 +6623,15 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 4
-    positionSpring: 200
+    positionSpring: 100
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
-    positionSpring: 200
+    positionSpring: 100
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_SlerpDrive:
     serializedVersion: 4
@@ -6784,13 +6785,13 @@ ConfigurableJoint:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_SlerpDrive:
     serializedVersion: 4
@@ -6941,13 +6942,13 @@ ConfigurableJoint:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_SlerpDrive:
     serializedVersion: 4
@@ -7053,22 +7054,22 @@ ConfigurableJoint:
     spring: 0
     damper: 0
   m_LowAngularXLimit:
-    limit: -177
+    limit: 0
     bounciness: 0
     contactDistance: 0
   m_HighAngularXLimit:
-    limit: 177
+    limit: 0
     bounciness: 0
     contactDistance: 0
   m_AngularYZLimitSpring:
     spring: 0
     damper: 0
   m_AngularYLimit:
-    limit: 177
+    limit: 0
     bounciness: 0
     contactDistance: 0
   m_AngularZLimit:
-    limit: 177
+    limit: 0
     bounciness: 0
     contactDistance: 0
   m_TargetPosition: {x: 0, y: 0, z: 0}
@@ -7098,13 +7099,13 @@ ConfigurableJoint:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
     positionSpring: 1000
     positionDamper: 0
-    maximumForce: 3.4028233e+38
+    maximumForce: 10000
     useAcceleration: 0
   m_SlerpDrive:
     serializedVersion: 4

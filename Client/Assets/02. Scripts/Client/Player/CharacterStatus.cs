@@ -8,9 +8,9 @@ public class CharacterStatus : MonoBehaviour
     private int Id;
     public int maxHp;
     public int hp;
-    public float maxStamina;
-    public float stamina;
-    public float staminaRecoverySpeed;
+    public int maxStamina;
+    public int stamina;
+    public int staminaRecoverySpeed;
     public int strength;
     public int speed;
     public float attackSpeed;
@@ -37,9 +37,9 @@ public class CharacterStatus : MonoBehaviour
 
 
     [Header("--- AnimationControll ---")]
-    public bool isGroggy;
+    private bool isGroggy;
     public AnimationController animationController;
-    private ActiveRagdoll.AnimationModule animationMoudule;
+    public ActiveRagdoll.AnimationModule animationMoudule;
     // 상체의 상태는 서버와 교환
     private UpperBodyAnimationState upperBodyAnimationState;
     // 하체의 상태는 클라가 관리(이동 관련해서는 이미 서버와 교환하고 있기 때문)
@@ -62,7 +62,17 @@ public class CharacterStatus : MonoBehaviour
     {
         amIPlayer = false;
         myCamera.enabled = false;
+
+        maxStamina = 100;
+        stamina = 100;
+        staminaRecoverySpeed = 5;
+
+        if(animationMoudule == null)
+        {
+            animationMoudule = GetComponent<ActiveRagdoll.AnimationModule>();
+        }
     }
+
     private void Start()
     {
         network = Managers.Network;
@@ -112,7 +122,7 @@ public class CharacterStatus : MonoBehaviour
     }
     public void SetUpperBodyAnimationState(UpperBodyAnimationState upperBodyAnimationState)
     {
-        if (this.upperBodyAnimationState != upperBodyAnimationState)
+        if (this.upperBodyAnimationState != upperBodyAnimationState && isGroggy == false)
         {
             ///<summary>
             ///서버에 상태 전달하는 부분 여기에 추가
@@ -125,7 +135,7 @@ public class CharacterStatus : MonoBehaviour
     }
     public void s_SetUpperBodyAnimationState(UpperBodyAnimationState upperBodyAnimationState)
     {
-        if (this.upperBodyAnimationState != upperBodyAnimationState)
+        if (this.upperBodyAnimationState != upperBodyAnimationState && isGroggy == false)
         {
             this.upperBodyAnimationState = upperBodyAnimationState;
             animationController.SetUpperBodyAnimationState(upperBodyAnimationState);
@@ -134,7 +144,7 @@ public class CharacterStatus : MonoBehaviour
 
     public void SetLowerBodyAnimationState(LowerBodyAnimationState lowerBodyAnimationState)
     {
-        if (this.lowerBodyAnimationState != lowerBodyAnimationState)
+        if (this.lowerBodyAnimationState != lowerBodyAnimationState && isGroggy == false)
         {
             this.lowerBodyAnimationState = lowerBodyAnimationState;
             animationController.SetLowerBodyAnimationState(lowerBodyAnimationState);
@@ -269,5 +279,26 @@ public class CharacterStatus : MonoBehaviour
     public int GetTeamNumber()
     {
         return teamNumber;
+    }
+
+    public void GroggyOn()
+    {
+        SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
+        SetLowerBodyAnimationState(LowerBodyAnimationState.IDLE);
+        isGroggy = true;
+        animationMoudule.GroggyOn();
+    }
+    public void GroggyOff()
+    {
+        isGroggy = false;
+        animationMoudule.GroggyOff();
+    }
+    public bool GetIsGroggy()
+    {
+        return isGroggy;
+    }
+    public int GetStamina()
+    {
+        return stamina;
     }
 }
