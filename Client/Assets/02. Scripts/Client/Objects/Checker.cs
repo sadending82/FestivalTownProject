@@ -24,6 +24,12 @@ public class Checker : MonoBehaviour
             {
                 check = false;
 
+                if (Managers.Player.GetIsHost() == true)
+                {
+                    CharacterStatus tPlayerState = other.gameObject.GetComponent<CharacterStatus>();
+                    packetManager.SendPlayerCollisionToBlockPacket(tPlayerState.GetId());
+                }
+
                 // Pusher ¿€µø
                 pusher.SetActive(true);
                 pusher.transform.position = new Vector3(this.transform.position.x, 5, this.transform.position.z);

@@ -291,6 +291,7 @@ public class CharacterStatus : MonoBehaviour
     public void GroggyOff()
     {
         isGroggy = false;
+        SetStamina(maxStamina);
         animationMoudule.GroggyOff();
     }
     public bool GetIsGroggy()
