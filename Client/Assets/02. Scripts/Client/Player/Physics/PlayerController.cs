@@ -66,8 +66,6 @@ public class PlayerController : MonoBehaviour
 
     [Header("--- Respawn ---")]
     private float createHeight = 4;
-    private float offsetX = 20;
-    private float offsetZ = 10;
 
     private void Awake()
     {
@@ -696,8 +694,6 @@ public class PlayerController : MonoBehaviour
         // 위치 단위 맞추기
         x *= -1;
         z *= -1;
-        x += offsetX;
-        z += offsetZ;
 
         SetDirectionByTeam();
 

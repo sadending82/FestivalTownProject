@@ -5,8 +5,6 @@ using NetworkProtocol;
 
 public class WeaponObjectManager : MonoBehaviour
 {
-    private float offsetX = 20;
-    private float offsetZ = 10;
     private float createHeight = 8;
 
     public int initialWeapons = 10;
@@ -55,7 +53,7 @@ public class WeaponObjectManager : MonoBehaviour
 
         reusedWeapon.gameObject.SetActive(true);
         reusedWeapon.gameObject.GetComponent<Weapon>().SetId(id);
-        reusedWeapon.gameObject.transform.position = new Vector3(x + offsetX, createHeight, z + offsetZ);
+        reusedWeapon.gameObject.transform.position = new Vector3(x, createHeight, z);
     }
     public GameObject FindWeaponById(int targetId)
     {

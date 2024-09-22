@@ -31,11 +31,12 @@ public class GameScene : BaseScene
     public void LoadStatue()
     {
         GameObject Statue1 = Managers.Resource.Instantiate("Statue");
-        Statue1.transform.position = new Vector3(23.0f, 0.0f, 0.0f);
+        Statue1.transform.position = new Vector3(3.0f, 0.0f, -10.0f);
         Statue1.transform.rotation = Quaternion.Euler(0.0f, -90.0f, 0.0f);
         Statue1.GetComponent<Statue>().SetTeam(0);
 
         GameObject Statue2 = Managers.Resource.Instantiate("Statue");
+        Statue2.transform.position = new Vector3(-43.0f, 0.0f, -10.0f);
         Statue2.transform.rotation = Quaternion.Euler(0.0f, 90.0f, 0.0f);
         Statue2.GetComponent<Statue>().SetTeam(1);
     }

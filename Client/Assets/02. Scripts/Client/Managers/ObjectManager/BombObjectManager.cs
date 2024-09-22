@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class BombObjectManager : MonoBehaviour
 {
-    private float offsetX = 20;
-    private float offsetZ = 10;
     private float createHeight = 8;
 
     public static BombObjectManager instance;
@@ -39,7 +37,7 @@ public class BombObjectManager : MonoBehaviour
 
         reusedBomb.gameObject.SetActive(true);
         reusedBomb.gameObject.GetComponent<Bomb>().SetId(id);
-        reusedBomb.gameObject.transform.position = new Vector3(x + offsetX, createHeight, z + offsetZ);
+        reusedBomb.gameObject.transform.position = new Vector3(x, createHeight, z);
 
         Managers.Sound.Play3D("Sfx_Bomb_Fuse", reusedBomb, Define.Sound.Bgm);
     }
