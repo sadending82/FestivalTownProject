@@ -248,12 +248,8 @@ std::set<Vector3f> Server::SetObjectSpawnPos(int roomID, int spawnCount)
             }
             Vector3f Index = ConvertVec3fToVec2i(bomb->GetPosition());
 
-            //COUT << "ÆøÅº - " << bomb->GetPosition().x << " " << bomb->GetPosition().z << ENDL;
             if (spawnIndex.x == Index.x
                 && spawnIndex.z == Index.z) {
-
-                //COUT <<  "ÀÌ¹Ì ÀÖÀ½;; " << spawnIndex.x << " " << spawnIndex.z << ENDL;
-
                 invalid_pos = true;
                 invalid_pos_cnt++;
                 break;
@@ -277,9 +273,6 @@ std::set<Vector3f> Server::SetObjectSpawnPos(int roomID, int spawnCount)
 
             if (spawnIndex.x == Index.x
                 && spawnIndex.z == Index.z) {
-
-               // COUT << "ÀÌ¹Ì ÀÖÀ½;; " << spawnIndex.x << " " << spawnIndex.z << ENDL;
-
                 invalid_pos = true;
                 invalid_pos_cnt++;
                 break;
