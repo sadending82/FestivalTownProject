@@ -99,6 +99,13 @@ namespace NetworkProtocol
         WT_BAT = 2002
     };
 
+    public enum eBlockType
+    {
+        BT_BLOCK_2_2_2 = 3001,
+        BT_BLOCK_2_2_1 = 3002,
+    };
+
+
     public enum eAttackType
     {
         AT_FALLDOWN,

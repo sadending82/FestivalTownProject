@@ -191,7 +191,7 @@ std::vector<uint8_t> PacketMaker::MakeGameResultPacket(std::set<int>& winningTea
 		auto fRecord = PacketTable::UtilitiesTable::CreatePlayerGameRecord(Builder
 			, id
 			, Builder.CreateString(players[id]->GetName())
-			, players[id]->GetTeam()
+			, record.team
 			, record.kill_count
 			, record.death_count
 			, record.bomb_insert_count

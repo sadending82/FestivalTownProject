@@ -24,8 +24,10 @@ public:
 			return;
 		}
 		GameMode gameMode = room->GetGameMode();
-		int nextEventTime = pServer->GetTableManager()-> GetGameModeData()[gameMode].Bomb_Spawn_Time; // seconds
-		int spawnCnt = pServer->GetTableManager()-> GetGameModeData()[gameMode].Bomb_Spawn_Count;
+		GameModeInfo& modeInfo = pServer->GetTableManager()->GetGameModeData()[gameMode];
+
+		int nextEventTime = modeInfo.Bomb_Spawn_Time; // seconds
+		int spawnCnt = modeInfo.Bomb_Spawn_Count;
 
 		PushEventBombSpawn(pServer->GetTimer(), event->roomID, event->roomCode, nextEventTime);
 		pServer->GetPacketSender()->SendBombSpawnPacket(roomid, spawnCnt);

@@ -116,6 +116,7 @@ struct Vector3f {
 };
 
 struct sPlayerGameRecord {
+	int team;
 	int kill_count;
 	int death_count;
 	int bomb_insert_count;
@@ -123,9 +124,10 @@ struct sPlayerGameRecord {
 	int point;
 	int is_mvp;
 
-	sPlayerGameRecord() : kill_count(0), death_count(0), bomb_insert_count(0), earn_gold(0), point(0), is_mvp(false) {};
+	sPlayerGameRecord() : team(0), kill_count(0), death_count(0), bomb_insert_count(0), earn_gold(0), point(0), is_mvp(false) {};
 
 	void Init() {
+		team = 0;
 		kill_count = 0;
 		death_count = 0;
 		bomb_insert_count = 0;

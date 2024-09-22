@@ -55,6 +55,7 @@ public:
 					if (target->GetWeapon()->SetIsGrabbed(false) == true) {
 						int weaponID = target->GetWeapon()->GetID();
 						target->GetWeapon()->SetOwenrID(INVALIDKEY);
+						target->GetWeapon()->SetPosition(target->GetPosition());
 						target->SetWeapon(nullptr);
 						pServer->GetPacketSender()->SendWeaponDropPacket(target->GetPosition(), roomid, weaponID);
 					}

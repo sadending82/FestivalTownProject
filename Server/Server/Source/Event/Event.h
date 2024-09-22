@@ -62,6 +62,7 @@ struct EV_HEART_BEAT : EVENT {
 struct EV_OBJECT_DROP : EVENT {
 	int roomID;
 	long long roomCode;
+	int objectType;
 };
 
 struct EV_BOMB_SPAWN : EVENT{
@@ -95,6 +96,7 @@ struct EV_PLAYER_RESPAWN : EVENT {
 struct EV_WEAPON_SPAWN : EVENT {
 	int roomID;
 	long long roomCode;
+	int weaponType;
 };
 
 struct EV_GROGGY_RECOVERY : EVENT {
@@ -110,9 +112,9 @@ bool PushEventGameMatching(Timer* pTimer);
 
 // InGameEvent
 bool PushEventGameStart(Timer* pTimer, int roomID, long long roomCode);
-bool PushEventBlockDrop(Timer* pTimer, int roomID, long long roomCode, int intervalSecond);
+bool PushEventBlockDrop(Timer* pTimer, int roomID, long long roomCode, int blockType, int intervalSecond);
 bool PushEventBombSpawn(Timer* pTimer, int roomID, long long roomCode, int intervalSecond);
-bool PushEventWeaponSpawn(Timer* pTimer, int roomID, long long roomCode, int intervalSecond);
+bool PushEventWeaponSpawn(Timer* pTimer, int roomID, long long roomCode, int weaponType, int intervalSecond);
 bool PushEventRemainTimeSync(Timer* pTimer, int roomID, long long roomCode);
 bool PushEventBombExplosion(Timer* pTimer, int roomID, int bombID, long long roomCode, int intervalSecond);
 bool PushEventTimeOverCheck(Timer* pTimer, int roomID, long long roomCode);

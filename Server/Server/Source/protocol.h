@@ -88,7 +88,8 @@ enum eWeaponType
 
 enum eBlockType
 {
-    
+    BT_BLOCK_2_2_2 = 3001,
+    BT_BLOCK_2_2_1 = 3002,
 };
 
 enum eAttackType

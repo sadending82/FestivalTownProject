@@ -25,11 +25,30 @@ public:
 		}
 
 		GameMode gameMode = room->GetGameMode();
-		int nextEventTime = pServer->GetTableManager()-> GetGameModeData()[gameMode].Weapon1_Spawn_Time; // seconds
-		int spawnCnt = pServer->GetTableManager()-> GetGameModeData()[gameMode].Weapon1_Spawn_Count + pServer->GetTableManager()->GetGameModeData()[gameMode].Weapon2_Spawn_Count;
+		GameModeInfo& modeInfo = pServer->GetTableManager()->GetGameModeData()[gameMode];
+		int weaponType = event->weaponType;
+		int nextEventTime = 0;
+		int spawnCnt = 0;
+		
+		switch (weaponType) {
+		case eWeaponType::WT_FRYING_PAN: {
+			nextEventTime = modeInfo.Weapon1_Spawn_Time; // seconds
+			spawnCnt = modeInfo.Weapon1_Spawn_Count;
+		}
+									   break;
+		case eWeaponType::WT_BAT: {
+			nextEventTime = modeInfo.Weapon2_Spawn_Time; // seconds
+			spawnCnt = modeInfo.Weapon2_Spawn_Count;
+		}
+								break;
+		default:
+		{
+			return;
+		}
+		}
 
-		PushEventWeaponSpawn(pServer->GetTimer(), event->roomID, event->roomCode, nextEventTime);
-		pServer->GetPacketSender()->SendWeaponSpawnPacket(roomid, spawnCnt);
+		PushEventWeaponSpawn(pServer->GetTimer(), event->roomID, event->roomCode, event->weaponType, nextEventTime);
+		pServer->GetPacketSender()->SendWeaponSpawnPacket(roomid, spawnCnt, weaponType);
 	}
 
 private:

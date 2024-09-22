@@ -96,6 +96,7 @@ bool Room::AddPlayer(Player* player)
 			player->SetPlayerState(ePlayerState::PS_ALIVE);
 			player->GetPlayerStateLock().unlock();
 			mPlayerRecordList[i].Init();
+			mPlayerRecordList[i].team = player->GetTeam();
 
 			return true;
 		}

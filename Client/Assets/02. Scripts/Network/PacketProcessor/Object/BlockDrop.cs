@@ -1,4 +1,5 @@
 ﻿using Google.FlatBuffers;
+using NetworkProtocol;
 using PacketTable.ObjectTable;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace Network.PacketProcessor
             int posY = Data.Pos.Value.Y;
             int objectID = Data.Id;
 
-            Managers.CubeObject.SpawnCube(posX, posY, objectID);
+            Managers.CubeObject.SpawnCube(posX, posY, (eBlockType)objectID);
         }
 
         

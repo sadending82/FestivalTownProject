@@ -59,8 +59,8 @@ public:
 					if (weapon->SetIsGrabbed(false) == true) {
 						int weaponID = weapon->GetID();
 						weapon->SetOwenrID(INVALIDKEY);
-						player->SetWeapon(nullptr);
 						weapon->SetPosition(player->GetPosition());
+						player->SetWeapon(nullptr);
 						pServer->GetPacketSender()->SendWeaponDropPacket(player->GetPosition(), roomid, weaponID);
 					}
 				}

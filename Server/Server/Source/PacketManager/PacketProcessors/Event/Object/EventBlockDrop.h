@@ -25,11 +25,32 @@ public:
 		}
 
 		GameMode gameMode = room->GetGameMode();
-		int nextEventTime = pServer->GetTableManager()->GetGameModeData()[gameMode].Block1_Spawn_Time; // seconds
-		int spawnCnt = pServer->GetTableManager()->GetGameModeData()[gameMode].Block1_Spawn_Count + pServer->GetTableManager()->GetGameModeData()[gameMode].Block2_Spawn_Count;
-		PushEventBlockDrop(pServer->GetTimer(), event->roomID, event->roomCode, nextEventTime);
 
-		pServer->GetPacketSender()->SendBlockDropPacket(event->roomID, spawnCnt);
+		GameModeInfo& modeInfo = pServer->GetTableManager()->GetGameModeData()[gameMode];
+
+		int blockType = event->objectType;
+		int nextEventTime = 0;
+		int spawnCnt = 0;
+
+		switch (blockType) {
+		case eBlockType::BT_BLOCK_2_2_2: {
+			nextEventTime = modeInfo.Block1_Spawn_Time; // seconds
+			spawnCnt = modeInfo.Block1_Spawn_Count;
+		}
+									   break;
+		case eBlockType::BT_BLOCK_2_2_1: {
+			nextEventTime = modeInfo.Block2_Spawn_Time; // seconds
+			spawnCnt = modeInfo.Block2_Spawn_Count;
+		}
+								break;
+		default:
+		{
+			return;
+		}
+		}
+		PushEventBlockDrop(pServer->GetTimer(), event->roomID, event->roomCode,blockType, nextEventTime);
+
+		pServer->GetPacketSender()->SendBlockDropPacket(event->roomID, spawnCnt, blockType);
 	}
 
 private:
