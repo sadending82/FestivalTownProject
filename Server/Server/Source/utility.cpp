@@ -15,8 +15,8 @@ std::vector<uint8_t> MakeBuffer(const int type, const uint8_t* data, const int s
 
 Vector3f ConvertVec3fToVec2i(Vector3f vec)
 {
-	float x = vec.x * (-1) + offsetX;
-	float z = vec.z * (-1) + offsetZ;
+	float x = vec.x;
+	float z = vec.z;
 
 	return Vector3f(std::trunc(x / BLOCKSIZE), 0, std::trunc(z / BLOCKSIZE));
 }
