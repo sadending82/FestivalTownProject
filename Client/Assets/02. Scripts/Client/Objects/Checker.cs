@@ -5,7 +5,6 @@ using UnityEngine;
 public class Checker : MonoBehaviour
 {
     private bool check;
-    public GameObject pusher;
 
     private PacketManager packetManager;
     private void Start()
@@ -22,17 +21,11 @@ public class Checker : MonoBehaviour
         {
             if (other.gameObject.tag == "Player")
             {
-                check = false;
-
                 if (Managers.Player.GetIsHost() == true)
                 {
                     CharacterStatus tPlayerState = other.gameObject.GetComponent<CharacterStatus>();
                     packetManager.SendPlayerCollisionToBlockPacket(tPlayerState.GetId());
                 }
-
-                // Pusher 작동
-                pusher.SetActive(true);
-                pusher.transform.position = new Vector3(this.transform.position.x, 5, this.transform.position.z);
             }
             if (other.gameObject.tag == "Bomb")
             {
@@ -47,6 +40,14 @@ public class Checker : MonoBehaviour
                 {
                     packetManager.SendWeaponDeletePacket(other.gameObject.GetComponent<Weapon>().GetId());
                 }
+            }
+            if (other.gameObject.tag == "Ground")
+            {
+                check = false;
+                GameObject pusher = Managers.Resource.Instantiate("CubePusher");
+                // Pusher 작동
+                pusher.transform.position = new Vector3(this.transform.position.x, 0, this.transform.position.z);
+                pusher.SetActive(true);
             }
         }
     }

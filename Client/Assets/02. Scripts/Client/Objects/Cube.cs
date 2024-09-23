@@ -18,12 +18,12 @@ public class Cube : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if(heightChecker == false)
+        if(heightChecker == true)
         {
-            if(this.transform.position.y<targetHeight)
+            if(this.transform.position.y < targetHeight)
             {
                 this.transform.position = new Vector3(this.transform.position.x, targetHeight, this.transform.position.z);
-                heightChecker = true;
+                heightChecker = false;
             }
         }
     }

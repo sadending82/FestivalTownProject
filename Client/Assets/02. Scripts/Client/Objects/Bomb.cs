@@ -67,7 +67,6 @@ public class Bomb : MonoBehaviour
 
         pusher.transform.position = transform.position;
         pusher.SetActive(true);
-        pusher.GetComponent<Pusher>().StartPush();
 
         GameObject sound = Managers.Resource.Instantiate("AudioSourceForDestroyingObj");
 

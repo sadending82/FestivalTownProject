@@ -6,12 +6,16 @@ public class Pusher : MonoBehaviour
 {
     public float maxScale = 3;
     public float pushSpeed = 0.5f;
+    public bool usePushY = false;
     private bool isStartPush = false;
 
+    private void OnEnable()
+    {
+        StartPush();
+    }
     public void StartPush()
     {
         isStartPush = true;
-        this.transform.localScale = Vector3.zero;
     }
     private void FixedUpdate()
     {
@@ -22,7 +26,14 @@ public class Pusher : MonoBehaviour
     }
     private void GetBigger()
     {
-        this.transform.localScale += new Vector3(pushSpeed, pushSpeed, pushSpeed);
+        if (usePushY == true)
+        {
+            this.transform.localScale += new Vector3(pushSpeed, pushSpeed, pushSpeed);
+        }
+        else
+        {
+            this.transform.localScale += new Vector3(pushSpeed, 0, pushSpeed);
+        }
         if(this.transform.localScale.x >= maxScale)
         {
             DeletePusher();
@@ -31,7 +42,14 @@ public class Pusher : MonoBehaviour
     private void DeletePusher()
     {
         isStartPush = false;
-        this.transform.localScale = Vector3.zero;
-        Managers.Resource.Destroy(this.gameObject);
+        if (usePushY == true)
+        {
+            this.transform.localScale = Vector3.zero;
+        }
+        else
+        {
+            this.transform.localScale = new Vector3(0, this.transform.localScale.y, 0);
+        }
+        this.gameObject.SetActive(false);
     }
 }
