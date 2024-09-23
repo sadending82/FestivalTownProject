@@ -25,14 +25,49 @@ public:
 				return;
 			}
 
-			// 팀킬 예외처리
-			if (target->GetTeam() == attacker->GetTeam()) {
+			// 데미지 계산
+			TableManager* tableManager = pServer->GetTableManager();
+			CharacterStat& attackerStat = tableManager->GetCharacterStats()[(int)attacker->GetChacracterType()];
+
+			target->GetPlayerStateLock().lock();
+			int damageAmount = 0;
+
+			switch (read->attack_type()) {
+			case eDamageType::AT_FALLDOWN: {
+				damageAmount = 9999999;
+				// 아래 코드들이 살아있는 상태에서 적용되기 때문에 일단 그로기에서 살아있는 상태로 바꿈
+				if (target->GetPlayerState() == ePlayerState::PS_GROGGY) {
+					target->SetPlayerState(ePlayerState::PS_ALIVE);
+				}
+			}break;
+
+			case eDamageType::AT_BASIC_ATTACK: {
+				damageAmount += attackerStat.strength;
+			}break;
+
+			case eDamageType::AT_WEAPON_ATTACK: {
+
+				if (attacker->GetWeapon() == nullptr) {
+					target->GetPlayerStateLock().unlock();
+					room->GetPlayerListLock().unlock_shared();
+					return;
+				}
+
+				damageAmount += attackerStat.strength + tableManager->GetWeaponStats()[(int)attacker->GetWeapon()->GetType()].Weapon_Power;
+			}break;
+
+			case eDamageType::AT_BOMB_ATTACK: {
+				damageAmount += 20; // 임시
+			}break;
+
+			default: {
+				target->GetPlayerStateLock().unlock();
 				room->GetPlayerListLock().unlock_shared();
 				return;
+			}break;
 			}
 
 			// 살아있는지 확인
-			target->GetPlayerStateLock().lock();
 			if (target->GetPlayerState() != ePlayerState::PS_ALIVE) {
 				target->GetPlayerStateLock().unlock();
 				room->GetPlayerListLock().unlock_shared();
@@ -60,23 +95,7 @@ public:
 				PushEventGroggyRecovery(pServer->GetTimer(), target_id, roomid, room->GetRoomCode(), target->GroggyRecoverTime());
 			}
 
-			TableManager* tableManager = pServer->GetTableManager();
-			CharacterStat& attackerStat = tableManager->GetCharacterStats()[(int)attacker->GetChacracterType()];
-			WeaponStat& attackerWeaponStat = tableManager->GetWeaponStats()[(int)attacker->GetWeapon()->GetType()];
-
-			// 데미지 계산
-			int damageAmount = 0;
-			if (read->attack_type() == AT_FALLDOWN) {
-				// 낙사 시 즉사
-				damageAmount = 9999999;
-			}
-			else {
-				damageAmount += attackerStat.strength; // 임시
-				if (attacker->GetWeapon() != nullptr) {
-					damageAmount += attackerWeaponStat.Weapon_Power;
-				}
-			}
-
+			// 데미지 적용
 			target->ReduceHP(damageAmount);
 
 			if (target->GetHP() <= 0) {
@@ -106,8 +125,8 @@ public:
 				Vector3f knockback_direction(read->knockback_direction()->x(), read->knockback_direction()->y(), read->knockback_direction()->z());
 				pServer->GetPacketSender()->SendPlayerCalculatedDamage(target_id, roomid, read->attack_type(), target->GetHP(), damageAmount, knockback_direction);
 			}
-			target->GetPlayerStateLock().unlock();
 
+			target->GetPlayerStateLock().unlock();
 			room->GetPlayerListLock().unlock_shared();
 		}
 	}

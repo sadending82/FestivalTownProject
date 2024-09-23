@@ -68,7 +68,7 @@ public class Weapon : MonoBehaviour
                 Vector3 attackedDirection = playerState.GetAttackedDirection(collision.transform.position);
                 int targetId = collision.transform.GetComponentInParent<CharacterStatus>().GetId();
 
-                packetManager.SendPlayerDamageReceivePacket(playerState.GetId(), targetId, weaponType, eDamageType.AT_WEAPON, attackedDirection);
+                packetManager.SendPlayerDamageReceivePacket(playerState.GetId(), targetId, weaponType, eDamageType.AT_WEAPON_ATTACK, attackedDirection);
             }
         }
     }

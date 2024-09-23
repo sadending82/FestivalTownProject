@@ -93,10 +93,12 @@ enum eBlockType
     BT_BLOCK_2_2_1 = 3002,
 };
 
-enum eAttackType
+enum eDamageType
 {
     AT_FALLDOWN,
-    AT_BASIC
+    AT_BOMB_ATTACK,
+    AT_BASIC_ATTACK,
+    AT_WEAPON_ATTACK,
 };
 
 enum UpperBodyAnimationState

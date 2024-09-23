@@ -44,7 +44,7 @@ public class Pusher : MonoBehaviour
                 // 폭탄이 플레이어 밀어낼 때 -> 다른 곳에도 Pusher 쓸거면 수정해야함
                 else
                 {
-                    packetManager.SendPlayerDamageReceivePacket(tPlayerState.GetId(), tPlayerState.GetId(), -1, eDamageType.AT_BOMBATTACK, Vector3.zero);
+                    packetManager.SendPlayerDamageReceivePacket(tPlayerState.GetId(), tPlayerState.GetId(), -1, eDamageType.AT_BOMB_ATTACK, Vector3.zero);
                 }
             }
         }
