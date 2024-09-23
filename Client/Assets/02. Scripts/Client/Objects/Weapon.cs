@@ -53,7 +53,7 @@ public class Weapon : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if(Managers.Player.GetIsHost() == true && this.transform.position.y <= -10f)
+        if(Managers.Player.GetIsHost() == true && this.transform.position.y <= -5f)
         {
             packetManager.SendWeaponDeletePacket(Id);
         }

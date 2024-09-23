@@ -1356,7 +1356,7 @@ MonoBehaviour:
   headRig: {fileID: 71571893083169489}
   attackedStrength: 50
   pelvis: {fileID: 4437203293968950405}
-  Hitbox: {fileID: 2672182746622162311}
+  hitbox: {fileID: 2672182746622162311}
 --- !u!114 &7513450559464735725
 MonoBehaviour:
   m_ObjectHideFlags: 0
