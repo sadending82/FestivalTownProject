@@ -27,6 +27,7 @@ public:
 
 			player->GetPlayerStateLock().lock();
 			ePlayerState playerState = player->GetPlayerState();
+
 			if (playerState == ePlayerState::PS_ALIVE) {
 				// 그로기 상태로 만듬
 				player->SetPlayerState(ePlayerState::PS_GROGGY);
@@ -71,6 +72,8 @@ public:
 				int spawnTime = pServer->GetTableManager()->GetGameModeData()[room->GetGameMode()].Player_Spawn_Time;
 				PushEventPlayerRespawn(pServer->GetTimer(), playerid, roomid, roomCode, spawnTime);
 			}
+
+			player->GetPlayerStateLock().unlock();
 		}
 	}
 
