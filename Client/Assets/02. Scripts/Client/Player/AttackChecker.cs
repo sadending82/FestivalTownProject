@@ -41,7 +41,7 @@ public class AttackChecker : MonoBehaviour
 
                 Debug.Log("³ª " + playerState.GetId() + " ÀÎµ¥ ¾ê " + targetId + " ÃÆ¾î");
 
-                packetManager.SendPlayerDamageReceivePacket(playerState.GetId(), targetId, (int)eWeaponType.WT_HAND, eAttackType.AT_BASIC, attackedDirection);
+                packetManager.SendPlayerDamageReceivePacket(playerState.GetId(), targetId, (int)eWeaponType.WT_HAND, eDamageType.AT_BASIC, attackedDirection);
             }
         }
     }

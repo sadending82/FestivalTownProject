@@ -695,7 +695,7 @@ public class PlayerController : MonoBehaviour
     {
         if(pelvis.transform.position.y < -10f)
         {
-            packetManager.SendPlayerDamageReceivePacket(playerStatus.GetId(), playerStatus.GetId(), 1, eAttackType.AT_FALLDOWN, Vector3.zero);
+            packetManager.SendPlayerDamageReceivePacket(playerStatus.GetId(), playerStatus.GetId(), -1, eDamageType.AT_FALLDOWN, Vector3.zero);
         }
     }
 

@@ -1,3 +1,4 @@
+using NetworkProtocol;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,8 +10,11 @@ public class Pusher : MonoBehaviour
     public bool usePushY = false;
     private bool isStartPush = false;
 
+    private PacketManager packetManager;
+
     private void OnEnable()
     {
+        packetManager = Managers.Network.GetPacketManager();
         StartPush();
     }
     public void StartPush()
@@ -22,6 +26,27 @@ public class Pusher : MonoBehaviour
         if (isStartPush == true)
         {
             GetBigger();
+        }
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "HitBox")
+        {
+            CharacterStatus tPlayerState = collision.transform.GetComponentInParent<CharacterStatus>();
+
+            if (tPlayerState.GetAmIPlayer() == true)
+            {
+                // 큐브가 플레이어 밀어낼 때 -> 다른 곳에도 Pusher 쓸거면 수정해야함
+                if (usePushY == false)
+                {
+                    packetManager.SendPlayerCollisionToBlockPacket(tPlayerState.GetId());
+                }
+                // 폭탄이 플레이어 밀어낼 때 -> 다른 곳에도 Pusher 쓸거면 수정해야함
+                else
+                {
+                    packetManager.SendPlayerDamageReceivePacket(tPlayerState.GetId(), tPlayerState.GetId(), -1, eDamageType.AT_BOMBATTACK, Vector3.zero);
+                }
+            }
         }
     }
     private void GetBigger()
@@ -51,5 +76,6 @@ public class Pusher : MonoBehaviour
             this.transform.localScale = new Vector3(0, this.transform.localScale.y, 0);
         }
         this.gameObject.SetActive(false);
+        Managers.Resource.Destroy(this.gameObject);
     }
 }

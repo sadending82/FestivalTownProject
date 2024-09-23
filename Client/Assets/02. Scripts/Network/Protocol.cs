@@ -109,10 +109,12 @@ namespace NetworkProtocol
     };
 
 
-    public enum eAttackType
+    public enum eDamageType
     {
         AT_FALLDOWN,
-        AT_BASIC
+        AT_BOMBATTACK,
+        AT_BASIC,
+        AT_WEAPON,
     };
 }
 

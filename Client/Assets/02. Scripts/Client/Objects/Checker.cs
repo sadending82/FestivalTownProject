@@ -19,14 +19,6 @@ public class Checker : MonoBehaviour
     {
         if (check == true)
         {
-            if (other.gameObject.tag == "Player")
-            {
-                if (Managers.Player.GetIsHost() == true)
-                {
-                    CharacterStatus tPlayerState = other.gameObject.GetComponent<CharacterStatus>();
-                    packetManager.SendPlayerCollisionToBlockPacket(tPlayerState.GetId());
-                }
-            }
             if (other.gameObject.tag == "Bomb")
             {
                 if (Managers.Player.GetIsHost() == true)
@@ -43,7 +35,6 @@ public class Checker : MonoBehaviour
             }
             if (other.gameObject.tag == "Ground")
             {
-                check = false;
                 GameObject pusher = Managers.Resource.Instantiate("CubePusher");
                 // Pusher ¿€µø
                 pusher.transform.position = new Vector3(this.transform.position.x, 0, this.transform.position.z);
