@@ -243,6 +243,7 @@ public class CharacterStatus : MonoBehaviour
         SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
         SetLowerBodyAnimationState(LowerBodyAnimationState.IDLE);
         SetIsHaveBomb(false);
+        SetIsHaveWeapon(false);
 
         playerController.ResetPlayerControllerSetting();
     }

@@ -119,6 +119,12 @@ public class Bomb : MonoBehaviour
 
         PickUpOff();
     }
+    public void Drop(Vector3 position)
+    {
+        this.transform.position = position;
+        SetRigidBodyBasic();
+        PickUpOff();
+    }
 
     private void SetRigidBodyPickUp()
     {
