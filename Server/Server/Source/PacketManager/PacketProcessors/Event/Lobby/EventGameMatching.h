@@ -22,10 +22,21 @@ public:
             s->GetStateLock().unlock();
         }
 
-        int playerCount = readyPlayers.size();
+        int waitingPlayerCount = readyPlayers.size();
+        std::unordered_map<GameMode, GameModeInfo>& gameModeInfos = pServer->GetTableManager()->GetGameModeData();
 
-        while(playerCount >= MINPLAYER) {
-            int roomid = pServer->CreateNewRoom((playerCount > MAXPLAYER) ? MAXPLAYER : playerCount, GameMode::FITH_Team_Battle_6);
+        while(waitingPlayerCount >= MINPLAYER) {
+            GameMode gameMode = GameMode::FITH_Team_Battle_6;
+
+            for (auto iter = gameModeInfos.begin(); iter != gameModeInfos.end(); iter++) {
+                if (waitingPlayerCount == iter->second.Player_Count) {
+                    gameMode = iter->first;
+                    break;
+                }
+            }
+            int playerCount = gameModeInfos[gameMode].Player_Count;
+
+            int roomid = pServer->CreateNewRoom(playerCount, gameMode);
             if (roomid == INVALIDKEY) {
                 std::cout << "Fali Create New Room\n";
                 break;
@@ -39,11 +50,10 @@ public:
                 }
                 playerList.push_back(readyPlayers.top().second);
                 readyPlayers.pop();
-                playerCount--;
             }
-
+            waitingPlayerCount = readyPlayers.size();
             pServer->MatchingComplete(roomid, playerCount, playerList);
-            std::cout << "Start Game room - " << roomid << std::endl;
+            std::cout << "Start Game room - " << roomid << "| GameMode - " << gameMode << std::endl;
         }
 
         PushEventGameMatching(pServer->GetTimer());

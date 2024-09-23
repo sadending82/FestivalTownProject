@@ -30,19 +30,33 @@ void TestThread::RunWorker()
             if (playerCnt == 0) {
                 continue;
             }
-            std::queue<Player*> readyPlayers;
-            for (Session* s : m_pServer->GetSessions()) {
+            std::priority_queue<std::pair<int, Player*>
+                , std::vector<std::pair<int, Player*>>
+                , std::greater<std::pair<int, Player*>>> readyPlayers;
+
+            for (Session* s :m_pServer->GetSessions()) {
                 s->GetStateLock().lock();
                 if (s->GetState() == eSessionState::ST_MATCHWAITING) {
-                    readyPlayers.push(dynamic_cast<Player*>(s));
+                    readyPlayers.push({ s->GetMatchingRequestTime(), dynamic_cast<Player*>(s) });
                 }
                 s->GetStateLock().unlock();
             }
 
-            int playerCount = readyPlayers.size();
+            int waitingPlayerCount = readyPlayers.size();
+            std::unordered_map<GameMode, GameModeInfo>& gameModeInfos = m_pServer->GetTableManager()->GetGameModeData();
 
             while (!readyPlayers.empty()) {
-                int roomid = m_pServer->CreateNewRoom((playerCount > MAXPLAYER) ? MAXPLAYER : playerCount, GameMode::FITH_Team_Battle_6);
+                GameMode gameMode = GameMode::FITH_Team_Battle_6;
+
+                for (auto iter = gameModeInfos.begin(); iter != gameModeInfos.end(); iter++) {
+                    if (waitingPlayerCount == iter->second.Player_Count) {
+                        gameMode = iter->first;
+                        break;
+                    }
+                }
+                int playerCount = gameModeInfos[gameMode].Player_Count;
+
+                int roomid = m_pServer->CreateNewRoom(playerCount, gameMode);
                 if (roomid == INVALIDKEY) {
                     std::cout << "Fali Create New Room\n";
                     break;
@@ -54,14 +68,15 @@ void TestThread::RunWorker()
                     if (readyPlayers.empty()) {
                         break;
                     }
-                    playerList.push_back(readyPlayers.front());
+                    playerList.push_back(readyPlayers.top().second);
                     readyPlayers.pop();
-                    playerCount--;
                 }
-
+                waitingPlayerCount = readyPlayers.size();
                 m_pServer->MatchingComplete(roomid, playerCount, playerList);
-                std::cout << "Start Game room - " << roomid << std::endl;
+                std::cout << "Start Game room - " << roomid << "| GameMode - " << gameMode << std::endl;
             }
+
+            PushEventGameMatching(m_pServer->GetTimer());
         }
         break;
             // 라이프 감소 전송

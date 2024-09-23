@@ -76,11 +76,14 @@ namespace NetworkProtocol
         C2S_GAME_READY
     };
 
-    public enum GameCode
+    public enum GameMode
     {
-        FITH_Team_battle_One,
-        FITH_Team_battle_Two,
-        FITH_Team_battle_Three,
+        INVALUE_MODE = 0,
+        FITH_Indiv_Battle_2 = 111,
+        FITH_Indiv_Battle_3 = 112,
+        FITH_Indiv_Battle_5 = 113,
+        FITH_Team_Battle_4 = 121,
+        FITH_Team_Battle_6 = 122
     };
 
     public enum ePlayerMoveState

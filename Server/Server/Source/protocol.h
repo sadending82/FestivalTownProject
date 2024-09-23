@@ -63,6 +63,7 @@ enum ePacketType
 };
 
 enum GameMode {
+    INVALUE_MODE = 0,
     FITH_Indiv_Battle_2 = 111,
     FITH_Indiv_Battle_3 = 112,
     FITH_Indiv_Battle_5 = 113,

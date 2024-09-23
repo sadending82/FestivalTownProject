@@ -24,6 +24,11 @@ public:
 				return;
 			}
 
+			// 팀킬 예외처리
+			if (target->GetTeam() == attacker->GetTeam()) {
+				return;
+			}
+
 			// 살아있는지 확인
 			target->GetPlayerStateLock().lock();
 			if (target->GetPlayerState() != ePlayerState::PS_ALIVE) {
@@ -46,6 +51,7 @@ public:
 
 			target->ReduceHP(damageAmount);
 
+			// 사망 처리
 			if (target->GetHP() <= 0) {
 				target->SetPlayerState(ePlayerState::PS_DEAD);
 				int spawnTime = pServer->GetTableManager()->GetGameModeData()[room->GetGameMode()].Player_Spawn_Time;

@@ -34,7 +34,7 @@ public:
 	std::array<Weapon*, MAXOBJECT>& GetWeaponList() { return mWeaponList; }
 	void GetAllObjects(std::vector<Object*>& objectList);
 	int GetPlayerCnt() { return mPlayerCnt; }
-	int GetReadyCnt() { return mPlayerCnt; }
+	int GetReadyCnt() { return mReadyCnt; }
 	int GetPlayerLimit() { return mPlayerLimit; }
 	GameMode GetGameMode() { return mGameMode; }
 	Map* GetMap() { return mMap; }
@@ -51,7 +51,7 @@ public:
 	
 
 	void AddPlayerCnt() { mPlayerCnt++; }
-	void AddReadyCnt() { mPlayerCnt++; }
+	void AddReadyCnt() { mReadyCnt++; }
 	void SetPlayerLimit(int num) { mPlayerLimit = num; }
 	void SetGameMode(GameMode GameMode) { mGameMode = GameMode; }
 	void SetStartTime(TIMEPOINT time) { mStartTime = time; }

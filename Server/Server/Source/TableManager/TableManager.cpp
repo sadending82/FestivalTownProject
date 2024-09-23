@@ -202,6 +202,8 @@ void TableManager::ReadGameModeTable()
                     row[GameModeOut_Field::Team_Color].value<int>(),
                     row[GameModeOut_Field::Play_Map].value<int>()
                 };
+
+               MapListByMode[(GameMode)index].push_back(MapCode::TEST);
             }
 
             idx++;

@@ -12,7 +12,7 @@ std::vector<uint8_t> PacketMaker::MakePlayerAddPacket(std::array<class Player*, 
 			continue;
 		}
 		Vector3f position = player->GetPosition();
-		auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, position.x, position.y, position.x);
+		auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, position.x, position.y, position.z);
 		auto dir = PacketTable::UtilitiesTable::CreateVec3f(Builder, 0, 0, 0);
 		auto pInfo = PacketTable::PlayerTable::CreatePlayerInfo(Builder
 			, player->GetInGameID()
