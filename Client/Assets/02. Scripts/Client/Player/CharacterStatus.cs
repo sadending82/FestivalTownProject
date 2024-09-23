@@ -56,7 +56,7 @@ public class CharacterStatus : MonoBehaviour
     // 레이어 관련
     [Header("--- LayerControl ---")]
     public GameObject pelvis;
-    public GameObject Hitbox;
+    public GameObject hitbox;
 
     private void Awake()
     {
@@ -106,7 +106,7 @@ public class CharacterStatus : MonoBehaviour
     {
         string layerName = "Player" + id;
         int layer = LayerMask.NameToLayer(layerName);
-        Hitbox.layer = layer;
+        hitbox.layer = layer;
 
         ChangeLayerRecursively(pelvis, layer);
     }
@@ -244,6 +244,7 @@ public class CharacterStatus : MonoBehaviour
         SetLowerBodyAnimationState(LowerBodyAnimationState.IDLE);
         SetIsHaveBomb(false);
         SetIsHaveWeapon(false);
+        GroggyOff();
 
         playerController.ResetPlayerControllerSetting();
     }

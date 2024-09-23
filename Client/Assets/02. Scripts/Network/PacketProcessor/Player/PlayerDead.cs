@@ -21,7 +21,5 @@ namespace Network.PacketProcessor
             CharacterStatus pState = Managers.Player.GetPlayers().transform.GetChild(targetId).GetComponent<CharacterStatus>();
             pState.SetIsDie(true);
         }
-
-        
     }
 }

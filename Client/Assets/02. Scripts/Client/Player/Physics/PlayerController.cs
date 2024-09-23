@@ -92,6 +92,7 @@ public class PlayerController : MonoBehaviour
     {
         if (playerStatus.GetIsDie() == false)
         {
+            FallDownCheck();
             // 살아있고 그로기 상태가 아님
             if (playerStatus.GetIsGroggy() == false)
             {
@@ -143,7 +144,6 @@ public class PlayerController : MonoBehaviour
                     }
                 }
             }
-            FallDownCheck();
         }
     }
     private void Update()
@@ -693,7 +693,7 @@ public class PlayerController : MonoBehaviour
     }
     private void FallDownCheck()
     {
-        if(pelvis.transform.position.y < -10f)
+        if(pelvis.transform.position.y < -5f)
         {
             packetManager.SendPlayerDamageReceivePacket(playerStatus.GetId(), playerStatus.GetId(), -1, eDamageType.AT_FALLDOWN, Vector3.zero);
         }
