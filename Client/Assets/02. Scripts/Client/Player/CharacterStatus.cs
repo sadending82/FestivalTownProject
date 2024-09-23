@@ -285,16 +285,22 @@ public class CharacterStatus : MonoBehaviour
 
     public void GroggyOn()
     {
-        SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
-        SetLowerBodyAnimationState(LowerBodyAnimationState.IDLE);
-        isGroggy = true;
-        animationMoudule.GroggyOn();
+        if (isGroggy == false)
+        {
+            SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
+            SetLowerBodyAnimationState(LowerBodyAnimationState.IDLE);
+            isGroggy = true;
+            animationMoudule.GroggyOn();
+        }
     }
     public void GroggyOff()
     {
-        isGroggy = false;
-        SetStamina(maxStamina);
-        animationMoudule.GroggyOff();
+        if (isGroggy == true)
+        {
+            isGroggy = false;
+            SetStamina(maxStamina);
+            animationMoudule.GroggyOff();
+        }
     }
     public bool GetIsGroggy()
     {
