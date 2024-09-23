@@ -67,6 +67,9 @@ public class PlayerController : MonoBehaviour
     [Header("--- Respawn ---")]
     private float createHeight = 4;
 
+    //Test
+    private int c = 0;
+
     private void Awake()
     {
         ResetPlayerControllerSetting();
@@ -145,16 +148,25 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
-        // 그로기 테스트
-        if (Input.GetKeyUp(KeyCode.G) && amIPlayer == true)
+        // 테스트
+        if (amIPlayer == true)
         {
-            if(playerStatus.GetIsGroggy() == false)
+            if (Input.GetKeyUp(KeyCode.G))
             {
-                playerStatus.SetStamina(0);
+                if (playerStatus.GetIsGroggy() == false)
+                {
+                    playerStatus.SetStamina(0);
+                }
+                else
+                {
+                    playerStatus.SetStamina(100);
+                }
             }
-            else
+            if (Input.GetKeyUp(KeyCode.T))
             {
-                playerStatus.SetStamina(100);
+                Managers.CubeObject.SpawnCube(c, c, 0);
+                c++;
+                c %= 10;
             }
         }
 
@@ -691,10 +703,6 @@ public class PlayerController : MonoBehaviour
     {
         playerStatus.SetIsDie(false);
 
-        // 위치 단위 맞추기
-        x *= -1;
-        z *= -1;
-
         SetDirectionByTeam();
 
         Vector3 targetPos = new Vector3(x, createHeight, z);
@@ -780,12 +788,12 @@ public class PlayerController : MonoBehaviour
         {
             case 0:
                 {
-                    stabilizer.transform.eulerAngles = new Vector3(0.0f, 270f, 0.0f);
+                    stabilizer.transform.eulerAngles = new Vector3(0.0f, 90f, 0.0f);
                 }
                 break;
             case 1:
                 {
-                    stabilizer.transform.eulerAngles = new Vector3(0.0f, 90f, 0.0f);
+                    stabilizer.transform.eulerAngles = new Vector3(0.0f, 270f, 0.0f);
                 }
                 break;
             default:

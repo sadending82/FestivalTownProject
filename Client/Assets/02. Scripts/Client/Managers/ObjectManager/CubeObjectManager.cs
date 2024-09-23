@@ -57,8 +57,8 @@ public class CubeObjectManager : MonoBehaviour
         }
         GameObject reusedCube = null;
         // 단위 맞춰주기
-        x *= -2;
-        y *= -2;
+        x *= 2;
+        y *= 2;
 
         reusedCube = Managers.ObjectPool.Pop(Managers.ObjectPool.GetOrigin("Cube"), cubes.transform).gameObject;
 
@@ -67,7 +67,7 @@ public class CubeObjectManager : MonoBehaviour
         // 타입에 해당하는 큐브 활성화, 포지션 설정
         reusedCube.gameObject.transform.GetChild(iType).gameObject.SetActive(true);
         reusedCube.gameObject.transform.GetChild(iType).gameObject.GetComponent<Cube>().SetTargetHeight(targetHeight);
-        reusedCube.gameObject.transform.GetChild(iType).gameObject.transform.position = new Vector3(x - 1, createHeight, y - 1);
+        reusedCube.gameObject.transform.GetChild(iType).gameObject.transform.position = new Vector3(x + 1, createHeight, y + 1);
 
         Managers.Sound.Play3D("Sfx_Block_Falling", reusedCube);
     }

@@ -27,9 +27,6 @@ public class WeaponObjectManager : MonoBehaviour
             return;
         }
 
-        // 단위 맞춰주기
-        x *= -1;
-        z *= -1;
         GameObject reusedWeapon = null;
 
         switch(type)

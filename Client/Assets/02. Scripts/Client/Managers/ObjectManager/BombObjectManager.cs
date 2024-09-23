@@ -28,9 +28,6 @@ public class BombObjectManager : MonoBehaviour
             return;
         }
 
-        // 단위 맞춰주기
-        x *= -1;
-        z *= -1;
         GameObject reusedBomb = null;
 
         reusedBomb = Managers.ObjectPool.Pop(Managers.ObjectPool.GetOrigin("Bomb"), bombs.transform).gameObject;
