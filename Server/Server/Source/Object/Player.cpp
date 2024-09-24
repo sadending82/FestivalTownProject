@@ -43,7 +43,6 @@ void Player::ChangeToGroggyState(Server* pServer, int roomID)
 {
 	mPlayerStateLock.lock();
 	mPlayerState = ePlayerState::PS_GROGGY;
-	mPlayerStateLock.unlock();
 	mGroggyCount++;
 
 	pServer->GetPacketSender()->SendPlayerGroggyPacket(mInGameID, roomID);
@@ -58,13 +57,13 @@ void Player::ChangeToGroggyState(Server* pServer, int roomID)
 			pServer->GetPacketSender()->SendWeaponDropPacket(mPosition, roomID, weaponID);
 		}
 	}
+	mPlayerStateLock.unlock();
 }
 
 void Player::ChangeToDeadState(Server* pServer, int roomID)
 {
 	mPlayerStateLock.lock();
 	mPlayerState = ePlayerState::PS_DEAD;
-	mPlayerStateLock.unlock();
 
 	pServer->GetPacketSender()->SendPlayerDeadPacket(mInGameID, roomID);
 
@@ -73,9 +72,10 @@ void Player::ChangeToDeadState(Server* pServer, int roomID)
 		if (mWeapon->SetIsGrabbed(false) == true) {
 			int weaponID = mWeapon->GetID();
 			mWeapon->SetOwenrID(INVALIDKEY);
-			mWeapon = nullptr;
 			mWeapon->SetPosition(mPosition);
+			mWeapon = nullptr;
 			pServer->GetPacketSender()->SendWeaponDropPacket(mPosition, roomID, weaponID);
 		}
 	}
+	mPlayerStateLock.unlock();
 }

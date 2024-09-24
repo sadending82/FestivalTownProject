@@ -72,6 +72,12 @@ struct PlayerGroggyBuilder;
 struct PlayerGroggyRecovery;
 struct PlayerGroggyRecoveryBuilder;
 
+struct PlayerGrabOtherPlayer;
+struct PlayerGrabOtherPlayerBuilder;
+
+struct PlayerThrowOtherPlayer;
+struct PlayerThrowOtherPlayerBuilder;
+
 struct PlayerPos FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef PlayerPosBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -1291,6 +1297,196 @@ inline ::flatbuffers::Offset<PlayerGroggyRecovery> CreatePlayerGroggyRecovery(
     int32_t recovery_value = 0) {
   PlayerGroggyRecoveryBuilder builder_(_fbb);
   builder_.add_recovery_value(recovery_value);
+  builder_.add_id(id);
+  return builder_.Finish();
+}
+
+struct PlayerGrabOtherPlayer FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef PlayerGrabOtherPlayerBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ID = 4,
+    VT_POS = 6,
+    VT_DIRECTION = 8,
+    VT_OTHER_PLAYER_ID = 10,
+    VT_OTHER_PLAYER_POS = 12,
+    VT_OTHER_PLAYER_DIRECTION = 14
+  };
+  int32_t id() const {
+    return GetField<int32_t>(VT_ID, 0);
+  }
+  const PacketTable::UtilitiesTable::Vec3f *pos() const {
+    return GetPointer<const PacketTable::UtilitiesTable::Vec3f *>(VT_POS);
+  }
+  const PacketTable::UtilitiesTable::Vec3f *direction() const {
+    return GetPointer<const PacketTable::UtilitiesTable::Vec3f *>(VT_DIRECTION);
+  }
+  int32_t other_player_id() const {
+    return GetField<int32_t>(VT_OTHER_PLAYER_ID, 0);
+  }
+  const PacketTable::UtilitiesTable::Vec3f *other_player_pos() const {
+    return GetPointer<const PacketTable::UtilitiesTable::Vec3f *>(VT_OTHER_PLAYER_POS);
+  }
+  const PacketTable::UtilitiesTable::Vec3f *other_player_direction() const {
+    return GetPointer<const PacketTable::UtilitiesTable::Vec3f *>(VT_OTHER_PLAYER_DIRECTION);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_ID, 4) &&
+           VerifyOffset(verifier, VT_POS) &&
+           verifier.VerifyTable(pos()) &&
+           VerifyOffset(verifier, VT_DIRECTION) &&
+           verifier.VerifyTable(direction()) &&
+           VerifyField<int32_t>(verifier, VT_OTHER_PLAYER_ID, 4) &&
+           VerifyOffset(verifier, VT_OTHER_PLAYER_POS) &&
+           verifier.VerifyTable(other_player_pos()) &&
+           VerifyOffset(verifier, VT_OTHER_PLAYER_DIRECTION) &&
+           verifier.VerifyTable(other_player_direction()) &&
+           verifier.EndTable();
+  }
+};
+
+struct PlayerGrabOtherPlayerBuilder {
+  typedef PlayerGrabOtherPlayer Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_id(int32_t id) {
+    fbb_.AddElement<int32_t>(PlayerGrabOtherPlayer::VT_ID, id, 0);
+  }
+  void add_pos(::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> pos) {
+    fbb_.AddOffset(PlayerGrabOtherPlayer::VT_POS, pos);
+  }
+  void add_direction(::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> direction) {
+    fbb_.AddOffset(PlayerGrabOtherPlayer::VT_DIRECTION, direction);
+  }
+  void add_other_player_id(int32_t other_player_id) {
+    fbb_.AddElement<int32_t>(PlayerGrabOtherPlayer::VT_OTHER_PLAYER_ID, other_player_id, 0);
+  }
+  void add_other_player_pos(::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> other_player_pos) {
+    fbb_.AddOffset(PlayerGrabOtherPlayer::VT_OTHER_PLAYER_POS, other_player_pos);
+  }
+  void add_other_player_direction(::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> other_player_direction) {
+    fbb_.AddOffset(PlayerGrabOtherPlayer::VT_OTHER_PLAYER_DIRECTION, other_player_direction);
+  }
+  explicit PlayerGrabOtherPlayerBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<PlayerGrabOtherPlayer> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<PlayerGrabOtherPlayer>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<PlayerGrabOtherPlayer> CreatePlayerGrabOtherPlayer(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t id = 0,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> pos = 0,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> direction = 0,
+    int32_t other_player_id = 0,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> other_player_pos = 0,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> other_player_direction = 0) {
+  PlayerGrabOtherPlayerBuilder builder_(_fbb);
+  builder_.add_other_player_direction(other_player_direction);
+  builder_.add_other_player_pos(other_player_pos);
+  builder_.add_other_player_id(other_player_id);
+  builder_.add_direction(direction);
+  builder_.add_pos(pos);
+  builder_.add_id(id);
+  return builder_.Finish();
+}
+
+struct PlayerThrowOtherPlayer FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef PlayerThrowOtherPlayerBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ID = 4,
+    VT_POS = 6,
+    VT_DIRECTION = 8,
+    VT_OTHER_PLAYER_ID = 10,
+    VT_OTHER_PLAYER_POS = 12,
+    VT_OTHER_PLAYER_DIRECTION = 14
+  };
+  int32_t id() const {
+    return GetField<int32_t>(VT_ID, 0);
+  }
+  const PacketTable::UtilitiesTable::Vec3f *pos() const {
+    return GetPointer<const PacketTable::UtilitiesTable::Vec3f *>(VT_POS);
+  }
+  const PacketTable::UtilitiesTable::Vec3f *direction() const {
+    return GetPointer<const PacketTable::UtilitiesTable::Vec3f *>(VT_DIRECTION);
+  }
+  int32_t other_player_id() const {
+    return GetField<int32_t>(VT_OTHER_PLAYER_ID, 0);
+  }
+  const PacketTable::UtilitiesTable::Vec3f *other_player_pos() const {
+    return GetPointer<const PacketTable::UtilitiesTable::Vec3f *>(VT_OTHER_PLAYER_POS);
+  }
+  const PacketTable::UtilitiesTable::Vec3f *other_player_direction() const {
+    return GetPointer<const PacketTable::UtilitiesTable::Vec3f *>(VT_OTHER_PLAYER_DIRECTION);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_ID, 4) &&
+           VerifyOffset(verifier, VT_POS) &&
+           verifier.VerifyTable(pos()) &&
+           VerifyOffset(verifier, VT_DIRECTION) &&
+           verifier.VerifyTable(direction()) &&
+           VerifyField<int32_t>(verifier, VT_OTHER_PLAYER_ID, 4) &&
+           VerifyOffset(verifier, VT_OTHER_PLAYER_POS) &&
+           verifier.VerifyTable(other_player_pos()) &&
+           VerifyOffset(verifier, VT_OTHER_PLAYER_DIRECTION) &&
+           verifier.VerifyTable(other_player_direction()) &&
+           verifier.EndTable();
+  }
+};
+
+struct PlayerThrowOtherPlayerBuilder {
+  typedef PlayerThrowOtherPlayer Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_id(int32_t id) {
+    fbb_.AddElement<int32_t>(PlayerThrowOtherPlayer::VT_ID, id, 0);
+  }
+  void add_pos(::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> pos) {
+    fbb_.AddOffset(PlayerThrowOtherPlayer::VT_POS, pos);
+  }
+  void add_direction(::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> direction) {
+    fbb_.AddOffset(PlayerThrowOtherPlayer::VT_DIRECTION, direction);
+  }
+  void add_other_player_id(int32_t other_player_id) {
+    fbb_.AddElement<int32_t>(PlayerThrowOtherPlayer::VT_OTHER_PLAYER_ID, other_player_id, 0);
+  }
+  void add_other_player_pos(::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> other_player_pos) {
+    fbb_.AddOffset(PlayerThrowOtherPlayer::VT_OTHER_PLAYER_POS, other_player_pos);
+  }
+  void add_other_player_direction(::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> other_player_direction) {
+    fbb_.AddOffset(PlayerThrowOtherPlayer::VT_OTHER_PLAYER_DIRECTION, other_player_direction);
+  }
+  explicit PlayerThrowOtherPlayerBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<PlayerThrowOtherPlayer> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<PlayerThrowOtherPlayer>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<PlayerThrowOtherPlayer> CreatePlayerThrowOtherPlayer(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t id = 0,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> pos = 0,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> direction = 0,
+    int32_t other_player_id = 0,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> other_player_pos = 0,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> other_player_direction = 0) {
+  PlayerThrowOtherPlayerBuilder builder_(_fbb);
+  builder_.add_other_player_direction(other_player_direction);
+  builder_.add_other_player_pos(other_player_pos);
+  builder_.add_other_player_id(other_player_id);
+  builder_.add_direction(direction);
+  builder_.add_pos(pos);
   builder_.add_id(id);
   return builder_.Finish();
 }
