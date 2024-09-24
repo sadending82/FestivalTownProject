@@ -26,18 +26,18 @@ public:
 				return;
 			}
 
-			// 데미지 계산
 			TableManager* tableManager = pServer->GetTableManager();
 			CharacterStat& attackerStat = tableManager->GetCharacterStats()[(int)attacker->GetChacracterType()];
 
 			target->GetPlayerStateLock().lock();
 			int damageAmount = 0;
 
+			// 데미지 계산
 			switch (read->attack_type()) 
 			{
 			case eDamageType::AT_FALLDOWN: {
 				damageAmount = 9999999;
-				// 아래 코드들이 살아있는 상태에서 적용되기 때문에 일단 그로기에서 살아있는 상태로 바꿈
+				// 아래 코드들이 살아있는 상태에서 적용되기 때문에 그로기에서 살아있는 상태로 바꿈
 				if (target->GetPlayerState() == ePlayerState::PS_GROGGY) {
 					target->SetPlayerState(ePlayerState::PS_ALIVE);
 				}

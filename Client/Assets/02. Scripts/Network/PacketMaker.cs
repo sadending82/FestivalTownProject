@@ -293,6 +293,134 @@ public class PacketMaker
         return result;
     }
 
+    public byte[] MakePlayerGrabOtherPlayerPacket(int playerID, Vector3 my_position, Vector3 my_direction, int targetID, Vector3 target_position)
+    {
+        var builder = new FlatBufferBuilder(1);
+
+        var my_pos = Vec3f.CreateVec3f(builder, my_position.x, my_position.y, my_position.z);
+        var my_dir = Vec3f.CreateVec3f(builder, my_direction.x, my_direction.y, my_direction.z);
+        var target_pos = Vec3f.CreateVec3f(builder, target_position.x, target_position.y, target_position.z);
+        var target_dir = Vec3f.CreateVec3f(builder, 0, 0, 0);
+
+        PlayerGrabOtherPlayer.StartPlayerGrabOtherPlayer(builder);
+        PlayerGrabOtherPlayer.AddId(builder, playerID);
+        PlayerGrabOtherPlayer.AddPos(builder, my_pos);
+        PlayerGrabOtherPlayer.AddDirection(builder, my_dir);
+
+        PlayerGrabOtherPlayer.AddTargetId(builder, targetID);
+        PlayerGrabOtherPlayer.AddTargetPos(builder, target_pos);
+        PlayerGrabOtherPlayer.AddTargetDirection(builder, target_dir);
+
+        var offset = PlayerGrabOtherPlayer.EndPlayerGrabOtherPlayer(builder);
+        builder.Finish(offset.Value);
+
+        byte[] data = builder.SizedByteArray();
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYER_GRAB_OTHER_PLAYER, flatBufferSize = (ushort)data.Length };
+        byte[] headerdata = Serialize<HEADER>(header);
+        byte[] result = new byte[data.Length + headerdata.Length];
+
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
+
+        return result;
+    }
+
+    public byte[] MakePlayerGrabOtherPlayerPacket(int playerID, Vector3 my_position, Vector3 my_direction, int targetID, Vector3 target_position, Vector3 target_direction)
+    {
+        var builder = new FlatBufferBuilder(1);
+
+        var my_pos = Vec3f.CreateVec3f(builder, my_position.x, my_position.y, my_position.z);
+        var my_dir = Vec3f.CreateVec3f(builder, my_direction.x, my_direction.y, my_direction.z);
+        var target_pos = Vec3f.CreateVec3f(builder, target_position.x, target_position.y, target_position.z);
+        var target_dir = Vec3f.CreateVec3f(builder, target_direction.x, target_direction.y, target_direction.z);
+
+        PlayerGrabOtherPlayer.StartPlayerGrabOtherPlayer(builder);
+        PlayerGrabOtherPlayer.AddId(builder, playerID);
+        PlayerGrabOtherPlayer.AddPos(builder, my_pos);
+        PlayerGrabOtherPlayer.AddDirection(builder, my_dir);
+
+        PlayerGrabOtherPlayer.AddTargetId(builder, targetID);
+        PlayerGrabOtherPlayer.AddTargetPos(builder, target_pos);
+        PlayerGrabOtherPlayer.AddTargetDirection(builder, target_dir);
+
+        var offset = PlayerGrabOtherPlayer.EndPlayerGrabOtherPlayer(builder);
+        builder.Finish(offset.Value);
+
+        byte[] data = builder.SizedByteArray();
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYER_GRAB_OTHER_PLAYER, flatBufferSize = (ushort)data.Length };
+        byte[] headerdata = Serialize<HEADER>(header);
+        byte[] result = new byte[data.Length + headerdata.Length];
+
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
+
+        return result;
+    }
+
+    public byte[] MakePlayerThrowOtherPlayerPacket(int playerID, Vector3 my_position, Vector3 my_direction, int targetID, Vector3 target_position)
+    {
+        var builder = new FlatBufferBuilder(1);
+
+        var my_pos = Vec3f.CreateVec3f(builder, my_position.x, my_position.y, my_position.z);
+        var my_dir = Vec3f.CreateVec3f(builder, my_direction.x, my_direction.y, my_direction.z);
+        var target_pos = Vec3f.CreateVec3f(builder, target_position.x, target_position.y, target_position.z);
+        var target_dir = Vec3f.CreateVec3f(builder, 0, 0, 0);
+
+        PlayerThrowOtherPlayer.StartPlayerThrowOtherPlayer(builder);
+        PlayerThrowOtherPlayer.AddId(builder, playerID);
+        PlayerThrowOtherPlayer.AddPos(builder, my_pos);
+        PlayerThrowOtherPlayer.AddDirection(builder, my_dir);
+
+        PlayerThrowOtherPlayer.AddTargetId(builder, targetID);
+        PlayerThrowOtherPlayer.AddTargetPos(builder, target_pos);
+        PlayerThrowOtherPlayer.AddTargetDirection(builder, target_dir);
+
+        var offset = PlayerThrowOtherPlayer.EndPlayerThrowOtherPlayer(builder);
+        builder.Finish(offset.Value);
+
+        byte[] data = builder.SizedByteArray();
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYER_THROW_OTHER_PLAYER, flatBufferSize = (ushort)data.Length };
+        byte[] headerdata = Serialize<HEADER>(header);
+        byte[] result = new byte[data.Length + headerdata.Length];
+
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
+
+        return result;
+    }
+
+    public byte[] MakePlayerThrowOtherPlayerPacket(int playerID, Vector3 my_position, Vector3 my_direction, int targetID, Vector3 target_position, Vector3 target_direction)
+    {
+        var builder = new FlatBufferBuilder(1);
+
+        var my_pos = Vec3f.CreateVec3f(builder, my_position.x, my_position.y, my_position.z);
+        var my_dir = Vec3f.CreateVec3f(builder, my_direction.x, my_direction.y, my_direction.z);
+        var target_pos = Vec3f.CreateVec3f(builder, target_position.x, target_position.y, target_position.z);
+        var target_dir = Vec3f.CreateVec3f(builder, target_direction.x, target_direction.y, target_direction.z);
+
+        PlayerThrowOtherPlayer.StartPlayerThrowOtherPlayer(builder);
+        PlayerThrowOtherPlayer.AddId(builder, playerID);
+        PlayerThrowOtherPlayer.AddPos(builder, my_pos);
+        PlayerThrowOtherPlayer.AddDirection(builder, my_dir);
+
+        PlayerThrowOtherPlayer.AddTargetId(builder, targetID);
+        PlayerThrowOtherPlayer.AddTargetPos(builder, target_pos);
+        PlayerThrowOtherPlayer.AddTargetDirection(builder, target_dir);
+
+        var offset = PlayerThrowOtherPlayer.EndPlayerThrowOtherPlayer(builder);
+        builder.Finish(offset.Value);
+
+        byte[] data = builder.SizedByteArray();
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYER_THROW_OTHER_PLAYER, flatBufferSize = (ushort)data.Length };
+        byte[] headerdata = Serialize<HEADER>(header);
+        byte[] result = new byte[data.Length + headerdata.Length];
+
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
+
+        return result;
+    }
+
     public byte[] MakeBombPositionSyncPacket(Vector3 position, int BombID)
     {
         var builder = new FlatBufferBuilder(1);
