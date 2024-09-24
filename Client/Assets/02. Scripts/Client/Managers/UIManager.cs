@@ -150,7 +150,7 @@ public class UIManager
     /// </summary>
     public void CloseAOTUI()
     {
-        if (_AlwaysOnTopUI != null) return;
+        if (_AlwaysOnTopUI == null) return;
         Managers.Resource.Destroy(_AlwaysOnTopUI.gameObject);
         _AlwaysOnTopUI = null;
     }
