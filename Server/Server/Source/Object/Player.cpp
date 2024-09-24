@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "../Server/Server.h"
 
 void Player::Init()
 {
@@ -36,4 +37,45 @@ int Player::GroggyRecoverTime()
 	if (mGroggyCount > 3 + 1) return 10;
 
 	return mGroggyCount * 2 + 1;
+}
+
+void Player::ChangeToGroggyState(Server* pServer, int roomID)
+{
+	mPlayerStateLock.lock();
+	mPlayerState = ePlayerState::PS_GROGGY;
+	mPlayerStateLock.unlock();
+	mGroggyCount++;
+
+	pServer->GetPacketSender()->SendPlayerGroggyPacket(mInGameID, roomID);
+
+	// 들고있는 무기 해제
+	if (mWeapon != nullptr) {
+		if (mWeapon->SetIsGrabbed(false) == true) {
+			int weaponID = mWeapon->GetID();
+			mWeapon->SetOwenrID(INVALIDKEY);
+			mWeapon = nullptr;
+			mWeapon->SetPosition(mPosition);
+			pServer->GetPacketSender()->SendWeaponDropPacket(mPosition, roomID, weaponID);
+		}
+	}
+}
+
+void Player::ChangeToDeadState(Server* pServer, int roomID)
+{
+	mPlayerStateLock.lock();
+	mPlayerState = ePlayerState::PS_DEAD;
+	mPlayerStateLock.unlock();
+
+	pServer->GetPacketSender()->SendPlayerDeadPacket(mInGameID, roomID);
+
+	// 들고있는 무기 해제
+	if (mWeapon != nullptr) {
+		if (mWeapon->SetIsGrabbed(false) == true) {
+			int weaponID = mWeapon->GetID();
+			mWeapon->SetOwenrID(INVALIDKEY);
+			mWeapon = nullptr;
+			mWeapon->SetPosition(mPosition);
+			pServer->GetPacketSender()->SendWeaponDropPacket(mPosition, roomID, weaponID);
+		}
+	}
 }

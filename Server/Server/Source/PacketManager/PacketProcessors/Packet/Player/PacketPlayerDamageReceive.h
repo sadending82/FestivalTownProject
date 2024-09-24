@@ -21,6 +21,7 @@ public:
 			room->GetPlayerListLock().lock_shared();
 			Player* target = room->GetPlayerList()[read->target_id()];
 			Player* attacker = room->GetPlayerList()[read->attacker_id()];
+
 			if (target == nullptr || attacker == nullptr) {
 				return;
 			}
@@ -32,7 +33,8 @@ public:
 			target->GetPlayerStateLock().lock();
 			int damageAmount = 0;
 
-			switch (read->attack_type()) {
+			switch (read->attack_type()) 
+			{
 			case eDamageType::AT_FALLDOWN: {
 				damageAmount = 9999999;
 				// 아래 코드들이 살아있는 상태에서 적용되기 때문에 일단 그로기에서 살아있는 상태로 바꿈
@@ -42,10 +44,21 @@ public:
 			}break;
 
 			case eDamageType::AT_BASIC_ATTACK: {
+				if (target_id == attacker_id) {
+					target->GetPlayerStateLock().unlock();
+					room->GetPlayerListLock().unlock_shared();
+					return;
+				}
+
 				damageAmount += attackerStat.strength;
 			}break;
 
 			case eDamageType::AT_WEAPON_ATTACK: {
+				if (target_id == attacker_id) {
+					target->GetPlayerStateLock().unlock();
+					room->GetPlayerListLock().unlock_shared();
+					return;
+				}
 
 				if (attacker->GetWeapon() == nullptr) {
 					target->GetPlayerStateLock().unlock();
@@ -73,25 +86,11 @@ public:
 				room->GetPlayerListLock().unlock_shared();
 				return;
 			}
+			target->GetPlayerStateLock().unlock();
 
 			// 타겟의 기력이 없으면 그로기 상태로
 			if (target->GetStamina() == 0) {
-				target->SetPlayerState(ePlayerState::PS_GROGGY);
-				target->AddGroggyCount();
-				pServer->GetPacketSender()->SendPlayerGroggyPacket(read->target_id(), roomid);
-
-				// 들고있는 무기 해제
-				Weapon* weapon = target->GetWeapon();
-				if (weapon != nullptr) {
-					if (weapon->SetIsGrabbed(false) == true) {
-						int weaponID = weapon->GetID();
-						weapon->SetOwenrID(INVALIDKEY);
-						target->SetWeapon(nullptr);
-						weapon->SetPosition(target->GetPosition());
-						pServer->GetPacketSender()->SendWeaponDropPacket(target->GetPosition(), roomid, weaponID);
-					}
-				}
-
+				target->ChangeToGroggyState(pServer, roomid);
 				PushEventGroggyRecovery(pServer->GetTimer(), target_id, roomid, room->GetRoomCode(), target->GroggyRecoverTime());
 			}
 
@@ -100,25 +99,14 @@ public:
 
 			if (target->GetHP() <= 0) {
 				// 사망 처리
-				target->SetPlayerState(ePlayerState::PS_DEAD);
-				int spawnTime = tableManager->GetGameModeData()[room->GetGameMode()].Player_Spawn_Time;
-				pServer->GetPacketSender()->SendPlayerDeadPacket(read->target_id(), roomid);
-
-				if (target->GetWeapon() != nullptr) {
-					if (target->GetWeapon()->SetIsGrabbed(false) == true) {
-						int weaponID = target->GetWeapon()->GetID();
-						target->GetWeapon()->SetOwenrID(INVALIDKEY);
-						target->GetWeapon()->SetPosition(target->GetPosition());
-						target->SetWeapon(nullptr);
-						pServer->GetPacketSender()->SendWeaponDropPacket(target->GetPosition(), roomid, weaponID);
-					}
-				}
+				target->ChangeToDeadState(pServer, roomid);
 
 				// record update
 				room->GetPlayerRecordList()[target_id].death_count++;
 				if (read->attack_type() != AT_FALLDOWN) {
 					room->GetPlayerRecordList()[attacker_id].kill_count++;
 				}
+				int spawnTime = tableManager->GetGameModeData()[room->GetGameMode()].Player_Spawn_Time;
 				PushEventPlayerRespawn(pServer->GetTimer(), target_id, roomid, room->GetRoomCode(), spawnTime);
 			}
 			else {
@@ -126,7 +114,6 @@ public:
 				pServer->GetPacketSender()->SendPlayerCalculatedDamage(target_id, roomid, read->attack_type(), target->GetHP(), damageAmount, knockback_direction);
 			}
 
-			target->GetPlayerStateLock().unlock();
 			room->GetPlayerListLock().unlock_shared();
 		}
 	}

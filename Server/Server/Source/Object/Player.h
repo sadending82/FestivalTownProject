@@ -59,6 +59,9 @@ public:
 
 	int				GroggyRecoverTime();
 
+	void			ChangeToGroggyState(class Server* pServer, int roomID);
+	void			ChangeToDeadState(class Server* pServer, int roomID);
+
 protected:
 	std::mutex      mPlayerStateLock;
 	ePlayerState	mPlayerState;
