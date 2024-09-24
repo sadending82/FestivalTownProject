@@ -52,8 +52,8 @@ void Player::ChangeToGroggyState(Server* pServer, int roomID)
 		if (mWeapon->SetIsGrabbed(false) == true) {
 			int weaponID = mWeapon->GetID();
 			mWeapon->SetOwenrID(INVALIDKEY);
-			mWeapon = nullptr;
 			mWeapon->SetPosition(mPosition);
+			mWeapon = nullptr;
 			pServer->GetPacketSender()->SendWeaponDropPacket(mPosition, roomID, weaponID);
 		}
 	}
