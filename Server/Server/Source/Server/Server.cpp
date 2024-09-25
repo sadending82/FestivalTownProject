@@ -19,6 +19,7 @@ Server::~Server()
     for (int i = 0; i < MAXROOM; ++i) {
         delete mRooms[i];
     }
+    delete mDB;
     delete mTimer;
     delete mPacketMaker;
     delete mPacketSender;
@@ -27,6 +28,36 @@ Server::~Server()
     for (WorkerThread* pWorkerThreadRef : mWorkerThreadRefs) {
         delete pWorkerThreadRef;
     }
+}
+
+bool Server::ReadConfig()
+{
+    std::string txt;
+
+    std::ifstream file("Config/Config.txt");
+    if (!file) return false;
+    int line = 0;
+
+    while (line < 4 && std::getline(file, txt)) {
+        if (line == 0) {
+            std::string tmp = txt.substr(5);
+            mOdbc.assign(tmp.begin(), tmp.end());
+        }
+        if (line == 1) {
+            std::string tmp = txt.substr(3);
+            mDB_ID.assign(tmp.begin(), tmp.end());
+        }
+        if (line == 2) {
+            std::string tmp = txt.substr(3);
+            mDB_Password.assign(tmp.begin(), tmp.end());
+        }
+        if (line == 3) {
+            std::string tmp = txt.substr(5);
+            mMode = static_cast<SERVER_MODE>(stoi(tmp));
+        }
+        line++;
+    }
+    return true;
 }
 
 int Server::SetSessionID()
@@ -94,9 +125,14 @@ void Server::Disconnect(int key)
     player->GetDisconnectLock().unlock();
 }
 
-void Server::Run(class TableManager* pTableManager, class DB* pDB)
+void Server::Run()
 {
-    mTableManager = pTableManager;
+    ReadConfig();
+    mTableManager = new TableManager;
+    mTableManager->ReadAllDataTable();
+    mDB = new DB;
+    mDB->Connect(mOdbc, mDB_ID, mDB_Password);
+
 
     WSADATA wsa;
     WSAStartup(MAKEWORD(2, 2), &wsa);
@@ -140,9 +176,6 @@ void Server::Run(class TableManager* pTableManager, class DB* pDB)
     for (int i = 0; i < MAXROOM; ++i) {
         mRooms[i] = new Room();
     }
-
-    mDB = pDB;
-    mDB->Init();
 
     mPacketMaker = new PacketMaker;
     mPacketSender = new PacketSender(this, mPacketMaker);

@@ -11,9 +11,8 @@ public:
     DB();
     ~DB();
     void ShowError(SQLHANDLE handle, SQLSMALLINT handleType, RETCODE retcode);
-    bool ReadConfig();
 	int Init();
-    bool Connect();
+    bool Connect(std::wstring odbc, std::wstring id, std::wstring password);
 
     bool UseAccountDB(SQLHSTMT& hStmt);
     bool UseGameDB(SQLHSTMT& hStmt);
@@ -32,10 +31,6 @@ public:
 private:
     SQLHENV hEnv = NULL;
     SQLHDBC hDbc = NULL;
-
-    std::wstring mOdbc = L"";
-    std::wstring mID = L"";
-    std::wstring mPassword = L"";
 
     Security* mSecurity = nullptr;
 };

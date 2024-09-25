@@ -8,6 +8,14 @@
 
 constexpr int SERVERPORT = 45872;
 
+constexpr int LIVE_MODE = 0;
+constexpr int TEST_MODE = 1;
+
+enum class SERVER_MODE {
+	LIVE = 0,
+	TEST = 1
+};
+
 class DB;
 class Timer;
 class TableManager;
@@ -19,10 +27,11 @@ public:
 	Server();
 	~Server();
 
+	bool ReadConfig();
 	int SetSessionID();
 	int SetRoomID();
 	void Disconnect(int key);
-	void Run(class TableManager* pTableManager, class DB* pDB);
+	void Run();
 	void ThreadJoin();
 
 	void SendAllPlayerInRoomBySessionID(void* packet, int size, int sessionID);
@@ -70,6 +79,12 @@ private:
 	std::thread mTimerThread;
 	std::thread mTestThread;
 
+	std::wstring mOdbc = L"";
+	std::wstring mDB_ID = L"";
+	std::wstring mDB_Password = L"";
+
 	int testUID = 1;
+
+	SERVER_MODE mMode;
 };
 

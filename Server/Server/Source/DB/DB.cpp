@@ -24,42 +24,11 @@ void DB::ShowError(SQLHANDLE handle, SQLSMALLINT handleType, RETCODE retcode) {
 	}
 }
 
-bool DB::ReadConfig()
-{
-	std::string txt;
-
-	std::ifstream file("Config/DBconfig.txt");
-	if (!file) return false;
-	int line = 0;
-
-	while (line < 3 && std::getline(file, txt)) {
-		if (line == 0) {
-			std::string tmp = txt.substr(5);
-			mOdbc.assign(tmp.begin(), tmp.end());
-		}
-		if (line == 1) {
-			std::string tmp = txt.substr(3);
-			mID.assign(tmp.begin(), tmp.end());
-		}
-		if (line == 2) {
-			std::string tmp = txt.substr(3);
-			mPassword.assign(tmp.begin(), tmp.end());
-		}
-		line++;
-	}
-	return true;
-}
-
 int DB::Init()
 {
 	mSecurity = new Security;
 
 	SQLRETURN retcode;
-
-	if (ReadConfig() == false) {
-		DEBUGMSGNOPARAM("Read DB Config File Fail\n");
-		return -1;
-	}
 
 	if (retcode = SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &hEnv) == SQL_ERROR) {
 
@@ -76,15 +45,13 @@ int DB::Init()
 		return -1;
 	}
 
-	if (Connect() == false) {
-		return -1;
-	}
-
 	return 1;
 }
 
-bool DB::Connect()
+bool DB::Connect(std::wstring odbc, std::wstring id, std::wstring password)
 {
+	Init();
+
 	SQLRETURN retcode;
 
 	if ((retcode = SQLSetConnectAttr(hDbc, SQL_LOGIN_TIMEOUT, (SQLPOINTER)5, 0)) == SQL_ERROR) {
@@ -92,7 +59,7 @@ bool DB::Connect()
 		return false;
 	}
 
-	retcode = SQLConnect(hDbc, (wchar_t*)mOdbc.c_str(), SQL_NTS, (wchar_t*)mID.c_str(), SQL_NTS, (wchar_t*)mPassword.c_str(), SQL_NTS);
+	retcode = SQLConnect(hDbc, (wchar_t*)odbc.c_str(), SQL_NTS, (wchar_t*)id.c_str(), SQL_NTS, (wchar_t*)password.c_str(), SQL_NTS);
 
 	if (retcode == SQL_ERROR) {
 		DEBUGMSGNOPARAM("DB Connect Fail\n");
