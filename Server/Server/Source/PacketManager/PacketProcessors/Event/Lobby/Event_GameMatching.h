@@ -52,7 +52,7 @@ public:
                 readyPlayers.pop();
             }
             waitingPlayerCount = readyPlayers.size();
-            pServer->MatchingComplete(roomid, playerCount, playerList);
+            pServer->MatchingComplete(roomid, playerList);
             std::cout << "Start Game room - " << roomid << "| GameMode - " << gameMode << std::endl;
         }
 

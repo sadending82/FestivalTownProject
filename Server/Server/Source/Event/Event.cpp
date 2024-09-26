@@ -42,7 +42,7 @@ bool PushEventGameStart(Timer* pTimer, int roomID, long long roomCode)
 
 	EVENT_HEADER header;
 	header.start_time = std::chrono::system_clock::now() + std::chrono::milliseconds(GAMESTARTINTERVAL);
-	memcpy(header.message, reinterpret_cast<char*>(&e), sizeof(EV_PLAYER_RESPAWN));
+	memcpy(header.message, reinterpret_cast<char*>(&e), sizeof(EV_GAME_START));
 
 	pTimer->PushEvent(header);
 

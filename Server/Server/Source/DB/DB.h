@@ -3,6 +3,7 @@
 
 #define _WINSOCKAPI_
 #include <windows.h>  
+// 이거 안쓰면 Flatbuffers 관련 헤더랑 충돌 일어남
 #undef max
 #undef min
 

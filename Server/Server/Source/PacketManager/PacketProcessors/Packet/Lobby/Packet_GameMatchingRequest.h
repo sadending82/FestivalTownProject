@@ -30,8 +30,7 @@ public:
 			}break;
 			case SERVER_MODE::TEST: {
 				std::vector<Player*> playerVector = {dynamic_cast<Player*>(session)};
-				int roomid = pServer->CreateNewRoom(1, GameMode::FITH_Indiv_Battle_2);
-				pServer->MatchingComplete(roomid, 1, playerVector);
+				pServer->MatchingComplete(TESTROOM, playerVector);
 			}break;
 			}
 		}

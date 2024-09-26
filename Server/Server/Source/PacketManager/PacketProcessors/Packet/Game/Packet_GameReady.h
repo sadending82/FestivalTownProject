@@ -25,14 +25,23 @@ public:
 
 			room->AddReadyCnt();
 
-			if (room->GetReadyCnt() == room->GetPlayerCnt()) {
+			SERVER_MODE serverMode = pServer->GetMode();
+			switch (serverMode) {
+			case SERVER_MODE::LIVE: {
+				if (room->GetReadyCnt() == room->GetPlayerCnt()) {
 
-				if (room->SetAllPlayerReady(true) == true) {
+					if (room->SetAllPlayerReady(true) == true) {
 
-					pServer->GetPacketSender()->SendAllPlayerReady(roomid);
+						pServer->GetPacketSender()->SendAllPlayerReady(roomid);
 
-					PushEventGameStart(pServer->GetTimer(), roomid, room->GetRoomCode());
+						PushEventGameStart(pServer->GetTimer(), roomid, room->GetRoomCode());
+					}
 				}
+			}break;
+			case SERVER_MODE::TEST: {
+				pServer->GetPacketSender()->SendAllPlayerReady(TESTROOM);
+				PushEventGameStart(pServer->GetTimer(), TESTROOM, pServer->GetRooms()[TESTROOM]->GetRoomCode());
+			}break;
 			}
 		}
 	}

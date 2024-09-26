@@ -42,7 +42,7 @@ public:
 
 	void StartHeartBeat(int sessionID);
 	int CreateNewRoom(int playerCount, GameMode gameMode);
-	void MatchingComplete(int roomID, int playerCnt, std::vector<Player*>& players);
+	void MatchingComplete(int roomID, std::vector<Player*>& players);
 	void StartGame(int roomID);
 	void CheckGameEnd(int roomID);
 	void TimeoverGameEnd(int roomID);

@@ -76,7 +76,7 @@ void TestThread::RunWorker()
                     readyPlayers.pop();
                 }
                 waitingPlayerCount = readyPlayers.size();
-                m_pServer->MatchingComplete(roomid, playerCount, playerList);
+                m_pServer->MatchingComplete(roomid, playerList);
                 std::cout << "Start Game room - " << roomid << "| GameMode - " << gameMode << std::endl;
             }
 

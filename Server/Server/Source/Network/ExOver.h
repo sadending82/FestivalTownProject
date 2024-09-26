@@ -1,18 +1,14 @@
 #pragma once
 
-#define _WINSOCKAPI_
 #include <winsock2.h>
-#include <windows.h>  
 #include <mswsock.h>
+// 이거 안쓰면 Flatbuffers 관련 헤더랑 충돌 일어남
 #undef max
 #undef min
 
 #include <mutex>
 #include "../utility.h"
 #include "../protocol.h"
-
-#pragma comment (lib,"WS2_32.lib")
-#pragma comment (lib,"MSWSock.lib")
 
 enum class eOpType
 {

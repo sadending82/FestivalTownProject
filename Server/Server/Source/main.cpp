@@ -7,6 +7,8 @@
 #define _CRTDBG_MAP_ALLOC
 #include <cstdlib>
 
+#pragma comment (lib,"WS2_32.lib")
+#pragma comment (lib,"MSWSock.lib")
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

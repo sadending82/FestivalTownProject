@@ -1,4 +1,0 @@
-ODBC-miyaongDB
-ID-serfghu
-PW-1q2w3e4r
-Mode:0

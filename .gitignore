@@ -94,5 +94,6 @@ Release
 ipch
 *sdf
 
-#DB config file
-DBconfig.txt
+#config file
+*config.txt
+Config.txt

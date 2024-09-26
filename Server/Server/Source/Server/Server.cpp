@@ -202,9 +202,22 @@ void Server::Run()
 #endif
     DEBUGMSGNOPARAM("Thread Ready\n");
 
-    if (mMode == SERVER_MODE::LIVE) {
+
+    switch (mMode) {
+    case SERVER_MODE::LIVE: {
         // matching start
         PushEventGameMatching(mTimer);
+    }break;
+    case SERVER_MODE::TEST: {
+        DEBUGMSGNOPARAM("START TEST MODE \n");
+        GameMode gameMode = GameMode::FITH_Team_Battle_6;
+        Room* room = mRooms[TESTROOM];
+        room->Init(TESTROOM, mTableManager->GetGameModeData()[gameMode].Life_Count, mTableManager->GetGameModeData()[gameMode].Player_Count);
+        room->SetGameMode(gameMode);
+        room->InitMap(&mTableManager->GetMapData()[MapCode::TEST]);
+        room->SetState(eRoomState::RS_INGAME);
+        room->SetPlayerLimit(mTableManager->GetGameModeData()[gameMode].Player_Count);
+    }break;
     }
 }
 
@@ -360,7 +373,7 @@ int Server::CreateNewRoom(int playerCount, GameMode gameMode)
     return roomID;
 }
 
-void Server::MatchingComplete(int roomID, int playerCnt, std::vector<Player*>& players)
+void Server::MatchingComplete(int roomID, std::vector<Player*>& players)
 {
     Room* room = GetRooms()[roomID];
 
@@ -404,7 +417,16 @@ void Server::MatchingComplete(int roomID, int playerCnt, std::vector<Player*>& p
 void Server::StartGame(int roomID)
 {
     Room* room = GetRooms()[roomID];
+
+    if (mMode == SERVER_MODE::TEST) {
+        mPacketSender->SendGameStart(roomID);
+    }
+
     if (room->SetIsRun(true) == true) {
+
+        if (mMode == SERVER_MODE::TEST) {
+            return;
+        }
 
         mPacketSender->SendGameStart(roomID);
 
