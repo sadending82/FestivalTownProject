@@ -50,6 +50,7 @@ public:
 	int CalculateGoldReward(GameMode mode, int point, bool isMvp, bool isWin);
 	void CalculateGameResult(int roomID, std::set<int>& winningTeams);
 
+	SERVER_MODE GetMode() { return mMode; }
 	HANDLE GetHcp() { return mHcp; }
 	SOCKADDR_IN GetServerAddr() { return mServerAddr; }
 	SOCKET GetListenSocket() { return mListenSocket; }
@@ -85,6 +86,6 @@ private:
 
 	int testUID = 1;
 
-	SERVER_MODE mMode;
+	SERVER_MODE mMode = SERVER_MODE::LIVE;
 };
 

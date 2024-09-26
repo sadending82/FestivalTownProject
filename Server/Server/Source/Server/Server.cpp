@@ -197,8 +197,11 @@ void Server::Run()
     mTestThread = std::thread(&TestThread::RunWorker, mTestThreadRef);
 #endif
     DEBUGMSGNOPARAM("Thread Ready\n");
-    // matching start
-    PushEventGameMatching(mTimer);
+
+    if (mMode == SERVER_MODE::LIVE) {
+        // matching start
+        PushEventGameMatching(mTimer);
+    }
 }
 
 void Server::ThreadJoin()

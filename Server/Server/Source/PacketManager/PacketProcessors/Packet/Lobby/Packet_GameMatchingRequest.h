@@ -17,11 +17,23 @@ public:
 
 			Session* session = pServer->GetSessions()[key];
 
-			session->SetMatchingRequestTime(std::chrono::duration_cast<std::chrono::seconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count());
+			SERVER_MODE serverMode = pServer->GetMode();
 
+			session->SetMatchingRequestTime(std::chrono::duration_cast<std::chrono::seconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count());
 			session->GetStateLock().lock();
 			session->SetState(eSessionState::ST_MATCHWAITING);
 			session->GetStateLock().unlock();
+
+			switch (serverMode) {
+			case SERVER_MODE::LIVE: {
+
+			}break;
+			case SERVER_MODE::TEST: {
+				std::vector<Player*> playerVector = {dynamic_cast<Player*>(session)};
+				int roomid = pServer->CreateNewRoom(1, GameMode::FITH_Indiv_Battle_2);
+				pServer->MatchingComplete(roomid, 1, playerVector);
+			}break;
+			}
 		}
 	}
 
