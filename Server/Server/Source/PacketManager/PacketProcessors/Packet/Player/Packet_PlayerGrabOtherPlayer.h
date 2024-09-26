@@ -18,6 +18,13 @@ public:
 				return;
 			}
 			
+			player->SetPosition(read->pos()->x(), read->pos()->y(), read->pos()->z());
+			player->SetDirection(read->direction()->x(), read->direction()->y(), read->direction()->z());
+
+			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYER_GRAB_OTHER_PLAYER, data, size);
+
+			pServer->SendAllPlayerInRoomExceptSender(send_buffer.data(), send_buffer.size(), key);
+
 		}
 	}
 
