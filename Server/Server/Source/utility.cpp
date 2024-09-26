@@ -1,4 +1,6 @@
 #include "utility.h"
+#include <vector>
+#include <cmath>
 
 std::vector<uint8_t> MakeBuffer(const int type, const uint8_t* data, const int size)
 {

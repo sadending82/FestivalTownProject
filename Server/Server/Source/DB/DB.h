@@ -1,5 +1,12 @@
 #pragma once
 #include "../DB/Security/Security.h"
+
+#define _WINSOCKAPI_
+#include <windows.h>  
+#undef max
+#undef min
+
+#include <iostream>
 #include <sql.h>
 #include <sqlext.h>
 #include <sqltypes.h>
@@ -10,7 +17,6 @@ public:
 
     DB();
     ~DB();
-    void ShowError(SQLHANDLE handle, SQLSMALLINT handleType, RETCODE retcode);
 	int Init();
     bool Connect(std::wstring odbc, std::wstring id, std::wstring password);
 

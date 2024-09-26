@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <chrono>
 // 테스트용 테이블
 
 #pragma pack (push, 1)
@@ -34,8 +35,8 @@ struct ItemTable {
 	std::string File_Name;	
 	ItemType Item_Type;
 	ItemGrade Item_Grade;
-	std::string Open_Date;	
-	std::string Close_Date;
+	/*std::chrono::year_month_day Open_Date;
+	std::chrono::year_month_day Close_Date;*/
 };
 
 #pragma pack(pop) 

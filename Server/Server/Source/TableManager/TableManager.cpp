@@ -1,4 +1,5 @@
 #include <fstream>
+#include <chrono>
 #include "TableManager.h"
 
 TableManager::TableManager()
@@ -81,12 +82,21 @@ void TableManager::ReadItemTable()
             if (!row.empty()) {
                 int index = (int)row[0].value<int>();
 
+                /*std::chrono::year_month_day openDate, closeDate;
+                std::istringstream ss1(row[ItemTable_Field::IT_Item_Type].to_string());
+                std::chrono::from_stream(ss1, "%Y-%m-%d", openDate);
+
+                std::istringstream ss2(row[ItemTable_Field::IT_Close_Date].to_string());
+                std::chrono::from_stream(ss2, "%Y-%m-%d", closeDate);*/
+
                 ItemInfos[index] = ItemTable{
                     index,
                     row[ItemTable_Field::IT_Name].to_string(),
                     row[ItemTable_Field::IT_File_Name].to_string(),
                     (ItemType)row[ItemTable_Field::IT_Item_Type].value<int>(),
-                    (ItemGrade)row[ItemTable_Field::IT_Item_Grade].value<int>()
+                    (ItemGrade)row[ItemTable_Field::IT_Item_Grade].value<int>(),
+                    /*openDate,
+                    closeDate*/
                 };
             }
 

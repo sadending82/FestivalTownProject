@@ -4,6 +4,7 @@
 #include "../Object/Object.h"
 #include "../Object/Bomb/Bomb.h"
 #include "../Object/Weapon/Weapon.h"
+#include <shared_mutex>
 
 class Room
 {

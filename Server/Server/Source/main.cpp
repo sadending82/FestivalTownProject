@@ -7,6 +7,7 @@
 #define _CRTDBG_MAP_ALLOC
 #include <cstdlib>
 
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #define DEBUG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )

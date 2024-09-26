@@ -1,5 +1,7 @@
 #pragma once
 #include "Security.h"
+#include <string>
+#include <random>
 
 std::string Security::GenerateSalt()
 {

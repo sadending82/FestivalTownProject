@@ -1,6 +1,7 @@
 #pragma once
 #include "../utility.h"
 #include "../protocol.h"
+#include <memory>
 
 // Bomb, Weapon ...
 class Object {

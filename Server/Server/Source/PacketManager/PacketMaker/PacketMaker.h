@@ -2,7 +2,9 @@
 #include "../../utility.h"
 #include "../../protocol.h"
 #include "../flatbuffer/FlatBufferManager.h"
+
 #include <unordered_map>
+#include <array>
 
 class PacketMaker
 {

@@ -3,6 +3,8 @@
 #include "../../Server/Server.h"
 #include "../../Room/Room.h"
 #include "../../Event/Event.h"
+#include <random>
+#include <map>
 
 
 PacketSender::~PacketSender()

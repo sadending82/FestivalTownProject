@@ -1,4 +1,7 @@
+#pragma once
+#include <Windows.h>
 #include "DB.h"
+
 
 DB::DB()
 {
@@ -10,18 +13,6 @@ DB::~DB()
 	SQLFreeHandle(SQL_HANDLE_DBC, hDbc);
 	SQLFreeHandle(SQL_HANDLE_ENV, hEnv);
 	delete mSecurity;
-}
-
-void DB::ShowError(SQLHANDLE handle, SQLSMALLINT handleType, RETCODE retcode) {
-	SQLSMALLINT i = 0;
-	SQLINTEGER native;
-	SQLWCHAR state[10];
-	SQLWCHAR text[256];
-	SQLSMALLINT len;
-	while (SQLGetDiagRec(handleType, handle, ++i, state, &native, text,
-		sizeof(text), &len) == SQL_SUCCESS) {
-		std::cout << "SQL Error: " << state << ": " << text << std::endl;
-	}
 }
 
 int DB::Init()

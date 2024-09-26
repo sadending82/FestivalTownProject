@@ -1,53 +1,30 @@
 #pragma once
 #include <iostream>
-#include <array>
-#include <vector>
-#include <unordered_set>
-#include <queue>
 #include <chrono>
-#include <random>
-#include <string>
-#include <locale.h>
-#include <cctype>
-#include <cmath>
-#include <memory>
-#include <mutex>
-#include <shared_mutex>
-
-#define _WINSOCKAPI_
-#include <windows.h>  
-#include <winsock2.h>
-#include <mswsock.h>
-#undef max
-#undef min
-
-#pragma comment (lib,"WS2_32.lib")
-#pragma comment (lib,"MSWSock.lib")
+#include <vector>
 
 #define TIMEPOINT std::chrono::system_clock::time_point
 
 #define COUT std::cout
 #define ENDL std::endl;
 
-constexpr int SERVERKEY = 0;
-constexpr int STARTKEY = 1;
-constexpr int INVALIDKEY = -1;
-constexpr int TESTROOM = 0;
+inline constexpr int SERVERKEY = 0;
+inline constexpr int STARTKEY = 1;
+inline constexpr int INVALIDKEY = -1;
+inline constexpr int TESTROOM = 0;
 
-constexpr int BUFSIZE = 1000;
+inline constexpr int BUFSIZE = 1000;
 
-constexpr int MAXSESSION = 1000;
-constexpr int MAXROOM = 100;
-constexpr int MAXPLAYER = 6;
-constexpr int MINPLAYER = 2;
-constexpr int MAXOBJECT = 100;
+inline constexpr int MAXSESSION = 1000;
+inline constexpr int MAXROOM = 100;
+inline constexpr int MAXPLAYER = 6;
+inline constexpr int MINPLAYER = 2;
+inline constexpr int MAXOBJECT = 100;
 
-constexpr int BLOCKSIZE = 2; // meter
+inline constexpr int BLOCKSIZE = 2; // meter
 
-constexpr float offsetX = 20;
-constexpr float offsetZ = 10;
-
-const uint8_t DEFAULT_8BITFLAG = 0b00000000;
+inline constexpr float offsetX = 20;
+inline constexpr float offsetZ = 10;
 
 #ifdef _DEBUG
 #define DEBUGMSGNOPARAM(args) (printf("file: %s, line:%d ",__FILE__,__LINE__), printf(args))

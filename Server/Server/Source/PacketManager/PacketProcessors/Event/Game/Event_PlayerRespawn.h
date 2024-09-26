@@ -5,8 +5,8 @@
 class Event_PlayerRespawn : public PacketProcessor {
 
 public:
-
 	virtual void Process(Server* pServer, unsigned char* buf) {
+
 		EV_PLAYER_RESPAWN* event = reinterpret_cast<EV_PLAYER_RESPAWN*>(buf);
 
 		int roomid = event->roomID;

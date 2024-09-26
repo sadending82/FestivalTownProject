@@ -1,5 +1,9 @@
+#pragma once
 #include "TestThread.h"
 #include"../../Server/Server.h"
+
+#include <iostream>
+#include <random>
 
 #ifdef RunTest
 
