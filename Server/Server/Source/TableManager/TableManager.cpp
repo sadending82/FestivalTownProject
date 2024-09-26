@@ -52,7 +52,7 @@ void TableManager::ClearAllTable()
 
 void TableManager::ReadAllDataTable()
 {
-    //ReadItemTable();
+    ReadItemTable();
     ReadCharacterStat();
     ReadWeaponStat();
     ReadGameModeTable();
@@ -66,27 +66,29 @@ void TableManager::ReadAllDataTable()
 void TableManager::ReadItemTable()
 {
     try {
-        mWorkbook.load("GameData/ItemTable.xlsx");
-        xlnt::worksheet ws = mWorkbook.active_sheet();
+        int sheetIdx = 0;
+        mWorkbook.load("GameData/Item.xlsx");
+        mWorksheet = mWorkbook.sheet_by_index(sheetIdx);
 
         int idx = 0;
 
         for (auto row : mWorksheet.rows(false)) {
-            if (idx == 0) {
+            if (idx == variableNameIdx) {
                 idx++;
                 continue;
             }
 
-            int uid = 0;
-            std::string name = "";
-            int price = 0;
-
             if (!row.empty()) {
-                uid = (int)row[0].value<int>();
-                name = (std::string)row[1].to_string();
-                price = (int)row[2].value<int>();
+                int index = (int)row[0].value<int>();
+
+                ItemInfos[index] = ItemTable{
+                    index,
+                    row[ItemTable_Field::IT_Name].to_string(),
+                    row[ItemTable_Field::IT_File_Name].to_string(),
+                    (ItemType)row[ItemTable_Field::IT_Item_Type].value<int>(),
+                    (ItemGrade)row[ItemTable_Field::IT_Item_Grade].value<int>()
+                };
             }
-            ItemInfos[uid] = ItemTable(uid, name, price);
 
             idx++;
         }
