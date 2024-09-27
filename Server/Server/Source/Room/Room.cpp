@@ -98,6 +98,8 @@ bool Room::AddPlayer(Player* player)
 			mPlayerRecordList[i].Init();
 			mPlayerRecordList[i].team = player->GetTeam();
 
+			mTeams[player->GetTeam()].GetMembers().insert(i);
+
 			return true;
 		}
 		mPlayerListLock.unlock();
@@ -111,7 +113,9 @@ bool Room::DeletePlayer(int playerID)
 	if (mPlayerList[playerID] == nullptr) {
 		return false;
 	}
+
 	mPlayerListLock.lock();
+	mTeams[mPlayerList[playerID]->GetTeam()].GetMembers().erase(playerID);
 	mPlayerList[playerID] = nullptr;
 	mPlayerListLock.unlock();
 	if (mPlayerCnt > 0) {

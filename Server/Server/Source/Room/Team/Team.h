@@ -2,7 +2,7 @@
 #include "../../utility.h"
 #include "../../Object/Player.h"
 #include "../../TableManager/TableManager.h"
-#include <unordered_map>
+#include <unordered_set>
 
 class Team {
 public:
@@ -16,9 +16,11 @@ public:
 
 	int GetLife() { return mLife.load(); }
 
+	std::unordered_set<int>& GetMembers() { return mMembers; }
+
 private:
 
 	std::atomic<int> mLife;
 
-	std::unordered_map<int, Player*> mMembers;
+	std::unordered_set<int> mMembers;
 };

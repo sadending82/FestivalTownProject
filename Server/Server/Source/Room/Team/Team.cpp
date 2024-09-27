@@ -11,6 +11,7 @@ Team::~Team()
 void Team::Init(int lifeCount)
 {
 	mLife = lifeCount;
+	mMembers.clear();
 }
 
 void Team::ReduceLife()
