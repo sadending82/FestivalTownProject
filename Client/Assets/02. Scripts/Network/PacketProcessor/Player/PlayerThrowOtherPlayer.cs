@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Unity.VisualScripting.FullSerializer;
+using UnityEditor;
 using UnityEngine;
 
 namespace Network.PacketProcessor
@@ -18,8 +19,36 @@ namespace Network.PacketProcessor
 
             var Data = PlayerThrowOtherPlayer.GetRootAsPlayerThrowOtherPlayer(bb);
 
+            int id = Data.Id;
+            Vector3 position = new Vector3(Data.Pos.Value.X, Data.Pos.Value.Y, Data.Pos.Value.Z);
+            Vector3 direction = new Vector3(Data.Direction.Value.X, Data.Direction.Value.Y, Data.Direction.Value.Z);
+
+            int targetId = Data.TargetId;
+            Vector3 targetHeadPos = new Vector3(Data.TargetHeadPos.Value.X, Data.TargetHeadPos.Value.Y, Data.TargetHeadPos.Value.Z);
+            Vector3 targetDirection = new Vector3(Data.TargetDirection.Value.X, Data.TargetDirection.Value.Y, Data.TargetDirection.Value.Z);
+
+            PlayerController playerController = Managers.Player.FindPlayerById(id).GetComponent<PlayerController>();
+            if (playerController != null)
+            {
+                playerController.SetPosition(position);
+                playerController.SetDirection(direction);
+                playerController.s_ThrowPlayer();
+            }
+            else
+            {
+                Debug.Log("Error!!!: PlayerThrowOtherPlayer Can't Find Player !!!");
+            }
+
+            PlayerController targetPlayerController = Managers.Player.FindPlayerById(targetId).GetComponent<PlayerController>();
+            if (targetPlayerController != null)
+            {
+                targetPlayerController.SetHeadPosition(targetHeadPos);
+                targetPlayerController.SetDirection(targetDirection);
+            }
+            else
+            {
+                Debug.Log("Error!!!: PlayerThrowOtherPlayer Can't Find Target Player !!!");
+            }
         }
-
-
     }
 }

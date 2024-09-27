@@ -5,6 +5,7 @@ using ClientProtocol;
 using NetworkProtocol;
 using UnityEngine.Rendering;
 using TMPro.Examples;
+using static UnityEngine.GraphicsBuffer;
 
 public class PlayerController : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class PlayerController : MonoBehaviour
     public GameObject clavicleL;
     public GameObject clavicleR;
     public GameObject head;
+    public GameObject handL;
+    public GameObject handR;
 
     [Header("--- State ---")]
     private CharacterStatus playerStatus;
@@ -38,7 +41,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("--- Animation ---")]
     private float leftMouseClickTimer;
-    private bool isHold;
+    private bool isGrap;
     private bool isLeftShiftKeyDown;
     private LowerBodyAnimationState nowLowerBodyAnimationState;
 
@@ -63,6 +66,7 @@ public class PlayerController : MonoBehaviour
     private bool isPickUpMode = false;
     private GameObject targetItem;
     private bool isDropMode = false;
+    private bool isGrapPlayerMode = false;
 
     [Header("--- Respawn ---")]
     private float createHeight = 4;
@@ -151,17 +155,6 @@ public class PlayerController : MonoBehaviour
         // 테스트
         if (amIPlayer == true)
         {
-            if (Input.GetKeyUp(KeyCode.G))
-            {
-                if (playerStatus.GetIsGroggy() == false)
-                {
-                    playerStatus.SetStamina(0);
-                }
-                else
-                {
-                    playerStatus.SetStamina(100);
-                }
-            }
             if (Input.GetKeyUp(KeyCode.T))
             {
                 Managers.CubeObject.SpawnCube(c, c, 0);
@@ -199,7 +192,7 @@ public class PlayerController : MonoBehaviour
 
     private void SendForSync()
     {
-        if (pelvis != null && gameStart == true)
+        if (pelvis != null && gameStart == true && playerStatus.GetIsGroggy() == false)
         {
             packetManager.SendPlayerSyncPacket(pelvis.transform.position, stabillizerDirection, playerStatus.GetStamina(), myId);
         }
@@ -523,20 +516,23 @@ public class PlayerController : MonoBehaviour
             if (Input.GetMouseButton(0))
             {
                 leftMouseClickTimer += Time.deltaTime;
-                if (leftMouseClickTimer >= 1f && isHold == false)
+                if (leftMouseClickTimer >= 1f && isGrap == false)
                 {
                     // 잡기 애니메이션 작동
-                    isHold = true;
-                    playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.HOLD);
+                    isGrap = true;
+                    playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.GRAP);
                 }
             }
             // 마우스 좌클릭 업
             if (Input.GetMouseButtonUp(0))
             {
-                if (isHold == true)
+                if (isGrap == true)
                 {
-                    isHold = false;
+                    isGrap = false;
                     playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
+                    PlayerController targetPlayerController = Managers.Player.FindPlayerById(playerStatus.GetGrapTargetPlayerId()).GetComponent<PlayerController>();
+                    packetManager.SendPlayerThrowOtherPlayerPacket(playerStatus.GetId(), GetPosition(), GetDirection(),
+                        playerStatus.GetGrapTargetPlayerId(), targetPlayerController.GetHeadPosition(), targetPlayerController.GetDirection());
                 }
                 else if (playerStatus.GetUpperBodyAnimationState() == UpperBodyAnimationState.NONE)
                 {
@@ -714,7 +710,7 @@ public class PlayerController : MonoBehaviour
     public void ResetPlayerControllerSetting()
     {
         leftMouseClickTimer = 0f;
-        isHold = false;
+        isGrap = false;
         isGrounded = false;
         isLeftShiftKeyDown = false;
         beforeAxisRawH = 0;
@@ -806,5 +802,34 @@ public class PlayerController : MonoBehaviour
     public void SetDirectionInResultScene()
     {
         stabilizer.transform.eulerAngles = new Vector3(0.0f, 180f, 0.0f);
+    }
+
+    public void s_GrapPlayer(int targetId, bool isLeftHand, Vector3 handPos, Vector3 targetHeadPos)
+    {
+        playerStatus.SetIsGrapPlayer(true, targetId);
+        if(isLeftHand == true)
+        {
+            handL.GetComponent<AttackChecker>().GrapPlayer(targetId, handPos, targetHeadPos);
+        }
+        else
+        {
+            handR.GetComponent<AttackChecker>().GrapPlayer(targetId, handPos, targetHeadPos);
+        }
+    }
+    public void s_ThrowPlayer()
+    {
+        playerStatus.SetIsGrapPlayer(false);
+    }
+    public void SetHeadPosition(Vector3 headPos)
+    {
+        head.transform.position = headPos;
+    }
+    public Vector3 GetHeadPosition()
+    {
+        return head.transform.position;
+    }
+    public Rigidbody GetHeadRigidbody()
+    {
+        return head.GetComponent<Rigidbody>();
     }
 }

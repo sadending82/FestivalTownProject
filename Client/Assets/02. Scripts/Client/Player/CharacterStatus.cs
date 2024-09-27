@@ -34,6 +34,9 @@ public class CharacterStatus : MonoBehaviour
     private int weaponId;
     public GameObject weaponInven;
     private GameObject myWeapon;
+    [SerializeField]
+    private bool isGrapPlayer = false;
+    private int grapTargetPlayerId;
 
 
     [Header("--- AnimationControll ---")]
@@ -313,5 +316,18 @@ public class CharacterStatus : MonoBehaviour
     public int GetStamina()
     {
         return stamina;
+    }
+    public Rigidbody GetHeadRigidbody()
+    {
+        return headRig;
+    }
+    public void SetIsGrapPlayer(bool isGrapPlayer, int targetPlayerId = -1)
+    {
+        this.isGrapPlayer = isGrapPlayer;
+        this.grapTargetPlayerId = targetPlayerId;
+    }
+    public int GetGrapTargetPlayerId()
+    {
+        return grapTargetPlayerId;
     }
 }

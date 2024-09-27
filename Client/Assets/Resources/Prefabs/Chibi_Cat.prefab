@@ -1350,6 +1350,7 @@ MonoBehaviour:
   isHaveBomb: 0
   isHaveWeapon: 0
   weaponInven: {fileID: 6241508891433731045}
+  isGrapPlayer: 0
   animationController: {fileID: 106592914044289826}
   animationMoudule: {fileID: 0}
   playerController: {fileID: 2266266892710373593}
@@ -1391,6 +1392,8 @@ MonoBehaviour:
   clavicleL: {fileID: 9091200775852942178}
   clavicleR: {fileID: 1539728641115245862}
   head: {fileID: 2421253405512057171}
+  handL: {fileID: 6973424783672775047}
+  handR: {fileID: 7439394265932431664}
   walkSpeed: 7
   runSpeed: 10
   jumpForce: 150
@@ -2618,7 +2621,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5213974553170885808, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}
       propertyPath: m_TagString
-      value: Player
+      value: Head
       objectReference: {fileID: 0}
     - target: {fileID: 5430954307942807424, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}
       propertyPath: m_Layer
@@ -3049,6 +3052,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2677232636036610869, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7602168561337450310}
+    - targetCorrespondingSourceObject: {fileID: 5213974553170885808, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5446829250298860451}
     - targetCorrespondingSourceObject: {fileID: 5213974553170885808, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}
       insertIndex: -1
       addedObject: {fileID: 71571893083169489}
@@ -4418,6 +4424,19 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5213974553170885808, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}
   m_PrefabInstance: {fileID: 7620590984462433763}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5446829250298860451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2421253405512057171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90144cd7fb908ae4bb0e089e6608ef72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rootGameObject: {fileID: 5680927581145501185}
 --- !u!54 &71571893083169489
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5883,7 +5902,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isLeftHand: 1
   playerState: {fileID: 11744454538213894}
-  amIPlayer: 0
+  playerController: {fileID: 2266266892710373593}
 --- !u!54 &4139916830881699547
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -6053,7 +6072,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isLeftHand: 0
   playerState: {fileID: 11744454538213894}
-  amIPlayer: 0
+  playerController: {fileID: 2266266892710373593}
 --- !u!54 &1114045697641998533
 Rigidbody:
   m_ObjectHideFlags: 0

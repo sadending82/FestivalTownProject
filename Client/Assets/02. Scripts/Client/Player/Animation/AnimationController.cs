@@ -90,7 +90,7 @@ public class AnimationController : MonoBehaviour
     private void OnAnimatorIK(int layerIndex)
     {
         // ¿‚±‚
-        if (upperBodyAnimationState == UpperBodyAnimationState.HOLD)
+        if (upperBodyAnimationState == UpperBodyAnimationState.GRAP)
         {
             animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1f);
             animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1f);
@@ -195,9 +195,6 @@ public class AnimationController : MonoBehaviour
         this.upperBodyAnimationState = upperBodyAnimationState;
         if(upperBodyAnimationState == UpperBodyAnimationState.NONE)
         {
-            leftAttackChecker.SetIsAttackState(false);
-            rightAttackChecker.SetIsAttackState(false);
-
             animationModule.SetUpdateUpperBodyAnimation(false);
         }
         else
@@ -213,6 +210,19 @@ public class AnimationController : MonoBehaviour
         {
             weaponAttackTimer = 0f;
             myWeapon = playerStatus.GetMyWeapon();
+        }
+        else if(upperBodyAnimationState == UpperBodyAnimationState.GRAP)
+        {
+            leftAttackChecker.SetIsGrapState(true);
+            rightAttackChecker.SetIsGrapState(true);
+        }
+        else
+        {
+            leftAttackChecker.SetIsAttackState(false);
+            rightAttackChecker.SetIsAttackState(false);
+
+            leftAttackChecker.SetIsGrapState(false);
+            rightAttackChecker.SetIsGrapState(false);
         }
     }
     public void SetLowerBodyAnimationState(LowerBodyAnimationState lowerBodyAnimationState)

@@ -9,6 +9,7 @@ TagManager:
   - Bomb
   - HitBox
   - Weapon
+  - Head
   layers:
   - Default
   - TransparentFX

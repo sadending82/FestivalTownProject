@@ -127,7 +127,7 @@ namespace ClientProtocol
     public enum UpperBodyAnimationState
     {
         NONE,
-        HOLD, THROW,
+        GRAP, THROW,
         ATTACK, POWERATTACK, HEADATTACK, ROLL, FLYINGKICK, WEAPONATTACK
     }
 
