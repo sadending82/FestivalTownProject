@@ -23,7 +23,7 @@ public struct PlayerThrowOtherPlayer : IFlatbufferObject
   public PacketTable.UtilitiesTable.Vec3f? Pos { get { int o = __p.__offset(6); return o != 0 ? (PacketTable.UtilitiesTable.Vec3f?)(new PacketTable.UtilitiesTable.Vec3f()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
   public PacketTable.UtilitiesTable.Vec3f? Direction { get { int o = __p.__offset(8); return o != 0 ? (PacketTable.UtilitiesTable.Vec3f?)(new PacketTable.UtilitiesTable.Vec3f()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
   public int TargetId { get { int o = __p.__offset(10); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public PacketTable.UtilitiesTable.Vec3f? TargetHeadPos { get { int o = __p.__offset(12); return o != 0 ? (PacketTable.UtilitiesTable.Vec3f?)(new PacketTable.UtilitiesTable.Vec3f()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
+  public PacketTable.UtilitiesTable.Vec3f? TargetPos { get { int o = __p.__offset(12); return o != 0 ? (PacketTable.UtilitiesTable.Vec3f?)(new PacketTable.UtilitiesTable.Vec3f()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
   public PacketTable.UtilitiesTable.Vec3f? TargetDirection { get { int o = __p.__offset(14); return o != 0 ? (PacketTable.UtilitiesTable.Vec3f?)(new PacketTable.UtilitiesTable.Vec3f()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
 
   public static Offset<PacketTable.PlayerTable.PlayerThrowOtherPlayer> CreatePlayerThrowOtherPlayer(FlatBufferBuilder builder,
@@ -31,11 +31,11 @@ public struct PlayerThrowOtherPlayer : IFlatbufferObject
       Offset<PacketTable.UtilitiesTable.Vec3f> posOffset = default(Offset<PacketTable.UtilitiesTable.Vec3f>),
       Offset<PacketTable.UtilitiesTable.Vec3f> directionOffset = default(Offset<PacketTable.UtilitiesTable.Vec3f>),
       int target_id = 0,
-      Offset<PacketTable.UtilitiesTable.Vec3f> target_head_posOffset = default(Offset<PacketTable.UtilitiesTable.Vec3f>),
+      Offset<PacketTable.UtilitiesTable.Vec3f> target_posOffset = default(Offset<PacketTable.UtilitiesTable.Vec3f>),
       Offset<PacketTable.UtilitiesTable.Vec3f> target_directionOffset = default(Offset<PacketTable.UtilitiesTable.Vec3f>)) {
     builder.StartTable(6);
     PlayerThrowOtherPlayer.AddTargetDirection(builder, target_directionOffset);
-    PlayerThrowOtherPlayer.AddTargetHeadPos(builder, target_head_posOffset);
+    PlayerThrowOtherPlayer.AddTargetPos(builder, target_posOffset);
     PlayerThrowOtherPlayer.AddTargetId(builder, target_id);
     PlayerThrowOtherPlayer.AddDirection(builder, directionOffset);
     PlayerThrowOtherPlayer.AddPos(builder, posOffset);
@@ -48,7 +48,7 @@ public struct PlayerThrowOtherPlayer : IFlatbufferObject
   public static void AddPos(FlatBufferBuilder builder, Offset<PacketTable.UtilitiesTable.Vec3f> posOffset) { builder.AddOffset(1, posOffset.Value, 0); }
   public static void AddDirection(FlatBufferBuilder builder, Offset<PacketTable.UtilitiesTable.Vec3f> directionOffset) { builder.AddOffset(2, directionOffset.Value, 0); }
   public static void AddTargetId(FlatBufferBuilder builder, int targetId) { builder.AddInt(3, targetId, 0); }
-  public static void AddTargetHeadPos(FlatBufferBuilder builder, Offset<PacketTable.UtilitiesTable.Vec3f> targetHeadPosOffset) { builder.AddOffset(4, targetHeadPosOffset.Value, 0); }
+  public static void AddTargetPos(FlatBufferBuilder builder, Offset<PacketTable.UtilitiesTable.Vec3f> targetPosOffset) { builder.AddOffset(4, targetPosOffset.Value, 0); }
   public static void AddTargetDirection(FlatBufferBuilder builder, Offset<PacketTable.UtilitiesTable.Vec3f> targetDirectionOffset) { builder.AddOffset(5, targetDirectionOffset.Value, 0); }
   public static Offset<PacketTable.PlayerTable.PlayerThrowOtherPlayer> EndPlayerThrowOtherPlayer(FlatBufferBuilder builder) {
     int o = builder.EndTable();
@@ -66,7 +66,7 @@ static public class PlayerThrowOtherPlayerVerify
       && verifier.VerifyTable(tablePos, 6 /*Pos*/, PacketTable.UtilitiesTable.Vec3fVerify.Verify, false)
       && verifier.VerifyTable(tablePos, 8 /*Direction*/, PacketTable.UtilitiesTable.Vec3fVerify.Verify, false)
       && verifier.VerifyField(tablePos, 10 /*TargetId*/, 4 /*int*/, 4, false)
-      && verifier.VerifyTable(tablePos, 12 /*TargetHeadPos*/, PacketTable.UtilitiesTable.Vec3fVerify.Verify, false)
+      && verifier.VerifyTable(tablePos, 12 /*TargetPos*/, PacketTable.UtilitiesTable.Vec3fVerify.Verify, false)
       && verifier.VerifyTable(tablePos, 14 /*TargetDirection*/, PacketTable.UtilitiesTable.Vec3fVerify.Verify, false)
       && verifier.VerifyTableEnd(tablePos);
   }

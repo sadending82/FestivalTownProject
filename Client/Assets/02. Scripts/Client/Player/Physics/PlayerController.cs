@@ -192,7 +192,7 @@ public class PlayerController : MonoBehaviour
 
     private void SendForSync()
     {
-        if (pelvis != null && gameStart == true && playerStatus.GetIsGroggy() == false)
+        if (pelvis != null && gameStart == true)
         {
             packetManager.SendPlayerSyncPacket(pelvis.transform.position, stabillizerDirection, playerStatus.GetStamina(), myId);
         }

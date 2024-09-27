@@ -25,11 +25,25 @@ public:
 
 		room->GetPlayerListLock().lock_shared();
 		Player* player = room->GetPlayerList()[playerid];
-		room->GetPlayerListLock().unlock_shared();
 		if (player == nullptr) {
+			room->GetPlayerListLock().unlock_shared();
 			return;
 		}
 
+		// 잡혀있으면 풀어줌
+		if (player->SetIsGrabbed(false) == true) {
+			int grabberID = player->GetAttachedPlayerID();
+			Player* grabber = room->GetPlayerList()[player->GetAttachedPlayerID()];
+			if (grabber == nullptr) {
+				room->GetPlayerListLock().unlock_shared();
+				return;
+			}
+			pServer->GetPacketSender()->SendPlayerThrowOtherPlayerPacket(roomid, grabberID, grabber->GetPosition(), grabber->GetDirection()
+				, playerid, player->GetPosition(), player->GetDirection());
+		}
+
+
+		// 스테미나 회복
 		CharacterStat& characterStat = pServer->GetTableManager()->GetCharacterStats()[(int)player->GetChacracterType()];
 
 		int staminaRecoveryValue = characterStat.stamina;
@@ -38,6 +52,8 @@ public:
 		player->GetPlayerStateLock().lock();
 		player->SetPlayerState(ePlayerState::PS_ALIVE);
 		player->GetPlayerStateLock().unlock();
+
+		room->GetPlayerListLock().unlock_shared();
 
 		pServer->GetPacketSender()->SendPlayerGroggyRecoveryPacket(playerid, roomid, staminaRecoveryValue);
 	}

@@ -33,6 +33,8 @@ public:
 	int				GetGroggyCount() { return mGroggyCount; }
 	class Bomb*		GetBomb() { return mBomb; }
 	class Weapon*	GetWeapon() { return mWeapon; }
+	bool			GetIsGrabbed() { return mIsGrabbed.load(); }
+	int				GetAttachedPlayerID() { return mAttachedPlayerID; }
 
 	int				SetUID() { return mUID; }
 	void			SetAccountID(std::string accountID) { mAccountID = accountID; }
@@ -51,6 +53,9 @@ public:
 	void			SetGroggyCount(int count) { mGroggyCount = count; }
 	void			SetBomb(class Bomb* bomb) { mBomb = bomb; }
 	void			SetWeapon(class Weapon* weapon) { mWeapon = weapon; }
+	void			SetAttachedPlayerID(int playerID) { mAttachedPlayerID = playerID; }
+	// cas
+	bool			SetIsGrabbed(bool desired);
 
 	void			RecoveryHP(int value) { mHP += value; }
 	void			ReduceHP(int value) { mHP -= value; }
@@ -82,4 +87,6 @@ protected:
 	int				mGroggyCount;
 	class Bomb*     mBomb = nullptr;
 	class Weapon*	mWeapon = nullptr;
+	std::atomic<bool> mIsGrabbed = false;
+	int				mAttachedPlayerID = INVALIDKEY;
 };

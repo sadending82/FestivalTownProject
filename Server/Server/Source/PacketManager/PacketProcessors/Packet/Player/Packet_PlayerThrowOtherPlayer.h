@@ -18,12 +18,32 @@ public:
 				return;
 			}
 
+			int playerID = read->id();
+			int targetID = read->target_id();
+
+			int roomID = player->GetRoomID();
+			Room* room = pServer->GetRooms()[roomID];
+			if (room == nullptr && (room->GetState() != eRoomState::RS_INGAME)) {
+				return;
+			}
+			room->GetPlayerListLock().lock_shared();
+			Player* target = room->GetPlayerList()[read->target_id()];
+
+			if (target->SetIsGrabbed(false) == false) {
+				room->GetPlayerListLock().unlock_shared();
+				return;
+			}
+			player->SetAttachedPlayerID(INVALIDKEY);
+			target->SetAttachedPlayerID(INVALIDKEY);
+
 			player->SetPosition(read->pos()->x(), read->pos()->y(), read->pos()->z());
 			player->SetDirection(read->direction()->x(), read->direction()->y(), read->direction()->z());
 
+			room->GetPlayerListLock().unlock_shared();
+
 			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYER_THROW_OTHER_PLAYER, data, size);
 
-			pServer->SendAllPlayerInRoomExceptSender(send_buffer.data(), send_buffer.size(), key);
+			pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 		}
 	}
 

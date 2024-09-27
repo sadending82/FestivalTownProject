@@ -32,6 +32,7 @@ public:
 	void SendPlayerCalculatedDamage(int targetID, int roomID, int attackType, int hp, int damageAmount, Vector3f knockback_direction);
 	void SendPlayerGroggyPacket(int inGameID, int roomID);
 	void SendPlayerGroggyRecoveryPacket(int inGameID, int roomID, int recoveredStamina);
+	void SendPlayerThrowOtherPlayerPacket(int roomID, int inGameID, Vector3f myPosition, Vector3f myDirection, int targetID, Vector3f targetPosition, Vector3f targetDirection);
 
 private:
 	class Server* mServer = nullptr;

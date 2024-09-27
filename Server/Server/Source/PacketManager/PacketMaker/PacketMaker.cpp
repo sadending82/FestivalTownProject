@@ -42,8 +42,8 @@ std::vector<uint8_t> PacketMaker::MakePlayerDeadPacket(int inGameID, int roomID,
 {
 	flatbuffers::FlatBufferBuilder Builder;
 	
-	auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, position.x, position.y, position.x);
-	auto dir = PacketTable::UtilitiesTable::CreateVec3f(Builder, direction.x, direction.y, direction.x);
+	auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, position.x, position.y, position.z);
+	auto dir = PacketTable::UtilitiesTable::CreateVec3f(Builder, direction.x, direction.y, direction.z);
 	Builder.Finish(PacketTable::PlayerTable::CreatePlayerDead(Builder, inGameID, pos, dir));
 	return MakeBuffer(ePacketType::S2C_PLAYER_DEAD, Builder.GetBufferPointer(), Builder.GetSize());
 }
@@ -78,6 +78,19 @@ std::vector<uint8_t> PacketMaker::MakePlayerGroggyRecoveryPacket(int id, int rec
 	flatbuffers::FlatBufferBuilder Builder;
 	Builder.Finish(PacketTable::PlayerTable::CreatePlayerGroggyRecovery(Builder, id, recoveredStamina));
 	return MakeBuffer(ePacketType::S2C_PLAYER_GROGGY_RECOVERY, Builder.GetBufferPointer(), Builder.GetSize());
+}
+
+std::vector<uint8_t> PacketMaker::MakePlayerThrowOtherPlayerPacket(int playerID, Vector3f myPosition, Vector3f myDirection, int targetID, Vector3f targetPosition, Vector3f targetDirection)
+{
+	flatbuffers::FlatBufferBuilder Builder;
+	auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, myPosition.x, myPosition.y, myPosition.z);
+	auto dir = PacketTable::UtilitiesTable::CreateVec3f(Builder, myDirection.x, myDirection.y, myDirection.z);
+
+	auto targetPos = PacketTable::UtilitiesTable::CreateVec3f(Builder, targetPosition.x, targetPosition.y, targetPosition.z);
+	auto targetDir = PacketTable::UtilitiesTable::CreateVec3f(Builder, targetDirection.x, targetDirection.y, targetDirection.z);
+
+	Builder.Finish(PacketTable::PlayerTable::CreatePlayerThrowOtherPlayer(Builder, playerID, pos, dir, targetID, targetPos, targetDir));
+	return MakeBuffer(ePacketType::S2C_PLAYER_THROW_OTHER_PLAYER, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
 std::vector<uint8_t> PacketMaker::MakeGameMatchingResponsePacket(int inGameID, int roomID, int team, int gameMode, int totalPlayerCount, bool isHost)

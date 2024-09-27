@@ -327,13 +327,13 @@ public class PacketMaker
         return result;
     }
 
-    public byte[] MakePlayerThrowOtherPlayerPacket(int playerID, Vector3 myPosition, Vector3 myDirection, int targetID, Vector3 targetHeadPosition, Vector3 targetDirection)
+    public byte[] MakePlayerThrowOtherPlayerPacket(int playerID, Vector3 myPosition, Vector3 myDirection, int targetID, Vector3 targetPosition, Vector3 targetDirection)
     {
         var builder = new FlatBufferBuilder(1);
 
         var my_pos = Vec3f.CreateVec3f(builder, myPosition.x, myPosition.y, myPosition.z);
         var my_dir = Vec3f.CreateVec3f(builder, myDirection.x, myDirection.y, myDirection.z);
-        var target_head_pos = Vec3f.CreateVec3f(builder, targetHeadPosition.x, targetHeadPosition.y, targetHeadPosition.z);
+        var target_pos = Vec3f.CreateVec3f(builder, targetPosition.x, targetPosition.y, targetPosition.z);
         var target_dir = Vec3f.CreateVec3f(builder, targetDirection.x, targetDirection.y, targetDirection.z);
 
         PlayerThrowOtherPlayer.StartPlayerThrowOtherPlayer(builder);
@@ -342,7 +342,7 @@ public class PacketMaker
         PlayerThrowOtherPlayer.AddDirection(builder, my_dir);
 
         PlayerThrowOtherPlayer.AddTargetId(builder, targetID);
-        PlayerThrowOtherPlayer.AddTargetHeadPos(builder, target_head_pos);
+        PlayerThrowOtherPlayer.AddTargetPos(builder, target_pos);
         PlayerThrowOtherPlayer.AddTargetDirection(builder, target_dir);
 
         var offset = PlayerThrowOtherPlayer.EndPlayerThrowOtherPlayer(builder);

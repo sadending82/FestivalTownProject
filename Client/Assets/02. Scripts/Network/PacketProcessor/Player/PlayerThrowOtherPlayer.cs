@@ -24,7 +24,7 @@ namespace Network.PacketProcessor
             Vector3 direction = new Vector3(Data.Direction.Value.X, Data.Direction.Value.Y, Data.Direction.Value.Z);
 
             int targetId = Data.TargetId;
-            Vector3 targetHeadPos = new Vector3(Data.TargetHeadPos.Value.X, Data.TargetHeadPos.Value.Y, Data.TargetHeadPos.Value.Z);
+            Vector3 targetPos = new Vector3(Data.TargetPos.Value.X, Data.TargetPos.Value.Y, Data.TargetPos.Value.Z);
             Vector3 targetDirection = new Vector3(Data.TargetDirection.Value.X, Data.TargetDirection.Value.Y, Data.TargetDirection.Value.Z);
 
             PlayerController playerController = Managers.Player.FindPlayerById(id).GetComponent<PlayerController>();
@@ -42,7 +42,7 @@ namespace Network.PacketProcessor
             PlayerController targetPlayerController = Managers.Player.FindPlayerById(targetId).GetComponent<PlayerController>();
             if (targetPlayerController != null)
             {
-                targetPlayerController.SetPosition(targetHeadPos);
+                targetPlayerController.SetPosition(targetPos);
                 targetPlayerController.SetDirection(targetDirection);
             }
             else

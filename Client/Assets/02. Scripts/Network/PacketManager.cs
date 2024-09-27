@@ -252,9 +252,9 @@ public class PacketManager : MonoBehaviour
         SendPacket(packet);
     }
 
-    public void SendPlayerThrowOtherPlayerPacket(int playerID, Vector3 myPosition, Vector3 myDirection, int targetID, Vector3 targetHeadPosition, Vector3 targetDirection)
+    public void SendPlayerThrowOtherPlayerPacket(int playerID, Vector3 myPosition, Vector3 myDirection, int targetID, Vector3 targetPosition, Vector3 targetDirection)
     {
-        byte[] packet = _packetMaker.MakePlayerThrowOtherPlayerPacket(playerID, myPosition, myDirection, targetID, targetHeadPosition, targetDirection);
+        byte[] packet = _packetMaker.MakePlayerThrowOtherPlayerPacket(playerID, myPosition, myDirection, targetID, targetPosition, targetDirection);
         if (packet == null) { return; }
         SendPacket(packet);
     }

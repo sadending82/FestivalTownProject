@@ -14,6 +14,9 @@ void Player::Init()
 
 	mBomb = nullptr;
 	mWeapon = nullptr;
+
+	mIsGrabbed = false;
+	mAttachedPlayerID = INVALIDKEY;
 }
 
 void Player::Disconnect()
@@ -32,11 +35,18 @@ void Player::DoSend(void* packet, const int size)
 	__super::DoSend(packet, size);
 }
 
+bool Player::SetIsGrabbed(bool desired)
+{
+	bool expected = !desired;
+	return mIsGrabbed.compare_exchange_strong(expected, desired);
+}
+
 int Player::GroggyRecoverTime()
 {
-	if (mGroggyCount > 3 + 1) return 10;
+	/*if (mGroggyCount > 3 + 1) return 10;
 
-	return mGroggyCount * 2 + 1;
+	return mGroggyCount * 2 + 1;*/
+	return 20;
 }
 
 void Player::ChangeToGroggyState(Server* pServer, int roomID)

@@ -25,6 +25,10 @@ public:
 			player->SetDirection(read->direction()->x(), read->direction()->y(), read->direction()->z());
 			player->SetStamina(read->stamina());
 
+			if (player->GetIsGrabbed() == true) {
+				return;
+			}
+
 			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYER_SYNC, data, size);
 
 			pServer->SendAllPlayerInRoomExceptSender(send_buffer.data(), send_buffer.size(), key);
