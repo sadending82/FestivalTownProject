@@ -22,6 +22,8 @@ namespace Network.PacketProcessor
             int roomID = Data.Roomid;
             bool isHost = Data.IsHost;
 
+            Debug.Log("Game Maching Complete");
+
             Managers.Scene.LoadScene(Define.Scene.Loading);
             Managers.Game.RoomID = roomID;
             Managers.Game.inGameID = id;

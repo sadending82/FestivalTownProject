@@ -377,8 +377,6 @@ void Server::MatchingComplete(int roomID, std::vector<Player*>& players)
 {
     Room* room = GetRooms()[roomID];
 
-    int tFlag = 0;
-
     // Player Add Into New Room
     for (Player* player : players) {
         if (room->GetPlayerCnt() == room->GetPlayerLimit()) {
@@ -386,14 +384,25 @@ void Server::MatchingComplete(int roomID, std::vector<Player*>& players)
         }
         player->GetStateLock().lock();
         if (player->GetState() == eSessionState::ST_MATCHWAITING) {
-            // 임시
-            int team = tFlag % 2;
-            player->SetTeam(team);
+            // 인원수가 적은 팀에 배치
+            int teamNum = 987654321;
+            int minTeammateCnt = 987654321;
+            for (auto& pair : room->GetTeams()) {
+                int key = pair.first;
+                Team& currTeam = pair.second;
+
+                int teammateCnt = currTeam.GetMembers().size();
+
+                if (teammateCnt < minTeammateCnt || (teammateCnt == minTeammateCnt && key < teamNum)) {
+                    teamNum = key;
+                    minTeammateCnt = teammateCnt;
+                }
+            }
+
+            player->SetTeam(teamNum);
             player->SetChacracterType(eCharacterType::CT_TEST);
             player->SetHP(GetTableManager()->GetCharacterStats()[(int)player->GetChacracterType()].hp);
             player->SetStamina(GetTableManager()->GetCharacterStats()[(int)player->GetChacracterType()].stamina);
-            tFlag++;
-            //
 
             int sessionID = player->GetSessionID();
             bool AddPlayerOk = room->AddPlayer(player);
