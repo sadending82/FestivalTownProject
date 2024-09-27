@@ -53,8 +53,6 @@ public class AttackChecker : MonoBehaviour
                     if (rb != null)
                     {
                         int targetId = targetPlayerState.GetId();
-                        playerState.SetIsGrapPlayer(true, targetId);
-                        GrapPlayer(targetId, this.transform.position, other.transform.position);
 
                         packetManager.SendPlayerGrabOtherPlayerPacket(playerState.GetId(), playerController.GetPosition(), playerController.GetDirection(),
                             this.transform.position, isLeftHand, targetId, other.transform.position);
