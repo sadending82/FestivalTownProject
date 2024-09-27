@@ -245,30 +245,16 @@ public class PacketManager : MonoBehaviour
         SendPacket(packet);
     }
 
-    public void SendPlayerGrabOtherPlayerPacket(int playerID, Vector3 my_position, Vector3 my_direction, int targetID, Vector3 target_position)
+    public void SendPlayerGrabOtherPlayerPacket(int playerID, Vector3 myPosition, Vector3 myDirection, Vector3 myHandPosition, bool isLeftHand, int targetID, Vector3 targetHeadPosition)
     {
-        byte[] packet = _packetMaker.MakePlayerGrabOtherPlayerPacket(playerID, my_position, my_direction, targetID, target_position);  
+        byte[] packet = _packetMaker.MakePlayerGrabOtherPlayerPacket(playerID, myPosition, myDirection, myHandPosition, isLeftHand, targetID, targetHeadPosition);  
         if (packet == null) { return; }
         SendPacket(packet);
     }
 
-    public void SendPlayerGrabOtherPlayerPacket(int playerID, Vector3 my_position, Vector3 my_direction, int targetID, Vector3 target_position, Vector3 target_direction)
+    public void SendPlayerThrowOtherPlayerPacket(int playerID, Vector3 myPosition, Vector3 myDirection, int targetID, Vector3 targetHeadPosition, Vector3 targetDirection)
     {
-        byte[] packet = _packetMaker.MakePlayerGrabOtherPlayerPacket(playerID, my_position, my_direction, targetID, target_position, target_direction);
-        if (packet == null) { return; }
-        SendPacket(packet);
-    }
-
-    public void SendPlayerThrowOtherPlayerPacket(int playerID, Vector3 my_position, Vector3 my_direction, int targetID, Vector3 target_position)
-    {
-        byte[] packet = _packetMaker.MakePlayerThrowOtherPlayerPacket(playerID, my_position, my_direction, targetID, target_position);
-        if (packet == null) { return; }
-        SendPacket(packet);
-    }
-
-    public void SendPlayerThrowOtherPlayerPacket(int playerID, Vector3 my_position, Vector3 my_direction, int targetID, Vector3 target_position, Vector3 target_direction)
-    {
-        byte[] packet = _packetMaker.MakePlayerThrowOtherPlayerPacket(playerID, my_position, my_direction, targetID, target_position, target_direction);
+        byte[] packet = _packetMaker.MakePlayerThrowOtherPlayerPacket(playerID, myPosition, myDirection, targetID, targetHeadPosition, targetDirection);
         if (packet == null) { return; }
         SendPacket(packet);
     }
