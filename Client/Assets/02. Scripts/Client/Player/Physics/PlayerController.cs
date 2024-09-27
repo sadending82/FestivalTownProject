@@ -532,7 +532,7 @@ public class PlayerController : MonoBehaviour
                     playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
                     PlayerController targetPlayerController = Managers.Player.FindPlayerById(playerStatus.GetGrapTargetPlayerId()).GetComponent<PlayerController>();
                     packetManager.SendPlayerThrowOtherPlayerPacket(playerStatus.GetId(), GetPosition(), GetDirection(),
-                        playerStatus.GetGrapTargetPlayerId(), targetPlayerController.GetHeadPosition(), targetPlayerController.GetDirection());
+                        playerStatus.GetGrapTargetPlayerId(), targetPlayerController.GetPosition(), targetPlayerController.GetDirection());
                 }
                 else if (playerStatus.GetUpperBodyAnimationState() == UpperBodyAnimationState.NONE)
                 {

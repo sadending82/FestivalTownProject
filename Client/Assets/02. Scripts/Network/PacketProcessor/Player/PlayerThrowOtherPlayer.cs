@@ -42,7 +42,7 @@ namespace Network.PacketProcessor
             PlayerController targetPlayerController = Managers.Player.FindPlayerById(targetId).GetComponent<PlayerController>();
             if (targetPlayerController != null)
             {
-                targetPlayerController.SetHeadPosition(targetHeadPos);
+                targetPlayerController.SetPosition(targetHeadPos);
                 targetPlayerController.SetDirection(targetDirection);
             }
             else
