@@ -79,11 +79,18 @@ public class AttackChecker : MonoBehaviour
         targetPlayerController.SetHeadPosition(targetHeadPos);
         this.transform.position = handPos;
 
+        CharacterStatus targetPlayerState = Managers.Player.FindPlayerById(targetId).GetComponent<CharacterStatus>();
+        targetPlayerState.SetIsGrapped(true, playerState.GetId());
+
         FixedJoint fixedJoint = GetComponent<FixedJoint>();
         if (fixedJoint == null)
         {
             fixedJoint = this.gameObject.AddComponent<FixedJoint>() as FixedJoint;
         }
         fixedJoint.connectedBody = targetPlayerController.GetHeadRigidbody();
+    }
+    public void ThrowPlayer()
+    {
+        Destroy(this.gameObject.GetComponent<FixedJoint>());
     }
 }

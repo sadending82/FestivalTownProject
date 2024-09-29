@@ -528,11 +528,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (isGrap == true)
                 {
-                    isGrap = false;
-                    playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
-                    PlayerController targetPlayerController = Managers.Player.FindPlayerById(playerStatus.GetGrapTargetPlayerId()).GetComponent<PlayerController>();
-                    packetManager.SendPlayerThrowOtherPlayerPacket(playerStatus.GetId(), GetPosition(), GetDirection(),
-                        playerStatus.GetGrapTargetPlayerId(), targetPlayerController.GetPosition(), targetPlayerController.GetDirection());
+                    GrapOff();
                 }
                 else if (playerStatus.GetUpperBodyAnimationState() == UpperBodyAnimationState.NONE)
                 {
@@ -831,5 +827,13 @@ public class PlayerController : MonoBehaviour
     public Rigidbody GetHeadRigidbody()
     {
         return head.GetComponent<Rigidbody>();
+    }
+    public void GrapOff()
+    {
+        isGrap = false;
+        playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
+        PlayerController targetPlayerController = Managers.Player.FindPlayerById(playerStatus.GetGrapTargetPlayerId()).GetComponent<PlayerController>();
+        packetManager.SendPlayerThrowOtherPlayerPacket(playerStatus.GetId(), GetPosition(), GetDirection(),
+            playerStatus.GetGrapTargetPlayerId(), targetPlayerController.GetPosition(), targetPlayerController.GetDirection());
     }
 }
