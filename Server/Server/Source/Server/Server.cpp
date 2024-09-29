@@ -210,13 +210,7 @@ void Server::Run()
     }break;
     case SERVER_MODE::TEST: {
         DEBUGMSGNOPARAM("START TEST MODE \n");
-        GameMode gameMode = GameMode::FITH_Team_Battle_6;
-        Room* room = mRooms[TESTROOM];
-        room->Init(TESTROOM, mTableManager->GetGameModeData()[gameMode].Life_Count, mTableManager->GetGameModeData()[gameMode].Player_Count);
-        room->SetGameMode(gameMode);
-        room->InitMap(&mTableManager->GetMapData()[MapCode::TEST]);
-        room->SetState(eRoomState::RS_INGAME);
-        room->SetPlayerLimit(mTableManager->GetGameModeData()[gameMode].Player_Count);
+        MakeTestRoom();
     }break;
     }
 }
@@ -230,6 +224,31 @@ void Server::ThreadJoin()
 #ifdef RunTest
     mTestThread.join();
 #endif
+}
+
+void Server::MakeTestRoom()
+{
+    GameMode gameMode = GameMode::FITH_Team_Battle_6;
+    Room* room = mRooms[TESTROOM];
+    room->Init(TESTROOM, mTableManager->GetGameModeData()[gameMode].Life_Count, mTableManager->GetGameModeData()[gameMode].Player_Count);
+    room->SetGameMode(gameMode);
+    room->InitMap(&mTableManager->GetMapData()[MapCode::TEST]);
+    room->SetState(eRoomState::RS_INGAME);
+    room->SetPlayerLimit(mTableManager->GetGameModeData()[gameMode].Player_Count);
+
+    // Push Event
+    long long roomCode = room->GetRoomCode();
+    GameModeInfo& modeInfo = mTableManager->GetGameModeData()[gameMode];
+
+    PushEventBlockDrop(mTimer, TESTROOM, roomCode, modeInfo.Block1_Spawn_Index, modeInfo.Block1_Spawn_Time);
+    PushEventBlockDrop(mTimer, TESTROOM, roomCode, modeInfo.Block2_Spawn_Index, modeInfo.Block2_Spawn_Time);
+
+    PushEventBombSpawn(mTimer, TESTROOM, roomCode, modeInfo.Bomb_Spawn_Time);
+
+    PushEventWeaponSpawn(mTimer, TESTROOM, roomCode, modeInfo.Weapon1_Spawn_Index, modeInfo.Weapon1_Spawn_Time);
+    PushEventWeaponSpawn(mTimer, TESTROOM, roomCode, modeInfo.Weapon2_Spawn_Index, modeInfo.Weapon2_Spawn_Time);
+
+    GetRooms()[TESTROOM]->SetStartTime(std::chrono::system_clock::now());
 }
 
 void Server::SendAllPlayerInRoomBySessionID(void* packet, int size, int sessionID)

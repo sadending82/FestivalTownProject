@@ -34,6 +34,8 @@ public:
 	void Run();
 	void ThreadJoin();
 
+	void MakeTestRoom();
+
 	void SendAllPlayerInRoomBySessionID(void* packet, int size, int sessionID);
 	void SendAllPlayerInRoom(void* packet, int size, int roomID);
 	void SendAllPlayerInRoomExceptSender(void* packet, int size, int sessionID);
