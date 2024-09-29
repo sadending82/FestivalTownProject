@@ -6,6 +6,8 @@ using NetworkProtocol;
 using UnityEngine.Rendering;
 using TMPro.Examples;
 using static UnityEngine.GraphicsBuffer;
+using UnityEngine.Playables;
+using UnityEditor;
 
 public class PlayerController : MonoBehaviour
 {
@@ -528,7 +530,13 @@ public class PlayerController : MonoBehaviour
             {
                 if (isGrap == true)
                 {
-                    GrapOff();
+                    isGrap = false;
+                    playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
+
+                    if (playerStatus.GetIsGrapPlayer() == true)
+                    {
+                        GrapOff();
+                    }
                 }
                 else if (playerStatus.GetUpperBodyAnimationState() == UpperBodyAnimationState.NONE)
                 {
@@ -803,7 +811,11 @@ public class PlayerController : MonoBehaviour
     public void s_GrapPlayer(int targetId, bool isLeftHand, Vector3 handPos, Vector3 targetHeadPos)
     {
         playerStatus.SetIsGrapPlayer(true, targetId);
-        if(isLeftHand == true)
+
+        CharacterStatus targetPlayerState = Managers.Player.FindPlayerById(targetId).GetComponent<CharacterStatus>();
+        targetPlayerState.SetIsGrapped(true, playerStatus.GetId());
+
+        if (isLeftHand == true)
         {
             handL.GetComponent<AttackChecker>().GrapPlayer(targetId, handPos, targetHeadPos);
         }
@@ -815,6 +827,8 @@ public class PlayerController : MonoBehaviour
     public void s_ThrowPlayer()
     {
         playerStatus.SetIsGrapPlayer(false);
+        handL.GetComponent<AttackChecker>().ThrowPlayer();
+        handR.GetComponent<AttackChecker>().ThrowPlayer();
     }
     public void SetHeadPosition(Vector3 headPos)
     {
@@ -830,8 +844,6 @@ public class PlayerController : MonoBehaviour
     }
     public void GrapOff()
     {
-        isGrap = false;
-        playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
         PlayerController targetPlayerController = Managers.Player.FindPlayerById(playerStatus.GetGrapTargetPlayerId()).GetComponent<PlayerController>();
         packetManager.SendPlayerThrowOtherPlayerPacket(playerStatus.GetId(), GetPosition(), GetDirection(),
             playerStatus.GetGrapTargetPlayerId(), targetPlayerController.GetPosition(), targetPlayerController.GetDirection());

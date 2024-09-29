@@ -42,6 +42,7 @@ namespace Network.PacketProcessor
             PlayerController targetPlayerController = Managers.Player.FindPlayerById(targetId).GetComponent<PlayerController>();
             CharacterStatus targetPlayerState = Managers.Player.FindPlayerById(targetId).GetComponent<CharacterStatus>();
             targetPlayerState.SetIsGrapped(false);
+
             if (targetPlayerController != null)
             {
                 targetPlayerController.SetPosition(targetPos);

@@ -340,6 +340,10 @@ public class CharacterStatus : MonoBehaviour
     {
         return grapTargetPlayerId;
     }
+    public bool GetIsGrapPlayer()
+    {
+        return isGrapPlayer;
+    }
     // 나를 잡은 플레이어
     public void SetIsGrapped(bool isGrapped, int grappedPlayerId = -1)
     {
