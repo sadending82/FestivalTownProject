@@ -1,5 +1,6 @@
 using ClientProtocol;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class CharacterStatus : MonoBehaviour
 {
@@ -37,6 +38,8 @@ public class CharacterStatus : MonoBehaviour
     [SerializeField]
     private bool isGrapPlayer = false;
     private int grapTargetPlayerId;
+    private bool isGrapped = false;
+    private int grappedPlayerId;
 
 
     [Header("--- AnimationControll ---")]
@@ -300,6 +303,12 @@ public class CharacterStatus : MonoBehaviour
     {
         if (isGroggy == true)
         {
+            if(isGrapped == true)
+            {
+                PlayerController targetPlayerController = Managers.Player.FindPlayerById(grappedPlayerId).GetComponent<PlayerController>();
+                targetPlayerController.GrapOff();
+            }
+
             isGroggy = false;
             SetStamina(maxStamina);
             animationMoudule.GroggyOff();
@@ -321,6 +330,7 @@ public class CharacterStatus : MonoBehaviour
     {
         return headRig;
     }
+    // 내가 잡은 플레이어
     public void SetIsGrapPlayer(bool isGrapPlayer, int targetPlayerId = -1)
     {
         this.isGrapPlayer = isGrapPlayer;
@@ -329,5 +339,23 @@ public class CharacterStatus : MonoBehaviour
     public int GetGrapTargetPlayerId()
     {
         return grapTargetPlayerId;
+    }
+    public bool GetIsGrapPlayer()
+    {
+        return isGrapPlayer;
+    }
+    // 나를 잡은 플레이어
+    public void SetIsGrapped(bool isGrapped, int grappedPlayerId = -1)
+    {
+        this.isGrapped = isGrapped;
+        this.grappedPlayerId = grappedPlayerId;
+    }
+    public bool GetIsGrapped()
+    {
+        return isGrapped;
+    }
+    public int GetGrappedPlayerId()
+    {
+        return grappedPlayerId;
     }
 }

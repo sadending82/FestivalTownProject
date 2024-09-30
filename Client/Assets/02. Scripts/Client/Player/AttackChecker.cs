@@ -86,4 +86,8 @@ public class AttackChecker : MonoBehaviour
         }
         fixedJoint.connectedBody = targetPlayerController.GetHeadRigidbody();
     }
+    public void ThrowPlayer()
+    {
+        Destroy(this.gameObject.GetComponent<FixedJoint>());
+    }
 }
