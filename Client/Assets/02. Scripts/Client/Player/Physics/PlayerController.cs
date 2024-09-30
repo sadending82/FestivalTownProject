@@ -159,9 +159,7 @@ public class PlayerController : MonoBehaviour
         {
             if (Input.GetKeyUp(KeyCode.T))
             {
-                Managers.CubeObject.SpawnCube(c, c, 0);
-                c++;
-                c %= 10;
+                packetManager.SendPlayerCollisionToBlockPacket(playerStatus.GetId());
             }
         }
 

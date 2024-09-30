@@ -7,13 +7,18 @@ public class Checker : MonoBehaviour
     private bool check;
 
     private PacketManager packetManager;
+
+    private GameObject pusher;
+
     private void Start()
     {
+        check = true;
         packetManager = Managers.Network.GetPacketManager();
     }
-    private void OnEnable()
+    public void CreatePusher()
     {
-        check = true;
+        pusher = Managers.Resource.Instantiate("CubePusher");
+        pusher.transform.position = new Vector3(this.transform.position.x, 0, this.transform.position.z);
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -35,10 +40,9 @@ public class Checker : MonoBehaviour
             }
             if (other.gameObject.tag == "Ground")
             {
-                GameObject pusher = Managers.Resource.Instantiate("CubePusher");
-                // Pusher ¿€µø
-                pusher.transform.position = new Vector3(this.transform.position.x, 0, this.transform.position.z);
+                check = false;
                 pusher.SetActive(true);
+                pusher.GetComponent<Pusher>().StartPush();
             }
         }
     }
