@@ -117,8 +117,7 @@ namespace NetworkProtocol
     {
         AT_FALLDOWN,
         AT_BOMB_ATTACK,
-        AT_BASIC_ATTACK,
-        AT_WEAPON_ATTACK,
+        AT_ATTACK = 10001
     };
 }
 

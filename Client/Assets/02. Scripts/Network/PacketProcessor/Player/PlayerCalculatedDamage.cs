@@ -21,6 +21,10 @@ namespace Network.PacketProcessor
             Vector3 dir = new Vector3(Data.KnockbackDirection.Value.X, Data.KnockbackDirection.Value.Y, Data.KnockbackDirection.Value.Z);
             int hp = Data.Hp;
 
+            int StaminaLoss = Data.TargetStaminaLoss;
+
+            Debug.Log("스테미너 소모량 : " + StaminaLoss);
+
             Debug.Log("맞은 사람 ID : " + targetId);
 
             CharacterStatus pState = Managers.Player.GetPlayers().transform.GetChild(targetId).GetComponent<CharacterStatus>();

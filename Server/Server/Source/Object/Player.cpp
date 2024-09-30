@@ -49,9 +49,14 @@ int Player::GroggyRecoverTime()
 	return 20;
 }
 
-void Player::ChangeToGroggyState(Server* pServer, int roomID)
+bool Player::ChangeToGroggyState(Server* pServer, int roomID)
 {
 	mPlayerStateLock.lock();
+	if (mPlayerState == ePlayerState::PS_GROGGY) {
+		mPlayerStateLock.unlock();
+		return false;
+	}
+
 	mPlayerState = ePlayerState::PS_GROGGY;
 	mGroggyCount++;
 
@@ -68,11 +73,18 @@ void Player::ChangeToGroggyState(Server* pServer, int roomID)
 		}
 	}
 	mPlayerStateLock.unlock();
+
+	return true;
 }
 
-void Player::ChangeToDeadState(Server* pServer, int roomID)
+bool Player::ChangeToDeadState(Server* pServer, int roomID)
 {
 	mPlayerStateLock.lock();
+	if (mPlayerState == ePlayerState::PS_DEAD) {
+		mPlayerStateLock.unlock();
+		return false;
+	}
+
 	mPlayerState = ePlayerState::PS_DEAD;
 
 	pServer->GetPacketSender()->SendPlayerDeadPacket(mInGameID, roomID);
@@ -88,4 +100,5 @@ void Player::ChangeToDeadState(Server* pServer, int roomID)
 		}
 	}
 	mPlayerStateLock.unlock();
+	return true;
 }

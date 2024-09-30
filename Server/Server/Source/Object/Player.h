@@ -60,12 +60,14 @@ public:
 	void			RecoveryHP(int value) { mHP += value; }
 	void			ReduceHP(int value) { mHP -= value; }
 
+	void			ReduceStamina(int value) { mStamina -= value; }
+
 	void			AddGroggyCount() { mGroggyCount++; }
 
 	int				GroggyRecoverTime();
 
-	void			ChangeToGroggyState(class Server* pServer, int roomID);
-	void			ChangeToDeadState(class Server* pServer, int roomID);
+	bool			ChangeToGroggyState(class Server* pServer, int roomID);
+	bool			ChangeToDeadState(class Server* pServer, int roomID);
 
 protected:
 	std::mutex      mPlayerStateLock;

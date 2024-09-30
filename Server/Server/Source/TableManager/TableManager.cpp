@@ -112,15 +112,12 @@ void TableManager::ReadCharacterStat()
 {
     try {
        
-        mWorkbook.load("GameData/Character_Stat.xlsx");
+        mWorkbook.load("GameData/Ch_Stat_20240930.xlsx");
 
         int idx = 0;
-        int sheetIdx = 1;
-
-       mWorksheet = mWorkbook.sheet_by_index(sheetIdx);
-
+        mWorksheet = mWorkbook.sheet_by_index(Ch_Stat_Sheet);
         for (auto row : mWorksheet.rows(false)) {
-            if (idx < 2) {
+            if (idx < 1) {
                 idx++;
                 continue;
             }
@@ -129,24 +126,60 @@ void TableManager::ReadCharacterStat()
                 CharacterStats[(int)row[static_cast<int>(CharacterStat_Field::index)].value<int>()]
                     = CharacterStat{
                     (int)row[static_cast<int>(CharacterStat_Field::index)].value<int>(),
-                    (std::string)row[static_cast<int>(CharacterStat_Field::name)].to_string(),  
-                    (int)row[static_cast<int>(CharacterStat_Field::hp)].value<int>(), 
-                    (int)row[static_cast<int>(CharacterStat_Field::stamina)].value<int>(), 
-                    (int)row[static_cast<int>(CharacterStat_Field::strength)].value<int>(), 
-                    (int)row[static_cast<int>(CharacterStat_Field::speed)].value<int>(), 
-                    (int)row[static_cast<int>(CharacterStat_Field::attack)].value<int>(),
-                    (int)row[static_cast<int>(CharacterStat_Field::headAttack)].value<int>(),
-                    (int)row[static_cast<int>(CharacterStat_Field::jumpKick)].value<int>(),
-                    (int)row[static_cast<int>(CharacterStat_Field::powerAttack)].value<int>(), 
-                    (int)row[static_cast<int>(CharacterStat_Field::walkSpeed)].value<int>(), 
-                    (int)row[static_cast<int>(CharacterStat_Field::runSpeed)].value<int>(), 
-                    (int)row[static_cast<int>(CharacterStat_Field::rollSpeed)].value<int>(),
-                    (int)row[static_cast<int>(CharacterStat_Field::staminaRecovery)].value<int>()
+                    (std::string)row[static_cast<int>(CharacterStat_Field::name)].to_string(),
+                    (int)row[static_cast<int>(CharacterStat_Field::hp)].value<int>(),
+                    (int)row[static_cast<int>(CharacterStat_Field::stamina)].value<int>(),
+                    (int)row[static_cast<int>(CharacterStat_Field::strength)].value<int>(),
+                    (int)row[static_cast<int>(CharacterStat_Field::speed)].value<int>()
+                };
+            }
+            idx++;
+        }
+
+        idx = 0;
+        mWorksheet = mWorkbook.sheet_by_index(Ch_Attack_Sheet);
+        for (auto row : mWorksheet.rows(false)) {
+            if (idx < 1) {
+                idx++;
+                continue;
+            }
+
+            if (!row.empty()) {
+                AttackStats[(int)row[static_cast<int>(AttackStat_Field::Index)].value<int>()]
+                    = AttackStat{
+                    (int)row[static_cast<int>(AttackStat_Field::Index)].value<int>(),
+                    (std::string)row[static_cast<int>(AttackStat_Field::Name)].to_string(),
+                    (float)row[static_cast<int>(AttackStat_Field::Value)].value<float>(),
+                    (int)row[static_cast<int>(AttackStat_Field::Attack_Speed)].value<int>(),
+                    (int)row[static_cast<int>(AttackStat_Field::Ch_StaminaConsume)].value<int>(),
+                    (int)row[static_cast<int>(AttackStat_Field::Steal_Stamina)].value<int>()
                 };
             }
 
             idx++;
         }
+
+        idx = 0;
+        mWorksheet = mWorkbook.sheet_by_index(Ch_Move_Sheet);
+        for (auto row : mWorksheet.rows(false)) {
+            if (idx < 1) {
+                idx++;
+                continue;
+            }
+
+            if (!row.empty()) {
+                MoveStats[(int)row[static_cast<int>(MoveStat_Field::Index)].value<int>()]
+                    = MoveStat{
+                    (int)row[static_cast<int>(MoveStat_Field::Index)].value<int>(),
+                    (std::string)row[static_cast<int>(MoveStat_Field::Name)].to_string(),
+                    (float)row[static_cast<int>(MoveStat_Field::Value)].value<float>(),
+                    (int)row[static_cast<int>(MoveStat_Field::Ch_StaminaConsume)].value<int>(),
+                    (int)row[static_cast<int>(MoveStat_Field::Ch_Stamina_recovery)].value<int>()
+                };
+            }
+            idx++;
+        }
+
     }
     catch (const xlnt::exception& e) {
         std::cerr << "Excel Character_Stat File Load Fail: " << e.what() << std::endl;

@@ -33,7 +33,11 @@ public:
 	void ReadGachaTable();
 
 	std::unordered_map<INDEX, ItemTable>& GetItemInfos() { return ItemInfos; }
+
 	std::unordered_map<INDEX, CharacterStat>& GetCharacterStats() { return CharacterStats; }
+	std::unordered_map<INDEX, AttackStat>& GetAttackStats() { return AttackStats; }
+	std::unordered_map<INDEX, MoveStat>& GetMoveStats() { return MoveStats; }
+
 	std::unordered_map<INDEX, WeaponStat>& GetWeaponStats() { return WeaponStats; }
 	std::unordered_map<GameMode, GameModeInfo>& GetGameModeData() { return GameModeData; }
 	std::unordered_map<MapCode, Map>& GetMapData() { return MapData; }
@@ -55,7 +59,11 @@ private:
 	xlnt::worksheet mWorksheet;
 
 	std::unordered_map<INDEX, ItemTable> ItemInfos;
+
 	std::unordered_map<INDEX, CharacterStat> CharacterStats;
+	std::unordered_map<INDEX, AttackStat> AttackStats;
+	std::unordered_map<INDEX, MoveStat> MoveStats;
+
 	std::unordered_map<INDEX, WeaponStat> WeaponStats;
 	std::unordered_map<GameMode, GameModeInfo> GameModeData;
 	std::unordered_map<MapCode, Map> MapData;

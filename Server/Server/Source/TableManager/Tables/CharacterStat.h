@@ -1,6 +1,10 @@
 #pragma once
 #include <string>
 
+#define Ch_Stat_Sheet 0
+#define Ch_Attack_Sheet 1
+#define Ch_Move_Sheet 2
+
 #pragma pack (push, 1)
 
 enum class CharacterStat_Field {
@@ -10,14 +14,23 @@ enum class CharacterStat_Field {
 	stamina,
 	strength,
 	speed,
-	attack,
-	headAttack = 8,
-	jumpKick,
-	powerAttack,
-	walkSpeed,
-	runSpeed,
-	rollSpeed,
-	staminaRecovery = 22
+};
+
+enum class AttackStat_Field {
+	Index,
+	Name,
+	Value,
+	Attack_Speed,
+	Ch_StaminaConsume,
+	Steal_Stamina,
+};
+
+enum class MoveStat_Field {
+	Index,
+	Name,
+	Value,
+	Ch_StaminaConsume,
+	Ch_Stamina_recovery,
 };
 
 struct CharacterStat {
@@ -27,14 +40,24 @@ struct CharacterStat {
 	int				stamina;
 	int				strength;
 	int				speed;
-	int				attack;
-	int				headAttack;
-	int				jumpKick;
-	int				powerAttack;
-	int				walkSpeed;
-	int				runSpeed;
-	int				rollSpeed;
-	int				staminaRecovery;
+};
+
+struct AttackStat {
+	int Index;
+	std::string Name;
+	float Value;
+	int	Attack_Speed;
+	int	Ch_StaminaConsume;
+	int Steal_Stamina;
+
+};
+
+struct MoveStat {
+	int Index;
+	std::string Name;
+	float Value;
+	int	Ch_StaminaConsume;
+	int Ch_Stamina_recovery;
 };
 
 #pragma pack(pop) 
