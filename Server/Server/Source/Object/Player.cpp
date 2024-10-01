@@ -49,7 +49,7 @@ int Player::GroggyRecoverTime()
 	return 20;
 }
 
-bool Player::ChangeToGroggyState(Server* pServer, int roomID)
+bool Player::ChangeToGroggyState(Server* pServer)
 {
 	mPlayerStateLock.lock();
 	if (mPlayerState == ePlayerState::PS_GROGGY) {
@@ -60,7 +60,7 @@ bool Player::ChangeToGroggyState(Server* pServer, int roomID)
 	mPlayerState = ePlayerState::PS_GROGGY;
 	mGroggyCount++;
 
-	pServer->GetPacketSender()->SendPlayerGroggyPacket(mInGameID, roomID);
+	pServer->GetPacketSender()->SendPlayerGroggyPacket(mInGameID, mRoomID);
 
 	// 들고있는 무기 해제
 	if (mWeapon != nullptr) {
@@ -69,7 +69,7 @@ bool Player::ChangeToGroggyState(Server* pServer, int roomID)
 			mWeapon->SetOwenrID(INVALIDKEY);
 			mWeapon->SetPosition(mPosition);
 			mWeapon = nullptr;
-			pServer->GetPacketSender()->SendWeaponDropPacket(mPosition, roomID, weaponID);
+			pServer->GetPacketSender()->SendWeaponDropPacket(mPosition, mRoomID, weaponID);
 		}
 	}
 	mPlayerStateLock.unlock();
@@ -77,7 +77,7 @@ bool Player::ChangeToGroggyState(Server* pServer, int roomID)
 	return true;
 }
 
-bool Player::ChangeToDeadState(Server* pServer, int roomID)
+bool Player::ChangeToDeadState(Server* pServer)
 {
 	mPlayerStateLock.lock();
 	if (mPlayerState == ePlayerState::PS_DEAD) {
@@ -87,7 +87,7 @@ bool Player::ChangeToDeadState(Server* pServer, int roomID)
 
 	mPlayerState = ePlayerState::PS_DEAD;
 
-	pServer->GetPacketSender()->SendPlayerDeadPacket(mInGameID, roomID);
+	pServer->GetPacketSender()->SendPlayerDeadPacket(mInGameID, mRoomID);
 
 	// 들고있는 무기 해제
 	if (mWeapon != nullptr) {
@@ -96,7 +96,7 @@ bool Player::ChangeToDeadState(Server* pServer, int roomID)
 			mWeapon->SetOwenrID(INVALIDKEY);
 			mWeapon->SetPosition(mPosition);
 			mWeapon = nullptr;
-			pServer->GetPacketSender()->SendWeaponDropPacket(mPosition, roomID, weaponID);
+			pServer->GetPacketSender()->SendWeaponDropPacket(mPosition, mRoomID, weaponID);
 		}
 	}
 	mPlayerStateLock.unlock();

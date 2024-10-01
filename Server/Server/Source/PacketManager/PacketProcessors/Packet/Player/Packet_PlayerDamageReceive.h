@@ -48,7 +48,7 @@ public:
 				damageAmount = 9999999;
 				// 사망 처리
 				target->ReduceHP(damageAmount);
-				if (target->ChangeToDeadState(pServer, roomid)) {
+				if (target->ChangeToDeadState(pServer)) {
 					// record update
 					room->GetPlayerRecordList()[target_id].death_count++;
 					int spawnTime = tableManager->GetGameModeData()[room->GetGameMode()].Player_Spawn_Time;
@@ -64,7 +64,7 @@ public:
 
 				// 타겟의 기력이 없으면 그로기 상태로
 				if (target->GetStamina() == 0) {
-					if (target->ChangeToGroggyState(pServer, roomid)) {
+					if (target->ChangeToGroggyState(pServer)) {
 						PushEventGroggyRecovery(pServer->GetTimer(), target_id, roomid, room->GetRoomCode(), target->GroggyRecoverTime());
 					}
 				}
@@ -82,7 +82,7 @@ public:
 
 				if (target->GetHP() <= 0) {
 					// 사망 처리
-					target->ChangeToDeadState(pServer, roomid);
+					target->ChangeToDeadState(pServer);
 
 					// record update
 					room->GetPlayerRecordList()[target_id].death_count++;
@@ -96,7 +96,7 @@ public:
 
 					// 타격 후 스테미너가 0미만이면 그로기로
 					if (target->GetStamina() < 0) {
-						if (target->ChangeToGroggyState(pServer, roomid)) {
+						if (target->ChangeToGroggyState(pServer)) {
 							PushEventGroggyRecovery(pServer->GetTimer(), target_id, roomid, room->GetRoomCode(), target->GroggyRecoverTime());
 						}
 					}
@@ -109,7 +109,7 @@ public:
 
 				// 타겟의 기력이 없으면 그로기 상태로
 				if (target->GetStamina() == 0) {
-					if (target->ChangeToGroggyState(pServer, roomid)) {
+					if (target->ChangeToGroggyState(pServer)) {
 						PushEventGroggyRecovery(pServer->GetTimer(), target_id, roomid, room->GetRoomCode(), target->GroggyRecoverTime());
 					}
 				}
@@ -119,7 +119,7 @@ public:
 
 				if (target->GetHP() <= 0) {
 					// 사망 처리
-					target->ChangeToDeadState(pServer, roomid);
+					target->ChangeToDeadState(pServer);
 
 					// record update
 					room->GetPlayerRecordList()[target_id].death_count++;

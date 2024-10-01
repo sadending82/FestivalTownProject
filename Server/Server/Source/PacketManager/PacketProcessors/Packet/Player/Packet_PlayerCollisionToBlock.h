@@ -31,12 +31,12 @@ public:
 
 			if (playerState == ePlayerState::PS_ALIVE) {
 				// ±×·Î±â »óÅÂ·Î ¸¸µë
-				player->ChangeToGroggyState(pServer, roomid);
+				player->ChangeToGroggyState(pServer);
 				PushEventGroggyRecovery(pServer->GetTimer(), playerid, roomid, roomCode, player->GroggyRecoverTime());
 			}
 			else if (playerState == ePlayerState::PS_GROGGY) {
 				// Á×ÀÓ
-				player->ChangeToDeadState(pServer, roomid);
+				player->ChangeToDeadState(pServer);
 
 				// record update
 				room->GetPlayerRecordList()[playerid].death_count++;

@@ -21,9 +21,24 @@ public:
 				return;
 			}
 
+			int roomid = player->GetRoomID();
+			Room* room = pServer->GetRooms()[roomid];
+
 			player->SetPosition(read->pos()->x(), read->pos()->y(), read->pos()->z());
 			player->SetDirection(read->direction()->x(), read->direction()->y(), read->direction()->z());
 			player->SetStamina(read->stamina());
+
+			if (pServer->GetGameManagers()[room->GetGameMode()]->CheckValidPlayerPosition(player->GetPosition()) == false) {
+				if (player->ChangeToDeadState(pServer)) {
+					// record update
+					int roomid = player->GetRoomID();
+					Room* room = pServer->GetRooms()[roomid];
+					room->GetPlayerRecordList()[playerid].death_count++;
+					int spawnTime = pServer->GetTableManager()->GetGameModeData()[room->GetGameMode()].Player_Spawn_Time;
+					PushEventPlayerRespawn(pServer->GetTimer(), playerid, roomid, room->GetRoomCode(), spawnTime);
+				}
+				return;
+			}
 
 			if (player->GetIsGrabbed() == true) {
 				return;

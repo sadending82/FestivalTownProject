@@ -22,6 +22,7 @@ enum class AttackStat_Field {
 	Name,
 	Value,
 	Attack_Speed,
+	Attack_Range,
 	Ch_StaminaConsume,
 	Steal_Stamina,
 };

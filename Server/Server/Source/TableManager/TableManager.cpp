@@ -112,7 +112,7 @@ void TableManager::ReadCharacterStat()
 {
     try {
        
-        mWorkbook.load("GameData/Ch_Stat_20240930.xlsx");
+        mWorkbook.load("GameData/Ch_Stat.xlsx");
 
         int idx = 0;
         mWorksheet = mWorkbook.sheet_by_index(Ch_Stat_Sheet);

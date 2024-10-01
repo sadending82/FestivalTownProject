@@ -23,6 +23,8 @@ public:
 	virtual void BombSpawn(class Room* room, int roomID) {}
 	virtual void WeaponSpawn(class Room* room, int roomID, eWeaponType weaponType, int spawnCount) {}
 
+	virtual bool CheckValidPlayerPosition(Vector3f& position) { return false; }
+
 
 private:
 	class Server* mServer = nullptr;

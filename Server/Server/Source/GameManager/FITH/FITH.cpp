@@ -284,3 +284,11 @@ void FITH::WeaponSpawn(Room* room, int roomID, eWeaponType weaponType, int spawn
         mPacketSender->SendWeaponSpawnPacket(pos, weaponid, roomID, weaponType);
     }
 }
+
+bool FITH::CheckValidPlayerPosition(Vector3f& position)
+{
+    if (position.y <= -15) {
+        return false;
+    }
+    return true;
+}

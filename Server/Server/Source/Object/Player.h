@@ -23,8 +23,8 @@ public:
 	int				GetInGameID() { return mInGameID; }
 	int				GetTeam() { return mTeam; }
 	std::string		GetName() { return mName; }
-	Vector3f		GetPosition() { return mPosition; }
-	Vector3f		GetDirection() { return mDirection; }
+	Vector3f&		GetPosition() { return mPosition; }
+	Vector3f&		GetDirection() { return mDirection; }
 	ePlayerState	GetPlayerState() { return mPlayerState; }
 	std::mutex&		GetPlayerStateLock() { return mPlayerStateLock; }
 	eCharacterType	GetChacracterType() { return mCharacterType; }
@@ -66,8 +66,8 @@ public:
 
 	int				GroggyRecoverTime();
 
-	bool			ChangeToGroggyState(class Server* pServer, int roomID);
-	bool			ChangeToDeadState(class Server* pServer, int roomID);
+	bool			ChangeToGroggyState(class Server* pServer);
+	bool			ChangeToDeadState(class Server* pServer);
 
 protected:
 	std::mutex      mPlayerStateLock;

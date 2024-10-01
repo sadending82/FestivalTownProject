@@ -10,6 +10,7 @@ public:
 	~FITH() {}
 
 	virtual void StartGame(int roomID) override;
+
 	virtual void CheckGameEnd(int roomID) override;
 	virtual void TimeoverGameEnd(int roomID) override;
 	virtual int CalculatePoint(sPlayerGameRecord record, bool isWin) override;
@@ -20,6 +21,8 @@ public:
 	virtual std::set<Vector3f> SetObjectSpawnPos(int roomID, int spawnCount) override;
 	virtual void BombSpawn(class Room* room, int roomID) override;
 	virtual void WeaponSpawn(class Room* room, int roomID, eWeaponType weaponType, int spawnCount) override;
+
+	virtual bool CheckValidPlayerPosition(Vector3f& position) override;
 
 private:
 	class Server* mServer = nullptr;
