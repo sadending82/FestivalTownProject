@@ -4,6 +4,7 @@
 #define Ch_Stat_Sheet 0
 #define Ch_Attack_Sheet 1
 #define Ch_Move_Sheet 2
+#define Ch_Action_Sheet 3
 
 #pragma pack (push, 1)
 
