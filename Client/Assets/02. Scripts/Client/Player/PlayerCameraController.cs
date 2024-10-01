@@ -28,7 +28,6 @@ public class PlayerCameraController : MonoBehaviour
     private void Start()
     {
         if (amIPlayer == true) Cursor.lockState = CursorLockMode.Locked;
-        camera.fieldOfView = maximum;
     }
 
     private void FixedUpdate()

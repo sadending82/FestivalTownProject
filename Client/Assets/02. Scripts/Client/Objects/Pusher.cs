@@ -15,7 +15,6 @@ public class Pusher : MonoBehaviour
     private void OnEnable()
     {
         packetManager = Managers.Network.GetPacketManager();
-        StartPush();
     }
     public void StartPush()
     {

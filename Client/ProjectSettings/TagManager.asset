@@ -10,6 +10,7 @@ TagManager:
   - HitBox
   - Weapon
   - Head
+  - Cube
   layers:
   - Default
   - TransparentFX

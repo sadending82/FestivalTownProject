@@ -15,12 +15,13 @@ public class Cube : MonoBehaviour
         {
             checker = this.transform.GetChild(0).GetComponent<Checker>();
         }
+        checker.CreatePusher();
     }
     private void FixedUpdate()
     {
         if(heightChecker == true)
         {
-            if(this.transform.position.y < targetHeight)
+            if(this.transform.position.y <= targetHeight)
             {
                 this.transform.position = new Vector3(this.transform.position.x, targetHeight, this.transform.position.z);
                 heightChecker = false;

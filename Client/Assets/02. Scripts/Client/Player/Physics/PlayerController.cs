@@ -96,9 +96,9 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        FallDownCheck();
         if (playerStatus.GetIsDie() == false)
         {
-            FallDownCheck();
             // 살아있고 그로기 상태가 아님
             if (playerStatus.GetIsGroggy() == false)
             {
@@ -159,9 +159,7 @@ public class PlayerController : MonoBehaviour
         {
             if (Input.GetKeyUp(KeyCode.T))
             {
-                Managers.CubeObject.SpawnCube(c, c, 0);
-                c++;
-                c %= 10;
+                packetManager.SendPlayerCollisionToBlockPacket(playerStatus.GetId());
             }
         }
 
@@ -693,9 +691,12 @@ public class PlayerController : MonoBehaviour
     }
     private void FallDownCheck()
     {
-        if(pelvis.transform.position.y < -5f)
+        if (pelvis.transform.position.y < -10f)
         {
-            packetManager.SendPlayerDamageReceivePacket(playerStatus.GetId(), playerStatus.GetId(), -1, eDamageType.AT_FALLDOWN, Vector3.zero);
+            if (playerStatus.GetIsDie() == false)
+            {
+                packetManager.SendPlayerDamageReceivePacket(playerStatus.GetId(), playerStatus.GetId(), -1, eDamageType.AT_FALLDOWN, Vector3.zero);
+            }
         }
     }
 
@@ -720,7 +721,6 @@ public class PlayerController : MonoBehaviour
         beforeAxisRawH = 0;
         beforeAxisRawV = 0;
         SetIsMove(false);
-        nowLowerBodyAnimationState = LowerBodyAnimationState.IDLE;
         isPickUpMode = false;
         targetItem = null;
     }
