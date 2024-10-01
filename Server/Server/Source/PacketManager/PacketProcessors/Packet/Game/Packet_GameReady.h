@@ -33,7 +33,6 @@ public:
 					if (room->SetAllPlayerReady(true) == true) {
 
 						pServer->GetPacketSender()->SendAllPlayerReady(roomid);
-
 						PushEventGameStart(pServer->GetTimer(), roomid, room->GetRoomCode());
 					}
 				}

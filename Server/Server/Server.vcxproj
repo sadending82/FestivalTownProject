@@ -163,6 +163,8 @@ xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\GameManager\FITH\FITH.cpp" />
+    <ClCompile Include="Source\GameManager\GameManager.cpp" />
     <ClCompile Include="KISA_SHA256\KISA_SHA256.c" />
     <ClCompile Include="Source\DB\Security\Security.cpp" />
     <ClCompile Include="Source\Object\Bomb\Bomb.cpp" />
@@ -188,6 +190,8 @@ xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     <ClCompile Include="Source\utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\GameManager\FITH\FITH.h" />
+    <ClInclude Include="Source\GameManager\GameManager.h" />
     <ClInclude Include="KISA_SHA256\KISA_SHA256.h" />
     <ClInclude Include="Source\DB\Security\Security.h" />
     <ClInclude Include="Source\Object\Bomb\Bomb.h" />

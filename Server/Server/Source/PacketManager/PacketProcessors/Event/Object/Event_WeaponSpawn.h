@@ -47,8 +47,8 @@ public:
 		}
 		}
 
+		pServer->GetGameManagers()[gameMode]->WeaponSpawn(room, event->roomID, (eWeaponType)event->weaponType, spawnCnt);
 		PushEventWeaponSpawn(pServer->GetTimer(), event->roomID, event->roomCode, event->weaponType, nextEventTime);
-		pServer->GetPacketSender()->SendWeaponSpawnPacket(roomid, spawnCnt, weaponType);
 	}
 
 private:

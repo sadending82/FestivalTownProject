@@ -136,11 +136,11 @@ std::vector<uint8_t> PacketMaker::MakeBlockDropPacket(int x, int y, int type)
 	return MakeBuffer(ePacketType::S2C_BLOCK_DROP, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakeBombSpawnPacket(Vector3f Positon, int bombid)
+std::vector<uint8_t> PacketMaker::MakeBombSpawnPacket(Vector3f Position, int bombid)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 	
-	auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, Positon.x, Positon.y, Positon.z);
+	auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, Position.x, Position.y, Position.z);
 	Builder.Finish(PacketTable::ObjectTable::CreateBombSpawn(Builder, pos, bombid));
 	return MakeBuffer(ePacketType::S2C_BOMB_SPAWN, Builder.GetBufferPointer(), Builder.GetSize());
 }

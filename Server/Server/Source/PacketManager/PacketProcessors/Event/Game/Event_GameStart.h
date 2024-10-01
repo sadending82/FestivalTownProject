@@ -22,7 +22,9 @@ public:
 			return;
 		}
 
-		pServer->StartGame(roomid);
+		GameMode gameMode = room->GetGameMode();
+
+		pServer->GetGameManagers()[gameMode]->StartGame(roomid);
 	}
 
 private:

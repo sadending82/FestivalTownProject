@@ -15,7 +15,7 @@ public:
 
 	void SendHeartBeatPacket(int sessionID);
 	void SendBlockDropPacket(int roomID, int spawnCount, int blockType);
-	void SendBombSpawnPacket(int roomID, int spawnCount);
+	void SendBombSpawnPacket(Vector3f position, int bombid, int roomID);
 	void SendBombExplosionPacket(int roomID, int bombID);
 	void SendLifeReducePacket(int team, int lifeCount, int roomID);
 	void SendRemainTimeSync(int roomID);
@@ -27,7 +27,7 @@ public:
 	void SendGameHostChange(int sessionID);
 	void SendPlayerDeadPacket(int inGameID, int roomID);
 	void SendPlayerRespawn(int inGameID, int roomID);
-	void SendWeaponSpawnPacket(int roomID, int spawnCount, int weaponType);
+	void SendWeaponSpawnPacket(Vector3f position, int weaponID, int roomID, int weaponType);
 	void SendWeaponDropPacket(Vector3f position, int roomID, int weaponID);
 	void SendPlayerCalculatedDamage(int targetID, int roomID, int attackType, int hp, int damageAmount, int targetStaminaLoss, Vector3f knockback_direction);
 	void SendPlayerGroggyPacket(int inGameID, int roomID);

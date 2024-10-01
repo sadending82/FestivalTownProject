@@ -24,6 +24,8 @@
     <ClCompile Include="Source\Object\Weapon\Weapon.cpp" />
     <ClCompile Include="Source\PacketManager\PacketSender\PacketSender.cpp" />
     <ClCompile Include="KISA_SHA256\KISA_SHA256.c" />
+    <ClCompile Include="Source\GameManager\GameManager.cpp" />
+    <ClCompile Include="Source\GameManager\FITH\FITH.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DB\DB.h" />
@@ -110,6 +112,8 @@
     <ClInclude Include="Source\TableManager\Tables\PointCalculateConstant.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Player\Packet_PlayerThrowOtherPlayer.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Player\Packet_PlayerGrabOtherPlayer.h" />
+    <ClInclude Include="Source\GameManager\GameManager.h" />
+    <ClInclude Include="Source\GameManager\FITH\FITH.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

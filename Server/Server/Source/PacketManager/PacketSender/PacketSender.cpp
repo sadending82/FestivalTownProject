@@ -101,9 +101,11 @@ void PacketSender::SendBlockDropPacket(int roomID, int spawnCount, int blockType
     }
 }
 
-void PacketSender::SendBombSpawnPacket(int roomID, int spawnCount)
+void PacketSender::SendBombSpawnPacket(Vector3f Position, int bombid, int roomID)
 {
-    Room* room = mServer->GetRooms()[roomID];
+
+
+    /*Room* room = mServer->GetRooms()[roomID];
     GameMode gameMode = room->GetGameMode();
     int explosionInterval = mServer->GetTableManager()-> GetGameModeData()[gameMode].Bomb_Delay_Time;
 
@@ -115,7 +117,10 @@ void PacketSender::SendBombSpawnPacket(int roomID, int spawnCount)
         std::vector<uint8_t> send_buffer = mPacketMaker->MakeBombSpawnPacket(pos, bombid);
         mServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
         PushEventBombExplosion(mServer->GetTimer(), roomID, bombid, room->GetRoomCode(), explosionInterval);
-    }
+    }*/
+
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakeBombSpawnPacket(Position, bombid);
+    mServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
 
 
@@ -221,18 +226,22 @@ void PacketSender::SendPlayerRespawn(int inGameID, int roomID)
     mServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
 
-void PacketSender::SendWeaponSpawnPacket(int roomID, int spawnCount, int weaponType)
+void PacketSender::SendWeaponSpawnPacket(Vector3f position, int weaponID, int roomID, int weaponType)
 {
-    Room* room = mServer->GetRooms()[roomID];
+    //Room* room = mServer->GetRooms()[roomID];
 
-    std::set<Vector3f> spawnPoses = mServer->SetObjectSpawnPos(roomID, spawnCount);
+    //std::set<Vector3f> spawnPoses = mServer->SetObjectSpawnPos(roomID, spawnCount);
 
-    for (const auto& pos : spawnPoses) {
-        int weaponid = room->AddWeapon(new Weapon((eWeaponType)weaponType, nullptr), pos);
-        if (weaponid == INVALIDKEY) continue;
-        std::vector<uint8_t> send_buffer = mPacketMaker->MakeWeaponSpawnPacket(pos, weaponid, weaponType);
-        mServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
-    }
+    //for (const auto& pos : spawnPoses) {
+    //    int weaponid = room->AddWeapon(new Weapon((eWeaponType)weaponType, nullptr), pos);
+    //    if (weaponid == INVALIDKEY) continue;
+    //    std::vector<uint8_t> send_buffer = mPacketMaker->MakeWeaponSpawnPacket(pos, weaponid, weaponType);
+    //    mServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
+    //}
+
+    if (weaponID == INVALIDKEY) return;
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakeWeaponSpawnPacket(position, weaponID, weaponType);
+    mServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
 
 void PacketSender::SendWeaponDropPacket(Vector3f position, int roomID, int weaponID)

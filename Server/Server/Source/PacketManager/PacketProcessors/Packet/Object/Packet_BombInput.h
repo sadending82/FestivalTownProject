@@ -20,6 +20,8 @@ public:
 
 			int roomid = dynamic_cast<Player*>(pServer->GetSessions()[key])->GetRoomID();
 			Room* room = pServer->GetRooms()[roomid];
+			GameMode gameMode = room->GetGameMode();
+			GameManager* gameManager = pServer->GetGameManagers()[gameMode];
 
 			room->GetPlayerListLock().lock_shared();
 			Player* player = dynamic_cast<Player*>(room->GetPlayerList()[playerid]);
@@ -49,7 +51,7 @@ public:
 			room->GetPlayerRecordList()[playerid].bomb_insert_count++;
 
 			if (lifeCount <= 0) {
-				pServer->CheckGameEnd(roomid);
+				gameManager->CheckGameEnd(roomid);
 			}
 		}
 	}
