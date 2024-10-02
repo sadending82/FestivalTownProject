@@ -35,8 +35,8 @@ struct ItemTable {
 	std::string File_Name;	
 	ItemType Item_Type;
 	ItemGrade Item_Grade;
-	/*std::chrono::year_month_day Open_Date;
-	std::chrono::year_month_day Close_Date;*/
+	std::tm Open_Date;
+	std::tm Close_Date;
 };
 
 #pragma pack(pop) 

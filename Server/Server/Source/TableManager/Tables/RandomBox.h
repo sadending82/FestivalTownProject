@@ -20,8 +20,8 @@ struct RandomBox {
 	int			Gacha_Group;
 	int			Pay_Item_Index;
 	int			Pay_Item_Value;
-	int			Open_Date;
-	int			Close_Date;
+	std::tm		Open_Date;
+	std::tm		Close_Date;
 	int			Exp;
 };
 

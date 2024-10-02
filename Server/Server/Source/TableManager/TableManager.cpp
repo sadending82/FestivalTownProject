@@ -1,4 +1,6 @@
 #include <fstream>
+#include <sstream>
+#include <iomanip>
 #include <chrono>
 #include "TableManager.h"
 
@@ -82,12 +84,11 @@ void TableManager::ReadItemTable()
             if (!row.empty()) {
                 int index = (int)row[0].value<int>();
 
-                /*std::chrono::year_month_day openDate, closeDate;
-                std::istringstream ss1(row[ItemTable_Field::IT_Item_Type].to_string());
-                std::chrono::from_stream(ss1, "%Y-%m-%d", openDate);
-
-                std::istringstream ss2(row[ItemTable_Field::IT_Close_Date].to_string());
-                std::chrono::from_stream(ss2, "%Y-%m-%d", closeDate);*/
+                std::tm openDate = {}, closeDate = {};
+                std::istringstream ssOpenDate(row[ItemTable_Field::IT_Item_Type].to_string());
+                std::istringstream ssCloseDate(row[ItemTable_Field::IT_Close_Date].to_string());
+                ssOpenDate >> std::get_time(&openDate, "%Y-%m-%d");
+                ssCloseDate >> std::get_time(&closeDate, "%Y-%m-%d");
 
                 ItemInfos[index] = ItemTable{
                     index,
@@ -95,8 +96,8 @@ void TableManager::ReadItemTable()
                     row[ItemTable_Field::IT_File_Name].to_string(),
                     (ItemType)row[ItemTable_Field::IT_Item_Type].value<int>(),
                     (ItemGrade)row[ItemTable_Field::IT_Item_Grade].value<int>(),
-                    /*openDate,
-                    closeDate*/
+                    openDate,
+                    closeDate
                 };
             }
 
@@ -238,14 +239,22 @@ void TableManager::ReadGameModeTable()
             }
 
             if (!row.empty()) {
+                std::tm openDate = {}, closeDate = {};
+                std::istringstream ssOpenDate(row[static_cast<int>(GameModeOut_Field::Open_Date)].to_string());
+                std::istringstream ssCloseDate(row[static_cast<int>(GameModeOut_Field::Close_Date)].to_string());
+                ssOpenDate >> std::get_time(&openDate, "%Y-%m-%d");
+                ssCloseDate >> std::get_time(&closeDate, "%Y-%m-%d");
+
                 int index = row[0].value<int>();
 
                GameModeData[(GameMode)index]
                     =  GameModeInfo{
-                    row[GameModeOut_Field::Player_Count].value<int>(),
-                    row[GameModeOut_Field::Team_Count].value<int>(),
-                    row[GameModeOut_Field::Team_Color].value<int>(),
-                    row[GameModeOut_Field::Play_Map].value<int>()
+                    row[static_cast<int>(GameModeOut_Field::Player_Count)].value<int>(),
+                    row[static_cast<int>(GameModeOut_Field::Team_Count)].value<int>(),
+                    row[static_cast<int>(GameModeOut_Field::Team_Color)].value<int>(),
+                    row[static_cast<int>(GameModeOut_Field::Play_Map)].value<int>(),
+                    openDate,
+                    closeDate
                 };
 
                MapListByMode[(GameMode)index].push_back(MapCode::TEST);
@@ -567,6 +576,12 @@ void TableManager::ReadGachaTable()
             }
 
             if (!row.empty()) {
+                std::tm openDate = {}, closeDate = {};
+                std::istringstream ssOpenDate(row[static_cast<int>(RandomBox_Field::Open_Date)].to_string());
+                std::istringstream ssCloseDate(row[static_cast<int>(RandomBox_Field::Close_Date)].to_string());
+                ssOpenDate >> std::get_time(&openDate, "%Y-%m-%d");
+                ssCloseDate >> std::get_time(&closeDate, "%Y-%m-%d");
+
                 int index = row[static_cast<int>(RandomBox_Field::index)].value<int>();
                 RandomBoxList[index]
                     =  RandomBox{
@@ -575,8 +590,9 @@ void TableManager::ReadGachaTable()
                     row[static_cast<int>(RandomBox_Field::Gacha_Group)].value<int>(),
                     row[static_cast<int>(RandomBox_Field::Pay_Item_Index)].value<int>(),
                     row[static_cast<int>(RandomBox_Field::Pay_Item_Value)].value<int>(),
-                    row[static_cast<int>(RandomBox_Field::Open_Date)].value<int>(),
-                    row[static_cast<int>(RandomBox_Field::Close_Date)].value<int>(),
+                    openDate,
+                    closeDate,
+                    row[static_cast<int>(RandomBox_Field::Exp)].value<int>()
                 };
             }
             rowIdx++;

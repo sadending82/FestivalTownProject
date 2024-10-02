@@ -15,12 +15,14 @@ MonoBehaviour:
   Stat:
   - Index: 2001
     Name: "\uD6C4\uB77C\uC774\uD32C"
+    ClassType: 0
     Weapon_Power: 10
     Weapon_Range: 1.4
     Weapon_Type: 0
     Weapon_StaminaConsume: 15
   - Index: 2002
     Name: "\uC57C\uAD6C\uBC29\uB9DD\uC774"
+    ClassType: 0
     Weapon_Power: 10
     Weapon_Range: 1.4
     Weapon_Type: 0

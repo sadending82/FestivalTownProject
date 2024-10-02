@@ -15,6 +15,7 @@ MonoBehaviour:
   Item_List:
   - Index: 100001
     Name: "\uACE8\uB4DC"
+    ClassType: 0
     File_Name: Money_Gold
     Item_Type: 1
     Item_Grade: 1
@@ -22,6 +23,7 @@ MonoBehaviour:
     Close_Date: 73050
   - Index: 100002
     Name: "\uB2E4\uC774\uC544"
+    ClassType: 0
     File_Name: Money_Dia
     Item_Type: 1
     Item_Grade: 1
@@ -29,6 +31,7 @@ MonoBehaviour:
     Close_Date: 73050
   - Index: 201001
     Name: "\uD558\uC580\uC0C9 \uC2A4\uD0A8"
+    ClassType: 0
     File_Name: Skin_White
     Item_Type: 10
     Item_Grade: 1
@@ -36,6 +39,7 @@ MonoBehaviour:
     Close_Date: 73050
   - Index: 201002
     Name: "\uBAA8\uB798\uC0C9 \uC2A4\uD0A8"
+    ClassType: 0
     File_Name: Skin_Sandy
     Item_Type: 10
     Item_Grade: 1
@@ -43,6 +47,7 @@ MonoBehaviour:
     Close_Date: 73050
   - Index: 201003
     Name: "\uB9C8\uBA40\uB808\uC774\uB4DC\uC0C9 \uC2A4\uD0A8"
+    ClassType: 0
     File_Name: Skin_Marmalade
     Item_Type: 10
     Item_Grade: 1
@@ -50,6 +55,7 @@ MonoBehaviour:
     Close_Date: 73050
   - Index: 201004
     Name: "\uBE0C\uB77C\uC6B4\uC0C9 \uC2A4\uD0A8"
+    ClassType: 0
     File_Name: Skin_Brown
     Item_Type: 10
     Item_Grade: 1
@@ -57,6 +63,7 @@ MonoBehaviour:
     Close_Date: 73050
   - Index: 201005
     Name: "\uD06C\uB9BC\uC0C9 \uC2A4\uD0A8"
+    ClassType: 0
     File_Name: Skin_Cream
     Item_Type: 10
     Item_Grade: 1
@@ -64,6 +71,7 @@ MonoBehaviour:
     Close_Date: 73050
   - Index: 201006
     Name: "\uCD08\uCF5C\uB81B\uC0C9 \uC2A4\uD0A8"
+    ClassType: 0
     File_Name: Skin_Chocolate
     Item_Type: 10
     Item_Grade: 1
@@ -71,6 +79,7 @@ MonoBehaviour:
     Close_Date: 73050
   - Index: 201007
     Name: "\uCE98\uB9AC\uCF54\uC0C9 \uC2A4\uD0A8"
+    ClassType: 0
     File_Name: Skin_Calico
     Item_Type: 10
     Item_Grade: 1
@@ -78,6 +87,7 @@ MonoBehaviour:
     Close_Date: 73050
   - Index: 201008
     Name: "\uAC80\uC815\uC0C9 \uC2A4\uD0A8"
+    ClassType: 0
     File_Name: Skin_Black
     Item_Type: 10
     Item_Grade: 1
@@ -85,6 +95,7 @@ MonoBehaviour:
     Close_Date: 73050
   - Index: 201009
     Name: "\uD131\uC2DC\uB3C4 \uC2A4\uD0A8"
+    ClassType: 0
     File_Name: Skin_Tuxedo
     Item_Type: 10
     Item_Grade: 1
@@ -92,6 +103,7 @@ MonoBehaviour:
     Close_Date: 73050
   - Index: 201010
     Name: "\uD68C\uC0C9 \uC2A4\uD0A8"
+    ClassType: 0
     File_Name: Skin_Gray
     Item_Type: 10
     Item_Grade: 1
@@ -99,6 +111,7 @@ MonoBehaviour:
     Close_Date: 73050
   - Index: 313001
     Name: "\uD558\uC774\uD0B9 \uBAA8\uC790"
+    ClassType: 0
     File_Name: Hat_Hiking
     Item_Type: 21
     Item_Grade: 3
@@ -106,6 +119,7 @@ MonoBehaviour:
     Close_Date: 73050
   - Index: 322001
     Name: "\uBE68\uAC04\uC548\uACBD"
+    ClassType: 0
     File_Name: Face_Grass_Red
     Item_Type: 22
     Item_Grade: 1
@@ -113,6 +127,7 @@ MonoBehaviour:
     Close_Date: 73050
   - Index: 333001
     Name: "\uBE75\uAC00\uBC29"
+    ClassType: 0
     File_Name: Back_Bag_Bread
     Item_Type: 23
     Item_Grade: 3
@@ -120,6 +135,7 @@ MonoBehaviour:
     Close_Date: 73050
   - Index: 332001
     Name: "\uD6C4\uB77C\uC774\uD32C"
+    ClassType: 0
     File_Name: Back_Pan
     Item_Type: 23
     Item_Grade: 2
@@ -127,6 +143,7 @@ MonoBehaviour:
     Close_Date: 73050
   - Index: 332002
     Name: "\uB098\uBB47\uAC00\uC9C0"
+    ClassType: 0
     File_Name: Back_Branch
     Item_Type: 23
     Item_Grade: 2
@@ -134,6 +151,7 @@ MonoBehaviour:
     Close_Date: 73050
   - Index: 332003
     Name: "\uBC14\uB78C\uAC1C\uBE44"
+    ClassType: 0
     File_Name: Back_Windmill
     Item_Type: 23
     Item_Grade: 2
@@ -141,6 +159,7 @@ MonoBehaviour:
     Close_Date: 73050
   - Index: 331001
     Name: "\uD3EC\uD06C"
+    ClassType: 0
     File_Name: Back_Fork
     Item_Type: 23
     Item_Grade: 1
@@ -148,6 +167,7 @@ MonoBehaviour:
     Close_Date: 73050
   - Index: 331002
     Name: "\uC8FD\uC740 \uBB3C\uACE0\uAE30"
+    ClassType: 0
     File_Name: Back_Deadfish
     Item_Type: 23
     Item_Grade: 1
@@ -155,6 +175,7 @@ MonoBehaviour:
     Close_Date: 73050
   - Index: 331003
     Name: "\uACE0\uAE30"
+    ClassType: 0
     File_Name: Back_Meat
     Item_Type: 23
     Item_Grade: 1

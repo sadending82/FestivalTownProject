@@ -15,6 +15,7 @@ MonoBehaviour:
   Mode_Out:
   - Index: 111
     Name: 
+    ClassType: 0
     Name_Info: 
     Player_Count: 2
     Team_Count: 2
@@ -24,6 +25,7 @@ MonoBehaviour:
     Close_Date: 0
   - Index: 112
     Name: 
+    ClassType: 0
     Name_Info: 
     Player_Count: 3
     Team_Count: 3
@@ -33,6 +35,7 @@ MonoBehaviour:
     Close_Date: 0
   - Index: 113
     Name: 
+    ClassType: 0
     Name_Info: 
     Player_Count: 5
     Team_Count: 5
@@ -42,6 +45,7 @@ MonoBehaviour:
     Close_Date: 0
   - Index: 121
     Name: 
+    ClassType: 0
     Name_Info: 
     Player_Count: 4
     Team_Count: 2
@@ -51,6 +55,7 @@ MonoBehaviour:
     Close_Date: 0
   - Index: 122
     Name: 
+    ClassType: 0
     Name_Info: 
     Player_Count: 6
     Team_Count: 2
@@ -61,6 +66,7 @@ MonoBehaviour:
   FITH_Mode:
   - Index: 111
     Name: 
+    ClassType: 0
     Name_Info: 
     Play_Time: 180
     Player_Spawn_Time: 5
@@ -82,6 +88,7 @@ MonoBehaviour:
     Block2_Spawn_Time: 15
   - Index: 112
     Name: 
+    ClassType: 0
     Name_Info: 
     Play_Time: 180
     Player_Spawn_Time: 5
@@ -103,6 +110,7 @@ MonoBehaviour:
     Block2_Spawn_Time: 15
   - Index: 113
     Name: 
+    ClassType: 0
     Name_Info: 
     Play_Time: 180
     Player_Spawn_Time: 5
@@ -124,6 +132,7 @@ MonoBehaviour:
     Block2_Spawn_Time: 15
   - Index: 121
     Name: 
+    ClassType: 0
     Name_Info: 
     Play_Time: 180
     Player_Spawn_Time: 5
@@ -145,6 +154,7 @@ MonoBehaviour:
     Block2_Spawn_Time: 15
   - Index: 122
     Name: 
+    ClassType: 0
     Name_Info: 
     Play_Time: 180
     Player_Spawn_Time: 5
@@ -167,6 +177,7 @@ MonoBehaviour:
   Mode_Point:
   - Index: 111101
     Name: FITH_Indiv_Battle_2_Win
+    ClassType: 0
     Mode_Index: 111
     Battle_Result: 1
     Type: 1
@@ -174,6 +185,7 @@ MonoBehaviour:
     Value: 2
   - Index: 111102
     Name: FITH_Indiv_Battle_2_Win
+    ClassType: 0
     Mode_Index: 111
     Battle_Result: 1
     Type: 2
@@ -181,6 +193,7 @@ MonoBehaviour:
     Value: 1
   - Index: 111103
     Name: FITH_Indiv_Battle_2_Win
+    ClassType: 0
     Mode_Index: 111
     Battle_Result: 1
     Type: 3
@@ -188,6 +201,7 @@ MonoBehaviour:
     Value: 3
   - Index: 111201
     Name: FITH_Indiv_Battle_2_Lose
+    ClassType: 0
     Mode_Index: 111
     Battle_Result: 2
     Type: 1
@@ -195,6 +209,7 @@ MonoBehaviour:
     Value: 2
   - Index: 111202
     Name: FITH_Indiv_Battle_2_Lose
+    ClassType: 0
     Mode_Index: 111
     Battle_Result: 2
     Type: 2
@@ -202,6 +217,7 @@ MonoBehaviour:
     Value: 1
   - Index: 111203
     Name: FITH_Indiv_Battle_2_Lose
+    ClassType: 0
     Mode_Index: 111
     Battle_Result: 2
     Type: 3
@@ -209,6 +225,7 @@ MonoBehaviour:
     Value: 3
   - Index: 112101
     Name: FITH_Indiv_Battle_3_Win
+    ClassType: 0
     Mode_Index: 112
     Battle_Result: 1
     Type: 1
@@ -216,6 +233,7 @@ MonoBehaviour:
     Value: 2
   - Index: 112102
     Name: FITH_Indiv_Battle_3_Win
+    ClassType: 0
     Mode_Index: 112
     Battle_Result: 1
     Type: 2
@@ -223,6 +241,7 @@ MonoBehaviour:
     Value: 1
   - Index: 112103
     Name: FITH_Indiv_Battle_3_Win
+    ClassType: 0
     Mode_Index: 112
     Battle_Result: 1
     Type: 3
@@ -230,6 +249,7 @@ MonoBehaviour:
     Value: 3
   - Index: 112201
     Name: FITH_Indiv_Battle_3_Lose
+    ClassType: 0
     Mode_Index: 112
     Battle_Result: 2
     Type: 1
@@ -237,6 +257,7 @@ MonoBehaviour:
     Value: 2
   - Index: 112202
     Name: FITH_Indiv_Battle_3_Lose
+    ClassType: 0
     Mode_Index: 112
     Battle_Result: 2
     Type: 2
@@ -244,6 +265,7 @@ MonoBehaviour:
     Value: 1
   - Index: 112203
     Name: FITH_Indiv_Battle_3_Lose
+    ClassType: 0
     Mode_Index: 112
     Battle_Result: 2
     Type: 3
@@ -251,6 +273,7 @@ MonoBehaviour:
     Value: 3
   - Index: 113101
     Name: FITH_Indiv_Battle_5_Win
+    ClassType: 0
     Mode_Index: 113
     Battle_Result: 1
     Type: 1
@@ -258,6 +281,7 @@ MonoBehaviour:
     Value: 2
   - Index: 113102
     Name: FITH_Indiv_Battle_5_Win
+    ClassType: 0
     Mode_Index: 113
     Battle_Result: 1
     Type: 2
@@ -265,6 +289,7 @@ MonoBehaviour:
     Value: 1
   - Index: 113103
     Name: FITH_Indiv_Battle_5_Win
+    ClassType: 0
     Mode_Index: 113
     Battle_Result: 1
     Type: 3
@@ -272,6 +297,7 @@ MonoBehaviour:
     Value: 3
   - Index: 113201
     Name: FITH_Indiv_Battle_5_Lose
+    ClassType: 0
     Mode_Index: 113
     Battle_Result: 2
     Type: 1
@@ -279,6 +305,7 @@ MonoBehaviour:
     Value: 2
   - Index: 113202
     Name: FITH_Indiv_Battle_5_Lose
+    ClassType: 0
     Mode_Index: 113
     Battle_Result: 2
     Type: 2
@@ -286,6 +313,7 @@ MonoBehaviour:
     Value: 1
   - Index: 113203
     Name: FITH_Indiv_Battle_5_Lose
+    ClassType: 0
     Mode_Index: 113
     Battle_Result: 2
     Type: 3
@@ -293,6 +321,7 @@ MonoBehaviour:
     Value: 3
   - Index: 121101
     Name: FITH_Team_Battle_4_Win
+    ClassType: 0
     Mode_Index: 121
     Battle_Result: 1
     Type: 1
@@ -300,6 +329,7 @@ MonoBehaviour:
     Value: 2
   - Index: 121102
     Name: FITH_Team_Battle_4_Win
+    ClassType: 0
     Mode_Index: 121
     Battle_Result: 1
     Type: 2
@@ -307,6 +337,7 @@ MonoBehaviour:
     Value: 1
   - Index: 121103
     Name: FITH_Team_Battle_4_Win
+    ClassType: 0
     Mode_Index: 121
     Battle_Result: 1
     Type: 3
@@ -314,6 +345,7 @@ MonoBehaviour:
     Value: 3
   - Index: 121201
     Name: FITH_Team_Battle_4_Lose
+    ClassType: 0
     Mode_Index: 121
     Battle_Result: 2
     Type: 1
@@ -321,6 +353,7 @@ MonoBehaviour:
     Value: 2
   - Index: 121202
     Name: FITH_Team_Battle_4_Lose
+    ClassType: 0
     Mode_Index: 121
     Battle_Result: 2
     Type: 2
@@ -328,6 +361,7 @@ MonoBehaviour:
     Value: 1
   - Index: 121203
     Name: FITH_Team_Battle_4_Lose
+    ClassType: 0
     Mode_Index: 121
     Battle_Result: 2
     Type: 3
@@ -335,6 +369,7 @@ MonoBehaviour:
     Value: 3
   - Index: 122101
     Name: FITH_Team_Battle_6_Win
+    ClassType: 0
     Mode_Index: 122
     Battle_Result: 1
     Type: 1
@@ -342,6 +377,7 @@ MonoBehaviour:
     Value: 2
   - Index: 122102
     Name: FITH_Team_Battle_6_Win
+    ClassType: 0
     Mode_Index: 122
     Battle_Result: 1
     Type: 2
@@ -349,6 +385,7 @@ MonoBehaviour:
     Value: 1
   - Index: 122103
     Name: FITH_Team_Battle_6_Win
+    ClassType: 0
     Mode_Index: 122
     Battle_Result: 1
     Type: 3
@@ -356,6 +393,7 @@ MonoBehaviour:
     Value: 3
   - Index: 122201
     Name: FITH_Team_Battle_6_Lose
+    ClassType: 0
     Mode_Index: 122
     Battle_Result: 2
     Type: 1
@@ -363,6 +401,7 @@ MonoBehaviour:
     Value: 2
   - Index: 122202
     Name: FITH_Team_Battle_6_Lose
+    ClassType: 0
     Mode_Index: 122
     Battle_Result: 2
     Type: 2
@@ -370,6 +409,7 @@ MonoBehaviour:
     Value: 1
   - Index: 122203
     Name: FITH_Team_Battle_6_Lose
+    ClassType: 0
     Mode_Index: 122
     Battle_Result: 2
     Type: 3
@@ -378,6 +418,7 @@ MonoBehaviour:
   Mode_Reward:
   - Index: 111001
     Name: FITH_Indiv_Battle_2_Win
+    ClassType: 0
     Mode_Index: 111
     Battle_Result: 1
     Reward1_Index: 4000
@@ -388,6 +429,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 111002
     Name: FITH_Indiv_Battle_2_Lose
+    ClassType: 0
     Mode_Index: 111
     Battle_Result: 2
     Reward1_Index: 4000
@@ -398,6 +440,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 112001
     Name: FITH_Indiv_Battle_3_Win
+    ClassType: 0
     Mode_Index: 112
     Battle_Result: 1
     Reward1_Index: 4000
@@ -408,6 +451,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 112002
     Name: FITH_Indiv_Battle_3_Lose
+    ClassType: 0
     Mode_Index: 112
     Battle_Result: 2
     Reward1_Index: 4000
@@ -418,6 +462,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 113001
     Name: FITH_Indiv_Battle_5_Win
+    ClassType: 0
     Mode_Index: 113
     Battle_Result: 1
     Reward1_Index: 4000
@@ -428,6 +473,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 113002
     Name: FITH_Indiv_Battle_5_Lose
+    ClassType: 0
     Mode_Index: 113
     Battle_Result: 2
     Reward1_Index: 4000
@@ -438,6 +484,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 121001
     Name: FITH_Team_Battle_4_Win
+    ClassType: 0
     Mode_Index: 121
     Battle_Result: 1
     Reward1_Index: 4000
@@ -448,6 +495,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 121002
     Name: FITH_Team_Battle_4_Lose
+    ClassType: 0
     Mode_Index: 121
     Battle_Result: 2
     Reward1_Index: 4000
@@ -458,6 +506,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 122001
     Name: FITH_Team_Battle_6_Win
+    ClassType: 0
     Mode_Index: 122
     Battle_Result: 1
     Reward1_Index: 4000
@@ -468,6 +517,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 121002
     Name: FITH_Team_Battle_6_Lose
+    ClassType: 0
     Mode_Index: 122
     Battle_Result: 2
     Reward1_Index: 4000
@@ -479,6 +529,7 @@ MonoBehaviour:
   Mode_BonusReward:
   - Index: 111100
     Name: FITH_Indiv_Battle_2_Win
+    ClassType: 0
     Mode_Index: 111
     Battle_Result: 1
     Type: 1
@@ -491,6 +542,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 111101
     Name: FITH_Indiv_Battle_2_Win
+    ClassType: 0
     Mode_Index: 111
     Battle_Result: 1
     Type: 1
@@ -503,6 +555,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 111102
     Name: FITH_Indiv_Battle_2_Win
+    ClassType: 0
     Mode_Index: 111
     Battle_Result: 1
     Type: 1
@@ -515,6 +568,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 111103
     Name: FITH_Indiv_Battle_2_Win
+    ClassType: 0
     Mode_Index: 111
     Battle_Result: 1
     Type: 1
@@ -527,6 +581,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 111104
     Name: FITH_Indiv_Battle_2_Win
+    ClassType: 0
     Mode_Index: 111
     Battle_Result: 1
     Type: 1
@@ -539,6 +594,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 111105
     Name: FITH_Indiv_Battle_2_Win
+    ClassType: 0
     Mode_Index: 111
     Battle_Result: 1
     Type: 1
@@ -551,6 +607,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 111106
     Name: FITH_Indiv_Battle_2_Win
+    ClassType: 0
     Mode_Index: 111
     Battle_Result: 1
     Type: 1
@@ -563,6 +620,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 111107
     Name: FITH_Indiv_Battle_2_Win
+    ClassType: 0
     Mode_Index: 111
     Battle_Result: 1
     Type: 1
@@ -575,6 +633,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 111108
     Name: FITH_Indiv_Battle_2_Win
+    ClassType: 0
     Mode_Index: 111
     Battle_Result: 1
     Type: 1
@@ -587,6 +646,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 111109
     Name: FITH_Indiv_Battle_2_Win
+    ClassType: 0
     Mode_Index: 111
     Battle_Result: 1
     Type: 1
@@ -599,6 +659,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 111110
     Name: FITH_Indiv_Battle_2_Win
+    ClassType: 0
     Mode_Index: 111
     Battle_Result: 1
     Type: 1
@@ -611,6 +672,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 111111
     Name: FITH_Indiv_Battle_2_MVP
+    ClassType: 0
     Mode_Index: 111
     Battle_Result: 1
     Type: 2
@@ -623,6 +685,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 111200
     Name: FITH_Indiv_Battle_2_Lose
+    ClassType: 0
     Mode_Index: 111
     Battle_Result: 2
     Type: 1
@@ -635,6 +698,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 111201
     Name: FITH_Indiv_Battle_2_Lose
+    ClassType: 0
     Mode_Index: 111
     Battle_Result: 2
     Type: 1
@@ -647,6 +711,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 111202
     Name: FITH_Indiv_Battle_2_Lose
+    ClassType: 0
     Mode_Index: 111
     Battle_Result: 2
     Type: 1
@@ -659,6 +724,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 111203
     Name: FITH_Indiv_Battle_2_Lose
+    ClassType: 0
     Mode_Index: 111
     Battle_Result: 2
     Type: 1
@@ -671,6 +737,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 111204
     Name: FITH_Indiv_Battle_2_Lose
+    ClassType: 0
     Mode_Index: 111
     Battle_Result: 2
     Type: 1
@@ -683,6 +750,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 111205
     Name: FITH_Indiv_Battle_2_Lose
+    ClassType: 0
     Mode_Index: 111
     Battle_Result: 2
     Type: 1
@@ -695,6 +763,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 111206
     Name: FITH_Indiv_Battle_2_Lose
+    ClassType: 0
     Mode_Index: 111
     Battle_Result: 2
     Type: 1
@@ -707,6 +776,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 111207
     Name: FITH_Indiv_Battle_2_Lose
+    ClassType: 0
     Mode_Index: 111
     Battle_Result: 2
     Type: 1
@@ -719,6 +789,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 111208
     Name: FITH_Indiv_Battle_2_Lose
+    ClassType: 0
     Mode_Index: 111
     Battle_Result: 2
     Type: 1
@@ -731,6 +802,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 111209
     Name: FITH_Indiv_Battle_2_Lose
+    ClassType: 0
     Mode_Index: 111
     Battle_Result: 2
     Type: 1
@@ -743,6 +815,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 111210
     Name: FITH_Indiv_Battle_2_Lose
+    ClassType: 0
     Mode_Index: 111
     Battle_Result: 2
     Type: 1
@@ -755,6 +828,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 112100
     Name: FITH_Indiv_Battle_3_Win
+    ClassType: 0
     Mode_Index: 112
     Battle_Result: 1
     Type: 1
@@ -767,6 +841,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 112101
     Name: FITH_Indiv_Battle_3_Win
+    ClassType: 0
     Mode_Index: 112
     Battle_Result: 1
     Type: 1
@@ -779,6 +854,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 112102
     Name: FITH_Indiv_Battle_3_Win
+    ClassType: 0
     Mode_Index: 112
     Battle_Result: 1
     Type: 1
@@ -791,6 +867,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 112103
     Name: FITH_Indiv_Battle_3_Win
+    ClassType: 0
     Mode_Index: 112
     Battle_Result: 1
     Type: 1
@@ -803,6 +880,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 112104
     Name: FITH_Indiv_Battle_3_Win
+    ClassType: 0
     Mode_Index: 112
     Battle_Result: 1
     Type: 1
@@ -815,6 +893,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 112105
     Name: FITH_Indiv_Battle_3_Win
+    ClassType: 0
     Mode_Index: 112
     Battle_Result: 1
     Type: 1
@@ -827,6 +906,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 112106
     Name: FITH_Indiv_Battle_3_Win
+    ClassType: 0
     Mode_Index: 112
     Battle_Result: 1
     Type: 1
@@ -839,6 +919,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 112107
     Name: FITH_Indiv_Battle_3_Win
+    ClassType: 0
     Mode_Index: 112
     Battle_Result: 1
     Type: 1
@@ -851,6 +932,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 112108
     Name: FITH_Indiv_Battle_3_Win
+    ClassType: 0
     Mode_Index: 112
     Battle_Result: 1
     Type: 1
@@ -863,6 +945,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 112109
     Name: FITH_Indiv_Battle_3_Win
+    ClassType: 0
     Mode_Index: 112
     Battle_Result: 1
     Type: 1
@@ -875,6 +958,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 112110
     Name: FITH_Indiv_Battle_3_Win
+    ClassType: 0
     Mode_Index: 112
     Battle_Result: 1
     Type: 1
@@ -887,6 +971,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 112111
     Name: FITH_Indiv_Battle_3_MVP
+    ClassType: 0
     Mode_Index: 112
     Battle_Result: 1
     Type: 2
@@ -899,6 +984,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 112200
     Name: FITH_Indiv_Battle_3_Lose
+    ClassType: 0
     Mode_Index: 112
     Battle_Result: 2
     Type: 1
@@ -911,6 +997,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 112201
     Name: FITH_Indiv_Battle_3_Lose
+    ClassType: 0
     Mode_Index: 112
     Battle_Result: 2
     Type: 1
@@ -923,6 +1010,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 112202
     Name: FITH_Indiv_Battle_3_Lose
+    ClassType: 0
     Mode_Index: 112
     Battle_Result: 2
     Type: 1
@@ -935,6 +1023,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 112203
     Name: FITH_Indiv_Battle_3_Lose
+    ClassType: 0
     Mode_Index: 112
     Battle_Result: 2
     Type: 1
@@ -947,6 +1036,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 112204
     Name: FITH_Indiv_Battle_3_Lose
+    ClassType: 0
     Mode_Index: 112
     Battle_Result: 2
     Type: 1
@@ -959,6 +1049,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 112205
     Name: FITH_Indiv_Battle_3_Lose
+    ClassType: 0
     Mode_Index: 112
     Battle_Result: 2
     Type: 1
@@ -971,6 +1062,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 112206
     Name: FITH_Indiv_Battle_3_Lose
+    ClassType: 0
     Mode_Index: 112
     Battle_Result: 2
     Type: 1
@@ -983,6 +1075,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 112207
     Name: FITH_Indiv_Battle_3_Lose
+    ClassType: 0
     Mode_Index: 112
     Battle_Result: 2
     Type: 1
@@ -995,6 +1088,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 112208
     Name: FITH_Indiv_Battle_3_Lose
+    ClassType: 0
     Mode_Index: 112
     Battle_Result: 2
     Type: 1
@@ -1007,6 +1101,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 112209
     Name: FITH_Indiv_Battle_3_Lose
+    ClassType: 0
     Mode_Index: 112
     Battle_Result: 2
     Type: 1
@@ -1019,6 +1114,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 112210
     Name: FITH_Indiv_Battle_3_Lose
+    ClassType: 0
     Mode_Index: 112
     Battle_Result: 2
     Type: 1
@@ -1031,6 +1127,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 113100
     Name: FITH_Indiv_Battle_5_Win
+    ClassType: 0
     Mode_Index: 113
     Battle_Result: 1
     Type: 1
@@ -1043,6 +1140,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 113101
     Name: FITH_Indiv_Battle_5_Win
+    ClassType: 0
     Mode_Index: 113
     Battle_Result: 1
     Type: 1
@@ -1055,6 +1153,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 113102
     Name: FITH_Indiv_Battle_5_Win
+    ClassType: 0
     Mode_Index: 113
     Battle_Result: 1
     Type: 1
@@ -1067,6 +1166,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 113103
     Name: FITH_Indiv_Battle_5_Win
+    ClassType: 0
     Mode_Index: 113
     Battle_Result: 1
     Type: 1
@@ -1079,6 +1179,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 113104
     Name: FITH_Indiv_Battle_5_Win
+    ClassType: 0
     Mode_Index: 113
     Battle_Result: 1
     Type: 1
@@ -1091,6 +1192,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 113105
     Name: FITH_Indiv_Battle_5_Win
+    ClassType: 0
     Mode_Index: 113
     Battle_Result: 1
     Type: 1
@@ -1103,6 +1205,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 113106
     Name: FITH_Indiv_Battle_5_Win
+    ClassType: 0
     Mode_Index: 113
     Battle_Result: 1
     Type: 1
@@ -1115,6 +1218,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 113107
     Name: FITH_Indiv_Battle_5_Win
+    ClassType: 0
     Mode_Index: 113
     Battle_Result: 1
     Type: 1
@@ -1127,6 +1231,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 113108
     Name: FITH_Indiv_Battle_5_Win
+    ClassType: 0
     Mode_Index: 113
     Battle_Result: 1
     Type: 1
@@ -1139,6 +1244,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 113109
     Name: FITH_Indiv_Battle_5_Win
+    ClassType: 0
     Mode_Index: 113
     Battle_Result: 1
     Type: 1
@@ -1151,6 +1257,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 113110
     Name: FITH_Indiv_Battle_5_Win
+    ClassType: 0
     Mode_Index: 113
     Battle_Result: 1
     Type: 1
@@ -1163,6 +1270,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 113111
     Name: FITH_Indiv_Battle_5_MVP
+    ClassType: 0
     Mode_Index: 113
     Battle_Result: 1
     Type: 2
@@ -1175,6 +1283,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 113200
     Name: FITH_Indiv_Battle_5_Lose
+    ClassType: 0
     Mode_Index: 113
     Battle_Result: 2
     Type: 1
@@ -1187,6 +1296,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 113201
     Name: FITH_Indiv_Battle_5_Lose
+    ClassType: 0
     Mode_Index: 113
     Battle_Result: 2
     Type: 1
@@ -1199,6 +1309,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 113202
     Name: FITH_Indiv_Battle_5_Lose
+    ClassType: 0
     Mode_Index: 113
     Battle_Result: 2
     Type: 1
@@ -1211,6 +1322,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 113203
     Name: FITH_Indiv_Battle_5_Lose
+    ClassType: 0
     Mode_Index: 113
     Battle_Result: 2
     Type: 1
@@ -1223,6 +1335,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 113204
     Name: FITH_Indiv_Battle_5_Lose
+    ClassType: 0
     Mode_Index: 113
     Battle_Result: 2
     Type: 1
@@ -1235,6 +1348,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 113205
     Name: FITH_Indiv_Battle_5_Lose
+    ClassType: 0
     Mode_Index: 113
     Battle_Result: 2
     Type: 1
@@ -1247,6 +1361,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 113206
     Name: FITH_Indiv_Battle_5_Lose
+    ClassType: 0
     Mode_Index: 113
     Battle_Result: 2
     Type: 1
@@ -1259,6 +1374,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 113207
     Name: FITH_Indiv_Battle_5_Lose
+    ClassType: 0
     Mode_Index: 113
     Battle_Result: 2
     Type: 1
@@ -1271,6 +1387,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 113208
     Name: FITH_Indiv_Battle_5_Lose
+    ClassType: 0
     Mode_Index: 113
     Battle_Result: 2
     Type: 1
@@ -1283,6 +1400,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 113209
     Name: FITH_Indiv_Battle_5_Lose
+    ClassType: 0
     Mode_Index: 113
     Battle_Result: 2
     Type: 1
@@ -1295,6 +1413,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 113210
     Name: FITH_Indiv_Battle_5_Lose
+    ClassType: 0
     Mode_Index: 113
     Battle_Result: 2
     Type: 1
@@ -1307,6 +1426,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 121100
     Name: FITH_Team_Battle_4_Win
+    ClassType: 0
     Mode_Index: 121
     Battle_Result: 1
     Type: 1
@@ -1319,6 +1439,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 121101
     Name: FITH_Team_Battle_4_Win
+    ClassType: 0
     Mode_Index: 121
     Battle_Result: 1
     Type: 1
@@ -1331,6 +1452,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 121102
     Name: FITH_Team_Battle_4_Win
+    ClassType: 0
     Mode_Index: 121
     Battle_Result: 1
     Type: 1
@@ -1343,6 +1465,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 121103
     Name: FITH_Team_Battle_4_Win
+    ClassType: 0
     Mode_Index: 121
     Battle_Result: 1
     Type: 1
@@ -1355,6 +1478,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 121104
     Name: FITH_Team_Battle_4_Win
+    ClassType: 0
     Mode_Index: 121
     Battle_Result: 1
     Type: 1
@@ -1367,6 +1491,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 121105
     Name: FITH_Team_Battle_4_Win
+    ClassType: 0
     Mode_Index: 121
     Battle_Result: 1
     Type: 1
@@ -1379,6 +1504,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 121106
     Name: FITH_Team_Battle_4_Win
+    ClassType: 0
     Mode_Index: 121
     Battle_Result: 1
     Type: 1
@@ -1391,6 +1517,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 121107
     Name: FITH_Team_Battle_4_Win
+    ClassType: 0
     Mode_Index: 121
     Battle_Result: 1
     Type: 1
@@ -1403,6 +1530,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 121108
     Name: FITH_Team_Battle_4_Win
+    ClassType: 0
     Mode_Index: 121
     Battle_Result: 1
     Type: 1
@@ -1415,6 +1543,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 121109
     Name: FITH_Team_Battle_4_Win
+    ClassType: 0
     Mode_Index: 121
     Battle_Result: 1
     Type: 1
@@ -1427,6 +1556,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 121110
     Name: FITH_Team_Battle_4_Win
+    ClassType: 0
     Mode_Index: 121
     Battle_Result: 1
     Type: 1
@@ -1439,6 +1569,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 121111
     Name: FITH_Team_Battle_4_MVP
+    ClassType: 0
     Mode_Index: 121
     Battle_Result: 1
     Type: 2
@@ -1451,6 +1582,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 121200
     Name: FITH_Team_Battle_4_Lose
+    ClassType: 0
     Mode_Index: 121
     Battle_Result: 2
     Type: 1
@@ -1463,6 +1595,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 121201
     Name: FITH_Team_Battle_4_Lose
+    ClassType: 0
     Mode_Index: 121
     Battle_Result: 2
     Type: 1
@@ -1475,6 +1608,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 121202
     Name: FITH_Team_Battle_4_Lose
+    ClassType: 0
     Mode_Index: 121
     Battle_Result: 2
     Type: 1
@@ -1487,6 +1621,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 121203
     Name: FITH_Team_Battle_4_Lose
+    ClassType: 0
     Mode_Index: 121
     Battle_Result: 2
     Type: 1
@@ -1499,6 +1634,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 121204
     Name: FITH_Team_Battle_4_Lose
+    ClassType: 0
     Mode_Index: 121
     Battle_Result: 2
     Type: 1
@@ -1511,6 +1647,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 121205
     Name: FITH_Team_Battle_4_Lose
+    ClassType: 0
     Mode_Index: 121
     Battle_Result: 2
     Type: 1
@@ -1523,6 +1660,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 121206
     Name: FITH_Team_Battle_4_Lose
+    ClassType: 0
     Mode_Index: 121
     Battle_Result: 2
     Type: 1
@@ -1535,6 +1673,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 121207
     Name: FITH_Team_Battle_4_Lose
+    ClassType: 0
     Mode_Index: 121
     Battle_Result: 2
     Type: 1
@@ -1547,6 +1686,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 121208
     Name: FITH_Team_Battle_4_Lose
+    ClassType: 0
     Mode_Index: 121
     Battle_Result: 2
     Type: 1
@@ -1559,6 +1699,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 121209
     Name: FITH_Team_Battle_4_Lose
+    ClassType: 0
     Mode_Index: 121
     Battle_Result: 2
     Type: 1
@@ -1571,6 +1712,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 121210
     Name: FITH_Team_Battle_4_Lose
+    ClassType: 0
     Mode_Index: 121
     Battle_Result: 2
     Type: 1
@@ -1583,6 +1725,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 122100
     Name: FITH_Team_Battle_6_Win
+    ClassType: 0
     Mode_Index: 122
     Battle_Result: 1
     Type: 1
@@ -1595,6 +1738,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 122101
     Name: FITH_Team_Battle_6_Win
+    ClassType: 0
     Mode_Index: 122
     Battle_Result: 1
     Type: 1
@@ -1607,6 +1751,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 122102
     Name: FITH_Team_Battle_6_Win
+    ClassType: 0
     Mode_Index: 122
     Battle_Result: 1
     Type: 1
@@ -1619,6 +1764,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 122103
     Name: FITH_Team_Battle_6_Win
+    ClassType: 0
     Mode_Index: 122
     Battle_Result: 1
     Type: 1
@@ -1631,6 +1777,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 122104
     Name: FITH_Team_Battle_6_Win
+    ClassType: 0
     Mode_Index: 122
     Battle_Result: 1
     Type: 1
@@ -1643,6 +1790,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 122105
     Name: FITH_Team_Battle_6_Win
+    ClassType: 0
     Mode_Index: 122
     Battle_Result: 1
     Type: 1
@@ -1655,6 +1803,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 122106
     Name: FITH_Team_Battle_6_Win
+    ClassType: 0
     Mode_Index: 122
     Battle_Result: 1
     Type: 1
@@ -1667,6 +1816,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 122107
     Name: FITH_Team_Battle_6_Win
+    ClassType: 0
     Mode_Index: 122
     Battle_Result: 1
     Type: 1
@@ -1679,6 +1829,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 122108
     Name: FITH_Team_Battle_6_Win
+    ClassType: 0
     Mode_Index: 122
     Battle_Result: 1
     Type: 1
@@ -1691,6 +1842,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 122109
     Name: FITH_Team_Battle_6_Win
+    ClassType: 0
     Mode_Index: 122
     Battle_Result: 1
     Type: 1
@@ -1703,6 +1855,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 122110
     Name: FITH_Team_Battle_6_Win
+    ClassType: 0
     Mode_Index: 122
     Battle_Result: 1
     Type: 1
@@ -1715,6 +1868,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 122111
     Name: FITH_Team_Battle_6_MVP
+    ClassType: 0
     Mode_Index: 122
     Battle_Result: 1
     Type: 2
@@ -1727,6 +1881,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 122200
     Name: FITH_Team_Battle_6_Lose
+    ClassType: 0
     Mode_Index: 122
     Battle_Result: 2
     Type: 1
@@ -1739,6 +1894,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 122201
     Name: FITH_Team_Battle_6_Lose
+    ClassType: 0
     Mode_Index: 122
     Battle_Result: 2
     Type: 1
@@ -1751,6 +1907,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 122202
     Name: FITH_Team_Battle_6_Lose
+    ClassType: 0
     Mode_Index: 122
     Battle_Result: 2
     Type: 1
@@ -1763,6 +1920,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 122203
     Name: FITH_Team_Battle_6_Lose
+    ClassType: 0
     Mode_Index: 122
     Battle_Result: 2
     Type: 1
@@ -1775,6 +1933,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 122204
     Name: FITH_Team_Battle_6_Lose
+    ClassType: 0
     Mode_Index: 122
     Battle_Result: 2
     Type: 1
@@ -1787,6 +1946,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 122205
     Name: FITH_Team_Battle_6_Lose
+    ClassType: 0
     Mode_Index: 122
     Battle_Result: 2
     Type: 1
@@ -1799,6 +1959,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 122206
     Name: FITH_Team_Battle_6_Lose
+    ClassType: 0
     Mode_Index: 122
     Battle_Result: 2
     Type: 1
@@ -1811,6 +1972,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 122207
     Name: FITH_Team_Battle_6_Lose
+    ClassType: 0
     Mode_Index: 122
     Battle_Result: 2
     Type: 1
@@ -1823,6 +1985,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 122208
     Name: FITH_Team_Battle_6_Lose
+    ClassType: 0
     Mode_Index: 122
     Battle_Result: 2
     Type: 1
@@ -1835,6 +1998,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 122209
     Name: FITH_Team_Battle_6_Lose
+    ClassType: 0
     Mode_Index: 122
     Battle_Result: 2
     Type: 1
@@ -1847,6 +2011,7 @@ MonoBehaviour:
     Reward3_Value: 0
   - Index: 122210
     Name: FITH_Team_Battle_6_Lose
+    ClassType: 0
     Mode_Index: 122
     Battle_Result: 2
     Type: 1

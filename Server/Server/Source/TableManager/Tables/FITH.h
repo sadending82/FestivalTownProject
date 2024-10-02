@@ -4,11 +4,13 @@
 #define Mode_Out_Sheet 0
 #define FITH_Mode_Sheet 1
 
-enum GameModeOut_Field {
+enum class GameModeOut_Field {
 	Player_Count = 3,
 	Team_Count,
 	Team_Color,
 	Play_Map,
+	Open_Date,
+	Close_Date
 };
 
 enum GameModeInfo_Field {
@@ -38,6 +40,8 @@ struct GameModeInfo {
 	int Team_Count;
 	int	Team_Color;
 	int	Play_Map;
+	std::tm Open_Date;
+	std::tm Close_Date;
 
 	int Play_Time;
 	int Player_Spawn_Time;
