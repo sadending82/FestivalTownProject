@@ -43,10 +43,10 @@ bool Player::SetIsGrabbed(bool desired)
 
 int Player::GroggyRecoverTime()
 {
-	/*if (mGroggyCount > 3 + 1) return 10;
+	if (mGroggyCount > 3 + 1) return 10;
 
-	return mGroggyCount * 2 + 1;*/
-	return 20;
+	return mGroggyCount * 2 + 1;
+	//return 20;
 }
 
 bool Player::ChangeToGroggyState(Server* pServer)
@@ -77,7 +77,7 @@ bool Player::ChangeToGroggyState(Server* pServer)
 	return true;
 }
 
-bool Player::ChangeToDeadState(Server* pServer)
+bool Player::ChangeToDeadState(Server* pServer, int spawn_time)
 {
 	mPlayerStateLock.lock();
 	if (mPlayerState == ePlayerState::PS_DEAD) {
@@ -87,7 +87,7 @@ bool Player::ChangeToDeadState(Server* pServer)
 
 	mPlayerState = ePlayerState::PS_DEAD;
 
-	pServer->GetPacketSender()->SendPlayerDeadPacket(mInGameID, mRoomID);
+	pServer->GetPacketSender()->SendPlayerDeadPacket(mInGameID, mRoomID, spawn_time);
 
 	// 들고있는 무기 해제
 	if (mWeapon != nullptr) {

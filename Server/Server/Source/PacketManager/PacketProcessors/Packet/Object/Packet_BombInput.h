@@ -35,10 +35,10 @@ public:
 
 			// 자기 팀에 넣으면 바로 사망
 			if (player->GetTeam() == team) {
-				pServer->GetPacketSender()->SendPlayerDeadPacket(playerid, roomid);
+				int spawnTime = pServer->GetTableManager()->GetGameModeData()[room->GetGameMode()].Player_Spawn_Time;
+				pServer->GetPacketSender()->SendPlayerDeadPacket(playerid, roomid, spawnTime);
 				// record update
 				room->GetPlayerRecordList()[playerid].death_count++;
-				int spawnTime = pServer->GetTableManager()->GetGameModeData()[room->GetGameMode()].Player_Spawn_Time;
 				PushEventPlayerRespawn(pServer->GetTimer(), playerid, roomid, room->GetRoomCode(), spawnTime);
 				return;
 			}

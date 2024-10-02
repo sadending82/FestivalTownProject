@@ -19,25 +19,55 @@ public struct WeaponSpawn : IFlatbufferObject
   public void __init(int _i, ByteBuffer _bb) { __p = new Table(_i, _bb); }
   public WeaponSpawn __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public PacketTable.UtilitiesTable.Vec3f? Pos { get { int o = __p.__offset(4); return o != 0 ? (PacketTable.UtilitiesTable.Vec3f?)(new PacketTable.UtilitiesTable.Vec3f()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
-  public int Id { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public int Type { get { int o = __p.__offset(8); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public PacketTable.UtilitiesTable.Vec3f? Pos(int j) { int o = __p.__offset(4); return o != 0 ? (PacketTable.UtilitiesTable.Vec3f?)(new PacketTable.UtilitiesTable.Vec3f()).__assign(__p.__indirect(__p.__vector(o) + j * 4), __p.bb) : null; }
+  public int PosLength { get { int o = __p.__offset(4); return o != 0 ? __p.__vector_len(o) : 0; } }
+  public int Id(int j) { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(__p.__vector(o) + j * 4) : (int)0; }
+  public int IdLength { get { int o = __p.__offset(6); return o != 0 ? __p.__vector_len(o) : 0; } }
+#if ENABLE_SPAN_T
+  public Span<int> GetIdBytes() { return __p.__vector_as_span<int>(6, 4); }
+#else
+  public ArraySegment<byte>? GetIdBytes() { return __p.__vector_as_arraysegment(6); }
+#endif
+  public int[] GetIdArray() { return __p.__vector_as_array<int>(6); }
+  public int Type(int j) { int o = __p.__offset(8); return o != 0 ? __p.bb.GetInt(__p.__vector(o) + j * 4) : (int)0; }
+  public int TypeLength { get { int o = __p.__offset(8); return o != 0 ? __p.__vector_len(o) : 0; } }
+#if ENABLE_SPAN_T
+  public Span<int> GetTypeBytes() { return __p.__vector_as_span<int>(8, 4); }
+#else
+  public ArraySegment<byte>? GetTypeBytes() { return __p.__vector_as_arraysegment(8); }
+#endif
+  public int[] GetTypeArray() { return __p.__vector_as_array<int>(8); }
 
   public static Offset<PacketTable.ObjectTable.WeaponSpawn> CreateWeaponSpawn(FlatBufferBuilder builder,
-      Offset<PacketTable.UtilitiesTable.Vec3f> posOffset = default(Offset<PacketTable.UtilitiesTable.Vec3f>),
-      int id = 0,
-      int type = 0) {
+      VectorOffset posOffset = default(VectorOffset),
+      VectorOffset idOffset = default(VectorOffset),
+      VectorOffset typeOffset = default(VectorOffset)) {
     builder.StartTable(3);
-    WeaponSpawn.AddType(builder, type);
-    WeaponSpawn.AddId(builder, id);
+    WeaponSpawn.AddType(builder, typeOffset);
+    WeaponSpawn.AddId(builder, idOffset);
     WeaponSpawn.AddPos(builder, posOffset);
     return WeaponSpawn.EndWeaponSpawn(builder);
   }
 
   public static void StartWeaponSpawn(FlatBufferBuilder builder) { builder.StartTable(3); }
-  public static void AddPos(FlatBufferBuilder builder, Offset<PacketTable.UtilitiesTable.Vec3f> posOffset) { builder.AddOffset(0, posOffset.Value, 0); }
-  public static void AddId(FlatBufferBuilder builder, int id) { builder.AddInt(1, id, 0); }
-  public static void AddType(FlatBufferBuilder builder, int type) { builder.AddInt(2, type, 0); }
+  public static void AddPos(FlatBufferBuilder builder, VectorOffset posOffset) { builder.AddOffset(0, posOffset.Value, 0); }
+  public static VectorOffset CreatePosVector(FlatBufferBuilder builder, Offset<PacketTable.UtilitiesTable.Vec3f>[] data) { builder.StartVector(4, data.Length, 4); for (int i = data.Length - 1; i >= 0; i--) builder.AddOffset(data[i].Value); return builder.EndVector(); }
+  public static VectorOffset CreatePosVectorBlock(FlatBufferBuilder builder, Offset<PacketTable.UtilitiesTable.Vec3f>[] data) { builder.StartVector(4, data.Length, 4); builder.Add(data); return builder.EndVector(); }
+  public static VectorOffset CreatePosVectorBlock(FlatBufferBuilder builder, ArraySegment<Offset<PacketTable.UtilitiesTable.Vec3f>> data) { builder.StartVector(4, data.Count, 4); builder.Add(data); return builder.EndVector(); }
+  public static VectorOffset CreatePosVectorBlock(FlatBufferBuilder builder, IntPtr dataPtr, int sizeInBytes) { builder.StartVector(1, sizeInBytes, 1); builder.Add<Offset<PacketTable.UtilitiesTable.Vec3f>>(dataPtr, sizeInBytes); return builder.EndVector(); }
+  public static void StartPosVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(4, numElems, 4); }
+  public static void AddId(FlatBufferBuilder builder, VectorOffset idOffset) { builder.AddOffset(1, idOffset.Value, 0); }
+  public static VectorOffset CreateIdVector(FlatBufferBuilder builder, int[] data) { builder.StartVector(4, data.Length, 4); for (int i = data.Length - 1; i >= 0; i--) builder.AddInt(data[i]); return builder.EndVector(); }
+  public static VectorOffset CreateIdVectorBlock(FlatBufferBuilder builder, int[] data) { builder.StartVector(4, data.Length, 4); builder.Add(data); return builder.EndVector(); }
+  public static VectorOffset CreateIdVectorBlock(FlatBufferBuilder builder, ArraySegment<int> data) { builder.StartVector(4, data.Count, 4); builder.Add(data); return builder.EndVector(); }
+  public static VectorOffset CreateIdVectorBlock(FlatBufferBuilder builder, IntPtr dataPtr, int sizeInBytes) { builder.StartVector(1, sizeInBytes, 1); builder.Add<int>(dataPtr, sizeInBytes); return builder.EndVector(); }
+  public static void StartIdVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(4, numElems, 4); }
+  public static void AddType(FlatBufferBuilder builder, VectorOffset typeOffset) { builder.AddOffset(2, typeOffset.Value, 0); }
+  public static VectorOffset CreateTypeVector(FlatBufferBuilder builder, int[] data) { builder.StartVector(4, data.Length, 4); for (int i = data.Length - 1; i >= 0; i--) builder.AddInt(data[i]); return builder.EndVector(); }
+  public static VectorOffset CreateTypeVectorBlock(FlatBufferBuilder builder, int[] data) { builder.StartVector(4, data.Length, 4); builder.Add(data); return builder.EndVector(); }
+  public static VectorOffset CreateTypeVectorBlock(FlatBufferBuilder builder, ArraySegment<int> data) { builder.StartVector(4, data.Count, 4); builder.Add(data); return builder.EndVector(); }
+  public static VectorOffset CreateTypeVectorBlock(FlatBufferBuilder builder, IntPtr dataPtr, int sizeInBytes) { builder.StartVector(1, sizeInBytes, 1); builder.Add<int>(dataPtr, sizeInBytes); return builder.EndVector(); }
+  public static void StartTypeVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(4, numElems, 4); }
   public static Offset<PacketTable.ObjectTable.WeaponSpawn> EndWeaponSpawn(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<PacketTable.ObjectTable.WeaponSpawn>(o);
@@ -50,9 +80,9 @@ static public class WeaponSpawnVerify
   static public bool Verify(Google.FlatBuffers.Verifier verifier, uint tablePos)
   {
     return verifier.VerifyTableStart(tablePos)
-      && verifier.VerifyTable(tablePos, 4 /*Pos*/, PacketTable.UtilitiesTable.Vec3fVerify.Verify, false)
-      && verifier.VerifyField(tablePos, 6 /*Id*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 8 /*Type*/, 4 /*int*/, 4, false)
+      && verifier.VerifyVectorOfTables(tablePos, 4 /*Pos*/, PacketTable.UtilitiesTable.Vec3fVerify.Verify, false)
+      && verifier.VerifyVectorOfData(tablePos, 6 /*Id*/, 4 /*int*/, false)
+      && verifier.VerifyVectorOfData(tablePos, 8 /*Type*/, 4 /*int*/, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }

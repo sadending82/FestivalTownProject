@@ -18,6 +18,9 @@ namespace Network.PacketProcessor
             var Data = PlayerDead.GetRootAsPlayerDead(bb);
 
             int targetId = Data.Id;
+
+            int spawn_time = Data.RespawnTime;
+
             CharacterStatus pState = Managers.Player.GetPlayers().transform.GetChild(targetId).GetComponent<CharacterStatus>();
             pState.SetIsDie(true);
         }

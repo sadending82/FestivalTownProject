@@ -873,7 +873,8 @@ struct PlayerDead FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_ID = 4,
     VT_POS = 6,
-    VT_DIRECTION = 8
+    VT_DIRECTION = 8,
+    VT_RESPAWN_TIME = 10
   };
   int32_t id() const {
     return GetField<int32_t>(VT_ID, 0);
@@ -884,6 +885,9 @@ struct PlayerDead FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   const PacketTable::UtilitiesTable::Vec3f *direction() const {
     return GetPointer<const PacketTable::UtilitiesTable::Vec3f *>(VT_DIRECTION);
   }
+  int32_t respawn_time() const {
+    return GetField<int32_t>(VT_RESPAWN_TIME, 0);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_ID, 4) &&
@@ -891,6 +895,7 @@ struct PlayerDead FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            verifier.VerifyTable(pos()) &&
            VerifyOffset(verifier, VT_DIRECTION) &&
            verifier.VerifyTable(direction()) &&
+           VerifyField<int32_t>(verifier, VT_RESPAWN_TIME, 4) &&
            verifier.EndTable();
   }
 };
@@ -908,6 +913,9 @@ struct PlayerDeadBuilder {
   void add_direction(::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> direction) {
     fbb_.AddOffset(PlayerDead::VT_DIRECTION, direction);
   }
+  void add_respawn_time(int32_t respawn_time) {
+    fbb_.AddElement<int32_t>(PlayerDead::VT_RESPAWN_TIME, respawn_time, 0);
+  }
   explicit PlayerDeadBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -923,8 +931,10 @@ inline ::flatbuffers::Offset<PlayerDead> CreatePlayerDead(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t id = 0,
     ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> pos = 0,
-    ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> direction = 0) {
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> direction = 0,
+    int32_t respawn_time = 0) {
   PlayerDeadBuilder builder_(_fbb);
+  builder_.add_respawn_time(respawn_time);
   builder_.add_direction(direction);
   builder_.add_pos(pos);
   builder_.add_id(id);

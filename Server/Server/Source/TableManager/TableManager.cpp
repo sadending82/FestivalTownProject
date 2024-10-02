@@ -556,7 +556,7 @@ void TableManager::ReadGachaTable()
         mWorkbook.load("GameData/Gacha.xlsx");
 
         int rowIdx = 0;
-        int startRow = 2;
+        int startRow = 1;
 
         // Random Box Info
        mWorksheet = mWorkbook.sheet_by_index(0);

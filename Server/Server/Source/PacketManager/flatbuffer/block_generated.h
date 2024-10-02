@@ -80,19 +80,21 @@ struct BlockDrop FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef BlockDropBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_POS = 4,
-    VT_ID = 6
+    VT_TYPE = 6
   };
-  const PacketTable::UtilitiesTable::Vec2i *pos() const {
-    return GetPointer<const PacketTable::UtilitiesTable::Vec2i *>(VT_POS);
+  const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec2i>> *pos() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec2i>> *>(VT_POS);
   }
-  int32_t id() const {
-    return GetField<int32_t>(VT_ID, 0);
+  const ::flatbuffers::Vector<int32_t> *type() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_TYPE);
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_POS) &&
-           verifier.VerifyTable(pos()) &&
-           VerifyField<int32_t>(verifier, VT_ID, 4) &&
+           verifier.VerifyVector(pos()) &&
+           verifier.VerifyVectorOfTables(pos()) &&
+           VerifyOffset(verifier, VT_TYPE) &&
+           verifier.VerifyVector(type()) &&
            verifier.EndTable();
   }
 };
@@ -101,11 +103,11 @@ struct BlockDropBuilder {
   typedef BlockDrop Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_pos(::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec2i> pos) {
+  void add_pos(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec2i>>> pos) {
     fbb_.AddOffset(BlockDrop::VT_POS, pos);
   }
-  void add_id(int32_t id) {
-    fbb_.AddElement<int32_t>(BlockDrop::VT_ID, id, 0);
+  void add_type(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> type) {
+    fbb_.AddOffset(BlockDrop::VT_TYPE, type);
   }
   explicit BlockDropBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -120,12 +122,24 @@ struct BlockDropBuilder {
 
 inline ::flatbuffers::Offset<BlockDrop> CreateBlockDrop(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec2i> pos = 0,
-    int32_t id = 0) {
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec2i>>> pos = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> type = 0) {
   BlockDropBuilder builder_(_fbb);
-  builder_.add_id(id);
+  builder_.add_type(type);
   builder_.add_pos(pos);
   return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<BlockDrop> CreateBlockDropDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec2i>> *pos = nullptr,
+    const std::vector<int32_t> *type = nullptr) {
+  auto pos__ = pos ? _fbb.CreateVector<::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec2i>>(*pos) : 0;
+  auto type__ = type ? _fbb.CreateVector<int32_t>(*type) : 0;
+  return PacketTable::ObjectTable::CreateBlockDrop(
+      _fbb,
+      pos__,
+      type__);
 }
 
 }  // namespace ObjectTable

@@ -38,13 +38,13 @@ std::vector<uint8_t> PacketMaker::MakePlayerDeletePacket(int inGameID)
 	return MakeBuffer(ePacketType::S2C_PLAYER_DELETE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakePlayerDeadPacket(int inGameID, int roomID, Vector3f position, Vector3f direction)
+std::vector<uint8_t> PacketMaker::MakePlayerDeadPacket(int inGameID, int roomID, Vector3f position, Vector3f direction, int spawn_delay)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 	
 	auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, position.x, position.y, position.z);
 	auto dir = PacketTable::UtilitiesTable::CreateVec3f(Builder, direction.x, direction.y, direction.z);
-	Builder.Finish(PacketTable::PlayerTable::CreatePlayerDead(Builder, inGameID, pos, dir));
+	Builder.Finish(PacketTable::PlayerTable::CreatePlayerDead(Builder, inGameID, pos, dir, spawn_delay));
 	return MakeBuffer(ePacketType::S2C_PLAYER_DEAD, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
@@ -127,30 +127,50 @@ std::vector<uint8_t> PacketMaker::MakeHeartBeatPacket()
 	return MakeBuffer(ePacketType::S2C_HEART_BEAT, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakeBlockDropPacket(int x, int y, int type)
+std::vector<uint8_t> PacketMaker::MakeBlockDropPacket(std::vector<std::pair<int, int>>& positions, std::vector<int>& blockTypes)
 {
 	flatbuffers::FlatBufferBuilder Builder;
-	
-	auto pos = PacketTable::UtilitiesTable::CreateVec2i(Builder, x, y);
-	Builder.Finish(PacketTable::ObjectTable::CreateBlockDrop(Builder, pos, type));
+	std::vector<flatbuffers::Offset<PacketTable::UtilitiesTable::Vec2i>> pos_vec;
+	for (auto position : positions) {
+		auto pos = PacketTable::UtilitiesTable::CreateVec2i(Builder, position.first, position.second);
+		pos_vec.push_back(pos);
+	}
+	Builder.Finish(PacketTable::ObjectTable::CreateBlockDrop(Builder, Builder.CreateVector(pos_vec)
+		, Builder.CreateVector(blockTypes)));
 	return MakeBuffer(ePacketType::S2C_BLOCK_DROP, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakeBombSpawnPacket(Vector3f Position, int bombid)
+std::vector<uint8_t> PacketMaker::MakeBombSpawnPacket(std::vector<Vector3f>& positions, std::vector<int>& bombIDs, int explosionInterval)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 	
-	auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, Position.x, Position.y, Position.z);
-	Builder.Finish(PacketTable::ObjectTable::CreateBombSpawn(Builder, pos, bombid));
+	std::vector<flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f>> pos_vec;
+	std::vector<int> delay_vec;
+
+	for (Vector3f position : positions) {
+		auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, position.x, position.y, position.z);
+		pos_vec.push_back(pos);
+		delay_vec.push_back(explosionInterval);
+	}
+	Builder.Finish(PacketTable::ObjectTable::CreateBombSpawn(Builder, Builder.CreateVector(pos_vec),
+		Builder.CreateVector(bombIDs)
+		, Builder.CreateVector(delay_vec)));
 	return MakeBuffer(ePacketType::S2C_BOMB_SPAWN, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakeWeaponSpawnPacket(Vector3f position, int weaponid, int weaponType)
+std::vector<uint8_t> PacketMaker::MakeWeaponSpawnPacket(std::vector<Vector3f>& positions, std::vector<int>& weaponIDs, std::vector<int>& weaponTypes)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 	
-	auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, position.x, position.y, position.z);
-	Builder.Finish(PacketTable::ObjectTable::CreateWeaponSpawn(Builder, pos, weaponid, weaponType));
+	std::vector<flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f>> pos_vec;
+
+	for (Vector3f position : positions) {
+		auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, position.x, position.y, position.z);
+		pos_vec.push_back(pos);
+	}
+	Builder.Finish(PacketTable::ObjectTable::CreateWeaponSpawn(Builder, Builder.CreateVector(pos_vec),
+		Builder.CreateVector(weaponIDs)
+		, Builder.CreateVector(weaponTypes)));
 	return MakeBuffer(ePacketType::S2C_WEAPON_SPAWN, Builder.GetBufferPointer(), Builder.GetSize());
 }
 

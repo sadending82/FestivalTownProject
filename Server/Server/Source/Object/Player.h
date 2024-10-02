@@ -67,7 +67,7 @@ public:
 	int				GroggyRecoverTime();
 
 	bool			ChangeToGroggyState(class Server* pServer);
-	bool			ChangeToDeadState(class Server* pServer);
+	bool			ChangeToDeadState(class Server* pServer, int spawn_time);
 
 protected:
 	std::mutex      mPlayerStateLock;

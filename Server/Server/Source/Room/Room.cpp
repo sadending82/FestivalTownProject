@@ -16,10 +16,11 @@ void Room::Reset()
 	mRoomID = 0; 
 	mPlayerCnt = 0;
 	mPlayerLimit = 0;
+	mReadyCnt = 0;
 	mHostID = INVALIDKEY;
 	mRoomCode = 0;
 
-	delete mMap;
+	//delete mMap;
 	for (int i = 0; i < MAXOBJECT; ++i) {
 		delete mBombList[i];
 	}
@@ -31,9 +32,8 @@ void Room::Reset()
 	std::fill(mWeaponList.begin(), mWeaponList.end(), nullptr);
 	mPlayerRecordList.clear();
 	mTeams.clear();
-	mStateLock.lock();
+
 	mState = eRoomState::RS_FREE;
-	mStateLock.unlock();
 
 	mAllPlayerReady = false;
 	mIsRun = false;
@@ -44,6 +44,7 @@ void Room::Init(int id, int teamLifeCount, int playerLimit)
 	mRoomID = id;
 	mPlayerCnt = 0;
 	mPlayerLimit = playerLimit;
+	mReadyCnt = 0;
 	mHostID = INVALIDKEY;
 
 	for (int i = 0; i < MAXOBJECT; ++i) {

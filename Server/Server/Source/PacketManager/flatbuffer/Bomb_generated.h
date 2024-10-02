@@ -83,19 +83,27 @@ struct BombSpawn FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef BombSpawnBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_POS = 4,
-    VT_ID = 6
+    VT_ID = 6,
+    VT_EXPLOSION_DELAY_TIME = 8
   };
-  const PacketTable::UtilitiesTable::Vec3f *pos() const {
-    return GetPointer<const PacketTable::UtilitiesTable::Vec3f *>(VT_POS);
+  const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f>> *pos() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f>> *>(VT_POS);
   }
-  int32_t id() const {
-    return GetField<int32_t>(VT_ID, 0);
+  const ::flatbuffers::Vector<int32_t> *id() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_ID);
+  }
+  const ::flatbuffers::Vector<int32_t> *explosion_delay_time() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_EXPLOSION_DELAY_TIME);
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_POS) &&
-           verifier.VerifyTable(pos()) &&
-           VerifyField<int32_t>(verifier, VT_ID, 4) &&
+           verifier.VerifyVector(pos()) &&
+           verifier.VerifyVectorOfTables(pos()) &&
+           VerifyOffset(verifier, VT_ID) &&
+           verifier.VerifyVector(id()) &&
+           VerifyOffset(verifier, VT_EXPLOSION_DELAY_TIME) &&
+           verifier.VerifyVector(explosion_delay_time()) &&
            verifier.EndTable();
   }
 };
@@ -104,11 +112,14 @@ struct BombSpawnBuilder {
   typedef BombSpawn Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_pos(::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> pos) {
+  void add_pos(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f>>> pos) {
     fbb_.AddOffset(BombSpawn::VT_POS, pos);
   }
-  void add_id(int32_t id) {
-    fbb_.AddElement<int32_t>(BombSpawn::VT_ID, id, 0);
+  void add_id(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> id) {
+    fbb_.AddOffset(BombSpawn::VT_ID, id);
+  }
+  void add_explosion_delay_time(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> explosion_delay_time) {
+    fbb_.AddOffset(BombSpawn::VT_EXPLOSION_DELAY_TIME, explosion_delay_time);
   }
   explicit BombSpawnBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -123,12 +134,29 @@ struct BombSpawnBuilder {
 
 inline ::flatbuffers::Offset<BombSpawn> CreateBombSpawn(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> pos = 0,
-    int32_t id = 0) {
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f>>> pos = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> id = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> explosion_delay_time = 0) {
   BombSpawnBuilder builder_(_fbb);
+  builder_.add_explosion_delay_time(explosion_delay_time);
   builder_.add_id(id);
   builder_.add_pos(pos);
   return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<BombSpawn> CreateBombSpawnDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f>> *pos = nullptr,
+    const std::vector<int32_t> *id = nullptr,
+    const std::vector<int32_t> *explosion_delay_time = nullptr) {
+  auto pos__ = pos ? _fbb.CreateVector<::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f>>(*pos) : 0;
+  auto id__ = id ? _fbb.CreateVector<int32_t>(*id) : 0;
+  auto explosion_delay_time__ = explosion_delay_time ? _fbb.CreateVector<int32_t>(*explosion_delay_time) : 0;
+  return PacketTable::ObjectTable::CreateBombSpawn(
+      _fbb,
+      pos__,
+      id__,
+      explosion_delay_time__);
 }
 
 struct BombExplosion FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {

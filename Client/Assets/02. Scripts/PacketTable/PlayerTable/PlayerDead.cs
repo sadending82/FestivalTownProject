@@ -22,22 +22,26 @@ public struct PlayerDead : IFlatbufferObject
   public int Id { get { int o = __p.__offset(4); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
   public PacketTable.UtilitiesTable.Vec3f? Pos { get { int o = __p.__offset(6); return o != 0 ? (PacketTable.UtilitiesTable.Vec3f?)(new PacketTable.UtilitiesTable.Vec3f()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
   public PacketTable.UtilitiesTable.Vec3f? Direction { get { int o = __p.__offset(8); return o != 0 ? (PacketTable.UtilitiesTable.Vec3f?)(new PacketTable.UtilitiesTable.Vec3f()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
+  public int RespawnTime { get { int o = __p.__offset(10); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
 
   public static Offset<PacketTable.PlayerTable.PlayerDead> CreatePlayerDead(FlatBufferBuilder builder,
       int id = 0,
       Offset<PacketTable.UtilitiesTable.Vec3f> posOffset = default(Offset<PacketTable.UtilitiesTable.Vec3f>),
-      Offset<PacketTable.UtilitiesTable.Vec3f> directionOffset = default(Offset<PacketTable.UtilitiesTable.Vec3f>)) {
-    builder.StartTable(3);
+      Offset<PacketTable.UtilitiesTable.Vec3f> directionOffset = default(Offset<PacketTable.UtilitiesTable.Vec3f>),
+      int respawn_time = 0) {
+    builder.StartTable(4);
+    PlayerDead.AddRespawnTime(builder, respawn_time);
     PlayerDead.AddDirection(builder, directionOffset);
     PlayerDead.AddPos(builder, posOffset);
     PlayerDead.AddId(builder, id);
     return PlayerDead.EndPlayerDead(builder);
   }
 
-  public static void StartPlayerDead(FlatBufferBuilder builder) { builder.StartTable(3); }
+  public static void StartPlayerDead(FlatBufferBuilder builder) { builder.StartTable(4); }
   public static void AddId(FlatBufferBuilder builder, int id) { builder.AddInt(0, id, 0); }
   public static void AddPos(FlatBufferBuilder builder, Offset<PacketTable.UtilitiesTable.Vec3f> posOffset) { builder.AddOffset(1, posOffset.Value, 0); }
   public static void AddDirection(FlatBufferBuilder builder, Offset<PacketTable.UtilitiesTable.Vec3f> directionOffset) { builder.AddOffset(2, directionOffset.Value, 0); }
+  public static void AddRespawnTime(FlatBufferBuilder builder, int respawnTime) { builder.AddInt(3, respawnTime, 0); }
   public static Offset<PacketTable.PlayerTable.PlayerDead> EndPlayerDead(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<PacketTable.PlayerTable.PlayerDead>(o);
@@ -53,6 +57,7 @@ static public class PlayerDeadVerify
       && verifier.VerifyField(tablePos, 4 /*Id*/, 4 /*int*/, 4, false)
       && verifier.VerifyTable(tablePos, 6 /*Pos*/, PacketTable.UtilitiesTable.Vec3fVerify.Verify, false)
       && verifier.VerifyTable(tablePos, 8 /*Direction*/, PacketTable.UtilitiesTable.Vec3fVerify.Verify, false)
+      && verifier.VerifyField(tablePos, 10 /*RespawnTime*/, 4 /*int*/, 4, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }
