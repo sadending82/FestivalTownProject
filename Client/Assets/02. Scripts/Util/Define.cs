@@ -61,4 +61,21 @@ public class Define
         public int bombInsert;
         public int gold;
     }
+
+    public enum ExcelDataClassType
+    {
+        CharacterStat,
+        CharacterAttack,
+        CharacterMove,
+        CharacterAction,
+        GachaGroup,
+        GachaGroupItem,
+        Item,
+        ModeOut,
+        FITHMode,
+        ModePoint,
+        ModeReward,
+        ModeBonusReward,
+        WeaponStat,
+    }
 }
