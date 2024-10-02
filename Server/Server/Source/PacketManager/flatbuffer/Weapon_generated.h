@@ -86,21 +86,24 @@ struct WeaponSpawn FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_ID = 6,
     VT_TYPE = 8
   };
-  const PacketTable::UtilitiesTable::Vec3f *pos() const {
-    return GetPointer<const PacketTable::UtilitiesTable::Vec3f *>(VT_POS);
+  const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f>> *pos() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f>> *>(VT_POS);
   }
-  int32_t id() const {
-    return GetField<int32_t>(VT_ID, 0);
+  const ::flatbuffers::Vector<int32_t> *id() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_ID);
   }
-  int32_t type() const {
-    return GetField<int32_t>(VT_TYPE, 0);
+  const ::flatbuffers::Vector<int32_t> *type() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_TYPE);
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_POS) &&
-           verifier.VerifyTable(pos()) &&
-           VerifyField<int32_t>(verifier, VT_ID, 4) &&
-           VerifyField<int32_t>(verifier, VT_TYPE, 4) &&
+           verifier.VerifyVector(pos()) &&
+           verifier.VerifyVectorOfTables(pos()) &&
+           VerifyOffset(verifier, VT_ID) &&
+           verifier.VerifyVector(id()) &&
+           VerifyOffset(verifier, VT_TYPE) &&
+           verifier.VerifyVector(type()) &&
            verifier.EndTable();
   }
 };
@@ -109,14 +112,14 @@ struct WeaponSpawnBuilder {
   typedef WeaponSpawn Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_pos(::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> pos) {
+  void add_pos(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f>>> pos) {
     fbb_.AddOffset(WeaponSpawn::VT_POS, pos);
   }
-  void add_id(int32_t id) {
-    fbb_.AddElement<int32_t>(WeaponSpawn::VT_ID, id, 0);
+  void add_id(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> id) {
+    fbb_.AddOffset(WeaponSpawn::VT_ID, id);
   }
-  void add_type(int32_t type) {
-    fbb_.AddElement<int32_t>(WeaponSpawn::VT_TYPE, type, 0);
+  void add_type(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> type) {
+    fbb_.AddOffset(WeaponSpawn::VT_TYPE, type);
   }
   explicit WeaponSpawnBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -131,14 +134,29 @@ struct WeaponSpawnBuilder {
 
 inline ::flatbuffers::Offset<WeaponSpawn> CreateWeaponSpawn(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> pos = 0,
-    int32_t id = 0,
-    int32_t type = 0) {
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f>>> pos = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> id = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> type = 0) {
   WeaponSpawnBuilder builder_(_fbb);
   builder_.add_type(type);
   builder_.add_id(id);
   builder_.add_pos(pos);
   return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<WeaponSpawn> CreateWeaponSpawnDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    const std::vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f>> *pos = nullptr,
+    const std::vector<int32_t> *id = nullptr,
+    const std::vector<int32_t> *type = nullptr) {
+  auto pos__ = pos ? _fbb.CreateVector<::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f>>(*pos) : 0;
+  auto id__ = id ? _fbb.CreateVector<int32_t>(*id) : 0;
+  auto type__ = type ? _fbb.CreateVector<int32_t>(*type) : 0;
+  return PacketTable::ObjectTable::CreateWeaponSpawn(
+      _fbb,
+      pos__,
+      id__,
+      type__);
 }
 
 struct WeaponDelete FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {

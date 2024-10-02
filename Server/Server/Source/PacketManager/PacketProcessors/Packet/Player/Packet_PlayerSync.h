@@ -29,12 +29,12 @@ public:
 			player->SetStamina(read->stamina());
 
 			if (pServer->GetGameManagers()[room->GetGameMode()]->CheckValidPlayerPosition(player->GetPosition()) == false) {
-				if (player->ChangeToDeadState(pServer)) {
+				int spawnTime = pServer->GetTableManager()->GetGameModeData()[room->GetGameMode()].Player_Spawn_Time;
+				if (player->ChangeToDeadState(pServer, spawnTime)) {
 					// record update
 					int roomid = player->GetRoomID();
 					Room* room = pServer->GetRooms()[roomid];
 					room->GetPlayerRecordList()[playerid].death_count++;
-					int spawnTime = pServer->GetTableManager()->GetGameModeData()[room->GetGameMode()].Player_Spawn_Time;
 					PushEventPlayerRespawn(pServer->GetTimer(), playerid, roomid, room->GetRoomCode(), spawnTime);
 				}
 				return;

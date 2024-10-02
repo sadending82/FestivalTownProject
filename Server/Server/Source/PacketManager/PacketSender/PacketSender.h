@@ -15,7 +15,7 @@ public:
 
 	void SendHeartBeatPacket(int sessionID);
 	void SendBlockDropPacket(int roomID, int spawnCount, int blockType);
-	void SendBombSpawnPacket(Vector3f position, int bombid, int roomID);
+	void SendBombSpawnPacket(std::vector<Vector3f>& Positions, std::vector<int>& bombIDs, int explosionInterval, int roomID);
 	void SendBombExplosionPacket(int roomID, int bombID);
 	void SendLifeReducePacket(int team, int lifeCount, int roomID);
 	void SendRemainTimeSync(int roomID);
@@ -25,9 +25,9 @@ public:
 	void SendGameResultPacket(int roomID, std::set<int>& winningTeams);
 
 	void SendGameHostChange(int sessionID);
-	void SendPlayerDeadPacket(int inGameID, int roomID);
+	void SendPlayerDeadPacket(int inGameID, int roomID, int spawn_delay);
 	void SendPlayerRespawn(int inGameID, int roomID);
-	void SendWeaponSpawnPacket(Vector3f position, int weaponID, int roomID, int weaponType);
+	void SendWeaponSpawnPacket(std::vector<Vector3f>& positions, std::vector<int>& weaponIDs, std::vector<int>& weaponTypes, int roomID);
 	void SendWeaponDropPacket(Vector3f position, int roomID, int weaponID);
 	void SendPlayerCalculatedDamage(int targetID, int roomID, int attackType, int hp, int damageAmount, int targetStaminaLoss, Vector3f knockback_direction);
 	void SendPlayerGroggyPacket(int inGameID, int roomID);

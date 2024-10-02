@@ -92,6 +92,7 @@ int Server::SetRoomID()
         if (room == nullptr) continue;
         room->GetStateLock().lock();
         if (eRoomState::RS_FREE == room->GetState()) {
+            room->Reset();
             room->SetState(eRoomState::RS_INGAME);
             room->GetStateLock().unlock();
             return i;

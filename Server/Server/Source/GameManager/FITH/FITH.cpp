@@ -266,11 +266,20 @@ void FITH::BombSpawn(Room* room, int roomID)
 
     std::set<Vector3f> spawnPoses = this->SetObjectSpawnPos(roomID, spawnCount);
 
+    std::vector<Vector3f> poses;
+    std::vector<int> bombIDs;
+
     for (const auto& pos : spawnPoses) {
         int bombid = room->AddBomb(new Bomb, pos);
         if (bombid == INVALIDKEY) continue;
-        mPacketSender->SendBombSpawnPacket(pos, bombid, roomID);
-        PushEventBombExplosion(mServer->GetTimer(), roomID, bombid, room->GetRoomCode(), explosionInterval);
+        poses.push_back(pos);
+        bombIDs.push_back(bombid);
+    }
+
+    mPacketSender->SendBombSpawnPacket(poses, bombIDs, explosionInterval, roomID);
+
+    for (const int id : bombIDs) {
+        PushEventBombExplosion(mServer->GetTimer(), roomID, id, room->GetRoomCode(), explosionInterval);
     }
 }
 
@@ -278,11 +287,19 @@ void FITH::WeaponSpawn(Room* room, int roomID, eWeaponType weaponType, int spawn
 {
     std::set<Vector3f> spawnPoses = this->SetObjectSpawnPos(roomID, spawnCount);
 
+    std::vector<Vector3f> poses;
+    std::vector<int> weaponIDs;
+    std::vector<int> weaponTypes;
+
     for (const auto& pos : spawnPoses) {
         int weaponid = room->AddWeapon(new Weapon(weaponType, nullptr), pos);
         if (weaponid == INVALIDKEY) continue;
-        mPacketSender->SendWeaponSpawnPacket(pos, weaponid, roomID, weaponType);
+
+        poses.push_back(pos);
+        weaponIDs.push_back(weaponid);
+        weaponTypes.push_back(weaponType);
     }
+    mPacketSender->SendWeaponSpawnPacket(poses, weaponIDs, weaponTypes, roomID);
 }
 
 bool FITH::CheckValidPlayerPosition(Vector3f& position)

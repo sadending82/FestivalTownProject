@@ -14,12 +14,15 @@ namespace Network.PacketProcessor
             var bb = new ByteBuffer(data);
             var Data = BombSpawn.GetRootAsBombSpawn(bb);
 
-            float posX = Data.Pos.Value.X;
-            float posZ = Data.Pos.Value.Z;
-            int id = Data.Id;
-
-            // 폭탄 생성
-            Managers.BombObject.SpawnBomb(posX, posZ, id);
+            for (int i = 0; i < Data.PosLength; ++i)
+            {
+                float posX = Data.Pos(i).Value.X;
+                float posZ = Data.Pos(i).Value.Z;
+                int id = Data.Id(i);
+                int explosion_delay = Data.ExplosionDelayTime(i);
+                // 폭탄 생성
+                Managers.BombObject.SpawnBomb(posX, posZ, id);
+            }
         }
 
         

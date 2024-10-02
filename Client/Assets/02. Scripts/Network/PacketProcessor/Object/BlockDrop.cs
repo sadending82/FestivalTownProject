@@ -15,11 +15,15 @@ namespace Network.PacketProcessor
             var bb = new ByteBuffer(data);
             var Data = BlockDrop.GetRootAsBlockDrop(bb);
 
-            int posX = Data.Pos.Value.X; 
-            int posY = Data.Pos.Value.Y;
-            int objectID = Data.Id;
+            for (int i = 0; i < Data.PosLength; ++i)
+            {
 
-            Managers.CubeObject.SpawnCube(posX, posY, (eBlockType)objectID);
+                int posX = Data.Pos(i).Value.X;
+                int posY = Data.Pos(i).Value.Y;
+                int type = Data.Type(i);
+
+                Managers.CubeObject.SpawnCube(posX, posY, (eBlockType)type);
+            }
         }
 
         
