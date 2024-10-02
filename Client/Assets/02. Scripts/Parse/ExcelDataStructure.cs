@@ -9,6 +9,7 @@ namespace ExcelDataStructure
     {
         public int Index;
         public string Name;
+        public Define.ExcelDataClassType ClassType;
     }
 
     [System.Serializable]
