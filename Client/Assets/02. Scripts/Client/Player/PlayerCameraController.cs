@@ -1,20 +1,20 @@
 using PacketTable.GameTable;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerCameraController : MonoBehaviour
 {
-    public Camera camera;
-
-    public float rotationSpeed = 1;
-    public Transform cameraArm;
+    private Camera myCamera;
+    private Transform cameraArm;
     public Transform pelvis;
 
-    [Header("--- Zoom Controll ---")]
-    public float zoomSpeed;
-    public float minimum;
-    public float maximum;
+    [Header("--- Camera Controll ---")]
+    public float RotationSpeed;
+    public float ZoomSpeed;
+    public float MinimumZoom;
+    public float MaximumZoom;
 
     private bool amIPlayer;
 
@@ -22,12 +22,17 @@ public class PlayerCameraController : MonoBehaviour
 
     private void Awake()
     {
+        myCamera = GetComponent<Camera>();
+        cameraArm = transform.parent;
         amIPlayer = false;
     }
 
     private void Start()
     {
-        if (amIPlayer == true) Cursor.lockState = CursorLockMode.Locked;
+        if (amIPlayer == true)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
     }
 
     private void FixedUpdate()
@@ -42,28 +47,31 @@ public class PlayerCameraController : MonoBehaviour
     {
         if (amIPlayer == true)
         {
-            float scroll = Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;
+            float scroll = Input.GetAxis("Mouse ScrollWheel") * ZoomSpeed;
 
-            camera.fieldOfView -= scroll;
+            myCamera.fieldOfView -= scroll;
         
-            if (camera.fieldOfView < minimum)
+            if (myCamera.fieldOfView < MinimumZoom)
             {
-                camera.fieldOfView = minimum;
+                myCamera.fieldOfView = MinimumZoom;
             }
-            else if (camera.fieldOfView > maximum)
+            else if (myCamera.fieldOfView > MaximumZoom)
             {
-                camera.fieldOfView = maximum;
+                myCamera.fieldOfView = MaximumZoom;
             }
         }
     }
-
+    private void LateUpdate()
+    {
+        FindObjectBetweenCameraAndPlayer();
+    }
     private void Move()
     {
         cameraArm.position = new Vector3(pelvis.position.x, 0, pelvis.position.z);
     }
     private void LookAround()
     {
-        Vector2 mouseDelta = new Vector2(Input.GetAxis("Mouse X") * rotationSpeed, Input.GetAxis("Mouse Y") * rotationSpeed);
+        Vector2 mouseDelta = new Vector2(Input.GetAxis("Mouse X") * RotationSpeed, Input.GetAxis("Mouse Y") * RotationSpeed);
         Vector3 cameraAngle = cameraArm.rotation.eulerAngles;
         float x = cameraAngle.x - mouseDelta.y;
 
@@ -81,5 +89,20 @@ public class PlayerCameraController : MonoBehaviour
     public void SetAmIPlayer(bool amIPlayer)
     {
         this.amIPlayer = amIPlayer;
+    }
+    private void FindObjectBetweenCameraAndPlayer()
+    {
+        Vector3 direction = (pelvis.position - transform.position).normalized;
+        RaycastHit[] hits = Physics.RaycastAll(transform.position, direction, Mathf.Infinity,
+            LayerMask.GetMask("Cube", "Statue"));
+
+        for (int i = 0; i < hits.Length; ++i)
+        {
+            TransparentObject[] obj = hits[i].transform.GetComponentsInChildren<TransparentObject>();
+            for (int j = 0; j < obj.Length; ++j)
+            {
+                obj[j]?.BecomeTransparent();
+            }
+        }
     }
 }

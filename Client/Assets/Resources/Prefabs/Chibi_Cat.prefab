@@ -1287,7 +1287,6 @@ GameObject:
   - component: {fileID: 11744454538213894}
   - component: {fileID: 7513450559464735725}
   - component: {fileID: 2266266892710373593}
-  - component: {fileID: 1415633369511455486}
   - component: {fileID: 2103632674421261722}
   - component: {fileID: -6865849756492790611}
   - component: {fileID: 4885904523204411648}
@@ -1405,25 +1404,6 @@ MonoBehaviour:
   isJump: 0
   nearObjectChecker: {fileID: 7949501394121076264}
   bombInvenTransform: {fileID: 4805236475303947220}
---- !u!114 &1415633369511455486
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5680927581145501185}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62972f8c6c1ae0e499e5d1ec5f57a1f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  camera: {fileID: 8248348564705223245}
-  rotationSpeed: 10
-  cameraArm: {fileID: 8242880226395056167}
-  pelvis: {fileID: 1058806054782018136}
-  zoomSpeed: 15
-  minimum: 30
-  maximum: 60
 --- !u!114 &2103632674421261722
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1903,8 +1883,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5299638824275300136}
   - component: {fileID: 8248348564705223245}
+  - component: {fileID: 6252166990058733439}
   m_Layer: 0
-  m_Name: MyCamera
+  m_Name: PlayerCamera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1976,6 +1957,23 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &6252166990058733439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7679138916435322589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62972f8c6c1ae0e499e5d1ec5f57a1f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pelvis: {fileID: 1058806054782018136}
+  RotationSpeed: 10
+  ZoomSpeed: 15
+  MinimumZoom: 30
+  MaximumZoom: 60
 --- !u!1 &7896031627127497940
 GameObject:
   m_ObjectHideFlags: 0

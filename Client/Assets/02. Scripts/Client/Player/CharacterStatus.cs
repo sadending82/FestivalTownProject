@@ -93,7 +93,7 @@ public class CharacterStatus : MonoBehaviour
     {
         this.amIPlayer = amIPlayer;
         this.GetComponent<PlayerController>().SetAmIPlayer(amIPlayer);
-        this.GetComponent<PlayerCameraController>().SetAmIPlayer(amIPlayer);
+        myCamera.GetComponent<PlayerCameraController>().SetAmIPlayer(amIPlayer);
         if(amIPlayer == true)
         {
             myCamera.enabled = true;
@@ -357,5 +357,9 @@ public class CharacterStatus : MonoBehaviour
     public int GetGrappedPlayerId()
     {
         return grappedPlayerId;
+    }
+    public GameObject GetPelvis()
+    {
+        return pelvis;
     }
 }
