@@ -559,7 +559,7 @@ void TableManager::ReadGachaTable()
         int startRow = 1;
 
         // Random Box Info
-       mWorksheet = mWorkbook.sheet_by_index(0);
+        mWorksheet = mWorkbook.sheet_by_index(0);
         for (auto row : mWorksheet.rows(false)) {
             if (rowIdx < startRow) {
                 rowIdx++;
