@@ -1,0 +1,152 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 8
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 224416c413c3023428878e2c3963575c, type: 3}
+  m_Name: Gacha
+  m_EditorClassIdentifier: 
+  GachaGroup:
+  - Index: 100001
+    Name: "\uAE30\uBCF8 \uC0C1\uC790"
+    Gacha_Group: 1001
+    Pay_Item_Index: 10001
+    Pay_Item_Value: 1000
+    Open_Date: 0
+    Close_Date: 0
+    Exp: 10
+  - Index: 100002
+    Name: "\uACE0\uAE09\uC0C1\uC790"
+    Gacha_Group: 1002
+    Pay_Item_Index: 10002
+    Pay_Item_Value: 100
+    Open_Date: 0
+    Close_Date: 0
+    Exp: 20
+  GachaGroup_Item:
+  - Index: 1001001
+    Name: "\uACE8\uB4DC \uD655\uB960 1"
+    Gacha_Group: 1001
+    Gacha_Weight: 5000
+    Reward_Item_Index: 10001
+    Reward_Item_Value: 1000
+  - Index: 1001002
+    Name: "\uACE8\uB4DC \uD655\uB960 2"
+    Gacha_Group: 1001
+    Gacha_Weight: 4000
+    Reward_Item_Index: 10001
+    Reward_Item_Value: 2000
+  - Index: 1001003
+    Name: "\uACE8\uB4DC \uD655\uB960 3"
+    Gacha_Group: 1001
+    Gacha_Weight: 3000
+    Reward_Item_Index: 10001
+    Reward_Item_Value: 3000
+  - Index: 1001004
+    Name: "\uACE8\uB4DC \uD655\uB960 4"
+    Gacha_Group: 1001
+    Gacha_Weight: 2000
+    Reward_Item_Index: 10001
+    Reward_Item_Value: 4000
+  - Index: 1001005
+    Name: "\uACE8\uB4DC  \uD655\uB960 5"
+    Gacha_Group: 1001
+    Gacha_Weight: 1000
+    Reward_Item_Index: 10001
+    Reward_Item_Value: 5000
+  - Index: 1001006
+    Name: "\uB2E4\uC774\uC544 \uD655\uB960 1"
+    Gacha_Group: 1001
+    Gacha_Weight: 500
+    Reward_Item_Index: 10002
+    Reward_Item_Value: 500
+  - Index: 1001007
+    Name: "\uB2E4\uC774\uC544 \uD655\uB960 2"
+    Gacha_Group: 1001
+    Gacha_Weight: 400
+    Reward_Item_Index: 10002
+    Reward_Item_Value: 1000
+  - Index: 1001008
+    Name: "\uB2E4\uC774\uC544 \uD655\uB960 3"
+    Gacha_Group: 1001
+    Gacha_Weight: 300
+    Reward_Item_Index: 10002
+    Reward_Item_Value: 1500
+  - Index: 1001009
+    Name: "\uB2E4\uC774\uC544 \uD655\uB960 4"
+    Gacha_Group: 1001
+    Gacha_Weight: 200
+    Reward_Item_Index: 10002
+    Reward_Item_Value: 2000
+  - Index: 1001010
+    Name: "\uB2E4\uC774\uC544 \uD655\uB960 5"
+    Gacha_Group: 1001
+    Gacha_Weight: 100
+    Reward_Item_Index: 10002
+    Reward_Item_Value: 2500
+  - Index: 1002001
+    Name: "\uACE8\uB4DC \uD655\uB960 1"
+    Gacha_Group: 1002
+    Gacha_Weight: 5000
+    Reward_Item_Index: 10001
+    Reward_Item_Value: 1000
+  - Index: 1002002
+    Name: "\uACE8\uB4DC \uD655\uB960 2"
+    Gacha_Group: 1002
+    Gacha_Weight: 4000
+    Reward_Item_Index: 10001
+    Reward_Item_Value: 2000
+  - Index: 1002003
+    Name: "\uACE8\uB4DC \uD655\uB960 3"
+    Gacha_Group: 1002
+    Gacha_Weight: 3000
+    Reward_Item_Index: 10001
+    Reward_Item_Value: 3000
+  - Index: 1002004
+    Name: "\uACE8\uB4DC \uD655\uB960 4"
+    Gacha_Group: 1002
+    Gacha_Weight: 2000
+    Reward_Item_Index: 10001
+    Reward_Item_Value: 4000
+  - Index: 1002005
+    Name: "\uACE8\uB4DC  \uD655\uB960 5"
+    Gacha_Group: 1002
+    Gacha_Weight: 1000
+    Reward_Item_Index: 10001
+    Reward_Item_Value: 5000
+  - Index: 1002006
+    Name: "\uB2E4\uC774\uC544 \uD655\uB960 1"
+    Gacha_Group: 1002
+    Gacha_Weight: 500
+    Reward_Item_Index: 10002
+    Reward_Item_Value: 500
+  - Index: 1002007
+    Name: "\uB2E4\uC774\uC544 \uD655\uB960 2"
+    Gacha_Group: 1002
+    Gacha_Weight: 400
+    Reward_Item_Index: 10002
+    Reward_Item_Value: 1000
+  - Index: 1002008
+    Name: "\uB2E4\uC774\uC544 \uD655\uB960 3"
+    Gacha_Group: 1002
+    Gacha_Weight: 300
+    Reward_Item_Index: 10002
+    Reward_Item_Value: 1500
+  - Index: 1002009
+    Name: "\uB2E4\uC774\uC544 \uD655\uB960 4"
+    Gacha_Group: 1002
+    Gacha_Weight: 200
+    Reward_Item_Index: 10002
+    Reward_Item_Value: 2000
+  - Index: 1002010
+    Name: "\uB2E4\uC774\uC544 \uD655\uB960 5"
+    Gacha_Group: 1002
+    Gacha_Weight: 100
+    Reward_Item_Index: 10002
+    Reward_Item_Value: 2500

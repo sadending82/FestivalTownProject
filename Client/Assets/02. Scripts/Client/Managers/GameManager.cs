@@ -68,13 +68,6 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
-        Managers.Data.GameModeDataDict.TryGetValue(mode, out GameModeEntity data);
-        if (data != null)
-        {
-            Debug.Log($"{mode}가 Null 이에요!!!!!!!.");
-            return;
-        }
-
         //GameEndTime = data.Play_Time;
     }
     

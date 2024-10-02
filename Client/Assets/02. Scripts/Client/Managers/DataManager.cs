@@ -12,44 +12,36 @@ public class DataManager
     /// 런타임시 항상 데이터를 항상 들고 있도록 설정하는 매니저.
     /// </summary>
 
-    public Dictionary<string, CharacterStatEntity> CharacterStatDataDict = new Dictionary<string, CharacterStatEntity>();
-    public Dictionary<Define.GameMode, GameModeEntity> GameModeDataDict = new Dictionary<Define.GameMode, GameModeEntity>();
+    public Dictionary<int, GameDataEntity> GameDataDict = new Dictionary<int, GameDataEntity>();
 
     public void Init()
     {
-        LoadStatData();
-        LoadGameModeData();
+        LoadGameData();
     }
 
-    void LoadStatData() 
-    { 
-        CharacterStatData data = Managers.Resource.Load<CharacterStatData>($"Data/CharacterStatData");
-        if (data == null) return;
-
-        foreach(CharacterStatEntity entity in data.Sheet1)
-        {
-            CharacterStatDataDict.Add(entity.name, entity);
-        }
-    }
-
-    void LoadGameModeData()
+    void LoadGameData()
     {
-        FITH_Mode data = Managers.Resource.Load<FITH_Mode>($"Data/FITH_Mode");
+        Ch_Stat data = Managers.Resource.Load<Ch_Stat>($"Data/Ch_Stat");
         if (data == null) return;
 
-        foreach (TeamBattleOneEntity entity in data.Team_Battle_one)
+        foreach(CharacterStatEntity cs in data.Stat)
         {
-            GameModeDataDict.Add(Define.GameMode.FireInTheHoleTeam1, entity);
+            GameDataDict.Add(cs.Index, cs);
         }
 
-        foreach (TeamBattleTwoEntity entity in data.Team_Battle_Two)
+        foreach(CharacterAttackEntity ca in data.Attack)
         {
-            GameModeDataDict.Add(Define.GameMode.FireInTheHoleTeam2, entity);
+            GameDataDict.Add(ca.Index, ca);
         }
 
-        foreach (TeamBattleThreeEntity entity in data.Team_Battle_Three)
+        foreach(CharacterMoveEntity cm in data.Move)
         {
-            GameModeDataDict.Add(Define.GameMode.FireInTheHoleTeam3, entity);
+            GameDataDict.Add(cm.Index, cm);
+        }
+
+        foreach(CharacterActionEntity cac in data.Action)
+        {
+            GameDataDict.Add(cac.Index, cac);
         }
     }
 
