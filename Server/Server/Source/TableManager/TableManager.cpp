@@ -85,17 +85,17 @@ void TableManager::ReadItemTable()
                 int index = (int)row[0].value<int>();
 
                 std::tm openDate = {}, closeDate = {};
-                std::istringstream ssOpenDate(row[ItemTable_Field::IT_Item_Type].to_string());
-                std::istringstream ssCloseDate(row[ItemTable_Field::IT_Close_Date].to_string());
+                std::istringstream ssOpenDate(row[(int)(ItemTable_Field::Item_Type)].to_string());
+                std::istringstream ssCloseDate(row[(int)(ItemTable_Field::Close_Date)].to_string());
                 ssOpenDate >> std::get_time(&openDate, "%Y-%m-%d");
                 ssCloseDate >> std::get_time(&closeDate, "%Y-%m-%d");
 
                 ItemInfos[index] = ItemTable{
                     index,
-                    row[ItemTable_Field::IT_Name].to_string(),
-                    row[ItemTable_Field::IT_File_Name].to_string(),
-                    (ItemType)row[ItemTable_Field::IT_Item_Type].value<int>(),
-                    (ItemGrade)row[ItemTable_Field::IT_Item_Grade].value<int>(),
+                    row[(int)(ItemTable_Field::Name)].to_string(),
+                    row[(int)(ItemTable_Field::File_Name)].to_string(),
+                    (ItemType)row[(int)(ItemTable_Field::Item_Type)].value<int>(),
+                    (ItemGrade)row[(int)(ItemTable_Field::Item_Grade)].value<int>(),
                     openDate,
                     closeDate
                 };
@@ -124,14 +124,14 @@ void TableManager::ReadCharacterStat()
             }
 
             if (!row.empty()) {
-                CharacterStats[(int)row[static_cast<int>(CharacterStat_Field::index)].value<int>()]
+                CharacterStats[(int)row[(int)(CharacterStat_Field::index)].value<int>()]
                     = CharacterStat{
-                    (int)row[static_cast<int>(CharacterStat_Field::index)].value<int>(),
-                    (std::string)row[static_cast<int>(CharacterStat_Field::name)].to_string(),
-                    (int)row[static_cast<int>(CharacterStat_Field::hp)].value<int>(),
-                    (int)row[static_cast<int>(CharacterStat_Field::stamina)].value<int>(),
-                    (int)row[static_cast<int>(CharacterStat_Field::strength)].value<int>(),
-                    (int)row[static_cast<int>(CharacterStat_Field::speed)].value<int>()
+                    (int)row[(int)(CharacterStat_Field::index)].value<int>(),
+                    (std::string)row[(int)(CharacterStat_Field::name)].to_string(),
+                    (int)row[(int)(CharacterStat_Field::hp)].value<int>(),
+                    (int)row[(int)(CharacterStat_Field::stamina)].value<int>(),
+                    (int)row[(int)(CharacterStat_Field::strength)].value<int>(),
+                    (int)row[(int)(CharacterStat_Field::speed)].value<int>()
                 };
             }
             idx++;
@@ -146,14 +146,14 @@ void TableManager::ReadCharacterStat()
             }
 
             if (!row.empty()) {
-                AttackStats[(int)row[static_cast<int>(AttackStat_Field::Index)].value<int>()]
+                AttackStats[(int)row[(int)(AttackStat_Field::Index)].value<int>()]
                     = AttackStat{
-                    (int)row[static_cast<int>(AttackStat_Field::Index)].value<int>(),
-                    (std::string)row[static_cast<int>(AttackStat_Field::Name)].to_string(),
-                    (float)row[static_cast<int>(AttackStat_Field::Value)].value<float>(),
-                    (int)row[static_cast<int>(AttackStat_Field::Attack_Speed)].value<int>(),
-                    (int)row[static_cast<int>(AttackStat_Field::Ch_StaminaConsume)].value<int>(),
-                    (int)row[static_cast<int>(AttackStat_Field::Steal_Stamina)].value<int>()
+                    (int)row[(int)(AttackStat_Field::Index)].value<int>(),
+                    (std::string)row[(int)(AttackStat_Field::Name)].to_string(),
+                    (float)row[(int)(AttackStat_Field::Value)].value<float>(),
+                    (int)row[(int)(AttackStat_Field::Attack_Speed)].value<int>(),
+                    (int)row[(int)(AttackStat_Field::Ch_StaminaConsume)].value<int>(),
+                    (int)row[(int)(AttackStat_Field::Steal_Stamina)].value<int>()
                 };
             }
 
@@ -169,13 +169,13 @@ void TableManager::ReadCharacterStat()
             }
 
             if (!row.empty()) {
-                MoveStats[(int)row[static_cast<int>(MoveStat_Field::Index)].value<int>()]
+                MoveStats[(int)row[(int)(MoveStat_Field::Index)].value<int>()]
                     = MoveStat{
-                    (int)row[static_cast<int>(MoveStat_Field::Index)].value<int>(),
-                    (std::string)row[static_cast<int>(MoveStat_Field::Name)].to_string(),
-                    (float)row[static_cast<int>(MoveStat_Field::Value)].value<float>(),
-                    (int)row[static_cast<int>(MoveStat_Field::Ch_StaminaConsume)].value<int>(),
-                    (int)row[static_cast<int>(MoveStat_Field::Ch_Stamina_recovery)].value<int>()
+                    (int)row[(int)(MoveStat_Field::Index)].value<int>(),
+                    (std::string)row[(int)(MoveStat_Field::Name)].to_string(),
+                    (float)row[(int)(MoveStat_Field::Value)].value<float>(),
+                    (int)row[(int)(MoveStat_Field::Ch_StaminaConsume)].value<int>(),
+                    (int)row[(int)(MoveStat_Field::Ch_Stamina_recovery)].value<int>()
                 };
             }
             idx++;
@@ -205,14 +205,14 @@ void TableManager::ReadWeaponStat()
             }
 
             if (!row.empty()) {
-                WeaponStats[(int)row[static_cast<int>(WeaponStat_Field::index)].value<int>()]
+                WeaponStats[(int)row[(int)(WeaponStat_Field::index)].value<int>()]
                     = WeaponStat{
-                    (int)row[static_cast<int>(WeaponStat_Field::index)].value<int>(),
-                    (std::string)row[static_cast<int>(WeaponStat_Field::name)].to_string(),
-                    (int)row[static_cast<int>(WeaponStat_Field::Weapon_Power)].value<int>(),
-                    (int)row[static_cast<int>(WeaponStat_Field::Weapon_Range)].value<int>(),
-                    (int)row[static_cast<int>(WeaponStat_Field::Weapon_Type)].value<int>(),
-                    (int)row[static_cast<int>(WeaponStat_Field::Weapon_StaminaConsume)].value<int>()
+                    (int)row[(int)(WeaponStat_Field::index)].value<int>(),
+                    (std::string)row[(int)(WeaponStat_Field::name)].to_string(),
+                    (int)row[(int)(WeaponStat_Field::Weapon_Power)].value<int>(),
+                    (int)row[(int)(WeaponStat_Field::Weapon_Range)].value<int>(),
+                    (int)row[(int)(WeaponStat_Field::Weapon_Type)].value<int>(),
+                    (int)row[(int)(WeaponStat_Field::Weapon_StaminaConsume)].value<int>()
                 };
             }
             idx++;
@@ -240,8 +240,8 @@ void TableManager::ReadGameModeTable()
 
             if (!row.empty()) {
                 std::tm openDate = {}, closeDate = {};
-                std::istringstream ssOpenDate(row[static_cast<int>(GameModeOut_Field::Open_Date)].to_string());
-                std::istringstream ssCloseDate(row[static_cast<int>(GameModeOut_Field::Close_Date)].to_string());
+                std::istringstream ssOpenDate(row[(int)(GameModeOut_Field::Open_Date)].to_string());
+                std::istringstream ssCloseDate(row[(int)(GameModeOut_Field::Close_Date)].to_string());
                 ssOpenDate >> std::get_time(&openDate, "%Y-%m-%d");
                 ssCloseDate >> std::get_time(&closeDate, "%Y-%m-%d");
 
@@ -249,10 +249,10 @@ void TableManager::ReadGameModeTable()
 
                GameModeData[(GameMode)index]
                     =  GameModeInfo{
-                    row[static_cast<int>(GameModeOut_Field::Player_Count)].value<int>(),
-                    row[static_cast<int>(GameModeOut_Field::Team_Count)].value<int>(),
-                    row[static_cast<int>(GameModeOut_Field::Team_Color)].value<int>(),
-                    row[static_cast<int>(GameModeOut_Field::Play_Map)].value<int>(),
+                    row[(int)(GameModeOut_Field::Player_Count)].value<int>(),
+                    row[(int)(GameModeOut_Field::Team_Count)].value<int>(),
+                    row[(int)(GameModeOut_Field::Team_Color)].value<int>(),
+                    row[(int)(GameModeOut_Field::Play_Map)].value<int>(),
                     openDate,
                     closeDate
                 };
@@ -278,24 +278,24 @@ void TableManager::ReadGameModeTable()
                 if (GameModeData.find((GameMode)index) == GameModeData.end()) {
                     continue;
                 }
-                GameModeData[(GameMode)index].Play_Time = row[GameModeInfo_Field::GM_Play_Time].value<int>();
-                GameModeData[(GameMode)index].Player_Spawn_Time = row[GameModeInfo_Field::GM_Player_Spawn_Time].value<int>();
-                GameModeData[(GameMode)index].Life_Count = row[GameModeInfo_Field::GM_Life_Count].value<int>();
-                GameModeData[(GameMode)index].Bomb_Spawn_Count = row[GameModeInfo_Field::GM_Bomb_Spawn_Count].value<int>();
-                GameModeData[(GameMode)index].Bomb_Spawn_Time = row[GameModeInfo_Field::GM_Bomb_Spawn_Time].value<int>();
-                GameModeData[(GameMode)index].Bomb_Delay_Time = row[GameModeInfo_Field::GM_Bomb_Delay_Time].value<int>();
-                GameModeData[(GameMode)index].Weapon1_Spawn_Index = row[GameModeInfo_Field::GM_Weapon1_Spawn_Index].value<int>();
-                GameModeData[(GameMode)index].Weapon1_Spawn_Count = row[GameModeInfo_Field::GM_Weapon1_Spawn_Count].value<int>();
-                GameModeData[(GameMode)index].Weapon1_Spawn_Time = row[GameModeInfo_Field::GM_Weapon1_Spawn_Time].value<int>();
-                GameModeData[(GameMode)index].Weapon2_Spawn_Index = row[GameModeInfo_Field::GM_Weapon2_Spawn_Index].value<int>();
-                GameModeData[(GameMode)index].Weapon2_Spawn_Count = row[GameModeInfo_Field::GM_Weapon2_Spawn_Count].value<int>();
-                GameModeData[(GameMode)index].Weapon2_Spawn_Time = row[GameModeInfo_Field::GM_Weapon2_Spawn_Time].value<int>();
-                GameModeData[(GameMode)index].Block1_Spawn_Index = row[GameModeInfo_Field::GM_Block1_Spawn_Index].value<int>();
-                GameModeData[(GameMode)index].Block1_Spawn_Count = row[GameModeInfo_Field::GM_Block1_Spawn_Count].value<int>();
-                GameModeData[(GameMode)index].Block1_Spawn_Time = row[GameModeInfo_Field::GM_Block1_Spawn_Time].value<int>();
-                GameModeData[(GameMode)index].Block2_Spawn_Index = row[GameModeInfo_Field::GM_Block2_Spawn_Index].value<int>();
-                GameModeData[(GameMode)index].Block2_Spawn_Count = row[GameModeInfo_Field::GM_Block2_Spawn_Count].value<int>();
-                GameModeData[(GameMode)index].Block2_Spawn_Time = row[GameModeInfo_Field::GM_Block2_Spawn_Time].value<int>();
+                GameModeData[(GameMode)index].Play_Time = row[(int)(GameModeInfo_Field::Play_Time)].value<int>();
+                GameModeData[(GameMode)index].Player_Spawn_Time = row[(int)(GameModeInfo_Field::Player_Spawn_Time)].value<int>();
+                GameModeData[(GameMode)index].Life_Count = row[(int)(GameModeInfo_Field::Life_Count)].value<int>();
+                GameModeData[(GameMode)index].Bomb_Spawn_Count = row[(int)(GameModeInfo_Field::Bomb_Spawn_Count)].value<int>();
+                GameModeData[(GameMode)index].Bomb_Spawn_Time = row[(int)(GameModeInfo_Field::Bomb_Spawn_Time)].value<int>();
+                GameModeData[(GameMode)index].Bomb_Delay_Time = row[(int)(GameModeInfo_Field::Bomb_Delay_Time)].value<int>();
+                GameModeData[(GameMode)index].Weapon1_Spawn_Index = row[(int)(GameModeInfo_Field::Weapon1_Spawn_Index)].value<int>();
+                GameModeData[(GameMode)index].Weapon1_Spawn_Count = row[(int)(GameModeInfo_Field::Weapon1_Spawn_Count)].value<int>();
+                GameModeData[(GameMode)index].Weapon1_Spawn_Time = row[(int)(GameModeInfo_Field::Weapon1_Spawn_Time)].value<int>();
+                GameModeData[(GameMode)index].Weapon2_Spawn_Index = row[(int)(GameModeInfo_Field::Weapon2_Spawn_Index)].value<int>();
+                GameModeData[(GameMode)index].Weapon2_Spawn_Count = row[(int)(GameModeInfo_Field::Weapon2_Spawn_Count)].value<int>();
+                GameModeData[(GameMode)index].Weapon2_Spawn_Time = row[(int)(GameModeInfo_Field::Weapon2_Spawn_Time)].value<int>();
+                GameModeData[(GameMode)index].Block1_Spawn_Index = row[(int)(GameModeInfo_Field::Block1_Spawn_Index)].value<int>();
+                GameModeData[(GameMode)index].Block1_Spawn_Count = row[(int)(GameModeInfo_Field::Block1_Spawn_Count)].value<int>();
+                GameModeData[(GameMode)index].Block1_Spawn_Time = row[(int)(GameModeInfo_Field::Block1_Spawn_Time)].value<int>();
+                GameModeData[(GameMode)index].Block2_Spawn_Index = row[(int)(GameModeInfo_Field::Block2_Spawn_Index)].value<int>();
+                GameModeData[(GameMode)index].Block2_Spawn_Count = row[(int)(GameModeInfo_Field::Block2_Spawn_Count)].value<int>();
+                GameModeData[(GameMode)index].Block2_Spawn_Time = row[(int)(GameModeInfo_Field::Block2_Spawn_Time)].value<int>();
             }
 
             idx++;
@@ -378,21 +378,21 @@ void TableManager::ReadPointConstantTable()
             }
             if (!row.empty()) {
 
-                GameMode modeIndex = (GameMode)row[PointConstant_Field::PC_Mode_Index].value<int>();
-                BattleResult battleResult = (BattleResult)row[PointConstant_Field::PC_Battle_Result].value<int>();
-                ConstantType type = (ConstantType)row[PointConstant_Field::PC_Type].value<int>();
+                GameMode modeIndex = (GameMode)row[(int)PointConstant_Field::Mode_Index].value<int>();
+                BattleResult battleResult = (BattleResult)row[(int)PointConstant_Field::Battle_Result].value<int>();
+                ConstantType type = (ConstantType)row[(int)PointConstant_Field::Type].value<int>();
 
                 switch (type) {
-                case ConstantType::CT_Kill_Point: {
+                case ConstantType::Kill_Point: {
                     switch (battleResult) {
                     case BattleResult::BR_Win: {
-                        PointConstantList[modeIndex].Win_Kill_Point.WorkType = row[PointConstant_Field::PC_WorkType].value<int>();
-                        PointConstantList[modeIndex].Win_Kill_Point.Value = row[PointConstant_Field::PC_Value].value<int>();
+                        PointConstantList[modeIndex].Win_Kill_Point.WorkType = row[(int)PointConstant_Field::WorkType].value<int>();
+                        PointConstantList[modeIndex].Win_Kill_Point.Value = row[(int)PointConstant_Field::Value].value<int>();
                     }
                     break;
                     case BattleResult::BR_Lose: {
-                        PointConstantList[modeIndex].Lose_Kill_Point.WorkType = row[PointConstant_Field::PC_WorkType].value<int>();
-                        PointConstantList[modeIndex].Lose_Kill_Point.Value = row[PointConstant_Field::PC_Value].value<int>();
+                        PointConstantList[modeIndex].Lose_Kill_Point.WorkType = row[(int)PointConstant_Field::WorkType].value<int>();
+                        PointConstantList[modeIndex].Lose_Kill_Point.Value = row[(int)PointConstant_Field::Value].value<int>();
                     }
                     break;
                     default:
@@ -400,16 +400,16 @@ void TableManager::ReadPointConstantTable()
                     }
                 }
                 break;
-                case ConstantType::CT_Death_Point: {
+                case ConstantType::Death_Point: {
                     switch (battleResult) {
                     case BattleResult::BR_Win: {
-                        PointConstantList[modeIndex].Win_Death_Point.WorkType = row[PointConstant_Field::PC_WorkType].value<int>();
-                        PointConstantList[modeIndex].Win_Death_Point.Value = row[PointConstant_Field::PC_Value].value<int>();
+                        PointConstantList[modeIndex].Win_Death_Point.WorkType = row[(int)PointConstant_Field::WorkType].value<int>();
+                        PointConstantList[modeIndex].Win_Death_Point.Value = row[(int)PointConstant_Field::Value].value<int>();
                     }
                                              break;
                     case BattleResult::BR_Lose: {
-                        PointConstantList[modeIndex].Lose_Death_Point.WorkType = row[PointConstant_Field::PC_WorkType].value<int>();
-                        PointConstantList[modeIndex].Lose_Death_Point.Value = row[PointConstant_Field::PC_Value].value<int>();
+                        PointConstantList[modeIndex].Lose_Death_Point.WorkType = row[(int)PointConstant_Field::WorkType].value<int>();
+                        PointConstantList[modeIndex].Lose_Death_Point.Value = row[(int)PointConstant_Field::Value].value<int>();
                     }
                                               break;
                     default:
@@ -417,16 +417,16 @@ void TableManager::ReadPointConstantTable()
                     }
                 }
                 break;
-                case ConstantType::CT_Bomb_Point: {
+                case ConstantType::Bomb_Point: {
                     switch (battleResult) {
                     case BattleResult::BR_Win: {
-                        PointConstantList[modeIndex].Win_Bomb_Point.WorkType = row[PointConstant_Field::PC_WorkType].value<int>();
-                        PointConstantList[modeIndex].Win_Bomb_Point.Value = row[PointConstant_Field::PC_Value].value<int>();
+                        PointConstantList[modeIndex].Win_Bomb_Point.WorkType = row[(int)PointConstant_Field::WorkType].value<int>();
+                        PointConstantList[modeIndex].Win_Bomb_Point.Value = row[(int)PointConstant_Field::Value].value<int>();
                     }
                                              break;
                     case BattleResult::BR_Lose: {
-                        PointConstantList[modeIndex].Lose_Bomb_Point.WorkType = row[PointConstant_Field::PC_WorkType].value<int>();
-                        PointConstantList[modeIndex].Lose_Bomb_Point.Value = row[PointConstant_Field::PC_Value].value<int>();
+                        PointConstantList[modeIndex].Lose_Bomb_Point.WorkType = row[(int)PointConstant_Field::WorkType].value<int>();
+                        PointConstantList[modeIndex].Lose_Bomb_Point.Value = row[(int)PointConstant_Field::Value].value<int>();
                     }
                                               break;
                     default:
@@ -462,26 +462,26 @@ void TableManager::ReadGameReward()
                 continue;
             }
             if (!row.empty()) {
-                GameMode modeIndex = (GameMode)row[Reward_Field::RW_Mode_Index].value<int>();
-                BattleResult battleResult = (BattleResult)row[Reward_Field::RW_Battle_Result].value<int>();
+                GameMode modeIndex = (GameMode)row[(int)Reward_Field::Mode_Index].value<int>();
+                BattleResult battleResult = (BattleResult)row[(int)Reward_Field::Battle_Result].value<int>();
 
                 switch (battleResult) {
                 case BattleResult::BR_Win: {
-                    GameRewardList[modeIndex].Win_Reward1_Index = row[Reward_Field::RW_Reward1_Index].value<int>();
-                    GameRewardList[modeIndex].Win_Reward1_Value = row[Reward_Field::RW_Reward1_Value].value<int>();
-                    GameRewardList[modeIndex].Win_Reward2_Index = row[Reward_Field::RW_Reward2_Index].value<int>();
-                    GameRewardList[modeIndex].Win_Reward2_Value = row[Reward_Field::RW_Reward2_Value].value<int>();
-                    GameRewardList[modeIndex].Win_Reward3_Index = row[Reward_Field::RW_Reward3_Index].value<int>();
-                    GameRewardList[modeIndex].Win_Reward3_Value = row[Reward_Field::RW_Reward3_Value].value<int>();
+                    GameRewardList[modeIndex].Win_Reward1_Index = row[(int)Reward_Field::Reward1_Index].value<int>();
+                    GameRewardList[modeIndex].Win_Reward1_Value = row[(int)Reward_Field::Reward1_Value].value<int>();
+                    GameRewardList[modeIndex].Win_Reward2_Index = row[(int)Reward_Field::Reward2_Index].value<int>();
+                    GameRewardList[modeIndex].Win_Reward2_Value = row[(int)Reward_Field::Reward2_Value].value<int>();
+                    GameRewardList[modeIndex].Win_Reward3_Index = row[(int)Reward_Field::Reward3_Index].value<int>();
+                    GameRewardList[modeIndex].Win_Reward3_Value = row[(int)Reward_Field::Reward3_Value].value<int>();
                 }
                 break;
                 case BattleResult::BR_Lose: {
-                    GameRewardList[modeIndex].Lose_Reward1_Index = row[Reward_Field::RW_Reward1_Index].value<int>();
-                    GameRewardList[modeIndex].Lose_Reward1_Value = row[Reward_Field::RW_Reward1_Value].value<int>();
-                    GameRewardList[modeIndex].Lose_Reward2_Index = row[Reward_Field::RW_Reward2_Index].value<int>();
-                    GameRewardList[modeIndex].Lose_Reward2_Value = row[Reward_Field::RW_Reward2_Value].value<int>();
-                    GameRewardList[modeIndex].Lose_Reward3_Index = row[Reward_Field::RW_Reward3_Index].value<int>();
-                    GameRewardList[modeIndex].Lose_Reward3_Value = row[Reward_Field::RW_Reward3_Value].value<int>();
+                    GameRewardList[modeIndex].Lose_Reward1_Index = row[(int)Reward_Field::Reward1_Index].value<int>();
+                    GameRewardList[modeIndex].Lose_Reward1_Value = row[(int)Reward_Field::Reward1_Value].value<int>();
+                    GameRewardList[modeIndex].Lose_Reward2_Index = row[(int)Reward_Field::Reward2_Index].value<int>();
+                    GameRewardList[modeIndex].Lose_Reward2_Value = row[(int)Reward_Field::Reward2_Value].value<int>();
+                    GameRewardList[modeIndex].Lose_Reward3_Index = row[(int)Reward_Field::Reward3_Index].value<int>();
+                    GameRewardList[modeIndex].Lose_Reward3_Value = row[(int)Reward_Field::Reward3_Value].value<int>();
                 }
                 break;
                 default:{
@@ -504,30 +504,30 @@ void TableManager::ReadGameReward()
                 continue;
             }
             if (!row.empty()) {
-                GameMode modeIndex = (GameMode)row[BonusReward_Field::BR_Mode_Index].value<int>();
-                BattleResult battleResult = (BattleResult)row[BonusReward_Field::BR_Battle_Result].value<int>();
-                int type = row[BonusReward_Field::BR_Type].value<int>();
-                int point = row[BonusReward_Field::BR_Point].value<int>();
+                GameMode modeIndex = (GameMode)row[(int)BonusReward_Field::Mode_Index].value<int>();
+                BattleResult battleResult = (BattleResult)row[(int)BonusReward_Field::Battle_Result].value<int>();
+                int type = row[(int)BonusReward_Field::Type].value<int>();
+                int point = row[(int)BonusReward_Field::Point].value<int>();
 
                 switch (battleResult) {
                 case BattleResult::BR_Win: {
                     switch (type) {
                     case 1: {
-                        GameBonusRewardList[modeIndex][point].Win_Reward1_Index = row[BonusReward_Field::BR_Reward1_Index].value<int>();
-                        GameBonusRewardList[modeIndex][point].Win_Reward1_Value = row[BonusReward_Field::BR_Reward1_Value].value<int>();
-                        GameBonusRewardList[modeIndex][point].Win_Reward2_Index = row[BonusReward_Field::BR_Reward2_Index].value<int>();
-                        GameBonusRewardList[modeIndex][point].Win_Reward2_Value = row[BonusReward_Field::BR_Reward2_Value].value<int>();
-                        GameBonusRewardList[modeIndex][point].Win_Reward3_Index = row[BonusReward_Field::BR_Reward3_Index].value<int>();
-                        GameBonusRewardList[modeIndex][point].Win_Reward3_Value = row[BonusReward_Field::BR_Reward3_Value].value<int>();
+                        GameBonusRewardList[modeIndex][point].Win_Reward1_Index = row[(int)BonusReward_Field::Reward1_Index].value<int>();
+                        GameBonusRewardList[modeIndex][point].Win_Reward1_Value = row[(int)BonusReward_Field::Reward1_Value].value<int>();
+                        GameBonusRewardList[modeIndex][point].Win_Reward2_Index = row[(int)BonusReward_Field::Reward2_Index].value<int>();
+                        GameBonusRewardList[modeIndex][point].Win_Reward2_Value = row[(int)BonusReward_Field::Reward2_Value].value<int>();
+                        GameBonusRewardList[modeIndex][point].Win_Reward3_Index = row[(int)BonusReward_Field::Reward3_Index].value<int>();
+                        GameBonusRewardList[modeIndex][point].Win_Reward3_Value = row[(int)BonusReward_Field::Reward3_Value].value<int>();
                     }
                           break;
                     case 2: {
-                        GameBonusRewardList[modeIndex][point].MVP_Reward1_Index = row[BonusReward_Field::BR_Reward1_Index].value<int>();
-                        GameBonusRewardList[modeIndex][point].MVP_Reward1_Value = row[BonusReward_Field::BR_Reward1_Value].value<int>();
-                        GameBonusRewardList[modeIndex][point].MVP_Reward2_Index = row[BonusReward_Field::BR_Reward2_Index].value<int>();
-                        GameBonusRewardList[modeIndex][point].MVP_Reward2_Value = row[BonusReward_Field::BR_Reward2_Value].value<int>();
-                        GameBonusRewardList[modeIndex][point].MVP_Reward3_Index = row[BonusReward_Field::BR_Reward3_Index].value<int>();
-                        GameBonusRewardList[modeIndex][point].MVP_Reward3_Value = row[BonusReward_Field::BR_Reward3_Value].value<int>();
+                        GameBonusRewardList[modeIndex][point].MVP_Reward1_Index = row[(int)BonusReward_Field::Reward1_Index].value<int>();
+                        GameBonusRewardList[modeIndex][point].MVP_Reward1_Value = row[(int)BonusReward_Field::Reward1_Value].value<int>();
+                        GameBonusRewardList[modeIndex][point].MVP_Reward2_Index = row[(int)BonusReward_Field::Reward2_Index].value<int>();
+                        GameBonusRewardList[modeIndex][point].MVP_Reward2_Value = row[(int)BonusReward_Field::Reward2_Value].value<int>();
+                        GameBonusRewardList[modeIndex][point].MVP_Reward3_Index = row[(int)BonusReward_Field::Reward3_Index].value<int>();
+                        GameBonusRewardList[modeIndex][point].MVP_Reward3_Value = row[(int)BonusReward_Field::Reward3_Value].value<int>();
                     }
                           break;
                     default:
@@ -537,12 +537,12 @@ void TableManager::ReadGameReward()
                 }
                 break;
                 case BattleResult::BR_Lose: {
-                    GameBonusRewardList[modeIndex][point].Lose_Reward1_Index = row[BonusReward_Field::BR_Reward1_Index].value<int>();
-                    GameBonusRewardList[modeIndex][point].Lose_Reward1_Value = row[BonusReward_Field::BR_Reward1_Value].value<int>();
-                    GameBonusRewardList[modeIndex][point].Lose_Reward2_Index = row[BonusReward_Field::BR_Reward2_Index].value<int>();
-                    GameBonusRewardList[modeIndex][point].Lose_Reward2_Value = row[BonusReward_Field::BR_Reward2_Value].value<int>();
-                    GameBonusRewardList[modeIndex][point].Lose_Reward3_Index = row[BonusReward_Field::BR_Reward3_Index].value<int>();
-                    GameBonusRewardList[modeIndex][point].Lose_Reward3_Value = row[BonusReward_Field::BR_Reward3_Value].value<int>();
+                    GameBonusRewardList[modeIndex][point].Lose_Reward1_Index = row[(int)BonusReward_Field::Reward1_Index].value<int>();
+                    GameBonusRewardList[modeIndex][point].Lose_Reward1_Value = row[(int)BonusReward_Field::Reward1_Value].value<int>();
+                    GameBonusRewardList[modeIndex][point].Lose_Reward2_Index = row[(int)BonusReward_Field::Reward2_Index].value<int>();
+                    GameBonusRewardList[modeIndex][point].Lose_Reward2_Value = row[(int)BonusReward_Field::Reward2_Value].value<int>();
+                    GameBonusRewardList[modeIndex][point].Lose_Reward3_Index = row[(int)BonusReward_Field::Reward3_Index].value<int>();
+                    GameBonusRewardList[modeIndex][point].Lose_Reward3_Value = row[(int)BonusReward_Field::Reward3_Value].value<int>();
                 }
                 break;
                 default: 
@@ -577,22 +577,22 @@ void TableManager::ReadGachaTable()
 
             if (!row.empty()) {
                 std::tm openDate = {}, closeDate = {};
-                std::istringstream ssOpenDate(row[static_cast<int>(RandomBox_Field::Open_Date)].to_string());
-                std::istringstream ssCloseDate(row[static_cast<int>(RandomBox_Field::Close_Date)].to_string());
+                std::istringstream ssOpenDate(row[(int)(RandomBox_Field::Open_Date)].to_string());
+                std::istringstream ssCloseDate(row[(int)(RandomBox_Field::Close_Date)].to_string());
                 ssOpenDate >> std::get_time(&openDate, "%Y-%m-%d");
                 ssCloseDate >> std::get_time(&closeDate, "%Y-%m-%d");
 
-                int index = row[static_cast<int>(RandomBox_Field::index)].value<int>();
+                int index = row[(int)(RandomBox_Field::index)].value<int>();
                 RandomBoxList[index]
                     =  RandomBox{
                     index,
-                    (std::string)row[static_cast<int>(RandomBox_Field::name)].to_string(),
-                    row[static_cast<int>(RandomBox_Field::Gacha_Group)].value<int>(),
-                    row[static_cast<int>(RandomBox_Field::Pay_Item_Index)].value<int>(),
-                    row[static_cast<int>(RandomBox_Field::Pay_Item_Value)].value<int>(),
+                    (std::string)row[(int)(RandomBox_Field::name)].to_string(),
+                    row[(int)(RandomBox_Field::Gacha_Group)].value<int>(),
+                    row[(int)(RandomBox_Field::Pay_Item_Index)].value<int>(),
+                    row[(int)(RandomBox_Field::Pay_Item_Value)].value<int>(),
                     openDate,
                     closeDate,
-                    row[static_cast<int>(RandomBox_Field::Exp)].value<int>()
+                    row[(int)(RandomBox_Field::Exp)].value<int>()
                 };
             }
             rowIdx++;
@@ -608,17 +608,17 @@ void TableManager::ReadGachaTable()
             }
 
             if (!row.empty()) {
-                int gachaGroup = row[static_cast<int>(GachaItem_Field::Gacha_Group)].value<int>();
-                int index = row[static_cast<int>(GachaItem_Field::index)].value<int>();
+                int gachaGroup = row[(int)(GachaItem_Field::Gacha_Group)].value<int>();
+                int index = row[(int)(GachaItem_Field::index)].value<int>();
 
                 GachaItemList[gachaGroup][index]
                     = GachaItem{
                     index,
-                    (std::string)row[static_cast<int>(GachaItem_Field::name)].to_string(),
-                    row[static_cast<int>(GachaItem_Field::Gacha_Group)].value<int>(),
-                    row[static_cast<int>(GachaItem_Field::Gacha_Weight)].value<int>(),
-                    row[static_cast<int>(GachaItem_Field::Reward_Item_Index)].value<int>(),
-                    row[static_cast<int>(GachaItem_Field::Reward_Item_Value)].value<int>(),
+                    (std::string)row[(int)(GachaItem_Field::name)].to_string(),
+                    row[(int)(GachaItem_Field::Gacha_Group)].value<int>(),
+                    row[(int)(GachaItem_Field::Gacha_Weight)].value<int>(),
+                    row[(int)(GachaItem_Field::Reward_Item_Index)].value<int>(),
+                    row[(int)(GachaItem_Field::Reward_Item_Value)].value<int>(),
                 };
             }
             rowIdx++;

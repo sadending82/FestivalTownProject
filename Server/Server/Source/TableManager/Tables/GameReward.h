@@ -4,15 +4,15 @@
 #define Mode_Reward_Sheet 3
 #define Mode_BonusReward_Sheet 4
 
-enum Reward_Field {
-	RW_Mode_Index = 2,
-	RW_Battle_Result,
-	RW_Reward1_Index,
-	RW_Reward1_Value,
-	RW_Reward2_Index,
-	RW_Reward2_Value,
-	RW_Reward3_Index,
-	RW_Reward3_Value,
+enum class Reward_Field {
+	Mode_Index = 2,
+	Battle_Result,
+	Reward1_Index,
+	Reward1_Value,
+	Reward2_Index,
+	Reward2_Value,
+	Reward3_Index,
+	Reward3_Value,
 };
 
 struct GameReward {
@@ -33,17 +33,17 @@ struct GameReward {
 	int	Lose_Reward3_Value;
 };
 
-enum BonusReward_Field {
-	BR_Mode_Index = 2,
-	BR_Battle_Result,
-	BR_Type,
-	BR_Point,
-	BR_Reward1_Index,
-	BR_Reward1_Value,
-	BR_Reward2_Index,
-	BR_Reward2_Value,
-	BR_Reward3_Index,
-	BR_Reward3_Value,
+enum class BonusReward_Field {
+	Mode_Index = 2,
+	Battle_Result,
+	Type,
+	Point,
+	Reward1_Index,
+	Reward1_Value,
+	Reward2_Index,
+	Reward2_Value,
+	Reward3_Index,
+	Reward3_Value,
 };
 
 struct BonusReward {
