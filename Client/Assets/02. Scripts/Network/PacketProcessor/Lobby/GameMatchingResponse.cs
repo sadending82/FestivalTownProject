@@ -21,6 +21,7 @@ namespace Network.PacketProcessor
             int id = Data.Ingameid;
             int roomID = Data.Roomid;
             bool isHost = Data.IsHost;
+            int gameTime = Data.GameTime; // Seconds
 
             Debug.Log("Game Maching Complete");
 
@@ -28,6 +29,7 @@ namespace Network.PacketProcessor
             Managers.Game.RoomID = roomID;
             Managers.Game.inGameID = id;
             Managers.Game.isHost = isHost;
+            Managers.Game.GameRemainTime = gameTime;
         }
 
         
