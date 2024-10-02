@@ -74,7 +74,7 @@
     <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
     <IncludePath>$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
-    <PreBuildEventUseInBuild>false</PreBuildEventUseInBuild>
+    <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
@@ -129,7 +129,8 @@
       <AdditionalDependencies>xlntd.lib;%(AdditionalDependencies);Kernel32.lib</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy /y /d "$(ProjectDir)\xlnt\xlnt_Debug\bin\xlntd.dll" "$(OutDir)"
+      <Command>robocopy "$(ProjectDir)..\..\Client\Assets\11. GameData" "$(ProjectDir)\GameData" /E /XF *.meta
+xcopy /y /d "$(ProjectDir)\xlnt\xlnt_Debug\bin\xlntd.dll" "$(OutDir)"
 xcopy /y /d /e /i "$(ProjectDir)\GameData" "$(OutDir)GameData"
 xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     </PreBuildEvent>
@@ -157,7 +158,8 @@ xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
       <AdditionalDependencies>xlnt.lib;%(AdditionalDependencies);Kernel32.lib</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy /y /d "$(ProjectDir)\xlnt\xlnt_Release\bin\xlnt.dll" "$(OutDir)"
+      <Command>robocopy "$(ProjectDir)..\..\Client\Assets\11. GameData" "$(ProjectDir)\GameData" /E /XF *.meta
+xcopy /y /d "$(ProjectDir)\xlnt\xlnt_Release\bin\xlnt.dll" "$(OutDir)"
 xcopy /y /d /e /i "$(ProjectDir)\GameData" "$(OutDir)GameData"
 xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     </PreBuildEvent>
