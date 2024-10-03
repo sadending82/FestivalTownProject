@@ -6,23 +6,28 @@ using namespace PacketTable::LobbyTable;
 class Packet_GameMatchingCancel : public PacketProcessor {
 
 public:
-	virtual void Process(Server* pServer, const uint8_t* data, const int size, const int key) {
+	virtual void Process(Server* pServer, const uint8_t* data, const int size, const int key) { 
+		try {
 
-		mBuilder.Clear();
+			mBuilder.Clear();
 
-		flatbuffers::Verifier verifier(data, size);
-		if (verifier.VerifyBuffer<GameMatchingCancel>(nullptr)) {
+			flatbuffers::Verifier verifier(data, size);
+			if (verifier.VerifyBuffer<GameMatchingCancel>(nullptr)) {
 
-			const GameMatchingCancel* read = flatbuffers::GetRoot<GameMatchingCancel>(data);
+				const GameMatchingCancel* read = flatbuffers::GetRoot<GameMatchingCancel>(data);
 
-			Session* session = pServer->GetSessions()[key];
+				Session* session = pServer->GetSessions()[key];
 
-			session->GetStateLock().lock();
-			session->SetState(eSessionState::ST_ACCEPTED);
-			session->GetStateLock().unlock();
+				session->GetStateLock().lock();
+				session->SetState(eSessionState::ST_ACCEPTED);
+				session->GetStateLock().unlock();
 
-			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_MATCHING_CANCEL, data, size);
-			session->DoSend(send_buffer.data(), send_buffer.size());
+				std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_MATCHING_CANCEL, data, size);
+				session->DoSend(send_buffer.data(), send_buffer.size());
+			}
+		}
+		catch (const std::exception& e) {
+			std::cerr << "[ERROR] : " << e.what() << " KEY : " << key << std::endl;
 		}
 	}
 

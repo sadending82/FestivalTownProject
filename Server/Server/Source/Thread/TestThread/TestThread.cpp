@@ -93,7 +93,7 @@ void TestThread::RunWorker()
             int roomID;
             std::cout << "Input roomID" << std::endl;
             std::cin >> roomID;
-            m_pServer->GetRooms()[roomID]->Reset();
+            m_pServer->GetRooms().at(roomID)->Reset();
             std::cout << "Delete room - " << roomID << std::endl;
         }
         break;

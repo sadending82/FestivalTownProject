@@ -7,28 +7,33 @@ class Packet_BombExplosion : public PacketProcessor {
 
 public:
 	virtual void Process(Server* pServer, const uint8_t* data, const int size, const int key) {
+		try {
 
-		mBuilder.Clear();
+			mBuilder.Clear();
 
-		flatbuffers::Verifier verifier(data, size);
-		if (verifier.VerifyBuffer<BombExplosion>(nullptr)) {
-			const BombExplosion* read = flatbuffers::GetRoot<BombExplosion>(data);
+			flatbuffers::Verifier verifier(data, size);
+			if (verifier.VerifyBuffer<BombExplosion>(nullptr)) {
+				const BombExplosion* read = flatbuffers::GetRoot<BombExplosion>(data);
 
-			int roomid = dynamic_cast<Player*>(pServer->GetSessions()[key])->GetRoomID();
-			int bombid = read->id();
-			if (bombid <= INVALIDKEY) {
-				return;
+				int roomid = dynamic_cast<Player*>(pServer->GetSessions()[key])->GetRoomID();
+				int bombid = read->id();
+				if (bombid <= INVALIDKEY) {
+					return;
+				}
+				Room* room = pServer->GetRooms().at(roomid);
+				if (room == nullptr) {
+					return;
+				}
+				if (room->GetState() == eRoomState::RS_FREE) {
+					return;
+				}
+
+				pServer->GetPacketSender()->SendBombExplosionPacket(roomid, bombid);
+				room->DeleteBomb(bombid);
 			}
-			Room* room = pServer->GetRooms()[roomid];
-			if (room == nullptr) {
-				return;
-			}
-			if (room->GetState() == eRoomState::RS_FREE) {
-				return;
-			}
-
-			pServer->GetPacketSender()->SendBombExplosionPacket(roomid, bombid);
-			room->DeleteBomb(bombid);
+		}
+		catch (const std::exception& e) {
+			std::cerr << "[ERROR] : " << e.what() << " KEY : " << key << std::endl;
 		}
 	}
 

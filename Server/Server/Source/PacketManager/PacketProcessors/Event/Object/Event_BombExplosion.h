@@ -9,32 +9,37 @@ class Event_BombExplosion : public PacketProcessor {
 public:
 
 	virtual void Process(Server* pServer, unsigned char* buf) {
-		EV_BOMB_EXPLOSION* event = reinterpret_cast<EV_BOMB_EXPLOSION*>(buf);
+		try {
+			EV_BOMB_EXPLOSION* event = reinterpret_cast<EV_BOMB_EXPLOSION*>(buf);
 
-		int roomid = event->roomID;
-		int bombid = event->bombID;
-		Room* room = pServer->GetRooms()[roomid];
-		if (room == nullptr) {
-			return;
-		}
-		long long roomCode = room->GetRoomCode();
-		if (roomCode != event->roomCode) {
-			return;
-		}
+			int roomid = event->roomID;
+			int bombid = event->bombID;
+			Room* room = pServer->GetRooms().at(roomid);
+			if (room == nullptr) {
+				return;
+			}
+			long long roomCode = room->GetRoomCode();
+			if (roomCode != event->roomCode) {
+				return;
+			}
 
-		if (room->GetState() == eRoomState::RS_FREE) {
-			return;
-		}
+			if (room->GetState() == eRoomState::RS_FREE) {
+				return;
+			}
 
-		room->GetBombListLock().lock_shared();
-		if (room->GetBombList()[bombid] == nullptr) {
+			room->GetBombListLock().lock_shared();
+			if (room->GetBombList()[bombid] == nullptr) {
+				room->GetBombListLock().unlock_shared();
+				return;
+			}
 			room->GetBombListLock().unlock_shared();
-			return;
-		}
-		room->GetBombListLock().unlock_shared();
 
-		pServer->GetPacketSender()->SendBombExplosionPacket(roomid, bombid);
-		room->DeleteBomb(bombid);
+			pServer->GetPacketSender()->SendBombExplosionPacket(roomid, bombid);
+			room->DeleteBomb(bombid);
+		}
+		catch (const std::exception& e) {
+			std::cerr << "[ERROR] : " << e.what() << std::endl;
+		}
 	}
 
 private:
