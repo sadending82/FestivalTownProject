@@ -96,7 +96,7 @@ public class PlayerManager : MonoBehaviour
             playerObject.GetComponent<CharacterStatus>().SetTeamNumber(teamNumber);
             playerObject.GetComponent<PlayerController>().SetMyId(id);
             playerObject.GetComponent<PlayerController>().Respawn(position.x, position.z);
-            nowPlayerNum++;          
+            nowPlayerNum++;
         }
     }
 
@@ -119,7 +119,7 @@ public class PlayerManager : MonoBehaviour
     }
     public GameObject FindPlayerById(int targetId)
     {
-        for (int i=0;i<maxPlayerNum;++i)
+        for (int i = 0; i < maxPlayerNum; ++i)
         {
             if (players.transform.GetChild(i).GetComponent<CharacterStatus>().GetId() == targetId)
             {
@@ -129,6 +129,10 @@ public class PlayerManager : MonoBehaviour
 
         Debug.Log("ERROR!!! : FindPlayerById(), Can't Find Target Player By Id : " + targetId);
         return null;
+    }
+    public GameObject GetMyPlayer()
+    {
+        return FindPlayerById(myId);
     }
 
     public void GameStart()
@@ -142,7 +146,6 @@ public class PlayerManager : MonoBehaviour
             }
         }
     }
-
     public void GameEnd()
     {
         for (int i = 0; i < maxPlayerNum; ++i)

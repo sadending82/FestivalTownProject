@@ -5,28 +5,28 @@
 
 #pragma pack (push, 1)
 
-enum ItemGrade {
-	IG_Normal = 1,
-	IG_Rare = 2,
-	IG_Unique = 3,
+enum class ItemGrade {
+	Normal = 1,
+	Rare = 2,
+	Unique = 3,
 };
 
-enum ItemType {
-	IT_Money = 1,
-	IT_Skin = 10,
-	IT_Accessory_Head = 21,
-	IT_Accessory_Face = 22,
-	IT_Accessory_Back = 23
+enum class ItemType {
+	Money = 1,
+	Skin = 10,
+	Accessory_Head = 21,
+	Accessory_Face = 22,
+	Accessory_Back = 23
 };
 
-enum ItemTable_Field {
-	IT_Index,
-	IT_Name,
-	IT_File_Name,
-	IT_Item_Type,
-	IT_Item_Grade,
-	IT_Open_Date,
-	IT_Close_Date
+enum class ItemTable_Field {
+	Index,
+	Name,
+	File_Name,
+	Item_Type,
+	Item_Grade,
+	Open_Date,
+	Close_Date
 };
 
 struct ItemTable {
@@ -35,8 +35,8 @@ struct ItemTable {
 	std::string File_Name;	
 	ItemType Item_Type;
 	ItemGrade Item_Grade;
-	/*std::chrono::year_month_day Open_Date;
-	std::chrono::year_month_day Close_Date;*/
+	std::tm Open_Date;
+	std::tm Close_Date;
 };
 
 #pragma pack(pop) 

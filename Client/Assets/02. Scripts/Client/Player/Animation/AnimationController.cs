@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using ClientProtocol;
+using ExcelDataStructure;
 
 public class AnimationController : MonoBehaviour
 {
@@ -32,11 +33,10 @@ public class AnimationController : MonoBehaviour
     public CharacterStatus playerStatus;
 
     private float attackSpeed;
+    private float weaponAttackSpeed;
     private float attackTimer;
     private bool isLeftAttack;
 
-    private float weaponAttackTimer;
-    private float weaponAttackSpeed;
     private GameObject myWeapon;
 
     public AttackChecker leftAttackChecker;
@@ -53,13 +53,23 @@ public class AnimationController : MonoBehaviour
         }
 
         attackTimer = 0;
-        weaponAttackTimer = 0;
         isLeftAttack = false;
     }
     void Start()
     {
-        attackSpeed = playerStatus.GetAttackSpeed();
-        weaponAttackSpeed = attackSpeed * 2;
+        GameDataEntity data;
+        CharacterAttackEntity cse;
+
+        // Attack
+        data = Managers.Data.GetData(10001);
+        cse = (CharacterAttackEntity)data;
+        attackSpeed = cse.Attack_Speed;
+
+        // Index값 수정해야함
+        // WeaponAttack
+        data = Managers.Data.GetData(10001);
+        cse = (CharacterAttackEntity)data;
+        weaponAttackSpeed = cse.Attack_Speed;
     }
     void Update()
     {
@@ -78,11 +88,11 @@ public class AnimationController : MonoBehaviour
         }
         else if(upperBodyAnimationState == UpperBodyAnimationState.WEAPONATTACK)
         {
-            weaponAttackTimer += Time.deltaTime;
-            if(weaponAttackTimer >= weaponAttackSpeed)
+            attackTimer += Time.deltaTime;
+            if(attackTimer >= weaponAttackSpeed)
             {
                 playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
-                weaponAttackTimer = 0;
+                attackTimer = 0;
                 myWeapon.GetComponent<Weapon>().SetIsAttackState(false);
             }
         }
@@ -164,7 +174,7 @@ public class AnimationController : MonoBehaviour
         }
         else if(upperBodyAnimationState == UpperBodyAnimationState.WEAPONATTACK)
         {
-            if (weaponAttackTimer < (weaponAttackSpeed / 2))
+            if (attackTimer < (weaponAttackSpeed / 2))
             {
                 animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
                 animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
@@ -208,7 +218,7 @@ public class AnimationController : MonoBehaviour
         }
         else if (upperBodyAnimationState == UpperBodyAnimationState.WEAPONATTACK)
         {
-            weaponAttackTimer = 0f;
+            attackTimer = 0f;
             myWeapon = playerStatus.GetMyWeapon();
         }
         else if(upperBodyAnimationState == UpperBodyAnimationState.GRAP)

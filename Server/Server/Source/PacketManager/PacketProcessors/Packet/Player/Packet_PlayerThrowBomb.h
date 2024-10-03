@@ -17,8 +17,10 @@ public:
 			if (player == nullptr && player->GetInGameID() != read->id()) {
 				return;
 			}
+			player->GetBombLock().lock();
 			Bomb* bomb = player->GetBomb();
 			if (bomb == nullptr) {
+				player->GetBombLock().unlock();
 				return;
 			}
 
@@ -29,6 +31,7 @@ public:
 			bomb->SetIsGrabbed(false);
 			bomb->SetOwenrID(INVALIDKEY);
 			player->SetBomb(nullptr);
+			player->GetBombLock().unlock();
 
 			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYER_THROW_BOMB, data, size);
 			pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomid);

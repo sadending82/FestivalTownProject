@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 8
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e5570383b4d11046b4a4acabc57faf9, type: 3}
+  m_Name: Weapon_Stat
+  m_EditorClassIdentifier: 
+  Stat:
+  - Index: 2001
+    Name: "\uD6C4\uB77C\uC774\uD32C"
+    ClassType: 0
+    Weapon_Power: 10
+    Weapon_Range: 1.4
+    Weapon_Type: 0
+    Weapon_StaminaConsume: 15
+  - Index: 2002
+    Name: "\uC57C\uAD6C\uBC29\uB9DD\uC774"
+    ClassType: 0
+    Weapon_Power: 10
+    Weapon_Range: 1.4
+    Weapon_Type: 0
+    Weapon_StaminaConsume: 15

@@ -68,13 +68,6 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
-        Managers.Data.GameModeDataDict.TryGetValue(mode, out GameModeEntity data);
-        if (data != null)
-        {
-            Debug.Log($"{mode}가 Null 이에요!!!!!!!.");
-            return;
-        }
-
         //GameEndTime = data.Play_Time;
     }
     
@@ -111,7 +104,7 @@ public class GameManager : MonoBehaviour
     public void Clear()
     {
         isTimerStart = false;
-        GameRemainTime = 300.0f;
+        //GameRemainTime = 300.0f;
         TeamLife = new();
         isHost = false;
         inGameID = -1;
@@ -124,6 +117,7 @@ public class GameManager : MonoBehaviour
     public void GameStart()
     {
         isTimerStart = true;
+        Managers.SpectatorCamera.AddCameras();
         Managers.Player.GameStart();
     }
 

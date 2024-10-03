@@ -17,7 +17,9 @@ public:
 				return;
 			}
 
+			player->GetWeaponLock().lock();
 			if (player->GetWeapon() != nullptr) {
+				player->GetWeaponLock().unlock();
 				return;
 			}
 
@@ -28,6 +30,7 @@ public:
 			room->GetWeaponListLock().lock_shared();
 			Weapon* weapon = dynamic_cast<Weapon*>(room->GetWeaponList()[weaponid]);
 			if (weapon == nullptr) {
+				player->GetWeaponLock().unlock();
 				room->GetWeaponListLock().unlock_shared();
 				return;
 			}
@@ -37,6 +40,7 @@ public:
 				std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYER_GRAB_WEAPON, data, size);
 				pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomid);
 			}
+			player->GetWeaponLock().unlock();
 			room->GetWeaponListLock().unlock_shared();
 		}
 	}

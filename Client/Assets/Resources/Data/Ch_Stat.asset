@@ -1,0 +1,127 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 8
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12149843335405d4893b5b9e5cb46648, type: 3}
+  m_Name: Ch_Stat
+  m_EditorClassIdentifier: 
+  Stat:
+  - Index: 1000
+    Name: 
+    ClassType: 0
+    Ch_Hp: 100
+    Ch_Stamina: 100
+    Ch_Strength: 10
+    Ch_Speed: 10
+  Attack:
+  - Index: 10001
+    Name: 
+    ClassType: 0
+    Value: 0.5
+    Attack_Speed: 1
+    Attack_Range: 0
+    Ch_StaminaConsume: 5
+    Steal_Stamina: 0
+  - Index: 10002
+    Name: 
+    ClassType: 0
+    Value: 0
+    Attack_Speed: 1
+    Attack_Range: 0
+    Ch_StaminaConsume: 15
+    Steal_Stamina: 0
+  - Index: 10003
+    Name: 
+    ClassType: 0
+    Value: 0.8
+    Attack_Speed: 1
+    Attack_Range: 0
+    Ch_StaminaConsume: 8
+    Steal_Stamina: 0
+  - Index: 10004
+    Name: 
+    ClassType: 0
+    Value: 1.3
+    Attack_Speed: 1
+    Attack_Range: 0
+    Ch_StaminaConsume: 10
+    Steal_Stamina: 0
+  - Index: 10005
+    Name: 
+    ClassType: 0
+    Value: 1
+    Attack_Speed: 1
+    Attack_Range: 0
+    Ch_StaminaConsume: 7
+    Steal_Stamina: 0
+  - Index: 10006
+    Name: 
+    ClassType: 0
+    Value: 0
+    Attack_Speed: 0
+    Attack_Range: 0
+    Ch_StaminaConsume: 5
+    Steal_Stamina: 0
+  Move:
+  - Index: 20001
+    Name: Ch_Idle
+    ClassType: 0
+    Value: 0
+    Ch_StaminaConsume: 0
+    Ch_Stamina_recovery: 10
+  - Index: 20002
+    Name: Ch_Walk
+    ClassType: 0
+    Value: 0.1
+    Ch_StaminaConsume: 0
+    Ch_Stamina_recovery: 5
+  - Index: 20003
+    Name: Ch_Run
+    ClassType: 0
+    Value: 0.2
+    Ch_StaminaConsume: 5
+    Ch_Stamina_recovery: 0
+  - Index: 20004
+    Name: Ch_Jump
+    ClassType: 0
+    Value: 0
+    Ch_StaminaConsume: 0
+    Ch_Stamina_recovery: 0
+  - Index: 20005
+    Name: Ch_Dash
+    ClassType: 0
+    Value: 0.4
+    Ch_StaminaConsume: 10
+    Ch_Stamina_recovery: 0
+  - Index: 20006
+    Name: Ch_RunJump
+    ClassType: 0
+    Value: 0.15
+    Ch_StaminaConsume: 5
+    Ch_Stamina_recovery: 0
+  - Index: 20007
+    Name: Ch_HoldSpeed
+    ClassType: 0
+    Value: 0.05
+    Ch_StaminaConsume: 5
+    Ch_Stamina_recovery: 0
+  Action:
+  - Index: 30001
+    Name: Ch_WeaponPick
+    ClassType: 0
+    Action_Speed: 0.5
+    Action_Range: 1
+    Ch_StaminaConsume: 0
+  - Index: 30002
+    Name: Ch_BombPick
+    ClassType: 0
+    Action_Speed: 0.5
+    Action_Range: 1
+    Ch_StaminaConsume: 0

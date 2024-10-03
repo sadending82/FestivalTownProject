@@ -71,9 +71,11 @@ public:
 
 				// 데미지 계산
 				damageAmount += attackerStat.strength * tableManager->GetAttackStats()[eDamageType::AT_ATTACK].Value;
+				attacker->GetWeaponLock().lock_shared();
 				if (attacker->GetWeapon() != nullptr) {
 					damageAmount += tableManager->GetWeaponStats()[(int)attacker->GetWeapon()->GetType()].Weapon_Power;
 				}
+				attacker->GetWeaponLock().unlock_shared();
 				TargetStaminaLoss += tableManager->GetAttackStats()[eDamageType::AT_ATTACK].Steal_Stamina;
 
 				// 데미지 적용

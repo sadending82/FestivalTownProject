@@ -20,19 +20,21 @@ void Room::Reset()
 	mHostID = INVALIDKEY;
 	mRoomCode = 0;
 
-	//delete mMap;
 	for (int i = 0; i < MAXOBJECT; ++i) {
 		delete mBombList[i];
 	}
 	for (int i = 0; i < MAXOBJECT; ++i) {
 		delete mWeaponList[i];
 	}
+	delete mMap;
+
 	std::fill(mPlayerList.begin(), mPlayerList.end(), nullptr);
 	std::fill(mBombList.begin(), mBombList.end(), nullptr);
 	std::fill(mWeaponList.begin(), mWeaponList.end(), nullptr);
+	mMap = nullptr;
+
 	mPlayerRecordList.clear();
 	mTeams.clear();
-
 	mState = eRoomState::RS_FREE;
 
 	mAllPlayerReady = false;
@@ -42,32 +44,13 @@ void Room::Reset()
 void Room::Init(int id, int teamLifeCount, int playerLimit)
 {
 	mRoomID = id;
-	mPlayerCnt = 0;
 	mPlayerLimit = playerLimit;
-	mReadyCnt = 0;
 	mHostID = INVALIDKEY;
-
-	for (int i = 0; i < MAXOBJECT; ++i) {
-		delete mBombList[i];
-	}
-	for (int i = 0; i < MAXOBJECT; ++i) {
-		delete mWeaponList[i];
-	}
-	std::fill(mPlayerList.begin(), mPlayerList.end(), nullptr);
-	std::fill(mBombList.begin(), mBombList.end(), nullptr);
-	std::fill(mWeaponList.begin(), mWeaponList.end(), nullptr);
-
-	mPlayerRecordList.clear();
-	mTeams.clear();
+	InitRoomCode();
 
 	// team game
 	mTeams[(int)TeamCode::RED].Init(teamLifeCount);
 	mTeams[(int)TeamCode::BLUE].Init(teamLifeCount);
-
-	mAllPlayerReady = false;
-	mIsRun = false;
-
-	InitRoomCode();
 }
 
 

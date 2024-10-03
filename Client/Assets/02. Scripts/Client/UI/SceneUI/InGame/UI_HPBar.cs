@@ -22,7 +22,9 @@ public class UI_HPBar : UI_Base
 
     public void SetHP(float hp, float maxHp)
     {
-        if(maxHp != 0)
-        Get<GameObject>((int)GameObjects.HPImage).GetComponent<Image>().fillAmount = hp / maxHp;
+        if (maxHp != 0 || Get<GameObject>((int)GameObjects.HPImage) != null)
+        {
+            Get<GameObject>((int)GameObjects.HPImage).GetComponent<Image>().fillAmount = hp / maxHp;
+        }
     }
 }

@@ -188,6 +188,10 @@ public class PlayerController : MonoBehaviour
 
             CheckIsGround();
         }
+        else if (amIPlayer == true)
+        {
+            SpectatorCameraControl();
+        }
     }
 
     private void SendForSync()
@@ -195,6 +199,13 @@ public class PlayerController : MonoBehaviour
         if (pelvis != null && gameStart == true)
         {
             packetManager.SendPlayerSyncPacket(pelvis.transform.position, stabillizerDirection, playerStatus.GetStamina(), myId);
+        }
+    }
+    private void SpectatorCameraControl()
+    {
+        if (Input.GetMouseButtonUp(0))
+        {
+            Managers.SpectatorCamera.SwitchNextCamera();
         }
     }
 
@@ -593,7 +604,7 @@ public class PlayerController : MonoBehaviour
         if(playerStatus.GetIsHaveBomb() == true)
         {
             GameObject targetBomb = Managers.BombObject.FindBombById(playerStatus.GetBombId());
-            targetBomb.GetComponent<Bomb>().Throw(stabillizerDirection, playerStatus.GetStrength());
+            targetBomb.GetComponent<Bomb>().Throw(stabillizerDirection, playerStatus.GetThrowPower());
 
             // ¼­¹ö¿¡ ÇÃ·¹ÀÌ¾î À§Ä¡, ÆøÅº ¹ß»ç ¹æÇâ, ÆøÅº À§Ä¡, ÇÃ·¹ÀÌ¾î ¾ÆÀÌµð, ÆøÅº ¾ÆÀÌµð º¸³»ÁÜ
             packetManager.SendPlayerThrowBombPacket(targetBomb.transform.position, stabillizerDirection, myId, targetBomb.GetComponent<Bomb>().GetId());
@@ -612,7 +623,7 @@ public class PlayerController : MonoBehaviour
         {
             GameObject targetBomb = Managers.BombObject.FindBombById(bombId);
             targetBomb.transform.position = bombPosition;
-            targetBomb.GetComponent<Bomb>().Throw(moveDirection, playerStatus.GetStrength());
+            targetBomb.GetComponent<Bomb>().Throw(moveDirection, playerStatus.GetThrowPower());
 
             playerStatus.SetIsHaveBomb(false);
         }
@@ -716,12 +727,12 @@ public class PlayerController : MonoBehaviour
     {
         leftMouseClickTimer = 0f;
         isGrap = false;
+        isPickUpMode = false;
         isGrounded = false;
         isLeftShiftKeyDown = false;
         beforeAxisRawH = 0;
         beforeAxisRawV = 0;
         SetIsMove(false);
-        isPickUpMode = false;
         targetItem = null;
     }
 

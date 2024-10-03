@@ -3,25 +3,25 @@
 
 #define Mode_Point_Sheet 2
 
-enum PointConstant_Field {
-	PC_Mode_Index = 2,	
-	PC_Battle_Result = 3,	
-	PC_Type = 4,	
-	PC_WorkType = 5,	
-	PC_Value = 6,
+enum class PointConstant_Field {
+	Mode_Index = 2,	
+	Battle_Result = 3,	
+	Type = 4,	
+	WorkType = 5,	
+	Value = 6,
 };
 
-enum ConstantType {
-	CT_Kill_Point = 1,
-	CT_Death_Point = 2,
-	CT_Bomb_Point = 3
+enum class ConstantType {
+	Kill_Point = 1,
+	Death_Point = 2,
+	Bomb_Point = 3
 };
 
-enum WorkType {
-	WT_Add = 1,
-	WT_Sub = 2,
-	WT_Mul = 3,
-	WT_Div = 4,
+enum class WorkType {
+	Add = 1,
+	Sub = 2,
+	Mul = 3,
+	Div = 4,
 };
 
 struct PointConstant {

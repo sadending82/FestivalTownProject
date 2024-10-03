@@ -17,7 +17,9 @@ public:
 				return;
 			}
 
+			player->GetBombLock().lock();
 			if (player->GetBomb() != nullptr) {
+				player->GetBombLock().unlock();
 				return;
 			}
 
@@ -28,6 +30,7 @@ public:
 			room->GetBombListLock().lock_shared();
 			Bomb* bomb = dynamic_cast<Bomb*>(room->GetBombList()[bombid]);
 			if (bomb == nullptr) {
+				player->GetBombLock().unlock();
 				room->GetBombListLock().unlock_shared();
 				return;
 			}
@@ -37,6 +40,7 @@ public:
 				std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYER_GRAB_BOMB, data, size);
 				pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomid);
 			}
+			player->GetBombLock().unlock();
 			room->GetBombListLock().unlock_shared();
 		}
 	}

@@ -54,6 +54,23 @@ public class Define
         Click,
     }
 
+    public enum ExcelDataClassType
+    {
+        CharacterStat,
+        CharacterAttack,
+        CharacterMove,
+        CharacterAction,
+        GachaGroup,
+        GachaGroupItem,
+        Item,
+        ModeOut,
+        FITHMode,
+        ModePoint,
+        ModeReward,
+        ModeBonusReward,
+        WeaponStat,
+    }
+
     public struct PlayerResult
     {
         public int kill;

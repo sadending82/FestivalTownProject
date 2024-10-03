@@ -90,8 +90,7 @@ public class UI_OneVersusOneSceneUI : UI_Scene
 
             try
             {
-                character = Managers.Player.GetPlayers().transform.
-                    GetChild(Managers.Player.GetMyId()).gameObject.GetComponent<CharacterStatus>();
+                character = Managers.Player.GetMyPlayer().GetComponent<CharacterStatus>();
             }
             catch
             {
@@ -100,8 +99,8 @@ public class UI_OneVersusOneSceneUI : UI_Scene
 
             if (character == null) return;
 
-            Get<GameObject>((int)GameObjects.HPBar).GetComponent<UI_HPBar>().SetHP(character.hp, character.maxHp);
-            Get<GameObject>((int)GameObjects.StaminaBar).GetComponent<UI_StaminaBar>().SetStamina(character.stamina, character.maxStamina);
+            Get<GameObject>((int)GameObjects.HPBar).GetComponent<UI_HPBar>().SetHP(character.GetHp(), character.GetMaxHp());
+            Get<GameObject>((int)GameObjects.StaminaBar).GetComponent<UI_StaminaBar>().SetStamina(character.GetStamina(), character.GetMaxStamina());
             
         }
     }

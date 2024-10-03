@@ -12,7 +12,8 @@ public class TransparentObject : MonoBehaviour
     private WaitForSeconds resetDelay = new WaitForSeconds(0.005f);
     
     private const float THRESHOLD_ALPHA = 0.25f;
-    private const float THRESHOLD_MAX_TIMER = 0.5f;
+    private const float THRESHOLD_MAX_TIMER = 0.2f;
+    private const float TRANSPARENT_SPEED = 2f;
 
     private bool isReseting = false;
     private float timer = 0f;
@@ -105,7 +106,7 @@ public class TransparentObject : MonoBehaviour
                 }
 
                 Color color = meshRenderers[i].material.color;
-                color.a -= Time.deltaTime;
+                color.a -= (Time.deltaTime * TRANSPARENT_SPEED);
                 meshRenderers[i].material.color = color;
             }
 
@@ -134,7 +135,7 @@ public class TransparentObject : MonoBehaviour
                 }
 
                 Color color = meshRenderers[i].material.color;
-                color.a += Time.deltaTime;
+                color.a += (Time.deltaTime * TRANSPARENT_SPEED);
                 meshRenderers[i].material.color = color;
             }
 
