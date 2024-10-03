@@ -22,6 +22,7 @@ public class Managers : MonoBehaviour
     CubeObjectManager _cubeObject = new CubeObjectManager();
     BombObjectManager _bombObject = new BombObjectManager();
     WeaponObjectManager _weaponObject = new WeaponObjectManager();
+    SpectatorCameraManager _spectatorCamera = new SpectatorCameraManager();
 
     //------------
 
@@ -40,6 +41,7 @@ public class Managers : MonoBehaviour
     public static CubeObjectManager CubeObject { get { return Instance._cubeObject; } }
     public static BombObjectManager BombObject { get { return Instance._bombObject; } }
     public static WeaponObjectManager WeaponObject { get { return Instance._weaponObject; } }
+    public static SpectatorCameraManager SpectatorCamera { get { return Instance._spectatorCamera; } }
 
     private void Start()
     {
@@ -48,11 +50,11 @@ public class Managers : MonoBehaviour
         _cubeObject = gameObject.AddComponent<CubeObjectManager>();
         _bombObject = gameObject.AddComponent<BombObjectManager>();
         _player = gameObject.AddComponent<PlayerManager>();
+        _spectatorCamera = gameObject.AddComponent<SpectatorCameraManager>();
 
         Init();
         _game.Init();
 
-        // TODO : 나중에는 아래의 매니저 들도 Managers에서 생성하는 것이 바람직해 보입니다.
         _network = gameObject.AddComponent<NetworkManager>();
     }
 
