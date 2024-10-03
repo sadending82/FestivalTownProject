@@ -29,6 +29,22 @@ MonoBehaviour:
     Item_Grade: 1
     Open_Date: 45292
     Close_Date: 73050
+  - Index: 100011
+    Name: "\uAE30\uBCF8 \uC0C1\uC790"
+    ClassType: 0
+    File_Name: Basic_Box
+    Item_Type: 5
+    Item_Grade: 1
+    Open_Date: 45292
+    Close_Date: 73050
+  - Index: 100012
+    Name: "\uACE0\uAE09\uC0C1\uC790"
+    ClassType: 0
+    File_Name: High_Box
+    Item_Type: 5
+    Item_Grade: 3
+    Open_Date: 45292
+    Close_Date: 73050
   - Index: 201001
     Name: "\uD558\uC580\uC0C9 \uC2A4\uD0A8"
     ClassType: 0
