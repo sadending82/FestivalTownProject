@@ -8,23 +8,23 @@
 #define COUT std::cout
 #define ENDL std::endl;
 
-inline constexpr int SERVERKEY = 0;
-inline constexpr int STARTKEY = 1;
-inline constexpr int INVALIDKEY = -1;
-inline constexpr int TESTROOM = 0;
+constexpr int SERVERKEY = 0;
+constexpr int STARTKEY = 1;
+constexpr int INVALIDKEY = -1;
+constexpr int TESTROOM = 0;
 
-inline constexpr int BUFSIZE = 1000;
+constexpr int BUFSIZE = 1000;
 
-inline constexpr int MAXSESSION = 1000;
-inline constexpr int MAXROOM = 100;
-inline constexpr int MAXPLAYER = 6;
-inline constexpr int MINPLAYER = 2;
-inline constexpr int MAXOBJECT = 100;
+constexpr int MAXSESSION = 1000;
+constexpr int MAXROOM = 100;
+constexpr int MAXPLAYER = 6;
+constexpr int MINPLAYER = 2;
+constexpr int MAXOBJECT = 100;
 
-inline constexpr int BLOCKSIZE = 2; // meter
+constexpr int BLOCKSIZE = 2; // meter
 
-inline constexpr float offsetX = 20;
-inline constexpr float offsetZ = 10;
+constexpr float offsetX = 20;
+constexpr float offsetZ = 10;
 
 #ifdef _DEBUG
 #define DEBUGMSGNOPARAM(args) (printf("file: %s, line:%d ",__FILE__,__LINE__), printf(args))

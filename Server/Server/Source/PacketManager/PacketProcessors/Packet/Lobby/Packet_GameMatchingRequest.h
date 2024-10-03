@@ -29,6 +29,13 @@ public:
 
 			}break;
 			case SERVER_MODE::TEST: {
+				Room* room = pServer->GetRooms()[TESTROOM];
+				room->GetStateLock().lock();
+				if (room->GetState() == eRoomState::RS_FREE) {
+					pServer->MakeTestRoom();
+				}
+				room->GetStateLock().unlock();
+
 				std::vector<Player*> playerVector = {dynamic_cast<Player*>(session)};
 				pServer->MatchingComplete(TESTROOM, playerVector);
 			}break;
