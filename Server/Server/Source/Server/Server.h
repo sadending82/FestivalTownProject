@@ -8,10 +8,10 @@
 #define ROOM_ARRAY std::array<Room*, MAXROOM>
 #define GAMEMANAGER_MAP std::unordered_map<GameMode, class GameManager*>
 
-constexpr int SERVERPORT = 45872;
+inline constexpr int SERVERPORT = 45872;
 
-constexpr int LIVE_MODE = 0;
-constexpr int TEST_MODE = 1;
+inline constexpr int LIVE_MODE = 0;
+inline constexpr int TEST_MODE = 1;
 
 enum class SERVER_MODE {
 	LIVE = 0,

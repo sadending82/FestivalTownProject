@@ -10,7 +10,7 @@
 #define INDEX int
 #define GACHA_GROUP int
 
-constexpr int variableNameIdx = 0;
+inline constexpr int variableNameIdx = 0;
 
 class TableManager {
 public:

@@ -2,12 +2,12 @@
 #include "../utility.h"
 
 // miliseconds
-constexpr int HEARTBEATINTERVAL = 6000;
-constexpr int BLOCKDROPINTERVAL = 10000;
-constexpr int REMAINTIMESYNCINTERVAL = 10000;
-constexpr int TIMEOVERCHECKINTERVAL = 5000;
-constexpr int GAMESTARTINTERVAL = 4000;
-constexpr int GAMEMATCHINGINTERVAL = 30000;
+inline constexpr int HEARTBEATINTERVAL = 6000;
+inline constexpr int BLOCKDROPINTERVAL = 10000;
+inline constexpr int REMAINTIMESYNCINTERVAL = 10000;
+inline constexpr int TIMEOVERCHECKINTERVAL = 5000;
+inline constexpr int GAMESTARTINTERVAL = 4000;
+inline constexpr int GAMEMATCHINGINTERVAL = 30000;
 
 class Timer;
 
@@ -33,7 +33,7 @@ enum eEventType {
 struct EVENT_HEADER {
 	std::chrono::system_clock::time_point start_time;
 
-	constexpr bool operator< (const EVENT_HEADER& other) const {
+	inline constexpr bool operator< (const EVENT_HEADER& other) const {
 		return start_time > other.start_time;
 	}
 

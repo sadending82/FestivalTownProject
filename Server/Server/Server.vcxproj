@@ -120,7 +120,7 @@
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <CompileAs>Default</CompileAs>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <LanguageStandard>Default</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -129,10 +129,10 @@
       <AdditionalDependencies>xlntd.lib;%(AdditionalDependencies);Kernel32.lib</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>robocopy "$(ProjectDir)..\..\Client\Assets\11. GameData" "$(ProjectDir)\GameData" /E /XF *.meta
-xcopy /y /d "$(ProjectDir)\xlnt\xlnt_Debug\bin\xlntd.dll" "$(OutDir)"
-xcopy /y /d /e /i "$(ProjectDir)\GameData" "$(OutDir)GameData"
-xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
+      <Command>if exist "$(ProjectDir)..\..\Client\Assets\11. GameData" robocopy "$(ProjectDir)..\..\Client\Assets\11. GameData" "$(ProjectDir)\GameData" /E /XF *.meta
+if exist "$(ProjectDir)\xlnt\xlnt_Debug\bin\xlntd.dll" xcopy /Y /d "$(ProjectDir)\xlnt\xlnt_Debug\bin\xlntd.dll" "$(OutDir)"
+if exist "$(ProjectDir)\GameData" xcopy /Y /d /e /i "$(ProjectDir)\GameData" "$(OutDir)GameData"
+if exist "$(ProjectDir)\Config" xcopy /Y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -147,7 +147,7 @@ xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <CompileAs>Default</CompileAs>
-      <LanguageStandard>Default</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -158,10 +158,10 @@ xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
       <AdditionalDependencies>xlnt.lib;%(AdditionalDependencies);Kernel32.lib</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>robocopy "$(ProjectDir)..\..\Client\Assets\11. GameData" "$(ProjectDir)\GameData" /E /XF *.meta
-xcopy /y /d "$(ProjectDir)\xlnt\xlnt_Release\bin\xlnt.dll" "$(OutDir)"
-xcopy /y /d /e /i "$(ProjectDir)\GameData" "$(OutDir)GameData"
-xcopy /y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
+      <Command>if exist "$(ProjectDir)..\..\Client\Assets\11. GameData" robocopy "$(ProjectDir)..\..\Client\Assets\11. GameData" "$(ProjectDir)\GameData" /E /XF *.meta
+if exist "$(ProjectDir)\xlnt\xlnt_Release\bin\xlnt.dll" xcopy /Y /d "$(ProjectDir)\xlnt\xlnt_Release\bin\xlnt.dll" "$(OutDir)"
+if exist "$(ProjectDir)\GameData" xcopy /Y /d /e /i "$(ProjectDir)\GameData" "$(OutDir)GameData"
+if exist "$(ProjectDir)\Config" xcopy /Y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
