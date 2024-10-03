@@ -1,82 +1,73 @@
+using ActiveRagdoll;
 using ClientProtocol;
+using ExcelDataStructure;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
 public class CharacterStatus : MonoBehaviour
 {
-    [Header("--- Status ---")]
-    [SerializeField]
-    private int id;
-    public int maxHp;
-    public int hp;
-    public int maxStamina;
-    public int stamina;
-    public int staminaRecoverySpeed;
-    public int strength;
-    public int speed;
-    public float attackSpeed;
-    public float runSpeedRatio;
-    private float rollSpeed;
-    public bool isDie = true;
-    public int groggyNum;
-    public float groggyTime;
-    public Camera myCamera;
-    private bool amIPlayer;
-    public GameObject playerMesh;
-    public int teamNumber;
+    private Camera myCamera;
+    private PlayerController playerController;
 
-    // 픽업관련
+    // 스탯
+    [Header("--- Status ---")]
+    [SerializeField] private int id;
+    [SerializeField] private int teamNumber;
+    [Space (10f)]
+    [SerializeField] private float maxHp;
+    [SerializeField] private float hp;
+    [Space(10f)]
+    [SerializeField] private int maxStamina;
+    [SerializeField] private int stamina;
+    public int AttackedMotionPower;
+    public float throwPower;
+
+    private bool isDie = true;
+    private bool amIPlayer;
+
+    // 픽업 관련
     [Header("--- PickUp ---")]
-    [SerializeField]
-    private bool isHaveBomb = false;
+    [SerializeField] private bool isHaveBomb = false;
     private int bombId;
-    [SerializeField]
-    private bool isHaveWeapon = false;
+    [SerializeField] private bool isHaveWeapon = false;
     private int weaponId;
-    public GameObject weaponInven;
     private GameObject myWeapon;
-    [SerializeField]
-    private bool isGrapPlayer = false;
+    [SerializeField] private bool isGrapPlayer = false;
     private int grapTargetPlayerId;
     private bool isGrapped = false;
     private int grappedPlayerId;
 
-
-    [Header("--- AnimationControll ---")]
+    // 애니메이션 컨트롤
     private bool isGroggy;
-    public AnimationController animationController;
-    public ActiveRagdoll.AnimationModule animationMoudule;
-    // 상체의 상태는 서버와 교환
-    private UpperBodyAnimationState upperBodyAnimationState;
-    // 하체의 상태는 클라가 관리(이동 관련해서는 이미 서버와 교환하고 있기 때문)
-    private LowerBodyAnimationState lowerBodyAnimationState;
+    private AnimationController animationController;
+    private ActiveRagdoll.AnimationModule animationMoudule;
+    private UpperBodyAnimationState upperBodyAnimationState; // 상체의 상태는 서버와 교환
+    private LowerBodyAnimationState lowerBodyAnimationState; // 하체의 상태는 클라가 관리(이동 관련해서는 이미 서버와 교환하고 있기 때문)
 
-    public PlayerController playerController;
+    // 바로 연결
+    [Header("--- Direct Connect ---")]
+    public GameObject pelvis;
     public Rigidbody headRig;
-    public float attackedStrength = 10;
+    public GameObject hitbox;
+    public GameObject playerMesh;
+    public GameObject weaponInven;
 
-    //------ Server -------
+    // 서버
     private NetworkManager network;
     private PacketManager packetManager;
 
-    // 레이어 관련
-    [Header("--- LayerControl ---")]
-    public GameObject pelvis;
-    public GameObject hitbox;
 
     private void Awake()
     {
+        myCamera = GetComponentInChildren<Camera>();
+        animationController = GetComponentInChildren<AnimationController>();
+        animationMoudule = GetComponent<ActiveRagdoll.AnimationModule>();
+        playerController = GetComponent<PlayerController>();
+
         amIPlayer = false;
         myCamera.enabled = false;
 
-        maxStamina = 100;
-        stamina = 100;
-        staminaRecoverySpeed = 5;
-
-        if(animationMoudule == null)
-        {
-            animationMoudule = GetComponent<ActiveRagdoll.AnimationModule>();
-        }
+        ResetCharacterState();
     }
 
     private void Start()
@@ -84,11 +75,109 @@ public class CharacterStatus : MonoBehaviour
         network = Managers.Network;
         packetManager = network.GetPacketManager();
     }
-    private void Update()
-    {
-    }
 
-    // ------------------- GETTERS & SETTERS -------------------
+
+    // ------------------- Status -------------------
+    public void ResetCharacterState()
+    {
+        var data = Managers.Data.GetData(1000);
+        CharacterStatEntity cse = (CharacterStatEntity)data;
+
+        SetMaxHp(cse.Ch_Hp);
+        SetIsHaveBomb(false);
+        SetIsHaveWeapon(false);
+        SetIsGrapPlayer(false);
+        SetIsGrapped(false);
+        GroggyOff();
+        SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
+        SetLowerBodyAnimationState(LowerBodyAnimationState.IDLE);
+
+        playerController.ResetPlayerControllerSetting();
+    }
+    public void SetId(int id)
+    {
+        this.id = id;
+        myCamera.GetComponent<PlayerCameraController>().SetMyId(id);
+    }
+    public int GetId()
+    {
+        return id;
+    }
+    public void SetTeamNumber(int teamNumber)
+    {
+        this.teamNumber = teamNumber;
+    }
+    public int GetTeamNumber()
+    {
+        return teamNumber;
+    }
+    public void SetMaxHp(float maxHp)
+    {
+        this.maxHp = maxHp;
+    }
+    public float GetMaxHp()
+    {
+        return maxHp;
+    }
+    public void SetHp(float hp)
+    {
+        this.hp = hp;
+    }
+    public float GetHp()
+    {
+        return hp;
+    }
+    public void SetMaxStamina(int maxStamina)
+    {
+        this.maxStamina = maxStamina;
+    }
+    public int GetMaxStamina()
+    {
+        return maxStamina;
+    }
+    public void SetStamina(int stamina)
+    {
+        this.stamina = stamina;
+    }
+    public int GetStamina()
+    {
+        return stamina;
+    }
+    public float GetThrowPower()
+    {
+        return throwPower;
+    }
+    public void SetIsDie(bool isDie)
+    {
+        this.isDie = isDie;
+        if (isDie == true)
+        {
+            hp = 0;
+            playerMesh.SetActive(false);
+            Managers.Sound.Play("Sfx_Ch_Die");
+            if (amIPlayer == true)
+            {
+                Managers.SpectatorCamera.SwitchNextCamera();
+            }
+            else
+            {
+                Managers.SpectatorCamera.CheckSpectator(id);
+            }
+        }
+        else
+        {
+            ResetCharacterState();
+            playerMesh.SetActive(true);
+            if (amIPlayer == true)
+            {
+                Managers.SpectatorCamera.SwitchMyCamera();
+            }
+        }
+    }
+    public bool GetIsDie()
+    {
+        return isDie;
+    }
     public void SetAmIPlayer(bool amIPlayer)
     {
         this.amIPlayer = amIPlayer;
@@ -108,62 +197,7 @@ public class CharacterStatus : MonoBehaviour
         return amIPlayer;
     }
 
-    public void SetLayer(int id)
-    {
-        string layerName = "Player" + id;
-        int layer = LayerMask.NameToLayer(layerName);
-        hitbox.layer = layer;
-
-        ChangeLayerRecursively(pelvis, layer);
-    }
-    // 모든 자식 오브젝트에 접근해 레이어를 바꾸는 함수
-    private void ChangeLayerRecursively(GameObject obj, int layer)
-    {
-        obj.layer = layer;
-
-        foreach (Transform child in obj.transform)
-        {
-            ChangeLayerRecursively(child.gameObject, layer);
-        }
-    }
-    public void SetUpperBodyAnimationState(UpperBodyAnimationState upperBodyAnimationState)
-    {
-        if (this.upperBodyAnimationState != upperBodyAnimationState && isGroggy == false)
-        {
-            ///<summary>
-            ///서버에 상태 전달하는 부분 여기에 추가
-            ///</summary>
-            packetManager.SendPlayerAnimationPacket(playerController.GetPosition(), playerController.GetDirection(), id, upperBodyAnimationState);
-
-            this.upperBodyAnimationState = upperBodyAnimationState;
-            animationController.SetUpperBodyAnimationState(upperBodyAnimationState);
-        }
-    }
-    public void s_SetUpperBodyAnimationState(UpperBodyAnimationState upperBodyAnimationState)
-    {
-        if (this.upperBodyAnimationState != upperBodyAnimationState && isGroggy == false)
-        {
-            this.upperBodyAnimationState = upperBodyAnimationState;
-            animationController.SetUpperBodyAnimationState(upperBodyAnimationState);
-        }
-    }
-
-    public void SetLowerBodyAnimationState(LowerBodyAnimationState lowerBodyAnimationState)
-    {
-        if (this.lowerBodyAnimationState != lowerBodyAnimationState && isGroggy == false)
-        {
-            this.lowerBodyAnimationState = lowerBodyAnimationState;
-            animationController.SetLowerBodyAnimationState(lowerBodyAnimationState);
-        }
-    }
-    public LowerBodyAnimationState GetLowerBodyAnimationState()
-    {
-        return this.lowerBodyAnimationState;
-    }
-    public UpperBodyAnimationState GetUpperBodyAnimationState()
-    {
-        return this.upperBodyAnimationState;
-    }
+    // ------------------- PickUp -------------------
     public void SetIsHaveBomb(bool isHaveBomb, int bombId = -1)
     {
         this.isHaveBomb = isHaveBomb;
@@ -198,76 +232,6 @@ public class CharacterStatus : MonoBehaviour
     {
         return weaponId;
     }
-
-    public void SetIsDie(bool isDie)
-    {
-        this.isDie = isDie;
-        if(isDie == true)
-        {
-            hp = 0;
-            playerMesh.SetActive(false);
-            Managers.Sound.Play("Sfx_Ch_Die");
-            if(amIPlayer == true)
-            {
-                Managers.SpectatorCamera.SwitchNextCamera();
-            }
-            else
-            {
-                Managers.SpectatorCamera.CheckSpectator(id);
-            }    
-        }
-        else
-        {
-            ResetCharacterState();
-            playerMesh.SetActive(true);
-            if (amIPlayer == true)
-            {
-                Managers.SpectatorCamera.SwitchMyCamera();
-            }
-        }
-    }
-    public bool GetIsDie()
-    {
-        return isDie;
-    }
-    public void SetId(int Id)
-    {
-        this.id = Id;
-        myCamera.GetComponent<PlayerCameraController>().SetMyId(Id);
-    }
-    public int GetId()
-    {
-        return id;
-    }
-    public int GetStrength()
-    {
-        return strength;
-    }
-    public float GetAttackSpeed()
-    {
-        return attackSpeed;
-    }
-
-    public void Attacked(Vector3 direction)
-    {
-        headRig.AddForce(direction * attackedStrength, ForceMode.Impulse);
-    }
-    public void SetHp(int hp)
-    {
-        this.hp = hp;
-    }
-
-    public void ResetCharacterState()
-    {
-        SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
-        SetLowerBodyAnimationState(LowerBodyAnimationState.IDLE);
-        SetIsHaveBomb(false);
-        SetIsHaveWeapon(false);
-        GroggyOff();
-
-        playerController.ResetPlayerControllerSetting();
-    }
-
     public GameObject GetWeaponInven()
     {
         return weaponInven;
@@ -276,76 +240,6 @@ public class CharacterStatus : MonoBehaviour
     public GameObject GetMyWeapon()
     {
         return myWeapon;
-    }
-
-    public Vector3 GetAttackedDirection(Vector3 attackerPosition)
-    {
-        Vector3 attackedDirection = attackerPosition - pelvis.transform.position;
-        attackedDirection.y = 0;
-
-        return attackedDirection.normalized;
-    }
-    public void CameraOn()
-    {
-        myCamera.enabled = true;
-    }
-    public void CameraOff()
-    {
-        myCamera.enabled = false;
-    }
-    public void SetTeamNumber(int teamNumber)
-    {
-        this.teamNumber = teamNumber;
-    }
-    public int GetTeamNumber()
-    {
-        return teamNumber;
-    }
-
-    public void GroggyOn()
-    {
-        if (isGroggy == false)
-        {
-            SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
-            SetLowerBodyAnimationState(LowerBodyAnimationState.IDLE);
-            isGroggy = true;
-            animationMoudule.GroggyOn();
-        }
-    }
-    public void GroggyOff()
-    {
-        if (isGroggy == true)
-        {
-            if(isGrapped == true)
-            {
-                PlayerController targetPlayerController = Managers.Player.FindPlayerById(grappedPlayerId).GetComponent<PlayerController>();
-                targetPlayerController.GrapOff();
-            }
-
-            isGroggy = false;
-            SetStamina(maxStamina);
-            animationMoudule.GroggyOff();
-        }
-    }
-    public bool GetIsGroggy()
-    {
-        return isGroggy;
-    }
-    public void SetStamina(int stamina)
-    {
-        this.stamina = stamina;
-    }
-    public int GetStamina()
-    {
-        return stamina;
-    }
-    public Rigidbody GetHeadRigidbody()
-    {
-        return headRig;
-    }
-    public Camera GetMyCamera()
-    {
-        return myCamera;
     }
     // 내가 잡은 플레이어
     public void SetIsGrapPlayer(bool isGrapPlayer, int targetPlayerId = -1)
@@ -374,6 +268,126 @@ public class CharacterStatus : MonoBehaviour
     public int GetGrappedPlayerId()
     {
         return grappedPlayerId;
+    }
+
+    // ------------------- Animation Control -------------------
+    public void GroggyOn()
+    {
+        if (isGroggy == false)
+        {
+            SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
+            SetLowerBodyAnimationState(LowerBodyAnimationState.IDLE);
+            isGroggy = true;
+            animationMoudule.GroggyOn();
+        }
+    }
+    public void GroggyOff()
+    {
+        if (isGroggy == true)
+        {
+            if (isGrapped == true)
+            {
+                PlayerController targetPlayerController = Managers.Player.FindPlayerById(grappedPlayerId).GetComponent<PlayerController>();
+                targetPlayerController.GrapOff();
+            }
+
+            isGroggy = false;
+            SetStamina(maxStamina);
+            animationMoudule.GroggyOff();
+        }
+    }
+    public bool GetIsGroggy()
+    {
+        return isGroggy;
+    }
+    public void SetLayer(int id)
+    {
+        string layerName = "Player" + id;
+        int layer = LayerMask.NameToLayer(layerName);
+        hitbox.layer = layer;
+
+        ChangeLayerRecursively(pelvis, layer);
+    }
+    /// <summary>
+    /// 모든 자식 오브젝트에 접근해 레이어를 바꾸는 함수
+    /// </summary>
+    private void ChangeLayerRecursively(GameObject obj, int layer)
+    {
+        obj.layer = layer;
+
+        foreach (Transform child in obj.transform)
+        {
+            ChangeLayerRecursively(child.gameObject, layer);
+        }
+    }
+    public void SetUpperBodyAnimationState(UpperBodyAnimationState upperBodyAnimationState)
+    {
+        if (this.upperBodyAnimationState != upperBodyAnimationState && isGroggy == false)
+        {
+            ///<summary>
+            ///서버에 상태 전달하는 부분 여기에 추가
+            ///</summary>
+            packetManager.SendPlayerAnimationPacket(playerController.GetPosition(), playerController.GetDirection(), id, upperBodyAnimationState);
+
+            this.upperBodyAnimationState = upperBodyAnimationState;
+            animationController.SetUpperBodyAnimationState(upperBodyAnimationState);
+        }
+    }
+    public void s_SetUpperBodyAnimationState(UpperBodyAnimationState upperBodyAnimationState)
+    {
+        if (this.upperBodyAnimationState != upperBodyAnimationState && isGroggy == false)
+        {
+            this.upperBodyAnimationState = upperBodyAnimationState;
+            animationController.SetUpperBodyAnimationState(upperBodyAnimationState);
+        }
+    }
+    public UpperBodyAnimationState GetUpperBodyAnimationState()
+    {
+        return this.upperBodyAnimationState;
+    }
+
+    public void SetLowerBodyAnimationState(LowerBodyAnimationState lowerBodyAnimationState)
+    {
+        if (this.lowerBodyAnimationState != lowerBodyAnimationState && isGroggy == false)
+        {
+            this.lowerBodyAnimationState = lowerBodyAnimationState;
+            animationController.SetLowerBodyAnimationState(lowerBodyAnimationState);
+        }
+    }
+    public LowerBodyAnimationState GetLowerBodyAnimationState()
+    {
+        return this.lowerBodyAnimationState;
+    }
+    public void Attacked(Vector3 direction)
+    {
+        headRig.AddForce(direction * AttackedMotionPower, ForceMode.Impulse);
+    }
+    public Vector3 GetAttackedDirection(Vector3 attackerPosition)
+    {
+        Vector3 attackedDirection = attackerPosition - pelvis.transform.position;
+        attackedDirection.y = 0;
+
+        return attackedDirection.normalized;
+    }
+
+    // ------------------- Camera -------------------
+    public Camera GetMyCamera()
+    {
+        return myCamera;
+    }
+    public void CameraOn()
+    {
+        myCamera.enabled = true;
+    }
+    public void CameraOff()
+    {
+        myCamera.enabled = false;
+    }
+
+    // ------------------- Physic --------------------
+    public Rigidbody GetHeadRigidbody()
+    {
+        return headRig;
     }
     public GameObject GetPelvis()
     {

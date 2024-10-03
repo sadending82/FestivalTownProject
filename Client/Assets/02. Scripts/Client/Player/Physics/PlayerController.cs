@@ -604,7 +604,7 @@ public class PlayerController : MonoBehaviour
         if(playerStatus.GetIsHaveBomb() == true)
         {
             GameObject targetBomb = Managers.BombObject.FindBombById(playerStatus.GetBombId());
-            targetBomb.GetComponent<Bomb>().Throw(stabillizerDirection, playerStatus.GetStrength());
+            targetBomb.GetComponent<Bomb>().Throw(stabillizerDirection, playerStatus.GetThrowPower());
 
             // 서버에 플레이어 위치, 폭탄 발사 방향, 폭탄 위치, 플레이어 아이디, 폭탄 아이디 보내줌
             packetManager.SendPlayerThrowBombPacket(targetBomb.transform.position, stabillizerDirection, myId, targetBomb.GetComponent<Bomb>().GetId());
@@ -623,7 +623,7 @@ public class PlayerController : MonoBehaviour
         {
             GameObject targetBomb = Managers.BombObject.FindBombById(bombId);
             targetBomb.transform.position = bombPosition;
-            targetBomb.GetComponent<Bomb>().Throw(moveDirection, playerStatus.GetStrength());
+            targetBomb.GetComponent<Bomb>().Throw(moveDirection, playerStatus.GetThrowPower());
 
             playerStatus.SetIsHaveBomb(false);
         }
@@ -727,12 +727,12 @@ public class PlayerController : MonoBehaviour
     {
         leftMouseClickTimer = 0f;
         isGrap = false;
+        isPickUpMode = false;
         isGrounded = false;
         isLeftShiftKeyDown = false;
         beforeAxisRawH = 0;
         beforeAxisRawV = 0;
         SetIsMove(false);
-        isPickUpMode = false;
         targetItem = null;
     }
 

@@ -16,7 +16,7 @@ namespace ExcelDataStructure
     public class CharacterStatEntity : GameDataEntity
     {
         public float Ch_Hp;
-        public float Ch_Stamina;
+        public int Ch_Stamina;
         public float Ch_Strength;
         public float Ch_Speed;
     }

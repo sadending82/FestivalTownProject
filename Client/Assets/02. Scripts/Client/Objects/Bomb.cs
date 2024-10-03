@@ -110,12 +110,12 @@ public class Bomb : MonoBehaviour
         this.targetTransform = null;
     }
 
-    public void Throw(Vector3 throwDirection, int throwStrength)
+    public void Throw(Vector3 throwDirection, float throwPower)
     {
         this.throwDirection = throwDirection;
         SetRigidBodyBasic();
 
-        rig.AddForce(throwDirection * throwStrength, ForceMode.Impulse);
+        rig.AddForce(throwDirection * throwPower, ForceMode.Impulse);
 
         PickUpOff();
     }

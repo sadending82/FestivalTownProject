@@ -1330,33 +1330,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: def2771a13b7ff049947992a699b7106, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Id: 0
+  id: 0
+  teamNumber: 0
   maxHp: 0
   hp: 0
   maxStamina: 0
   stamina: 0
-  staminaRecoverySpeed: 0
-  strength: 5
-  speed: 0
-  attackSpeed: 0.3
-  runSpeedRatio: 0
-  isDie: 0
-  groggyNum: 0
-  groggyTime: 0
-  myCamera: {fileID: 8248348564705223245}
-  playerMesh: {fileID: 8491244148625121900}
-  teamNumber: 0
+  AttackedMotionPower: 10
+  throwPower: 5
   isHaveBomb: 0
   isHaveWeapon: 0
-  weaponInven: {fileID: 6241508891433731045}
   isGrapPlayer: 0
-  animationController: {fileID: 106592914044289826}
-  animationMoudule: {fileID: 0}
-  playerController: {fileID: 2266266892710373593}
-  headRig: {fileID: 71571893083169489}
-  attackedStrength: 50
   pelvis: {fileID: 4437203293968950405}
+  headRig: {fileID: 71571893083169489}
   hitbox: {fileID: 2672182746622162311}
+  playerMesh: {fileID: 8491244148625121900}
+  weaponInven: {fileID: 6241508891433731045}
 --- !u!114 &7513450559464735725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2323,17 +2312,6 @@ PrefabInstance:
       addedObject: {fileID: 2690671586321578309}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6581f17781117ff40aac84e0bbed4cee, type: 3}
---- !u!114 &106592914044289826 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 266402392606314669, guid: 6581f17781117ff40aac84e0bbed4cee, type: 3}
-  m_PrefabInstance: {fileID: 200623627248472975}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16262335861591345841965a3989b0b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &4798644086004994513 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4634476143383757406, guid: 6581f17781117ff40aac84e0bbed4cee, type: 3}

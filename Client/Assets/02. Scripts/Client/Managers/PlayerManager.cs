@@ -130,6 +130,10 @@ public class PlayerManager : MonoBehaviour
         Debug.Log("ERROR!!! : FindPlayerById(), Can't Find Target Player By Id : " + targetId);
         return null;
     }
+    public GameObject GetMyPlayer()
+    {
+        return FindPlayerById(myId);
+    }
 
     public void GameStart()
     {
@@ -142,7 +146,6 @@ public class PlayerManager : MonoBehaviour
             }
         }
     }
-
     public void GameEnd()
     {
         for (int i = 0; i < maxPlayerNum; ++i)
