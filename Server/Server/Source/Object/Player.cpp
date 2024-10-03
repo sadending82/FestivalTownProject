@@ -62,7 +62,7 @@ bool Player::ChangeToGroggyState(Server* pServer)
 
 	pServer->GetPacketSender()->SendPlayerGroggyPacket(mInGameID, mRoomID);
 
-	// µé°íÀÖ´Â ¹«±â ÇØÁ¦
+	// ë“¤ê³ ìžˆëŠ” ë¬´ê¸° í•´ì œ
 	mWeaponLock.lock();
 	if (mWeapon != nullptr) {
 		if (mWeapon->SetIsGrabbed(false) == true) {
@@ -75,21 +75,21 @@ bool Player::ChangeToGroggyState(Server* pServer)
 	}
 	mWeaponLock.unlock();
 
-	// µé°íÀÖ´Â ÆøÅº Æø¹ß
+	// ë“¤ê³ ìžˆëŠ” í­íƒ„ í­ë°œ
 	mBombLock.lock();
 	if (mBomb != nullptr) {
 		if (mBomb->SetIsGrabbed(false) == true) {
 			int bombID = mBomb->GetID();
 			mBomb = nullptr;
 			pServer->GetPacketSender()->SendBombExplosionPacket(mRoomID, bombID);
-			pServer->GetRooms()[mRoomID]->DeleteBomb(bombID);
+			pServer->GetRooms().at(mRoomID)->DeleteBomb(bombID);
 		}
 	}
 	mBombLock.unlock();
 
-	// ÀâÀº ÇÃ·¹ÀÌ¾î ³õ±â
+	// ìž¡ì€ í”Œë ˆì´ì–´ ë†“ê¸°
 	if (mAttachedPlayerID != INVALIDKEY && GetIsGrabbed() == false) {
-		Room* room = pServer->GetRooms()[mRoomID];
+		Room* room = pServer->GetRooms().at(mRoomID);
 		if (room != nullptr && (room->GetState() == eRoomState::RS_INGAME)) {
 			room->GetPlayerListLock().lock_shared();
 			Player* target = room->GetPlayerList()[mAttachedPlayerID];
@@ -123,7 +123,7 @@ bool Player::ChangeToDeadState(Server* pServer, int spawn_time)
 
 	pServer->GetPacketSender()->SendPlayerDeadPacket(mInGameID, mRoomID, spawn_time);
 
-	// µé°íÀÖ´Â ¹«±â ÇØÁ¦
+	// ë“¤ê³ ìžˆëŠ” ë¬´ê¸° í•´ì œ
 	mWeaponLock.lock();
 	if (mWeapon != nullptr) {
 		if (mWeapon->SetIsGrabbed(false) == true) {
@@ -136,14 +136,14 @@ bool Player::ChangeToDeadState(Server* pServer, int spawn_time)
 	}
 	mWeaponLock.unlock();
 
-	// µé°íÀÖ´Â ÆøÅº Æø¹ß
+	// ë“¤ê³ ìžˆëŠ” í­íƒ„ í­ë°œ
 	mBombLock.lock();
 	if (mBomb != nullptr) {
 		if (mBomb->SetIsGrabbed(false) == true) {
 			int bombID = mBomb->GetID();
 			mBomb = nullptr;
 			pServer->GetPacketSender()->SendBombExplosionPacket(mRoomID, bombID);
-			pServer->GetRooms()[mRoomID]->DeleteBomb(bombID);
+			pServer->GetRooms().at(mRoomID)->DeleteBomb(bombID);
 		}
 	}
 	mBombLock.unlock();

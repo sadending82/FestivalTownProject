@@ -3,10 +3,10 @@
 
 #ifdef RunTest
 
-inline constexpr char GameStartCommand = 's';
-inline constexpr char SendLifeReduceCommand = 'l';
-inline constexpr char DeleteRoom = 'd';
-inline constexpr char Gacha = 'g';
+constexpr char GameStartCommand = 's';
+constexpr char SendLifeReduceCommand = 'l';
+constexpr char DeleteRoom = 'd';
+constexpr char Gacha = 'g';
 
 class Timer;
 

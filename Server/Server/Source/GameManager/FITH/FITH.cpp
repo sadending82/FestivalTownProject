@@ -250,6 +250,9 @@ std::set<Vector3f> FITH::SetObjectSpawnPos(int roomID, int spawnCount)
         bool invalid_pos = false;
 
         if (invalid_pos == false) {
+
+
+
             unique_pos.emplace(ConvertVec2iToVec3f(spawnIndex.x, spawnIndex.z));
         }
     }
@@ -266,13 +269,22 @@ void FITH::BombSpawn(Room* room, int roomID)
 
     std::set<Vector3f> spawnPoses = this->SetObjectSpawnPos(roomID, spawnCount);
 
+    float posOffset = (static_cast<float>(BLOCKSIZE) / 3);
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<>dis_value(-posOffset, posOffset);
+
     std::vector<Vector3f> poses;
     std::vector<int> bombIDs;
 
-    for (const auto& pos : spawnPoses) {
-        int bombid = room->AddBomb(new Bomb, pos);
+    for (auto& pos : spawnPoses) {
+        Vector3f newPos;
+        newPos.x = pos.x + (float)dis_value(gen);
+        newPos.z = pos.z + (float)dis_value(gen);
+
+        int bombid = room->AddBomb(new Bomb, newPos);
         if (bombid == INVALIDKEY) continue;
-        poses.push_back(pos);
+        poses.push_back(newPos);
         bombIDs.push_back(bombid);
     }
 
@@ -291,11 +303,21 @@ void FITH::WeaponSpawn(Room* room, int roomID, eWeaponType weaponType, int spawn
     std::vector<int> weaponIDs;
     std::vector<int> weaponTypes;
 
+    float posOffset = (static_cast<float>(BLOCKSIZE) / 3);
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<>dis_value(-posOffset, posOffset);
+
     for (const auto& pos : spawnPoses) {
-        int weaponid = room->AddWeapon(new Weapon(weaponType, nullptr), pos);
+        Vector3f newPos;
+        newPos.x = pos.x + (float)dis_value(gen);
+        newPos.z = pos.z + (float)dis_value(gen);
+
+        int weaponid = room->AddWeapon(new Weapon(weaponType, nullptr), newPos);
         if (weaponid == INVALIDKEY) continue;
 
-        poses.push_back(pos);
+        poses.push_back(newPos);
         weaponIDs.push_back(weaponid);
         weaponTypes.push_back(weaponType);
     }

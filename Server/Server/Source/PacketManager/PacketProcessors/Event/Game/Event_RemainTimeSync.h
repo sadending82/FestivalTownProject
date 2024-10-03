@@ -6,26 +6,31 @@ class Event_RemainTimeSync : public PacketProcessor {
 
 public:
 
-	virtual void Process(Server* pServer, unsigned char* buf) {
-		EV_TIME_SYNC* event = reinterpret_cast<EV_TIME_SYNC*>(buf);
+	virtual void Process(Server* pServer, unsigned char* buf) { 
+		try {
+			EV_TIME_SYNC* event = reinterpret_cast<EV_TIME_SYNC*>(buf);
 
-		int roomid = event->roomID;
-		Room* room = pServer->GetRooms()[roomid];
-		if (room == nullptr) {
-			return;
-		}
-		long long roomCode = room->GetRoomCode();
-		if (roomCode != event->roomCode) {
-			return;
-		}
-		if (room->GetState() == eRoomState::RS_FREE) {
-			return;
-		}
+			int roomid = event->roomID;
+			Room* room = pServer->GetRooms().at(roomid);
+			if (room == nullptr) {
+				return;
+			}
+			long long roomCode = room->GetRoomCode();
+			if (roomCode != event->roomCode) {
+				return;
+			}
+			if (room->GetState() == eRoomState::RS_FREE) {
+				return;
+			}
 
-		GameMode gameMode = room->GetGameMode();
+			GameMode gameMode = room->GetGameMode();
 
-		PushEventRemainTimeSync(pServer->GetTimer(), roomid, event->roomCode);
-		pServer->GetPacketSender()->SendRemainTimeSync(roomid);
+			PushEventRemainTimeSync(pServer->GetTimer(), roomid, event->roomCode);
+			pServer->GetPacketSender()->SendRemainTimeSync(roomid);
+		}
+		catch (const std::exception& e) {
+			std::cerr << "[ERROR] : " << e.what() << std::endl;
+		}
 	}
 
 private:
