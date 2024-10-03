@@ -54,14 +54,6 @@ public class Define
         Click,
     }
 
-    public struct PlayerResult
-    {
-        public int kill;
-        public int death;
-        public int bombInsert;
-        public int gold;
-    }
-
     public enum ExcelDataClassType
     {
         CharacterStat,
@@ -77,5 +69,13 @@ public class Define
         ModeReward,
         ModeBonusReward,
         WeaponStat,
+    }
+
+    public struct PlayerResult
+    {
+        public int kill;
+        public int death;
+        public int bombInsert;
+        public int gold;
     }
 }
