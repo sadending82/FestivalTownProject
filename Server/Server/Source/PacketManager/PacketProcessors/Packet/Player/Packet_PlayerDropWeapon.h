@@ -17,8 +17,10 @@ public:
 			if (player == nullptr && player->GetInGameID() != read->id()) {
 				return;
 			}
+			player->GetWeaponLock().lock();
 			Weapon* weapon = player->GetWeapon();
 			if (weapon == nullptr) {
+				player->GetWeaponLock().unlock();
 				return;
 			}
 
@@ -30,6 +32,8 @@ public:
 			weapon->SetOwenrID(INVALIDKEY);
 			weapon->SetPosition(Vector3f(read->pos()->x(), read->pos()->y(), read->pos()->z()));
 			player->SetWeapon(nullptr);
+
+			player->GetWeaponLock().unlock();
 
 			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYER_DROP_WEAPON, data, size);
 			pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomid);

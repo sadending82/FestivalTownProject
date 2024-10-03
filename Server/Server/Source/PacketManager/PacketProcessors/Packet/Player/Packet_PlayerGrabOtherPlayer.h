@@ -28,22 +28,19 @@ public:
 			room->GetPlayerListLock().lock_shared();
 			Player* target = room->GetPlayerList()[read->target_id()];
 
-			if (target->SetIsGrabbed(true) == false) {
-				room->GetPlayerListLock().unlock_shared();
-				return;
+			if (target->SetIsGrabbed(true) == true) {
+
+				player->SetAttachedPlayerID(targetID);
+				target->SetAttachedPlayerID(playerID);
+
+
+				player->SetPosition(read->pos()->x(), read->pos()->y(), read->pos()->z());
+				player->SetDirection(read->direction()->x(), read->direction()->y(), read->direction()->z());
+				std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYER_GRAB_OTHER_PLAYER, data, size);
+
+				pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 			}
-			player->SetAttachedPlayerID(targetID);
-			target->SetAttachedPlayerID(playerID);
-
-
-			player->SetPosition(read->pos()->x(), read->pos()->y(), read->pos()->z());
-			player->SetDirection(read->direction()->x(), read->direction()->y(), read->direction()->z());
-
 			room->GetPlayerListLock().unlock_shared();
-			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYER_GRAB_OTHER_PLAYER, data, size);
-
-			pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
-
 		}
 	}
 

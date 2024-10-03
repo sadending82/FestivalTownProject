@@ -38,6 +38,10 @@ public:
 				room->GetPlayerListLock().unlock_shared();
 				return;
 			}
+
+			player->SetAttachedPlayerID(INVALIDKEY);
+			grabber->SetAttachedPlayerID(INVALIDKEY);
+
 			pServer->GetPacketSender()->SendPlayerThrowOtherPlayerPacket(roomid, grabberID, grabber->GetPosition(), grabber->GetDirection()
 				, playerid, player->GetPosition(), player->GetDirection());
 		}
