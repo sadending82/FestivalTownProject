@@ -2,6 +2,7 @@ using PacketTable.GameTable;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerCameraController : MonoBehaviour
@@ -18,7 +19,7 @@ public class PlayerCameraController : MonoBehaviour
 
     private bool amIPlayer;
     private int myId;
-    private bool spectatorMode;
+    private bool IsMainCamera;
 
     private float mouseX, mouseY;
 
@@ -27,7 +28,7 @@ public class PlayerCameraController : MonoBehaviour
         myCamera = GetComponent<Camera>();
         cameraArm = transform.parent;
         amIPlayer = false;
-        spectatorMode = false;
+        IsMainCamera = false;
     }
 
     private void Start()
@@ -40,7 +41,7 @@ public class PlayerCameraController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (amIPlayer == true || spectatorMode == true)
+        if (IsMainCamera == true)
         {
             Move();
             LookAround();
@@ -48,7 +49,7 @@ public class PlayerCameraController : MonoBehaviour
     }
     private void Update()
     {
-        if (amIPlayer == true || spectatorMode == true)
+        if (IsMainCamera == true)
         {
             float scroll = Input.GetAxis("Mouse ScrollWheel") * ZoomSpeed;
 
@@ -66,7 +67,10 @@ public class PlayerCameraController : MonoBehaviour
     }
     private void LateUpdate()
     {
-        FindObjectBetweenCameraAndPlayer();
+        if (IsMainCamera == true)
+        {
+            FindObjectBetweenCameraAndPlayer();
+        }
     }
     private void Move()
     {
@@ -92,6 +96,7 @@ public class PlayerCameraController : MonoBehaviour
     public void SetAmIPlayer(bool amIPlayer)
     {
         this.amIPlayer = amIPlayer;
+        IsMainCamera = amIPlayer;
     }
     public bool GetAmIPlayer()
     {
@@ -103,11 +108,11 @@ public class PlayerCameraController : MonoBehaviour
     }
     public void SpectatorModeOn()
     {
-        spectatorMode = true;
+        IsMainCamera = true;
     }
     public void SpectatorModeOff()
     {
-        spectatorMode = false;
+        IsMainCamera = false;
     }
     public bool GetIsPlayerDie()
     {
@@ -116,7 +121,8 @@ public class PlayerCameraController : MonoBehaviour
     private void FindObjectBetweenCameraAndPlayer()
     {
         Vector3 direction = (pelvis.position - transform.position).normalized;
-        RaycastHit[] hits = Physics.RaycastAll(transform.position, direction, Mathf.Infinity,
+        float distance = Vector3.Distance(pelvis.position, transform.position);
+        RaycastHit[] hits = Physics.RaycastAll(transform.position, direction, distance,
             LayerMask.GetMask("Cube", "Statue"));
 
         for (int i = 0; i < hits.Length; ++i)
