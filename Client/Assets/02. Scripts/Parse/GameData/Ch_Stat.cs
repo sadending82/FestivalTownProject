@@ -2,7 +2,7 @@ using ExcelDataStructure;
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExcelAsset (AssetPath = "Resources/Prefabs/Data")]
+[ExcelAsset (AssetPath = "Resources/Data")]
 public class Ch_Stat : ScriptableObject
 {
 	public List<CharacterStatEntity> Stat;

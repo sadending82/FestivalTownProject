@@ -36,25 +36,25 @@ public class DataManager
 
             foreach (CharacterStatEntity entity in StatData.Stat)
             {
-                GameDataDict.Add(entity.Index, entity);
+                GameDataDict.TryAdd(entity.Index, entity);
                 GameDataDict[entity.Index].ClassType = Define.ExcelDataClassType.CharacterStat;
             }
 
             foreach (CharacterAttackEntity entity in StatData.Attack)
             {
-                GameDataDict.Add(entity.Index, entity);
+                GameDataDict.TryAdd(entity.Index, entity);
                 GameDataDict[entity.Index].ClassType = Define.ExcelDataClassType.CharacterAttack;
             }
 
             foreach (CharacterMoveEntity entity in StatData.Move)
             {
-                GameDataDict.Add(entity.Index, entity);
+                GameDataDict.TryAdd(entity.Index, entity);
                 GameDataDict[entity.Index].ClassType = Define.ExcelDataClassType.CharacterMove;
             }
 
             foreach (CharacterActionEntity entity in StatData.Action)
             {
-                GameDataDict.Add(entity.Index, entity);
+                GameDataDict.TryAdd(entity.Index, entity);
                 GameDataDict[entity.Index].ClassType = Define.ExcelDataClassType.CharacterAction;
             }
         }
@@ -64,13 +64,13 @@ public class DataManager
         {
             foreach(GachaGroupEntity entity in gachaData.GachaGroup)
             {
-                GameDataDict.Add(entity.Index, entity);
+                GameDataDict.TryAdd(entity.Index, entity);
                 GameDataDict[entity.Index].ClassType = Define.ExcelDataClassType.GachaGroup;
             }
 
             foreach(GachaGroupItemEntity entity in gachaData.GachaGroup_Item)
             {
-                GameDataDict.Add(entity.Index, entity);
+                GameDataDict.TryAdd(entity.Index, entity);
                 GameDataDict[entity.Index].ClassType = Define.ExcelDataClassType.GachaGroupItem;
             }
         }
@@ -80,7 +80,7 @@ public class DataManager
         {
             foreach(ItemEntity entity in itemData.Item_List)
             {
-                GameDataDict.Add(entity.Index, entity);
+                GameDataDict.TryAdd(entity.Index, entity);
                 GameDataDict[entity.Index].ClassType = Define.ExcelDataClassType.Item;
             }
         }
@@ -90,31 +90,31 @@ public class DataManager
         {
             foreach(ModeOutEntity entity in  modeData.Mode_Out)
             {
-                GameDataDict.Add(entity.Index, entity);
+                GameDataDict.TryAdd(entity.Index, entity);
                 GameDataDict[entity.Index].ClassType = Define.ExcelDataClassType.ModeOut;
             }
 
             foreach (FITHModeEntity entity in modeData.FITH_Mode)
             {
-                GameDataDict.Add(entity.Index, entity);
+                GameDataDict.TryAdd(entity.Index, entity);
                 GameDataDict[entity.Index].ClassType = Define.ExcelDataClassType.FITHMode;
             }
 
             foreach (ModePointEntity entity in modeData.Mode_Point)
             {
-                GameDataDict.Add(entity.Index, entity);
+                GameDataDict.TryAdd(entity.Index, entity);
                 GameDataDict[entity.Index].ClassType = Define.ExcelDataClassType.ModePoint;
             }
 
             foreach (ModeRewardEntity entity in modeData.Mode_Reward)
             {
-                GameDataDict.Add(entity.Index, entity);
+                GameDataDict.TryAdd(entity.Index, entity);
                 GameDataDict[entity.Index].ClassType = Define.ExcelDataClassType.ModeReward;
             }
 
             foreach (ModeBonusRewardEntity entity in modeData.Mode_BonusReward)
             {
-                GameDataDict.Add(entity.Index, entity);
+                GameDataDict.TryAdd(entity.Index, entity);
                 GameDataDict[entity.Index].ClassType = Define.ExcelDataClassType.ModeBonusReward;
             }
         }
@@ -124,7 +124,7 @@ public class DataManager
         {
             foreach(WeaponStatEntity entity in weaponData.Stat)
             {
-                GameDataDict.Add(entity.Index, entity);
+                GameDataDict.TryAdd(entity.Index, entity);
                 GameDataDict[entity.Index].ClassType = Define.ExcelDataClassType.WeaponStat;
             }
         }
