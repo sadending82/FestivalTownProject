@@ -6,7 +6,7 @@ public class CharacterStatus : MonoBehaviour
 {
     [Header("--- Status ---")]
     [SerializeField]
-    private int Id;
+    private int id;
     public int maxHp;
     public int hp;
     public int maxStamina;
@@ -17,7 +17,7 @@ public class CharacterStatus : MonoBehaviour
     public float attackSpeed;
     public float runSpeedRatio;
     private float rollSpeed;
-    public bool isDie = false;
+    public bool isDie = true;
     public int groggyNum;
     public float groggyTime;
     public Camera myCamera;
@@ -133,7 +133,7 @@ public class CharacterStatus : MonoBehaviour
             ///<summary>
             ///서버에 상태 전달하는 부분 여기에 추가
             ///</summary>
-            packetManager.SendPlayerAnimationPacket(playerController.GetPosition(), playerController.GetDirection(), Id, upperBodyAnimationState);
+            packetManager.SendPlayerAnimationPacket(playerController.GetPosition(), playerController.GetDirection(), id, upperBodyAnimationState);
 
             this.upperBodyAnimationState = upperBodyAnimationState;
             animationController.SetUpperBodyAnimationState(upperBodyAnimationState);
@@ -207,11 +207,23 @@ public class CharacterStatus : MonoBehaviour
             hp = 0;
             playerMesh.SetActive(false);
             Managers.Sound.Play("Sfx_Ch_Die");
+            if(amIPlayer == true)
+            {
+                Managers.SpectatorCamera.SwitchNextCamera();
+            }
+            else
+            {
+                Managers.SpectatorCamera.CheckSpectator(id);
+            }    
         }
         else
         {
             ResetCharacterState();
             playerMesh.SetActive(true);
+            if (amIPlayer == true)
+            {
+                Managers.SpectatorCamera.SwitchMyCamera();
+            }
         }
     }
     public bool GetIsDie()
@@ -220,11 +232,12 @@ public class CharacterStatus : MonoBehaviour
     }
     public void SetId(int Id)
     {
-        this.Id = Id;
+        this.id = Id;
+        myCamera.GetComponent<PlayerCameraController>().SetMyId(Id);
     }
     public int GetId()
     {
-        return Id;
+        return id;
     }
     public int GetStrength()
     {
@@ -329,6 +342,10 @@ public class CharacterStatus : MonoBehaviour
     public Rigidbody GetHeadRigidbody()
     {
         return headRig;
+    }
+    public Camera GetMyCamera()
+    {
+        return myCamera;
     }
     // 내가 잡은 플레이어
     public void SetIsGrapPlayer(bool isGrapPlayer, int targetPlayerId = -1)

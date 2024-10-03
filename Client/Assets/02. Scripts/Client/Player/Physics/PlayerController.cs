@@ -188,6 +188,10 @@ public class PlayerController : MonoBehaviour
 
             CheckIsGround();
         }
+        else if (amIPlayer == true)
+        {
+            SpectatorCameraControl();
+        }
     }
 
     private void SendForSync()
@@ -195,6 +199,13 @@ public class PlayerController : MonoBehaviour
         if (pelvis != null && gameStart == true)
         {
             packetManager.SendPlayerSyncPacket(pelvis.transform.position, stabillizerDirection, playerStatus.GetStamina(), myId);
+        }
+    }
+    private void SpectatorCameraControl()
+    {
+        if (Input.GetMouseButtonUp(0))
+        {
+            Managers.SpectatorCamera.SwitchNextCamera();
         }
     }
 

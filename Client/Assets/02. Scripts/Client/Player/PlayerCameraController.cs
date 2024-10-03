@@ -17,6 +17,8 @@ public class PlayerCameraController : MonoBehaviour
     public float MaximumZoom;
 
     private bool amIPlayer;
+    private int myId;
+    private bool spectatorMode;
 
     private float mouseX, mouseY;
 
@@ -25,6 +27,7 @@ public class PlayerCameraController : MonoBehaviour
         myCamera = GetComponent<Camera>();
         cameraArm = transform.parent;
         amIPlayer = false;
+        spectatorMode = false;
     }
 
     private void Start()
@@ -37,7 +40,7 @@ public class PlayerCameraController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (amIPlayer == true)
+        if (amIPlayer == true || spectatorMode == true)
         {
             Move();
             LookAround();
@@ -45,7 +48,7 @@ public class PlayerCameraController : MonoBehaviour
     }
     private void Update()
     {
-        if (amIPlayer == true)
+        if (amIPlayer == true || spectatorMode == true)
         {
             float scroll = Input.GetAxis("Mouse ScrollWheel") * ZoomSpeed;
 
@@ -89,6 +92,26 @@ public class PlayerCameraController : MonoBehaviour
     public void SetAmIPlayer(bool amIPlayer)
     {
         this.amIPlayer = amIPlayer;
+    }
+    public bool GetAmIPlayer()
+    {
+        return amIPlayer;
+    }
+    public void SetMyId(int myId)
+    {
+        this.myId = myId;
+    }
+    public void SpectatorModeOn()
+    {
+        spectatorMode = true;
+    }
+    public void SpectatorModeOff()
+    {
+        spectatorMode = false;
+    }
+    public bool GetIsPlayerDie()
+    {
+        return Managers.Player.FindPlayerById(myId).GetComponent<CharacterStatus>().GetIsDie();
     }
     private void FindObjectBetweenCameraAndPlayer()
     {

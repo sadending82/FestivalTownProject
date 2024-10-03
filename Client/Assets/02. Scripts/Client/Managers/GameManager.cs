@@ -117,6 +117,7 @@ public class GameManager : MonoBehaviour
     public void GameStart()
     {
         isTimerStart = true;
+        Managers.SpectatorCamera.AddCameras();
         Managers.Player.GameStart();
     }
 
