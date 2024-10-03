@@ -107,6 +107,23 @@ public class GameScene : BaseScene
 
         Managers.Resource.Destroy(GameObject.Find("UI_Loading"));
 
+        StartCoroutine(GameStartTimerActive());
+    }
+
+    IEnumerator GameStartTimerActive()
+    {
+        var ui = Managers.UI.ShowPopUpUI<UI_StartTimer>();
+        Managers.Sound.Play("Sfx_Countdown");
+        yield return null;
+        ui.TimerSet(3);
+        yield return new WaitForSeconds(1f);
+        ui.TimerSet(2);
+        yield return new WaitForSeconds(1f);
+        ui.TimerSet(1);
+        yield return new WaitUntil(() => Managers.Game.isTimerStart);
+        ui.TimerSet(0);
+        yield return new WaitForSeconds(0.5f);
+        Managers.UI.ClosePopUpUI(ui);
     }
 
     public void MoveToResult()
@@ -119,6 +136,18 @@ public class GameScene : BaseScene
         GameObject tPlayer = Managers.Player.FindPlayerById(myId);
         tPlayer.GetComponent<CharacterStatus>().CameraOff();
         ResultObjectOn();
+
+        Managers.Sound.Stop(Define.Sound.Bgm);
+
+        if(Managers.Game.GetWinningTeam() ==
+            tPlayer.GetComponent<CharacterStatus>().GetTeamNumber())
+        {
+            Managers.Sound.Play("Sfx_Win");
+        }
+        else
+        {
+            Managers.Sound.Play("Sfx_Lose");
+        }
 
         Managers.UI.ShowSceneUI<UI_Result>();
 
