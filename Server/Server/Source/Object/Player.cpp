@@ -72,6 +72,17 @@ bool Player::ChangeToGroggyState(Server* pServer)
 			pServer->GetPacketSender()->SendWeaponDropPacket(mPosition, mRoomID, weaponID);
 		}
 	}
+
+	// µé°íÀÖ´Â ÆøÅº Æø¹ß
+	if (mBomb != nullptr) {
+		if (mBomb->SetIsGrabbed(false) == true) {
+			int bombID = mBomb->GetID();
+			mBomb = nullptr;
+			pServer->GetPacketSender()->SendBombExplosionPacket(mRoomID, bombID);
+			pServer->GetRooms()[mRoomID]->DeleteBomb(bombID);
+		}
+	}
+
 	mPlayerStateLock.unlock();
 
 	return true;
@@ -99,6 +110,17 @@ bool Player::ChangeToDeadState(Server* pServer, int spawn_time)
 			pServer->GetPacketSender()->SendWeaponDropPacket(mPosition, mRoomID, weaponID);
 		}
 	}
+
+	// µé°íÀÖ´Â ÆøÅº Æø¹ß
+	if (mBomb != nullptr) {
+		if (mBomb->SetIsGrabbed(false) == true) {
+			int bombID = mBomb->GetID();
+			mBomb = nullptr;
+			pServer->GetPacketSender()->SendBombExplosionPacket(mRoomID, bombID);
+			pServer->GetRooms()[mRoomID]->DeleteBomb(bombID);
+		}
+	}
+
 	mPlayerStateLock.unlock();
 	return true;
 }
