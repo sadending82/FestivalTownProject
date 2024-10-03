@@ -31,9 +31,9 @@ public class NetworkSelect : EditorWindow
         labelStyle.alignment = TextAnchor.MiddleCenter;
         GUILayout.Label("네트워크 설정", EditorStyles.boldLabel);
 
-        _networkSelected = GUILayout.Toolbar(_networkSelected, new string[] { "로컬 네트워크로 설정", "리모트 네트워크로 설정", "IP 직접 입력" });
+        _networkSelected = GUILayout.Toolbar(_networkSelected, new string[] { "로컬 네트워크로 설정", "리모트 네트워크로 설정", "테스트 서버로 설정", "IP 직접 입력" });
 
-        if (_networkSelected == 2)
+        if (_networkSelected == 3)
         {
             GUILayout.Space(10);
             GUILayout.Label("IP 주소");
@@ -50,6 +50,9 @@ public class NetworkSelect : EditorWindow
                 IPAddressObj.IPAddress = "39.120.204.67";
                 break;
             case 2:
+                IPAddressObj.IPAddress = "203.239.231.148";
+                break;
+            case 3:
                 IPAddressObj.IPAddress = _ipAddressText;
                 break;
             default:
@@ -58,8 +61,8 @@ public class NetworkSelect : EditorWindow
 
         labelStyle.alignment = TextAnchor.MiddleLeft;
 
-        minSize = new Vector3(480.0f, 200.0f);
-        maxSize = new Vector3(480.0f, 200.0f);
+        minSize = new Vector3(600.0f, 200.0f);
+        maxSize = new Vector3(600.0f, 200.0f);
     }
 }
 #endif
