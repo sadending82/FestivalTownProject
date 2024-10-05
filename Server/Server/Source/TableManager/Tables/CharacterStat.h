@@ -24,7 +24,7 @@ enum class AttackStat_Field {
 	Attack_Speed,
 	Attack_Range,
 	Ch_StaminaConsume,
-	Steal_Stamina,
+	Vanish_Stamina,
 };
 
 enum class MoveStat_Field {
@@ -38,9 +38,9 @@ enum class MoveStat_Field {
 struct CharacterStat {
 	int				index;
 	std::string		name;
-	int				hp;
+	float			hp;
 	int				stamina;
-	int				strength;
+	float			strength;
 	int				speed;
 };
 
@@ -48,9 +48,10 @@ struct AttackStat {
 	int Index;
 	std::string Name;
 	float Value;
-	int	Attack_Speed;
+	float Attack_Speed;
+	float Attack_Range;
 	int	Ch_StaminaConsume;
-	int Steal_Stamina;
+	int Vanish_Stamina;
 
 };
 

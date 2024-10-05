@@ -77,7 +77,7 @@ public:
 						damageAmount = attackerStat.strength + tableManager->GetWeaponStats()[(int)attacker->GetWeapon()->GetType()].Weapon_Power;
 					}
 					attacker->GetWeaponLock().unlock_shared();
-					TargetStaminaLoss += tableManager->GetAttackStats()[eDamageType::AT_ATTACK].Steal_Stamina;
+					TargetStaminaLoss += tableManager->GetAttackStats()[eDamageType::AT_ATTACK].Vanish_Stamina;
 
 					// 데미지 적용
 					target->ReduceHP(damageAmount);

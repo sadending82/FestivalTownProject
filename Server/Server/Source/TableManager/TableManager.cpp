@@ -128,9 +128,9 @@ void TableManager::ReadCharacterStat()
                     = CharacterStat{
                     (int)row[(int)(CharacterStat_Field::index)].value<int>(),
                     (std::string)row[(int)(CharacterStat_Field::name)].to_string(),
-                    (int)row[(int)(CharacterStat_Field::hp)].value<int>(),
+                    (float)row[(int)(CharacterStat_Field::hp)].value<float>(),
                     (int)row[(int)(CharacterStat_Field::stamina)].value<int>(),
-                    (int)row[(int)(CharacterStat_Field::strength)].value<int>(),
+                    (float)row[(int)(CharacterStat_Field::strength)].value<float>(),
                     (int)row[(int)(CharacterStat_Field::speed)].value<int>()
                 };
             }
@@ -151,9 +151,10 @@ void TableManager::ReadCharacterStat()
                     (int)row[(int)(AttackStat_Field::Index)].value<int>(),
                     (std::string)row[(int)(AttackStat_Field::Name)].to_string(),
                     (float)row[(int)(AttackStat_Field::Value)].value<float>(),
-                    (int)row[(int)(AttackStat_Field::Attack_Speed)].value<int>(),
+                    (float)row[(int)(AttackStat_Field::Attack_Speed)].value<float>(),
+                    (float)row[(int)(AttackStat_Field::Attack_Range)].value<float>(),
                     (int)row[(int)(AttackStat_Field::Ch_StaminaConsume)].value<int>(),
-                    (int)row[(int)(AttackStat_Field::Steal_Stamina)].value<int>()
+                    (int)row[(int)(AttackStat_Field::Vanish_Stamina)].value<int>()
                 };
             }
 
@@ -210,7 +211,8 @@ void TableManager::ReadWeaponStat()
                     (int)row[(int)(WeaponStat_Field::index)].value<int>(),
                     (std::string)row[(int)(WeaponStat_Field::name)].to_string(),
                     (int)row[(int)(WeaponStat_Field::Weapon_Power)].value<int>(),
-                    (int)row[(int)(WeaponStat_Field::Weapon_Range)].value<int>(),
+                    (float)row[(int)(WeaponStat_Field::Weapon_Range)].value<float>(),
+                    (float)row[(int)(WeaponStat_Field::Weapon_Speed)].value<float>(),
                     (int)row[(int)(WeaponStat_Field::Weapon_Type)].value<int>(),
                     (int)row[(int)(WeaponStat_Field::Weapon_StaminaConsume)].value<int>()
                 };
