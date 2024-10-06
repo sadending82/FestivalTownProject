@@ -23,6 +23,7 @@ public:
 	int					GetRoomID() { return mRoomID; }
 	int					GetInGameID() { return mInGameID; }
 	int					GetTeam() { return mTeam; }
+	bool				GetIsBot(){ return mIsBot; }
 	std::string			GetName() { return mName; }
 	Vector3f&			GetPosition() { return mPosition; }
 	Vector3f&			GetDirection() { return mDirection; }
@@ -44,6 +45,7 @@ public:
 	void				SetRoomID(int id) { mRoomID = id; }
 	void				SetInGameID(int id) { mInGameID = id; }
 	void				SetTeam(int team) { mTeam = team; }
+	void				SetIsBot(bool isBot) { mIsBot = isBot; }
 	void				SetName(std::string name) { mName = name; }
 	void				SetPosition(float x, float y, float z) { mPosition = Vector3f(x, y, z); }
 	void				SetPosition(Vector3f v3f) { mPosition = v3f; }
@@ -85,6 +87,8 @@ protected:
 	int					mInGameID; // 클라와 함께 인게임 내에서 구분하기 위한 id
 	std::string			mName = "test"; // 임시 닉네임
 	int					mTeam;
+
+	bool				mIsBot = false;
 	
 	Vector3f			mPosition;
 	Vector3f			mDirection;

@@ -23,14 +23,10 @@ void FITH::StartGame(int roomID)
     Room* room = mServer->GetRooms()[roomID];
 
     if (mServer->GetMode() == SERVER_MODE::TEST) {
-        mPacketSender->SendGameStart(roomID);
+       
     }
 
     if (room->SetIsRun(true) == true) {
-
-        if (mServer->GetMode() == SERVER_MODE::TEST) {
-            return;
-        }
 
         mPacketSender->SendGameStart(roomID);
 
@@ -78,6 +74,10 @@ void FITH::CheckGameEnd(int roomID)
             room->GetPlayerListLock().lock_shared();
             for (auto player : room->GetPlayerList()) {
                 if (player == nullptr) continue;
+                if (player->GetIsBot() == true) {
+                    delete player;
+                    continue;
+                }
                 player->GetStateLock().lock();
                 player->SetState(eSessionState::ST_ACCEPTED);
                 player->GetStateLock().unlock();
@@ -117,6 +117,10 @@ void FITH::TimeoverGameEnd(int roomID)
         room->GetPlayerListLock().lock_shared();
         for (auto player : room->GetPlayerList()) {
             if (player == nullptr) continue;
+            if (player->GetIsBot() == true) {
+                delete player;
+                continue;
+            }
             player->GetStateLock().lock();
             player->Init();
             player->SetState(eSessionState::ST_ACCEPTED);

@@ -211,11 +211,11 @@ void Server::Run()
     switch (mMode) {
     case SERVER_MODE::LIVE: {
         // matching start
-        //PushEventGameMatching(mTimer);
+        PushEventGameMatching(mTimer);
     }break;
     case SERVER_MODE::TEST: {
         DEBUGMSGNOPARAM("START TEST MODE \n");
-        MakeTestRoom();
+        //MakeTestRoom();
     }break;
     }
 }
@@ -271,6 +271,7 @@ void Server::SendAllPlayerInRoomBySessionID(void* packet, int size, int sessionI
     mRooms[roomID]->GetPlayerListLock().lock_shared();
     for (Player* p : GetRooms()[roomID]->GetPlayerList()) {
         if (p == nullptr) continue;
+        if (p->GetIsBot()) continue;
         p->DoSend(packet, size);
     }
     mRooms[roomID]->GetPlayerListLock().unlock_shared();
@@ -281,6 +282,7 @@ void Server::SendAllPlayerInRoom(void* packet, int size, int roomID)
     mRooms[roomID]->GetPlayerListLock().lock_shared();
     for (Player* p : GetRooms()[roomID]->GetPlayerList()) {
         if (p == nullptr) continue;
+        if (p->GetIsBot()) continue;
         p->DoSend(packet, size);
     }
     mRooms[roomID]->GetPlayerListLock().unlock_shared();
@@ -299,6 +301,7 @@ void Server::SendAllPlayerInRoomExceptSender(void* packet, int size, int session
     mRooms[roomID]->GetPlayerListLock().lock_shared();
     for (Player* p : GetRooms()[roomID]->GetPlayerList()) {
         if (p == nullptr) continue;
+        if (p->GetIsBot()) continue;
         if (p->GetSessionID() == sessionID) continue;
         p->DoSend(packet, size);
     }
@@ -370,7 +373,13 @@ void Server::MatchingComplete(int roomID, std::vector<Player*>& players)
                     room->SetHost(player->GetInGameID());
                 }
                 room->AddPlayerCnt();
-                mPacketSender->SendGameMatchingResponse(sessionID);
+
+                if (player->GetIsBot() == true) {
+                    room->AddReadyCnt();
+                }
+                else {
+                    mPacketSender->SendGameMatchingResponse(sessionID);
+                }
             }
         }
         player->GetStateLock().unlock();

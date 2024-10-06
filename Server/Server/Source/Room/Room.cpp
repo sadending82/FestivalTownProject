@@ -71,7 +71,6 @@ bool Room::AddPlayer(Player* player)
 		if (mPlayerList[i] == nullptr) {
 			mPlayerList[i] = player;
 
-			mPlayerListLock.unlock();
 			player->SetInGameID(i);
 			player->SetRoomID(mRoomID);
 			player->SetState(eSessionState::ST_INGAME);
@@ -83,6 +82,8 @@ bool Room::AddPlayer(Player* player)
 			mPlayerRecordList[i].team = player->GetTeam();
 
 			mTeams[player->GetTeam()].GetMembers().insert(i);
+
+			mPlayerListLock.unlock();
 
 			return true;
 		}

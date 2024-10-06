@@ -39,8 +39,8 @@ public:
 					}
 				}break;
 				case SERVER_MODE::TEST: {
-					pServer->GetPacketSender()->SendAllPlayerReady(TESTROOM);
-					PushEventGameStart(pServer->GetTimer(), TESTROOM, pServer->GetRooms()[TESTROOM]->GetRoomCode());
+					pServer->GetPacketSender()->SendAllPlayerReady(roomid);
+					PushEventGameStart(pServer->GetTimer(), roomid, pServer->GetRooms()[roomid]->GetRoomCode());
 				}break;
 				}
 			}

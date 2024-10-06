@@ -29,15 +29,21 @@ public:
 
 				}break;
 				case SERVER_MODE::TEST: {
-					Room* room = pServer->GetRooms()[TESTROOM];
+					/*Room* room = pServer->GetRooms()[TESTROOM];
 					room->GetStateLock().lock();
 					if (room->GetState() == eRoomState::RS_FREE) {
 						pServer->MakeTestRoom();
 					}
-					room->GetStateLock().unlock();
+					room->GetStateLock().unlock();*/
 
-					std::vector<Player*> playerVector = { dynamic_cast<Player*>(session) };
-					pServer->MatchingComplete(TESTROOM, playerVector);
+					int roomID = pServer->CreateNewRoom(2, GameMode::FITH_Indiv_Battle_2);
+
+					Player* Bot = new Player;
+					Bot->SetState(eSessionState::ST_MATCHWAITING);
+					Bot->SetIsBot(true);
+
+					std::vector<Player*> playerVector = { dynamic_cast<Player*>(session), Bot };
+					pServer->MatchingComplete(roomID, playerVector);
 				}break;
 				}
 			}
