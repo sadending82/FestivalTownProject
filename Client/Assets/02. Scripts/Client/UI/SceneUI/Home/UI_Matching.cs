@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class UI_Matching : UI_AlwaysOnTop
+public class UI_Matching : UI_PopUp
 {
     enum GameObjects
     {
@@ -19,6 +19,8 @@ public class UI_Matching : UI_AlwaysOnTop
 
     public override void Init()
     {
+        base.Init();
+
         Bind<GameObject>(typeof(GameObjects));
     }
 

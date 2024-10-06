@@ -15,11 +15,14 @@ public class UI_Present : UI_PopUp
 
     void Start()
     {
+        
         Init();
     }
 
     public override void Init()
     {
+        base.Init();
+
         Bind<GameObject>(typeof(GameObjects));
 
         Get<GameObject>((int)GameObjects.GachaButton).BindEvent((PointerEventData) =>
@@ -29,8 +32,7 @@ public class UI_Present : UI_PopUp
 
         Get<GameObject>((int)GameObjects.BackButton).BindEvent((PointerEventData) =>
         {
-            Managers.UI.CloseAllPopUpUI();
-            Managers.UI.ShowPopUpUI<UI_HomeStart>();
+            Managers.UI.ClosePopUpUI(GetComponent<UI_Present>());
         });
     }
 }

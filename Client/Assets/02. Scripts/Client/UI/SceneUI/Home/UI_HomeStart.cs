@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class UI_HomeStart : UI_PopUp
+public class UI_HomeStart : UI_Scene
 {
-
     bool isMatching = false;
     bool isPresentOpen = false;
 
@@ -26,6 +25,8 @@ public class UI_HomeStart : UI_PopUp
 
     public override void Init()
     {
+        base.Init();
+
         Bind<GameObject>(typeof(GameObjects));
 
         Get<GameObject>((int)GameObjects.GameStartButton).BindEvent((PointerEventData) => { 
@@ -42,7 +43,7 @@ public class UI_HomeStart : UI_PopUp
             }
             else
             {
-                Managers.UI.ShowAOTUI<UI_Matching>();
+                Managers.UI.ShowPopUpUI<UI_Matching>();
                 Managers.Network.GetPacketManager().SendGameMatchingRequest();
 
                 // 이거도 나중에 서버에서 받고 처리해야 할 것으로 보입니다.

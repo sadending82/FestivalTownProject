@@ -35,11 +35,6 @@ public class UIManager
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         canvas.overrideSorting = true; // 캔버스 두 개면 위에 겹쳐버리라구~
 
-        if(alwaysOnTop)
-        {
-            canvas.sortingOrder = 99;
-        }
-
         if (sort)
         {
             canvas.sortingOrder = _order;
@@ -48,6 +43,11 @@ public class UIManager
         else // 소팅 안하면 그냥 고정되는 놈이라 맨 앞에 놓으면 됨
         {
             canvas.sortingOrder = 0;
+        }
+
+        if (alwaysOnTop)
+        {
+            canvas.sortingOrder = 99;
         }
     }
 

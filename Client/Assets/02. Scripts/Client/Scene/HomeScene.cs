@@ -14,8 +14,8 @@ public class HomeScene : BaseScene
 
         Managers.Sound.Play("Sfx_BGM_Lobby", Define.Sound.Bgm);
 
-        Managers.UI.ShowSceneUI<UI_HomeScene>();
-        Managers.UI.ShowPopUpUI<UI_HomeStart>();
+        Managers.UI.ShowSceneUI<UI_HomeStart>();
+        Managers.UI.ShowAOTUI<UI_HomeScene>();
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
