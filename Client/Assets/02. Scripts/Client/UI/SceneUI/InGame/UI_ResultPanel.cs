@@ -33,10 +33,10 @@ public class UI_ResultPanel : UI_Base
 
     }
 
-    public void SetPlayerResult(int playerId, int kill, int death, int bombInsert, int gold)
+    public void SetPlayerResult(int playerId, int kill, int death, int bombInsert, int gold, bool isMvp)
     {
         GetPlayerResultObj(playerId).SetActive(true);
-        GetPlayerResultObj(playerId).GetComponent<UI_PlayerResult>().SetPlayerResult(kill, death, bombInsert, gold);
+        GetPlayerResultObj(playerId).GetComponent<UI_PlayerResult>().SetPlayerResult(kill, death, bombInsert, gold, isMvp);
     }
 
     GameObject GetPlayerResultObj(int id)

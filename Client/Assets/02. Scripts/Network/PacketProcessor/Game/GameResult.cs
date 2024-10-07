@@ -35,6 +35,7 @@ namespace Network.PacketProcessor
                 result.death = playerRecord.Value.DeathCount;
                 result.bombInsert = playerRecord.Value.BombInsertCount;
                 result.gold = playerRecord.Value.EarnGold;
+                result.isMvp = playerRecord.Value.IsMvp;
 
                 Managers.Game.PlayerResultData.Add(playerRecord.Value.Id, result);
             }
