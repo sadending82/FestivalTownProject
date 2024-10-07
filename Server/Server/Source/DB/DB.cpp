@@ -287,6 +287,7 @@ bool DB::UpdateUserPoint(const int uid, const int valueOfChange)
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 		return true;
+
 	}
 
 	DEBUGMSGNOPARAM("Execute Query Error : (UpdateUserPoint)\n");
