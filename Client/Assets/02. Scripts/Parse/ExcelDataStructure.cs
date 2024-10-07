@@ -94,24 +94,24 @@ namespace ExcelDataStructure
     public class FITHModeEntity : GameDataEntity
     {
         public string Name_Info;
-        public float Play_Time;
-        public float Player_Spawn_Time;
+        public int Play_Time;
+        public int Player_Spawn_Time;
         public int Life_Count;
         public int Bomb_Spawn_Count;
-        public float Bomb_Spawn_Time;
-        public float Bomb_Delay_Time;
-        public float Weapon1_Spawn_Index;
+        public int Bomb_Spawn_Time;
+        public int Bomb_Delay_Time;
+        public int Weapon1_Spawn_Index;
         public int Weapon1_Spawn_Count;
-        public float Weapon1_Spawn_Time;
+        public int Weapon1_Spawn_Time;
         public int Weapon2_Spawn_Index;
-        public float Weapon2_Spawn_Count;
-        public float Weapon2_Spawn_Time;
+        public int Weapon2_Spawn_Count;
+        public int Weapon2_Spawn_Time;
         public int Block1_Spawn_Index;
         public int Block1_Spawn_Count;
-        public float Block1_Spawn_Time;
+        public int Block1_Spawn_Time;
         public int Block2_Spawn_Index;
         public int Block2_Spawn_Count;
-        public float Block2_Spawn_Time;
+        public int Block2_Spawn_Time;
 
     }
 
@@ -160,6 +160,6 @@ namespace ExcelDataStructure
         public int Weapon_Power;
         public float Weapon_Range;
         public int Weapon_Type;
-        public float Weapon_StaminaConsume;
+        public int Weapon_StaminaConsume;
     }
 }
