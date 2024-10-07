@@ -7,6 +7,7 @@ constexpr char GameStartCommand = 's';
 constexpr char SendLifeReduceCommand = 'l';
 constexpr char DeleteRoom = 'd';
 constexpr char Gacha = 'g';
+constexpr char TableReload = 't';
 
 class Timer;
 

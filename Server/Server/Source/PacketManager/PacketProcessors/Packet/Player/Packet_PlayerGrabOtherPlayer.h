@@ -12,7 +12,7 @@ public:
 			mBuilder.Clear();
 			flatbuffers::Verifier verifier(data, size);
 			if (verifier.VerifyBuffer<PlayerGrabOtherPlayer>(nullptr)) {
-				const PlayerGrabOtherPlayer* read = flatbuffers::GetRoot<PlayerGrabOtherPlayer >(data);
+				const PlayerGrabOtherPlayer* read = flatbuffers::GetRoot<PlayerGrabOtherPlayer>(data);
 
 				Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
 				if (player == nullptr && player->GetInGameID() != read->id()) {

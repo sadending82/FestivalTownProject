@@ -240,6 +240,14 @@ void Server::SetGameManagers()
     mGameManagers[GameMode::FITH_Team_Battle_6] = new FITH(this, GameMode::FITH_Team_Battle_6);
 }
 
+void Server::TableReLoad()
+{
+    mTableManager->Lock();
+    mTableManager->ClearAllTable();
+    mTableManager->ReadAllDataTable();
+    mTableManager->UnLock();
+}
+
 void Server::MakeTestRoom()
 {
     GameMode gameMode = GameMode::FITH_Team_Battle_6;
