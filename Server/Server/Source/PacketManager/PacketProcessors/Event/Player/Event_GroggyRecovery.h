@@ -49,7 +49,7 @@ public:
 
 
 			// 스테미나 회복
-			CharacterStat& characterStat = pServer->GetTableManager()->GetCharacterStats()[(int)player->GetChacracterType()];
+			CharacterStat& characterStat = player->GetCharacterStat();
 
 			int staminaRecoveryValue = characterStat.stamina;
 

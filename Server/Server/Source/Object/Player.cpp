@@ -17,6 +17,7 @@ void Player::Init()
 
 	mIsGrabbed = false;
 	mAttachedPlayerID = INVALIDKEY;
+	mCharacterStat = CharacterStat();
 }
 
 void Player::Disconnect()
@@ -150,4 +151,10 @@ bool Player::ChangeToDeadState(Server* pServer, int spawn_time)
 
 	mPlayerStateLock.unlock();
 	return true;
+}
+
+void Player::ChangeCharacterType(Server* pServer, eCharacterType type)
+{
+	mCharacterType = type;
+	mCharacterStat = pServer->GetTableManager()->GetCharacterStats()[type];
 }

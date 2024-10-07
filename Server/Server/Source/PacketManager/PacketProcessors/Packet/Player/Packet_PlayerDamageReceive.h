@@ -38,7 +38,7 @@ public:
 				target->GetPlayerStateLock().unlock();
 
 				TableManager* tableManager = pServer->GetTableManager();
-				CharacterStat& attackerStat = tableManager->GetCharacterStats()[(int)attacker->GetChacracterType()];
+				CharacterStat& attackerStat = attacker->GetCharacterStat();
 
 				int damageAmount = 0;
 				int TargetStaminaLoss = 0;

@@ -1,5 +1,6 @@
 #pragma once
 #include "../Network/Session/Session.h"
+#include "../TableManager/Tables/CharacterStat.h"
 #include <shared_mutex>
 
 class Player : public Session
@@ -39,6 +40,7 @@ public:
 	std::shared_mutex&	GetWeaponLock() { return mWeaponLock; }
 	bool				GetIsGrabbed() { return mIsGrabbed.load(); }
 	int					GetAttachedPlayerID() { return mAttachedPlayerID; }
+	CharacterStat&		GetCharacterStat() { return mCharacterStat; }
 
 	int					SetUID() { return mUID; }
 	void				SetAccountID(std::string accountID) { mAccountID = accountID; }
@@ -59,6 +61,7 @@ public:
 	void				SetBomb(class Bomb* bomb) { mBomb = bomb; }
 	void				SetWeapon(class Weapon* weapon) { mWeapon = weapon; }
 	void				SetAttachedPlayerID(int playerID) { mAttachedPlayerID = playerID; }
+	void				SetCharacterStat(CharacterStat stat) { mCharacterStat = stat; }
 	// cas
 	bool				SetIsGrabbed(bool desired);
 
@@ -73,6 +76,8 @@ public:
 
 	bool				ChangeToGroggyState(class Server* pServer);
 	bool				ChangeToDeadState(class Server* pServer, int spawn_time);
+
+	void				ChangeCharacterType(class Server* pServer, eCharacterType type);
 
 protected:
 	std::mutex			mPlayerStateLock;
@@ -101,4 +106,6 @@ protected:
 	class Weapon*		mWeapon = nullptr;
 	std::atomic<bool>	mIsGrabbed = false;
 	int					mAttachedPlayerID = INVALIDKEY;
+
+	CharacterStat		mCharacterStat;
 };

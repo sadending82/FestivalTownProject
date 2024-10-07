@@ -359,9 +359,9 @@ void Server::MatchingComplete(int roomID, std::vector<Player*>& players)
             }
 
             player->SetTeam(teamNum);
-            player->SetChacracterType(eCharacterType::CT_TEST);
-            player->SetHP(GetTableManager()->GetCharacterStats()[(int)player->GetChacracterType()].hp);
-            player->SetStamina(GetTableManager()->GetCharacterStats()[(int)player->GetChacracterType()].stamina);
+            player->ChangeCharacterType(this, eCharacterType::CT_TEST);
+            player->SetHP(player->GetCharacterStat().hp);
+            player->SetStamina(player->GetCharacterStat().stamina);
 
             int sessionID = player->GetSessionID();
             bool AddPlayerOk = room->AddPlayer(player);
