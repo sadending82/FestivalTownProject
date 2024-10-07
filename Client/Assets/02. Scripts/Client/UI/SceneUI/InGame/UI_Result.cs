@@ -23,6 +23,8 @@ public class UI_Result : UI_Scene
 
     public override void Init()
     {
+        base.Init();
+
         Bind<GameObject>(typeof(GameObjects));
 
         Get<GameObject>((int)GameObjects.RestartButton).BindEvent((PointerEventData) => {

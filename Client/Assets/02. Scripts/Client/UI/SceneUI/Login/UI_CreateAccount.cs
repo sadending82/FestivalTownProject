@@ -19,6 +19,7 @@ public class UI_CreateAccount : UI_PopUp
 
     public override void Init()
     {
+        base.Init();
         Bind<GameObject>(typeof(GameObjects));
     }
 

@@ -11,11 +11,13 @@ public class UI_HomeStart : UI_Scene
     enum GameObjects
     {
         Panel,
+        Title,
         GameStartButton,
         PresentButton,
         GalleryButton,
         SettingButton,
         ExitButton,
+        CharacterImage,
     }
 
     void Start()
