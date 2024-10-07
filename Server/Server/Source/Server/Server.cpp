@@ -243,16 +243,14 @@ void Server::SetGameManagers()
 void Server::MakeTestRoom()
 {
     GameMode gameMode = GameMode::FITH_Team_Battle_6;
+    GameModeData& modeInfo = mTableManager->GetGameModeData()[gameMode];
     Room* room = mRooms[TESTROOM];
-    room->Init(TESTROOM, mTableManager->GetGameModeData()[gameMode].Life_Count, mTableManager->GetGameModeData()[gameMode].Player_Count);
-    room->SetGameMode(gameMode);
+    room->Init(TESTROOM, gameMode, modeInfo);
     room->InitMap(&mTableManager->GetMapData()[MapCode::TEST]);
     room->SetState(eRoomState::RS_INGAME);
-    room->SetPlayerLimit(mTableManager->GetGameModeData()[gameMode].Player_Count);
 
     // Push Event
     long long roomCode = room->GetRoomCode();
-    GameModeInfo& modeInfo = mTableManager->GetGameModeData()[gameMode];
 
     PushEventBlockDrop(mTimer, TESTROOM, roomCode, modeInfo.Block1_Spawn_Index, modeInfo.Block1_Spawn_Time);
     PushEventBlockDrop(mTimer, TESTROOM, roomCode, modeInfo.Block2_Spawn_Index, modeInfo.Block2_Spawn_Time);
@@ -315,7 +313,7 @@ void Server::StartHeartBeat(int sessionID)
     PushEventHeartBeat(mTimer, sessionID);
 }
 
-int Server::CreateNewRoom(int playerCount, GameMode gameMode)
+int Server::CreateNewRoom(GameMode gameMode)
 {
     int roomID = SetRoomID();
     if (roomID == INVALIDKEY) {
@@ -323,11 +321,8 @@ int Server::CreateNewRoom(int playerCount, GameMode gameMode)
         return INVALIDKEY;
     }
     Room* room = GetRooms()[roomID];
-    room->Init(roomID, GetTableManager()->GetGameModeData()[gameMode].Life_Count, GetTableManager()->GetGameModeData()[gameMode].Player_Count);
-    room->SetGameMode(gameMode);
+    room->Init(roomID, gameMode, mTableManager->GetGameModeData()[gameMode]);
     room->InitMap(&GetTableManager()->GetMapData()[MapCode::TEST]);
-
-    room->SetPlayerLimit(playerCount); // юс╫ц
 
     return roomID;
 }
@@ -338,7 +333,7 @@ void Server::MatchingComplete(int roomID, std::vector<Player*>& players)
 
     // Player Add Into New Room
     for (Player* player : players) {
-        if (room->GetPlayerCnt() == room->GetPlayerLimit()) {
+        if (room->GetPlayerCnt() == room->GetGameModeData().Player_Count) {
             break;
         }
         player->GetStateLock().lock();

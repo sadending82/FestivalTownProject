@@ -27,7 +27,7 @@ public:
 
 			GameMode gameMode = room->GetGameMode();
 
-			GameModeInfo& modeInfo = pServer->GetTableManager()->GetGameModeData()[gameMode];
+			GameModeData& modeInfo = pServer->GetTableManager()->GetGameModeData()[gameMode];
 
 			int blockType = event->objectType;
 			int nextEventTime = 0;

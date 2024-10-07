@@ -49,7 +49,7 @@ public:
 					damageAmount = 9999999;
 					// 荤噶 贸府
 					target->ReduceHP(damageAmount);
-					int spawnTime = tableManager->GetGameModeData()[room->GetGameMode()].Player_Spawn_Time;
+					int spawnTime = room->GetGameModeData().Player_Spawn_Time;
 					if (target->ChangeToDeadState(pServer, spawnTime)) {
 						// record update
 						room->GetPlayerRecordList()[target_id].death_count++;
@@ -85,7 +85,7 @@ public:
 
 					if (target->GetHP() <= 0) {
 						// 荤噶 贸府
-						int spawnTime = tableManager->GetGameModeData()[room->GetGameMode()].Player_Spawn_Time;
+						int spawnTime = room->GetGameModeData().Player_Spawn_Time;
 						target->ChangeToDeadState(pServer, spawnTime);
 
 						// record update
@@ -122,7 +122,7 @@ public:
 
 					if (target->GetHP() <= 0) {
 						// 荤噶 贸府
-						int spawnTime = tableManager->GetGameModeData()[room->GetGameMode()].Player_Spawn_Time;
+						int spawnTime = room->GetGameModeData().Player_Spawn_Time;
 						target->ChangeToDeadState(pServer, spawnTime);
 
 						// record update

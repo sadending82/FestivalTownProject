@@ -47,20 +47,19 @@ void TestThread::RunWorker()
             }
 
             int waitingPlayerCount = readyPlayers.size();
-            std::unordered_map<GameMode, GameModeInfo>& gameModeInfos = m_pServer->GetTableManager()->GetGameModeData();
+            std::unordered_map<GameMode, GameModeData>& GameModeDatas = m_pServer->GetTableManager()->GetGameModeData();
 
             while (!readyPlayers.empty()) {
                 GameMode gameMode = GameMode::FITH_Team_Battle_6;
 
-                for (auto iter = gameModeInfos.begin(); iter != gameModeInfos.end(); iter++) {
+                for (auto iter = GameModeDatas.begin(); iter != GameModeDatas.end(); iter++) {
                     if (waitingPlayerCount == iter->second.Player_Count) {
                         gameMode = iter->first;
                         break;
                     }
                 }
-                int playerCount = gameModeInfos[gameMode].Player_Count;
 
-                int roomid = m_pServer->CreateNewRoom(playerCount, gameMode);
+                int roomid = m_pServer->CreateNewRoom(gameMode);
                 if (roomid == INVALIDKEY) {
                     std::cout << "Fali Create New Room\n";
                     break;

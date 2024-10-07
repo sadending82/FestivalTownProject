@@ -44,7 +44,7 @@ public:
 	void						SendAllPlayerInRoomExceptSender(void* packet, int size, int sessionID);
 
 	void						StartHeartBeat(int sessionID);
-	int							CreateNewRoom(int playerCount, GameMode gameMode);
+	int							CreateNewRoom(GameMode gameMode);
 	void						MatchingComplete(int roomID, std::vector<Player*>& players);
 
 	SERVER_MODE					GetMode() { return mMode; }

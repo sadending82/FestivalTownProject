@@ -15,7 +15,6 @@ void Room::Reset()
 {
 	mRoomID = 0; 
 	mPlayerCnt = 0;
-	mPlayerLimit = 0;
 	mReadyCnt = 0;
 	mHostID = INVALIDKEY;
 	mRoomCode = 0;
@@ -41,16 +40,17 @@ void Room::Reset()
 	mIsRun = false;
 }
 
-void Room::Init(int id, int teamLifeCount, int playerLimit)
+void Room::Init(int id, GameMode gameMode, GameModeData& GameModeData)
 {
 	mRoomID = id;
-	mPlayerLimit = playerLimit;
+	mGameMode = gameMode;
+	mGameModeData = GameModeData;
 	mHostID = INVALIDKEY;
 	InitRoomCode();
 
 	// team game
-	mTeams[(int)TeamCode::RED].Init(teamLifeCount);
-	mTeams[(int)TeamCode::BLUE].Init(teamLifeCount);
+	mTeams[(int)TeamCode::RED].Init(mGameModeData.Life_Count);
+	mTeams[(int)TeamCode::BLUE].Init(mGameModeData.Life_Count);
 }
 
 

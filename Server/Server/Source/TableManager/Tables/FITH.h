@@ -13,7 +13,7 @@ enum class GameModeOut_Field {
 	Close_Date
 };
 
-enum class GameModeInfo_Field {
+enum class GameModeData_Field {
 	Play_Time = 3,
 	Player_Spawn_Time,
 	Life_Count,
@@ -35,7 +35,7 @@ enum class GameModeInfo_Field {
 };
 
 #pragma pack (push, 1)
-struct GameModeInfo {
+struct GameModeData {
 	int Player_Count;
 	int Team_Count;
 	int	Team_Color;

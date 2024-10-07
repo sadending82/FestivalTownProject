@@ -39,7 +39,7 @@ public:
 	std::unordered_map<INDEX, MoveStat>& GetMoveStats() { return MoveStats; }
 
 	std::unordered_map<INDEX, WeaponStat>& GetWeaponStats() { return WeaponStats; }
-	std::unordered_map<GameMode, GameModeInfo>& GetGameModeData() { return GameModeData; }
+	std::unordered_map<GameMode, GameModeData>& GetGameModeData() { return GameModeDatas; }
 	std::unordered_map<MapCode, Map>& GetMapData() { return MapData; }
 
 	std::unordered_map<GameMode, PointConstants>& GetPointConstantList() { return PointConstantList; }
@@ -65,7 +65,7 @@ private:
 	std::unordered_map<INDEX, MoveStat> MoveStats;
 
 	std::unordered_map<INDEX, WeaponStat> WeaponStats;
-	std::unordered_map<GameMode, GameModeInfo> GameModeData;
+	std::unordered_map<GameMode, GameModeData> GameModeDatas;
 	std::unordered_map<MapCode, Map> MapData;
 	std::unordered_map<GameMode, PointConstants> PointConstantList;
 	

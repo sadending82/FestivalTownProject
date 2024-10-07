@@ -36,7 +36,7 @@ public:
 					}
 					room->GetStateLock().unlock();*/
 
-					int roomID = pServer->CreateNewRoom(2, GameMode::FITH_Indiv_Battle_2);
+					int roomID = pServer->CreateNewRoom(GameMode::FITH_Indiv_Battle_2);
 
 					Player* Bot = new Player;
 					Bot->SetState(eSessionState::ST_MATCHWAITING);

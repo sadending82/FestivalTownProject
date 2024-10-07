@@ -36,7 +36,7 @@ public:
 					PushEventGroggyRecovery(pServer->GetTimer(), playerid, roomid, roomCode, player->GroggyRecoverTime());
 				}
 				else if (playerState == ePlayerState::PS_GROGGY) {
-					int spawnTime = pServer->GetTableManager()->GetGameModeData()[room->GetGameMode()].Player_Spawn_Time;
+					int spawnTime = room->GetGameModeData().Player_Spawn_Time;
 					// Á×ÀÓ
 					player->ChangeToDeadState(pServer, spawnTime);
 

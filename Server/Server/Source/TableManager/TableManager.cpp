@@ -26,7 +26,7 @@ void TableManager::ClearAllTable()
     WeaponStats.clear();
 
     // gamemode
-    GameModeData.clear();
+    GameModeDatas.clear();
 
     // map
     MapData.clear();
@@ -249,8 +249,8 @@ void TableManager::ReadGameModeTable()
 
                 int index = row[0].value<int>();
 
-               GameModeData[(GameMode)index]
-                    =  GameModeInfo{
+               GameModeDatas[(GameMode)index]
+                    =  GameModeData{
                     row[(int)(GameModeOut_Field::Player_Count)].value<int>(),
                     row[(int)(GameModeOut_Field::Team_Count)].value<int>(),
                     row[(int)(GameModeOut_Field::Team_Color)].value<int>(),
@@ -277,27 +277,27 @@ void TableManager::ReadGameModeTable()
             if (!row.empty()) {
                 int index = row[0].value<int>();
 
-                if (GameModeData.find((GameMode)index) == GameModeData.end()) {
+                if (GameModeDatas.find((GameMode)index) == GameModeDatas.end()) {
                     continue;
                 }
-                GameModeData[(GameMode)index].Play_Time = row[(int)(GameModeInfo_Field::Play_Time)].value<int>();
-                GameModeData[(GameMode)index].Player_Spawn_Time = row[(int)(GameModeInfo_Field::Player_Spawn_Time)].value<int>();
-                GameModeData[(GameMode)index].Life_Count = row[(int)(GameModeInfo_Field::Life_Count)].value<int>();
-                GameModeData[(GameMode)index].Bomb_Spawn_Count = row[(int)(GameModeInfo_Field::Bomb_Spawn_Count)].value<int>();
-                GameModeData[(GameMode)index].Bomb_Spawn_Time = row[(int)(GameModeInfo_Field::Bomb_Spawn_Time)].value<int>();
-                GameModeData[(GameMode)index].Bomb_Delay_Time = row[(int)(GameModeInfo_Field::Bomb_Delay_Time)].value<int>();
-                GameModeData[(GameMode)index].Weapon1_Spawn_Index = row[(int)(GameModeInfo_Field::Weapon1_Spawn_Index)].value<int>();
-                GameModeData[(GameMode)index].Weapon1_Spawn_Count = row[(int)(GameModeInfo_Field::Weapon1_Spawn_Count)].value<int>();
-                GameModeData[(GameMode)index].Weapon1_Spawn_Time = row[(int)(GameModeInfo_Field::Weapon1_Spawn_Time)].value<int>();
-                GameModeData[(GameMode)index].Weapon2_Spawn_Index = row[(int)(GameModeInfo_Field::Weapon2_Spawn_Index)].value<int>();
-                GameModeData[(GameMode)index].Weapon2_Spawn_Count = row[(int)(GameModeInfo_Field::Weapon2_Spawn_Count)].value<int>();
-                GameModeData[(GameMode)index].Weapon2_Spawn_Time = row[(int)(GameModeInfo_Field::Weapon2_Spawn_Time)].value<int>();
-                GameModeData[(GameMode)index].Block1_Spawn_Index = row[(int)(GameModeInfo_Field::Block1_Spawn_Index)].value<int>();
-                GameModeData[(GameMode)index].Block1_Spawn_Count = row[(int)(GameModeInfo_Field::Block1_Spawn_Count)].value<int>();
-                GameModeData[(GameMode)index].Block1_Spawn_Time = row[(int)(GameModeInfo_Field::Block1_Spawn_Time)].value<int>();
-                GameModeData[(GameMode)index].Block2_Spawn_Index = row[(int)(GameModeInfo_Field::Block2_Spawn_Index)].value<int>();
-                GameModeData[(GameMode)index].Block2_Spawn_Count = row[(int)(GameModeInfo_Field::Block2_Spawn_Count)].value<int>();
-                GameModeData[(GameMode)index].Block2_Spawn_Time = row[(int)(GameModeInfo_Field::Block2_Spawn_Time)].value<int>();
+                GameModeDatas[(GameMode)index].Play_Time = row[(int)(GameModeData_Field::Play_Time)].value<int>();
+                GameModeDatas[(GameMode)index].Player_Spawn_Time = row[(int)(GameModeData_Field::Player_Spawn_Time)].value<int>();
+                GameModeDatas[(GameMode)index].Life_Count = row[(int)(GameModeData_Field::Life_Count)].value<int>();
+                GameModeDatas[(GameMode)index].Bomb_Spawn_Count = row[(int)(GameModeData_Field::Bomb_Spawn_Count)].value<int>();
+                GameModeDatas[(GameMode)index].Bomb_Spawn_Time = row[(int)(GameModeData_Field::Bomb_Spawn_Time)].value<int>();
+                GameModeDatas[(GameMode)index].Bomb_Delay_Time = row[(int)(GameModeData_Field::Bomb_Delay_Time)].value<int>();
+                GameModeDatas[(GameMode)index].Weapon1_Spawn_Index = row[(int)(GameModeData_Field::Weapon1_Spawn_Index)].value<int>();
+                GameModeDatas[(GameMode)index].Weapon1_Spawn_Count = row[(int)(GameModeData_Field::Weapon1_Spawn_Count)].value<int>();
+                GameModeDatas[(GameMode)index].Weapon1_Spawn_Time = row[(int)(GameModeData_Field::Weapon1_Spawn_Time)].value<int>();
+                GameModeDatas[(GameMode)index].Weapon2_Spawn_Index = row[(int)(GameModeData_Field::Weapon2_Spawn_Index)].value<int>();
+                GameModeDatas[(GameMode)index].Weapon2_Spawn_Count = row[(int)(GameModeData_Field::Weapon2_Spawn_Count)].value<int>();
+                GameModeDatas[(GameMode)index].Weapon2_Spawn_Time = row[(int)(GameModeData_Field::Weapon2_Spawn_Time)].value<int>();
+                GameModeDatas[(GameMode)index].Block1_Spawn_Index = row[(int)(GameModeData_Field::Block1_Spawn_Index)].value<int>();
+                GameModeDatas[(GameMode)index].Block1_Spawn_Count = row[(int)(GameModeData_Field::Block1_Spawn_Count)].value<int>();
+                GameModeDatas[(GameMode)index].Block1_Spawn_Time = row[(int)(GameModeData_Field::Block1_Spawn_Time)].value<int>();
+                GameModeDatas[(GameMode)index].Block2_Spawn_Index = row[(int)(GameModeData_Field::Block2_Spawn_Index)].value<int>();
+                GameModeDatas[(GameMode)index].Block2_Spawn_Count = row[(int)(GameModeData_Field::Block2_Spawn_Count)].value<int>();
+                GameModeDatas[(GameMode)index].Block2_Spawn_Time = row[(int)(GameModeData_Field::Block2_Spawn_Time)].value<int>();
             }
 
             idx++;

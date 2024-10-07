@@ -61,7 +61,7 @@ public:
 	void				SetBomb(class Bomb* bomb) { mBomb = bomb; }
 	void				SetWeapon(class Weapon* weapon) { mWeapon = weapon; }
 	void				SetAttachedPlayerID(int playerID) { mAttachedPlayerID = playerID; }
-	void				SetCharacterStat(CharacterStat stat) { mCharacterStat = stat; }
+	void				SetCharacterStat(CharacterStat& stat) { mCharacterStat = stat; }
 	// cas
 	bool				SetIsGrabbed(bool desired);
 

@@ -32,7 +32,7 @@ void FITH::StartGame(int roomID)
 
         // Push Event
         long long roomCode = room->GetRoomCode();
-        GameModeInfo& modeInfo = mTableManager->GetGameModeData()[mGameMode];
+        GameModeData& modeInfo = room->GetGameModeData();
 
         PushEventBlockDrop(mTimer, roomID, roomCode, modeInfo.Block1_Spawn_Index, modeInfo.Block1_Spawn_Time);
         PushEventBlockDrop(mTimer, roomID, roomCode, modeInfo.Block2_Spawn_Index, modeInfo.Block2_Spawn_Time);
@@ -266,7 +266,7 @@ std::set<Vector3f> FITH::SetObjectSpawnPos(int roomID, int spawnCount)
 
 void FITH::BombSpawn(Room* room, int roomID)
 {
-    GameModeInfo& modeInfo = mServer->GetTableManager()->GetGameModeData()[mGameMode];
+    GameModeData& modeInfo = room->GetGameModeData();
 
     int explosionInterval = modeInfo.Bomb_Delay_Time;
     int spawnCount = modeInfo.Bomb_Spawn_Count;

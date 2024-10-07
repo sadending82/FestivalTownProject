@@ -4,6 +4,7 @@
 #include "../Object/Object.h"
 #include "../Object/Bomb/Bomb.h"
 #include "../Object/Weapon/Weapon.h"
+#include "../TableManager/Tables/FITH.h"
 #include <shared_mutex>
 
 class Room
@@ -14,7 +15,7 @@ public:
 	~Room();
 
 	void Reset();
-	void Init(int id, int teamLifeCount, int playerLimit = MAXPLAYER);
+	void Init(int id, GameMode gameMode, GameModeData& GameModeData);
 
 	void InitMap(Map* map) { mMap = new Map(*map); }
 	void InitRoomCode();
@@ -36,7 +37,6 @@ public:
 	void GetAllObjects(std::vector<Object*>& objectList);
 	int GetPlayerCnt() { return mPlayerCnt; }
 	int GetReadyCnt() { return mReadyCnt; }
-	int GetPlayerLimit() { return mPlayerLimit; }
 	GameMode GetGameMode() { return mGameMode; }
 	Map* GetMap() { return mMap; }
 	TIMEPOINT GetStartTime() { return mStartTime; }
@@ -49,11 +49,11 @@ public:
 	long long GetRoomCode() { return mRoomCode; }
 	bool GetAllPlayerReady() { return mAllPlayerReady.load(); }
 	bool GetIsRun() { return mIsRun.load(); }
+	GameModeData& GetGameModeData() { return mGameModeData; }
 	
 
 	void AddPlayerCnt() { mPlayerCnt++; }
 	void AddReadyCnt() { mReadyCnt++; }
-	void SetPlayerLimit(int num) { mPlayerLimit = num; }
 	void SetGameMode(GameMode GameMode) { mGameMode = GameMode; }
 	void SetStartTime(TIMEPOINT time) { mStartTime = time; }
 	void SetState(eRoomState state) { mState = state; }
@@ -81,12 +81,13 @@ private:
 	int mRoomID; // room array index
 	int mPlayerCnt = 0;
 	int mReadyCnt = 0;
-	int mPlayerLimit = 6;
 	int mHostID = INVALIDKEY;
 	TIMEPOINT mStartTime;
 	long long mRoomCode = 0; // Room 고유 식별 번호
 
 	std::atomic<bool> mAllPlayerReady = false;
 	std::atomic<bool> mIsRun = false;
+
+	GameModeData mGameModeData;
 };
 
