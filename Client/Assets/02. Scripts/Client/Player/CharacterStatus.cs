@@ -2,6 +2,7 @@ using ActiveRagdoll;
 using ClientProtocol;
 using ExcelDataStructure;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using static UnityEngine.GraphicsBuffer;
 
 public class CharacterStatus : MonoBehaviour
@@ -13,12 +14,15 @@ public class CharacterStatus : MonoBehaviour
     [Header("--- Status ---")]
     [SerializeField] private int id;
     [SerializeField] private int teamNumber;
-    [Space (10f)]
+    [Space(10f)]
     [SerializeField] private float maxHp;
     [SerializeField] private float hp;
     [Space(10f)]
     [SerializeField] private int maxStamina;
     [SerializeField] private int stamina;
+    private int staminaConsumption;
+    private int staminaConsumptionByHold;
+    private int staminaRecoveryAmount;
     public int AttackedMotionPower;
     public float throwPower;
 
@@ -76,7 +80,6 @@ public class CharacterStatus : MonoBehaviour
         packetManager = network.GetPacketManager();
     }
 
-
     // ------------------- Status -------------------
     public void ResetCharacterState()
     {
@@ -84,6 +87,9 @@ public class CharacterStatus : MonoBehaviour
         CharacterStatEntity cse = (CharacterStatEntity)data;
 
         SetMaxHp(cse.Ch_Hp);
+        SetHp(cse.Ch_Hp);
+        SetMaxStamina(cse.Ch_Stamina);
+        SetStamina(cse.Ch_Stamina);
         SetIsHaveBomb(false);
         SetIsHaveWeapon(false);
         SetIsGrapPlayer(false);
@@ -91,6 +97,11 @@ public class CharacterStatus : MonoBehaviour
         GroggyOff();
         SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
         SetLowerBodyAnimationState(LowerBodyAnimationState.IDLE);
+        CancelInvoke("StaminaUpdate");
+        InvokeRepeating("StaminaUpdate", 0, 1);
+        staminaConsumption = 0;
+        staminaConsumptionByHold = 0;
+        staminaRecoveryAmount = 0;
 
         playerController.ResetPlayerControllerSetting();
     }
@@ -143,6 +154,19 @@ public class CharacterStatus : MonoBehaviour
     {
         return stamina;
     }
+    private void StaminaUpdate()
+    {
+        // 스테미나
+        stamina += staminaRecoveryAmount - staminaConsumption - staminaConsumptionByHold;
+        if (stamina < 0)
+        {
+            stamina = 0;
+        }
+        else if (stamina > maxStamina)
+        {
+            stamina = maxStamina;
+        }
+    }
     public float GetThrowPower()
     {
         return throwPower;
@@ -155,6 +179,8 @@ public class CharacterStatus : MonoBehaviour
             hp = 0;
             playerMesh.SetActive(false);
             Managers.Sound.Play("Sfx_Ch_Die");
+
+            // 관전 관련
             if (amIPlayer == true)
             {
                 Managers.SpectatorCamera.SwitchNextCamera();
@@ -168,6 +194,8 @@ public class CharacterStatus : MonoBehaviour
         {
             ResetCharacterState();
             playerMesh.SetActive(true);
+
+            // 관전 관련
             if (amIPlayer == true)
             {
                 Managers.SpectatorCamera.SwitchMyCamera();
@@ -183,7 +211,7 @@ public class CharacterStatus : MonoBehaviour
         this.amIPlayer = amIPlayer;
         this.GetComponent<PlayerController>().SetAmIPlayer(amIPlayer);
         myCamera.GetComponent<PlayerCameraController>().SetAmIPlayer(amIPlayer);
-        if(amIPlayer == true)
+        if (amIPlayer == true)
         {
             myCamera.enabled = true;
             // 로딩 창 없애기
@@ -244,6 +272,14 @@ public class CharacterStatus : MonoBehaviour
     // 내가 잡은 플레이어
     public void SetIsGrapPlayer(bool isGrapPlayer, int targetPlayerId = -1)
     {
+        if(isGrapPlayer == true)
+        {
+            staminaConsumptionByHold = 5;
+        }
+        else
+        {
+            staminaConsumptionByHold = 0;
+        }
         this.isGrapPlayer = isGrapPlayer;
         this.grapTargetPlayerId = targetPlayerId;
     }
@@ -351,6 +387,69 @@ public class CharacterStatus : MonoBehaviour
         if (this.lowerBodyAnimationState != lowerBodyAnimationState && isGroggy == false)
         {
             this.lowerBodyAnimationState = lowerBodyAnimationState;
+
+            GameDataEntity data;
+            CharacterMoveEntity cme;
+
+            // 스테미나 관련 계산
+            switch (lowerBodyAnimationState)
+            {
+                case LowerBodyAnimationState.IDLE:
+                    {
+                        if (playerController.GetisGrounded() == true)
+                        {
+                            data = Managers.Data.GetData(20001);
+                            cme = (CharacterMoveEntity)data;
+                            staminaConsumption = cme.Ch_StaminaConsume;
+                            staminaRecoveryAmount = cme.Ch_Stamina_recovery;
+                        }
+                        else
+                        {
+                            data = Managers.Data.GetData(20004);
+                            cme = (CharacterMoveEntity)data;
+                            staminaConsumption = cme.Ch_StaminaConsume;
+                            staminaRecoveryAmount = cme.Ch_Stamina_recovery;
+                        }
+                        break;
+                    }
+                case LowerBodyAnimationState.WALK:
+                    {
+                        if (playerController.GetisGrounded() == true)
+                        {
+                            data = Managers.Data.GetData(20002);
+                            cme = (CharacterMoveEntity)data;
+                            staminaConsumption = cme.Ch_StaminaConsume;
+                            staminaRecoveryAmount = cme.Ch_Stamina_recovery;
+                        }
+                        else
+                        {
+                            data = Managers.Data.GetData(20004);
+                            cme = (CharacterMoveEntity)data;
+                            staminaConsumption = cme.Ch_StaminaConsume;
+                            staminaRecoveryAmount = cme.Ch_Stamina_recovery;
+                        }
+                        break;
+                    }
+                case LowerBodyAnimationState.RUN:
+                    {
+                        if (playerController.GetisGrounded() == true)
+                        {
+                            data = Managers.Data.GetData(20003);
+                            cme = (CharacterMoveEntity)data;
+                            staminaConsumption = cme.Ch_StaminaConsume;
+                            staminaRecoveryAmount = cme.Ch_Stamina_recovery;
+                        }
+                        else
+                        {
+                            data = Managers.Data.GetData(20004);
+                            cme = (CharacterMoveEntity)data;
+                            staminaConsumption = cme.Ch_StaminaConsume;
+                            staminaRecoveryAmount = cme.Ch_Stamina_recovery;
+                        }
+                        break;
+                    }
+            }
+
             animationController.SetLowerBodyAnimationState(lowerBodyAnimationState);
         }
     }

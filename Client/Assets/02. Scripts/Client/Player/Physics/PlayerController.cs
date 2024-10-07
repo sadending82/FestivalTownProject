@@ -201,6 +201,10 @@ public class PlayerController : MonoBehaviour
             packetManager.SendPlayerSyncPacket(pelvis.transform.position, stabillizerDirection, playerStatus.GetStamina(), myId);
         }
     }
+    public bool GetisGrounded()
+    {
+        return isGrounded;
+    }
     private void SpectatorCameraControl()
     {
         if (Input.GetMouseButtonUp(0))

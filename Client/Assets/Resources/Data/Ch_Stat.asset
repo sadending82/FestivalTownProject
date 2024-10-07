@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Stat:
   - Index: 1000
-    Name: 
+    Name: Cat
     ClassType: 0
     Ch_Hp: 100
     Ch_Stamina: 100
@@ -22,119 +22,119 @@ MonoBehaviour:
     Ch_Speed: 10
   Attack:
   - Index: 10001
-    Name: 
+    Name: Ch_Attack
     ClassType: 0
     Value: 0.5
     Attack_Speed: 1
     Attack_Range: 0.65
     Ch_StaminaConsume: 5
-    Steal_Stamina: 0
+    Vanish_Stamina: 5
   - Index: 10002
-    Name: 
+    Name: Ch_JumpAttack
     ClassType: 0
     Value: 1.3
     Attack_Speed: 1
     Attack_Range: 1.3
     Ch_StaminaConsume: 10
-    Steal_Stamina: 0
+    Vanish_Stamina: 20
   - Index: 10003
-    Name: 
+    Name: Ch_WeaponAttack
     ClassType: 0
     Value: 0
     Attack_Speed: 1
     Attack_Range: 1.4
     Ch_StaminaConsume: 15
-    Steal_Stamina: 0
+    Vanish_Stamina: 20
   - Index: 10004
-    Name: 
+    Name: Ch_Hold
     ClassType: 0
     Value: 0
     Attack_Speed: 1
     Attack_Range: 0
     Ch_StaminaConsume: 5
-    Steal_Stamina: 0
+    Vanish_Stamina: 0
   - Index: 10005
-    Name: 
+    Name: Ch_Throw
     ClassType: 0
     Value: 0
     Attack_Speed: 1
     Attack_Range: 0
     Ch_StaminaConsume: 0
-    Steal_Stamina: 0
+    Vanish_Stamina: 0
   - Index: 10006
-    Name: 
+    Name: Ch_HeadAttack
     ClassType: 0
     Value: 0.8
     Attack_Speed: 1
     Attack_Range: 0.3
     Ch_StaminaConsume: 8
-    Steal_Stamina: 0
+    Vanish_Stamina: 5
   - Index: 10007
-    Name: 
+    Name: Ch_PowerAttack
     ClassType: 0
     Value: 1
     Attack_Speed: 1
     Attack_Range: 0.65
     Ch_StaminaConsume: 7
-    Steal_Stamina: 0
+    Vanish_Stamina: 7
   Move:
   - Index: 20001
-    Name: 
+    Name: Ch_Idle
     ClassType: 0
     Value: 0
     Ch_StaminaConsume: 0
     Ch_Stamina_recovery: 10
   - Index: 20002
-    Name: 
+    Name: Ch_Walk
     ClassType: 0
     Value: 0.2
     Ch_StaminaConsume: 0
     Ch_Stamina_recovery: 5
   - Index: 20003
-    Name: 
+    Name: Ch_Run
     ClassType: 0
     Value: 0.4
     Ch_StaminaConsume: 5
     Ch_Stamina_recovery: 0
   - Index: 20004
-    Name: 
+    Name: Ch_Jump
     ClassType: 0
     Value: 0
     Ch_StaminaConsume: 0
     Ch_Stamina_recovery: 0
   - Index: 20005
-    Name: 
+    Name: Ch_Dash
     ClassType: 0
     Value: 0.6
     Ch_StaminaConsume: 10
     Ch_Stamina_recovery: 0
   - Index: 20006
-    Name: 
+    Name: Ch_HoldWalk
     ClassType: 0
     Value: 0.17
     Ch_StaminaConsume: 5
     Ch_Stamina_recovery: 0
   - Index: 20007
-    Name: 
+    Name: Ch_HoldRun
     ClassType: 0
     Value: 0.3
     Ch_StaminaConsume: 5
     Ch_Stamina_recovery: 0
   - Index: 20008
-    Name: 
+    Name: Ch_HoldJump
     ClassType: 0
     Value: 0
     Ch_StaminaConsume: 5
     Ch_Stamina_recovery: 0
   Action:
   - Index: 30001
-    Name: 
+    Name: Ch_WeaponPick
     ClassType: 0
     Action_Speed: 0.5
     Action_Range: 1
     Ch_StaminaConsume: 0
   - Index: 30002
-    Name: 
+    Name: Ch_BombPick
     ClassType: 0
     Action_Speed: 0.5
     Action_Range: 1
