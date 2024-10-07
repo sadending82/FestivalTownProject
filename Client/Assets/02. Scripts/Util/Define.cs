@@ -77,5 +77,6 @@ public class Define
         public int death;
         public int bombInsert;
         public int gold;
+        public bool isMvp;
     }
 }

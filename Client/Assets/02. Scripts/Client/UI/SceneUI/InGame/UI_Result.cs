@@ -7,6 +7,8 @@ public class UI_Result : UI_Scene
 {
     enum GameObjects
     {
+        PanelBG,
+        Logo,
         ResultPanel,
         RestartButton,
         BackToLobbyButton,
@@ -36,9 +38,9 @@ public class UI_Result : UI_Scene
         });
     }
 
-    public void SetPlayerResult(int playerId, int kill, int death, int bombInsert, int gold)
+    public void SetPlayerResult(int playerId, int kill, int death, int bombInsert, int gold, bool isMvp)
     {
-        Get<GameObject>((int)GameObjects.ResultPanel).GetComponent<UI_ResultPanel>().SetPlayerResult(playerId, kill, death, bombInsert, gold);
+        Get<GameObject>((int)GameObjects.ResultPanel).GetComponent<UI_ResultPanel>().SetPlayerResult(playerId, kill, death, bombInsert, gold, isMvp);
     }
 
     private void Update()
@@ -48,7 +50,7 @@ public class UI_Result : UI_Scene
             foreach (KeyValuePair<int, Define.PlayerResult> data in Managers.Game.PlayerResultData)
             {
                 SetPlayerResult(data.Key, data.Value.kill, data.Value.death,
-                    data.Value.bombInsert, data.Value.gold);
+                    data.Value.bombInsert, data.Value.gold, data.Value.isMvp);
             }
 
             isResultChecked = true;
