@@ -1285,8 +1285,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6069327758178660741}
   - component: {fileID: 11744454538213894}
-  - component: {fileID: 7513450559464735725}
   - component: {fileID: 2266266892710373593}
+  - component: {fileID: 7513450559464735725}
   - component: {fileID: 2103632674421261722}
   - component: {fileID: -6865849756492790611}
   - component: {fileID: 4885904523204411648}
@@ -1346,22 +1346,6 @@ MonoBehaviour:
   hitbox: {fileID: 2672182746622162311}
   playerMesh: {fileID: 8491244148625121900}
   weaponInven: {fileID: 6241508891433731045}
---- !u!114 &7513450559464735725
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5680927581145501185}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 029d63b45989f594ea30cf5436c4fbc1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _animatedTorso: {fileID: 4798644086004994513}
-  _physicalTorso: {fileID: 6480030335004993299}
-  _animatedAnimator: {fileID: 5118200460168494093}
-  _physicalAnimator: {fileID: 4741332568285102971}
 --- !u!114 &2266266892710373593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1382,17 +1366,29 @@ MonoBehaviour:
   head: {fileID: 2421253405512057171}
   handL: {fileID: 6973424783672775047}
   handR: {fileID: 7439394265932431664}
-  walkSpeed: 7
-  runSpeed: 10
-  jumpForce: 150
-  rotateSpeed: 5
-  floorDetectionDistance: 0.04
   leftFootRigidbody: {fileID: 6490085632441195103}
   rightFootRigidbody: {fileID: 5402061227843248073}
-  isGrounded: 0
-  isJump: 0
-  nearObjectChecker: {fileID: 7949501394121076264}
+  jumpForce: 150
+  floorDetectionDistance: 0.04
+  rotateSpeed: 5
   bombInvenTransform: {fileID: 4805236475303947220}
+  nearObjectChecker: {fileID: 0}
+--- !u!114 &7513450559464735725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5680927581145501185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 029d63b45989f594ea30cf5436c4fbc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animatedTorso: {fileID: 4798644086004994513}
+  _physicalTorso: {fileID: 6480030335004993299}
+  _animatedAnimator: {fileID: 5118200460168494093}
+  _physicalAnimator: {fileID: 4741332568285102971}
 --- !u!114 &2103632674421261722
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -8,10 +8,11 @@ using TMPro.Examples;
 using static UnityEngine.GraphicsBuffer;
 using UnityEngine.Playables;
 using UnityEditor;
+using ExcelDataStructure;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("--- Physics ---")]
+    [Header("--- Direct Connect ---")]
     public Transform cameraArm;
     public Transform stabilizer;
     public GameObject pelvis;
@@ -21,31 +22,46 @@ public class PlayerController : MonoBehaviour
     public GameObject head;
     public GameObject handL;
     public GameObject handR;
-
-    [Header("--- State ---")]
-    private CharacterStatus playerStatus;
-    public float walkSpeed;
-    public float runSpeed;
-    public float jumpForce;
-    public float rotateSpeed;
-    private bool isMove;
-    private Vector3 moveDirection;
-
-    [Header("--- JumpCheck ---")]
-    public float floorDetectionDistance;
     public Rigidbody leftFootRigidbody;
     public Rigidbody rightFootRigidbody;
-    public bool isGrounded;
-    public bool isJump;
 
+    [Header("--- State ---")]
+    public float jumpForce;
+    public float floorDetectionDistance;
+    public float rotateSpeed;
+
+    private int myId;
+    private bool amIPlayer;
+    private CharacterStatus playerStatus;
+    private float createHeight = 4;
+
+    private bool isGrounded;
+    private bool isJump;
+
+    private bool isMove;
+    private Vector3 moveDirection;
     private Quaternion rotationQuaternion;
     private Vector3 stabillizerDirection;
 
-    [Header("--- Animation ---")]
-    private float leftMouseClickTimer;
-    private bool isGrap;
-    private bool isLeftShiftKeyDown;
+    private float walkSpeed;
+    private float runSpeed;
+    private float holdAndWalkSpeed;
+    private float holdAndRunSpeed;
+
     private LowerBodyAnimationState nowLowerBodyAnimationState;
+
+    private bool isLeftShiftKeyDown;
+
+    //------ Pick Up -------
+    public Transform bombInvenTransform;
+    [SerializeField] private NearObjectChecker nearObjectChecker;
+    private float leftMouseClickTimer;
+    private float fKeyDownTimer;
+    private bool isPickUpMode = false;
+    private bool isDropMode = false;
+    private bool isGrapPlayerMode = false;
+    private bool isGrap;
+    private GameObject targetItem;
 
     //------ Server -------
     private NetworkManager network;
@@ -53,28 +69,12 @@ public class PlayerController : MonoBehaviour
     private ReceiveManager receiveManager;
     private float beforeAxisRawH, beforeAxisRawV;
     private float AxisRawH, AxisRawV;
-    private bool amIPlayer;
-    private int myId;
     private bool gameStart = false;
 
     //------ timer for send ------
     private float curTime= 0.0f;
     private float sendInterval = 0.01666666666f * 3;
 
-    [Header("--- Pick Up ---")]
-    public NearObjectChecker nearObjectChecker;
-    public Transform bombInvenTransform;
-    private float fKeyDownTimer;
-    private bool isPickUpMode = false;
-    private GameObject targetItem;
-    private bool isDropMode = false;
-    private bool isGrapPlayerMode = false;
-
-    [Header("--- Respawn ---")]
-    private float createHeight = 4;
-
-    //Test
-    private int c = 0;
 
     private void Awake()
     {
@@ -83,15 +83,40 @@ public class PlayerController : MonoBehaviour
         stabillizerDirection = Vector3.zero;
 
         network = Managers.Network;
-        pelvisRigidbody = pelvis.GetComponent<Rigidbody>();
+        packetManager = network.GetPacketManager();
+        receiveManager = network.GetReceiveManager();
+
         playerStatus = this.GetComponent<CharacterStatus>();
         myId = playerStatus.GetId();
 
-        packetManager = network.GetPacketManager();
-        receiveManager = network.GetReceiveManager();
+        pelvisRigidbody = pelvis.GetComponent<Rigidbody>();
+
+        nearObjectChecker = GetComponentInChildren<NearObjectChecker>();
     }
     void Start()
     {
+        GameDataEntity data = Managers.Data.GetData(1000);
+        CharacterStatEntity cse = (CharacterStatEntity)data;
+
+        float chSpeed = (float)cse.Ch_Speed;
+
+        CharacterMoveEntity cme;
+
+        data = Managers.Data.GetData(20002);
+        cme = (CharacterMoveEntity)data;
+        walkSpeed = cme.Value * chSpeed;
+
+        data = Managers.Data.GetData(20003);
+        cme = (CharacterMoveEntity)data;
+        runSpeed = cme.Value * chSpeed;
+
+        data = Managers.Data.GetData(20006);
+        cme = (CharacterMoveEntity)data;
+        holdAndWalkSpeed = cme.Value * chSpeed;
+
+        data = Managers.Data.GetData(20007);
+        cme = (CharacterMoveEntity)data;
+        holdAndRunSpeed = cme.Value * chSpeed;
     }
 
     private void FixedUpdate()
@@ -118,9 +143,9 @@ public class PlayerController : MonoBehaviour
                     {
                         if (playerStatus.GetLowerBodyAnimationState() == LowerBodyAnimationState.WALK)
                         {
-                            if (isGrounded == false)
+                            if (playerStatus.GetIsGrapPlayer() == true)
                             {
-                                pelvisRigidbody.velocity = (moveDirection * (walkSpeed - 2));
+                                pelvisRigidbody.velocity = moveDirection * holdAndWalkSpeed;
                             }
                             else
                             {
@@ -129,9 +154,9 @@ public class PlayerController : MonoBehaviour
                         }
                         else if (playerStatus.GetLowerBodyAnimationState() == LowerBodyAnimationState.RUN)
                         {
-                            if (isGrounded == false)
+                            if (playerStatus.GetIsGrapPlayer() == true)
                             {
-                                pelvisRigidbody.velocity = moveDirection * (runSpeed - 3);
+                                pelvisRigidbody.velocity = moveDirection * holdAndRunSpeed;
                             }
                             else
                             {
@@ -201,111 +226,6 @@ public class PlayerController : MonoBehaviour
             packetManager.SendPlayerSyncPacket(pelvis.transform.position, stabillizerDirection, playerStatus.GetStamina(), myId);
         }
     }
-    public bool GetisGrounded()
-    {
-        return isGrounded;
-    }
-    private void SpectatorCameraControl()
-    {
-        if (Input.GetMouseButtonUp(0))
-        {
-            Managers.SpectatorCamera.SwitchNextCamera();
-        }
-    }
-
-    private void CheckIsGround()
-    {
-        if(isGrounded == false && pelvisRigidbody.velocity.y <= 0)
-        {
-            Ray rayL = new Ray(leftFootRigidbody.position, Vector3.down);
-            Ray rayR = new Ray(rightFootRigidbody.position, Vector3.down);
-
-            AxisRawH = Input.GetAxisRaw("Horizontal");
-            AxisRawV = Input.GetAxisRaw("Vertical");
-            Vector3 moveInput = new Vector3(AxisRawH, AxisRawV, 0);
-
-            RaycastHit hitInfoL, hitinfoR;
-            if (Physics.Raycast(rayL, out hitInfoL, floorDetectionDistance) == true)
-            {
-                if (hitInfoL.collider.gameObject.tag == "Ground")
-                {
-                    if (pelvis != null && amIPlayer == true)
-                    {
-                        if (moveInput == Vector3.zero)
-                        {
-                            if (pelvis != null)
-                            {
-                                packetManager.SendPlayerStopPacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_JUMPSTOP);
-                            }
-                            else
-                            {
-                                Debug.Log("Not Send Stop Packet, Pelvis is Null !!!");
-                            }
-                        }
-                        else
-                        {
-                            if (pelvis != null)
-                            {
-                                if (isLeftShiftKeyDown == true)
-                                {
-                                    packetManager.SendPlayerMovePacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_RUN);
-                                }
-                                else
-                                {
-                                    packetManager.SendPlayerMovePacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_WALK);
-                                }
-                            }
-                            else
-                            {
-                                Debug.Log("Not Send Run Packet, Pelvis is Null !!!");
-                            }
-                        }
-                    }
-                    isGrounded = true;
-                }
-            }
-            else if (Physics.Raycast(rayR, out hitinfoR, floorDetectionDistance) == true)
-            {
-                if (hitinfoR.collider.gameObject.tag == "Ground")
-                {
-                    if (pelvis != null && amIPlayer == true)
-                    {
-                        if (moveInput == Vector3.zero)
-                        {
-                            if (pelvis != null)
-                            {
-                                packetManager.SendPlayerStopPacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_JUMPSTOP);
-                            }
-                            else
-                            {
-                                Debug.Log("Not Send Stop Packet, Pelvis is Null !!!");
-                            }
-                        }
-                        else
-                        {
-                            if (pelvis != null)
-                            {
-                                if (isLeftShiftKeyDown == true)
-                                {
-                                    packetManager.SendPlayerMovePacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_RUN);
-                                }
-                                else
-                                {
-                                    packetManager.SendPlayerMovePacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_WALK);
-                                }
-                            }
-                            else
-                            {
-                                Debug.Log("Not Send Run Packet, Pelvis is Null !!!");
-                            }
-                        }
-                    }
-                    isGrounded = true;
-                }
-            }
-        }
-    }
-
     private void Move()
     {
         isLeftShiftKeyDown = false;
@@ -322,7 +242,7 @@ public class PlayerController : MonoBehaviour
         moveDirection = lookForward * moveInput.y + lookRight * moveInput.x;
         moveDirection = moveDirection.normalized;
 
-        if(stabillizerDirection != moveDirection && moveDirection != Vector3.zero)
+        if (stabillizerDirection != moveDirection && moveDirection != Vector3.zero)
         {
             stabillizerDirection = moveDirection;
             rotationQuaternion = Quaternion.LookRotation(moveDirection);
@@ -370,9 +290,9 @@ public class PlayerController : MonoBehaviour
             {
                 if (CheckHitWall() == false)
                 {
-                    if (isGrounded == false)
+                    if (playerStatus.GetIsGrapPlayer() == true)
                     {
-                        pelvisRigidbody.velocity = moveDirection * (runSpeed - 3);
+                        pelvisRigidbody.velocity = moveDirection * holdAndRunSpeed;
                     }
                     else
                     {
@@ -389,9 +309,9 @@ public class PlayerController : MonoBehaviour
             {
                 if (CheckHitWall() == false)
                 {
-                    if (isGrounded == false)
+                    if (playerStatus.GetIsGrapPlayer() == true)
                     {
-                        pelvisRigidbody.velocity = moveDirection * (walkSpeed - 2);
+                        pelvisRigidbody.velocity = moveDirection * holdAndWalkSpeed;
                     }
                     else
                     {
@@ -416,7 +336,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetAxis("Jump") > 0)
         {
-            if(isGrounded == true)
+            if (isGrounded == true)
             {
                 if (pelvis != null)
                 {
@@ -431,6 +351,12 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+    public void Jump()
+    {
+        isGrounded = false;
+        pelvisRigidbody.velocity = Vector3.up * jumpForce;
+    }
+
     private void KeyboardInput()
     {
         /// <summary>
@@ -583,6 +509,157 @@ public class PlayerController : MonoBehaviour
             Throw();
         }
     }
+    public void GameStart()
+    {
+        gameStart = true;
+    }
+    public void GameEnd()
+    {
+        gameStart = false;
+    }
+    public bool GetisGrounded()
+    {
+        return isGrounded;
+    }
+
+    private void CheckIsGround()
+    {
+        if(isGrounded == false && pelvisRigidbody.velocity.y <= 0)
+        {
+            Ray rayL = new Ray(leftFootRigidbody.position, Vector3.down);
+            Ray rayR = new Ray(rightFootRigidbody.position, Vector3.down);
+
+            AxisRawH = Input.GetAxisRaw("Horizontal");
+            AxisRawV = Input.GetAxisRaw("Vertical");
+            Vector3 moveInput = new Vector3(AxisRawH, AxisRawV, 0);
+
+            RaycastHit hitInfoL, hitinfoR;
+            if (Physics.Raycast(rayL, out hitInfoL, floorDetectionDistance) == true)
+            {
+                if (hitInfoL.collider.gameObject.tag == "Ground")
+                {
+                    if (pelvis != null && amIPlayer == true)
+                    {
+                        if (moveInput == Vector3.zero)
+                        {
+                            if (pelvis != null)
+                            {
+                                packetManager.SendPlayerStopPacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_JUMPSTOP);
+                            }
+                            else
+                            {
+                                Debug.Log("Not Send Stop Packet, Pelvis is Null !!!");
+                            }
+                        }
+                        else
+                        {
+                            if (pelvis != null)
+                            {
+                                if (isLeftShiftKeyDown == true)
+                                {
+                                    packetManager.SendPlayerMovePacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_RUN);
+                                }
+                                else
+                                {
+                                    packetManager.SendPlayerMovePacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_WALK);
+                                }
+                            }
+                            else
+                            {
+                                Debug.Log("Not Send Run Packet, Pelvis is Null !!!");
+                            }
+                        }
+                    }
+                    isGrounded = true;
+                }
+            }
+            else if (Physics.Raycast(rayR, out hitinfoR, floorDetectionDistance) == true)
+            {
+                if (hitinfoR.collider.gameObject.tag == "Ground")
+                {
+                    if (pelvis != null && amIPlayer == true)
+                    {
+                        if (moveInput == Vector3.zero)
+                        {
+                            if (pelvis != null)
+                            {
+                                packetManager.SendPlayerStopPacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_JUMPSTOP);
+                            }
+                            else
+                            {
+                                Debug.Log("Not Send Stop Packet, Pelvis is Null !!!");
+                            }
+                        }
+                        else
+                        {
+                            if (pelvis != null)
+                            {
+                                if (isLeftShiftKeyDown == true)
+                                {
+                                    packetManager.SendPlayerMovePacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_RUN);
+                                }
+                                else
+                                {
+                                    packetManager.SendPlayerMovePacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_WALK);
+                                }
+                            }
+                            else
+                            {
+                                Debug.Log("Not Send Run Packet, Pelvis is Null !!!");
+                            }
+                        }
+                    }
+                    isGrounded = true;
+                }
+            }
+        }
+    }
+    private bool CheckHitWall()
+    {
+        float scope = 0.7f;
+
+        // 레이 확인용
+        //Debug.DrawRay(pelvis.transform.position, moveDirection * scope, Color.red);
+
+        List<Vector3> rayPositions = new List<Vector3>();
+
+        rayPositions.Add(pelvis.transform.position);
+        rayPositions.Add(head.transform.position);
+        rayPositions.Add(clavicleL.transform.position);
+        rayPositions.Add(clavicleR.transform.position);
+
+        foreach (Vector3 pos in rayPositions)
+        {
+            if (Physics.Raycast(pos, moveDirection, out RaycastHit hit, scope) == true)
+            {
+                if (hit.collider.tag == "Ground")
+                {
+                    SetCanMove(false);
+                    return true;
+                }
+            }
+        }
+
+        SetCanMove(true);
+        return false;
+    }
+    private void FallDownCheck()
+    {
+        if (pelvis.transform.position.y < -10f)
+        {
+            if (playerStatus.GetIsDie() == false)
+            {
+                packetManager.SendPlayerDamageReceivePacket(playerStatus.GetId(), playerStatus.GetId(), -1, eDamageType.AT_FALLDOWN, Vector3.zero);
+            }
+        }
+    }
+    private void SpectatorCameraControl()
+    {
+        if (Input.GetMouseButtonUp(0))
+        {
+            Managers.SpectatorCamera.SwitchNextCamera();
+        }
+    }
     public void s_PickUpBomb(int playerId, int bombId)
     {
         // 폭탄과 플레이어 붙여주기
@@ -597,12 +674,6 @@ public class PlayerController : MonoBehaviour
         targetWeapon.PickUp(playerId);
         playerStatus.SetIsHaveWeapon(true, weaponId);
     }
-    public void Jump()
-    {
-        isGrounded = false;
-        pelvisRigidbody.velocity = Vector3.up * jumpForce;
-    }
-
     public void Throw()
     {
         if(playerStatus.GetIsHaveBomb() == true)
@@ -636,13 +707,63 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Player " + playerStatus.GetId() + " Don't Have an Item to Throw !!!");
         }
     }
-    
+    public void s_GrapPlayer(int targetId, bool isLeftHand, Vector3 handPos, Vector3 targetHeadPos)
+    {
+        playerStatus.SetIsGrapPlayer(true, targetId);
+
+        CharacterStatus targetPlayerState = Managers.Player.FindPlayerById(targetId).GetComponent<CharacterStatus>();
+        targetPlayerState.SetIsGrapped(true, playerStatus.GetId());
+
+        if (isLeftHand == true)
+        {
+            handL.GetComponent<AttackChecker>().GrapPlayer(targetId, handPos, targetHeadPos);
+        }
+        else
+        {
+            handR.GetComponent<AttackChecker>().GrapPlayer(targetId, handPos, targetHeadPos);
+        }
+    }
+    public void s_ThrowPlayer()
+    {
+        playerStatus.SetIsGrapPlayer(false);
+        handL.GetComponent<AttackChecker>().ThrowPlayer();
+        handR.GetComponent<AttackChecker>().ThrowPlayer();
+    }
+    public void GrapOff()
+    {
+        PlayerController targetPlayerController = Managers.Player.FindPlayerById(playerStatus.GetGrapTargetPlayerId()).GetComponent<PlayerController>();
+        packetManager.SendPlayerThrowOtherPlayerPacket(playerStatus.GetId(), GetPosition(), GetDirection(),
+            playerStatus.GetGrapTargetPlayerId(), targetPlayerController.GetPosition(), targetPlayerController.GetDirection());
+    }
+
     public void SendToServerGoalTeamNumber(int bombId, int teamNumber)
     {
         packetManager.SendBombInputPacket(bombId, teamNumber);
     }
+    public void Respawn(float x, float z)
+    {
+        playerStatus.SetIsDie(false);
 
-    // ------- Setter Getter -------
+        SetDirectionByTeam();
+
+        Vector3 targetPos = new Vector3(x, createHeight, z);
+
+        SetPosition(targetPos);
+
+        Managers.Sound.Play("Sfx_Ch_Respawn");
+    }
+    public void ResetPlayerControllerSetting()
+    {
+        leftMouseClickTimer = 0f;
+        isGrap = false;
+        isPickUpMode = false;
+        isGrounded = false;
+        isLeftShiftKeyDown = false;
+        beforeAxisRawH = 0;
+        beforeAxisRawV = 0;
+        SetIsMove(false);
+        targetItem = null;
+    }
     public void SetAmIPlayer(bool amIPlayer)
     {
         this.amIPlayer = amIPlayer;
@@ -704,71 +825,6 @@ public class PlayerController : MonoBehaviour
                 break;
         }
     }
-    private void FallDownCheck()
-    {
-        if (pelvis.transform.position.y < -10f)
-        {
-            if (playerStatus.GetIsDie() == false)
-            {
-                packetManager.SendPlayerDamageReceivePacket(playerStatus.GetId(), playerStatus.GetId(), -1, eDamageType.AT_FALLDOWN, Vector3.zero);
-            }
-        }
-    }
-
-    public void Respawn(float x, float z)
-    {
-        playerStatus.SetIsDie(false);
-
-        SetDirectionByTeam();
-
-        Vector3 targetPos = new Vector3(x, createHeight, z);
-
-        SetPosition(targetPos);
-
-        Managers.Sound.Play("Sfx_Ch_Respawn");
-    }
-    public void ResetPlayerControllerSetting()
-    {
-        leftMouseClickTimer = 0f;
-        isGrap = false;
-        isPickUpMode = false;
-        isGrounded = false;
-        isLeftShiftKeyDown = false;
-        beforeAxisRawH = 0;
-        beforeAxisRawV = 0;
-        SetIsMove(false);
-        targetItem = null;
-    }
-
-    private bool CheckHitWall()
-    {
-        float scope = 0.7f;
-
-        // 레이 확인용
-        //Debug.DrawRay(pelvis.transform.position, moveDirection * scope, Color.red);
-
-        List<Vector3> rayPositions = new List<Vector3>();
-
-        rayPositions.Add(pelvis.transform.position);
-        rayPositions.Add(head.transform.position);
-        rayPositions.Add(clavicleL.transform.position);
-        rayPositions.Add(clavicleR.transform.position);
-
-        foreach (Vector3 pos in rayPositions)
-        {
-            if (Physics.Raycast(pos, moveDirection, out RaycastHit hit, scope) == true)
-            {
-                if (hit.collider.tag == "Ground")
-                {
-                    SetCanMove(false);
-                    return true;
-                }
-            }
-        }
-
-        SetCanMove(true);
-        return false;
-    }
     private void SetCanMove(bool canImove)
     {
         if (canImove == false)
@@ -784,16 +840,6 @@ public class PlayerController : MonoBehaviour
         {
             pelvisRigidbody.constraints = RigidbodyConstraints.None;
         }
-    }
-
-    public void GameStart()
-    {
-        gameStart = true;
-    }
-
-    public void GameEnd()
-    {
-        gameStart = false;
     }
 
     public void SetDirectionByTeam()
@@ -822,29 +868,6 @@ public class PlayerController : MonoBehaviour
     {
         stabilizer.transform.eulerAngles = new Vector3(0.0f, 180f, 0.0f);
     }
-
-    public void s_GrapPlayer(int targetId, bool isLeftHand, Vector3 handPos, Vector3 targetHeadPos)
-    {
-        playerStatus.SetIsGrapPlayer(true, targetId);
-
-        CharacterStatus targetPlayerState = Managers.Player.FindPlayerById(targetId).GetComponent<CharacterStatus>();
-        targetPlayerState.SetIsGrapped(true, playerStatus.GetId());
-
-        if (isLeftHand == true)
-        {
-            handL.GetComponent<AttackChecker>().GrapPlayer(targetId, handPos, targetHeadPos);
-        }
-        else
-        {
-            handR.GetComponent<AttackChecker>().GrapPlayer(targetId, handPos, targetHeadPos);
-        }
-    }
-    public void s_ThrowPlayer()
-    {
-        playerStatus.SetIsGrapPlayer(false);
-        handL.GetComponent<AttackChecker>().ThrowPlayer();
-        handR.GetComponent<AttackChecker>().ThrowPlayer();
-    }
     public void SetHeadPosition(Vector3 headPos)
     {
         head.transform.position = headPos;
@@ -856,11 +879,5 @@ public class PlayerController : MonoBehaviour
     public Rigidbody GetHeadRigidbody()
     {
         return head.GetComponent<Rigidbody>();
-    }
-    public void GrapOff()
-    {
-        PlayerController targetPlayerController = Managers.Player.FindPlayerById(playerStatus.GetGrapTargetPlayerId()).GetComponent<PlayerController>();
-        packetManager.SendPlayerThrowOtherPlayerPacket(playerStatus.GetId(), GetPosition(), GetDirection(),
-            playerStatus.GetGrapTargetPlayerId(), targetPlayerController.GetPosition(), targetPlayerController.GetDirection());
     }
 }
