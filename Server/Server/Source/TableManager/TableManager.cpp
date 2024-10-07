@@ -116,28 +116,6 @@ void TableManager::ReadCharacterStat()
         mWorkbook.load("GameData/Ch_Stat.xlsx");
 
         int idx = 0;
-        mWorksheet = mWorkbook.sheet_by_index(Ch_Stat_Sheet);
-        for (auto row : mWorksheet.rows(false)) {
-            if (idx < 1) {
-                idx++;
-                continue;
-            }
-
-            if (!row.empty()) {
-                CharacterStats[(int)row[(int)(CharacterStat_Field::index)].value<int>()]
-                    = CharacterStat{
-                    (int)row[(int)(CharacterStat_Field::index)].value<int>(),
-                    (std::string)row[(int)(CharacterStat_Field::name)].to_string(),
-                    (float)row[(int)(CharacterStat_Field::hp)].value<float>(),
-                    (int)row[(int)(CharacterStat_Field::stamina)].value<int>(),
-                    (float)row[(int)(CharacterStat_Field::strength)].value<float>(),
-                    (int)row[(int)(CharacterStat_Field::speed)].value<int>()
-                };
-            }
-            idx++;
-        }
-
-        idx = 0;
         mWorksheet = mWorkbook.sheet_by_index(Ch_Attack_Sheet);
         for (auto row : mWorksheet.rows(false)) {
             if (idx < 1) {
@@ -178,6 +156,39 @@ void TableManager::ReadCharacterStat()
                     (int)row[(int)(MoveStat_Field::Ch_StaminaConsume)].value<int>(),
                     (int)row[(int)(MoveStat_Field::Ch_Stamina_recovery)].value<int>()
                 };
+            }
+            idx++;
+        }
+
+        idx = 0;
+
+        mWorksheet = mWorkbook.sheet_by_index(Ch_Stat_Sheet);
+        for (auto row : mWorksheet.rows(false)) {
+            if (idx < 1) {
+                idx++;
+                continue;
+            }
+
+            int charIndex = row[(int)(CharacterStat_Field::index)].value<int>();
+
+            if (!row.empty()) {
+                CharacterStats[charIndex]
+                    = CharacterStat{
+                    (int)row[(int)(CharacterStat_Field::index)].value<int>(),
+                    (std::string)row[(int)(CharacterStat_Field::name)].to_string(),
+                    (float)row[(int)(CharacterStat_Field::hp)].value<float>(),
+                    (int)row[(int)(CharacterStat_Field::stamina)].value<int>(),
+                    (float)row[(int)(CharacterStat_Field::strength)].value<float>(),
+                    (int)row[(int)(CharacterStat_Field::speed)].value<int>()
+                };
+
+                for (const auto& pair : AttackStats) {
+                    CharacterStats[charIndex].attackStats[pair.first] = pair.second;
+                }
+
+                for (const auto& pair : MoveStats) {
+                    CharacterStats[charIndex].moveStats[pair.first] = pair.second;
+                }
             }
             idx++;
         }

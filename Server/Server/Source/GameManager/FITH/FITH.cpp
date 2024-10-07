@@ -306,6 +306,7 @@ void FITH::WeaponSpawn(Room* room, int roomID, eWeaponType weaponType, int spawn
     std::vector<Vector3f> poses;
     std::vector<int> weaponIDs;
     std::vector<int> weaponTypes;
+    WeaponStat& weaponStat = mServer->GetTableManager()->GetWeaponStats()[weaponType];
 
     float posOffset = (static_cast<float>(BLOCKSIZE) / 3);
 
@@ -318,7 +319,7 @@ void FITH::WeaponSpawn(Room* room, int roomID, eWeaponType weaponType, int spawn
         newPos.x = pos.x + (float)dis_value(gen);
         newPos.z = pos.z + (float)dis_value(gen);
 
-        int weaponid = room->AddWeapon(new Weapon(weaponType, nullptr), newPos);
+        int weaponid = room->AddWeapon(new Weapon(weaponType, weaponStat), newPos);
         if (weaponid == INVALIDKEY) continue;
 
         poses.push_back(newPos);

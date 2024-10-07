@@ -35,6 +35,7 @@ public:
 			player->SetPlayerState(ePlayerState::PS_ALIVE);
 			player->GetPlayerStateLock().unlock();
 			player->SetHP(player->GetCharacterStat().hp);
+			player->SetStamina(player->GetCharacterStat().stamina);
 			pServer->GetPacketSender()->SendPlayerRespawn(playerid, roomid);
 		}
 		catch (const std::exception& e) {

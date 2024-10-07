@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <unordered_map>
 
 #define Ch_Stat_Sheet 0
 #define Ch_Attack_Sheet 1
@@ -35,15 +36,6 @@ enum class MoveStat_Field {
 	Ch_Stamina_recovery,
 };
 
-struct CharacterStat {
-	int				index;
-	std::string		name;
-	float			hp;
-	int				stamina;
-	float			strength;
-	int				speed;
-};
-
 struct AttackStat {
 	int Index;
 	std::string Name;
@@ -61,6 +53,18 @@ struct MoveStat {
 	float Value;
 	int	Ch_StaminaConsume;
 	int Ch_Stamina_recovery;
+};
+
+struct CharacterStat {
+	int				index;
+	std::string		name;
+	float			hp;
+	int				stamina;
+	float			strength;
+	int				speed;
+
+	std::unordered_map<int, AttackStat> attackStats;
+	std::unordered_map<int, MoveStat> moveStats;
 };
 
 #pragma pack(pop) 

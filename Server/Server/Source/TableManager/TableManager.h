@@ -35,8 +35,6 @@ public:
 	std::unordered_map<INDEX, ItemTable>& GetItemInfos() { return ItemInfos; }
 
 	std::unordered_map<INDEX, CharacterStat>& GetCharacterStats() { return CharacterStats; }
-	std::unordered_map<INDEX, AttackStat>& GetAttackStats() { return AttackStats; }
-	std::unordered_map<INDEX, MoveStat>& GetMoveStats() { return MoveStats; }
 
 	std::unordered_map<INDEX, WeaponStat>& GetWeaponStats() { return WeaponStats; }
 	std::unordered_map<GameMode, GameModeData>& GetGameModeData() { return GameModeDatas; }

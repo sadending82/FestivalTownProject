@@ -71,17 +71,18 @@ public:
 					}
 
 					// 데미지 계산
-					damageAmount += attackerStat.strength * tableManager->GetAttackStats()[eDamageType::AT_ATTACK].Value;
+					damageAmount += attackerStat.strength * attackerStat.attackStats[eDamageType::AT_ATTACK].Value;
 					attacker->GetWeaponLock().lock_shared();
 					if (attacker->GetWeapon() != nullptr) {
-						damageAmount = attackerStat.strength + tableManager->GetWeaponStats()[(int)attacker->GetWeapon()->GetType()].Weapon_Power;
+						damageAmount = attackerStat.strength + attacker->GetWeapon()->GetStat().Weapon_Power;
 					}
 					attacker->GetWeaponLock().unlock_shared();
-					TargetStaminaLoss += tableManager->GetAttackStats()[eDamageType::AT_ATTACK].Vanish_Stamina;
+					TargetStaminaLoss += attackerStat.attackStats[eDamageType::AT_ATTACK].Vanish_Stamina;
 
 					// 데미지 적용
 					target->ReduceHP(damageAmount);
 					target->ReduceStamina(TargetStaminaLoss);
+
 
 					if (target->GetHP() <= 0) {
 						// 사망 처리
