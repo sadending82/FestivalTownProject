@@ -18,7 +18,7 @@ namespace ExcelDataStructure
         public float Ch_Hp;
         public int Ch_Stamina;
         public float Ch_Strength;
-        public float Ch_Speed;
+        public int Ch_Speed;
     }
 
     [System.Serializable]
@@ -27,16 +27,16 @@ namespace ExcelDataStructure
         public float Value;
         public float Attack_Speed;
         public float Attack_Range;
-        public float Ch_StaminaConsume;
-        public float Steal_Stamina;
+        public int Ch_StaminaConsume;
+        public int Vanish_Stamina;
     }
 
     [System.Serializable]
     public class CharacterMoveEntity : GameDataEntity
     {
         public float Value;
-        public float Ch_StaminaConsume;
-        public float Ch_Stamina_recovery;
+        public int Ch_StaminaConsume;
+        public int Ch_Stamina_recovery;
     }
 
     [System.Serializable]
@@ -44,7 +44,7 @@ namespace ExcelDataStructure
     {
         public float Action_Speed;
         public float Action_Range;
-        public float Ch_StaminaConsume;
+        public int Ch_StaminaConsume;
     }
 
     [System.Serializable]
@@ -157,9 +157,9 @@ namespace ExcelDataStructure
     [System.Serializable]
     public class WeaponStatEntity : GameDataEntity
     {
-        public float Weapon_Power;
+        public int Weapon_Power;
         public float Weapon_Range;
-        public float Weapon_Type;
+        public int Weapon_Type;
         public float Weapon_StaminaConsume;
     }
 }
