@@ -62,7 +62,6 @@ void TableManager::ReadAllDataTable()
     ReadMapData();
     ReadPointConstantTable();
     ReadGachaTable();
-
     ReadGameReward();
 }
 
@@ -640,4 +639,17 @@ void TableManager::ReadGachaTable()
     catch (const xlnt::exception& e) {
         std::cerr << "Gacha.xlsx Excel File Load Fail: " << e.what() << std::endl;
     }
+}
+
+void TableManager::Lock()
+{
+    bool expected = false;
+    while (!mLocked.compare_exchange_strong(expected, true)) {
+        expected = false;
+    }
+}
+
+void TableManager::UnLock()
+{
+    mLocked.store(false);
 }

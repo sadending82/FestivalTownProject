@@ -37,6 +37,8 @@ public:
 	void						ThreadJoin();
 	void						SetGameManagers();
 
+	void						TableReLoad();
+
 	void						MakeTestRoom();
 
 	void						SendAllPlayerInRoomBySessionID(void* packet, int size, int sessionID);

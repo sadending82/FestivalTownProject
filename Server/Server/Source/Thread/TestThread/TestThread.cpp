@@ -137,6 +137,11 @@ void TestThread::RunWorker()
             std::cout << "Gacha Results!" << " -> Item: " << rewardItem  << " | Value: " << rewardValue <<std::endl;
         }
         break;
+        case TableReload: {
+            m_pServer->TableReLoad();
+            std::cout << "Table Load Complete\n";
+        }
+                        break;
         default: {
             std::cout << "Wrong Command" << std::endl;
         }

@@ -32,6 +32,9 @@ public:
 
 	void ReadGachaTable();
 
+	void Lock();
+	void UnLock();
+
 	std::unordered_map<INDEX, ItemTable>& GetItemInfos() { return ItemInfos; }
 
 	std::unordered_map<INDEX, CharacterStat>& GetCharacterStats() { return CharacterStats; }
@@ -76,4 +79,6 @@ private:
 	std::unordered_map<GACHA_GROUP, std::unordered_map<INDEX, GachaItem>> GachaItemList;
 
 	std::unordered_map<GameMode, std::vector<MapCode>> MapListByMode;
+
+	std::atomic<bool> mLocked;
 };
