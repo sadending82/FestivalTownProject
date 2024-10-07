@@ -35,25 +35,25 @@ public:
 	void Lock();
 	void UnLock();
 
-	std::unordered_map<INDEX, ItemTable>& GetItemInfos() { return ItemInfos; }
+	std::unordered_map<INDEX, ItemTable>& GetItemInfos();
 
-	std::unordered_map<INDEX, CharacterStat>& GetCharacterStats() { return CharacterStats; }
+	std::unordered_map<INDEX, CharacterStat>& GetCharacterStats();
 
-	std::unordered_map<INDEX, WeaponStat>& GetWeaponStats() { return WeaponStats; }
-	std::unordered_map<GameMode, GameModeData>& GetGameModeData() { return GameModeDatas; }
-	std::unordered_map<MapCode, Map>& GetMapData() { return MapData; }
+	std::unordered_map<INDEX, WeaponStat>& GetWeaponStats();
+	std::unordered_map<GameMode, GameModeData>& GetGameModeData();
+	std::unordered_map<MapCode, Map>& GetMapData();
 
-	std::unordered_map<GameMode, PointConstants>& GetPointConstantList() { return PointConstantList; }
+	std::unordered_map<GameMode, PointConstants>& GetPointConstantList();
 
-	std::unordered_map <GameMode, GameReward>& GetGameRewardList() { return GameRewardList; }
+	std::unordered_map <GameMode, GameReward>& GetGameRewardList();
 	// <GameMode, Point>
-	std::unordered_map<GameMode, std::unordered_map<int, BonusReward>>& GetGameBonusRewardList() { return GameBonusRewardList; }
+	std::unordered_map<GameMode, std::unordered_map<int, BonusReward>>& GetGameBonusRewardList();
 
-	std::unordered_map<INDEX, RandomBox>& GetRandomBoxList(){return RandomBoxList;}
-	std::unordered_map<GACHA_GROUP, std::unordered_map<INDEX, GachaItem>>& GetGachaItemList() { return GachaItemList; }
+	std::unordered_map<INDEX, RandomBox>& GetRandomBoxList();
+	std::unordered_map<GACHA_GROUP, std::unordered_map<INDEX, GachaItem>>& GetGachaItemList();
 
 
-	std::unordered_map<GameMode, std::vector<MapCode>>& getMapListByMode() { return MapListByMode; }
+	std::unordered_map<GameMode, std::vector<MapCode>>& getMapListByMode();
 
 private:
 	xlnt::workbook mWorkbook;
@@ -80,5 +80,6 @@ private:
 
 	std::unordered_map<GameMode, std::vector<MapCode>> MapListByMode;
 
-	std::atomic<bool> mLocked;
+	std::atomic_flag mLockFlag = ATOMIC_FLAG_INIT;
+	std::atomic<bool> mIsLoading;
 };

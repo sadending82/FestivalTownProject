@@ -243,7 +243,6 @@ void Server::SetGameManagers()
 void Server::TableReLoad()
 {
     mTableManager->Lock();
-    mTableManager->ClearAllTable();
     mTableManager->ReadAllDataTable();
     mTableManager->UnLock();
 }

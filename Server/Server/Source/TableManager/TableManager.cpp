@@ -55,6 +55,10 @@ void TableManager::ClearAllTable()
 
 void TableManager::ReadAllDataTable()
 {
+    mIsLoading = true;
+
+    ClearAllTable();
+
     ReadItemTable();
     ReadCharacterStat();
     ReadWeaponStat();
@@ -63,6 +67,8 @@ void TableManager::ReadAllDataTable()
     ReadPointConstantTable();
     ReadGachaTable();
     ReadGameReward();
+
+    mIsLoading = false;
 }
 
 void TableManager::ReadItemTable()
@@ -643,13 +649,100 @@ void TableManager::ReadGachaTable()
 
 void TableManager::Lock()
 {
-    bool expected = false;
-    while (!mLocked.compare_exchange_strong(expected, true)) {
-        expected = false;
+    while (mLockFlag.test_and_set(std::memory_order_acquire)) {
+
     }
 }
 
 void TableManager::UnLock()
 {
-    mLocked.store(false);
+    mLockFlag.clear();
+}
+
+std::unordered_map<INDEX, ItemTable>& TableManager::GetItemInfos()
+{
+    while (mIsLoading == true) {
+
+    }
+    return ItemInfos;
+}
+
+std::unordered_map<INDEX, CharacterStat>& TableManager::GetCharacterStats()
+{
+    while (mIsLoading == true) {
+
+    }
+    return CharacterStats;
+}
+
+std::unordered_map<INDEX, WeaponStat>& TableManager::GetWeaponStats()
+{
+    while (mIsLoading == true) {
+
+    }
+    return WeaponStats;
+}
+
+std::unordered_map<GameMode, GameModeData>& TableManager::GetGameModeData()
+{
+    while (mIsLoading == true) {
+
+    }
+    return GameModeDatas;
+}
+
+std::unordered_map<MapCode, Map>& TableManager::GetMapData()
+{
+    while (mIsLoading == true) {
+
+    }
+    return MapData;
+}
+
+std::unordered_map<GameMode, PointConstants>& TableManager::GetPointConstantList()
+{
+    while (mIsLoading == true) {
+
+    }
+    return PointConstantList;
+}
+
+std::unordered_map<GameMode, GameReward>& TableManager::GetGameRewardList()
+{
+    while (mIsLoading == true) {
+
+    }
+    return GameRewardList;
+}
+
+std::unordered_map<GameMode, std::unordered_map<int, BonusReward>>& TableManager::GetGameBonusRewardList()
+{
+    while (mIsLoading == true) {
+
+    }
+    return GameBonusRewardList;
+}
+
+std::unordered_map<INDEX, RandomBox>& TableManager::GetRandomBoxList()
+{
+    while (mIsLoading == true) {
+
+    }
+    return RandomBoxList;
+}
+
+std::unordered_map<GACHA_GROUP, std::unordered_map<INDEX, GachaItem>>& TableManager::GetGachaItemList()
+{
+    while (mIsLoading == true) {
+
+    }
+    return GachaItemList;
+}
+
+std::unordered_map<GameMode, std::vector<MapCode>>& TableManager::getMapListByMode()
+{
+    while (mIsLoading == true) {
+
+    }
+    return MapListByMode;
 }

@@ -27,7 +27,7 @@ public:
 			GameManager* gameManager = pServer->GetGameManagers()[gameMode];
 
 			TIMEPOINT startTime = room->GetStartTime();
-			std::chrono::seconds playTime(pServer->GetTableManager()->GetGameModeData()[gameMode].Play_Time);
+			std::chrono::seconds playTime(room->GetGameModeData().Play_Time);
 			TIMEPOINT endTime = startTime + playTime;
 			TIMEPOINT currTime = std::chrono::system_clock::now();
 			if (endTime <= currTime) {
