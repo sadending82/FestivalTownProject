@@ -18,6 +18,8 @@ public class UI_Loading : UI_PopUp
 
     public override void Init()
     {
+        base.Init();
+
         Bind<GameObject>(typeof(GameObjects));
     }
 }

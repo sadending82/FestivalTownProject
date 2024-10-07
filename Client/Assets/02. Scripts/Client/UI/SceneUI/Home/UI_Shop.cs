@@ -18,6 +18,8 @@ public class UI_Shop : UI_PopUp
 
     public override void Init()
     {
+        base.Init();
+
         Bind<GameObject>(typeof(GameObjects));
     }
 }

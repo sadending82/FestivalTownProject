@@ -20,6 +20,7 @@ public class UI_Emoticon : UI_Base
 
     public override void Init()
     {
+
         Bind<GameObject>(typeof(GameObjects));
     }
 

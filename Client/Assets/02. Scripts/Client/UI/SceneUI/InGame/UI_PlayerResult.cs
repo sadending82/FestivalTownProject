@@ -24,7 +24,6 @@ public class UI_PlayerResult : UI_Base
     public override void Init()
     {
         Bind<GameObject>(typeof(GameObjects));
-
     }
 
     public void SetPlayerResult(int kill, int death, int bombInsert, int gold, bool isMvp)

@@ -24,6 +24,8 @@ public class UI_OneVersusOneSceneUI : UI_Scene
 
     public override void Init()
     {
+        base.Init();
+
         Bind<GameObject>(typeof(GameObjects));
     }
 
