@@ -62,6 +62,9 @@ public class PlayerController : MonoBehaviour
     private bool isGrapPlayerMode = false;
     private bool isGrap;
     private GameObject targetItem;
+    private float bombPickUpSpeed;
+    private float weaponPickUpSpeed;
+    private float pickUpRange;
 
     //------ Server -------
     private NetworkManager network;
@@ -100,6 +103,8 @@ public class PlayerController : MonoBehaviour
 
         float chSpeed = (float)cse.Ch_Speed;
 
+
+        // 이동 속도 관련
         CharacterMoveEntity cme;
 
         data = Managers.Data.GetData(20002);
@@ -117,6 +122,21 @@ public class PlayerController : MonoBehaviour
         data = Managers.Data.GetData(20007);
         cme = (CharacterMoveEntity)data;
         holdAndRunSpeed = cme.Value * chSpeed;
+
+        // 픽업 관련
+        CharacterActionEntity cae;
+
+        data = Managers.Data.GetData(30001);
+        cae = (CharacterActionEntity)data;
+        weaponPickUpSpeed = cae.Action_Speed;
+        pickUpRange = cae.Action_Range;
+
+        Vector3 basicScale = nearObjectChecker.transform.localScale;
+        nearObjectChecker.transform.localScale = new Vector3(basicScale.x * pickUpRange, basicScale.y, basicScale.z * pickUpRange);
+
+        data = Managers.Data.GetData(30002);
+        cae = (CharacterActionEntity)data;
+        bombPickUpSpeed = cae.Action_Speed;
     }
 
     private void FixedUpdate()
@@ -396,15 +416,15 @@ public class PlayerController : MonoBehaviour
                     fKeyDownTimer = 0;
                     isPickUpMode = false;
                 }
-                else if (fKeyDownTimer >= 1f)
+                else
                 {
-                    if (targetItem.tag == "Bomb" && playerStatus.GetIsHaveBomb() == false)
+                    if (targetItem.tag == "Bomb" && playerStatus.GetIsHaveBomb() == false && fKeyDownTimer >= bombPickUpSpeed)
                     {
                         Bomb targetBomb = targetItem.GetComponent<Bomb>();
                         fKeyDownTimer = 0;
                         packetManager.SendPlayerGrabBombPacket(pelvis.transform.position, stabillizerDirection, myId, targetBomb.GetId());
                     }
-                    else if (targetItem.tag == "Weapon" && playerStatus.GetIsHaveWeapon() == false)
+                    else if (targetItem.tag == "Weapon" && playerStatus.GetIsHaveWeapon() == false && fKeyDownTimer >= weaponPickUpSpeed)
                     {
                         Weapon targetWeapon = targetItem.GetComponent<Weapon>();
                         fKeyDownTimer = 0;
