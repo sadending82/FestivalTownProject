@@ -39,7 +39,6 @@ public class UI_LoginPanel: UI_Base
         Get<GameObject>((int)GameObjects.LoginButton).BindEvent((pointerEventData) => {
             Debug.Log("로그인 버튼 클릭");
             Login();
-            Managers.Scene.LoadScene(Define.Scene.Home);
         });
     }
 
@@ -47,8 +46,7 @@ public class UI_LoginPanel: UI_Base
     {
         string ID = Get<GameObject>((int)GameObjects.IDInputField).GetComponent<TMP_InputField>().text;
         string PW = Get<GameObject>((int)GameObjects.PWInputField).GetComponent<TMP_InputField>().text;
-        Debug.Log($"ID : {ID}");
-        Debug.Log($"PW : {PW}");
+        Managers.Network.GetPacketManager().SendLoginRequestPacket(ID, PW);
     }
 
 }

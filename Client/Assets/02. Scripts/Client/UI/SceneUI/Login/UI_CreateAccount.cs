@@ -21,6 +21,22 @@ public class UI_CreateAccount : UI_PopUp
     {
         base.Init();
         Bind<GameObject>(typeof(GameObjects));
+
+        Get<GameObject>((int)GameObjects.CreateAccountButton).BindEvent((PointerEventData) =>
+        {
+            Debug.Log("회원가입 버튼 클릭");
+
+            var panel = Get<GameObject>((int)GameObjects.CreateAccountPanel).GetComponent<UI_CreateAccountPanel>();
+            if (panel.IsCompatible())
+            {
+                Managers.Network.GetPacketManager().SendSignUpRequestPacket(
+                    panel.GetEmailText(), panel.GetPassword(), panel.GetNickName());
+            }
+            else
+            {
+                Debug.Log("회원가입 실패");
+            }
+        });
     }
 
     private void Update()

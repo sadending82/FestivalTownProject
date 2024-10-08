@@ -17,6 +17,8 @@ namespace Network.PacketProcessor
 
             int resultCode = Data.ResultCode;
 
+            Debug.Log($"SignUp Result Code : {resultCode}");
+            Managers.UI.ClosePopUpUI();
         }
 
 
