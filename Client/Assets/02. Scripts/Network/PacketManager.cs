@@ -43,8 +43,10 @@ public class PacketManager : MonoBehaviour
     {
         processorDict = new Dictionary<ePacketType, PacketProcessor>
         {
-            { ePacketType.S2C_HEART_BEAT, new HeartBeatProcessor() },
+            { ePacketType.S2C_LOGIN_RESPONSE, new LoginResponseProcessor() },
+            { ePacketType.S2C_SIGNUP_RESPONSE, new SignUpResponseProcessor() },
 
+            { ePacketType.S2C_HEART_BEAT, new HeartBeatProcessor() },
 
             { ePacketType.S2C_PLAYER_ADD, new PlayerAddProcessor() },
             { ePacketType.S2C_PLAYER_DELETE, new PlayerDeleteProcessor() },
