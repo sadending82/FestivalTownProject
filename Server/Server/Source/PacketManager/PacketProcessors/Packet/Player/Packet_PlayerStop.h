@@ -6,7 +6,9 @@ using namespace PacketTable::PlayerTable;
 class Packet_PlayerStop : public PacketProcessor {
 
 public:
-	virtual void Process(Server* pServer, const uint8_t* data, const int size, const int key) {
+	Packet_PlayerStop(Server* server, PacketSender* packetSender) : PacketProcessor(server, packetSender) {}
+
+	virtual void Process(const uint8_t* data, const int size, const int key) {
 		try {
 
 			mBuilder.Clear();
@@ -39,5 +41,4 @@ public:
 	}
 
 private:
-	flatbuffers::FlatBufferBuilder mBuilder;
 };

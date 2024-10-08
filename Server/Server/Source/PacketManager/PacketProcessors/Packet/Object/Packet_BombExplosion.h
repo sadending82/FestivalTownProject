@@ -6,7 +6,9 @@ using namespace PacketTable::ObjectTable;
 class Packet_BombExplosion : public PacketProcessor {
 
 public:
-	virtual void Process(Server* pServer, const uint8_t* data, const int size, const int key) {
+	Packet_BombExplosion(Server* server, PacketSender* packetSender) : PacketProcessor(server, packetSender) {}
+
+	virtual void Process(const uint8_t* data, const int size, const int key) {
 		try {
 
 			mBuilder.Clear();
@@ -28,7 +30,7 @@ public:
 					return;
 				}
 
-				pServer->GetPacketSender()->SendBombExplosionPacket(roomid, bombid);
+				pPacketSender->SendBombExplosionPacket(roomid, bombid);
 				room->DeleteBomb(bombid);
 			}
 		}
@@ -38,5 +40,4 @@ public:
 	}
 
 private:
-	flatbuffers::FlatBufferBuilder mBuilder;
 };

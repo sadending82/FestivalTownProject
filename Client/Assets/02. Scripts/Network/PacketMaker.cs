@@ -13,6 +13,7 @@ using PacketTable.GameTable;
 using PacketTable.ObjectTable;
 using PacketTable.LobbyTable;
 using System.Diagnostics;
+using PacketTable.LoginTable;
 
 public class PacketMaker
 {
@@ -506,6 +507,47 @@ public class PacketMaker
         WeaponDelete.StartWeaponDelete(builder);
         WeaponDelete.AddId(builder, weaponID);
         var offset = WeaponDelete.EndWeaponDelete(builder);
+        builder.Finish(offset.Value);
+
+        byte[] data = builder.SizedByteArray();
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_WEAPON_DELETE, flatBufferSize = (ushort)data.Length };
+        byte[] headerdata = Serialize<HEADER>(header);
+        byte[] result = new byte[data.Length + headerdata.Length];
+
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
+
+        return result;
+    }
+
+    public byte[] MakeLoginRequestPacket(string accountID, string accountPassword)
+    {
+        var builder = new FlatBufferBuilder(1);
+        LoginRequest.StartLoginRequest(builder);
+        LoginRequest.AddAccountId(builder, builder.CreateString(accountID));
+        LoginRequest.AddAccountPassword(builder, builder.CreateString(accountPassword));
+        var offset = LoginRequest.EndLoginRequest(builder);
+        builder.Finish(offset.Value);
+
+        byte[] data = builder.SizedByteArray();
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_WEAPON_DELETE, flatBufferSize = (ushort)data.Length };
+        byte[] headerdata = Serialize<HEADER>(header);
+        byte[] result = new byte[data.Length + headerdata.Length];
+
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
+
+        return result;
+    }
+
+    public byte[] MakeSignUpRequestPacket(string accountID, string accountPassword, string nickName)
+    {
+        var builder = new FlatBufferBuilder(1);
+        SignUpRequest.StartSignUpRequest(builder);
+        SignUpRequest.AddAccountId(builder, builder.CreateString(accountID));
+        SignUpRequest.AddAccountPassword(builder, builder.CreateString(accountPassword));
+        SignUpRequest.AddNickname(builder, builder.CreateString(nickName));
+        var offset = SignUpRequest.EndSignUpRequest(builder);
         builder.Finish(offset.Value);
 
         byte[] data = builder.SizedByteArray();

@@ -6,8 +6,9 @@
 class Event_GameMatching : public PacketProcessor {
 
 public:
+    Event_GameMatching(Server* server, PacketSender* packetSender) : PacketProcessor(server, packetSender) {}
 
-	virtual void Process(Server* pServer, unsigned char* buf) { 
+	virtual void Process(unsigned char* buf) { 
         try {
             EV_GAME_MATCHING* event = reinterpret_cast<EV_GAME_MATCHING*>(buf);
 
@@ -64,5 +65,4 @@ public:
 	}
 
 private:
-	flatbuffers::FlatBufferBuilder mBuilder;
 };

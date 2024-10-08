@@ -7,8 +7,9 @@ using namespace PacketTable::PlayerTable;
 class Event_HeartBeat : public PacketProcessor {
 
 public:
+	Event_HeartBeat(Server* server, PacketSender* packetSender) : PacketProcessor(server, packetSender) {}
 
-	virtual void Process(Server* pServer, unsigned char* buf) {
+	virtual void Process(unsigned char* buf) {
 		try {
 			EV_HEART_BEAT* event = reinterpret_cast<EV_HEART_BEAT*>(buf);
 			int target = event->sessionID;
@@ -27,6 +28,4 @@ public:
 	}
 
 private:
-
-	flatbuffers::FlatBufferBuilder mBuilder;
 };

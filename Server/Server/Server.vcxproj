@@ -207,6 +207,7 @@ if exist "$(ProjectDir)\Config" xcopy /Y /d /e /i "$(ProjectDir)\Config" "$(OutD
     <ClInclude Include="Source\PacketManager\flatbuffer\FlatBufferManager.h" />
     <ClInclude Include="Source\PacketManager\flatbuffer\Game_generated.h" />
     <ClInclude Include="Source\PacketManager\flatbuffer\Lobby_generated.h" />
+    <ClInclude Include="Source\PacketManager\flatbuffer\Login_generated.h" />
     <ClInclude Include="Source\PacketManager\flatbuffer\Player_generated.h" />
     <ClInclude Include="Source\PacketManager\FlatBuffer\test_generated.h" />
     <ClInclude Include="Source\PacketManager\flatbuffer\Utilities_generated.h" />
@@ -235,6 +236,8 @@ if exist "$(ProjectDir)\Config" xcopy /Y /d /e /i "$(ProjectDir)\Config" "$(OutD
     <ClInclude Include="Source\PacketManager\PacketProcessors\flatbuffer\Utilities_generated.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_GachaRequest.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_GameMatchingCancel.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Login\Packet_LoginRequest.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Login\Packet_SignUpRequest.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Object\Packet_BombExplosion.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Object\Packet_BombInput.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Object\Packet_BombPositionSync.h" />

@@ -15,11 +15,14 @@ class PacketProcessor
 {
 public:
 	PacketProcessor() {}
+	PacketProcessor(Server* server, PacketSender* packetSender):pServer(server), pPacketSender(packetSender) {}
 	~PacketProcessor() {}
 
-	virtual void Process(Server* pServer, const uint8_t* data, const int size, const int key) {}
-	virtual void Process(Server* pServer, unsigned char* buffer) {}
+	virtual void Process(const uint8_t* data, const int size, const int key) {}
+	virtual void Process(unsigned char* buffer) {}
 
-private:
+protected:
 	flatbuffers::FlatBufferBuilder mBuilder;
+	Server* pServer = nullptr;
+	PacketSender* pPacketSender = nullptr;
 };

@@ -11,6 +11,18 @@ PacketSender::~PacketSender()
 {
 }
 
+void PacketSender::SendLoginResponse(int sessionID, int result)
+{
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakeLoginResponsePacket(result);
+    mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
+}
+
+void PacketSender::SendSignUpResponse(int sessionID, int result)
+{
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakeSignUpResponsePacket(result);
+    mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
+}
+
 void PacketSender::SendPlayerAdd(int roomID)
 {
     Room* room = mServer->GetRooms()[roomID];

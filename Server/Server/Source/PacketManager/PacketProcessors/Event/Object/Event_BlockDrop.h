@@ -7,8 +7,9 @@ using namespace PacketTable::ObjectTable;
 class Event_BlockDrop : public PacketProcessor {
 
 public:
+	Event_BlockDrop(Server* server, PacketSender* packetSender) : PacketProcessor(server, packetSender) {}
 
-	virtual void Process(Server* pServer, unsigned char* buf) { 
+	virtual void Process(unsigned char* buf) { 
 		try {
 			EV_OBJECT_DROP* event = reinterpret_cast<EV_OBJECT_DROP*>(buf);
 
@@ -51,7 +52,7 @@ public:
 			}
 			PushEventBlockDrop(pServer->GetTimer(), event->roomID, event->roomCode, blockType, nextEventTime);
 
-			pServer->GetPacketSender()->SendBlockDropPacket(event->roomID, spawnCnt, blockType);
+			pPacketSender->SendBlockDropPacket(event->roomID, spawnCnt, blockType);
 		}
 		catch (const std::exception& e) {
 			std::cerr << "[ERROR] : " << e.what() << std::endl;
@@ -59,5 +60,4 @@ public:
 	}
 
 private:
-	flatbuffers::FlatBufferBuilder mBuilder;
 };

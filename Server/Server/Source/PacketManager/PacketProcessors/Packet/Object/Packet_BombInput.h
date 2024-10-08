@@ -6,7 +6,9 @@ using namespace PacketTable::GameTable;
 class Packet_BombInput : public PacketProcessor {
 
 public:
-	virtual void Process(Server* pServer, const uint8_t* data, const int size, const int key) {
+	Packet_BombInput(Server* server, PacketSender* packetSender) : PacketProcessor(server, packetSender) {}
+
+	virtual void Process(const uint8_t* data, const int size, const int key) {
 		try {
 			mBuilder.Clear();
 
@@ -35,8 +37,10 @@ public:
 
 				// ÀÚ±â ÆÀ¿¡ ³ÖÀ¸¸é ¹Ù·Î »ç¸Á
 				if (player->GetTeam() == team) {
-					int spawnTime = pServer->GetTableManager()->GetGameModeData()[room->GetGameMode()].Player_Spawn_Time;
-					pServer->GetPacketSender()->SendPlayerDeadPacket(playerid, roomid, spawnTime);
+					int spawnTime = room->GetGameModeData().Player_Spawn_Time;
+					// Á×ÀÓ
+					player->ChangeToDeadState(pServer, spawnTime);
+
 					// record update
 					room->GetPlayerRecordList().at(playerid).death_count++;
 					PushEventPlayerRespawn(pServer->GetTimer(), playerid, roomid, room->GetRoomCode(), spawnTime);
@@ -45,7 +49,7 @@ public:
 
 				room->GetTeams()[team].ReduceLife();
 				int lifeCount = room->GetTeams()[team].GetLife();
-				pServer->GetPacketSender()->SendLifeReducePacket(team, lifeCount, roomid);
+				pPacketSender->SendLifeReducePacket(team, lifeCount, roomid);
 
 				// record update
 				room->GetPlayerRecordList().at(playerid).bomb_insert_count++;
@@ -61,5 +65,4 @@ public:
 	}
 
 private:
-	flatbuffers::FlatBufferBuilder mBuilder;
 };

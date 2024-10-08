@@ -5,7 +5,9 @@ using namespace PacketTable::PlayerTable;
 class Packet_PlayerDamageReceive : public PacketProcessor {
 
 public:
-	virtual void Process(Server* pServer, const uint8_t* data, const int size, const int key) { 
+	Packet_PlayerDamageReceive(Server* server, PacketSender* packetSender) : PacketProcessor(server, packetSender) {}
+
+	virtual void Process(const uint8_t* data, const int size, const int key) { 
 		try {
 
 			mBuilder.Clear();
@@ -96,7 +98,7 @@ public:
 					}
 					else {
 						Vector3f knockback_direction(read->knockback_direction()->x(), read->knockback_direction()->y(), read->knockback_direction()->z());
-						pServer->GetPacketSender()->SendPlayerCalculatedDamage(target_id, roomid, read->attack_type(), target->GetHP(), damageAmount, TargetStaminaLoss, knockback_direction);
+						pPacketSender->SendPlayerCalculatedDamage(target_id, roomid, read->attack_type(), target->GetHP(), damageAmount, TargetStaminaLoss, knockback_direction);
 
 						// 타격 후 스테미너가 0미만이면 그로기로
 						if (target->GetStamina() < 0) {
@@ -132,7 +134,7 @@ public:
 					}
 					else {
 						Vector3f knockback_direction(read->knockback_direction()->x(), read->knockback_direction()->y(), read->knockback_direction()->z());
-						pServer->GetPacketSender()->SendPlayerCalculatedDamage(target_id, roomid, read->attack_type(), target->GetHP(), damageAmount, TargetStaminaLoss, knockback_direction);
+						pPacketSender->SendPlayerCalculatedDamage(target_id, roomid, read->attack_type(), target->GetHP(), damageAmount, TargetStaminaLoss, knockback_direction);
 					}
 
 				}break;
@@ -152,5 +154,4 @@ public:
 	}
 
 private:
-	flatbuffers::FlatBufferBuilder mBuilder;
 };

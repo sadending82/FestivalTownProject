@@ -7,8 +7,10 @@ using namespace PacketTable::ObjectTable;
 class Event_BombSpawn : public PacketProcessor {
 
 public:
+	Event_BombSpawn(Server* server, PacketSender* packetSender) : PacketProcessor(server, packetSender) {}
 
-	virtual void Process(Server* pServer, unsigned char* buf) { 
+
+	virtual void Process(unsigned char* buf) { 
 		try {
 			EV_BOMB_SPAWN* event = reinterpret_cast<EV_BOMB_SPAWN*>(buf);
 
@@ -38,6 +40,4 @@ public:
 	}
 
 private:
-
-	flatbuffers::FlatBufferBuilder mBuilder;
 };

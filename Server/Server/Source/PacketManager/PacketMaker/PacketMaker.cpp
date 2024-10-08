@@ -2,6 +2,22 @@
 #include "PacketMaker.h"
 #include "../../Object/Player.h"
 
+std::vector<uint8_t> PacketMaker::MakeLoginResponsePacket(int result)
+{
+	flatbuffers::FlatBufferBuilder Builder;
+
+	Builder.Finish(PacketTable::LoginTable::CreateLoginResponse(Builder, result));
+	return MakeBuffer(ePacketType::S2C_LOGIN_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
+}
+
+std::vector<uint8_t> PacketMaker::MakeSignUpResponsePacket(int result)
+{
+	flatbuffers::FlatBufferBuilder Builder;
+
+	Builder.Finish(PacketTable::LoginTable::CreateSignUpResponse(Builder, result));
+	return MakeBuffer(ePacketType::S2C_SIGNUP_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
+}
+
 std::vector<uint8_t> PacketMaker::MakePlayerAddPacket(std::array<class Player*, MAXPLAYER>& players)
 {
 	flatbuffers::FlatBufferBuilder Builder;

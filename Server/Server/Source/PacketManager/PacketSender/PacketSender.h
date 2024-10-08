@@ -7,6 +7,9 @@ public:
 	PacketSender(class Server* server, class PacketMaker* packetMaker) :mServer(server), mPacketMaker(packetMaker) {}
 	~PacketSender();
 
+	void SendLoginResponse(int sessionID, int result);
+	void SendSignUpResponse(int sessionID, int result);
+
 	void SendPlayerAdd(int roomID);
 	void SendPlayerDelete(int roomID, int inGameID);
 	void SendGameMatchingResponse(int sessionID);

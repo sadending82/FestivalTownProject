@@ -6,7 +6,9 @@ using namespace PacketTable::GameTable;
 class Packet_GameReady : public PacketProcessor {
 
 public:
-	virtual void Process(Server* pServer, const uint8_t* data, const int size, const int key) { 
+	Packet_GameReady(Server* server, PacketSender* packetSender) : PacketProcessor(server, packetSender) {}
+
+	virtual void Process(const uint8_t* data, const int size, const int key) { 
 		try {
 
 			mBuilder.Clear();
@@ -33,13 +35,13 @@ public:
 
 						if (room->SetAllPlayerReady(true) == true) {
 
-							pServer->GetPacketSender()->SendAllPlayerReady(roomid);
+							pPacketSender->SendAllPlayerReady(roomid);
 							PushEventGameStart(pServer->GetTimer(), roomid, room->GetRoomCode());
 						}
 					}
 				}break;
 				case SERVER_MODE::TEST: {
-					pServer->GetPacketSender()->SendAllPlayerReady(roomid);
+					pPacketSender->SendAllPlayerReady(roomid);
 					PushEventGameStart(pServer->GetTimer(), roomid, pServer->GetRooms()[roomid]->GetRoomCode());
 				}break;
 				}
@@ -51,5 +53,4 @@ public:
 	}
 
 private:
-	flatbuffers::FlatBufferBuilder mBuilder;
 };

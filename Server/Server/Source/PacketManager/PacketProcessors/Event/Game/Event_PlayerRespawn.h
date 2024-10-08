@@ -5,7 +5,9 @@
 class Event_PlayerRespawn : public PacketProcessor {
 
 public:
-	virtual void Process(Server* pServer, unsigned char* buf) { 
+	Event_PlayerRespawn(Server* server, PacketSender* packetSender) : PacketProcessor(server, packetSender) {}
+
+	virtual void Process(unsigned char* buf) { 
 		try {
 
 			EV_PLAYER_RESPAWN* event = reinterpret_cast<EV_PLAYER_RESPAWN*>(buf);
@@ -36,7 +38,7 @@ public:
 			player->GetPlayerStateLock().unlock();
 			player->SetHP(player->GetCharacterStat().hp);
 			player->SetStamina(player->GetCharacterStat().stamina);
-			pServer->GetPacketSender()->SendPlayerRespawn(playerid, roomid);
+			pPacketSender->SendPlayerRespawn(playerid, roomid);
 		}
 		catch (const std::exception& e) {
 			std::cerr << "[ERROR] : " << e.what() << std::endl;
@@ -44,5 +46,4 @@ public:
 	}
 
 private:
-	flatbuffers::FlatBufferBuilder mBuilder;
 };

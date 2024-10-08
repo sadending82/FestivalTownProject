@@ -7,8 +7,9 @@ using namespace PacketTable::ObjectTable;
 class Event_BombExplosion : public PacketProcessor {
 
 public:
+	Event_BombExplosion(Server* server, PacketSender* packetSender) : PacketProcessor(server, packetSender) {}
 
-	virtual void Process(Server* pServer, unsigned char* buf) {
+	virtual void Process(unsigned char* buf) {
 		try {
 			EV_BOMB_EXPLOSION* event = reinterpret_cast<EV_BOMB_EXPLOSION*>(buf);
 
@@ -34,7 +35,7 @@ public:
 			}
 			room->GetBombListLock().unlock_shared();
 
-			pServer->GetPacketSender()->SendBombExplosionPacket(roomid, bombid);
+			pPacketSender->SendBombExplosionPacket(roomid, bombid);
 			room->DeleteBomb(bombid);
 		}
 		catch (const std::exception& e) {
@@ -43,6 +44,4 @@ public:
 	}
 
 private:
-
-	flatbuffers::FlatBufferBuilder mBuilder;
 };

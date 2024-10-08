@@ -5,8 +5,9 @@
 class Event_GroggyRecovery: public PacketProcessor {
 
 public:
+	Event_GroggyRecovery(Server* server, PacketSender* packetSender) : PacketProcessor(server, packetSender) {}
 
-	virtual void Process(Server* pServer, unsigned char* buf) { 
+	virtual void Process(unsigned char* buf) { 
 		try {
 			EV_GROGGY_RECOVERY* event = reinterpret_cast<EV_GROGGY_RECOVERY*>(buf);
 
@@ -43,7 +44,7 @@ public:
 				player->SetAttachedPlayerID(INVALIDKEY);
 				grabber->SetAttachedPlayerID(INVALIDKEY);
 
-				pServer->GetPacketSender()->SendPlayerThrowOtherPlayerPacket(roomid, grabberID, grabber->GetPosition(), grabber->GetDirection()
+				pPacketSender->SendPlayerThrowOtherPlayerPacket(roomid, grabberID, grabber->GetPosition(), grabber->GetDirection()
 					, playerid, player->GetPosition(), player->GetDirection());
 			}
 
@@ -60,7 +61,7 @@ public:
 
 			room->GetPlayerListLock().unlock_shared();
 
-			pServer->GetPacketSender()->SendPlayerGroggyRecoveryPacket(playerid, roomid, staminaRecoveryValue);
+			pPacketSender->SendPlayerGroggyRecoveryPacket(playerid, roomid, staminaRecoveryValue);
 		}
 		catch (const std::exception& e) {
 			std::cerr << "[ERROR] : " << e.what() << std::endl;
@@ -68,5 +69,4 @@ public:
 	}
 
 private:
-	flatbuffers::FlatBufferBuilder mBuilder;
 };

@@ -5,8 +5,9 @@
 class Event_RemainTimeSync : public PacketProcessor {
 
 public:
+	Event_RemainTimeSync(Server* server, PacketSender* packetSender) : PacketProcessor(server, packetSender) {}
 
-	virtual void Process(Server* pServer, unsigned char* buf) { 
+	virtual void Process(unsigned char* buf) { 
 		try {
 			EV_TIME_SYNC* event = reinterpret_cast<EV_TIME_SYNC*>(buf);
 
@@ -26,7 +27,7 @@ public:
 			GameMode gameMode = room->GetGameMode();
 
 			PushEventRemainTimeSync(pServer->GetTimer(), roomid, event->roomCode);
-			pServer->GetPacketSender()->SendRemainTimeSync(roomid);
+			pPacketSender->SendRemainTimeSync(roomid);
 		}
 		catch (const std::exception& e) {
 			std::cerr << "[ERROR] : " << e.what() << std::endl;
@@ -34,5 +35,4 @@ public:
 	}
 
 private:
-	flatbuffers::FlatBufferBuilder mBuilder;
 };

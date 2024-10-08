@@ -12,6 +12,9 @@ public:
 	PacketMaker() {};
 	~PacketMaker() {};
 
+	std::vector<uint8_t> MakeLoginResponsePacket(int result);
+	std::vector<uint8_t> MakeSignUpResponsePacket(int result);
+
 	std::vector<uint8_t> MakePlayerAddPacket(std::array<class Player*, MAXPLAYER>& players);
 	std::vector<uint8_t> MakePlayerDeletePacket (int inGameID);
 	std::vector<uint8_t> MakePlayerDeadPacket(int inGameID, int roomID, Vector3f position, Vector3f direction, int spawn_delay);

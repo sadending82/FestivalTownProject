@@ -16,5 +16,6 @@ private:
 	std::unordered_map<int, std::unique_ptr<PacketProcessor>> PacketProcessorMap;
 	std::unordered_map<int, std::unique_ptr<PacketProcessor>> EventProcessorMap;
 	class Server* pServer = nullptr;
+	class PacketSender* pPacketSender = nullptr;
 };
 

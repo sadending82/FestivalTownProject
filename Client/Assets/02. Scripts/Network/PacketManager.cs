@@ -8,6 +8,9 @@ using ClientProtocol;
 using Network.PacketProcessor;
 using UnityEngine.UIElements;
 using PacketTable.GameTable;
+using PacketTable.PlayerTable;
+using static UnityEngine.GraphicsBuffer;
+using TMPro;
 
 public class PacketManager : MonoBehaviour 
 {
@@ -255,6 +258,20 @@ public class PacketManager : MonoBehaviour
     public void SendPlayerThrowOtherPlayerPacket(int playerID, Vector3 myPosition, Vector3 myDirection, int targetID, Vector3 targetPosition, Vector3 targetDirection)
     {
         byte[] packet = _packetMaker.MakePlayerThrowOtherPlayerPacket(playerID, myPosition, myDirection, targetID, targetPosition, targetDirection);
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+
+    public void SendLoginRequestPacket(string accountID, string accountPassword)
+    {
+        byte[] packet = _packetMaker.MakeLoginRequestPacket(accountID, accountPassword);
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+
+    public void SendSignUpRequestPacket(string accountID, string accountPassword, string nickname)
+    {
+        byte[] packet = _packetMaker.MakeSignUpRequestPacket(accountID, accountPassword, nickname);
         if (packet == null) { return; }
         SendPacket(packet);
     }

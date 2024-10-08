@@ -5,8 +5,9 @@
 class Event_TimeOverCheck : public PacketProcessor {
 
 public:
+	Event_TimeOverCheck(Server* server, PacketSender* packetSender) : PacketProcessor(server, packetSender) {}
 
-	virtual void Process(Server* pServer, unsigned char* buf) { 
+	virtual void Process(unsigned char* buf) { 
 		try {
 			EV_TIMEOVER_CHECK* event = reinterpret_cast<EV_TIMEOVER_CHECK*>(buf);
 
@@ -43,5 +44,4 @@ public:
 	}
 
 private:
-	flatbuffers::FlatBufferBuilder mBuilder;
 };
