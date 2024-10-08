@@ -39,6 +39,7 @@ public class UI_LoginPanel: UI_Base
         Get<GameObject>((int)GameObjects.LoginButton).BindEvent((pointerEventData) => {
             Debug.Log("로그인 버튼 클릭");
             Login();
+            Managers.Scene.LoadScene(Define.Scene.Home);
         });
     }
 
