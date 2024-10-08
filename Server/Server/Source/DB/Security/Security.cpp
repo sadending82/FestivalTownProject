@@ -24,7 +24,6 @@ std::string Security::HashingPassword(const std::string password, const std::str
 {
 	std::string str = password + salt;
 	unsigned char hash[32];
-
 	SHA256_Encrpyt(reinterpret_cast<const unsigned char*>(str.c_str()), str.size(), hash);
 
 	std::string hashedStr;

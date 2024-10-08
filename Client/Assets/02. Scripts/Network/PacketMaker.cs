@@ -523,14 +523,16 @@ public class PacketMaker
     public byte[] MakeLoginRequestPacket(string accountID, string accountPassword)
     {
         var builder = new FlatBufferBuilder(1);
+        var AccountID = builder.CreateString(accountID);
+        var AccountPassword = builder.CreateString(accountPassword);
         LoginRequest.StartLoginRequest(builder);
-        LoginRequest.AddAccountId(builder, builder.CreateString(accountID));
-        LoginRequest.AddAccountPassword(builder, builder.CreateString(accountPassword));
+        LoginRequest.AddAccountId(builder, AccountID);
+        LoginRequest.AddAccountPassword(builder, AccountPassword);
         var offset = LoginRequest.EndLoginRequest(builder);
         builder.Finish(offset.Value);
 
         byte[] data = builder.SizedByteArray();
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_WEAPON_DELETE, flatBufferSize = (ushort)data.Length };
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_LOGIN_REQUEST, flatBufferSize = (ushort)data.Length };
         byte[] headerdata = Serialize<HEADER>(header);
         byte[] result = new byte[data.Length + headerdata.Length];
 
@@ -543,21 +545,21 @@ public class PacketMaker
     public byte[] MakeSignUpRequestPacket(string accountID, string accountPassword, string nickName)
     {
         var builder = new FlatBufferBuilder(1);
+        var AccountID = builder.CreateString(accountID);
+        var AccountPassword = builder.CreateString(accountPassword);
+        var NickName = builder.CreateString(nickName);
         SignUpRequest.StartSignUpRequest(builder);
-        SignUpRequest.AddAccountId(builder, builder.CreateString(accountID));
-        SignUpRequest.AddAccountPassword(builder, builder.CreateString(accountPassword));
-        SignUpRequest.AddNickname(builder, builder.CreateString(nickName));
+        SignUpRequest.AddAccountId(builder, AccountID);
+        SignUpRequest.AddAccountPassword(builder, AccountPassword);
+        SignUpRequest.AddNickname(builder,NickName);
         var offset = SignUpRequest.EndSignUpRequest(builder);
         builder.Finish(offset.Value);
-
         byte[] data = builder.SizedByteArray();
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_WEAPON_DELETE, flatBufferSize = (ushort)data.Length };
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_SIGNUP_REQUEST, flatBufferSize = (ushort)data.Length };
         byte[] headerdata = Serialize<HEADER>(header);
         byte[] result = new byte[data.Length + headerdata.Length];
-
         Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
         Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
-
         return result;
     }
 }

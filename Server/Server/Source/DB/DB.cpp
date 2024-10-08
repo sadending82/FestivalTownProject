@@ -355,16 +355,14 @@ bool DB::CheckValidateLogin(const char* id, const char* password)
 
 		while (SQLFetch(hStmt) == SQL_SUCCESS) {
 			SQLLEN len1, len2;
-			SQLCHAR value1[HASHED_PASSWORD_LENGTH]; // hashedPassword
-			SQLCHAR value2[SALT_LENGTH]; // salt
+			SQLCHAR value1[HASHED_PASSWORD_LENGTH+1]; // hashedPassword
+			SQLCHAR value2[SALT_LENGTH+1]; // salt
 			SQLGetData(hStmt, 1, SQL_C_CHAR, value1, sizeof(value1), &len1);
 			hashedPassword.assign(reinterpret_cast<char*>(value1), len1);
 
 			SQLGetData(hStmt, 2, SQL_C_CHAR, value2, sizeof(value2), &len2);
 			salt.assign(reinterpret_cast<char*>(value2), len2);
 		}
-
-		std::cout << hashedPassword << " - " << salt << std::endl;
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	}
