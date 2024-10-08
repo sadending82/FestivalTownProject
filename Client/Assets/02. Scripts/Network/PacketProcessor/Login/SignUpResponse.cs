@@ -19,6 +19,10 @@ namespace Network.PacketProcessor
 
             Debug.Log($"SignUp Result Code : {resultCode}");
             Managers.UI.ClosePopUpUI();
+            if (Camera.main.gameObject.GetComponent<SuperBlur.SuperBlur>() != null)
+            {
+                Camera.main.gameObject.GetComponent<SuperBlur.SuperBlur>().enabled = false;
+            }
         }
 
 

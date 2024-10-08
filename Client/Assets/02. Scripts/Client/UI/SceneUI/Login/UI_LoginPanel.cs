@@ -46,6 +46,7 @@ public class UI_LoginPanel: UI_Base
     {
         string ID = Get<GameObject>((int)GameObjects.IDInputField).GetComponent<TMP_InputField>().text;
         string PW = Get<GameObject>((int)GameObjects.PWInputField).GetComponent<TMP_InputField>().text;
+        Debug.Log($"ID : {ID}, PW : {PW}");
         Managers.Network.GetPacketManager().SendLoginRequestPacket(ID, PW);
     }
 

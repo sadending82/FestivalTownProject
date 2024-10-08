@@ -18,7 +18,11 @@ namespace Network.PacketProcessor
             int resultCode = Data.ResultCode;
 
             Debug.Log($"Login Result : {resultCode}");
-            Managers.Scene.LoadScene(Define.Scene.Home);
+
+            if (resultCode == 1)
+            {
+                Managers.Scene.LoadScene(Define.Scene.Home);
+            }
         }
 
 

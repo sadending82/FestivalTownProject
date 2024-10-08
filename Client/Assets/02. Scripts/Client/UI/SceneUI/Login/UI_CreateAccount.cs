@@ -29,6 +29,10 @@ public class UI_CreateAccount : UI_PopUp
             var panel = Get<GameObject>((int)GameObjects.CreateAccountPanel).GetComponent<UI_CreateAccountPanel>();
             if (panel.IsCompatible())
             {
+                Debug.Log($"ID : {panel.GetEmailText()}");
+                Debug.Log($"PW : {panel.GetPassword()}");
+                Debug.Log($"NAME : {panel.GetNickName()}");
+
                 Managers.Network.GetPacketManager().SendSignUpRequestPacket(
                     panel.GetEmailText(), panel.GetPassword(), panel.GetNickName());
             }
