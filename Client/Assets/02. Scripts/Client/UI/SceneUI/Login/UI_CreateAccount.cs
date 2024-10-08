@@ -23,4 +23,12 @@ public class UI_CreateAccount : UI_PopUp
         Bind<GameObject>(typeof(GameObjects));
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            Camera.main.gameObject.GetComponent<SuperBlur.SuperBlur>().enabled = false;
+            ClosePopUpUI();
+        }
+    }
+
 }

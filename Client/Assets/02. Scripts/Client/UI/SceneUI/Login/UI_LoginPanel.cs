@@ -1,7 +1,9 @@
 using SuperBlur;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_LoginPanel: UI_Base
 {
@@ -36,7 +38,16 @@ public class UI_LoginPanel: UI_Base
 
         Get<GameObject>((int)GameObjects.LoginButton).BindEvent((pointerEventData) => {
             Debug.Log("로그인 버튼 클릭");
+            Login();
         });
+    }
+
+    public void Login()
+    {
+        string ID = Get<GameObject>((int)GameObjects.IDInputField).GetComponent<TMP_InputField>().text;
+        string PW = Get<GameObject>((int)GameObjects.PWInputField).GetComponent<TMP_InputField>().text;
+        Debug.Log($"ID : {ID}");
+        Debug.Log($"PW : {PW}");
     }
 
 }
