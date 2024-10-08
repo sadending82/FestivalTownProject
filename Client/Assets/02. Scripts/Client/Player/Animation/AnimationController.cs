@@ -123,7 +123,7 @@ public class AnimationController : MonoBehaviour
         {
             if (isLeftAttack == true)
             {
-                if (attackTimer < (attackSpeed / 2))
+                if (attackTimer < (attackSpeed / 3))
                 {
                     animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1f);
                     animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1f);
@@ -148,7 +148,7 @@ public class AnimationController : MonoBehaviour
             }
             else
             {
-                if (attackTimer < (attackSpeed / 2))
+                if (attackTimer < (attackSpeed / 3))
                 {
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
