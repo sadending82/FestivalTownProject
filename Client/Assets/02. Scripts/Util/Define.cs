@@ -71,6 +71,13 @@ public class Define
         WeaponStat,
     }
 
+    public enum CompatibilityColor
+    {
+        Brown,
+        Red,
+        Green,
+    }
+
     public struct PlayerResult
     {
         public int kill;

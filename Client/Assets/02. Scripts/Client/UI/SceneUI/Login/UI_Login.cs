@@ -22,6 +22,7 @@ public class UI_Login : UI_Scene
 
         Bind<GameObject>(typeof(GameObjects));
 
+        GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
     }
 
 
