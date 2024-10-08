@@ -18,7 +18,18 @@ public:
 
 				const SignUpRequest* read = flatbuffers::GetRoot<SignUpRequest>(data);
 
-				pPacketSender->SendSignUpResponse(key, 0);
+				DB* pDB = pServer->GetDB();
+
+				bool result = pDB->InsertNewAcccount(read->account_id()->c_str(), read->account_password()->c_str());
+
+				if (result == true) {
+					pDB->InsertNewUser(read->account_id()->c_str(), read->nickname()->c_str());
+				}
+				else {
+					//rollback (Delete Account)
+				}
+
+				pPacketSender->SendSignUpResponse(key, result);
 			}
 		}
 		catch (const std::exception& e) {

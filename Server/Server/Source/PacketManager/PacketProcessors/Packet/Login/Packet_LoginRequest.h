@@ -18,9 +18,11 @@ public:
 
 				const LoginRequest* read = flatbuffers::GetRoot<LoginRequest>(data);
 
-				
+				DB* pDB = pServer->GetDB();
 
-				pPacketSender->SendLoginResponse(key, 0);
+				bool result = pDB->CheckValidateLogin(read->account_id()->c_str(), read->account_password()->c_str());
+
+				pPacketSender->SendLoginResponse(key, result);
 			}
 		}
 		catch (const std::exception& e) {
