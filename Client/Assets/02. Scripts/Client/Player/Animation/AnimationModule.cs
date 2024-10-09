@@ -12,6 +12,7 @@ namespace ActiveRagdoll
         private ConfigurableJoint[] joints;
         public ConfigurableJoint stabillizer;
         private Transform[] animatedBones;
+        private Rigidbody[] rigidbodys;
         public Animator Animator { get; private set; }
 
         [Header("--- AnimationControll ---")]
@@ -30,6 +31,7 @@ namespace ActiveRagdoll
             joints = _activeRagdoll.Joints;
             animatedBones = _activeRagdoll.AnimatedBones;
             Animator = _activeRagdoll.AnimatedAnimator;
+            rigidbodys = _activeRagdoll.Rigidbodies;
 
             initialJointsRotation = new Quaternion[joints.Length];
             for (int i = 0; i < joints.Length; i++)
@@ -91,6 +93,12 @@ namespace ActiveRagdoll
             driveJoint.positionDamper = 0;
             driveJoint.maximumForce = 1000;
             stabillizer.angularXDrive = stabillizer.angularYZDrive = driveJoint;
+
+            // 그로기 상태에서 잘 끌려다니도록 mass 가볍게 설정
+            foreach (Rigidbody rb in rigidbodys)
+            {
+                rb.mass = 0.5f;
+            }
         }
         public void GroggyOff()
         {
@@ -120,6 +128,12 @@ namespace ActiveRagdoll
             driveJoint.positionDamper = 50;
             driveJoint.maximumForce = 1000;
             stabillizer.angularXDrive = stabillizer.angularYZDrive = driveJoint;
+
+            // 다시 원래 무게로 설정
+            foreach (Rigidbody rb in rigidbodys)
+            {
+                rb.mass = 1f;
+            }
         }
     }
 }
