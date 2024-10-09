@@ -24,6 +24,15 @@ public:
 					return;
 				}
 
+				int roomid = player->GetRoomID();
+				if (roomid == INVALIDKEY) {
+					return;
+				}
+				Room* room = pServer->GetRooms().at(roomid);
+				if (room == nullptr && (room->GetState() != eRoomState::RS_INGAME)) {
+					return;
+				}
+
 				if (player->GetIsGrabbed() == true) {
 					return;
 				}

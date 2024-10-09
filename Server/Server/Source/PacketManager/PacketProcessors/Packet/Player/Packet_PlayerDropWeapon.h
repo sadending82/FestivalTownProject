@@ -20,6 +20,16 @@ public:
 				if (player == nullptr && player->GetInGameID() != read->id()) {
 					return;
 				}
+				int roomid = player->GetRoomID();
+				if (roomid == INVALIDKEY) {
+					return;
+				}
+				Room* room = pServer->GetRooms().at(roomid);
+				if (room == nullptr && (room->GetState() != eRoomState::RS_INGAME)) {
+					return;
+				}
+
+
 				player->GetWeaponLock().lock();
 				Weapon* weapon = player->GetWeapon();
 				if (weapon == nullptr) {
@@ -27,9 +37,7 @@ public:
 					return;
 				}
 
-				int roomid = player->GetRoomID();
 				int weaponid = read->id();
-				Room* room = pServer->GetRooms().at(roomid);
 
 				weapon->SetIsGrabbed(false);
 				weapon->SetOwenrID(INVALIDKEY);

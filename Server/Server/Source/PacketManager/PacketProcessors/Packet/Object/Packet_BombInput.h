@@ -21,6 +21,9 @@ public:
 				int team = read->team();
 
 				int roomid = dynamic_cast<Player*>(pServer->GetSessions()[key])->GetRoomID();
+				if (roomid == INVALIDKEY) {
+					return;
+				}
 				Room* room = pServer->GetRooms().at(roomid);
 				GameMode gameMode = room->GetGameMode();
 				GameManager* gameManager = pServer->GetGameManagers()[gameMode];

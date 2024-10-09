@@ -20,7 +20,17 @@ public:
 				int attacker_id = read->attacker_id();
 				int target_id = read->target_id();
 				int roomid = dynamic_cast<Player*>(pServer->GetSessions()[key])->GetRoomID();
+				if (roomid == INVALIDKEY) {
+					return;
+				}
 				Room* room = pServer->GetRooms().at(roomid);
+
+				room->GetStateLock().lock_shared();
+				if (room->GetState() != eRoomState::RS_INGAME) {
+					room->GetStateLock().unlock_shared();
+					return;
+				}
+				room->GetStateLock().unlock_shared();
 
 				room->GetPlayerListLock().lock_shared();
 				Player* target = room->GetPlayerList().at(read->target_id());

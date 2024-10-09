@@ -21,8 +21,11 @@ public:
 				if (player == nullptr && player->GetInGameID() != read->id()) {
 					return;
 				}
-
-				Room* room = pServer->GetRooms()[player->GetRoomID()];
+				int roomid = player->GetRoomID();
+				if (roomid == INVALIDKEY) {
+					return;
+				}
+				Room* room = pServer->GetRooms()[roomid];
 				if (room == nullptr && (room->GetState() != eRoomState::RS_INGAME)) {
 					return;
 				}

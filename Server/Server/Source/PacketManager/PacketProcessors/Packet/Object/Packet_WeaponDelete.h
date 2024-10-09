@@ -18,6 +18,9 @@ public:
 				const WeaponDelete* read = flatbuffers::GetRoot<WeaponDelete>(data);
 
 				int roomid = dynamic_cast<Player*>(pServer->GetSessions()[key])->GetRoomID();
+				if (roomid == INVALIDKEY) {
+					return;
+				}
 				int weaponid = read->id();
 				if (weaponid <= INVALIDKEY) {
 					return;

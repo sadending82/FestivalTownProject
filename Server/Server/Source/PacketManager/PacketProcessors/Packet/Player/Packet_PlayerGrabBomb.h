@@ -20,16 +20,22 @@ public:
 					return;
 				}
 
+				int roomid = player->GetRoomID();
+				if (roomid == INVALIDKEY) {
+					return;
+				}
+				Room* room = pServer->GetRooms().at(roomid);
+				if (room == nullptr && (room->GetState() != eRoomState::RS_INGAME)) {
+					return;
+				}
+
 				player->GetBombLock().lock();
 				if (player->GetBomb() != nullptr) {
 					player->GetBombLock().unlock();
 					return;
 				}
-
-				int roomid = player->GetRoomID();
 				int bombid = read->bomb_id();
 
-				Room* room = pServer->GetRooms().at(roomid);
 				room->GetBombListLock().lock_shared();
 				Bomb* bomb = dynamic_cast<Bomb*>(room->GetBombList()[bombid]);
 				if (bomb == nullptr) {

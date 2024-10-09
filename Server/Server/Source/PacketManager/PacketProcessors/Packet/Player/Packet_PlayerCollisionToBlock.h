@@ -15,8 +15,6 @@ public:
 
 			flatbuffers::Verifier verifier(data, size);
 			if (verifier.VerifyBuffer<PlayerStop>(nullptr)) {
-
-
 				const PlayerCollisionToBlock* read = flatbuffers::GetRoot<PlayerCollisionToBlock>(data);
 
 				int playerid = read->id();
@@ -25,12 +23,21 @@ public:
 					return;
 				}
 				int roomid = player->GetRoomID();
+				if (roomid == INVALIDKEY) {
+					return;
+				}
 				Room* room = pServer->GetRooms().at(roomid);
+				room->GetStateLock().lock_shared();
+				if (room->GetState() != eRoomState::RS_INGAME) {
+					room->GetStateLock().unlock_shared();
+					return;
+				}
+				room->GetStateLock().unlock_shared();
+
 				long long roomCode = room->GetRoomCode();
 
-				player->GetPlayerStateLock().lock();
+				player->GetPlayerStateLock().lock_shared();
 				ePlayerState playerState = player->GetPlayerState();
-				player->GetPlayerStateLock().unlock();
 
 				if (playerState == ePlayerState::PS_ALIVE) {
 					// 그로기 상태로 만듬
@@ -46,6 +53,7 @@ public:
 					room->GetPlayerRecordList().at(playerid).death_count++;
 					PushEventPlayerRespawn(pServer->GetTimer(), playerid, roomid, roomCode, spawnTime);
 				}
+				player->GetPlayerStateLock().unlock_shared();
 			}
 		}
 		catch (const std::exception& e) {

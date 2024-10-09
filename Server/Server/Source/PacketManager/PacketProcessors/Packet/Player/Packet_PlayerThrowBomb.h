@@ -20,6 +20,15 @@ public:
 				if (player == nullptr && player->GetInGameID() != read->id()) {
 					return;
 				}
+				int roomid = player->GetRoomID();
+				if (roomid == INVALIDKEY) {
+					return;
+				}
+				Room* room = pServer->GetRooms().at(roomid);
+				if (room == nullptr && (room->GetState() != eRoomState::RS_INGAME)) {
+					return;
+				}
+
 				player->GetBombLock().lock();
 				Bomb* bomb = player->GetBomb();
 				if (bomb == nullptr) {
@@ -27,9 +36,7 @@ public:
 					return;
 				}
 
-				int roomid = player->GetRoomID();
 				int bombid = read->bomb_id();
-				Room* room = pServer->GetRooms().at(roomid);
 
 				bomb->SetIsGrabbed(false);
 				bomb->SetOwenrID(INVALIDKEY);

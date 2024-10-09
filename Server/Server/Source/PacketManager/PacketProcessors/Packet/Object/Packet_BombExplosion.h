@@ -18,6 +18,9 @@ public:
 				const BombExplosion* read = flatbuffers::GetRoot<BombExplosion>(data);
 
 				int roomid = dynamic_cast<Player*>(pServer->GetSessions()[key])->GetRoomID();
+				if (roomid == INVALIDKEY) {
+					return;
+				}
 				int bombid = read->id();
 				if (bombid <= INVALIDKEY) {
 					return;

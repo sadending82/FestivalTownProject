@@ -20,16 +20,23 @@ public:
 					return;
 				}
 
+				int roomid = player->GetRoomID();
+				if (roomid == INVALIDKEY) {
+					return;
+				}
+				Room* room = pServer->GetRooms().at(roomid);
+				if (room == nullptr && (room->GetState() != eRoomState::RS_INGAME)) {
+					return;
+				}
+
 				player->GetWeaponLock().lock();
 				if (player->GetWeapon() != nullptr) {
 					player->GetWeaponLock().unlock();
 					return;
 				}
 
-				int roomid = player->GetRoomID();
 				int weaponid = read->weapon_id();
 
-				Room* room = pServer->GetRooms().at(roomid);
 				room->GetWeaponListLock().lock_shared();
 				Weapon* weapon = dynamic_cast<Weapon*>(room->GetWeaponList()[weaponid]);
 				if (weapon == nullptr) {

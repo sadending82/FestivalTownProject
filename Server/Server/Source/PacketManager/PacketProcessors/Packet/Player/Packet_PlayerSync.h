@@ -25,7 +25,13 @@ public:
 				}
 
 				int roomid = player->GetRoomID();
+				if (roomid == INVALIDKEY) {
+					return;
+				}
 				Room* room = pServer->GetRooms().at(roomid);
+				if (room == nullptr && (room->GetState() != eRoomState::RS_INGAME)) {
+					return;
+				}
 
 				player->SetPosition(read->pos()->x(), read->pos()->y(), read->pos()->z());
 				player->SetDirection(read->direction()->x(), read->direction()->y(), read->direction()->z());

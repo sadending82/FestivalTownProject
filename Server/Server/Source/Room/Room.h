@@ -41,7 +41,7 @@ public:
 	Map* GetMap() { return mMap; }
 	TIMEPOINT GetStartTime() { return mStartTime; }
 	eRoomState GetState() { return mState; }
-	std::mutex& GetStateLock() { return mStateLock; }
+	std::shared_mutex& GetStateLock() { return mStateLock; }
 	std::shared_mutex& GetPlayerListLock() { return mPlayerListLock; }
 	std::shared_mutex& GetBombListLock() { return mBombListLock; }
 	std::shared_mutex& GetWeaponListLock() { return mWeaponListLock; }
@@ -68,7 +68,7 @@ private:
 	GameMode mGameMode;
 	Map* mMap = nullptr;
 
-	std::mutex mStateLock;
+	std::shared_mutex mStateLock;
 	std::shared_mutex mPlayerListLock;
 	std::shared_mutex mBombListLock;
 	std::shared_mutex mWeaponListLock;

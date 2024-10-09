@@ -29,7 +29,7 @@ public:
 	Vector3f&			GetPosition() { return mPosition; }
 	Vector3f&			GetDirection() { return mDirection; }
 	ePlayerState		GetPlayerState() { return mPlayerState; }
-	std::mutex&			GetPlayerStateLock() { return mPlayerStateLock; }
+	std::shared_mutex&	GetPlayerStateLock() { return mPlayerStateLock; }
 	eCharacterType		GetChacracterType() { return mCharacterType; }
 	int					GetHP() { return mHP; }
 	int					GetStamina() { return mStamina; }
@@ -80,7 +80,7 @@ public:
 	void				ChangeCharacterType(class Server* pServer, eCharacterType type);
 
 protected:
-	std::mutex			mPlayerStateLock;
+	std::shared_mutex	mPlayerStateLock;
 	std::mutex			mBombLock;
 	std::shared_mutex	mWeaponLock;
 

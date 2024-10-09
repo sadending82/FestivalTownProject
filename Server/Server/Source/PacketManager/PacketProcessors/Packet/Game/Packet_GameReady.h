@@ -21,6 +21,9 @@ public:
 					return;
 				}
 				int roomid = player->GetRoomID();
+				if (roomid == INVALIDKEY) {
+					return;
+				}
 				Room* room = pServer->GetRooms().at(roomid);
 				if (room == nullptr) {
 					return;
