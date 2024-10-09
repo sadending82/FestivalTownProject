@@ -18,10 +18,18 @@ namespace Network.PacketProcessor
             int resultCode = Data.ResultCode;
 
             Debug.Log($"SignUp Result Code : {resultCode}");
-            Managers.UI.ClosePopUpUI();
-            if (Camera.main.gameObject.GetComponent<SuperBlur.SuperBlur>() != null)
+            if (resultCode == 1)
             {
-                Camera.main.gameObject.GetComponent<SuperBlur.SuperBlur>().enabled = false;
+                Managers.UI.ShowPopUpUI<UI_SignInSuccess>();
+            }
+            else
+            {
+                if (Camera.main.gameObject.GetComponent<SuperBlur.SuperBlur>() != null)
+                {
+                    Camera.main.gameObject.GetComponent<SuperBlur.SuperBlur>().enabled = false;
+                }
+
+                Managers.UI.ClosePopUpUI();
             }
         }
 

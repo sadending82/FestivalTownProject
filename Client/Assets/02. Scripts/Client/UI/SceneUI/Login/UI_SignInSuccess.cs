@@ -23,5 +23,15 @@ public class UI_SignInSuccess : UI_PopUp
         base.Init();
 
         Bind<GameObject>(typeof(GameObjects));
+
+        Get<GameObject>((int)GameObjects.OkButton).BindEvent((PointerEventData) =>
+        {
+            if (Camera.main.gameObject.GetComponent<SuperBlur.SuperBlur>() != null)
+            {
+                Camera.main.gameObject.GetComponent<SuperBlur.SuperBlur>().enabled = false;
+            }
+            Managers.UI.ClosePopUpUI();
+            Managers.UI.ClosePopUpUI();
+        });
     }
 }
