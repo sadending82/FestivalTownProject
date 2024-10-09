@@ -120,9 +120,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: Maplestory OTF Light SDF
   m_EditorClassIdentifier: 
-  hashCode: 0
+  hashCode: 523778020
   material: {fileID: -4670157427648066957}
-  materialHashCode: 0
+  materialHashCode: -1883029820
   m_Version: 1.1.0
   m_SourceFontFileGUID: b485c577c08e56a47931c74a367517a0
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: b485c577c08e56a47931c74a367517a0, type: 3}
@@ -132,24 +132,24 @@ MonoBehaviour:
     m_FaceIndex: 0
     m_FamilyName: Maplestory OTF
     m_StyleName: Light
-    m_PointSize: 90
+    m_PointSize: 60
     m_Scale: 1
     m_UnitsPerEM: 1000
-    m_LineHeight: 100.350006
-    m_AscentLine: 76.5
-    m_CapLine: 62
-    m_MeanLine: 45
+    m_LineHeight: 66.9
+    m_AscentLine: 51.000004
+    m_CapLine: 42
+    m_MeanLine: 30
     m_Baseline: 0
-    m_DescentLine: -23.85
-    m_SuperscriptOffset: 76.5
+    m_DescentLine: -15.900001
+    m_SuperscriptOffset: 51.000004
     m_SuperscriptSize: 0.5
-    m_SubscriptOffset: -23.85
+    m_SubscriptOffset: -15.900001
     m_SubscriptSize: 0.5
-    m_UnderlineOffset: -13.500001
-    m_UnderlineThickness: 4.5
-    m_StrikethroughOffset: 18
-    m_StrikethroughThickness: 4.5
-    m_TabWidth: 24
+    m_UnderlineOffset: -9
+    m_UnderlineThickness: 3
+    m_StrikethroughOffset: 12
+    m_StrikethroughThickness: 3
+    m_TabWidth: 16
   m_GlyphTable: []
   m_CharacterTable: []
   m_AtlasTextures:
@@ -201,7 +201,7 @@ MonoBehaviour:
     sourceFontFileName: 
     sourceFontFileGUID: b485c577c08e56a47931c74a367517a0
     pointSizeSamplingMode: 0
-    pointSize: 90
+    pointSize: 60
     padding: 9
     packingMode: 0
     atlasWidth: 1024
