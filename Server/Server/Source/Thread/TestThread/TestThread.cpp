@@ -49,7 +49,7 @@ void TestThread::RunWorker()
             TableManager* tableManager = m_pServer->GetTableManager();
             GAMEMANAGER_MAP& gameManagers = m_pServer->GetGameManagers();
 
-            while (waitingPlayerCount >= MINPLAYER) {
+            while (waitingPlayerCount >= 1) {
                 GameMode gameMode = CulculateGameMode(waitingPlayerCount);
 
                 int matchedPlayerCount = tableManager->GetGameModeData()[gameMode].Player_Count;
