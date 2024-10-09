@@ -35,7 +35,7 @@ public:
 			PushEventBombSpawn(pServer->GetTimer(), event->roomID, event->roomCode, nextEventTime);
 		}
 		catch (const std::exception& e) {
-			std::cerr << "[ERROR] : " << e.what() << std::endl;
+			std::cerr << "[Event_BombSpawn ERROR] : " << e.what() << std::endl;
 		}
 	}
 

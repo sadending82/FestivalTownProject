@@ -33,7 +33,7 @@ public:
 			}
 		}
 		catch (const std::exception& e) {
-			std::cerr << "[ERROR] : " << e.what() << " KEY : " << key << std::endl;
+			std::cerr << "[Packet_PlayerAnimation ERROR] : " << e.what() << " KEY : " << key << std::endl;
 		}
 	}
 

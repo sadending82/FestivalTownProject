@@ -9,6 +9,7 @@ public:
 		, mSessionID(INVALIDKEY)
 		,mPrevData(0)
 		,mIsHeartbeatAck(false)
+		,mPlayedSoloGameBefore(false)
 		,mMatchingRequestTime(0)
 	{
 	}
@@ -20,6 +21,8 @@ public:
 
 	virtual void DoSend(void* packet, const int size);
 
+	void SessionInit(SOCKET sock, int key);
+
 	ExOver GetExOver() { return mExOver; }
 	eSessionState GetState() { return mState; }
 	std::mutex& GetStateLock() { return mStateLock; }
@@ -28,6 +31,7 @@ public:
 	SOCKET GetSocket() { return mSocket; }
 	int GetPrevData() { return mPrevData; }
 	bool GetIsHeartbeatAck() { return mIsHeartbeatAck; }
+	bool GetPlayedSoloGameBefore() { return mPlayedSoloGameBefore; }
 	unsigned int GetMatchingRequestTime() { return mMatchingRequestTime; }
 
 	void SetExOver(ExOver over) { mExOver = over; }
@@ -36,6 +40,7 @@ public:
 	void SetSocket(SOCKET sock) { mSocket = sock; }
 	void SetPrevData(int prevData) { mPrevData = prevData; }
 	void SetIsHeartbeatAck(bool flag) { mIsHeartbeatAck = flag; }
+	void SetPlayedSoloGameBefore(bool flag) { mPlayedSoloGameBefore = flag; }
 	void SetMatchingRequestTime(int time) { mMatchingRequestTime = time; }
 
 protected:
@@ -47,6 +52,8 @@ protected:
 	SOCKET			mSocket;
 	int				mPrevData;
 	bool			mIsHeartbeatAck;
+
+	bool			mPlayedSoloGameBefore;
 	unsigned int	mMatchingRequestTime;
 };
 

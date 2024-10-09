@@ -30,34 +30,29 @@ void TestThread::RunWorker()
         switch (command) {
             // 게임 시작
         case GameStartCommand: {
-            int playerCnt = GetReadyPlayerCnt();
-            if (playerCnt == 0) {
-                continue;
-            }
-            std::priority_queue<std::pair<int, Player*>
-                , std::vector<std::pair<int, Player*>>
-                , std::greater<std::pair<int, Player*>>> readyPlayers;
+            m_pServer->GetMatchingLock().lock();
 
-            for (Session* s :m_pServer->GetSessions()) {
+            std::priority_queue<Player*
+                , std::vector<Player*>
+                , MatchingCompare> readyPlayers;
+
+            for (Session* s : m_pServer->GetSessions()) {
                 s->GetStateLock().lock();
                 if (s->GetState() == eSessionState::ST_MATCHWAITING) {
-                    readyPlayers.push({ s->GetMatchingRequestTime(), dynamic_cast<Player*>(s) });
+                    readyPlayers.push(dynamic_cast<Player*>(s));
                 }
                 s->GetStateLock().unlock();
             }
 
             int waitingPlayerCount = readyPlayers.size();
-            std::unordered_map<GameMode, GameModeData>& GameModeDatas = m_pServer->GetTableManager()->GetGameModeData();
 
-            while (!readyPlayers.empty()) {
-                GameMode gameMode = GameMode::FITH_Team_Battle_6;
+            TableManager* tableManager = m_pServer->GetTableManager();
+            GAMEMANAGER_MAP& gameManagers = m_pServer->GetGameManagers();
 
-                for (auto iter = GameModeDatas.begin(); iter != GameModeDatas.end(); iter++) {
-                    if (waitingPlayerCount == iter->second.Player_Count) {
-                        gameMode = iter->first;
-                        break;
-                    }
-                }
+            while (waitingPlayerCount >= MINPLAYER) {
+                GameMode gameMode = CulculateGameMode(waitingPlayerCount);
+
+                int matchedPlayerCount = tableManager->GetGameModeData()[gameMode].Player_Count;
 
                 int roomid = m_pServer->CreateNewRoom(gameMode);
                 if (roomid == INVALIDKEY) {
@@ -66,18 +61,29 @@ void TestThread::RunWorker()
                 }
 
                 std::vector<Player*> playerList;
-                int matchingPlayerCount = MAXPLAYER;
-                for (int i = 0; i < matchingPlayerCount; ++i) {
+                for (int i = 0; i < matchedPlayerCount; ++i) {
                     if (readyPlayers.empty()) {
                         break;
                     }
-                    playerList.push_back(readyPlayers.top().second);
+                    Player* topPlayer = readyPlayers.top();
+
+                    // 다음 매칭에 참고하기 위해 지금 매칭된 게임 종류 저장
+                    if (gameMode == GameMode::FITH_Team_Battle_4 || gameMode == GameMode::FITH_Team_Battle_6) {
+                        topPlayer->SetPlayedSoloGameBefore(false);
+                    }
+                    else {
+                        topPlayer->SetPlayedSoloGameBefore(true);
+                    }
+                    playerList.push_back(topPlayer);
+                    COUT << "Matched - " << topPlayer->GetSessionID() << ENDL;
                     readyPlayers.pop();
                 }
                 waitingPlayerCount = readyPlayers.size();
                 m_pServer->MatchingComplete(roomid, playerList);
                 std::cout << "Start Game room - " << roomid << "| GameMode - " << gameMode << std::endl;
             }
+
+            m_pServer->GetMatchingLock().unlock();
         }
         break;
             // 라이프 감소 전송

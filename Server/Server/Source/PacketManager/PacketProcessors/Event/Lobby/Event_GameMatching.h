@@ -12,30 +12,29 @@ public:
         try {
             EV_GAME_MATCHING* event = reinterpret_cast<EV_GAME_MATCHING*>(buf);
 
-            std::priority_queue<std::pair<int, Player*>
-                , std::vector<std::pair<int, Player*>>
-                , std::greater<std::pair<int, Player*>>> readyPlayers;
+            pServer->GetMatchingLock().lock();
+
+            std::priority_queue<Player*
+                , std::vector<Player*>
+                , MatchingCompare> readyPlayers;
 
             for (Session* s : pServer->GetSessions()) {
                 s->GetStateLock().lock();
                 if (s->GetState() == eSessionState::ST_MATCHWAITING) {
-                    readyPlayers.push({ s->GetMatchingRequestTime(), dynamic_cast<Player*>(s) });
+                    readyPlayers.push(dynamic_cast<Player*>(s));
                 }
                 s->GetStateLock().unlock();
             }
 
             int waitingPlayerCount = readyPlayers.size();
-            std::unordered_map<GameMode, GameModeData>& GameModeDatas = pServer->GetTableManager()->GetGameModeData();
+
+            TableManager* tableManager = pServer->GetTableManager();
+            GAMEMANAGER_MAP& gameManagers = pServer->GetGameManagers();
 
             while (waitingPlayerCount >= MINPLAYER) {
-                GameMode gameMode = GameMode::FITH_Team_Battle_6;
+                GameMode gameMode = CulculateGameMode(waitingPlayerCount);
 
-                for (auto iter = GameModeDatas.begin(); iter != GameModeDatas.end(); iter++) {
-                    if (waitingPlayerCount == iter->second.Player_Count) {
-                        gameMode = iter->first;
-                        break;
-                    }
-                }
+                int matchedPlayerCount = tableManager->GetGameModeData()[gameMode].Player_Count;
 
                 int roomid = pServer->CreateNewRoom(gameMode);
                 if (roomid == INVALIDKEY) {
@@ -44,12 +43,21 @@ public:
                 }
 
                 std::vector<Player*> playerList;
-                int matchingPlayerCount = MAXPLAYER;
-                for (int i = 0; i < matchingPlayerCount; ++i) {
+                for (int i = 0; i < matchedPlayerCount; ++i) {
                     if (readyPlayers.empty()) {
                         break;
                     }
-                    playerList.push_back(readyPlayers.top().second);
+                    Player* topPlayer = readyPlayers.top();
+
+                    // 다음 매칭에 참고하기 위해 지금 매칭된 게임 종류 저장
+                    if (gameMode == GameMode::FITH_Team_Battle_4 || gameMode == GameMode::FITH_Team_Battle_6) {
+                        topPlayer->SetPlayedSoloGameBefore(false);
+                    }
+                    else {
+                        topPlayer->SetPlayedSoloGameBefore(true);
+                    }
+                    playerList.push_back(topPlayer);
+                    COUT << "Matched - " << topPlayer->GetSessionID() << ENDL;
                     readyPlayers.pop();
                 }
                 waitingPlayerCount = readyPlayers.size();
@@ -57,6 +65,7 @@ public:
                 std::cout << "Start Game room - " << roomid << "| GameMode - " << gameMode << std::endl;
             }
 
+            pServer->GetMatchingLock().unlock();
             PushEventGameMatching(pServer->GetTimer());
         }
         catch (const std::exception& e) {

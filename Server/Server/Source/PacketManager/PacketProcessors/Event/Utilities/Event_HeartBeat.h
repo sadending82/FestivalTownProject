@@ -23,7 +23,7 @@ public:
 			}
 		}
 		catch (const std::exception& e) {
-			std::cerr << "[ERROR] : " << e.what()  << std::endl;
+			std::cerr << "[Event_HeartBeat ERROR] : " << e.what()  << std::endl;
 		}
 	}
 

@@ -7,7 +7,7 @@ inline constexpr int BLOCKDROPINTERVAL = 10000;
 inline constexpr int REMAINTIMESYNCINTERVAL = 10000;
 inline constexpr int TIMEOVERCHECKINTERVAL = 5000;
 inline constexpr int GAMESTARTINTERVAL = 4000;
-inline constexpr int GAMEMATCHINGINTERVAL = 30000;
+inline constexpr int GAMEMATCHINGINTERVAL = 60000;
 
 class Timer;
 

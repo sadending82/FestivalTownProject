@@ -39,7 +39,7 @@ public:
 			PushEventTimeOverCheck(pServer->GetTimer(), roomid, event->roomCode);
 		}
 		catch (const std::exception& e) {
-			std::cerr << "[ERROR] : " << e.what() << std::endl;
+			std::cerr << "[Event_TimeOverCheck ERROR] : " << e.what() << std::endl;
 		}
 	}
 

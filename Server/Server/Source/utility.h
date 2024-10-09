@@ -2,6 +2,7 @@
 #include <iostream>
 #include <chrono>
 #include <vector>
+#include "protocol.h"
 
 #define TIMEPOINT std::chrono::system_clock::time_point
 
@@ -120,3 +121,9 @@ std::vector<uint8_t> MakeBuffer(const int type, const uint8_t* data, const int s
 
 Vector3f ConvertVec3fToVec2i(Vector3f vec);
 Vector3f ConvertVec2iToVec3f(int x, int z);
+
+struct MatchingCompare {
+	bool operator()(class Player* a, class Player* b);
+};
+
+GameMode CulculateGameMode(int playerCount);

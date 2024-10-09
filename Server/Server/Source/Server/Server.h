@@ -46,7 +46,9 @@ public:
 	void						SendAllPlayerInRoomExceptSender(void* packet, int size, int sessionID);
 
 	void						StartHeartBeat(int sessionID);
+
 	int							CreateNewRoom(GameMode gameMode);
+
 	void						MatchingComplete(int roomID, std::vector<Player*>& players);
 
 	SERVER_MODE					GetMode() { return mMode; }
@@ -60,6 +62,8 @@ public:
 	TableManager*				GetTableManager() { return mTableManager; }
 	PacketSender*				GetPacketSender() { return mPacketSender; }
 	GAMEMANAGER_MAP&			GetGameManagers() { return mGameManagers; }
+
+	std::mutex&					GetMatchingLock() { return mMatchingLock; }
 
 private:
 	SOCKADDR_IN							mServerAddr;
@@ -80,6 +84,9 @@ private:
 	std::vector<std::thread>			mWorkerThreads;
 	std::thread							mTimerThread;
 	std::thread							mTestThread;
+
+	// 매칭을 동시에 여러 스레드에서 하는거 방지
+	std::mutex							mMatchingLock;
 
 	std::wstring						mOdbc = L"";
 	std::wstring						mDB_ID = L"";

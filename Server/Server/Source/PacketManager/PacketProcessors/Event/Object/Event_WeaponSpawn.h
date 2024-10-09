@@ -53,7 +53,7 @@ public:
 			PushEventWeaponSpawn(pServer->GetTimer(), event->roomID, event->roomCode, event->weaponType, nextEventTime);
 		}
 		catch (const std::exception& e) {
-			std::cerr << "[ERROR] : " << e.what() << std::endl;
+			std::cerr << "[Event_WeaponSpawn ERROR] : " << e.what() << std::endl;
 		}
 	}
 

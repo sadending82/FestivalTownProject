@@ -30,7 +30,7 @@ public:
 			pPacketSender->SendRemainTimeSync(roomid);
 		}
 		catch (const std::exception& e) {
-			std::cerr << "[ERROR] : " << e.what() << std::endl;
+			std::cerr << "[Event_RemainTimeSync ERROR] : " << e.what() << std::endl;
 		}
 	}
 

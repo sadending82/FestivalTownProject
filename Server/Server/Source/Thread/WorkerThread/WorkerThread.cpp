@@ -31,10 +31,12 @@ void WorkerThread::RunWorker()
             if (newKey != INVALIDKEY) {
                 Session* newSession = m_pServer->GetSessions()[newKey];
                 SOCKET cSocket = reinterpret_cast<SOCKET>(exOver->mWsaBuf.buf);
-                newSession->SetSocket(cSocket);
+                /*newSession->SetSocket(cSocket);
                 newSession->GetExOver().SetmOpType(eOpType::OP_RECV);
                 newSession->SetPrevData(0);
                 newSession->SetSessionID(newKey);
+                newSession->SetPlayedSoloGameBefore(false);*/
+                newSession->SessionInit(cSocket, newKey);
 
                 CreateIoCompletionPort((HANDLE)newSession->GetSocket(), m_pServer->GetHcp(), newKey, 0);
                 DEBUGMSGONEPARAM("Lobby Accept: %d\n", newKey);
