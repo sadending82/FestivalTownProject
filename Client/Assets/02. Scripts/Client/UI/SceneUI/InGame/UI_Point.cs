@@ -6,7 +6,6 @@ public class UI_Point : UI_Base
 {
     enum GameObjects
     {
-        Red,
         Green,
     }
 
@@ -27,13 +26,11 @@ public class UI_Point : UI_Base
         if(state)
         {
             isOn = true;
-            Get<GameObject>((int)GameObjects.Red).gameObject.SetActive(false);
             Get<GameObject>((int)GameObjects.Green).gameObject.SetActive(true);
         }
         else
         {
             isOn = false;
-            Get<GameObject>((int)GameObjects.Red).gameObject.SetActive(true);
             Get<GameObject>((int)GameObjects.Green).gameObject.SetActive(false);
         }
     }
