@@ -202,4 +202,17 @@ public class PlayerManager : MonoBehaviour
     {
         return faceMaterial[index];
     }
+
+    public void Clear()
+    {
+        myId = -1;
+        maxPlayerNum = 6;
+        nowPlayerNum = 0;
+        isHost = false;
+
+        foreach (Transform player in players.transform)
+        {
+            Managers.Resource.Destroy(player.gameObject);
+        }
+    }
 }

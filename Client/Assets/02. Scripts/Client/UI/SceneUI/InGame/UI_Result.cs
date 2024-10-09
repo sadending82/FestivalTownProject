@@ -37,6 +37,8 @@ public class UI_Result : UI_Scene
             Managers.ObjectPool.Clear();
             Managers.Game.Clear();
             Managers.CubeObject.Clear();
+            Managers.Player.Clear();
+            Managers.SpectatorCamera.Clear();
         });
     }
 

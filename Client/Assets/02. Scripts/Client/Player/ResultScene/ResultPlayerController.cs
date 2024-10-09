@@ -32,7 +32,6 @@ public class ResultPlayerController : MonoBehaviour
                 // 이긴 팀 플레이어면
                 if (winningTeam == teamNumber)
                 {
-                    Debug.Log("Win");
                     rPlayer.transform.position = winnerOffset;
                     winnerOffset.x += winnerXInterval;
                     rPlayer.GetComponent<ResultAnimationController>().SetWinAnimation();
@@ -40,7 +39,6 @@ public class ResultPlayerController : MonoBehaviour
                 // 진 팀 플레이어면
                 else
                 {
-                    Debug.Log("Lose");
                     rPlayer.transform.position = loserOffset;
                     loserOffset.x += loserXInterval;
                     rPlayer.GetComponent <ResultAnimationController>().SetLoseAnimation();

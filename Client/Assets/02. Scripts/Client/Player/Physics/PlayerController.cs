@@ -883,10 +883,6 @@ public class PlayerController : MonoBehaviour
                 break;
         }
     }
-    public void SetDirectionInResultScene()
-    {
-        stabilizer.transform.eulerAngles = new Vector3(0.0f, 180f, 0.0f);
-    }
     public void SetHeadPosition(Vector3 headPos)
     {
         head.transform.position = headPos;

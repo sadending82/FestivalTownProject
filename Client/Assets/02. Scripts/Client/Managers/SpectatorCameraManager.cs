@@ -72,4 +72,13 @@ public class SpectatorCameraManager : MonoBehaviour
             SwitchNextCamera();
         }
     }
+
+    public void Clear()
+    {
+        cameraControllers = null;
+        cameras = null;
+        cameraCount = 0;
+        myCameraNumber = -1;
+        nowCameraNumber = -1;
+    }
 }
