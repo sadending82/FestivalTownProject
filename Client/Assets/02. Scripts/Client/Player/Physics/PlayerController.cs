@@ -691,6 +691,7 @@ public class PlayerController : MonoBehaviour
     {
         // 무기와 플레이어 붙여주기
         Weapon targetWeapon = Managers.WeaponObject.FindWeaponById(weaponId).GetComponent<Weapon>();
+
         targetWeapon.PickUp(playerId);
         playerStatus.SetIsHaveWeapon(true, weaponId);
     }

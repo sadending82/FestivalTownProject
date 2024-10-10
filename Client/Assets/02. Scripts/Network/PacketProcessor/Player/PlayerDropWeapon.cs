@@ -21,6 +21,10 @@ namespace Network.PacketProcessor
             Vector3 pos = new Vector3(Data.Pos.Value.X, Data.Pos.Value.Y, Data.Pos.Value.Z);
 
             Weapon targetWeapon = Managers.WeaponObject.FindWeaponById(weaponID).GetComponent<Weapon>();
+            if (targetWeapon == null)
+            {
+                Debug.Log("드롭하려는데 웨폰이 없다데스!!!");
+            }
             targetWeapon.Drop(pos);
         }
     }

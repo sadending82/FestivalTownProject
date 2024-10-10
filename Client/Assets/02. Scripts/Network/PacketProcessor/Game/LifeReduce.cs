@@ -18,10 +18,6 @@ namespace Network.PacketProcessor
             int lifeCount = Data.Life;
 
             Managers.Game.SetLifeCount(team, lifeCount);
-            Debug.Log("Life Reduced.");
-
         }
-
-        
     }
 }
