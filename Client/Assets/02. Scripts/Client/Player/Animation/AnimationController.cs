@@ -264,7 +264,6 @@ public class AnimationController : MonoBehaviour
     }
     private void ChangeAnimation(string state)
     {
-        animator.SetTrigger("New State");
         animator.SetTrigger(state);
     }
 }
