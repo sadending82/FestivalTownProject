@@ -98,7 +98,7 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
-            Debug.Log($"Add Player {id}");
+            //Debug.Log($"Add Player {id}");
 
             var playerObject = players.transform.GetChild(id).gameObject;
             playerObject.SetActive(true);

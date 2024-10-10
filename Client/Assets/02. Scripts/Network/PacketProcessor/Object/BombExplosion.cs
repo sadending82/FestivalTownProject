@@ -17,8 +17,6 @@ namespace Network.PacketProcessor
             Vector3 pos = new Vector3(Data.Pos.Value.X, Data.Pos.Value.Y, Data.Pos.Value.Z);
             int bombId = Data.Id;
 
-            Debug.Log("BombExplosion");
-
             GameObject targetBomb = Managers.BombObject.FindBombById(bombId);
             if (targetBomb != null)
             {

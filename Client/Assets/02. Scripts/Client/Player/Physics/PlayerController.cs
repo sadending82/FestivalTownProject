@@ -524,8 +524,9 @@ public class PlayerController : MonoBehaviour
         // 마우스 우클릭 다운
         if (Input.GetMouseButtonDown(1))
         {
-            playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.THROW);
-            Throw();
+            // 수정 : 여기 애니메이션 Throw 있어야함
+            GameObject targetBomb = Managers.BombObject.FindBombById(playerStatus.GetBombId());
+            packetManager.SendPlayerThrowBombPacket(targetBomb.transform.position, stabillizerDirection, myId, targetBomb.GetComponent<Bomb>().GetId());
         }
     }
     public void GameStart()
@@ -692,24 +693,6 @@ public class PlayerController : MonoBehaviour
         Weapon targetWeapon = Managers.WeaponObject.FindWeaponById(weaponId).GetComponent<Weapon>();
         targetWeapon.PickUp(playerId);
         playerStatus.SetIsHaveWeapon(true, weaponId);
-    }
-    public void Throw()
-    {
-        if(playerStatus.GetIsHaveBomb() == true)
-        {
-            GameObject targetBomb = Managers.BombObject.FindBombById(playerStatus.GetBombId());
-            targetBomb.GetComponent<Bomb>().Throw(stabillizerDirection, playerStatus.GetThrowPower());
-
-            // 서버에 플레이어 위치, 폭탄 발사 방향, 폭탄 위치, 플레이어 아이디, 폭탄 아이디 보내줌
-            packetManager.SendPlayerThrowBombPacket(targetBomb.transform.position, stabillizerDirection, myId, targetBomb.GetComponent<Bomb>().GetId());
-            playerStatus.SetIsHaveBomb(false);
-
-            playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
-        }
-        else
-        {
-            Debug.Log("Player " + playerStatus.GetId() + " Don't Have an Item to Throw !!!");
-        }
     }
     public void s_Throw(Vector3 bombPosition, int bombId)
     {
