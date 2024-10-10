@@ -35,7 +35,6 @@ public:
 				switch (serverMode) {
 				case SERVER_MODE::LIVE: {
 					if (room->GetReadyCnt() == room->GetPlayerCnt()) {
-
 						if (room->SetAllPlayerReady(true) == true) {
 
 							pPacketSender->SendAllPlayerReady(roomid);

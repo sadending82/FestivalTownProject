@@ -57,7 +57,6 @@ public:
                         topPlayer->SetPlayedSoloGameBefore(true);
                     }
                     playerList.push_back(topPlayer);
-                    COUT << "Matched - " << topPlayer->GetSessionID() << ENDL;
                     readyPlayers.pop();
                 }
                 waitingPlayerCount = readyPlayers.size();

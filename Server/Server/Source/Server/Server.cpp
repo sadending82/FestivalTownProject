@@ -381,6 +381,7 @@ void Server::MatchingComplete(int roomID, std::vector<Player*>& players)
                 }
                 else {
                     mPacketSender->SendGameMatchingResponse(sessionID);
+                    COUT << "Matched - " << sessionID << ENDL;
                 }
             }
         }
