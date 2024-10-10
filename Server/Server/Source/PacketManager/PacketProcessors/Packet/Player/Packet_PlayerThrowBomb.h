@@ -44,7 +44,7 @@ public:
 				player->GetBombLock().unlock();
 
 				std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYER_THROW_BOMB, data, size);
-				pServer->SendAllPlayerInRoomExceptSender(send_buffer.data(), send_buffer.size(), key);
+				pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomid);
 			}
 		}
 		catch (const std::exception& e) {
