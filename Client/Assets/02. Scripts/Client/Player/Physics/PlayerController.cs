@@ -477,78 +477,47 @@ public class PlayerController : MonoBehaviour
     }
     private void MouseInput()
     {
-        if (isLeftShiftKeyDown == true)
+        // 마우스 좌클릭 다운
+        if (Input.GetMouseButtonDown(0))
         {
-            if (playerStatus.GetUpperBodyAnimationState() == UpperBodyAnimationState.NONE)
+            leftMouseClickTimer = 0f;
+        }
+        // 마우스 좌클릭 홀드
+        if (Input.GetMouseButton(0))
+        {
+            leftMouseClickTimer += Time.deltaTime;
+            if (leftMouseClickTimer >= 1f && isGrap == false)
             {
-                // 마우스 좌클릭 다운
-                if (Input.GetMouseButtonDown(0))
-                {
-                    if (isGrounded == true)
-                    {
-                        playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.POWERATTACK);
-                    }
-                    else
-                    {
-                        playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.FLYINGKICK);
-                    }
-                }
+                // 잡기 애니메이션 작동
+                isGrap = true;
+                playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.GRAP);
             }
         }
-        else
+        // 마우스 좌클릭 업
+        if (Input.GetMouseButtonUp(0))
         {
-            // 마우스 좌클릭 다운
-            if (Input.GetMouseButtonDown(0))
+            if (isGrap == true)
             {
-                leftMouseClickTimer = 0f;
-            }
-            // 마우스 좌클릭 홀드
-            if (Input.GetMouseButton(0))
-            {
-                leftMouseClickTimer += Time.deltaTime;
-                if (leftMouseClickTimer >= 1f && isGrap == false)
-                {
-                    // 잡기 애니메이션 작동
-                    isGrap = true;
-                    playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.GRAP);
-                }
-            }
-            // 마우스 좌클릭 업
-            if (Input.GetMouseButtonUp(0))
-            {
-                if (isGrap == true)
-                {
-                    isGrap = false;
-                    playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
+                isGrap = false;
+                playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
 
-                    if (playerStatus.GetIsGrapPlayer() == true)
-                    {
-                        GrapOff();
-                    }
-                }
-                else if (playerStatus.GetUpperBodyAnimationState() == UpperBodyAnimationState.NONE)
+                if (playerStatus.GetIsGrapPlayer() == true)
                 {
-                    if (playerStatus.GetIsHaveWeapon() == false)
-                    {
-                        playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.ATTACK);
-                    }
-                    else
-                    {
-                        playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.WEAPONATTACK);
-                    }
+                    GrapOff();
                 }
-                leftMouseClickTimer = 0f;
             }
-        }
-        // 마우스 휠클릭 다운
-        if (Input.GetMouseButtonDown(2))
-        {
-            playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.HEADATTACK);
-        }
-        // 마우스 휠클릭 업
-        if (Input.GetMouseButtonUp(2))
-        {
-            playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
+            else if (playerStatus.GetUpperBodyAnimationState() == UpperBodyAnimationState.NONE)
+            {
+                if (playerStatus.GetIsHaveWeapon() == false)
+                {
+                    playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.ATTACK);
+                }
+                else
+                {
+                    playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.WEAPONATTACK);
+                }
+            }
+            leftMouseClickTimer = 0f;
         }
 
         // 마우스 우클릭 다운

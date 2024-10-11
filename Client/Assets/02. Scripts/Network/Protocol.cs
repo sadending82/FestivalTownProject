@@ -133,7 +133,7 @@ namespace ClientProtocol
     {
         NONE,
         GRAP, THROW,
-        ATTACK, POWERATTACK, HEADATTACK, ROLL, FLYINGKICK, WEAPONATTACK
+        ATTACK, ROLL, FLYINGKICK, WEAPONATTACK
     }
 
     // 서버에 전달 X 클라가 관리
