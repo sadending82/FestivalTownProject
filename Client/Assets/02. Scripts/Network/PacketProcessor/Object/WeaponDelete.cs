@@ -16,10 +16,6 @@ namespace Network.PacketProcessor
             int id = Data.Id;
 
             Weapon targetWeapon = Managers.WeaponObject.FindWeaponById(id).GetComponent<Weapon>();
-            if (targetWeapon == null)
-            {
-                Debug.Log("지우려는데 웨폰이 없다데스!!!");
-            }
             targetWeapon.DeleteWeapon();
         }
     }

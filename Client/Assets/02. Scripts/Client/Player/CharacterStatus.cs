@@ -244,10 +244,6 @@ public class CharacterStatus : MonoBehaviour
         if (isHaveWeapon == true)
         {
             myWeapon = Managers.WeaponObject.FindWeaponById(weaponId);
-            if (myWeapon == null)
-            {
-                Debug.Log("마이웨폰 등록하려는데 웨폰이 없다데스!!!");
-            }
         }
         else
         {
