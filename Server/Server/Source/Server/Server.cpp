@@ -207,7 +207,6 @@ void Server::Run()
     SetGameManagers();
     DEBUGMSGNOPARAM("Thread Ready\n");
 
-
     switch (mMode) {
     case SERVER_MODE::LIVE: {
         // matching start
@@ -318,6 +317,40 @@ void Server::StartHeartBeat(int sessionID)
     GetSessions()[sessionID]->SetIsHeartbeatAck(false);
     mPacketSender->SendHeartBeatPacket(sessionID);
     PushEventHeartBeat(mTimer, sessionID);
+}
+
+bool Server::UserLogin(const char* accountID, const char* accountPassword, const int sessionID)
+{
+    if (mDB->CheckValidateLogin(accountID, accountPassword) == false) {
+        return false;
+    }
+
+    std::pair<bool, UserInfo> result = mDB->SelectUserInfo(accountID);
+
+    UserInfo& userInfo = result.second;
+
+    if (result.first == false) {
+        return false;
+    }
+
+    if (userInfo.State == true) {
+        for (Session* session : mSessions) {
+            if (session == nullptr) {
+                continue;
+            }
+
+            Player* player = dynamic_cast<Player*>(session);
+
+            if (player->GetUID() == userInfo.UID) {
+                player->Disconnect();
+                break;
+            }
+        }
+    }
+    Player* player = dynamic_cast<Player*>(GetSessions()[sessionID]);
+    player->SetUserInfoFromDB(userInfo);
+
+    return true;
 }
 
 int Server::CreateNewRoom(GameMode gameMode)

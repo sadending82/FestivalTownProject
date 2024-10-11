@@ -36,6 +36,13 @@ void Player::DoSend(void* packet, const int size)
 	__super::DoSend(packet, size);
 }
 
+void Player::SetUserInfoFromDB(UserInfo& userInfo)
+{
+	mUID = userInfo.UID;
+	mAccountID = userInfo.AccountID;
+	mName = userInfo.NickName;
+}
+
 bool Player::SetIsGrabbed(bool desired)
 {
 	bool expected = !desired;

@@ -1,6 +1,7 @@
 #pragma once
 #include "../Network/Session/Session.h"
 #include "../TableManager/Tables/CharacterStat.h"
+#include "../DB/Tables/DB_UserInfo.h"
 #include <shared_mutex>
 
 class Player : public Session
@@ -42,7 +43,7 @@ public:
 	int					GetAttachedPlayerID() { return mAttachedPlayerID; }
 	CharacterStat&		GetCharacterStat() { return mCharacterStat; }
 
-	int					SetUID() { return mUID; }
+	void				SetUID(int uid) { mUID = uid; }
 	void				SetAccountID(std::string accountID) { mAccountID = accountID; }
 	void				SetRoomID(int id) { mRoomID = id; }
 	void				SetInGameID(int id) { mInGameID = id; }
@@ -62,6 +63,8 @@ public:
 	void				SetWeapon(class Weapon* weapon) { mWeapon = weapon; }
 	void				SetAttachedPlayerID(int playerID) { mAttachedPlayerID = playerID; }
 	void				SetCharacterStat(CharacterStat& stat) { mCharacterStat = stat; }
+
+	void				SetUserInfoFromDB(UserInfo userInfo);
 	// cas
 	bool				SetIsGrabbed(bool desired);
 
@@ -88,13 +91,14 @@ protected:
 
 	int					mUID;	// GameDB에서 PK로 사용하는 Unique ID
 	std::string			mAccountID = ""; // 계정 ID
-	int					mRoomID;
-	int					mInGameID; // 클라와 함께 인게임 내에서 구분하기 위한 id
 	std::string			mName = "test"; // 임시 닉네임
-	int					mTeam;
 
 	bool				mIsBot = false;
-	
+
+	int					mRoomID;
+	int					mInGameID; // 클라와 함께 인게임 내에서 구분하기 위한 id
+	int					mTeam;
+
 	Vector3f			mPosition;
 	Vector3f			mDirection;
 

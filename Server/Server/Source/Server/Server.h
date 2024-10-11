@@ -47,6 +47,8 @@ public:
 
 	void						StartHeartBeat(int sessionID);
 
+	bool						UserLogin(const char* accountID, const char* accountPassword, const int sessionID);
+
 	int							CreateNewRoom(GameMode gameMode);
 
 	void						MatchingComplete(int roomID, std::vector<Player*>& players);

@@ -195,6 +195,110 @@ bool DB::InsertRanking(const int uid)
 	return false;
 }
 
+std::pair<bool, UserInfo> DB::SelectUserInfo(const char* id)
+{
+	UserInfo userInfo;
+
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGNOPARAM("hStmt Error : (InsertRanking) \n");
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return { false,UserInfo() };
+	}
+
+	UseGameDB(hStmt);
+
+	const WCHAR* query = L"SELECT * FROM UserInfo WHERE AccountID = ?";
+
+	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, strlen(id), 0, (SQLCHAR*)id, 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		SQLLEN col1, col2, col3, col4, col5, col6, col7, col8;
+		TIMESTAMP_STRUCT date{};
+
+		while (SQLFetch(hStmt) == SQL_SUCCESS) {
+			SQLGetData(hStmt, 1, SQL_C_LONG, &userInfo.UID, sizeof(userInfo.UID), &col1);
+			SQLGetData(hStmt, 2, SQL_C_CHAR, &userInfo.AccountID[0], userInfo.AccountID.size(), &col2);
+			SQLGetData(hStmt, 3, SQL_C_CHAR, &userInfo.NickName[0], userInfo.NickName.size(), &col3);
+			SQLGetData(hStmt, 4, SQL_C_LONG, &userInfo.Point, sizeof(userInfo.Point), &col4);
+			SQLGetData(hStmt, 5, SQL_C_LONG, &userInfo.Gold, sizeof(userInfo.Gold), &col5);
+			SQLGetData(hStmt, 6, SQL_C_TYPE_TIMESTAMP, &date, sizeof(date), &col6);
+			SQLGetData(hStmt, 7, SQL_C_LONG, &userInfo.AttendanceDay, sizeof(userInfo.AttendanceDay), &col7);
+			SQLGetData(hStmt, 8, SQL_C_LONG, &userInfo.State, sizeof(userInfo.State), &col8);
+		}
+
+		userInfo.date.tm_year = date.year;
+		userInfo.date.tm_mon = date.month;
+		userInfo.date.tm_mday = date.day;
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return { true, userInfo };
+	}
+
+	DEBUGMSGNOPARAM("Execute Query Error : (SelectUserInfo)\n");
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	return { false,UserInfo() };
+}
+
+std::pair<bool, UserInfo> DB::SelectUserInfo(const int uid)
+{
+	UserInfo userInfo;
+
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGNOPARAM("hStmt Error : (InsertRanking) \n");
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return { false,UserInfo() };
+	}
+
+	UseGameDB(hStmt);
+
+	const WCHAR* query = L"SELECT * FROM UserInfo WHERE UID = ?";
+
+	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		SQLLEN col1, col2, col3, col4, col5, col6, col7, col8;
+		TIMESTAMP_STRUCT date{};
+
+		while (SQLFetch(hStmt) == SQL_SUCCESS) {
+			SQLGetData(hStmt, 1, SQL_C_LONG, &userInfo.UID, sizeof(userInfo.UID), &col1);
+			SQLGetData(hStmt, 2, SQL_C_CHAR, &userInfo.AccountID[0], userInfo.AccountID.size(), &col2);
+			SQLGetData(hStmt, 3, SQL_C_CHAR, &userInfo.NickName[0], userInfo.NickName.size(), &col3);
+			SQLGetData(hStmt, 4, SQL_C_LONG, &userInfo.Point, sizeof(userInfo.Point), &col4);
+			SQLGetData(hStmt, 5, SQL_C_LONG, &userInfo.Gold, sizeof(userInfo.Gold), &col5);
+			SQLGetData(hStmt, 6, SQL_C_TYPE_TIMESTAMP, &date, sizeof(date), &col6);
+			SQLGetData(hStmt, 7, SQL_C_LONG, &userInfo.AttendanceDay, sizeof(userInfo.AttendanceDay), &col7);
+			SQLGetData(hStmt, 8, SQL_C_LONG, &userInfo.State, sizeof(userInfo.State), &col8);
+		}
+
+		userInfo.date.tm_year = date.year;
+		userInfo.date.tm_mon = date.month;
+		userInfo.date.tm_mday = date.day;
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return { true, userInfo };
+	}
+
+	DEBUGMSGNOPARAM("Execute Query Error : (SelectUserInfo)\n");
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	return { false,UserInfo() };
+}
+
 bool DB::UpdateUserConnectionState(const int uid, const int state)
 {
 	SQLHSTMT hStmt = NULL;
@@ -208,7 +312,7 @@ bool DB::UpdateUserConnectionState(const int uid, const int state)
 
 	UseGameDB(hStmt);
 
-	const WCHAR* query = L"UPDATE UserInfo SET State = State + ? WHERE UID = ?";
+	const WCHAR* query = L"UPDATE UserInfo SET State = ? WHERE UID = ?";
 
 	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
 

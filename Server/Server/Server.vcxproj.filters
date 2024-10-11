@@ -114,6 +114,12 @@
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Player\Packet_PlayerGrabOtherPlayer.h" />
     <ClInclude Include="Source\GameManager\GameManager.h" />
     <ClInclude Include="Source\GameManager\FITH\FITH.h" />
+    <ClInclude Include="Source\PacketManager\flatbuffer\Login_generated.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Login\Packet_LoginRequest.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Login\Packet_SignUpRequest.h" />
+    <ClInclude Include="Source\DB\Tables\DB_Account.h" />
+    <ClInclude Include="Source\DB\Tables\DB_UserInfo.h" />
+    <ClInclude Include="Source\DB\Tables\DB_Tables.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

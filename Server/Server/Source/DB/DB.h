@@ -1,5 +1,6 @@
 #pragma once
 #include "../DB/Security/Security.h"
+#include "Tables/DB_Tables.h"
 
 #define _WINSOCKAPI_
 #include <windows.h>  
@@ -27,6 +28,9 @@ public:
     bool InsertNewAcccount(const char* id, const char* password);
     bool InsertNewUser(const char* id, const char* nickname);
     bool InsertRanking(const int uid);
+
+    std::pair<bool, UserInfo> SelectUserInfo(const char* id);
+    std::pair<bool, UserInfo> SelectUserInfo(const int uid);
 
     bool UpdateUserConnectionState(const int uid, const int state);
     bool UpdateUserGold(const int uid, const int valueOfChange);

@@ -19,8 +19,10 @@ public:
 				const LoginRequest* read = flatbuffers::GetRoot<LoginRequest>(data);
 
 				DB* pDB = pServer->GetDB();
+				const char* id = read->account_id()->c_str();
+				const char* pw = read->account_password()->c_str();
 
-				bool result = pDB->CheckValidateLogin(read->account_id()->c_str(), read->account_password()->c_str());
+				bool result = pServer->UserLogin(id, pw, key);
 
 				pPacketSender->SendLoginResponse(key, result);
 			}
