@@ -118,6 +118,7 @@ public class GameManager : MonoBehaviour
     public void GameStart()
     {
         isTimerStart = true;
+        Managers.Network.GetPacketManager().GameStart();
         Managers.SpectatorCamera.AddCameras();
         Managers.Player.GameStart();
     }
@@ -126,6 +127,7 @@ public class GameManager : MonoBehaviour
     {
         isTimerStart = false;
         Managers.Player.GameEnd();
+        Managers.Network.GetPacketManager().GameEnd();
 
         isGameEnd = true;
     }
@@ -137,5 +139,9 @@ public class GameManager : MonoBehaviour
     public int GetWinningTeam()
     {
         return winningTeam;
+    }
+    public bool GetisGameEnd()
+    {
+        return isGameEnd;
     }
 }

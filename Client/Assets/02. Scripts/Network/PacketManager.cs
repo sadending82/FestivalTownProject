@@ -14,6 +14,8 @@ using TMPro;
 
 public class PacketManager : MonoBehaviour 
 {
+    private bool isGameEnd = false;
+
     private Dictionary<ePacketType, PacketProcessor> processorDict { get; set; }
 
     public PacketProcessor GetProcessor(ePacketType type)
@@ -105,7 +107,19 @@ public class PacketManager : MonoBehaviour
             Debug.Log("Write exception: " + Exception);
         }
     }
-
+    private void SendPacketWhenPlayingGame(Byte[] buffer)
+    {
+        if (isGameEnd) return;
+        SendPacket(buffer);
+    }
+    public void GameStart()
+    {
+        isGameEnd = false;
+    }
+    public void GameEnd()
+    {
+        isGameEnd = true;
+    }
     private byte[] Serialize<T>(T packet)
     {
         var buffer = new byte[Marshal.SizeOf(typeof(T))];
@@ -121,149 +135,13 @@ public class PacketManager : MonoBehaviour
         return buffer;
     }
 
-    public void SendPlayerMovePacket(Vector3 position, Vector3 direction, int id, ePlayerMoveState state)
-    {
-
-        byte[] packet = _packetMaker.MakePlayerMovePacket(position, direction, id, state);
-        if (packet == null) { return; }
-        SendPacket(packet);
-    }
-
-    public void SendPlayerStopPacket(Vector3 position, Vector3 direction, int id, ePlayerMoveState state)
-    {
-
-        byte[] packet = _packetMaker.MakePlayerStopPacket(position, direction, id, state);
-        if (packet == null) { return; }
-        SendPacket(packet);
-    }
-
-    public void SendPlayerSyncPacket(Vector3 position, Vector3 direction, int stamina, int id)
-    {
-        byte[] packet = _packetMaker.MakePlayerSyncPacket(position, direction, stamina, id);
-        if (packet == null) { return; }
-        SendPacket(packet);
-    }
-
+    // ------------------ Game ------------------
     public void SendHeartBeatPacket()
     {
         byte[] packet = _packetMaker.MakeHeartBeatPacket();
         if (packet == null) { return; }
         SendPacket(packet);
     }
-
-    public void SendBombInputPacket(int bombid, int team, int playerid = 0)
-    {
-        byte[] packet = _packetMaker.MakeBombInputPacket(playerid, bombid, team);
-        if (packet == null) { return; }
-        SendPacket(packet);
-    }
-
-    public void SendPlayerGrabBombPacket(Vector3 position, Vector3 direction, int playerID, int BombID)
-    {
-        byte[] packet = _packetMaker.MakePlayerGrabBombPacket(position, direction, playerID, BombID);
-        if (packet == null) { return; }
-        SendPacket(packet);
-    }
-
-    public void SendPlayerThrowBombPacket(Vector3 position, Vector3 direction, int playerID, int BombID)
-    {
-        byte[] packet = _packetMaker.MakePlayerThrowBombPacket(position, direction, playerID, BombID);
-        if (packet == null) { return; }
-        SendPacket(packet);
-    }
-
-    public void SendPlayerAnimationPacket(Vector3 position, Vector3 direction, int playerID, UpperBodyAnimationState animation)
-    {
-        byte[] packet = _packetMaker.MakePlayerAnimationPacket(position, direction, playerID, (int)animation);
-        if (packet == null) { return; }
-        SendPacket(packet);
-    }
-
-    public void SendPlayerDamageReceivePacket(int attackerID, int targetID, int weapon, eDamageType attackType, Vector3 knockback_direction)
-    {
-        byte[] packet = _packetMaker.MakePlayerDamageReceivePacket(attackerID, targetID, weapon, (int)attackType, knockback_direction);
-        if (packet == null) { return; }
-        SendPacket(packet);
-    }
-
-    public void SendPlayerCollisionToBlockPacket(int id)
-    {
-        byte[] packet = _packetMaker.MakePlayerCollisionToBlockPacket(id);
-        if (packet == null) { return; }
-        SendPacket(packet);
-    }
-
-
-    public void SendBombPositionSyncPacket(Vector3 position, int BombID)
-    {
-        byte[] packet = _packetMaker.MakeBombPositionSyncPacket(position, BombID);
-        if (packet == null) { return; }
-        SendPacket(packet);
-    }
-
-    public void SendBombExplosionPacket(Vector3 position, int BombID)
-    {
-        byte[] packet = _packetMaker.MakeBombExplosionPacket(position, BombID);
-        if (packet == null) { return; }
-        SendPacket(packet);
-    }
-
-    public void SendGameMatchingRequest()
-    {
-        byte[] packet = _packetMaker.MakeGameMatchingRequestPacket();
-        if (packet == null) { return; }
-        SendPacket(packet);
-    }
-
-    public void SendGameMatchingCancle()
-    {
-        byte[] packet = _packetMaker.MakeGameMatchingCancelPacket();
-        if (packet == null) { return; }
-        SendPacket(packet);
-    }
-
-    public void SendGameReady()
-    {
-        byte[] packet = _packetMaker.MakeGameReadyPacket();
-        if (packet == null) { return; }
-        SendPacket(packet);
-    }
-
-    public void SendPlayerGrabWeaponPacket(Vector3 position, Vector3 direction, int playerID, int weaponID)
-    {
-        byte[] packet = _packetMaker.MakePlayerGrabWeaponPacket(position, direction, playerID, weaponID);
-        if (packet == null) { return; }
-        SendPacket(packet);
-    }
-
-    public void SendPlayerDropWeaponPacket(Vector3 position, int weaponID)
-    {
-        byte[] packet = _packetMaker.MakePlayerDropWeaponPacket(position, weaponID);
-        if (packet == null) { return; }
-        SendPacket(packet);
-    }
-
-    public void SendWeaponDeletePacket(int weaponID)
-    {
-        byte[] packet = _packetMaker.MakeWeaponDeletePacket(weaponID);
-        if (packet == null) { return; }
-        SendPacket(packet);
-    }
-
-    public void SendPlayerGrabOtherPlayerPacket(int playerID, Vector3 myPosition, Vector3 myDirection, Vector3 myHandPosition, bool isLeftHand, int targetID, Vector3 targetHeadPosition)
-    {
-        byte[] packet = _packetMaker.MakePlayerGrabOtherPlayerPacket(playerID, myPosition, myDirection, myHandPosition, isLeftHand, targetID, targetHeadPosition);  
-        if (packet == null) { return; }
-        SendPacket(packet);
-    }
-
-    public void SendPlayerThrowOtherPlayerPacket(int playerID, Vector3 myPosition, Vector3 myDirection, int targetID, Vector3 targetPosition, Vector3 targetDirection)
-    {
-        byte[] packet = _packetMaker.MakePlayerThrowOtherPlayerPacket(playerID, myPosition, myDirection, targetID, targetPosition, targetDirection);
-        if (packet == null) { return; }
-        SendPacket(packet);
-    }
-
     public void SendLoginRequestPacket(string accountID, string accountPassword)
     {
         byte[] packet = _packetMaker.MakeLoginRequestPacket(accountID, accountPassword);
@@ -276,5 +154,126 @@ public class PacketManager : MonoBehaviour
         byte[] packet = _packetMaker.MakeSignUpRequestPacket(accountID, accountPassword, nickname);
         if (packet == null) { return; }
         SendPacket(packet);
+    }
+    public void SendGameMatchingRequest()
+    {
+        byte[] packet = _packetMaker.MakeGameMatchingRequestPacket();
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+    public void SendGameMatchingCancle()
+    {
+        byte[] packet = _packetMaker.MakeGameMatchingCancelPacket();
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+    public void SendGameReady()
+    {
+        byte[] packet = _packetMaker.MakeGameReadyPacket();
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+
+    // ------------------ Player ------------------
+    public void SendPlayerSyncPacket(Vector3 position, Vector3 direction, int stamina, int id)
+    {
+        byte[] packet = _packetMaker.MakePlayerSyncPacket(position, direction, stamina, id);
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+    public void SendPlayerMovePacket(Vector3 position, Vector3 direction, int id, ePlayerMoveState state)
+    {
+
+        byte[] packet = _packetMaker.MakePlayerMovePacket(position, direction, id, state);
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+    public void SendPlayerStopPacket(Vector3 position, Vector3 direction, int id, ePlayerMoveState state)
+    {
+
+        byte[] packet = _packetMaker.MakePlayerStopPacket(position, direction, id, state);
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+    public void SendPlayerAnimationPacket(Vector3 position, Vector3 direction, int playerID, UpperBodyAnimationState animation)
+    {
+        byte[] packet = _packetMaker.MakePlayerAnimationPacket(position, direction, playerID, (int)animation);
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+    public void SendPlayerGrabBombPacket(Vector3 position, Vector3 direction, int playerID, int BombID)
+    {
+        byte[] packet = _packetMaker.MakePlayerGrabBombPacket(position, direction, playerID, BombID);
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+    public void SendPlayerThrowBombPacket(Vector3 position, Vector3 direction, int playerID, int BombID)
+    {
+        byte[] packet = _packetMaker.MakePlayerThrowBombPacket(position, direction, playerID, BombID);
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+    public void SendPlayerGrabWeaponPacket(Vector3 position, Vector3 direction, int playerID, int weaponID)
+    {
+        byte[] packet = _packetMaker.MakePlayerGrabWeaponPacket(position, direction, playerID, weaponID);
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+    public void SendPlayerGrabOtherPlayerPacket(int playerID, Vector3 myPosition, Vector3 myDirection, Vector3 myHandPosition, bool isLeftHand, int targetID, Vector3 targetHeadPosition)
+    {
+        byte[] packet = _packetMaker.MakePlayerGrabOtherPlayerPacket(playerID, myPosition, myDirection, myHandPosition, isLeftHand, targetID, targetHeadPosition);
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+
+    public void SendPlayerThrowOtherPlayerPacket(int playerID, Vector3 myPosition, Vector3 myDirection, int targetID, Vector3 targetPosition, Vector3 targetDirection)
+    {
+        byte[] packet = _packetMaker.MakePlayerThrowOtherPlayerPacket(playerID, myPosition, myDirection, targetID, targetPosition, targetDirection);
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+    public void SendPlayerDropWeaponPacket(Vector3 position, int weaponID)
+    {
+        byte[] packet = _packetMaker.MakePlayerDropWeaponPacket(position, weaponID);
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+    public void SendPlayerCollisionToBlockPacket(int id)
+    {
+        byte[] packet = _packetMaker.MakePlayerCollisionToBlockPacket(id);
+        if (packet == null) { return; }
+        SendPacketWhenPlayingGame(packet);
+    }
+    public void SendPlayerDamageReceivePacket(int attackerID, int targetID, int weapon, eDamageType attackType, Vector3 knockback_direction)
+    {
+        byte[] packet = _packetMaker.MakePlayerDamageReceivePacket(attackerID, targetID, weapon, (int)attackType, knockback_direction);
+        if (packet == null) { return; }
+        SendPacketWhenPlayingGame(packet);
+    }
+
+    // ------------------ Bomb & Weapon ------------------
+    public void SendBombPositionSyncPacket(Vector3 position, int BombID)
+    {
+        byte[] packet = _packetMaker.MakeBombPositionSyncPacket(position, BombID);
+        if (packet == null) { return; }
+        SendPacketWhenPlayingGame(packet);
+    }
+    public void SendBombInputPacket(int bombid, int team, int playerid = 0)
+    {
+        byte[] packet = _packetMaker.MakeBombInputPacket(playerid, bombid, team);
+        if (packet == null) { return; }
+        SendPacketWhenPlayingGame(packet);
+    }
+    public void SendBombExplosionPacket(Vector3 position, int BombID)
+    {
+        byte[] packet = _packetMaker.MakeBombExplosionPacket(position, BombID);
+        if (packet == null) { return; }
+        SendPacketWhenPlayingGame(packet);
+    }
+    public void SendWeaponDeletePacket(int weaponID)
+    {
+        byte[] packet = _packetMaker.MakeWeaponDeletePacket(weaponID);
+        if (packet == null) { return; }
+        SendPacketWhenPlayingGame(packet);
     }
 }
