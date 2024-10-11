@@ -22,9 +22,11 @@ public:
 				const char* id = read->account_id()->c_str();
 				const char* pw = read->account_password()->c_str();
 
-				bool result = pServer->UserLogin(id, pw, key);
+				std::pair<bool, UserInfo> result = pServer->UserLogin(id, pw, key);
 
-				pPacketSender->SendLoginResponse(key, result);
+				UserInfo userInfo = result.second;
+
+				pPacketSender->SendLoginResponse(key, result.first, userInfo.UID, userInfo.NickName, userInfo.Point, userInfo.Gold);
 			}
 		}
 		catch (const std::exception& e) {

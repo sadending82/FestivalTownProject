@@ -20,16 +20,42 @@ public struct LoginResponse : IFlatbufferObject
   public LoginResponse __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public int ResultCode { get { int o = __p.__offset(4); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int Uid { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public string Nickname { get { int o = __p.__offset(8); return o != 0 ? __p.__string(o + __p.bb_pos) : null; } }
+#if ENABLE_SPAN_T
+  public Span<byte> GetNicknameBytes() { return __p.__vector_as_span<byte>(8, 1); }
+#else
+  public ArraySegment<byte>? GetNicknameBytes() { return __p.__vector_as_arraysegment(8); }
+#endif
+  public byte[] GetNicknameArray() { return __p.__vector_as_array<byte>(8); }
+  public int Point { get { int o = __p.__offset(10); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int Gold { get { int o = __p.__offset(12); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int AttendanceDay { get { int o = __p.__offset(14); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
 
   public static Offset<PacketTable.LoginTable.LoginResponse> CreateLoginResponse(FlatBufferBuilder builder,
-      int result_code = 0) {
-    builder.StartTable(1);
+      int result_code = 0,
+      int uid = 0,
+      StringOffset nicknameOffset = default(StringOffset),
+      int point = 0,
+      int gold = 0,
+      int attendance_day = 0) {
+    builder.StartTable(6);
+    LoginResponse.AddAttendanceDay(builder, attendance_day);
+    LoginResponse.AddGold(builder, gold);
+    LoginResponse.AddPoint(builder, point);
+    LoginResponse.AddNickname(builder, nicknameOffset);
+    LoginResponse.AddUid(builder, uid);
     LoginResponse.AddResultCode(builder, result_code);
     return LoginResponse.EndLoginResponse(builder);
   }
 
-  public static void StartLoginResponse(FlatBufferBuilder builder) { builder.StartTable(1); }
+  public static void StartLoginResponse(FlatBufferBuilder builder) { builder.StartTable(6); }
   public static void AddResultCode(FlatBufferBuilder builder, int resultCode) { builder.AddInt(0, resultCode, 0); }
+  public static void AddUid(FlatBufferBuilder builder, int uid) { builder.AddInt(1, uid, 0); }
+  public static void AddNickname(FlatBufferBuilder builder, StringOffset nicknameOffset) { builder.AddOffset(2, nicknameOffset.Value, 0); }
+  public static void AddPoint(FlatBufferBuilder builder, int point) { builder.AddInt(3, point, 0); }
+  public static void AddGold(FlatBufferBuilder builder, int gold) { builder.AddInt(4, gold, 0); }
+  public static void AddAttendanceDay(FlatBufferBuilder builder, int attendanceDay) { builder.AddInt(5, attendanceDay, 0); }
   public static Offset<PacketTable.LoginTable.LoginResponse> EndLoginResponse(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<PacketTable.LoginTable.LoginResponse>(o);
@@ -43,6 +69,11 @@ static public class LoginResponseVerify
   {
     return verifier.VerifyTableStart(tablePos)
       && verifier.VerifyField(tablePos, 4 /*ResultCode*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 6 /*Uid*/, 4 /*int*/, 4, false)
+      && verifier.VerifyString(tablePos, 8 /*Nickname*/, false)
+      && verifier.VerifyField(tablePos, 10 /*Point*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 12 /*Gold*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 14 /*AttendanceDay*/, 4 /*int*/, 4, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }

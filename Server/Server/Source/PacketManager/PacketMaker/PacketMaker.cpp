@@ -2,11 +2,11 @@
 #include "PacketMaker.h"
 #include "../../Object/Player.h"
 
-std::vector<uint8_t> PacketMaker::MakeLoginResponsePacket(int result)
+std::vector<uint8_t> PacketMaker::MakeLoginResponsePacket(int result, int uid, std::string& nickname, int point, int gold)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 
-	Builder.Finish(PacketTable::LoginTable::CreateLoginResponse(Builder, result));
+	Builder.Finish(PacketTable::LoginTable::CreateLoginResponse(Builder, result, uid, Builder.CreateString(nickname), point, gold));
 	return MakeBuffer(ePacketType::S2C_LOGIN_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 

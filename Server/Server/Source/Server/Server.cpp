@@ -319,10 +319,10 @@ void Server::StartHeartBeat(int sessionID)
     PushEventHeartBeat(mTimer, sessionID);
 }
 
-bool Server::UserLogin(const char* accountID, const char* accountPassword, const int sessionID)
+std::pair<bool, UserInfo> Server::UserLogin(const char* accountID, const char* accountPassword, const int sessionID)
 {
     if (mDB->CheckValidateLogin(accountID, accountPassword) == false) {
-        return false;
+        return { false, UserInfo() };
     }
 
     std::pair<bool, UserInfo> result = mDB->SelectUserInfo(accountID);
@@ -330,7 +330,7 @@ bool Server::UserLogin(const char* accountID, const char* accountPassword, const
     UserInfo& userInfo = result.second;
 
     if (result.first == false) {
-        return false;
+        return result;
     }
 
     if (userInfo.State == true) {
@@ -350,7 +350,7 @@ bool Server::UserLogin(const char* accountID, const char* accountPassword, const
     Player* player = dynamic_cast<Player*>(GetSessions()[sessionID]);
     player->SetUserInfoFromDB(userInfo);
 
-    return true;
+    return { true, userInfo };
 }
 
 int Server::CreateNewRoom(GameMode gameMode)

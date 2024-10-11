@@ -12,7 +12,7 @@ public:
 	PacketMaker() {};
 	~PacketMaker() {};
 
-	std::vector<uint8_t> MakeLoginResponsePacket(int result);
+	std::vector<uint8_t> MakeLoginResponsePacket(int result, int uid, std::string& nickname, int point, int gold);
 	std::vector<uint8_t> MakeSignUpResponsePacket(int result);
 
 	std::vector<uint8_t> MakePlayerAddPacket(std::array<class Player*, MAXPLAYER>& players);

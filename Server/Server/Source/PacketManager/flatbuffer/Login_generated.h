@@ -216,14 +216,40 @@ inline ::flatbuffers::Offset<LoginRequest> CreateLoginRequestDirect(
 struct LoginResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef LoginResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_RESULT_CODE = 4
+    VT_RESULT_CODE = 4,
+    VT_UID = 6,
+    VT_NICKNAME = 8,
+    VT_POINT = 10,
+    VT_GOLD = 12,
+    VT_ATTENDANCE_DAY = 14
   };
   int32_t result_code() const {
     return GetField<int32_t>(VT_RESULT_CODE, 0);
   }
+  int32_t uid() const {
+    return GetField<int32_t>(VT_UID, 0);
+  }
+  const ::flatbuffers::String *nickname() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_NICKNAME);
+  }
+  int32_t point() const {
+    return GetField<int32_t>(VT_POINT, 0);
+  }
+  int32_t gold() const {
+    return GetField<int32_t>(VT_GOLD, 0);
+  }
+  int32_t attendance_day() const {
+    return GetField<int32_t>(VT_ATTENDANCE_DAY, 0);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_RESULT_CODE, 4) &&
+           VerifyField<int32_t>(verifier, VT_UID, 4) &&
+           VerifyOffset(verifier, VT_NICKNAME) &&
+           verifier.VerifyString(nickname()) &&
+           VerifyField<int32_t>(verifier, VT_POINT, 4) &&
+           VerifyField<int32_t>(verifier, VT_GOLD, 4) &&
+           VerifyField<int32_t>(verifier, VT_ATTENDANCE_DAY, 4) &&
            verifier.EndTable();
   }
 };
@@ -234,6 +260,21 @@ struct LoginResponseBuilder {
   ::flatbuffers::uoffset_t start_;
   void add_result_code(int32_t result_code) {
     fbb_.AddElement<int32_t>(LoginResponse::VT_RESULT_CODE, result_code, 0);
+  }
+  void add_uid(int32_t uid) {
+    fbb_.AddElement<int32_t>(LoginResponse::VT_UID, uid, 0);
+  }
+  void add_nickname(::flatbuffers::Offset<::flatbuffers::String> nickname) {
+    fbb_.AddOffset(LoginResponse::VT_NICKNAME, nickname);
+  }
+  void add_point(int32_t point) {
+    fbb_.AddElement<int32_t>(LoginResponse::VT_POINT, point, 0);
+  }
+  void add_gold(int32_t gold) {
+    fbb_.AddElement<int32_t>(LoginResponse::VT_GOLD, gold, 0);
+  }
+  void add_attendance_day(int32_t attendance_day) {
+    fbb_.AddElement<int32_t>(LoginResponse::VT_ATTENDANCE_DAY, attendance_day, 0);
   }
   explicit LoginResponseBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -248,10 +289,39 @@ struct LoginResponseBuilder {
 
 inline ::flatbuffers::Offset<LoginResponse> CreateLoginResponse(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    int32_t result_code = 0) {
+    int32_t result_code = 0,
+    int32_t uid = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> nickname = 0,
+    int32_t point = 0,
+    int32_t gold = 0,
+    int32_t attendance_day = 0) {
   LoginResponseBuilder builder_(_fbb);
+  builder_.add_attendance_day(attendance_day);
+  builder_.add_gold(gold);
+  builder_.add_point(point);
+  builder_.add_nickname(nickname);
+  builder_.add_uid(uid);
   builder_.add_result_code(result_code);
   return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<LoginResponse> CreateLoginResponseDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t result_code = 0,
+    int32_t uid = 0,
+    const char *nickname = nullptr,
+    int32_t point = 0,
+    int32_t gold = 0,
+    int32_t attendance_day = 0) {
+  auto nickname__ = nickname ? _fbb.CreateString(nickname) : 0;
+  return PacketTable::LoginTable::CreateLoginResponse(
+      _fbb,
+      result_code,
+      uid,
+      nickname__,
+      point,
+      gold,
+      attendance_day);
 }
 
 }  // namespace LoginTable

@@ -11,9 +11,9 @@ PacketSender::~PacketSender()
 {
 }
 
-void PacketSender::SendLoginResponse(int sessionID, int result)
+void PacketSender::SendLoginResponse(int sessionID, int result, int uid, std::string& nickname, int point, int gold)
 {
-    std::vector<uint8_t> send_buffer = mPacketMaker->MakeLoginResponsePacket(result);
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakeLoginResponsePacket(result, uid, nickname, point, gold);
     mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
 }
 
