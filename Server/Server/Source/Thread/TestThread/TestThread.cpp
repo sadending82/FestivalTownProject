@@ -37,11 +37,11 @@ void TestThread::RunWorker()
                 , MatchingCompare> readyPlayers;
 
             for (Session* s : m_pServer->GetSessions()) {
-                s->GetStateLock().lock();
-                if (s->GetState() == eSessionState::ST_MATCHWAITING) {
+                s->GetSessionStateLock().lock();
+                if (s->GetSessionState() == eSessionState::ST_MATCHWAITING) {
                     readyPlayers.push(dynamic_cast<Player*>(s));
                 }
-                s->GetStateLock().unlock();
+                s->GetSessionStateLock().unlock();
             }
 
             int waitingPlayerCount = readyPlayers.size();
@@ -154,20 +154,4 @@ void TestThread::RunWorker()
         }
     }
 }
-
-int TestThread::GetReadyPlayerCnt()
-{
-    int cnt = 0;
-    for (Session* s : m_pServer->GetSessions()) {
-        s->GetStateLock().lock();
-        if (s->GetState() == eSessionState::ST_MATCHWAITING) {
-            cnt++;
-        }
-        s->GetStateLock().unlock();
-
-        if (cnt >= 6) return cnt;
-    }
-    return cnt;
-}
-
 #endif RunTest

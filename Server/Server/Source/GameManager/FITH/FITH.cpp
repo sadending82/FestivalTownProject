@@ -78,9 +78,9 @@ void FITH::CheckGameEnd(int roomID)
                     delete player;
                     continue;
                 }
-                player->GetStateLock().lock();
-                player->SetState(eSessionState::ST_ACCEPTED);
-                player->GetStateLock().unlock();
+                player->GetSessionStateLock().lock();
+                player->SetSessionState(eSessionState::ST_ACCEPTED);
+                player->GetSessionStateLock().unlock();
             }
             room->GetPlayerListLock().unlock_shared();
             room->Reset();
@@ -121,10 +121,10 @@ void FITH::TimeoverGameEnd(int roomID)
                 delete player;
                 continue;
             }
-            player->GetStateLock().lock();
+            player->GetSessionStateLock().lock();
             player->Init();
-            player->SetState(eSessionState::ST_ACCEPTED);
-            player->GetStateLock().unlock();
+            player->SetSessionState(eSessionState::ST_ACCEPTED);
+            player->GetSessionStateLock().unlock();
         }
         room->GetPlayerListLock().unlock_shared();
         room->Reset();

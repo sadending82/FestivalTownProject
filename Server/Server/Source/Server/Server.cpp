@@ -73,13 +73,13 @@ int Server::SetSessionID()
     for (int i = STARTKEY; i < MAXSESSION; ++i) {
         auto session = GetSessions()[i];
         if (session == nullptr) continue;
-        session->GetStateLock().lock();
-        if (eSessionState::ST_FREE == session->GetState()) {
-            session->SetState(eSessionState::ST_ACCEPTED);
-            session->GetStateLock().unlock();
+        session->GetSessionStateLock().lock();
+        if (eSessionState::ST_FREE == session->GetSessionState()) {
+            session->SetSessionState(eSessionState::ST_ACCEPTED);
+            session->GetSessionStateLock().unlock();
             return i;
         }
-        session->GetStateLock().unlock();
+        session->GetSessionStateLock().unlock();
     }
     DEBUGMSGNOPARAM("Set Session ID Error\n");
     return INVALIDKEY;
@@ -107,14 +107,14 @@ bool Server::Disconnect(int key)
 {
     Player* player = dynamic_cast<Player*>(GetSessions()[key]);
 
-    player->GetStateLock().lock();
-    if (player->GetState() == eSessionState::ST_FREE) {
-        player->GetStateLock().unlock();
+    player->GetSessionStateLock().lock();
+    if (player->GetSessionState() == eSessionState::ST_FREE) {
+        player->GetSessionStateLock().unlock();
         return false;
     }
 
     // Delete Player In Room
-    if (player->GetState() == eSessionState::ST_INGAME) {
+    if (player->GetSessionState() == eSessionState::ST_INGAME) {
         int roomID = player->GetRoomID();
         int inGameID = player->GetInGameID();
 
@@ -130,7 +130,7 @@ bool Server::Disconnect(int key)
         }
 
     }
-    player->GetStateLock().unlock();
+    player->GetSessionStateLock().unlock();
     player->Disconnect();
 
     return true;
@@ -378,8 +378,8 @@ void Server::MatchingComplete(int roomID, std::vector<Player*>& players)
         if (room->GetPlayerCnt() == room->GetGameModeData().Player_Count) {
             break;
         }
-        player->GetStateLock().lock();
-        if (player->GetState() == eSessionState::ST_MATCHWAITING) {
+        player->GetSessionStateLock().lock();
+        if (player->GetSessionState() == eSessionState::ST_MATCHWAITING) {
             // 인원수가 적은 팀에 배치
             int teamNum = 987654321;
             int minTeammateCnt = 987654321;
@@ -420,7 +420,7 @@ void Server::MatchingComplete(int roomID, std::vector<Player*>& players)
                 }
             }
         }
-        player->GetStateLock().unlock();
+        player->GetSessionStateLock().unlock();
     }
 
     mPacketSender->SendPlayerAdd(roomID);

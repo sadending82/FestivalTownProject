@@ -23,7 +23,6 @@ public:
 
 	void RunWorker();
 
-	int GetReadyPlayerCnt();
 
 private:
 	bool isRun = true;

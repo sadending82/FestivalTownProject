@@ -19,11 +19,11 @@ public:
                 , MatchingCompare> readyPlayers;
 
             for (Session* s : pServer->GetSessions()) {
-                s->GetStateLock().lock();
-                if (s->GetState() == eSessionState::ST_MATCHWAITING) {
+                s->GetSessionStateLock().lock();
+                if (s->GetSessionState() == eSessionState::ST_MATCHWAITING) {
                     readyPlayers.push(dynamic_cast<Player*>(s));
                 }
-                s->GetStateLock().unlock();
+                s->GetSessionStateLock().unlock();
             }
 
             int waitingPlayerCount = readyPlayers.size();

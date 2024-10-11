@@ -22,9 +22,9 @@ public:
 				SERVER_MODE serverMode = pServer->GetMode();
 
 				session->SetMatchingRequestTime(std::chrono::duration_cast<std::chrono::seconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count());
-				session->GetStateLock().lock();
-				session->SetState(eSessionState::ST_MATCHWAITING);
-				session->GetStateLock().unlock();
+				session->GetSessionStateLock().lock();
+				session->SetSessionState(eSessionState::ST_MATCHWAITING);
+				session->GetSessionStateLock().unlock();
 
 				switch (serverMode) {
 				case SERVER_MODE::LIVE: {
@@ -41,7 +41,7 @@ public:
 					int roomID = pServer->CreateNewRoom(GameMode::FITH_Indiv_Battle_2);
 
 					Player* Bot = new Player;
-					Bot->SetState(eSessionState::ST_MATCHWAITING);
+					Bot->SetSessionState(eSessionState::ST_MATCHWAITING);
 					Bot->SetIsBot(true);
 
 					std::vector<Player*> playerVector = { dynamic_cast<Player*>(session), Bot };

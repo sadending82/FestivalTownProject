@@ -5,7 +5,7 @@ class Session
 {
 public:
 	Session() : mSocket(INVALID_SOCKET),
-		mState(eSessionState::ST_FREE)
+		mSessionState(eSessionState::ST_FREE)
 		, mSessionID(INVALIDKEY)
 		,mPrevData(0)
 		,mIsHeartbeatAck(false)
@@ -24,8 +24,8 @@ public:
 	void SessionInit(SOCKET sock, int key);
 
 	ExOver GetExOver() { return mExOver; }
-	eSessionState GetState() { return mState; }
-	std::mutex& GetStateLock() { return mStateLock; }
+	eSessionState GetSessionState() { return mSessionState; }
+	std::mutex& GetSessionStateLock() { return mSessionStateLock; }
 	std::mutex& GetDisconnectLock() { return mDisconnectLock; }
 	int GetSessionID() { return mSessionID; }
 	SOCKET GetSocket() { return mSocket; }
@@ -35,7 +35,7 @@ public:
 	unsigned int GetMatchingRequestTime() { return mMatchingRequestTime; }
 
 	void SetExOver(ExOver over) { mExOver = over; }
-	void SetState(eSessionState state) { mState = state; }
+	void SetSessionState(eSessionState state) { mSessionState = state; }
 	void SetSessionID(int id) { mSessionID = id; }
 	void SetSocket(SOCKET sock) { mSocket = sock; }
 	void SetPrevData(int prevData) { mPrevData = prevData; }
@@ -45,9 +45,9 @@ public:
 
 protected:
 	ExOver			mExOver;
-	std::mutex		mStateLock;
+	std::mutex		mSessionStateLock;
 	std::mutex		mDisconnectLock;
-	eSessionState	mState;
+	eSessionState	mSessionState;
 	int				mSessionID; // 서버 내에서 구분하기 위한 id
 	SOCKET			mSocket;
 	int				mPrevData;

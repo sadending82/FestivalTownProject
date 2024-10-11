@@ -20,9 +20,9 @@ public:
 
 				Session* session = pServer->GetSessions()[key];
 
-				session->GetStateLock().lock();
-				session->SetState(eSessionState::ST_ACCEPTED);
-				session->GetStateLock().unlock();
+				session->GetSessionStateLock().lock();
+				session->SetSessionState(eSessionState::ST_ACCEPTED);
+				session->GetSessionStateLock().unlock();
 
 				std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_MATCHING_CANCEL, data, size);
 				session->DoSend(send_buffer.data(), send_buffer.size());
