@@ -9,6 +9,7 @@ using static UnityEngine.GraphicsBuffer;
 using UnityEngine.Playables;
 using UnityEditor;
 using ExcelDataStructure;
+using UnityEditor.Experimental.GraphView;
 
 public class PlayerController : MonoBehaviour
 {
@@ -37,6 +38,7 @@ public class PlayerController : MonoBehaviour
 
     private bool isGrounded;
     private bool isJump;
+    private bool recoveryStaminaChecker;
 
     private bool isMove;
     private Vector3 moveDirection;
@@ -45,10 +47,11 @@ public class PlayerController : MonoBehaviour
 
     private float walkSpeed;
     private float runSpeed;
+    private int runStaminaConsume;
     private float holdAndWalkSpeed;
+    private int holdAndWalkStaminaConsume;
     private float holdAndRunSpeed;
-
-    private LowerBodyAnimationState nowLowerBodyAnimationState;
+    private int holdAndRunStaminaConsume;
 
     private bool isLeftShiftKeyDown;
     private bool beforeIsLeftShiftKeyDown;
@@ -104,7 +107,7 @@ public class PlayerController : MonoBehaviour
 
         float chSpeed = (float)cse.Ch_Speed;
 
-        // 이동 속도 관련
+        // 이동 관련
         CharacterMoveEntity cme;
 
         data = Managers.Data.GetData(20002);
@@ -114,14 +117,17 @@ public class PlayerController : MonoBehaviour
         data = Managers.Data.GetData(20003);
         cme = (CharacterMoveEntity)data;
         runSpeed = cme.Value * chSpeed;
+        runStaminaConsume = cme.Ch_StaminaConsume;
 
         data = Managers.Data.GetData(20006);
         cme = (CharacterMoveEntity)data;
         holdAndWalkSpeed = cme.Value * chSpeed;
+        holdAndWalkStaminaConsume = cme.Ch_StaminaConsume;
 
         data = Managers.Data.GetData(20007);
         cme = (CharacterMoveEntity)data;
         holdAndRunSpeed = cme.Value * chSpeed;
+        holdAndRunStaminaConsume = cme.Ch_StaminaConsume;
 
         // 픽업 관련
         CharacterActionEntity cae;
@@ -273,13 +279,15 @@ public class PlayerController : MonoBehaviour
             stabilizer.rotation = rotationQuaternion;
         }
 
-        if (AxisRawH != beforeAxisRawH || AxisRawV != beforeAxisRawV || beforeIsLeftShiftKeyDown != isLeftShiftKeyDown)
+        if (AxisRawH != beforeAxisRawH || AxisRawV != beforeAxisRawV || beforeIsLeftShiftKeyDown != isLeftShiftKeyDown || recoveryStaminaChecker == true)
         {
+            recoveryStaminaChecker = false;
             if (moveInput == Vector3.zero)
             {
                 if (pelvis != null)
                 {
                     packetManager.SendPlayerStopPacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_MOVESTOP);
+                    playerStatus.SetLowerBodyAnimationState(LowerBodyAnimationState.IDLE);
                 }
                 else
                 {
@@ -290,13 +298,36 @@ public class PlayerController : MonoBehaviour
             {
                 if (pelvis != null)
                 {
-                    if (isLeftShiftKeyDown == true)
+                    if (playerStatus.GetIsGrapPlayer() == true)
                     {
-                        packetManager.SendPlayerMovePacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_RUN);
+                        if (isLeftShiftKeyDown == true && holdAndRunStaminaConsume <= playerStatus.GetStamina())
+                        {
+                            playerStatus.SetLowerBodyAnimationState(LowerBodyAnimationState.RUN);
+                            packetManager.SendPlayerMovePacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_RUN);
+                        }
+                        else if (holdAndWalkStaminaConsume <= playerStatus.GetStamina())
+                        {
+                            playerStatus.SetLowerBodyAnimationState(LowerBodyAnimationState.WALK);
+                            packetManager.SendPlayerMovePacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_WALK);
+                        }
+                        else
+                        {
+                            playerStatus.SetLowerBodyAnimationState(LowerBodyAnimationState.IDLE);
+                            packetManager.SendPlayerStopPacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_MOVESTOP);
+                        }
                     }
                     else
                     {
-                        packetManager.SendPlayerMovePacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_WALK);
+                        if (isLeftShiftKeyDown == true && runStaminaConsume <= playerStatus.GetStamina())
+                        {
+                            playerStatus.SetLowerBodyAnimationState(LowerBodyAnimationState.RUN);
+                            packetManager.SendPlayerMovePacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_RUN);
+                        }
+                        else
+                        {
+                            playerStatus.SetLowerBodyAnimationState(LowerBodyAnimationState.WALK);
+                            packetManager.SendPlayerMovePacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_WALK);
+                        }
                     }
                 }
                 else
@@ -315,26 +346,25 @@ public class PlayerController : MonoBehaviour
             {
                 if (CheckHitWall() == false)
                 {
-                    if (playerStatus.GetIsGrapPlayer() == true)
+                    if (playerStatus.GetIsGrapPlayer() == true && holdAndRunStaminaConsume <= playerStatus.GetStamina())
                     {
                         pelvisRigidbody.velocity = moveDirection * holdAndRunSpeed;
                     }
-                    else
+                    else if (runStaminaConsume <= playerStatus.GetStamina())
                     {
                         pelvisRigidbody.velocity = moveDirection * runSpeed;
                     }
-                }
-                if (nowLowerBodyAnimationState != LowerBodyAnimationState.RUN)
-                {
-                    nowLowerBodyAnimationState = LowerBodyAnimationState.RUN;
-                    playerStatus.SetLowerBodyAnimationState(LowerBodyAnimationState.RUN);
+                    else
+                    {
+                        pelvisRigidbody.velocity = moveDirection * walkSpeed;
+                    }
                 }
             }
             else
             {
                 if (CheckHitWall() == false)
                 {
-                    if (playerStatus.GetIsGrapPlayer() == true)
+                    if (playerStatus.GetIsGrapPlayer() == true && holdAndWalkStaminaConsume <= playerStatus.GetStamina())
                     {
                         pelvisRigidbody.velocity = moveDirection * holdAndWalkSpeed;
                     }
@@ -343,19 +373,6 @@ public class PlayerController : MonoBehaviour
                         pelvisRigidbody.velocity = moveDirection * walkSpeed;
                     }
                 }
-                if (nowLowerBodyAnimationState != LowerBodyAnimationState.WALK)
-                {
-                    nowLowerBodyAnimationState = LowerBodyAnimationState.WALK;
-                    playerStatus.SetLowerBodyAnimationState(LowerBodyAnimationState.WALK);
-                }
-            }
-        }
-        else
-        {
-            if (nowLowerBodyAnimationState != LowerBodyAnimationState.IDLE)
-            {
-                nowLowerBodyAnimationState = LowerBodyAnimationState.IDLE;
-                playerStatus.SetLowerBodyAnimationState(LowerBodyAnimationState.IDLE);
             }
         }
 
@@ -380,6 +397,15 @@ public class PlayerController : MonoBehaviour
     {
         isGrounded = false;
         pelvisRigidbody.velocity = Vector3.up * jumpForce;
+    }
+    public void SetWalkState()
+    {
+        packetManager.SendPlayerMovePacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_WALK);
+        playerStatus.SetLowerBodyAnimationState(LowerBodyAnimationState.WALK);
+    }
+    public void RecoveryStaminaCheckerOn()
+    {
+        recoveryStaminaChecker = true;
     }
 
     private void KeyboardInput()
@@ -762,19 +788,16 @@ public class PlayerController : MonoBehaviour
         {
             case ePlayerMoveState.PS_WALK:
                 {
-                    nowLowerBodyAnimationState = LowerBodyAnimationState.WALK;
                     playerStatus.SetLowerBodyAnimationState(LowerBodyAnimationState.WALK);
                 }
                 break;
             case ePlayerMoveState.PS_RUN:
                 {
-                    nowLowerBodyAnimationState = LowerBodyAnimationState.RUN;
                     playerStatus.SetLowerBodyAnimationState(LowerBodyAnimationState.RUN);
                 }
                 break;
             case ePlayerMoveState.PS_MOVESTOP:
                 {
-                    nowLowerBodyAnimationState = LowerBodyAnimationState.IDLE;
                     playerStatus.SetLowerBodyAnimationState(LowerBodyAnimationState.IDLE);
                 }
                 break;

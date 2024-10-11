@@ -24,9 +24,6 @@ public class CharacterStatus : MonoBehaviour
     [Space(10f)]
     public int AttackedMotionPower;
     public float throwPower;
-    private int staminaConsumption;
-    private int staminaConsumptionByHold;
-    private int staminaRecoveryAmount;
 
     private bool isDie = true;
     private bool amIPlayer;
@@ -103,7 +100,7 @@ public class CharacterStatus : MonoBehaviour
     {
         var data = Managers.Data.GetData(1000);
         CharacterStatEntity cse = (CharacterStatEntity)data;
-
+        
         SetMaxHp(cse.Ch_Hp);
         SetHp(cse.Ch_Hp);
         SetMaxStamina(cse.Ch_Stamina);
@@ -115,11 +112,11 @@ public class CharacterStatus : MonoBehaviour
         GroggyOff();
         SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
         SetLowerBodyAnimationState(LowerBodyAnimationState.IDLE);
-        CancelInvoke("StaminaUpdate");
-        InvokeRepeating("StaminaUpdate", 0, 1);
-        staminaConsumption = 0;
-        staminaConsumptionByHold = 0;
-        staminaRecoveryAmount = 0;
+        if (amIPlayer == true)
+        {
+            CancelInvoke("StaminaUpdate");
+            InvokeRepeating("StaminaUpdate", 0, 1);
+        }
 
         playerController.ResetPlayerControllerSetting();
     }
@@ -172,13 +169,107 @@ public class CharacterStatus : MonoBehaviour
     {
         return stamina;
     }
+    /// <summary>
+    /// 스테미나 증감량 계산해주는 함수
+    /// </summary>
+    private int CalculateStaminaIncrease()
+    {
+        GameDataEntity data;
+        CharacterMoveEntity cme;
+        int staminaConsumption = 0;
+        int staminaConsumptionByHold = 0;
+        int staminaRecoveryAmount = 0;
+
+        // 스테미나 관련 계산
+        switch (lowerBodyAnimationState)
+        {
+            case LowerBodyAnimationState.IDLE:
+                {
+                    if (playerController.GetisGrounded() == true)
+                    {
+                        data = Managers.Data.GetData(20001);
+                        cme = (CharacterMoveEntity)data;
+                        staminaConsumption = cme.Ch_StaminaConsume;
+                        staminaRecoveryAmount = cme.Ch_Stamina_recovery;
+                    }
+                    else
+                    {
+                        data = Managers.Data.GetData(20004);
+                        cme = (CharacterMoveEntity)data;
+                        staminaConsumption = cme.Ch_StaminaConsume;
+                        staminaRecoveryAmount = cme.Ch_Stamina_recovery;
+                    }
+                    break;
+                }
+            case LowerBodyAnimationState.WALK:
+                {
+                    if (playerController.GetisGrounded() == true)
+                    {
+                        data = Managers.Data.GetData(20002);
+                        cme = (CharacterMoveEntity)data;
+                        staminaConsumption = cme.Ch_StaminaConsume;
+                        staminaRecoveryAmount = cme.Ch_Stamina_recovery;
+                    }
+                    else
+                    {
+                        data = Managers.Data.GetData(20004);
+                        cme = (CharacterMoveEntity)data;
+                        staminaConsumption = cme.Ch_StaminaConsume;
+                        staminaRecoveryAmount = cme.Ch_Stamina_recovery;
+                    }
+                    break;
+                }
+            case LowerBodyAnimationState.RUN:
+                {
+                    if (playerController.GetisGrounded() == true)
+                    {
+                        data = Managers.Data.GetData(20003);
+                        cme = (CharacterMoveEntity)data;
+                        staminaConsumption = cme.Ch_StaminaConsume;
+                        staminaRecoveryAmount = cme.Ch_Stamina_recovery;
+                    }
+                    else
+                    {
+                        data = Managers.Data.GetData(20004);
+                        cme = (CharacterMoveEntity)data;
+                        staminaConsumption = cme.Ch_StaminaConsume;
+                        staminaRecoveryAmount = cme.Ch_Stamina_recovery;
+                    }
+                    break;
+                }
+        }
+        if (isGrapPlayer == true)
+        {
+            data = Managers.Data.GetData(10004);
+            CharacterAttackEntity cae = (CharacterAttackEntity)data;
+            staminaConsumptionByHold = cae.Ch_StaminaConsume;
+        }
+        else
+        {
+            staminaConsumptionByHold = 0;
+        }
+        return (staminaRecoveryAmount - staminaConsumption - staminaConsumptionByHold);
+    }
     private void StaminaUpdate()
     {
-        // 스테미나
-        stamina += staminaRecoveryAmount - staminaConsumption - staminaConsumptionByHold;
-        if (stamina < 0)
+        int staminaIncrease = CalculateStaminaIncrease();
+
+        if(stamina == 0 && (stamina + staminaIncrease) > 0)
+        {
+            playerController.RecoveryStaminaCheckerOn();
+        }
+        stamina += staminaIncrease;
+        if (stamina <= 0)
         {
             stamina = 0;
+            if (isGrapPlayer == true)
+            {
+                playerController.GrapOff();
+            }
+            if(lowerBodyAnimationState == LowerBodyAnimationState.RUN)
+            {
+                playerController.SetWalkState();
+            }
         }
         else if (stamina > maxStamina)
         {
@@ -290,14 +381,6 @@ public class CharacterStatus : MonoBehaviour
     // 내가 잡은 플레이어
     public void SetIsGrapPlayer(bool isGrapPlayer, int targetPlayerId = -1)
     {
-        if(isGrapPlayer == true)
-        {
-            staminaConsumptionByHold = 5;
-        }
-        else
-        {
-            staminaConsumptionByHold = 0;
-        }
         this.isGrapPlayer = isGrapPlayer;
         this.grapTargetPlayerId = targetPlayerId;
     }
@@ -402,69 +485,6 @@ public class CharacterStatus : MonoBehaviour
         if (this.lowerBodyAnimationState != lowerBodyAnimationState && isGroggy == false)
         {
             this.lowerBodyAnimationState = lowerBodyAnimationState;
-
-            GameDataEntity data;
-            CharacterMoveEntity cme;
-
-            // 스테미나 관련 계산
-            switch (lowerBodyAnimationState)
-            {
-                case LowerBodyAnimationState.IDLE:
-                    {
-                        if (playerController.GetisGrounded() == true)
-                        {
-                            data = Managers.Data.GetData(20001);
-                            cme = (CharacterMoveEntity)data;
-                            staminaConsumption = cme.Ch_StaminaConsume;
-                            staminaRecoveryAmount = cme.Ch_Stamina_recovery;
-                        }
-                        else
-                        {
-                            data = Managers.Data.GetData(20004);
-                            cme = (CharacterMoveEntity)data;
-                            staminaConsumption = cme.Ch_StaminaConsume;
-                            staminaRecoveryAmount = cme.Ch_Stamina_recovery;
-                        }
-                        break;
-                    }
-                case LowerBodyAnimationState.WALK:
-                    {
-                        if (playerController.GetisGrounded() == true)
-                        {
-                            data = Managers.Data.GetData(20002);
-                            cme = (CharacterMoveEntity)data;
-                            staminaConsumption = cme.Ch_StaminaConsume;
-                            staminaRecoveryAmount = cme.Ch_Stamina_recovery;
-                        }
-                        else
-                        {
-                            data = Managers.Data.GetData(20004);
-                            cme = (CharacterMoveEntity)data;
-                            staminaConsumption = cme.Ch_StaminaConsume;
-                            staminaRecoveryAmount = cme.Ch_Stamina_recovery;
-                        }
-                        break;
-                    }
-                case LowerBodyAnimationState.RUN:
-                    {
-                        if (playerController.GetisGrounded() == true)
-                        {
-                            data = Managers.Data.GetData(20003);
-                            cme = (CharacterMoveEntity)data;
-                            staminaConsumption = cme.Ch_StaminaConsume;
-                            staminaRecoveryAmount = cme.Ch_Stamina_recovery;
-                        }
-                        else
-                        {
-                            data = Managers.Data.GetData(20004);
-                            cme = (CharacterMoveEntity)data;
-                            staminaConsumption = cme.Ch_StaminaConsume;
-                            staminaRecoveryAmount = cme.Ch_Stamina_recovery;
-                        }
-                        break;
-                    }
-            }
-
             animationController.SetLowerBodyAnimationState(lowerBodyAnimationState);
         }
     }
