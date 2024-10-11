@@ -21,6 +21,7 @@ public:
     ~DB();
 	int Init();
     bool Connect(std::wstring odbc, std::wstring id, std::wstring password);
+    void ErrorDisplay(SQLHSTMT& hStmt, RETCODE retCode);
 
     bool UseAccountDB(SQLHSTMT& hStmt);
     bool UseGameDB(SQLHSTMT& hStmt);
@@ -29,7 +30,7 @@ public:
     bool InsertNewUser(const char* id, const char* nickname);
     bool InsertRanking(const int uid);
 
-    std::pair<bool, UserInfo> SelectUserInfo(const char* id);
+    std::pair<bool, UserInfo> SelectUserInfoForLogin(const char* id);
     std::pair<bool, UserInfo> SelectUserInfo(const int uid);
 
     bool UpdateUserConnectionState(const int uid, const int state);

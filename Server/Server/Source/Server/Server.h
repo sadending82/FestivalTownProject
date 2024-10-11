@@ -32,7 +32,7 @@ public:
 	bool						ReadConfig();
 	int							SetSessionID();
 	int							SetRoomID();
-	void						Disconnect(int key);
+	bool						Disconnect(int key);
 	void						Run();
 	void						ThreadJoin();
 	void						SetGameManagers();

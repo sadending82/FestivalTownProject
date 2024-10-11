@@ -62,6 +62,29 @@ bool DB::Connect(std::wstring odbc, std::wstring id, std::wstring password)
 	return true;
 }
 
+void DB::ErrorDisplay(SQLHSTMT& hStmt, RETCODE retCode)
+{
+	SQLSMALLINT rec = 0;
+	SQLINTEGER  error;
+
+	wchar_t       wszMessage[1000] = { 0, };
+	wchar_t       wszState[SQL_SQLSTATE_SIZE + 1];
+
+	if (retCode == SQL_INVALID_HANDLE)
+	{
+		fwprintf(stderr, L"Invalid handle!\n");
+		return;
+	}
+
+	while (SQLGetDiagRec(SQL_HANDLE_STMT, hStmt, ++rec, wszState, &error, wszMessage, (short)(sizeof(wszMessage) / sizeof(wchar_t)), (short*)nullptr) == SQL_SUCCESS)
+	{
+		if (wcsncmp(wszState, L"01004", 5))
+		{
+			fwprintf(stderr, L"[%5.5s] %s (%d)\n", wszState, wszMessage, error);
+		}
+	}
+}
+
 bool DB::UseAccountDB(SQLHSTMT& hStmt)
 {
 	SQLRETURN retcode;
@@ -195,7 +218,7 @@ bool DB::InsertRanking(const int uid)
 	return false;
 }
 
-std::pair<bool, UserInfo> DB::SelectUserInfo(const char* id)
+std::pair<bool, UserInfo> DB::SelectUserInfoForLogin(const char* id)
 {
 	UserInfo userInfo;
 
@@ -209,12 +232,18 @@ std::pair<bool, UserInfo> DB::SelectUserInfo(const char* id)
 	}
 
 	UseGameDB(hStmt);
+	int state = true;
 
-	const WCHAR* query = L"SELECT * FROM UserInfo WHERE AccountID = ?";
+	const WCHAR* query = L"UPDATE UserInfo\
+							SET State = ?\
+							OUTPUT deleted.*\
+							WHERE AccountID = ?;";
+
 
 	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
 
-	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, strlen(id), 0, (SQLCHAR*)id, 0, NULL);
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (&state), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, strlen(id), 0, (SQLCHAR*)id, 0, NULL);
 
 	retcode = SQLExecute(hStmt);
 
@@ -222,6 +251,7 @@ std::pair<bool, UserInfo> DB::SelectUserInfo(const char* id)
 
 		SQLLEN col1, col2, col3, col4, col5, col6, col7, col8;
 		TIMESTAMP_STRUCT date{};
+		SQLINTEGER t = 0;
 
 		while (SQLFetch(hStmt) == SQL_SUCCESS) {
 			SQLGetData(hStmt, 1, SQL_C_LONG, &userInfo.UID, sizeof(userInfo.UID), &col1);
@@ -231,18 +261,21 @@ std::pair<bool, UserInfo> DB::SelectUserInfo(const char* id)
 			SQLGetData(hStmt, 5, SQL_C_LONG, &userInfo.Gold, sizeof(userInfo.Gold), &col5);
 			SQLGetData(hStmt, 6, SQL_C_TYPE_TIMESTAMP, &date, sizeof(date), &col6);
 			SQLGetData(hStmt, 7, SQL_C_LONG, &userInfo.AttendanceDay, sizeof(userInfo.AttendanceDay), &col7);
-			SQLGetData(hStmt, 8, SQL_C_LONG, &userInfo.State, sizeof(userInfo.State), &col8);
+			SQLGetData(hStmt, 8, SQL_C_LONG, &t, sizeof(t), &col8);
 		}
 
 		userInfo.date.tm_year = date.year;
 		userInfo.date.tm_mon = date.month;
 		userInfo.date.tm_mday = date.day;
 
+		userInfo.State = t;
+
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 		return { true, userInfo };
 	}
 
-	DEBUGMSGNOPARAM("Execute Query Error : (SelectUserInfo)\n");
+	DEBUGMSGNOPARAM("Execute Query Error : (SelectUserInfoForLogin)\n");
+	ErrorDisplay(hStmt, retcode);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	return { false,UserInfo() };
 }
@@ -327,7 +360,7 @@ bool DB::UpdateUserConnectionState(const int uid, const int state)
 		return true;
 	}
 
-	DEBUGMSGNOPARAM("Execute Query Error : (UpdateUserGold)\n");
+	DEBUGMSGNOPARAM("Execute Query Error : (UpdateUserConnectionState)\n");
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	return false;
 }

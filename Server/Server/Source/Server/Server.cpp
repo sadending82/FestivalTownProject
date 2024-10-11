@@ -103,14 +103,14 @@ int Server::SetRoomID()
     return INVALIDKEY;
 }
 
-void Server::Disconnect(int key)
+bool Server::Disconnect(int key)
 {
     Player* player = dynamic_cast<Player*>(GetSessions()[key]);
 
-    player->GetDisconnectLock().lock();
+    player->GetStateLock().lock();
     if (player->GetState() == eSessionState::ST_FREE) {
-        player->GetDisconnectLock().unlock();
-        return;
+        player->GetStateLock().unlock();
+        return false;
     }
 
     // Delete Player In Room
@@ -130,8 +130,10 @@ void Server::Disconnect(int key)
         }
 
     }
+    player->GetStateLock().unlock();
     player->Disconnect();
-    player->GetDisconnectLock().unlock();
+
+    return true;
 }
 
 void Server::Run()
@@ -325,7 +327,7 @@ std::pair<bool, UserInfo> Server::UserLogin(const char* accountID, const char* a
         return { false, UserInfo() };
     }
 
-    std::pair<bool, UserInfo> result = mDB->SelectUserInfo(accountID);
+    std::pair<bool, UserInfo> result = mDB->SelectUserInfoForLogin(accountID);
 
     UserInfo& userInfo = result.second;
 

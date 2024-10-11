@@ -14,9 +14,19 @@ public:
 			EV_HEART_BEAT* event = reinterpret_cast<EV_HEART_BEAT*>(buf);
 			int target = event->sessionID;
 
-			if (pServer->GetSessions()[target]->GetIsHeartbeatAck() == false) {
+			Player* player = dynamic_cast<Player*>(pServer->GetSessions()[target]);
+
+			if (player == nullptr) {
+				return;
+			}
+
+			if (player->GetIsHeartbeatAck() == false) {
 				// 응답이 없었다면 연결 종료
-				pServer->Disconnect(target);
+				bool result = pServer->Disconnect(target);
+
+				if (result == true) {
+					pServer->GetDB()->UpdateUserConnectionState(player->GetUID(), false);
+				}
 			}
 			else {
 				pServer->StartHeartBeat(target);
