@@ -1,10 +1,12 @@
 using System;
+using System.Collections;
 using System.Net.Sockets;
 using UnityEngine;
 
 public class NetworkManager : MonoBehaviour
 {
     bool isNetworkConnected = false;
+    bool isConnectionLostNoticed = false;
 
     public static NetworkManager instance;
 
@@ -106,7 +108,25 @@ public class NetworkManager : MonoBehaviour
             {
                 CurrentTime -= SendBufferInterval;
             }
+
+            if (!Connection.Connected)
+            {
+                if (!isConnectionLostNoticed)
+                {
+                    isConnectionLostNoticed = true;
+
+                    //UI가 바인드 되기 전에는 내부 이름을 수정할 수 없으므로 코루틴으로 한 프레임 뒤에 변경하도록 해줌
+                    StartCoroutine(ShowNoticePopUp());
+                }
+            }
         }
+    }
+
+    IEnumerator ShowNoticePopUp()
+    {
+        var ui = Managers.UI.ShowPopUpUI<UI_Notice>();
+        yield return null;
+        ui.NoticeTextChange("서버에 접속할 수 없습니다.");
     }
 
     public TcpClient GetTcpClient()
