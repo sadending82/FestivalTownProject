@@ -32,7 +32,7 @@ public class UI_HomeStart : UI_Scene
         Bind<GameObject>(typeof(GameObjects));
 
         Get<GameObject>((int)GameObjects.GameStartButton).BindEvent((PointerEventData) => { 
-            Debug.Log($"게임 시작 버튼을 클릭했군요!");
+            //Debug.Log($"게임 시작 버튼을 클릭했군요!");
 
             if (Managers.Scene.CurrentScene.GetComponent<HomeScene>() == null) return;
 

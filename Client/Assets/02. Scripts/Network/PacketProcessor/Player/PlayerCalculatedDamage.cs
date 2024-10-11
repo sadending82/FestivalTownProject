@@ -23,7 +23,7 @@ namespace Network.PacketProcessor
 
             int StaminaLoss = Data.TargetStaminaLoss;
 
-            Debug.Log("맞은 사람 ID : " + targetId);
+            //Debug.Log("맞은 사람 ID : " + targetId);
 
             CharacterStatus pState = Managers.Player.GetPlayers().transform.GetChild(targetId).GetComponent<CharacterStatus>();
             pState.Attacked(dir);

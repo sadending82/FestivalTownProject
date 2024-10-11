@@ -75,7 +75,6 @@ namespace ActiveRagdoll
         }
         public void GroggyOn()
         {
-            Debug.Log("Groggy On");
             isGroggy = true;
 
             JointDrive driveJoint = new JointDrive();
@@ -102,7 +101,6 @@ namespace ActiveRagdoll
         }
         public void GroggyOff()
         {
-            Debug.Log("Groggy Off");
             isGroggy = false;
 
             JointDrive driveJoint = new JointDrive();

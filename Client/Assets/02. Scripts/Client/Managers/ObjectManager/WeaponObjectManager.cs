@@ -62,8 +62,6 @@ public class WeaponObjectManager : MonoBehaviour
                 return weapons.transform.GetChild(i).gameObject;
             }
         }
-
-        Debug.Log("ERROR!!! : Can't Find Target Weapon By Id : " + targetId);
         return null;
     }
 }

@@ -98,7 +98,7 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
-            Debug.Log($"Add Player {id}");
+            //Debug.Log($"Add Player {id}");
 
             var playerObject = players.transform.GetChild(id).gameObject;
             playerObject.SetActive(true);
@@ -152,7 +152,7 @@ public class PlayerManager : MonoBehaviour
             GameObject tPlayer = players.transform.GetChild(i).gameObject;
             if (tPlayer.activeSelf == true)
             {
-                tPlayer.GetComponent<PlayerController>().GameStart();
+                tPlayer.GetComponent<CharacterStatus>().GameStart();
             }
         }
     }
@@ -163,7 +163,7 @@ public class PlayerManager : MonoBehaviour
             GameObject tPlayer = players.transform.GetChild(i).gameObject;
             if (tPlayer.activeSelf == true)
             {
-                tPlayer.GetComponent<PlayerController>().GameEnd();
+                tPlayer.GetComponent<CharacterStatus>().GameEnd();
             }
         }
     }

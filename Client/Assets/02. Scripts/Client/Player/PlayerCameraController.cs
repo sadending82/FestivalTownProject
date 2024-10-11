@@ -11,6 +11,8 @@ public class PlayerCameraController : MonoBehaviour
     private Transform cameraArm;
     public Transform pelvis;
 
+    private bool isGameEnd;
+
     [Header("--- Camera Controll ---")]
     public float RotationSpeed;
     public float ZoomSpeed;
@@ -41,7 +43,7 @@ public class PlayerCameraController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (IsMainCamera == true)
+        if (IsMainCamera == true && isGameEnd == false)
         {
             Move();
             LookAround();
@@ -49,7 +51,7 @@ public class PlayerCameraController : MonoBehaviour
     }
     private void Update()
     {
-        if (IsMainCamera == true)
+        if (IsMainCamera == true && isGameEnd == false)
         {
             float scroll = Input.GetAxis("Mouse ScrollWheel") * ZoomSpeed;
 
@@ -67,7 +69,7 @@ public class PlayerCameraController : MonoBehaviour
     }
     private void LateUpdate()
     {
-        if (IsMainCamera == true)
+        if (IsMainCamera == true && isGameEnd == false)
         {
             FindObjectBetweenCameraAndPlayer();
         }
@@ -91,6 +93,15 @@ public class PlayerCameraController : MonoBehaviour
            x = Mathf.Clamp(x, 320f, 361f);
        }
        cameraArm.rotation = Quaternion.Euler(x, cameraAngle.y + mouseDelta.x, cameraAngle.z);
+    }
+
+    public void GameStart()
+    {
+        isGameEnd = false;
+    }
+    public void GameEnd()
+    {
+        isGameEnd = true;
     }
 
     public void SetAmIPlayer(bool amIPlayer)

@@ -15,11 +15,10 @@ namespace Network.PacketProcessor
     {
         public override void Process(PacketManager packetmanager, byte[] data)
         {
-            // 여기에 처리    
             var bb = new ByteBuffer(data);
             var moveData = PlayerMove.GetRootAsPlayerMove(bb);
 
-            int id = moveData.Id;// 이거는 일단 안씀
+            int id = moveData.Id;
             Vector3 pos = new Vector3(moveData.Pos.Value.X, moveData.Pos.Value.Y, moveData.Pos.Value.Z);
             Vector3 dir = new Vector3(moveData.Direction.Value.X, moveData.Direction.Value.Y, moveData.Direction.Value.Z);
             int state = moveData.State;

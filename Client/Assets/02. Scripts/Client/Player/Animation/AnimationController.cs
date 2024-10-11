@@ -42,6 +42,8 @@ public class AnimationController : MonoBehaviour
     public AttackChecker leftAttackChecker;
     public AttackChecker rightAttackChecker;
 
+    private bool isGameEnd;
+
     private void Awake()
     {   
         upperBodyAnimationState = UpperBodyAnimationState.NONE;
@@ -70,97 +72,130 @@ public class AnimationController : MonoBehaviour
         data = Managers.Data.GetData(10001);
         cse = (CharacterAttackEntity)data;
         weaponAttackSpeed = cse.Attack_Speed;
+
+        isGameEnd = false;
     }
     void Update()
     {
-        if (upperBodyAnimationState == UpperBodyAnimationState.ATTACK)
+        if (isGameEnd == false)
         {
-            attackTimer += Time.deltaTime;
-            if (attackTimer >= attackSpeed)
+            if (upperBodyAnimationState == UpperBodyAnimationState.ATTACK)
             {
-                playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
-                attackTimer = 0;
-                // 손 바꿔주기
-                isLeftAttack = !isLeftAttack;
-                leftAttackChecker.SetIsAttackState(false);
-                rightAttackChecker.SetIsAttackState(false);
+                attackTimer += Time.deltaTime;
+                if (attackTimer >= attackSpeed)
+                {
+                    playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
+                    attackTimer = 0;
+                    // 손 바꿔주기
+                    isLeftAttack = !isLeftAttack;
+                    leftAttackChecker.SetIsAttackState(false);
+                    rightAttackChecker.SetIsAttackState(false);
+                }
             }
-        }
-        else if(upperBodyAnimationState == UpperBodyAnimationState.WEAPONATTACK)
-        {
-            attackTimer += Time.deltaTime;
-            if(attackTimer >= weaponAttackSpeed)
+            else if (upperBodyAnimationState == UpperBodyAnimationState.WEAPONATTACK)
             {
-                playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
-                attackTimer = 0;
-                myWeapon.GetComponent<Weapon>().SetIsAttackState(false);
+                attackTimer += Time.deltaTime;
+                if (attackTimer >= weaponAttackSpeed)
+                {
+                    playerStatus.SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
+                    attackTimer = 0;
+                    myWeapon.GetComponent<Weapon>().SetIsAttackState(false);
+                }
             }
         }
     }
     private void OnAnimatorIK(int layerIndex)
     {
-        // 잡기
-        if (upperBodyAnimationState == UpperBodyAnimationState.GRAP)
+        if (isGameEnd == false)
         {
-            animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1f);
-            animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1f);
-            animator.SetIKHintPositionWeight(AvatarIKHint.LeftElbow, 1f);
-
-            animator.SetIKPosition(AvatarIKGoal.LeftHand, targetLeftHand.position);
-            animator.SetIKRotation(AvatarIKGoal.LeftHand, targetLeftHand.rotation);
-            animator.SetIKHintPosition(AvatarIKHint.LeftElbow, targetLeftHint.position);
-
-            animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
-            animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
-            animator.SetIKHintPositionWeight(AvatarIKHint.RightElbow, 1f);
-
-            animator.SetIKPosition(AvatarIKGoal.RightHand, targetRightHand.position);
-            animator.SetIKRotation(AvatarIKGoal.RightHand, targetRightHand.rotation);
-            animator.SetIKHintPosition(AvatarIKHint.LeftElbow, targetRightHint.position);
-        }
-        // 일반 공격
-        else if (upperBodyAnimationState == UpperBodyAnimationState.ATTACK)
-        {
-            if (isLeftAttack == true)
+            // 잡기
+            if (upperBodyAnimationState == UpperBodyAnimationState.GRAP)
             {
-                if (attackTimer < (attackSpeed / 3))
-                {
-                    animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1f);
-                    animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1f);
-                    animator.SetIKHintPositionWeight(AvatarIKHint.LeftElbow, 1f);
+                animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1f);
+                animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1f);
+                animator.SetIKHintPositionWeight(AvatarIKHint.LeftElbow, 1f);
 
-                    animator.SetIKPosition(AvatarIKGoal.LeftHand, attackLeftHand.position);
-                    animator.SetIKRotation(AvatarIKGoal.LeftHand, attackLeftHand.rotation);
-                    animator.SetIKHintPosition(AvatarIKHint.LeftElbow, attackLeftHint.position);
+                animator.SetIKPosition(AvatarIKGoal.LeftHand, targetLeftHand.position);
+                animator.SetIKRotation(AvatarIKGoal.LeftHand, targetLeftHand.rotation);
+                animator.SetIKHintPosition(AvatarIKHint.LeftElbow, targetLeftHint.position);
+
+                animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
+                animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
+                animator.SetIKHintPositionWeight(AvatarIKHint.RightElbow, 1f);
+
+                animator.SetIKPosition(AvatarIKGoal.RightHand, targetRightHand.position);
+                animator.SetIKRotation(AvatarIKGoal.RightHand, targetRightHand.rotation);
+                animator.SetIKHintPosition(AvatarIKHint.LeftElbow, targetRightHint.position);
+            }
+            // 일반 공격
+            else if (upperBodyAnimationState == UpperBodyAnimationState.ATTACK)
+            {
+                if (isLeftAttack == true)
+                {
+                    if (attackTimer < (attackSpeed / 3))
+                    {
+                        animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1f);
+                        animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1f);
+                        animator.SetIKHintPositionWeight(AvatarIKHint.LeftElbow, 1f);
+
+                        animator.SetIKPosition(AvatarIKGoal.LeftHand, attackLeftHand.position);
+                        animator.SetIKRotation(AvatarIKGoal.LeftHand, attackLeftHand.rotation);
+                        animator.SetIKHintPosition(AvatarIKHint.LeftElbow, attackLeftHint.position);
+                    }
+                    else
+                    {
+                        leftAttackChecker.SetIsAttackState(true);
+
+                        animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1f);
+                        animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1f);
+                        animator.SetIKHintPositionWeight(AvatarIKHint.LeftElbow, 1f);
+
+                        animator.SetIKPosition(AvatarIKGoal.LeftHand, targetLeftHand.position);
+                        animator.SetIKRotation(AvatarIKGoal.LeftHand, targetLeftHand.rotation);
+                        animator.SetIKHintPosition(AvatarIKHint.LeftElbow, targetLeftHint.position);
+                    }
                 }
                 else
                 {
-                    leftAttackChecker.SetIsAttackState(true);
+                    if (attackTimer < (attackSpeed / 3))
+                    {
+                        animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
+                        animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
+                        animator.SetIKHintPositionWeight(AvatarIKHint.RightElbow, 1f);
 
-                    animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1f);
-                    animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1f);
-                    animator.SetIKHintPositionWeight(AvatarIKHint.LeftElbow, 1f);
+                        animator.SetIKPosition(AvatarIKGoal.RightHand, attackRightHand.position);
+                        animator.SetIKRotation(AvatarIKGoal.RightHand, attackRightHand.rotation);
+                        animator.SetIKHintPosition(AvatarIKHint.RightElbow, attackRightHint.position);
+                    }
+                    else
+                    {
+                        rightAttackChecker.SetIsAttackState(true);
 
-                    animator.SetIKPosition(AvatarIKGoal.LeftHand, targetLeftHand.position);
-                    animator.SetIKRotation(AvatarIKGoal.LeftHand, targetLeftHand.rotation);
-                    animator.SetIKHintPosition(AvatarIKHint.LeftElbow, targetLeftHint.position);
+                        animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
+                        animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
+                        animator.SetIKHintPositionWeight(AvatarIKHint.RightElbow, 1f);
+
+                        animator.SetIKPosition(AvatarIKGoal.RightHand, targetRightHand.position);
+                        animator.SetIKRotation(AvatarIKGoal.RightHand, targetRightHand.rotation);
+                        animator.SetIKHintPosition(AvatarIKHint.LeftElbow, targetRightHint.position);
+                    }
                 }
             }
-            else
+            else if (upperBodyAnimationState == UpperBodyAnimationState.WEAPONATTACK)
             {
-                if (attackTimer < (attackSpeed / 3))
+                if (attackTimer < (weaponAttackSpeed / 2))
                 {
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
                     animator.SetIKHintPositionWeight(AvatarIKHint.RightElbow, 1f);
 
-                    animator.SetIKPosition(AvatarIKGoal.RightHand, attackRightHand.position);
-                    animator.SetIKRotation(AvatarIKGoal.RightHand, attackRightHand.rotation);
-                    animator.SetIKHintPosition(AvatarIKHint.RightElbow, attackRightHint.position);
+                    animator.SetIKPosition(AvatarIKGoal.RightHand, WeaponAttackRightHand.position);
+                    animator.SetIKRotation(AvatarIKGoal.RightHand, WeaponAttackRightHand.rotation);
+                    animator.SetIKHintPosition(AvatarIKHint.RightElbow, WeaponAttackRightHint.position);
                 }
                 else
                 {
-                    rightAttackChecker.SetIsAttackState(true);
+                    myWeapon.GetComponent<Weapon>().SetIsAttackState(true);
 
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
@@ -170,31 +205,6 @@ public class AnimationController : MonoBehaviour
                     animator.SetIKRotation(AvatarIKGoal.RightHand, targetRightHand.rotation);
                     animator.SetIKHintPosition(AvatarIKHint.LeftElbow, targetRightHint.position);
                 }
-            }
-        }
-        else if(upperBodyAnimationState == UpperBodyAnimationState.WEAPONATTACK)
-        {
-            if (attackTimer < (weaponAttackSpeed / 2))
-            {
-                animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
-                animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
-                animator.SetIKHintPositionWeight(AvatarIKHint.RightElbow, 1f);
-
-                animator.SetIKPosition(AvatarIKGoal.RightHand, WeaponAttackRightHand.position);
-                animator.SetIKRotation(AvatarIKGoal.RightHand, WeaponAttackRightHand.rotation);
-                animator.SetIKHintPosition(AvatarIKHint.RightElbow, WeaponAttackRightHint.position);
-            }
-            else
-            {
-                myWeapon.GetComponent<Weapon>().SetIsAttackState(true);
-
-                animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
-                animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
-                animator.SetIKHintPositionWeight(AvatarIKHint.RightElbow, 1f);
-
-                animator.SetIKPosition(AvatarIKGoal.RightHand, targetRightHand.position);
-                animator.SetIKRotation(AvatarIKGoal.RightHand, targetRightHand.rotation);
-                animator.SetIKHintPosition(AvatarIKHint.LeftElbow, targetRightHint.position);
             }
         }
     }
@@ -265,5 +275,13 @@ public class AnimationController : MonoBehaviour
     private void ChangeAnimation(string state)
     {
         animator.SetTrigger(state);
+    }
+    public void GameStart()
+    {
+        isGameEnd = false;
+    }
+    public void GameEnd()
+    {
+        isGameEnd = true;
     }
 }

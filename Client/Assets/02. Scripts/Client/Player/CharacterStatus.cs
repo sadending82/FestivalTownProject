@@ -9,6 +9,7 @@ public class CharacterStatus : MonoBehaviour
 {
     private Camera myCamera;
     private PlayerController playerController;
+    private bool isGameEnd;
 
     // 스탯
     [Header("--- Status ---")]
@@ -20,11 +21,12 @@ public class CharacterStatus : MonoBehaviour
     [Space(10f)]
     [SerializeField] private int maxStamina;
     [SerializeField] private int stamina;
+    [Space(10f)]
+    public int AttackedMotionPower;
+    public float throwPower;
     private int staminaConsumption;
     private int staminaConsumptionByHold;
     private int staminaRecoveryAmount;
-    public int AttackedMotionPower;
-    public float throwPower;
 
     private bool isDie = true;
     private bool amIPlayer;
@@ -70,6 +72,7 @@ public class CharacterStatus : MonoBehaviour
 
         amIPlayer = false;
         myCamera.enabled = false;
+        isGameEnd = false;
 
         ResetCharacterState();
     }
@@ -78,6 +81,21 @@ public class CharacterStatus : MonoBehaviour
     {
         network = Managers.Network;
         packetManager = network.GetPacketManager();
+    }
+
+    public void GameStart()
+    {
+        isGameEnd = false;
+        playerController.GameStart();
+        animationController.GameStart();
+        myCamera.gameObject.GetComponent<PlayerCameraController>().GameStart();
+    }
+    public void GameEnd()
+    {
+        isGameEnd = true;
+        playerController.GameEnd();
+        animationController.GameEnd();
+        myCamera.gameObject.GetComponent<PlayerCameraController>().GameEnd();
     }
 
     // ------------------- Status -------------------
@@ -360,9 +378,6 @@ public class CharacterStatus : MonoBehaviour
     {
         if (this.upperBodyAnimationState != upperBodyAnimationState && isGroggy == false)
         {
-            ///<summary>
-            ///서버에 상태 전달하는 부분 여기에 추가
-            ///</summary>
             packetManager.SendPlayerAnimationPacket(playerController.GetPosition(), playerController.GetDirection(), id, upperBodyAnimationState);
 
             this.upperBodyAnimationState = upperBodyAnimationState;

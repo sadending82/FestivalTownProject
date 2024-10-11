@@ -97,6 +97,7 @@ public class GameManager : MonoBehaviour
 
     public void SendToServerGoalTeamNumber(int bombId, int teamNumber, int playerId)
     {
+        if (isGameEnd) return;
         PacketManager packetManager = Managers.Network.GetPacketManager();
         packetManager.SendBombInputPacket(bombId, teamNumber, playerId);
     }
