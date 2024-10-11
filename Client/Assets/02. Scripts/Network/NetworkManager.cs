@@ -58,6 +58,10 @@ public class NetworkManager : MonoBehaviour
         Debug.Log("Network Connect : " + isNetworkConnected);
 
         if(isNetworkConnected) recvManager.CreateRecvThread(Connection);
+        else
+        {
+            StartCoroutine(ShowNoticePopUp());
+        }
     }
 
     private bool ConnectToServer()
