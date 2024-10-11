@@ -51,6 +51,7 @@ public class PlayerController : MonoBehaviour
     private LowerBodyAnimationState nowLowerBodyAnimationState;
 
     private bool isLeftShiftKeyDown;
+    private bool beforeIsLeftShiftKeyDown;
 
     //------ Pick Up -------
     public Transform bombInvenTransform;
@@ -249,11 +250,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Move()
     {
-        isLeftShiftKeyDown = false;
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            isLeftShiftKeyDown = true;
-        }
+        isLeftShiftKeyDown = Input.GetKey(KeyCode.LeftShift);
 
         AxisRawH = Input.GetAxisRaw("Horizontal");
         AxisRawV = Input.GetAxisRaw("Vertical");
@@ -270,7 +267,7 @@ public class PlayerController : MonoBehaviour
             stabilizer.rotation = rotationQuaternion;
         }
 
-        if (AxisRawH != beforeAxisRawH || AxisRawV != beforeAxisRawV)
+        if (AxisRawH != beforeAxisRawH || AxisRawV != beforeAxisRawV || beforeIsLeftShiftKeyDown != isLeftShiftKeyDown)
         {
             if (moveInput == Vector3.zero)
             {
@@ -304,6 +301,7 @@ public class PlayerController : MonoBehaviour
         }
         beforeAxisRawH = AxisRawH;
         beforeAxisRawV = AxisRawV;
+        beforeIsLeftShiftKeyDown = isLeftShiftKeyDown;
 
         if (moveInput != Vector3.zero)
         {
@@ -320,7 +318,7 @@ public class PlayerController : MonoBehaviour
                         pelvisRigidbody.velocity = moveDirection * runSpeed;
                     }
                 }
-                if (isGrounded == true && nowLowerBodyAnimationState != LowerBodyAnimationState.RUN)
+                if (nowLowerBodyAnimationState != LowerBodyAnimationState.RUN)
                 {
                     nowLowerBodyAnimationState = LowerBodyAnimationState.RUN;
                     playerStatus.SetLowerBodyAnimationState(LowerBodyAnimationState.RUN);
@@ -339,7 +337,7 @@ public class PlayerController : MonoBehaviour
                         pelvisRigidbody.velocity = moveDirection * walkSpeed;
                     }
                 }
-                if (isGrounded == true && nowLowerBodyAnimationState != LowerBodyAnimationState.WALK)
+                if (nowLowerBodyAnimationState != LowerBodyAnimationState.WALK)
                 {
                     nowLowerBodyAnimationState = LowerBodyAnimationState.WALK;
                     playerStatus.SetLowerBodyAnimationState(LowerBodyAnimationState.WALK);
@@ -380,10 +378,8 @@ public class PlayerController : MonoBehaviour
 
     private void KeyboardInput()
     {
-        /// <summary>
-        /// F 키를 눌렀을때 플레이어가 아이템을 가지지 않고 
-        /// 주울 수 있는 범위 내에 아이템이 존재하면 픽업모드 시작
-        /// </summary>
+        // F 키를 눌렀을때 플레이어가 아이템을 가지지 않고 
+        // 주울 수 있는 범위 내에 아이템이 존재하면 픽업모드 시작
         if (Input.GetKeyDown(KeyCode.F))
         {
             if (nearObjectChecker.GetNearObject() != null &&
@@ -715,6 +711,7 @@ public class PlayerController : MonoBehaviour
         isPickUpMode = false;
         isGrounded = false;
         isLeftShiftKeyDown = false;
+        beforeIsLeftShiftKeyDown = false;
         beforeAxisRawH = 0;
         beforeAxisRawV = 0;
         SetIsMove(false);
