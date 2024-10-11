@@ -141,59 +141,62 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isGrounded == false && pelvisRigidbody.velocity.y <= 0)
+        if (gameStart == true)
         {
-            FallDownCheck();
-            CheckIsGround();
-        }
-        if (playerStatus.GetIsDie() == false)
-        {
-            // 살아있고 그로기 상태가 아님
-            if (playerStatus.GetIsGroggy() == false)
+            if (isGrounded == false && pelvisRigidbody.velocity.y <= 0)
             {
-                if (amIPlayer == true && gameStart == true)
+                FallDownCheck();
+                CheckIsGround();
+            }
+            if (playerStatus.GetIsDie() == false)
+            {
+                // 살아있고 그로기 상태가 아님
+                if (playerStatus.GetIsGroggy() == false)
                 {
-                    Move();
-                }
-                else
-                {
-                    if (stabillizerDirection != moveDirection && moveDirection != Vector3.zero)
+                    if (amIPlayer == true)
                     {
-                        stabillizerDirection = moveDirection;
-                        rotationQuaternion = Quaternion.LookRotation(moveDirection);
-                        stabilizer.rotation = rotationQuaternion;
+                        Move();
                     }
-                    if (isMove == true && CheckHitWall() == false)
+                    else
                     {
-                        if (playerStatus.GetLowerBodyAnimationState() == LowerBodyAnimationState.WALK)
+                        if (stabillizerDirection != moveDirection && moveDirection != Vector3.zero)
                         {
-                            if (playerStatus.GetIsGrapPlayer() == true)
-                            {
-                                pelvisRigidbody.velocity = moveDirection * holdAndWalkSpeed;
-                            }
-                            else
-                            {
-                                pelvisRigidbody.velocity = moveDirection * walkSpeed;
-                            }
+                            stabillizerDirection = moveDirection;
+                            rotationQuaternion = Quaternion.LookRotation(moveDirection);
+                            stabilizer.rotation = rotationQuaternion;
                         }
-                        else if (playerStatus.GetLowerBodyAnimationState() == LowerBodyAnimationState.RUN)
+                        if (isMove == true && CheckHitWall() == false)
                         {
-                            if (playerStatus.GetIsGrapPlayer() == true)
+                            if (playerStatus.GetLowerBodyAnimationState() == LowerBodyAnimationState.WALK)
                             {
-                                pelvisRigidbody.velocity = moveDirection * holdAndRunSpeed;
+                                if (playerStatus.GetIsGrapPlayer() == true)
+                                {
+                                    pelvisRigidbody.velocity = moveDirection * holdAndWalkSpeed;
+                                }
+                                else
+                                {
+                                    pelvisRigidbody.velocity = moveDirection * walkSpeed;
+                                }
                             }
-                            else
+                            else if (playerStatus.GetLowerBodyAnimationState() == LowerBodyAnimationState.RUN)
                             {
-                                pelvisRigidbody.velocity = moveDirection * runSpeed;
+                                if (playerStatus.GetIsGrapPlayer() == true)
+                                {
+                                    pelvisRigidbody.velocity = moveDirection * holdAndRunSpeed;
+                                }
+                                else
+                                {
+                                    pelvisRigidbody.velocity = moveDirection * runSpeed;
+                                }
                             }
-                        }
 
-                        if (isJump == true)
-                        {
-                            if (isGrounded == true)
+                            if (isJump == true)
                             {
-                                Jump();
-                                isJump = false;
+                                if (isGrounded == true)
+                                {
+                                    Jump();
+                                    isJump = false;
+                                }
                             }
                         }
                     }
@@ -203,41 +206,44 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
-        // 테스트
-        if (amIPlayer == true)
+        if (gameStart == true)
         {
-            if (Input.GetKeyUp(KeyCode.T))
+            // 테스트
+            if (amIPlayer == true)
             {
-                packetManager.SendPlayerCollisionToBlockPacket(playerStatus.GetId());
+                if (Input.GetKeyUp(KeyCode.T))
+                {
+                    packetManager.SendPlayerCollisionToBlockPacket(playerStatus.GetId());
+                }
             }
-        }
 
-        if (playerStatus.GetIsDie() == false)
-        {
-            if (amIPlayer == true && gameStart == true)
+            if (playerStatus.GetIsDie() == false)
             {
-                if (playerStatus.GetIsGroggy() == false)
+                if (amIPlayer == true)
                 {
-                    KeyboardInput();
-                    if (isPickUpMode == false)
+                    if (playerStatus.GetIsGroggy() == false)
                     {
-                        MouseInput();
+                        KeyboardInput();
+                        if (isPickUpMode == false)
+                        {
+                            MouseInput();
+                        }
                     }
-                }
-                if (gameObject != null)
-                {
-                    curTime += Time.deltaTime;
-                    if (curTime > sendInterval)
+                    if (gameObject != null)
                     {
-                        curTime -= sendInterval;
-                        SendForSync();
+                        curTime += Time.deltaTime;
+                        if (curTime > sendInterval)
+                        {
+                            curTime -= sendInterval;
+                            SendForSync();
+                        }
                     }
                 }
             }
-        }
-        else if (amIPlayer == true)
-        {
-            SpectatorCameraControl();
+            else if (amIPlayer == true)
+            {
+                SpectatorCameraControl();
+            }
         }
     }
 
@@ -688,10 +694,6 @@ public class PlayerController : MonoBehaviour
             playerStatus.GetGrapTargetPlayerId(), targetPlayerController.GetPosition(), targetPlayerController.GetDirection());
     }
 
-    public void SendToServerGoalTeamNumber(int bombId, int teamNumber)
-    {
-        packetManager.SendBombInputPacket(bombId, teamNumber);
-    }
     public void Respawn(float x, float z)
     {
         playerStatus.SetIsDie(false);
