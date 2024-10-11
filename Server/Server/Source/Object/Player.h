@@ -64,7 +64,7 @@ public:
 	void				SetAttachedPlayerID(int playerID) { mAttachedPlayerID = playerID; }
 	void				SetCharacterStat(CharacterStat& stat) { mCharacterStat = stat; }
 
-	void				SetUserInfoFromDB(UserInfo userInfo);
+	void				SetUserInfoFromDB(UserInfo& userInfo);
 	// cas
 	bool				SetIsGrabbed(bool desired);
 
