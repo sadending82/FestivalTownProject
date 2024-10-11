@@ -7,6 +7,7 @@ using NetworkProtocol;
 using System.Runtime.InteropServices;
 using System;
 using System.IO;
+using Unity.VisualScripting;
 
 public class ReceiveManager : MonoBehaviour
 {
@@ -71,6 +72,8 @@ public class ReceiveManager : MonoBehaviour
         int prevSize = 0;
         int recvSize = 0;
 
+        bool isAborted = false;
+
         while (true)
         {
             //if(isDestroyed == false)
@@ -100,8 +103,11 @@ public class ReceiveManager : MonoBehaviour
                 catch (IOException e)
                 {
                     Debug.Log($"Thread Aborting: {e}");
+                    isAborted = true;
                     break;
                 }
+
+                if (isAborted) break;
 
                 // 포인터가 없으므로 실제 패킷의 포인터 위치를 바탕으로 += 해나가는 방식은 사용할 수 없음.
                 // 따라서, 리스트(C++의 Vector와 비슷함)
