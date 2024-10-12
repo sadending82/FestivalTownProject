@@ -461,9 +461,8 @@ public class CharacterStatus : MonoBehaviour
     {
         if (this.upperBodyAnimationState != upperBodyAnimationState && isGroggy == false)
         {
-            packetManager.SendPlayerAnimationPacket(playerController.GetPosition(), playerController.GetDirection(), id, upperBodyAnimationState);
-
             this.upperBodyAnimationState = upperBodyAnimationState;
+            packetManager.SendPlayerAnimationPacket(playerController.GetPosition(), playerController.GetDirection(), id, upperBodyAnimationState);
             animationController.SetUpperBodyAnimationState(upperBodyAnimationState);
         }
     }

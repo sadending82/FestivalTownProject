@@ -39,8 +39,6 @@ public class AttackChecker : MonoBehaviour
 
                 int targetId = other.transform.GetComponentInParent<CharacterStatus>().GetId();
 
-                //Debug.Log("³ª " + playerState.GetId() + " ÀÎµ¥ ¾ê " + targetId + " ÃÆ¾î");
-
                 packetManager.SendPlayerDamageReceivePacket(playerState.GetId(), targetId, (int)eWeaponType.WT_HAND, eDamageType.AT_ATTACK, attackedDirection);
             }
             if(other.gameObject.tag == "Head" && isGrapState == true && other.gameObject.layer != this.gameObject.layer)

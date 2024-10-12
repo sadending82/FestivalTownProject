@@ -9,7 +9,6 @@ using static UnityEngine.GraphicsBuffer;
 using UnityEngine.Playables;
 using UnityEditor;
 using ExcelDataStructure;
-using UnityEditor.Experimental.GraphView;
 
 public class PlayerController : MonoBehaviour
 {
@@ -149,7 +148,7 @@ public class PlayerController : MonoBehaviour
     {
         if (gameStart == true)
         {
-            if (isGrounded == false && pelvisRigidbody.velocity.y <= 0)
+            if (isGrounded == false)
             {
                 FallDownCheck();
                 CheckIsGround();
