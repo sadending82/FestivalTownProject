@@ -50,6 +50,8 @@ public:
 					std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYER_GRAB_WEAPON, data, size);
 					pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomid);
 				}
+				else {
+				}
 				player->GetWeaponLock().unlock();
 				room->GetWeaponListLock().unlock_shared();
 			}

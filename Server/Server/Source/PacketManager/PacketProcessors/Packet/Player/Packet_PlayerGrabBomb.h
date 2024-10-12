@@ -49,6 +49,8 @@ public:
 					std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYER_GRAB_BOMB, data, size);
 					pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomid);
 				}
+				else {
+				}
 				player->GetBombLock().unlock();
 				room->GetBombListLock().unlock_shared();
 			}

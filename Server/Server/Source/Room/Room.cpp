@@ -231,7 +231,7 @@ bool Room::DeleteWeapon(int id)
 		mPlayerListLock.lock_shared();
 		Player* player = mPlayerList.at(OwnerID);
 		if (player != nullptr) {
-			mPlayerList.at(OwnerID)->SetBomb(nullptr);
+			mPlayerList.at(OwnerID)->SetWeapon(nullptr);
 		}
 		mPlayerListLock.unlock_shared();
 	}
