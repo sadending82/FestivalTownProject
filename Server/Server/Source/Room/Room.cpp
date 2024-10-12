@@ -220,9 +220,7 @@ bool Room::DeleteBomb(int id)
 
 bool Room::DeleteWeapon(int id)
 {
-	mWeaponListLock.lock();
 	if (mWeaponList.at(id) == nullptr) {
-		mWeaponListLock.unlock();
 		return false;
 	}
 	// 어떤 플레이어가 이 오브젝트를 가지고 있으면 해제시켜줘야함
@@ -237,7 +235,6 @@ bool Room::DeleteWeapon(int id)
 	}
 	delete mWeaponList.at(id);
 	mWeaponList.at(id) = nullptr;
-	mWeaponListLock.unlock();
 	return true;
 }
 
