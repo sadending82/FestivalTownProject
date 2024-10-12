@@ -71,6 +71,8 @@ void PacketManager::ProcessPacket(unsigned char* data, const int key)
     int flatBufSize = header->flatBufferSize;
     int headerSize = sizeof(HEADER);
 
+    std::cout << "process packet " << type << std::endl;
+
     if (PacketProcessorMap[type] == nullptr) {
         std::cout << "Received Invalid Packet Type : " << type << std::endl;
         return;

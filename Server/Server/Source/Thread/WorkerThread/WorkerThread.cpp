@@ -78,6 +78,7 @@ void WorkerThread::RunWorker()
             while (required_data >= packet_size) {
                 if (required_data >= BUFSIZE) break;
                 if (packet_size <= 0) break;
+                std::cout << "packetprocess\n" << std::endl;
                 m_pPacketManager->ProcessPacket(packet_ptr, key);
                 required_data -= packet_size;
                 packet_ptr += packet_size;

@@ -28,8 +28,21 @@ public:
 		LocalFree(lpMsgBuf);
 	}
 
+	void DoSend(void* packet, const size_t size)
+	{
+		std::cout << "send " << size << "byte" << std::endl;
+		OverlappedEx* sdata = new OverlappedEx{ reinterpret_cast<unsigned char*>(packet), (int)size };
+		BOOL ret = WSASend(clientSocket, &sdata->wsabuf, 1, 0, 0, &sdata->over, 0);
+		if (0 != ret) {
+			int err_no = WSAGetLastError();
+			if (WSA_IO_PENDING != err_no)
+				std::cout << "Error in SendPacket : " << err_no << std::endl;
+		}
+	}
+
 	int id;
-	float x, y, z;
+	Vector3f position;
+	Vector3f direction;
 	std::atomic_bool connected;
 	SOCKET clientSocket;
 	OverlappedEx recvOver;
@@ -37,5 +50,7 @@ public:
 	int prevPacketData;
 	int currPacketSize;
 	std::chrono::high_resolution_clock::time_point lastPacketSend;
+	bool isInGame;
+	
 };
 
