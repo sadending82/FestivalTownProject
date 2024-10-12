@@ -87,13 +87,13 @@ MonoBehaviour:
   - Index: 20002
     Name: Ch_Walk
     ClassType: 0
-    Value: 0.5
+    Value: 1
     Ch_StaminaConsume: 0
     Ch_Stamina_recovery: 5
   - Index: 20003
     Name: Ch_Run
     ClassType: 0
-    Value: 0.8
+    Value: 1.3
     Ch_StaminaConsume: 5
     Ch_Stamina_recovery: 0
   - Index: 20004
