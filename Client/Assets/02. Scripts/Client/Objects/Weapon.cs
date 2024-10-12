@@ -20,6 +20,7 @@ public class Weapon : MonoBehaviour
     private bool amIPlayer = false;
     private bool isAttackState = false;
     private int weaponType = -1;
+    private bool isDelete = false;
 
     private ParentConstraint parentConstraint;
     private ConstraintSource weaponInvenSource;
@@ -48,12 +49,14 @@ public class Weapon : MonoBehaviour
     private void OnEnable()
     {
         isPickUp = false;
+        isDelete = false;
         pickUpPlayerId = -1;
     }
     private void FixedUpdate()
     {
-        if(Managers.Player.GetIsHost() == true && this.transform.position.y <= -10f && isPickUp == false)
+        if(Managers.Player.GetIsHost() == true && this.transform.position.y <= -10f && isPickUp == false && isDelete == false)
         {
+            isDelete = true;
             packetManager.SendWeaponDeletePacket(Id);
         }
     }
@@ -115,7 +118,8 @@ public class Weapon : MonoBehaviour
 
     public void DeleteWeapon()
     {
-        if(isPickUp == true)
+        isDelete = true;
+        if (isPickUp == true)
         {
             Drop(transform.position);
         }
