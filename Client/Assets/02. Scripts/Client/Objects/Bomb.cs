@@ -44,7 +44,7 @@ public class Bomb : MonoBehaviour
         {
             transform.position = targetTransform.position;
         }
-        if (Managers.Player.GetIsHost() == true && this.transform.position.y <= -10f)
+        else if (Managers.Player.GetIsHost() == true && this.transform.position.y <= -10f)
         {
             packetManager.SendBombExplosionPacket(transform.position, Id);
         }
@@ -75,11 +75,6 @@ public class Bomb : MonoBehaviour
 
         if(isPickUp == true)
         {
-            /// <summary>
-            ///  게임 매니저 추가 되면 여기서 게임 매니저한테 죽은 플레이어 아이디 보내줌
-            /// </summary>
-            Debug.Log("Player " + pickUpPlayerId + " is Die");
-
             PickUpOff();
         }
         rig.velocity = Vector3.zero;
