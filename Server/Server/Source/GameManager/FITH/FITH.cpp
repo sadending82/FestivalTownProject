@@ -331,7 +331,7 @@ void FITH::WeaponSpawn(Room* room, int roomID, eWeaponType weaponType, int spawn
 
 bool FITH::CheckValidPlayerPosition(Vector3f& position)
 {
-    if (position.y <= -15) {
+    if (position.y <= -10) {
         return false;
     }
     return true;

@@ -21,7 +21,7 @@ public:
 	void InitRoomCode();
 
 	bool AddPlayer(Player* player);
-	bool DeletePlayer(int playerID);
+	bool DeletePlayer(int playerID, class PacketSender* packetSender);
 
 	int  AddBomb(Bomb* object, Vector3f position, Vector3f direction = Vector3f(0, 0, 0));
 	int  AddWeapon(Weapon* object, Vector3f position, Vector3f direction = Vector3f(0, 0, 0));

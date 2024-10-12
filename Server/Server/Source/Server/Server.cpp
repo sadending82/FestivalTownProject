@@ -119,7 +119,7 @@ bool Server::Disconnect(int key)
         int inGameID = player->GetInGameID();
 
         if (roomID != INVALIDKEY) {
-            mRooms[roomID]->DeletePlayer(inGameID);
+            mRooms[roomID]->DeletePlayer(inGameID, mPacketSender);
 
             mPacketSender->SendPlayerDelete(roomID, inGameID);
 

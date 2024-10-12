@@ -9,7 +9,7 @@ bool PushEventHeartBeat(Timer* pTimer, int sessionID) {
 	e.sessionID = sessionID;
 
 	EVENT_HEADER header;
-	header.start_time = std::chrono::system_clock::now() + std::chrono::milliseconds(HEARTBEATINTERVAL*2);
+	header.start_time = std::chrono::system_clock::now() + std::chrono::milliseconds(HEARTBEATINTERVAL);
 	memcpy(header.message, reinterpret_cast<char*>(&e), sizeof(EV_HEART_BEAT));
 
 	pTimer->PushEvent(header);

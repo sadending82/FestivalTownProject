@@ -1,4 +1,6 @@
+#pragma once
 #include "Room.h"
+#include "../PacketManager/PacketSender/PacketSender.h"
 
 Room::~Room()
 {
@@ -97,16 +99,60 @@ bool Room::AddPlayer(Player* player)
 	return false;
 }
 
-bool Room::DeletePlayer(int playerID)
+bool Room::DeletePlayer(int playerID, PacketSender* packetSender)
 {
-	if (mPlayerList[playerID] == nullptr) {
+	if (mState != eRoomState::RS_INGAME) {
 		return false;
 	}
 
-	mPlayerListLock.lock();
+	Player* player = mPlayerList[playerID];
+
+	if (player == nullptr) {
+		return false;
+	}
+	Vector3f pos = player->GetPosition();
+	Vector3f dir = player->GetDirection();
+
+	// 들고있는 무기 해제
+	player->GetWeaponLock().lock();
+	Weapon* weapon = player->GetWeapon();
+	if (weapon != nullptr) {
+		if (weapon->SetIsGrabbed(false) == true) {
+			int weaponID = weapon->GetID();
+			weapon->SetOwenrID(INVALIDKEY);
+			weapon->SetPosition(player->GetPosition());
+			packetSender->SendWeaponDropPacket(pos, mRoomID, weaponID);
+		}
+	}
+	player->GetWeaponLock().unlock();
+
+	// 들고있는 폭탄 폭발
+	player->GetBombLock().lock();
+	Bomb* bomb = player->GetBomb();
+	if (bomb != nullptr) {
+		if (bomb->SetIsGrabbed(false) == true) {
+			int bombID = bomb->GetID();
+			bomb = nullptr;
+			packetSender->SendBombExplosionPacket(mRoomID, bombID);
+			DeleteBomb(bombID);
+		}
+	}
+	player->GetBombLock().unlock();
+
+	// 잡은 플레이어 놓기
+	if (player->GetAttachedPlayerID() != INVALIDKEY && player->GetIsGrabbed() == false) {
+		int targetID = player->GetAttachedPlayerID();
+		Player* target = mPlayerList[player->GetAttachedPlayerID()];
+
+		if (target->SetIsGrabbed(false) == true) {
+			player->SetAttachedPlayerID(INVALIDKEY);
+			target->SetAttachedPlayerID(INVALIDKEY);
+			packetSender->SendPlayerThrowOtherPlayerPacket(mRoomID, playerID, pos, dir, targetID, target->GetPosition(), target->GetDirection());
+		}
+	}
+
 	mTeams[mPlayerList[playerID]->GetTeam()].GetMembers().erase(playerID);
 	mPlayerList[playerID] = nullptr;
-	mPlayerListLock.unlock();
 	if (mPlayerCnt > 0) {
 		mPlayerCnt--;
 	}
@@ -160,7 +206,10 @@ bool Room::DeleteBomb(int id)
 	int OwnerID = mBombList.at(id)->GetOwenrID();
 	if (OwnerID > INVALIDKEY) {
 		mPlayerListLock.lock_shared();
-		mPlayerList.at(OwnerID)->SetBomb(nullptr);
+		Player* player = mPlayerList.at(OwnerID);
+		if (player != nullptr) {
+			mPlayerList.at(OwnerID)->SetBomb(nullptr);
+		}
 		mPlayerListLock.unlock_shared();
 	}
 	delete mBombList.at(id);
@@ -180,7 +229,10 @@ bool Room::DeleteWeapon(int id)
 	int OwnerID = mWeaponList[id]->GetOwenrID();
 	if (OwnerID > INVALIDKEY) {
 		mPlayerListLock.lock_shared();
-		mPlayerList.at(OwnerID)->SetWeapon(nullptr);
+		Player* player = mPlayerList.at(OwnerID);
+		if (player != nullptr) {
+			mPlayerList.at(OwnerID)->SetBomb(nullptr);
+		}
 		mPlayerListLock.unlock_shared();
 	}
 	delete mWeaponList.at(id);

@@ -38,6 +38,7 @@ public:
 				player->SetStamina(read->stamina());
 
 				if (pServer->GetGameManagers()[room->GetGameMode()]->CheckValidPlayerPosition(player->GetPosition()) == false) {
+					COUT << "tlqkf\n";
 					int spawnTime = room->GetGameModeData().Player_Spawn_Time;
 					if (player->ChangeToDeadState(pServer, spawnTime)) {
 						// record update
