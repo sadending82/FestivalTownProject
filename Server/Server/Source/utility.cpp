@@ -39,7 +39,7 @@ bool MatchingCompare::operator()(Player* a, Player* b) {
     if (a->GetPlayedSoloGameBefore() != b->GetPlayedSoloGameBefore()) {
         return a->GetPlayedSoloGameBefore();
     }
-    return a->GetMatchingRequestTime() > b->GetMatchingRequestTime();
+    return a->GetMatchingRequestTime() < b->GetMatchingRequestTime();
 }
 
 GameMode CulculateGameMode(int playerCount)
