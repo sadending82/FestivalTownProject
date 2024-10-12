@@ -16,7 +16,10 @@ namespace Network.PacketProcessor
             int id = Data.Id;
 
             Weapon targetWeapon = Managers.WeaponObject.FindWeaponById(id).GetComponent<Weapon>();
-            targetWeapon.DeleteWeapon();
+            if (targetWeapon != null)
+            {
+                targetWeapon.DeleteWeapon();
+            }
         }
     }
 }
