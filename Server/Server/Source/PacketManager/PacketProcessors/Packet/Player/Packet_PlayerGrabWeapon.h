@@ -31,6 +31,7 @@ public:
 
 				player->GetWeaponLock().lock();
 				if (player->GetWeapon() != nullptr) {
+					COUT << "무기 이미 있음\n";
 					player->GetWeaponLock().unlock();
 					return;
 				}
@@ -51,6 +52,8 @@ public:
 					pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomid);
 				}
 				else {
+					player->SetWeapon(nullptr);
+					COUT << "무기 주인 이미 있음\n";
 				}
 				player->GetWeaponLock().unlock();
 				room->GetWeaponListLock().unlock_shared();

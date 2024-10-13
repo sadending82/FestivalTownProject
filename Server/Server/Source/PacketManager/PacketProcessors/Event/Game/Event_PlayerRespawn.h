@@ -38,6 +38,15 @@ public:
 			player->GetPlayerStateLock().unlock();
 			player->SetHP(player->GetCharacterStat().hp);
 			player->SetStamina(player->GetCharacterStat().stamina);
+			
+			player->GetWeaponLock().lock();
+			player->SetWeapon(nullptr);
+			player->GetWeaponLock().unlock();
+
+			player->GetBombLock().lock();
+			player->SetBomb(nullptr);
+			player->GetBombLock().unlock();
+
 			pPacketSender->SendPlayerRespawn(playerid, roomid);
 		}
 		catch (const std::exception& e) {

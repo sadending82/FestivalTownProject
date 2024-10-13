@@ -31,6 +31,7 @@ public:
 
 				player->GetBombLock().lock();
 				if (player->GetBomb() != nullptr) {
+					COUT << "ÆøÅº ÀÌ¹Ì ÀÖÀ½\n";
 					player->GetBombLock().unlock();
 					return;
 				}
@@ -50,6 +51,8 @@ public:
 					pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomid);
 				}
 				else {
+					player->SetBomb(nullptr);
+					COUT << "ÆøÅº ÁÖÀÎ ÀÌ¹Ì ÀÖÀ½\n";
 				}
 				player->GetBombLock().unlock();
 				room->GetBombListLock().unlock_shared();
