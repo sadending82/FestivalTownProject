@@ -54,3 +54,12 @@ std::vector<uint8_t> PacketMaker::MakeGameReadyPacket(int roomid)
     builder.Finish(PacketTable::GameTable::CreateGameReady(builder, roomid));
     return MakeBuffer(ePacketType::C2S_GAME_READY, builder.GetBufferPointer(), builder.GetSize());
 }
+
+std::vector<uint8_t> PacketMaker::MakePlayerPosSyncPacket(int id, Vector3f pos, Vector3f dir, int stamina)
+{
+    flatbuffers::FlatBufferBuilder builder;
+    auto bpos = PacketTable::UtilitiesTable::CreateVec3f(builder, pos.x, pos.y, pos.z);
+    auto bdir = PacketTable::UtilitiesTable::CreateVec3f(builder, dir.x, dir.y, dir.z);
+    builder.Finish(PacketTable::PlayerTable::CreatePlayerSync(builder, id, bpos, bdir, stamina));
+    return MakeBuffer(ePacketType::C2S_PLAYER_SYNC, builder.GetBufferPointer(), builder.GetSize());
+}
