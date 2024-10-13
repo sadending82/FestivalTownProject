@@ -47,8 +47,7 @@ public class NetworkSelect : EditorWindow
                 IPAddressObj.IPAddress = "127.0.0.1";
                 break;
             case 1:
-                //IPAddressObj.IPAddress = "39.120.204.67";
-                IPAddressObj.IPAddress = "110.5.241.37";
+                IPAddressObj.IPAddress = "39.120.204.67";
                 break;
             case 2:
                 IPAddressObj.IPAddress = "203.239.231.148";
