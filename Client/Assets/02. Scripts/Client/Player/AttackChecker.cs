@@ -34,6 +34,9 @@ public class AttackChecker : MonoBehaviour
             // 때리는 상태인지와 때리는 중인지
             if (other.gameObject.tag == "HitBox" && isAttackState == true && other.gameObject.layer != this.gameObject.layer)
             {
+                Debug.Log("Attack!!");
+                isAttackState = false;
+
                 // 피격 방향 구하기
                 Vector3 attackedDirection = playerState.GetAttackedDirection(other.transform.position);
 
@@ -49,6 +52,9 @@ public class AttackChecker : MonoBehaviour
                     Rigidbody rb = other.transform.GetComponent<Rigidbody>();
                     if (rb != null)
                     {
+                        Debug.Log("Grap!!");
+                        isGrapState = false;
+
                         int targetId = targetPlayerState.GetId();
 
                         packetManager.SendPlayerGrabOtherPlayerPacket(playerState.GetId(), playerController.GetPosition(), playerController.GetDirection(),

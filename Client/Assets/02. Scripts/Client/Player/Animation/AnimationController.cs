@@ -36,6 +36,7 @@ public class AnimationController : MonoBehaviour
     private float weaponAttackSpeed;
     private float attackTimer;
     private bool isLeftAttack;
+    private bool oneTimeSendChecker;
 
     private GameObject myWeapon;
 
@@ -48,8 +49,9 @@ public class AnimationController : MonoBehaviour
     {   
         upperBodyAnimationState = UpperBodyAnimationState.NONE;
         lowerBodyAnimationState = LowerBodyAnimationState.IDLE;
+        oneTimeSendChecker = false;
 
-        if(animator == null)
+        if (animator == null)
         {
             animator = GetComponent<Animator>();
         }
@@ -144,7 +146,11 @@ public class AnimationController : MonoBehaviour
                     }
                     else
                     {
-                        leftAttackChecker.SetIsAttackState(true);
+                        if (oneTimeSendChecker == true)
+                        {
+                            oneTimeSendChecker = false;
+                            leftAttackChecker.SetIsAttackState(true);
+                        }
 
                         animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1f);
                         animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1f);
@@ -169,7 +175,11 @@ public class AnimationController : MonoBehaviour
                     }
                     else
                     {
-                        rightAttackChecker.SetIsAttackState(true);
+                        if (oneTimeSendChecker == true)
+                        {
+                            oneTimeSendChecker = false;
+                            rightAttackChecker.SetIsAttackState(true);
+                        }
 
                         animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
                         animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
@@ -195,7 +205,11 @@ public class AnimationController : MonoBehaviour
                 }
                 else
                 {
-                    myWeapon.GetComponent<Weapon>().SetIsAttackState(true);
+                    if (oneTimeSendChecker == true)
+                    {
+                        oneTimeSendChecker = false;
+                        myWeapon.GetComponent<Weapon>().SetIsAttackState(true);
+                    }
 
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
@@ -224,14 +238,16 @@ public class AnimationController : MonoBehaviour
 
         if (upperBodyAnimationState == UpperBodyAnimationState.ATTACK)
         {
+            oneTimeSendChecker = true;
             attackTimer = 0f;
         }
         else if (upperBodyAnimationState == UpperBodyAnimationState.WEAPONATTACK)
         {
+            oneTimeSendChecker = true;
             attackTimer = 0f;
             myWeapon = playerStatus.GetMyWeapon();
         }
-        else if(upperBodyAnimationState == UpperBodyAnimationState.GRAP)
+        else if (upperBodyAnimationState == UpperBodyAnimationState.GRAP)
         {
             leftAttackChecker.SetIsGrapState(true);
             rightAttackChecker.SetIsGrapState(true);

@@ -67,6 +67,8 @@ public class Weapon : MonoBehaviour
         {
             if(collision.gameObject.tag == "HitBox" && isAttackState == true)
             {
+                isAttackState = false;
+
                 Vector3 attackedDirection = playerState.GetAttackedDirection(collision.transform.position);
                 int targetId = collision.transform.GetComponentInParent<CharacterStatus>().GetId();
 
