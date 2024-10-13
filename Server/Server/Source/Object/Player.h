@@ -31,7 +31,7 @@ public:
 	Vector3f&			GetDirection() { return mDirection; }
 	ePlayerState		GetPlayerState() { return mPlayerState; }
 	std::shared_mutex&	GetPlayerStateLock() { return mPlayerStateLock; }
-	eCharacterType		GetChacracterType() { return mCharacterType; }
+	eCharacterType		GetCharacterType() { return mCharacterType; }
 	int					GetHP() { return mHP; }
 	int					GetStamina() { return mStamina; }
 	int					GetGroggyCount() { return mGroggyCount; }

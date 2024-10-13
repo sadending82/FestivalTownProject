@@ -35,7 +35,7 @@ std::vector<uint8_t> PacketMaker::MakePlayerAddPacket(std::array<class Player*, 
 			, pos
 			, dir
 			, player->GetTeam()
-			, player->GetChacracterType()
+			, player->GetCharacterType()
 			, Builder.CreateString(player->GetName())
 		);
 
