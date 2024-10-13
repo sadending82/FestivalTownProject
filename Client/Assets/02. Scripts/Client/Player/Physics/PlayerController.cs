@@ -61,9 +61,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private NearObjectChecker nearObjectChecker;
     private float leftMouseClickTimer;
     private float fKeyDownTimer;
-    private bool isPickUpMode = false;
-    private bool isDropMode = false;
-    private bool isGrapPlayerMode = false;
+    private bool isPickUpMode;
+    private bool isDropMode;
     private bool isGrap;
     private GameObject targetItem;
     private float bombPickUpSpeed;
@@ -143,6 +142,23 @@ public class PlayerController : MonoBehaviour
         data = Managers.Data.GetData(30002);
         cae = (CharacterActionEntity)data;
         bombPickUpSpeed = cae.Action_Speed;
+    }
+    public void ResetPlayerControllerSetting()
+    {
+        leftMouseClickTimer = 0f;
+        fKeyDownTimer = 0f;
+        isGrap = false;
+        isJump = false;
+        isPickUpMode = false;
+        isDropMode = false;
+        isGrounded = false;
+        isLeftShiftKeyDown = false;
+        beforeIsLeftShiftKeyDown = false;
+        recoveryStaminaChecker = false;
+        beforeAxisRawH = 0;
+        beforeAxisRawV = 0;
+        SetIsMove(false);
+        targetItem = null;
     }
 
     private void FixedUpdate()
@@ -718,10 +734,6 @@ public class PlayerController : MonoBehaviour
 
             playerStatus.SetIsHaveBomb(false);
         }
-        else
-        {
-            Debug.Log("Player " + playerStatus.GetId() + " Don't Have an Item to Throw !!!");
-        }
     }
     public void s_GrapPlayer(int targetId, bool isLeftHand, Vector3 handPos, Vector3 targetHeadPos)
     {
@@ -764,29 +776,17 @@ public class PlayerController : MonoBehaviour
 
         Managers.Sound.Play("Sfx_Ch_Respawn");
     }
-    public void ResetPlayerControllerSetting()
-    {
-        leftMouseClickTimer = 0f;
-        isGrap = false;
-        isPickUpMode = false;
-        isGrounded = false;
-        isLeftShiftKeyDown = false;
-        beforeIsLeftShiftKeyDown = false;
-        beforeAxisRawH = 0;
-        beforeAxisRawV = 0;
-        SetIsMove(false);
-        targetItem = null;
-    }
     public void SetAmIPlayer(bool amIPlayer)
     {
         this.amIPlayer = amIPlayer;
     }
     public void SetPosition(Vector3 position)
     {
-        if (pelvis == null) {
+        if (pelvis == null) 
+        {
             Debug.Log("pelvis Null!!!!");
-
-            return; }
+            return; 
+        }
 
         pelvis.transform.position = position;
     }

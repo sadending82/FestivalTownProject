@@ -49,8 +49,6 @@ public class BombObjectManager : MonoBehaviour
                 return bombs.transform.GetChild(i).gameObject;
             }
         }
-
-        //Debug.Log("ERROR!!! : Can't Find Target Bomb By Id : " + targetBombId);
         return null;
     }
 }
