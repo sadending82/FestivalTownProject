@@ -24,7 +24,7 @@ public:
 
 	OverlappedEx(unsigned char* packet, const int size)
 	{
-		wsabuf.len = BUFSIZE;
+		wsabuf.len = size;
 		wsabuf.buf = reinterpret_cast<char*>(iocpBuf);
 		ZeroMemory(&over, sizeof(over));
 		eventType = eOpType::OP_SEND;

@@ -23,7 +23,7 @@ namespace Network.PacketProcessor
                 Managers.Scene.CurrentScene.GetComponent<HomeScene>().isMatching = false;
             }
 
-            Managers.UI.CloseAOTUI();
+            Managers.UI.ClosePopUpUI();
 
         }
 

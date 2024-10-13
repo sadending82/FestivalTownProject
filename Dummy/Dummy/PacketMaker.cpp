@@ -34,17 +34,23 @@ std::vector<uint8_t> PacketMaker::MakePlayerMovePacket(Vector3f pos, Vector3f di
 
 std::vector<uint8_t> PacketMaker::MakeHeartBeatPacket()
 {
-    std::cout << "Make Hart Beat Packet" << std::endl;
     flatbuffers::FlatBufferBuilder builder;
-    int64_t t = time(NULL);
-    builder.Finish(PacketTable::UtilitiesTable::CreateHeartBeat(builder, t));
+    long long currTime = std::chrono::duration_cast<std::chrono::milliseconds>(
+        std::chrono::system_clock::now().time_since_epoch()).count();
+    builder.Finish(PacketTable::UtilitiesTable::CreateHeartBeat(builder, currTime));
     return MakeBuffer(ePacketType::C2S_HEART_BEAT, builder.GetBufferPointer(), builder.GetSize());
 }
 
 std::vector<uint8_t> PacketMaker::MakeMatchingRequestPacket(int id)
 {
-    
     flatbuffers::FlatBufferBuilder builder;
     builder.Finish(PacketTable::LobbyTable::CreateGameMatchingRequest(builder, id));
     return MakeBuffer(ePacketType::C2S_MATCHING_REQUEST, builder.GetBufferPointer(), builder.GetSize());
+}
+
+std::vector<uint8_t> PacketMaker::MakeGameReadyPacket(int roomid)
+{
+    flatbuffers::FlatBufferBuilder builder;
+    builder.Finish(PacketTable::GameTable::CreateGameReady(builder, roomid));
+    return MakeBuffer(ePacketType::C2S_GAME_READY, builder.GetBufferPointer(), builder.GetSize());
 }

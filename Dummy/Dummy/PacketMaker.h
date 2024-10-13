@@ -15,5 +15,6 @@ public:
 	std::vector<uint8_t> MakePlayerMovePacket(Vector3f pos, Vector3f dir, int id, ePlayerMoveState state);
 	std::vector<uint8_t> MakeHeartBeatPacket();
 	std::vector<uint8_t> MakeMatchingRequestPacket(int id);
+	std::vector<uint8_t> MakeGameReadyPacket(int roomId);
 };
 

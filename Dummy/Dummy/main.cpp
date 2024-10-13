@@ -49,6 +49,8 @@ void error_display(const char* msg, int err_no)
 		(LPTSTR)&lpMsgBuf, 0, NULL);
 	std::cout << msg;
 	std::wcout << L"에러" << lpMsgBuf << std::endl;
+
+	LocalFree(lpMsgBuf);
 }
 
 void DisconnectClient(int ci)
@@ -95,55 +97,46 @@ void WorkerThread()
 		unsigned long long ci;
 		OverlappedEx* over;
 		BOOL ret = GetQueuedCompletionStatus(g_hiocp, &io_size, &ci, reinterpret_cast<LPWSAOVERLAPPED*>(&over), INFINITE);
-		std::cout << "97 GQCS : Start\n";
 		int client_id = static_cast<int>(ci);
 		if (FALSE == ret) {
 			int err_no = WSAGetLastError();
-			if (64 == err_no) {
-				error_display("103 GQCS : ", WSAGetLastError());
-				DisconnectClient(client_id);
-			}
-			else {
-				error_display("107 GQCS : ", WSAGetLastError());
-				DisconnectClient(client_id);
-			}
+			error_display("107 GQCS : ", WSAGetLastError());
+			DisconnectClient(client_id);
 			if (eOpType::OP_SEND == over->eventType) delete over;
 		}
 
 		if (0 == io_size) {
-			std::cout << "114 io_size == 0\n";
+			//연결 끊김
 			DisconnectClient(client_id);
 			continue;
 		}
 
 		if (eOpType::OP_RECV == over->eventType) {
-			std::cout << "115 RECV from Client :" << ci;
-			std::cout << "  116 IO_SIZE : " << io_size << std::endl;
+			unsigned char* packet_ptr = over->iocpBuf;
+			uint16_t BufSize = 0;
+			std::memcpy(&BufSize, packet_ptr, sizeof(uint16_t));
 			unsigned char* buf = g_clients[ci].recvOver.iocpBuf;
-			unsigned psize = g_clients[ci].currPacketSize;
-			unsigned pr_size = g_clients[ci].prevPacketData;
-			while (io_size > 0) {
-				if (0 == psize) psize = buf[0];
-				if (io_size + pr_size >= psize) {
-					unsigned char packet[BUFSIZE];
-					memcpy(packet, g_clients[ci].packetBuf, pr_size);
-					memcpy(packet + pr_size, buf, psize - pr_size);
-					ProcessPacket(packet, static_cast<int>(ci));
-					io_size -= psize - pr_size;
-					buf += psize - pr_size;
-					psize = 0; pr_size = 0;
-				}
-				else {
-					memcpy(g_clients[ci].packetBuf + pr_size, buf, io_size);
-					pr_size += io_size;
-					io_size = 0;
-				}
+			const int headerSize = sizeof(HEADER);
+			int required_data = io_size + g_clients[ci].prevPacketData;
+			int packet_size = BufSize + headerSize;
+			while (required_data >= packet_size) {
+				if (required_data >= BUFSIZE) break;
+				if (packet_size <= 0) break;
+				ProcessPacket(packet_ptr, ci);
+				required_data -= packet_size;
+				packet_ptr += packet_size;
+
+				uint16_t nextBufSize = 0;
+				std::memcpy(&nextBufSize, packet_ptr, sizeof(uint16_t));
+				packet_size = nextBufSize + headerSize;
 			}
-			g_clients[ci].currPacketSize = psize;
-			g_clients[ci].prevPacketData = pr_size;
+			packet_size = 0;
+			g_clients[ci].prevPacketData = 0;
+			if (0 != required_data)
+				memcpy(over->iocpBuf, packet_ptr, required_data);
+
 			DWORD recv_flag = 0;
-			int ret = WSARecv(g_clients[ci].clientSocket, &g_clients[ci].recvOver.wsabuf, 1,
-				NULL, &recv_flag, &g_clients[ci].recvOver.over, NULL);
+			int ret = WSARecv(g_clients[ci].clientSocket, &g_clients[ci].recvOver.wsabuf, 1, NULL, &recv_flag, &g_clients[ci].recvOver.over, NULL);
 			if (SOCKET_ERROR == ret) {
 				int err_no = WSAGetLastError();
 				if (err_no != WSA_IO_PENDING)
@@ -214,7 +207,6 @@ void Adjust_Number_Of_Client()
 	ServerAddr.sin_family = AF_INET;
 	ServerAddr.sin_port = htons(PORTNUM);
 	ServerAddr.sin_addr.S_un.S_addr = inet_addr(IPADDRESS);
-	
 
 	int Result = WSAConnect(g_clients[num_connections].clientSocket, (sockaddr*)&ServerAddr, sizeof(ServerAddr), NULL, NULL, NULL, NULL);
 	if (0 != Result) {
@@ -269,15 +261,14 @@ void TestThread()
 		{
 			if (false == g_clients[i].connected) continue;
 			if (false == g_clients[i].isInGame) continue;
-			if (g_clients[i].lastPacketSend + 1s > high_resolution_clock::now()) continue;
+			if (g_clients[i].lastPacketSend + 16ms > high_resolution_clock::now()) continue;
 			g_clients[i].lastPacketSend = high_resolution_clock::now();
 			Vector3f newDir;
 			newDir.x = urd(dre);
 			newDir.y = urd(dre);
 			newDir.z = urd(dre);
-
 			g_clients[i].direction = newDir;
-			auto pack = pm.MakePlayerMovePacket(g_clients[i].position, g_clients[i].direction, g_clients[i].id, ePlayerMoveState::PS_RUN);
+			auto pack = pm.MakePlayerMovePacket(g_clients[i].position, g_clients[i].direction, g_clients[i].ingameId, ePlayerMoveState::PS_RUN);
 			g_clients[i].DoSend(pack.data(), pack.size());
 		}
 	}
@@ -291,12 +282,12 @@ void ProcessPacket(unsigned char* data, const int ci)
 	int flatBufSize = header->flatBufferSize;
 	int headerSize = sizeof(HEADER);
 
-	std::cout << ci << " process packet, type : " << type << std::endl;
-
 	switch ((ePacketType)type)
 	{
 	case ePacketType::S2C_LOGIN_RESPONSE:
 	{
+		g_clients[ci].connected = true;
+		std::cout << ci << "가 로그인을 시도했습니다." << std::endl;
 		auto packet = pm.MakeMatchingRequestPacket(ci);
 		g_clients[ci].DoSend(packet.data(), packet.size());
 	}	
@@ -308,16 +299,31 @@ void ProcessPacket(unsigned char* data, const int ci)
 		break;
 	case ePacketType::S2C_GAME_START:
 	{
+		std::cout << ci << "플레이어가 게임 시작과 동시에 댄스를 시작합니다!" << std::endl;
 		g_clients[ci].isInGame = true;
 	}
 		break;
 	case ePacketType::S2C_MATCHING_RESPONSE:
 	{
+		std::cout << ci << "플레이어가 매칭이 된 것을 확인했어요!" << std::endl;
 
+		uint8_t* d = data + headerSize;
+		size_t s = header->flatBufferSize;
+		flatbuffers::Verifier verifier(d, s);
+		if (verifier.VerifyBuffer<PacketTable::LobbyTable::GameMatchingResponse>(nullptr)) {
+			const PacketTable::LobbyTable::GameMatchingResponse* read = flatbuffers::GetRoot<PacketTable::LobbyTable::GameMatchingResponse>(d);
+
+			g_clients[ci].roomId = read->roomid();
+			g_clients[ci].ingameId = read->ingameid();
+		}
+
+		auto packet = pm.MakeGameReadyPacket(g_clients[ci].roomId);
+		g_clients[ci].DoSend(packet.data(), packet.size());
 	}
 		break;
 	case ePacketType::S2C_GAME_END:
 	{
+		std::cout << ci << "가 게임이 끝났다고 알립니다." << std::endl;
 		g_clients[ci].isInGame = false;
 		auto packet = pm.MakeMatchingRequestPacket(ci);
 		g_clients[ci].DoSend(packet.data(), packet.size());
@@ -325,7 +331,6 @@ void ProcessPacket(unsigned char* data, const int ci)
 		break;
 	case ePacketType::S2C_HEART_BEAT:
 	{
-		std::cout << ci << " HeartBeat" << std::endl;
 		auto packet = pm.MakeHeartBeatPacket();
 		g_clients[ci].DoSend(packet.data(), packet.size());
 	}
