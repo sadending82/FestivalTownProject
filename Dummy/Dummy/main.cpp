@@ -294,13 +294,33 @@ void ProcessPacket(unsigned char* data, const int ci)
 		break;
 	case ePacketType::S2C_SIGNUP_RESPONSE:
 	{
-
+		
 	}
 		break;
 	case ePacketType::S2C_GAME_START:
 	{
 		std::cout << ci << "플레이어가 게임 시작과 동시에 댄스를 시작합니다!" << std::endl;
 		g_clients[ci].isInGame = true;
+	}
+		break;
+	case ePacketType::S2C_PLAYER_ADD:
+	{
+
+		uint8_t* d = data + headerSize;
+		size_t s = header->flatBufferSize;
+		flatbuffers::Verifier verifier(d, s);
+		if (verifier.VerifyBuffer<PacketTable::PlayerTable::PlayerAdd>(nullptr)) {
+			const PacketTable::PlayerTable::PlayerAdd* read = flatbuffers::GetRoot<PacketTable::PlayerTable::PlayerAdd>(d);
+
+			for (auto pl : *(read->players()))
+			{
+				if (pl->id() == g_clients[ci].ingameId) {
+					g_clients[ci].position.x = pl->pos()->x();
+					g_clients[ci].position.y = pl->pos()->y();
+					g_clients[ci].position.z = pl->pos()->z();
+				}
+			}
+		}
 	}
 		break;
 	case ePacketType::S2C_MATCHING_RESPONSE:
