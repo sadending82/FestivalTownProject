@@ -51,6 +51,7 @@ public class PlayerController : MonoBehaviour
     private int holdAndWalkStaminaConsume;
     private float holdAndRunSpeed;
     private int holdAndRunStaminaConsume;
+    private float jumpSpeedOffset = 0.6f;
 
     private bool isLeftShiftKeyDown;
     private bool beforeIsLeftShiftKeyDown;
@@ -176,22 +177,50 @@ public class PlayerController : MonoBehaviour
                             {
                                 if (playerStatus.GetIsGrapPlayer() == true)
                                 {
-                                    pelvisRigidbody.velocity = moveDirection * holdAndWalkSpeed;
+                                    if (isGrounded == false)
+                                    {
+                                        pelvisRigidbody.velocity = moveDirection * holdAndWalkSpeed * jumpSpeedOffset;
+                                    }
+                                    else
+                                    {
+                                        pelvisRigidbody.velocity = moveDirection * holdAndWalkSpeed;
+                                    }
                                 }
                                 else
                                 {
-                                    pelvisRigidbody.velocity = moveDirection * walkSpeed;
+                                    if (isGrounded == false)
+                                    {
+                                        pelvisRigidbody.velocity = moveDirection * walkSpeed * jumpSpeedOffset;
+                                    }
+                                    else
+                                    {
+                                        pelvisRigidbody.velocity = moveDirection * walkSpeed;
+                                    }
                                 }
                             }
                             else if (playerStatus.GetLowerBodyAnimationState() == LowerBodyAnimationState.RUN)
                             {
                                 if (playerStatus.GetIsGrapPlayer() == true)
                                 {
-                                    pelvisRigidbody.velocity = moveDirection * holdAndRunSpeed;
+                                    if (isGrounded == false)
+                                    {
+                                        pelvisRigidbody.velocity = moveDirection * holdAndRunSpeed * jumpSpeedOffset;
+                                    }
+                                    else
+                                    {
+                                        pelvisRigidbody.velocity = moveDirection * holdAndRunSpeed;
+                                    }
                                 }
                                 else
                                 {
-                                    pelvisRigidbody.velocity = moveDirection * runSpeed;
+                                    if (isGrounded == false)
+                                    {
+                                        pelvisRigidbody.velocity = moveDirection * runSpeed * jumpSpeedOffset;
+                                    }
+                                    else
+                                    {
+                                        pelvisRigidbody.velocity = moveDirection * runSpeed;
+                                    }
                                 }
                             }
 
@@ -347,15 +376,36 @@ public class PlayerController : MonoBehaviour
                 {
                     if (playerStatus.GetIsGrapPlayer() == true && holdAndRunStaminaConsume <= playerStatus.GetStamina())
                     {
-                        pelvisRigidbody.velocity = moveDirection * holdAndRunSpeed;
+                        if (isGrounded == false)
+                        {
+                            pelvisRigidbody.velocity = moveDirection * holdAndRunSpeed * jumpSpeedOffset;
+                        }
+                        else
+                        {
+                            pelvisRigidbody.velocity = moveDirection * holdAndRunSpeed;
+                        }
                     }
                     else if (runStaminaConsume <= playerStatus.GetStamina())
                     {
-                        pelvisRigidbody.velocity = moveDirection * runSpeed;
+                        if (isGrounded == false)
+                        {
+                            pelvisRigidbody.velocity = moveDirection * runSpeed * jumpSpeedOffset;
+                        }
+                        else
+                        {
+                            pelvisRigidbody.velocity = moveDirection * runSpeed;
+                        }
                     }
                     else
                     {
-                        pelvisRigidbody.velocity = moveDirection * walkSpeed;
+                        if (isGrounded == false)
+                        {
+                            pelvisRigidbody.velocity = moveDirection * walkSpeed * jumpSpeedOffset;
+                        }
+                        else
+                        {
+                            pelvisRigidbody.velocity = moveDirection * walkSpeed;
+                        }
                     }
                 }
             }
@@ -365,11 +415,25 @@ public class PlayerController : MonoBehaviour
                 {
                     if (playerStatus.GetIsGrapPlayer() == true && holdAndWalkStaminaConsume <= playerStatus.GetStamina())
                     {
-                        pelvisRigidbody.velocity = moveDirection * holdAndWalkSpeed;
+                        if (isGrounded == false)
+                        {
+                            pelvisRigidbody.velocity = moveDirection * holdAndWalkSpeed * jumpSpeedOffset;
+                        }
+                        else
+                        {
+                            pelvisRigidbody.velocity = moveDirection * holdAndWalkSpeed;
+                        }
                     }
                     else
                     {
-                        pelvisRigidbody.velocity = moveDirection * walkSpeed;
+                        if (isGrounded == false)
+                        {
+                            pelvisRigidbody.velocity = moveDirection * walkSpeed * jumpSpeedOffset;
+                        }
+                        else
+                        {
+                            pelvisRigidbody.velocity = moveDirection * walkSpeed;
+                        }
                     }
                 }
             }
