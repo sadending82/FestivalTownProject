@@ -40,7 +40,13 @@ public:
 
 					int roomID = pServer->CreateNewRoom(GameMode::FITH_Indiv_Battle_2);
 
-					Player* Bot = new Player;
+					int botID = pServer->SetSessionID();
+
+					if (botID == INVALIDKEY) {
+						return;
+					}
+
+					Player* Bot = dynamic_cast<Player*>(pServer->GetSessions()[botID]);
 					Bot->SetSessionState(eSessionState::ST_MATCHWAITING);
 					Bot->SetIsBot(true);
 

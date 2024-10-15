@@ -18,7 +18,7 @@ std::vector<uint8_t> PacketMaker::MakeSignUpResponsePacket(int result)
 	return MakeBuffer(ePacketType::S2C_SIGNUP_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakePlayerAddPacket(std::array<class Player*, MAXPLAYER>& players)
+std::vector<uint8_t> PacketMaker::MakePlayerAddPacket(std::vector<class Player*>& players)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 	std::vector<flatbuffers::Offset<PacketTable::PlayerTable::PlayerInfo>> player_vec;
@@ -224,7 +224,7 @@ std::vector<uint8_t> PacketMaker::MakeGameEndPacket(uint8_t winningTeams_flag)
 	return MakeBuffer(ePacketType::S2C_GAME_END, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakeGameResultPacket(std::set<int>& winningTeams, std::unordered_map<int, sPlayerGameRecord>& records, std::array<class Player*, MAXPLAYER>& players)
+std::vector<uint8_t> PacketMaker::MakeGameResultPacket(std::set<int>& winningTeams, std::unordered_map<int, sPlayerGameRecord>& records, std::unordered_map<int, class Player*>& players)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 	std::vector<flatbuffers::Offset<PacketTable::UtilitiesTable::PlayerGameRecord>> record_vec;
@@ -233,13 +233,14 @@ std::vector<uint8_t> PacketMaker::MakeGameResultPacket(std::set<int>& winningTea
 
 	for (auto& pair : records) {
 		int id = pair.first;
-		if (players[id] == nullptr) {
-			continue;
+		std::string playerName = "NULL";
+		if (players[id] != nullptr) {
+			playerName = players[id]->GetName();
 		}
 		sPlayerGameRecord record = pair.second;
 		auto fRecord = PacketTable::UtilitiesTable::CreatePlayerGameRecord(Builder
 			, id
-			, Builder.CreateString(players[id]->GetName())
+			, Builder.CreateString(playerName)
 			, record.team
 			, record.kill_count
 			, record.death_count

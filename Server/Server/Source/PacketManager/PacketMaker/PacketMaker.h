@@ -15,7 +15,7 @@ public:
 	std::vector<uint8_t> MakeLoginResponsePacket(int result, int uid, std::string& nickname, int point, int gold);
 	std::vector<uint8_t> MakeSignUpResponsePacket(int result);
 
-	std::vector<uint8_t> MakePlayerAddPacket(std::array<class Player*, MAXPLAYER>& players);
+	std::vector<uint8_t> MakePlayerAddPacket(std::vector<class Player*>& players);
 	std::vector<uint8_t> MakePlayerDeletePacket (int inGameID);
 	std::vector<uint8_t> MakePlayerDeadPacket(int inGameID, int roomID, Vector3f position, Vector3f direction, int spawn_delay);
 	std::vector<uint8_t> MakePlayerRespawnPacket(int inGameID, int roomID, Vector3f position, int hp);
@@ -36,7 +36,7 @@ public:
 	std::vector<uint8_t> MakeBombExplosionPacket(int bombID, Vector3f position);
 	std::vector<uint8_t> MakeGameStartPacket(int roomID, int startTime);
 	std::vector<uint8_t> MakeGameEndPacket(uint8_t winningTeams_flag);
-	std::vector<uint8_t> MakeGameResultPacket(std::set<int>& winningTeams, std::unordered_map<int, sPlayerGameRecord>& records, std::array<class Player*, MAXPLAYER>& players);
+	std::vector<uint8_t> MakeGameResultPacket(std::set<int>& winningTeams, std::unordered_map<int, sPlayerGameRecord>& records, std::unordered_map<int, class Player*>& players);
 	std::vector<uint8_t> MakeGameHostChangePacket(int inGameID, int roomID);
 
 	std::vector<uint8_t> MakeLifeReducePacket(int team, int lifeCount);

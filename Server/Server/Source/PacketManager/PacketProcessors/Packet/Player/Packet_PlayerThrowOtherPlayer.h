@@ -33,8 +33,12 @@ public:
 					return;
 				}
 
-				room->GetPlayerListLock().lock_shared();
-				Player* target = room->GetPlayerList()[read->target_id()];
+				int target_sessionID = room->GetPlayerList()[read->target_id()].load();
+				if (target_sessionID == INVALIDKEY) {
+					return;
+				}
+
+				Player* target = dynamic_cast<Player*>(pServer->GetSessions()[room->GetPlayerList()[target_sessionID].load()]);
 
 				if (target->SetIsGrabbed(false) == true) {
 					player->SetAttachedPlayerID(INVALIDKEY);
@@ -47,7 +51,6 @@ public:
 
 					pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomid);
 				}
-				room->GetPlayerListLock().unlock_shared();
 			}
 		}
 		catch (const std::exception& e) {

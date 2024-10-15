@@ -20,21 +20,27 @@ public:
 				int bombid = read->bombid();
 				int team = read->team();
 
-				int roomid = dynamic_cast<Player*>(pServer->GetSessions()[key])->GetRoomID();
+				Player* host = dynamic_cast<Player*>(pServer->GetSessions()[key]);
+
+				int roomid = host->GetRoomID();
 				if (roomid == INVALIDKEY) {
 					return;
 				}
 				Room* room = pServer->GetRooms().at(roomid);
-				GameMode gameMode = room->GetGameMode();
-				GameManager* gameManager = pServer->GetGameManagers()[gameMode];
 
-				room->GetPlayerListLock().lock_shared();
-				Player* player = dynamic_cast<Player*>(room->GetPlayerList().at(playerid));
-				if (player == nullptr) {
-					room->GetPlayerListLock().unlock_shared();
+				int player_sessionID = room->GetPlayerList()[playerid].load();
+
+				if (player_sessionID == INVALIDKEY) {
 					return;
 				}
-				room->GetPlayerListLock().unlock_shared();
+
+				Player* player = dynamic_cast<Player*>(pServer->GetSessions()[player_sessionID]);
+				if (player == nullptr) {
+					return;
+				}
+
+				GameMode gameMode = room->GetGameMode();
+				GameManager* gameManager = pServer->GetGameManagers()[gameMode];
 
 				room->DeleteBomb(bombid);
 

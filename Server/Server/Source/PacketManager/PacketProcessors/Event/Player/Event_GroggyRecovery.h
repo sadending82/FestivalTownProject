@@ -25,21 +25,26 @@ public:
 				return;
 			}
 
-			room->GetPlayerListLock().lock_shared();
-			Player* player = room->GetPlayerList()[playerid];
+			int sessionID = room->GetPlayerList()[playerid].load();
+			if (sessionID == INVALIDKEY) {
+				return;
+			}
+
+			Player* player = dynamic_cast<Player*>(pServer->GetSessions()[sessionID]);
 			if (player == nullptr) {
-				room->GetPlayerListLock().unlock_shared();
 				return;
 			}
 
 			// 잡혀있으면 풀어줌
 			if (player->SetIsGrabbed(false) == true) {
 				int grabberID = player->GetAttachedPlayerID();
-				Player* grabber = room->GetPlayerList()[player->GetAttachedPlayerID()];
-				if (grabber == nullptr) {
-					room->GetPlayerListLock().unlock_shared();
+
+				int grabber_sessionID = room->GetPlayerList()[grabberID].load();
+				if (grabber_sessionID == INVALIDKEY) {
 					return;
 				}
+
+				Player* grabber = player = dynamic_cast<Player*>(pServer->GetSessions()[grabber_sessionID]);
 
 				player->SetAttachedPlayerID(INVALIDKEY);
 				grabber->SetAttachedPlayerID(INVALIDKEY);
@@ -58,8 +63,6 @@ public:
 			player->GetPlayerStateLock().lock();
 			player->SetPlayerState(ePlayerState::PS_ALIVE);
 			player->GetPlayerStateLock().unlock();
-
-			room->GetPlayerListLock().unlock_shared();
 
 			pPacketSender->SendPlayerGroggyRecoveryPacket(playerid, roomid, staminaRecoveryValue);
 		}

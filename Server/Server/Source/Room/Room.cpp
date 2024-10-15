@@ -1,6 +1,7 @@
 #pragma once
 #include "Room.h"
 #include "../PacketManager/PacketSender/PacketSender.h"
+#include "../Server/Server.h"
 
 Room::~Room()
 {
@@ -29,7 +30,7 @@ void Room::Reset()
 	}
 	delete mMap;
 
-	std::fill(mPlayerList.begin(), mPlayerList.end(), nullptr);
+	std::fill(mPlayerList.begin(), mPlayerList.end(), INVALIDKEY);
 	std::fill(mBombList.begin(), mBombList.end(), nullptr);
 	std::fill(mWeaponList.begin(), mWeaponList.end(), nullptr);
 	mMap = nullptr;
@@ -50,6 +51,8 @@ void Room::Init(int id, GameMode gameMode, GameModeData& GameModeData)
 	mHostID = INVALIDKEY;
 	InitRoomCode();
 
+	std::fill(mPlayerList.begin(), mPlayerList.end(), INVALIDKEY);
+
 	// team game
 	mTeams[(int)TeamCode::RED].Init(mGameModeData.Life_Count);
 	mTeams[(int)TeamCode::BLUE].Init(mGameModeData.Life_Count);
@@ -68,11 +71,11 @@ void Room::InitRoomCode()
 
 bool Room::AddPlayer(Player* player)
 {
-	for (int i = 0; i < MAXPLAYER; ++i) {
-		mPlayerListLock.lock();
-		if (mPlayerList[i] == nullptr) {
-			mPlayerList[i] = player;
+	int sessionID = player->GetSessionID();
 
+	for (int i = 0; i < MAXPLAYER; ++i) {
+		int expected = INVALIDKEY;
+		if (mPlayerList[i].compare_exchange_strong(expected, sessionID)) {
 			player->SetInGameID(i);
 			player->SetRoomID(mRoomID);
 
@@ -89,74 +92,11 @@ bool Room::AddPlayer(Player* player)
 
 			mTeams[player->GetTeam()].GetMembers().insert(i);
 
-			mPlayerListLock.unlock();
-
 			return true;
 		}
-		mPlayerListLock.unlock();
 	}
 
 	return false;
-}
-
-bool Room::DeletePlayer(int playerID, PacketSender* packetSender)
-{
-	if (mState != eRoomState::RS_INGAME) {
-		return false;
-	}
-
-	Player* player = mPlayerList[playerID];
-
-	if (player == nullptr) {
-		return false;
-	}
-	Vector3f pos = player->GetPosition();
-	Vector3f dir = player->GetDirection();
-
-	// 들고있는 무기 해제
-	player->GetWeaponLock().lock();
-	Weapon* weapon = player->GetWeapon();
-	if (weapon != nullptr) {
-		if (weapon->SetIsGrabbed(false) == true) {
-			int weaponID = weapon->GetID();
-			weapon->SetOwenrID(INVALIDKEY);
-			weapon->SetPosition(player->GetPosition());
-			packetSender->SendWeaponDropPacket(pos, mRoomID, weaponID);
-		}
-	}
-	player->GetWeaponLock().unlock();
-
-	// 들고있는 폭탄 폭발
-	player->GetBombLock().lock();
-	Bomb* bomb = player->GetBomb();
-	if (bomb != nullptr) {
-		if (bomb->SetIsGrabbed(false) == true) {
-			int bombID = bomb->GetID();
-			bomb = nullptr;
-			packetSender->SendBombExplosionPacket(mRoomID, bombID);
-			DeleteBomb(bombID);
-		}
-	}
-	player->GetBombLock().unlock();
-
-	// 잡은 플레이어 놓기
-	if (player->GetAttachedPlayerID() != INVALIDKEY && player->GetIsGrabbed() == false) {
-		int targetID = player->GetAttachedPlayerID();
-		Player* target = mPlayerList[player->GetAttachedPlayerID()];
-
-		if (target->SetIsGrabbed(false) == true) {
-			player->SetAttachedPlayerID(INVALIDKEY);
-			target->SetAttachedPlayerID(INVALIDKEY);
-			packetSender->SendPlayerThrowOtherPlayerPacket(mRoomID, playerID, pos, dir, targetID, target->GetPosition(), target->GetDirection());
-		}
-	}
-
-	mTeams[mPlayerList[playerID]->GetTeam()].GetMembers().erase(playerID);
-	mPlayerList[playerID] = nullptr;
-	if (mPlayerCnt > 0) {
-		mPlayerCnt--;
-	}
-	return true;
 }
 
 int Room::AddBomb(Bomb* object, Vector3f position, Vector3f direction)
@@ -205,12 +145,13 @@ bool Room::DeleteBomb(int id)
 	// 어떤 플레이어가 이 오브젝트를 가지고 있으면 해제시켜줘야함
 	int OwnerID = mBombList.at(id)->GetOwenrID();
 	if (OwnerID > INVALIDKEY) {
-		mPlayerListLock.lock_shared();
-		Player* player = mPlayerList.at(OwnerID);
-		if (player != nullptr) {
-			mPlayerList.at(OwnerID)->SetBomb(nullptr);
+		Player* player = dynamic_cast<Player*>(pServer->GetSessions()[mPlayerList[OwnerID].load()]);
+
+		player->GetSessionStateLock().lock();
+		if (player->GetSessionState() == eSessionState::ST_INGAME) {
+			player->SetBomb(nullptr);
 		}
-		mPlayerListLock.unlock_shared();
+		player->GetSessionStateLock().unlock();
 	}
 	delete mBombList.at(id);
 	mBombList.at(id) = nullptr;
@@ -224,14 +165,15 @@ bool Room::DeleteWeapon(int id)
 		return false;
 	}
 	// 어떤 플레이어가 이 오브젝트를 가지고 있으면 해제시켜줘야함
-	int OwnerID = mWeaponList[id]->GetOwenrID();
+	int OwnerID = mWeaponList.at(id)->GetOwenrID();
 	if (OwnerID > INVALIDKEY) {
-		mPlayerListLock.lock_shared();
-		Player* player = mPlayerList.at(OwnerID);
-		if (player != nullptr) {
-			mPlayerList.at(OwnerID)->SetWeapon(nullptr);
+		Player* player = dynamic_cast<Player*>(pServer->GetSessions()[mPlayerList[OwnerID].load()]);
+
+		player->GetSessionStateLock().lock();
+		if (player->GetSessionState() == eSessionState::ST_INGAME) {
+			player->SetWeapon(nullptr);
 		}
-		mPlayerListLock.unlock_shared();
+		player->GetSessionStateLock().unlock();
 	}
 	delete mWeaponList.at(id);
 	mWeaponList.at(id) = nullptr;
@@ -271,16 +213,13 @@ bool Room::SetAllPlayerReady(bool desired)
 
 int Room::ChangeHost()
 {
-	int sessionid = INVALIDKEY;
-	mPlayerListLock.lock();
-	for (Player* player : mPlayerList) {
-		if (player == nullptr) {
-			continue;
-		}
+	int session_id = INVALIDKEY;
+	for (const auto& id : mPlayerList) {
+		session_id = id.load();
+		if (session_id == INVALIDKEY) continue;
+		Player* player = dynamic_cast<Player*>(pServer->GetSessions()[session_id]);
 		mHostID = player->GetInGameID();
-		sessionid = player->GetSessionID();
 		break;
 	}
-	mPlayerListLock.unlock();
-	return sessionid;
+	return session_id;
 }

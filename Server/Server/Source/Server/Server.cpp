@@ -119,12 +119,16 @@ bool Server::Disconnect(int key)
         int inGameID = player->GetInGameID();
 
         if (roomID != INVALIDKEY) {
-            mRooms[roomID]->DeletePlayer(inGameID, mPacketSender);
+            Room* room = mRooms[roomID];
+
+            GameMode gameMode = room->GetGameMode();
+
+            mGameManagers[gameMode]->DeletePlayer(inGameID, roomID);
 
             mPacketSender->SendPlayerDelete(roomID, inGameID);
 
-            if (inGameID == mRooms[roomID]->GetHostID()) {
-                int newHostSessionID = mRooms[roomID]->ChangeHost();
+            if (inGameID == room->GetHostID()) {
+                int newHostSessionID = room->ChangeHost();
                 mPacketSender->SendGameHostChange(newHostSessionID);
             }
         }
@@ -184,7 +188,7 @@ void Server::Run()
         mSessions[i] = new Player();
     }
     for (int i = 0; i < MAXROOM; ++i) {
-        mRooms[i] = new Room();
+        mRooms[i] = new Room(this);
     }
 
     mPacketMaker = new PacketMaker;
@@ -274,24 +278,24 @@ void Server::MakeTestRoom()
 void Server::SendAllPlayerInRoomBySessionID(void* packet, int size, int sessionID)
 {
     int roomID = dynamic_cast<Player*>(GetSessions()[sessionID])->GetRoomID();
-    mRooms[roomID]->GetPlayerListLock().lock_shared();
-    for (Player* p : GetRooms()[roomID]->GetPlayerList()) {
-        if (p == nullptr) continue;
-        if (p->GetIsBot()) continue;
-        p->DoSend(packet, size);
+    for (const auto& id : GetRooms()[roomID]->GetPlayerList()) {
+        int session_id = id.load();
+        if (session_id == INVALIDKEY) continue;
+        Player* player = dynamic_cast<Player*>(mSessions[session_id]);
+        if (player->GetIsBot()) continue;
+        player->DoSend(packet, size);
     }
-    mRooms[roomID]->GetPlayerListLock().unlock_shared();
 }
 
 void Server::SendAllPlayerInRoom(void* packet, int size, int roomID)
 {
-    mRooms[roomID]->GetPlayerListLock().lock_shared();
-    for (Player* p : GetRooms()[roomID]->GetPlayerList()) {
-        if (p == nullptr) continue;
-        if (p->GetIsBot()) continue;
-        p->DoSend(packet, size);
+    for (const auto& sID : GetRooms()[roomID]->GetPlayerList()) {
+        int session_id = sID.load();
+        if (session_id == INVALIDKEY) continue;
+        Player* player = dynamic_cast<Player*>(mSessions[session_id]);
+        if (player->GetIsBot()) continue;
+        player->DoSend(packet, size);
     }
-    mRooms[roomID]->GetPlayerListLock().unlock_shared();
 }
 
 void Server::SendAllPlayerInRoomExceptSender(void* packet, int size, int sessionID)
@@ -304,14 +308,14 @@ void Server::SendAllPlayerInRoomExceptSender(void* packet, int size, int session
     if (roomID == INVALIDKEY) {
         return;
     }
-    mRooms[roomID]->GetPlayerListLock().lock_shared();
-    for (Player* p : GetRooms()[roomID]->GetPlayerList()) {
-        if (p == nullptr) continue;
-        if (p->GetIsBot()) continue;
-        if (p->GetSessionID() == sessionID) continue;
-        p->DoSend(packet, size);
+    for (const auto& id : GetRooms()[roomID]->GetPlayerList()) {
+        int session_id = id.load();
+        if (session_id == INVALIDKEY) continue;
+        if (session_id == sessionID) continue;
+        Player* player = dynamic_cast<Player*>(mSessions[session_id]);
+        if (player->GetIsBot()) continue;
+        player->DoSend(packet, size);
     }
-    mRooms[roomID]->GetPlayerListLock().unlock_shared();
 }
 
 void Server::StartHeartBeat(int sessionID)

@@ -64,7 +64,6 @@ void PacketManager::Init(Server* server)
 
 void PacketManager::ProcessPacket(unsigned char* data, const int key)
 {
-	//PacketProcessorMap[type]->Process(pServer, data, size, key);
 
     HEADER* header = reinterpret_cast<HEADER*>(data);
     int type = header->type;

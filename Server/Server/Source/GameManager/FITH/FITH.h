@@ -17,6 +17,8 @@ public:
 	virtual int CalculateGoldReward(int point, bool isMvp, bool isWin) override;
 	virtual void CalculateGameResult(int roomID, std::set<int>& winningTeams) override;
 
+	virtual bool DeletePlayer(int playerID, int roomID) override;
+
 	// Bomb, Weapon Spawn Position
 	virtual std::set<Vector3f> SetObjectSpawnPos(int roomID, int spawnCount) override;
 	virtual void BombSpawn(class Room* room, int roomID) override;
@@ -25,11 +27,11 @@ public:
 	virtual bool CheckValidPlayerPosition(Vector3f& position) override;
 
 private:
-	class Server* mServer = nullptr;
-	class DB* mDB = nullptr;
-	class Timer* mTimer = nullptr;
-	class TableManager* mTableManager = nullptr;
-	class PacketSender* mPacketSender = nullptr;
+	class Server* pServer = nullptr;
+	class DB* pDB = nullptr;
+	class Timer* pTimer = nullptr;
+	class TableManager* pTableManager = nullptr;
+	class PacketSender* pPacketSender = nullptr;
 
 	GameMode mGameMode = GameMode::INVALUE_MODE;
 };

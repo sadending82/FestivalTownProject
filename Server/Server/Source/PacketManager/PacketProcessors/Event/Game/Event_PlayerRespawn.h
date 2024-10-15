@@ -26,9 +26,11 @@ public:
 				return;
 			}
 
-			room->GetPlayerListLock().lock_shared();
-			Player* player = room->GetPlayerList()[playerid];
-			room->GetPlayerListLock().unlock_shared();
+			int sessionID = room->GetPlayerList()[playerid].load();
+			if (sessionID == INVALIDKEY) {
+				return;
+			}
+			Player* player = dynamic_cast<Player*>(pServer->GetSessions()[sessionID]);
 			if (player == nullptr) {
 				return;
 			}

@@ -18,6 +18,8 @@ void Player::Init()
 	mIsGrabbed = false;
 	mAttachedPlayerID = INVALIDKEY;
 	mCharacterStat = CharacterStat();
+
+	mIsBot = false;
 }
 
 void Player::Disconnect()
@@ -99,8 +101,7 @@ bool Player::ChangeToGroggyState(Server* pServer)
 	if (mAttachedPlayerID != INVALIDKEY && GetIsGrabbed() == false) {
 		Room* room = pServer->GetRooms().at(mRoomID);
 		if (room != nullptr && (room->GetState() == eRoomState::RS_INGAME)) {
-			room->GetPlayerListLock().lock_shared();
-			Player* target = room->GetPlayerList()[mAttachedPlayerID];
+			Player* target = dynamic_cast<Player*>(pServer->GetSessions()[room->GetPlayerList()[mAttachedPlayerID]]);
 
 			if (target->SetIsGrabbed(false) == true) {
 				int targetID = mAttachedPlayerID;
@@ -108,7 +109,6 @@ bool Player::ChangeToGroggyState(Server* pServer)
 				target->SetAttachedPlayerID(INVALIDKEY);
 				pServer->GetPacketSender()->SendPlayerThrowOtherPlayerPacket(mRoomID, mInGameID, mPosition, mDirection, targetID, target->GetPosition(), target->GetDirection());
 			}
-			room->GetPlayerListLock().unlock_shared();
 		}
 	}
 

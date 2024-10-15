@@ -9,42 +9,42 @@
 
 FITH::FITH(class Server* server, GameMode gameMode)
 {
-    mServer = server;
-    mDB = mServer->GetDB();
-    mTimer = mServer->GetTimer();
-    mTableManager = mServer->GetTableManager();
-    mPacketSender = mServer->GetPacketSender();
+    pServer = server;
+    pDB = pServer->GetDB();
+    pTimer = pServer->GetTimer();
+    pTableManager = pServer->GetTableManager();
+    pPacketSender = pServer->GetPacketSender();
 
     mGameMode = gameMode;
 }
 
 void FITH::StartGame(int roomID)
 {
-    Room* room = mServer->GetRooms()[roomID];
+    Room* room = pServer->GetRooms()[roomID];
 
-    if (mServer->GetMode() == SERVER_MODE::TEST) {
+    if (pServer->GetMode() == SERVER_MODE::TEST) {
        
     }
 
     if (room->SetIsRun(true) == true) {
 
-        mPacketSender->SendGameStart(roomID);
+        pPacketSender->SendGameStart(roomID);
 
         // Push Event
         long long roomCode = room->GetRoomCode();
         GameModeData& modeInfo = room->GetGameModeData();
 
-        PushEventBlockDrop(mTimer, roomID, roomCode, modeInfo.Block1_Spawn_Index, modeInfo.Block1_Spawn_Time);
-        PushEventBlockDrop(mTimer, roomID, roomCode, modeInfo.Block2_Spawn_Index, modeInfo.Block2_Spawn_Time);
+        PushEventBlockDrop(pTimer, roomID, roomCode, modeInfo.Block1_Spawn_Index, modeInfo.Block1_Spawn_Time);
+        PushEventBlockDrop(pTimer, roomID, roomCode, modeInfo.Block2_Spawn_Index, modeInfo.Block2_Spawn_Time);
 
-        PushEventBombSpawn(mTimer, roomID, roomCode, modeInfo.Bomb_Spawn_Time);
+        PushEventBombSpawn(pTimer, roomID, roomCode, modeInfo.Bomb_Spawn_Time);
 
-        PushEventWeaponSpawn(mTimer, roomID, roomCode, modeInfo.Weapon1_Spawn_Index, modeInfo.Weapon1_Spawn_Time);
-        PushEventWeaponSpawn(mTimer, roomID, roomCode, modeInfo.Weapon2_Spawn_Index, modeInfo.Weapon2_Spawn_Time);
+        PushEventWeaponSpawn(pTimer, roomID, roomCode, modeInfo.Weapon1_Spawn_Index, modeInfo.Weapon1_Spawn_Time);
+        PushEventWeaponSpawn(pTimer, roomID, roomCode, modeInfo.Weapon2_Spawn_Index, modeInfo.Weapon2_Spawn_Time);
 
-        PushEventRemainTimeSync(mTimer, roomID, roomCode);
+        PushEventRemainTimeSync(pTimer, roomID, roomCode);
 
-        PushEventTimeOverCheck(mTimer, roomID, roomCode);
+        PushEventTimeOverCheck(pTimer, roomID, roomCode);
 
         room->SetStartTime(std::chrono::system_clock::now());
     }
@@ -52,7 +52,7 @@ void FITH::StartGame(int roomID)
 
 void FITH::CheckGameEnd(int roomID)
 {
-    Room* room = mServer->GetRooms()[roomID];
+    Room* room = pServer->GetRooms()[roomID];
     int teamCnt = 2; // 팀 수 (임시 나중에 게임 데이터로 읽어야 함)
     int loseTeamCnt = 0;
     std::set<int> winningTeams;
@@ -67,22 +67,20 @@ void FITH::CheckGameEnd(int roomID)
 
     if (loseTeamCnt == teamCnt - 1) {
         if (room->SetIsRun(false) == true) {
-            mPacketSender->SendGameEndPacket(roomID, 0);
+            pPacketSender->SendGameEndPacket(roomID, 0);
 
             CalculateGameResult(roomID, winningTeams);
 
-            room->GetPlayerListLock().lock_shared();
-            for (auto player : room->GetPlayerList()) {
-                if (player == nullptr) continue;
-                if (player->GetIsBot() == true) {
-                    delete player;
-                    continue;
-                }
+            for (const auto& sID : room->GetPlayerList()) {
+                int session_id = sID.load();
+                if (session_id == INVALIDKEY) continue;
+
+                Player* player = dynamic_cast<Player*>(pServer->GetSessions()[session_id]);
+
                 player->GetSessionStateLock().lock();
                 player->SetSessionState(eSessionState::ST_ACCEPTED);
                 player->GetSessionStateLock().unlock();
             }
-            room->GetPlayerListLock().unlock_shared();
             room->Reset();
 
             std::cout << "Game End - " << roomID << std::endl;
@@ -92,7 +90,7 @@ void FITH::CheckGameEnd(int roomID)
 
 void FITH::TimeoverGameEnd(int roomID)
 {
-    Room* room = mServer->GetRooms()[roomID];
+    Room* room = pServer->GetRooms()[roomID];
 
     std::set<int> winningTeams;
     int maxLife = 0;
@@ -110,23 +108,19 @@ void FITH::TimeoverGameEnd(int roomID)
     }
 
     if (room->SetIsRun(false) == true) {
-        mPacketSender->SendGameEndPacket(roomID, 0);
+        pPacketSender->SendGameEndPacket(roomID, 0);
 
         CalculateGameResult(roomID, winningTeams);
 
-        room->GetPlayerListLock().lock_shared();
-        for (auto player : room->GetPlayerList()) {
-            if (player == nullptr) continue;
-            if (player->GetIsBot() == true) {
-                delete player;
-                continue;
-            }
+        for (const auto& sID : room->GetPlayerList()) {
+            int session_id = sID.load();
+            if (session_id == INVALIDKEY) continue;
+            Player* player = dynamic_cast<Player*>(pServer->GetSessions()[session_id]);
             player->GetSessionStateLock().lock();
             player->Init();
             player->SetSessionState(eSessionState::ST_ACCEPTED);
             player->GetSessionStateLock().unlock();
         }
-        room->GetPlayerListLock().unlock_shared();
         room->Reset();
 
         std::cout << "Game End - " << roomID << std::endl;
@@ -137,7 +131,7 @@ int FITH::CalculatePoint(sPlayerGameRecord record, bool isWin)
 {
     int point = 0;
 
-    auto& constants = mTableManager->GetPointConstantList()[mGameMode];
+    auto& constants = pTableManager->GetPointConstantList()[mGameMode];
 
     switch (isWin) {
     case true: {
@@ -159,8 +153,8 @@ int FITH::CalculateGoldReward(int point, bool isMvp, bool isWin)
 {
     int pointIdx = (point > 10) ? 10 : point;
 
-    auto& rewards = mTableManager->GetGameRewardList()[mGameMode];
-    auto& BonusRewards = mTableManager->GetGameBonusRewardList()[mGameMode][(isMvp == true) ? 11 : pointIdx];
+    auto& rewards = pTableManager->GetGameRewardList()[mGameMode];
+    auto& BonusRewards = pTableManager->GetGameBonusRewardList()[mGameMode][(isMvp == true) ? 11 : pointIdx];
 
     int gold = 0;
 
@@ -190,7 +184,7 @@ int FITH::CalculateGoldReward(int point, bool isMvp, bool isWin)
 
 void FITH::CalculateGameResult(int roomID, std::set<int>& winningTeams)
 {
-    Room* room = mServer->GetRooms()[roomID];
+    Room* room = pServer->GetRooms()[roomID];
     std::unordered_map<int, sPlayerGameRecord>& records = room->GetPlayerRecordList();
 
     int mvp_id = INVALIDKEY;
@@ -218,26 +212,88 @@ void FITH::CalculateGameResult(int roomID, std::set<int>& winningTeams)
     }
 
     // DB에 데이터 업데이트
-    room->GetPlayerListLock().lock_shared();
     for (auto& pair : records) {
-        if (room->GetPlayerList()[pair.first] == nullptr) {
-            continue;
-        }
         sPlayerGameRecord record = pair.second;
 
         // 테스트용
-        mDB->UpdateRanking(pair.first + 1001, record.kill_count, record.death_count, record.point);
-        mDB->UpdateUserGold(pair.first + 1001, record.earn_gold);
-        mDB->UpdateUserPoint(pair.first + 1001, record.point);
+        pDB->UpdateRanking(pair.first + 1001, record.kill_count, record.death_count, record.point);
+        pDB->UpdateUserGold(pair.first + 1001, record.earn_gold);
+        pDB->UpdateUserPoint(pair.first + 1001, record.point);
     }
-    room->GetPlayerListLock().unlock_shared();
 
-    mPacketSender->SendGameResultPacket(roomID, winningTeams);
+    pPacketSender->SendGameResultPacket(roomID, winningTeams);
+}
+
+bool FITH::DeletePlayer(int playerID, int roomID)
+{
+    Room* room = pServer->GetRooms()[roomID];
+
+    int sessionID = room->GetPlayerList()[playerID].load();
+    if (sessionID == INVALIDKEY) {
+        return false;
+    }
+
+    Player* player = dynamic_cast<Player*>(pServer->GetSessions()[sessionID]);
+
+    if (room->GetState() != eRoomState::RS_INGAME) {
+        return false;
+    }
+
+    if (player == nullptr) {
+        return false;
+    }
+    Vector3f pos = player->GetPosition();
+    Vector3f dir = player->GetDirection();
+
+    // 들고있는 무기 해제
+    player->GetWeaponLock().lock();
+    Weapon* weapon = player->GetWeapon();
+    if (weapon != nullptr) {
+        if (weapon->SetIsGrabbed(false) == true) {
+            int weaponID = weapon->GetID();
+            weapon->SetOwenrID(INVALIDKEY);
+            weapon->SetPosition(player->GetPosition());
+            pPacketSender->SendWeaponDropPacket(pos, roomID, weaponID);
+        }
+    }
+    player->GetWeaponLock().unlock();
+
+    // 들고있는 폭탄 폭발
+    player->GetBombLock().lock();
+    Bomb* bomb = player->GetBomb();
+    if (bomb != nullptr) {
+        if (bomb->SetIsGrabbed(false) == true) {
+            int bombID = bomb->GetID();
+            bomb = nullptr;
+            pPacketSender->SendBombExplosionPacket(roomID, bombID);
+            room->DeleteBomb(bombID);
+        }
+    }
+    player->GetBombLock().unlock();
+
+    // 잡은 플레이어 놓기
+    if (player->GetAttachedPlayerID() != INVALIDKEY && player->GetIsGrabbed() == false) {
+        int targetID = player->GetAttachedPlayerID();
+        Player* target = dynamic_cast<Player*>(pServer->GetSessions()[room->GetPlayerList()[targetID].load()]);
+
+        if (target->SetIsGrabbed(false) == true) {
+            player->SetAttachedPlayerID(INVALIDKEY);
+            target->SetAttachedPlayerID(INVALIDKEY);
+            pPacketSender->SendPlayerThrowOtherPlayerPacket(roomID, playerID, pos, dir, targetID, target->GetPosition(), target->GetDirection());
+        }
+    }
+
+    room->GetTeams()[player->GetTeam()].GetMembers().erase(playerID);
+    room->GetPlayerList()[playerID].store(INVALIDKEY);
+    if (room->GetPlayerCnt() > 0) {
+        room->SubPlayerCnt();
+    }
+    return true;
 }
 
 std::set<Vector3f> FITH::SetObjectSpawnPos(int roomID, int spawnCount)
 {
-    Room* room = mServer->GetRooms()[roomID];
+    Room* room = pServer->GetRooms()[roomID];
 
     std::vector<std::pair<int, int>>& spawnPoses = room->GetMap()->GetObjectSpawnIndexes();
 
@@ -292,10 +348,10 @@ void FITH::BombSpawn(Room* room, int roomID)
         bombIDs.push_back(bombid);
     }
 
-    mPacketSender->SendBombSpawnPacket(poses, bombIDs, explosionInterval, roomID);
+    pPacketSender->SendBombSpawnPacket(poses, bombIDs, explosionInterval, roomID);
 
     for (const int id : bombIDs) {
-        PushEventBombExplosion(mServer->GetTimer(), roomID, id, room->GetRoomCode(), explosionInterval);
+        PushEventBombExplosion(pServer->GetTimer(), roomID, id, room->GetRoomCode(), explosionInterval);
     }
 }
 
@@ -306,7 +362,7 @@ void FITH::WeaponSpawn(Room* room, int roomID, eWeaponType weaponType, int spawn
     std::vector<Vector3f> poses;
     std::vector<int> weaponIDs;
     std::vector<int> weaponTypes;
-    WeaponStat& weaponStat = mServer->GetTableManager()->GetWeaponStats()[weaponType];
+    WeaponStat& weaponStat = pServer->GetTableManager()->GetWeaponStats()[weaponType];
 
     float posOffset = (static_cast<float>(BLOCKSIZE) / 3);
 
@@ -326,7 +382,7 @@ void FITH::WeaponSpawn(Room* room, int roomID, eWeaponType weaponType, int spawn
         weaponIDs.push_back(weaponid);
         weaponTypes.push_back(weaponType);
     }
-    mPacketSender->SendWeaponSpawnPacket(poses, weaponIDs, weaponTypes, roomID);
+    pPacketSender->SendWeaponSpawnPacket(poses, weaponIDs, weaponTypes, roomID);
 }
 
 bool FITH::CheckValidPlayerPosition(Vector3f& position)

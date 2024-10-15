@@ -5,8 +5,8 @@ class WorkerThread
 {
 public:
 	WorkerThread(class Server* pServer)
-		:m_pServer(pServer),
-		m_pPacketManager(nullptr)
+		:pServer(pServer),
+		pPacketManager(nullptr)
 	{};
 	~WorkerThread();
 
@@ -15,7 +15,7 @@ public:
 private:
 	bool isRun = true;
 
-	class Server* m_pServer;
-	PacketManager* m_pPacketManager;
+	class Server* pServer;
+	PacketManager* pPacketManager;
 };
 

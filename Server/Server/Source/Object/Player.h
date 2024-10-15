@@ -16,7 +16,7 @@ public:
 
 	virtual void		Disconnect() override;
 	
-	virtual void		DoRecv() override;;
+	virtual void		DoRecv() override;
 
 	virtual void		DoSend(void* packet, const int size) override;
 
@@ -56,8 +56,8 @@ public:
 	void				SetDirection(Vector3f v3f) { mDirection = v3f; }
 	void				SetPlayerState(ePlayerState state) { mPlayerState = state; }
 	void				SetChacracterType(eCharacterType type) { mCharacterType = type; }
-	void				SetHP(int hp) { mHP = hp; }
-	void				SetStamina(int stamina) { mStamina = stamina; }
+	void				SetHP(int hp) { mHP.store(hp); }
+	void				SetStamina(int stamina) { mStamina.store(stamina); }
 	void				SetGroggyCount(int count) { mGroggyCount = count; }
 	void				SetBomb(class Bomb* bomb) { mBomb = bomb; }
 	void				SetWeapon(class Weapon* weapon) { mWeapon = weapon; }
@@ -68,10 +68,10 @@ public:
 	// cas
 	bool				SetIsGrabbed(bool desired);
 
-	void				RecoveryHP(int value) { mHP += value; }
-	void				ReduceHP(int value) { mHP -= value; }
+	void				RecoveryHP(int value) { mHP.fetch_add(value); }
+	void				ReduceHP(int value) { mHP.fetch_add(-value); }
 
-	void				ReduceStamina(int value) { mStamina -= value; }
+	void				ReduceStamina(int value) { mStamina.fetch_add(-value); }
 
 	void				AddGroggyCount() { mGroggyCount++; }
 
@@ -103,8 +103,8 @@ protected:
 	Vector3f			mDirection;
 
 	eCharacterType		mCharacterType = eCharacterType::CT_TEST;
-	int					mHP;
-	int					mStamina;
+	std::atomic<int>	mHP;
+	std::atomic<int>	mStamina;
 	int					mGroggyCount;
 	class Bomb*			mBomb = nullptr;
 	class Weapon*		mWeapon = nullptr;

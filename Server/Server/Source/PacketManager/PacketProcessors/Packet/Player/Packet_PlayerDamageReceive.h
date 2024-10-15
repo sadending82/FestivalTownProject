@@ -32,9 +32,17 @@ public:
 				}
 				room->GetStateLock().unlock_shared();
 
-				room->GetPlayerListLock().lock_shared();
-				Player* target = room->GetPlayerList().at(read->target_id());
-				Player* attacker = room->GetPlayerList().at(read->attacker_id());
+				int target_sessionID = room->GetPlayerList()[read->target_id()].load();
+				if (target_sessionID == INVALIDKEY) {
+					return;
+				}
+				int attacker_sessionID = room->GetPlayerList()[read->attacker_id()].load();
+				if (attacker_sessionID == INVALIDKEY) {
+					return;
+				}
+
+				Player* target = dynamic_cast<Player*>(pServer->GetSessions()[target_sessionID]);
+				Player* attacker = dynamic_cast<Player*>(pServer->GetSessions()[attacker_sessionID]);
 
 				if (target == nullptr || attacker == nullptr) {
 					return;
@@ -44,7 +52,6 @@ public:
 				// 살아있는지 확인
 				if (target->GetPlayerState() != ePlayerState::PS_ALIVE) {
 					target->GetPlayerStateLock().unlock();
-					room->GetPlayerListLock().unlock_shared();
 					return;
 				}
 				target->GetPlayerStateLock().unlock();
@@ -71,7 +78,10 @@ public:
 
 				case eDamageType::AT_ATTACK: {
 					if (target_id == attacker_id) {
-						room->GetPlayerListLock().unlock_shared();
+						return;
+					}
+					// 팀킬 방지
+					if (target->GetTeam() == attacker->GetTeam()) {
 						return;
 					}
 
@@ -150,12 +160,9 @@ public:
 				}break;
 
 				default: {
-					room->GetPlayerListLock().unlock_shared();
 					return;
 				}break;
 				}
-
-				room->GetPlayerListLock().unlock_shared();
 			}
 		}
 		catch (const std::exception& e) {

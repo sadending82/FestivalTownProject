@@ -19,6 +19,8 @@ public:
 	virtual int CalculateGoldReward(int point, bool isMvp, bool isWin) { return 0; }
 	virtual void CalculateGameResult(int roomID, std::set<int>& winningTeams) {}
 
+	virtual bool DeletePlayer(int playerID, int roomID) { return false; }
+
 	virtual std::set<Vector3f> SetObjectSpawnPos(int roomID, int spawnCount) { return std::set<Vector3f>(); }
 	virtual void BombSpawn(class Room* room, int roomID) {}
 	virtual void WeaponSpawn(class Room* room, int roomID, eWeaponType weaponType, int spawnCount) {}
