@@ -12,7 +12,7 @@ HANDLE g_hiocp;
 #define PORTNUM 45872
 #define IPADDRESS "127.0.0.1"
 
-inline constexpr int MAX_TEST = 5;
+inline constexpr int MAX_TEST = 400;
 inline constexpr int MAX_CLIENTS = MAX_TEST * 2;
 
 std::array<int, MAX_CLIENTS> client_map;
@@ -263,13 +263,11 @@ void TestThread()
 			if (false == g_clients[i].isInGame) continue;
 			if (g_clients[i].lastPacketSend + 16ms > high_resolution_clock::now()) continue;
 			g_clients[i].lastPacketSend = high_resolution_clock::now();
-			Vector3f newDir;
-			newDir.x = urd(dre);
-			newDir.y = urd(dre);
-			newDir.z = urd(dre);
-			g_clients[i].direction = newDir;
+			g_clients[i].direction.z += 0.001;
 			auto pack = pm.MakePlayerMovePacket(g_clients[i].position, g_clients[i].direction, g_clients[i].ingameId, ePlayerMoveState::PS_RUN);
+			auto pack2 = pm.MakePlayerPosSyncPacket(g_clients[i].ingameId, g_clients[i].position, g_clients[i].direction, 100);
 			g_clients[i].DoSend(pack.data(), pack.size());
+			g_clients[i].DoSend(pack2.data(), pack2.size());
 		}
 	}
 }
@@ -288,6 +286,7 @@ void ProcessPacket(unsigned char* data, const int ci)
 	{
 		g_clients[ci].connected = true;
 		std::cout << ci << "가 로그인을 시도했습니다." << std::endl;
+		std::cout << ci << "가 매칭을 시도해요!" << std::endl;
 		auto packet = pm.MakeMatchingRequestPacket(ci);
 		g_clients[ci].DoSend(packet.data(), packet.size());
 	}	
@@ -316,13 +315,14 @@ void ProcessPacket(unsigned char* data, const int ci)
 			{
 				if (pl->id() == g_clients[ci].ingameId) {
 					g_clients[ci].position.x = pl->pos()->x();
-					g_clients[ci].position.y = pl->pos()->y();
+					g_clients[ci].position.y = pl->pos()->y() + 0.5;
 					g_clients[ci].position.z = pl->pos()->z();
 				}
 			}
 		}
 	}
 		break;
+
 	case ePacketType::S2C_MATCHING_RESPONSE:
 	{
 		std::cout << ci << "플레이어가 매칭이 된 것을 확인했어요!" << std::endl;
@@ -345,10 +345,16 @@ void ProcessPacket(unsigned char* data, const int ci)
 	{
 		std::cout << ci << "가 게임이 끝났다고 알립니다." << std::endl;
 		g_clients[ci].isInGame = false;
+		g_clients[ci].direction.z = 0;
+	}
+		break;
+	case ePacketType::S2C_GAME_RESULT:
+	{
+		std::cout << ci << "가 결과를 전송 받았어요." << std::endl;
+		std::cout << ci << "가 바로 다시 매칭을 신청해요" << std::endl;
 		auto packet = pm.MakeMatchingRequestPacket(ci);
 		g_clients[ci].DoSend(packet.data(), packet.size());
 	}
-		break;
 	case ePacketType::S2C_HEART_BEAT:
 	{
 		auto packet = pm.MakeHeartBeatPacket();
