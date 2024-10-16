@@ -3,6 +3,7 @@
 enum ePacketType
 {
     // Server -> Client
+    PACKET_TYPE_NONE,
     S2C_LOGIN_RESPONSE,
     S2C_SIGNUP_RESPONSE,
 

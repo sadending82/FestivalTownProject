@@ -130,8 +130,7 @@ void WorkerThread()
 				std::memcpy(&nextBufSize, packet_ptr, sizeof(uint16_t));
 				packet_size = nextBufSize + headerSize;
 			}
-			packet_size = 0;
-			g_clients[ci].prevPacketData = 0;
+			g_clients[ci].prevPacketData = required_data;
 			if (0 != required_data)
 				memcpy(over->iocpBuf, packet_ptr, required_data);
 

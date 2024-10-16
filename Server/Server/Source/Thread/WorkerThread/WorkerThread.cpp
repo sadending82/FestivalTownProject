@@ -69,7 +69,7 @@ void WorkerThread::RunWorker()
             break;
         }
         case eOpType::OP_RECV: {
-            unsigned char* packet_ptr = exOver->mMessageBuf;
+            unsigned char* packet_ptr = exOver->GetmMessageBuf();
             uint16_t BufSize = 0;
             std::memcpy(&BufSize, packet_ptr, sizeof(uint16_t));
             const int headerSize = sizeof(HEADER);
@@ -86,10 +86,10 @@ void WorkerThread::RunWorker()
                 std::memcpy(&nextBufSize, packet_ptr, sizeof(uint16_t));
                 packet_size = nextBufSize + headerSize;
             }
-            packet_size = 0;
-            pServer->GetSessions()[key]->SetPrevData(0);
-            if (0 != required_data)
+            pServer->GetSessions()[key]->SetPrevData(required_data);
+            if (0 != required_data) {
                 memcpy(exOver->mMessageBuf, packet_ptr, required_data);
+            }
             pServer->GetSessions()[key]->DoRecv();
             break;
         }
