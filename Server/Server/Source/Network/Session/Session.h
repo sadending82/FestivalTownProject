@@ -7,7 +7,7 @@ public:
 	Session() : mSocket(INVALID_SOCKET),
 		mSessionState(eSessionState::ST_FREE)
 		, mSessionID(INVALIDKEY)
-		,mPrevData(0)
+		,mPrevDataSize(0)
 		,mIsHeartbeatAck(false)
 		,mPlayedSoloGameBefore(false)
 		,mMatchingRequestTime(0)
@@ -29,7 +29,7 @@ public:
 	std::mutex& GetDisconnectLock() { return mDisconnectLock; }
 	int GetSessionID() { return mSessionID; }
 	SOCKET GetSocket() { return mSocket; }
-	int GetPrevData() { return mPrevData; }
+	int GetPrevDataSize() { return mPrevDataSize; }
 	bool GetIsHeartbeatAck() { return mIsHeartbeatAck; }
 	bool GetPlayedSoloGameBefore() { return mPlayedSoloGameBefore; }
 	unsigned int GetMatchingRequestTime() { return mMatchingRequestTime; }
@@ -38,7 +38,7 @@ public:
 	void SetSessionState(eSessionState state) { mSessionState = state; }
 	void SetSessionID(int id) { mSessionID = id; }
 	void SetSocket(SOCKET sock) { mSocket = sock; }
-	void SetPrevData(int prevData) { mPrevData = prevData; }
+	void SetPrevDataSize(int prevDataSize) { mPrevDataSize = prevDataSize; }
 	void SetIsHeartbeatAck(bool flag) { mIsHeartbeatAck = flag; }
 	void SetPlayedSoloGameBefore(bool flag) { mPlayedSoloGameBefore = flag; }
 	void SetMatchingRequestTime(int time) { mMatchingRequestTime = time; }
@@ -50,7 +50,7 @@ protected:
 	eSessionState	mSessionState;
 	int				mSessionID; // 서버 내에서 구분하기 위한 id
 	SOCKET			mSocket;
-	int				mPrevData;
+	int				mPrevDataSize;
 	bool			mIsHeartbeatAck;
 
 	bool			mPlayedSoloGameBefore;

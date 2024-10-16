@@ -13,8 +13,8 @@ void Session::DoRecv()
 {
 	DWORD recvFlag = 0;
 	ZeroMemory(&mExOver.mOver, sizeof(mExOver.mOver));
-	mExOver.mWsaBuf.len = BUFSIZE - mPrevData;
-	mExOver.mWsaBuf.buf = reinterpret_cast<char*>(mExOver.mMessageBuf) + mPrevData;
+	mExOver.mWsaBuf.len = BUFSIZE - mPrevDataSize;
+	mExOver.mWsaBuf.buf = reinterpret_cast<char*>(mExOver.mMessageBuf) + mPrevDataSize;
 	BOOL ret = WSARecv(mSocket, &mExOver.mWsaBuf, 1, 0, &recvFlag, &mExOver.mOver, 0);
 }
 
@@ -27,8 +27,8 @@ void Session::DoSend(void* packet, const int size)
 void Session::SessionInit(SOCKET sock, int key)
 {
 	mSocket = sock;
-	mExOver.SetmOpType(eOpType::OP_RECV);
-	mPrevData = 0 ;
+	mExOver.SetOpType(eOpType::OP_RECV);
+	mPrevDataSize = 0 ;
 	mSessionID = key;
 	mPlayedSoloGameBefore = false;
 }

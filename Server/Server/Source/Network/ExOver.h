@@ -36,17 +36,17 @@ public:
 
 	~ExOver() {}
 
-	void SetmOver(WSAOVERLAPPED over) { mOver = over; }
-	void SetmWsaBuf(WSABUF buf) { mWsaBuf = buf; }
-	void SetmMessgeBuf(char* buf) { memcpy(mMessageBuf, buf, sizeof(buf)); }
-	void SetmOpType(eOpType type) { mOpType = type; }
-	void SetmTargetID(int id) { mTargetID = id; }
+	void SetOver(WSAOVERLAPPED over) { mOver = over; }
+	void SetWsaBuf(WSABUF buf) { mWsaBuf = buf; }
+	void SetMessgeBuf(char* buf) { memcpy(mMessageBuf, buf, sizeof(buf)); }
+	void SetOpType(eOpType type) { mOpType = type; }
+	void SetTargetID(int id) { mTargetID = id; }
 
-	WSAOVERLAPPED GetmOver() { return mOver; }
-	WSABUF GetmWsaBuf() { return mWsaBuf; }
-	unsigned char* GetmMessageBuf() { return mMessageBuf; }
-	eOpType GetmOpType() { return mOpType; }
-	int GetmTargetID() { return mTargetID; }
+	WSAOVERLAPPED GetOver() { return mOver; }
+	WSABUF GetWsaBuf() { return mWsaBuf; }
+	unsigned char* GetMessageBuf() { return mMessageBuf; }
+	eOpType GetOpType() { return mOpType; }
+	int GetTargetID() { return mTargetID; }
 
 	//private:
 	WSAOVERLAPPED mOver;
