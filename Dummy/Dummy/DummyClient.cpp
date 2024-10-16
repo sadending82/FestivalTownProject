@@ -9,6 +9,8 @@ DummyClient::DummyClient()
 	direction.x = 0.0;
 	direction.y = 0.0;
 	direction.z = 0.0;
+
+	isMove = false;
 }
 
 DummyClient::~DummyClient()

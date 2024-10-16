@@ -10,10 +10,10 @@
 HANDLE g_hiocp;
 
 #define PORTNUM 45872
-#define IPADDRESS "127.0.0.1"
-//"39.120.204.67"
+#define IPADDRESS "39.120.204.67"
+//
 
-inline constexpr int MAX_TEST = 5;
+inline constexpr int MAX_TEST = 250;
 inline constexpr int MAX_CLIENTS = MAX_TEST * 2;
 
 std::array<int, MAX_CLIENTS> client_map;
@@ -113,27 +113,39 @@ void WorkerThread()
 		}
 
 		if (eOpType::OP_RECV == over->eventType) {
-			unsigned char* packet_ptr = over->iocpBuf;
-			uint16_t BufSize = 0;
-			std::memcpy(&BufSize, packet_ptr, sizeof(uint16_t));
-			unsigned char* buf = g_clients[ci].recvOver.iocpBuf;
-			const int headerSize = sizeof(HEADER);
-			int required_data = io_size + g_clients[ci].prevPacketData;
-			int packet_size = BufSize + headerSize;
-			while (required_data >= packet_size) {
-				if (required_data >= BUFSIZE) break;
-				if (packet_size <= 0) break;
-				ProcessPacket(packet_ptr, ci);
-				required_data -= packet_size;
-				packet_ptr += packet_size;
 
-				uint16_t nextBufSize = 0;
-				std::memcpy(&nextBufSize, packet_ptr, sizeof(uint16_t));
-				packet_size = nextBufSize + headerSize;
+			const int headerSize = sizeof(HEADER);
+
+			unsigned char* buf = g_clients[ci].recvOver.iocpBuf;		
+			uint16_t psize = g_clients[ci].currPacketSize;
+			unsigned prSize = g_clients[ci].prevPacketData;
+
+			// 받은 데이터가 실제 패킷 크기보다 클 동안 패킷 재조립 실행
+			while (io_size > 0)
+			{
+				if (0 == psize) {
+					std::memcpy(&psize, buf, sizeof(uint16_t));
+					psize += headerSize;
+				}
+				if (io_size + prSize >= psize) {
+					//패킷 조립 가능
+					unsigned char packet[BUFSIZE];
+					memcpy(packet, g_clients[ci].packetBuf, prSize);
+					memcpy(packet + prSize, buf, psize - prSize);
+					ProcessPacket(packet, static_cast<int>(ci));
+					io_size -= psize - prSize;
+					buf += psize - prSize;
+					psize = 0; prSize = 0;
+				}
+				else {
+					memcpy(g_clients[ci].packetBuf + prSize, buf, io_size);
+					prSize += io_size;
+					io_size = 0;
+				}
 			}
-			g_clients[ci].prevPacketData = required_data;
-			if (0 != required_data)
-				memcpy(over->iocpBuf, packet_ptr, required_data);
+
+			g_clients[ci].currPacketSize = psize;
+			g_clients[ci].prevPacketData = prSize;
 
 			DWORD recv_flag = 0;
 			int ret = WSARecv(g_clients[ci].clientSocket, &g_clients[ci].recvOver.wsabuf, 1, NULL, &recv_flag, &g_clients[ci].recvOver.over, NULL);
@@ -261,13 +273,21 @@ void TestThread()
 		{
 			if (false == g_clients[i].connected) continue;
 			if (false == g_clients[i].isInGame) continue;
-			if (g_clients[i].lastPacketSend + 32ms > high_resolution_clock::now()) continue;
-			g_clients[i].lastPacketSend = high_resolution_clock::now();
-			g_clients[i].direction.z += 0.001;
-			auto pack = pm.MakePlayerMovePacket(g_clients[i].position, g_clients[i].direction, g_clients[i].ingameId, ePlayerMoveState::PS_RUN);
-			auto pack2 = pm.MakePlayerPosSyncPacket(g_clients[i].ingameId, g_clients[i].position, g_clients[i].direction, 100);
-			g_clients[i].DoSend(pack.data(), pack.size());
-			g_clients[i].DoSend(pack2.data(), pack2.size());
+			if (g_clients[i].lastSyncPacketSend + 48ms <= high_resolution_clock::now())
+			{
+				g_clients[i].lastSyncPacketSend = high_resolution_clock::now();
+				auto pack = pm.MakePlayerPosSyncPacket(g_clients[i].ingameId, g_clients[i].position, g_clients[i].direction, 100);
+				g_clients[i].DoSend(pack.data(), pack.size());
+			}
+			if (g_clients[i].lastMovePacketSend + 0.5s <= high_resolution_clock::now())
+			{
+				g_clients[i].lastMovePacketSend = high_resolution_clock::now();
+				g_clients[i].direction.y += 0.005;
+				auto pack = pm.MakePlayerMovePacket(g_clients[i].position, g_clients[i].direction,
+					g_clients[i].ingameId, g_clients[i].isMove ? ePlayerMoveState::PS_RUN : ePlayerMoveState::PS_MOVESTOP);
+				g_clients[i].isMove = !g_clients[i].isMove;
+				g_clients[i].DoSend(pack.data(), pack.size());
+			}
 		}
 	}
 }

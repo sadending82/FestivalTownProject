@@ -47,8 +47,10 @@ public:
 	OverlappedEx recvOver;
 	unsigned char packetBuf[BUFSIZE];
 	int prevPacketData;
-	int currPacketSize;
-	std::chrono::high_resolution_clock::time_point lastPacketSend;
+	uint16_t currPacketSize;
+	std::chrono::high_resolution_clock::time_point lastSyncPacketSend;
+	std::chrono::high_resolution_clock::time_point lastMovePacketSend;
+	bool isMove;
 	bool isInGame;
 	int roomId;
 	int ingameId;
