@@ -11,8 +11,9 @@ HANDLE g_hiocp;
 
 #define PORTNUM 45872
 #define IPADDRESS "127.0.0.1"
+//"39.120.204.67"
 
-inline constexpr int MAX_TEST = 400;
+inline constexpr int MAX_TEST = 5;
 inline constexpr int MAX_CLIENTS = MAX_TEST * 2;
 
 std::array<int, MAX_CLIENTS> client_map;
@@ -261,7 +262,7 @@ void TestThread()
 		{
 			if (false == g_clients[i].connected) continue;
 			if (false == g_clients[i].isInGame) continue;
-			if (g_clients[i].lastPacketSend + 16ms > high_resolution_clock::now()) continue;
+			if (g_clients[i].lastPacketSend + 32ms > high_resolution_clock::now()) continue;
 			g_clients[i].lastPacketSend = high_resolution_clock::now();
 			g_clients[i].direction.z += 0.001;
 			auto pack = pm.MakePlayerMovePacket(g_clients[i].position, g_clients[i].direction, g_clients[i].ingameId, ePlayerMoveState::PS_RUN);
@@ -355,6 +356,7 @@ void ProcessPacket(unsigned char* data, const int ci)
 		auto packet = pm.MakeMatchingRequestPacket(ci);
 		g_clients[ci].DoSend(packet.data(), packet.size());
 	}
+		break;
 	case ePacketType::S2C_HEART_BEAT:
 	{
 		auto packet = pm.MakeHeartBeatPacket();
