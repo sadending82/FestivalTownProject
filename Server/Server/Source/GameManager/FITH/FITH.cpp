@@ -215,10 +215,10 @@ void FITH::CalculateGameResult(int roomID, std::set<int>& winningTeams)
     for (auto& pair : records) {
         sPlayerGameRecord record = pair.second;
 
-        // 테스트용
-        pDB->UpdateRanking(pair.first + 1001, record.kill_count, record.death_count, record.point);
-        pDB->UpdateUserGold(pair.first + 1001, record.earn_gold);
-        pDB->UpdateUserPoint(pair.first + 1001, record.point);
+        //// 테스트용
+        //pDB->UpdateRanking(pair.first + 1001, record.kill_count, record.death_count, record.point);
+        //pDB->UpdateUserGold(pair.first + 1001, record.earn_gold);
+        //pDB->UpdateUserPoint(pair.first + 1001, record.point);
     }
 
     pPacketSender->SendGameResultPacket(roomID, winningTeams);
