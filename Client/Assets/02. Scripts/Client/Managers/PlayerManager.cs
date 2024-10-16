@@ -50,8 +50,6 @@ public class PlayerManager : MonoBehaviour
             myId = Managers.Game.inGameID;
             isHost = Managers.Game.isHost;
         }
-
-        
     }
     public GameObject GetPlayers()
     {

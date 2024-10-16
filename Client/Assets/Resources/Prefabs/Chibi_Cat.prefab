@@ -3161,7 +3161,7 @@ Rigidbody:
   m_GameObject: {fileID: 11703587716968144}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0.5
+  m_Drag: 0.05
   m_AngularDrag: 0.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -3254,13 +3254,13 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
@@ -3316,7 +3316,7 @@ Rigidbody:
   m_GameObject: {fileID: 401297270253956949}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0.5
+  m_Drag: 0.05
   m_AngularDrag: 0.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -3409,13 +3409,13 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
@@ -3471,7 +3471,7 @@ Rigidbody:
   m_GameObject: {fileID: 586984623971072362}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0.5
+  m_Drag: 0.05
   m_AngularDrag: 0.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -3564,13 +3564,13 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
@@ -3628,7 +3628,7 @@ Rigidbody:
   m_GameObject: {fileID: 942860553661328234}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0.5
+  m_Drag: 0.05
   m_AngularDrag: 0.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -3788,7 +3788,7 @@ Rigidbody:
   m_GameObject: {fileID: 1410775900721058734}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0.5
+  m_Drag: 0.05
   m_AngularDrag: 0.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -3881,13 +3881,13 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
@@ -3943,7 +3943,7 @@ Rigidbody:
   m_GameObject: {fileID: 1427926658118093225}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0.5
+  m_Drag: 0.05
   m_AngularDrag: 0.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -4098,7 +4098,7 @@ Rigidbody:
   m_GameObject: {fileID: 1539728641115245862}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0.5
+  m_Drag: 0.05
   m_AngularDrag: 0.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -4191,13 +4191,13 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
@@ -4258,7 +4258,7 @@ Rigidbody:
   m_GameObject: {fileID: 2030581038094220146}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0.5
+  m_Drag: 0.05
   m_AngularDrag: 0.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -4351,13 +4351,13 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
@@ -4426,7 +4426,7 @@ Rigidbody:
   m_GameObject: {fileID: 2421253405512057171}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0.5
+  m_Drag: 0.05
   m_AngularDrag: 0.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -4519,13 +4519,13 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
@@ -4589,7 +4589,7 @@ Rigidbody:
   m_GameObject: {fileID: 2494826194896390755}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0.5
+  m_Drag: 0.05
   m_AngularDrag: 0.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -4682,13 +4682,13 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
@@ -4723,7 +4723,7 @@ Rigidbody:
   m_GameObject: {fileID: 3364263081529966664}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0.5
+  m_Drag: 0.05
   m_AngularDrag: 0.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -4816,13 +4816,13 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
@@ -4880,7 +4880,7 @@ Rigidbody:
   m_GameObject: {fileID: 3587909018602843184}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0.5
+  m_Drag: 0.05
   m_AngularDrag: 0.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -4973,13 +4973,13 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
@@ -5035,7 +5035,7 @@ Rigidbody:
   m_GameObject: {fileID: 3664824800025055193}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0.5
+  m_Drag: 0.05
   m_AngularDrag: 0.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -5128,13 +5128,13 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
@@ -5192,7 +5192,7 @@ Rigidbody:
   m_GameObject: {fileID: 3727966088115929952}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0.5
+  m_Drag: 0.05
   m_AngularDrag: 0.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -5285,13 +5285,13 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
@@ -5407,7 +5407,7 @@ Rigidbody:
   m_GameObject: {fileID: 4860029613339846683}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0.5
+  m_Drag: 0.05
   m_AngularDrag: 0.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -5562,7 +5562,7 @@ Rigidbody:
   m_GameObject: {fileID: 5541318676758005462}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0.5
+  m_Drag: 0.05
   m_AngularDrag: 0.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -5655,13 +5655,13 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
@@ -5717,7 +5717,7 @@ Rigidbody:
   m_GameObject: {fileID: 6233094912445671986}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0.5
+  m_Drag: 0.05
   m_AngularDrag: 0.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -5810,13 +5810,13 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
@@ -5892,7 +5892,7 @@ Rigidbody:
   m_GameObject: {fileID: 6973424783672775047}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0.5
+  m_Drag: 0.05
   m_AngularDrag: 0.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -5985,13 +5985,13 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
@@ -6062,7 +6062,7 @@ Rigidbody:
   m_GameObject: {fileID: 7439394265932431664}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0.5
+  m_Drag: 0.05
   m_AngularDrag: 0.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -6155,13 +6155,13 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
@@ -6217,7 +6217,7 @@ Rigidbody:
   m_GameObject: {fileID: 7698584564914061176}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0.5
+  m_Drag: 0.05
   m_AngularDrag: 0.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -6310,13 +6310,13 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
@@ -6374,7 +6374,7 @@ Rigidbody:
   m_GameObject: {fileID: 7826404169141441853}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0.5
+  m_Drag: 0.05
   m_AngularDrag: 0.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -6529,7 +6529,7 @@ Rigidbody:
   m_GameObject: {fileID: 8361135193262927689}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0.5
+  m_Drag: 0.05
   m_AngularDrag: 0.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -6689,7 +6689,7 @@ Rigidbody:
   m_GameObject: {fileID: 8577148043036928269}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0.5
+  m_Drag: 0.05
   m_AngularDrag: 0.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -6782,13 +6782,13 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
@@ -6846,7 +6846,7 @@ Rigidbody:
   m_GameObject: {fileID: 8600823212770174269}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0.5
+  m_Drag: 0.05
   m_AngularDrag: 0.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -6939,13 +6939,13 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
@@ -7003,7 +7003,7 @@ Rigidbody:
   m_GameObject: {fileID: 9091200775852942178}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0.5
+  m_Drag: 0.05
   m_AngularDrag: 0.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -7096,13 +7096,13 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0
   m_AngularYZDrive:
     serializedVersion: 4
-    positionSpring: 1000
+    positionSpring: 4000
     positionDamper: 0
     maximumForce: 10000
     useAcceleration: 0

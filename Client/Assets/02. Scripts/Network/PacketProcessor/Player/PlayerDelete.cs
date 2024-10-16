@@ -20,9 +20,12 @@ namespace Network.PacketProcessor
             var id = Data.Id;
 
             Debug.Log("Delete player - " + id);
-            Managers.Player.GetPlayers().transform.GetChild(id).GetComponent<PlayerController>().gameObject.SetActive(false);
+            GameObject tPlayer = Managers.Player.FindPlayerById(id);
+            if (tPlayer != null)
+            {
+                tPlayer.GetComponent<CharacterStatus>().SetIsDie(true);
+                tPlayer.GetComponent<PlayerController>().gameObject.SetActive(false);
+            }
         }
-
-        
     }
 }
