@@ -38,7 +38,7 @@ public:
 					return;
 				}
 
-				Player* target = dynamic_cast<Player*>(pServer->GetSessions()[room->GetPlayerList()[target_sessionID].load()]);
+				Player* target = dynamic_cast<Player*>(pServer->GetSessions()[target_sessionID]);
 
 				if (target->SetIsGrabbed(false) == true) {
 					player->SetAttachedPlayerID(INVALIDKEY);
