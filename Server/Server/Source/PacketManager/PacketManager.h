@@ -5,10 +5,10 @@
 class PacketManager
 {
 public:
-	PacketManager() {};
-	~PacketManager() {};
+	PacketManager() {}
+	PacketManager(Server* server, PacketSender* packetSender);
+	~PacketManager() {}
 
-	void Init(Server* server);
 	void ProcessPacket(unsigned char* data, const int key);
 	void ProcessEvent(const eEventType type, unsigned char* buf);
 

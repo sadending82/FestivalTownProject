@@ -6,10 +6,10 @@
 #include <sstream>
 #include <exception>
 
-void PacketManager::Init(Server* server)
+PacketManager::PacketManager(Server* server, PacketSender* packetSender)
 {
-	pServer = server;
-    pPacketSender = pServer->GetPacketSender();
+    pServer = server;
+    pPacketSender = packetSender;
 
     // packet
     {

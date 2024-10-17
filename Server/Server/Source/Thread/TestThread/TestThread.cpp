@@ -9,14 +9,11 @@
 
 TestThread::~TestThread()
 {
-    delete m_pPacketManager;
+
 }
 
 void TestThread::RunWorker()
 {
-    m_pPacketManager = new PacketManager();
-    m_pPacketManager->Init(m_pServer);
-
     AllocConsole();
     FILE* fpOut;
     freopen_s(&fpOut, "CONOUT$", "w", stdout);

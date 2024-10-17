@@ -77,6 +77,7 @@ private:
 	DB*									mDB = nullptr;
 	Timer*								mTimer = nullptr;
 	TableManager*						mTableManager = nullptr;
+	class PacketManager*				mPacketManager = nullptr;
 	PacketMaker*						mPacketMaker = nullptr;
 	PacketSender*						mPacketSender = nullptr;
 	class TestThread*					mTestThreadRef = nullptr;

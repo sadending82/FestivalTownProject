@@ -1,12 +1,11 @@
 #pragma once
-#include "../../PacketManager/PacketManager.h"
 
 class WorkerThread
 {
 public:
-	WorkerThread(class Server* pServer)
-		:pServer(pServer),
-		pPacketManager(nullptr)
+	WorkerThread(class Server* Server, class PacketManager* packetManager)
+		:pServer(Server),
+		pPacketManager(packetManager)
 	{};
 	~WorkerThread();
 
@@ -16,6 +15,6 @@ private:
 	bool isRun = true;
 
 	class Server* pServer;
-	PacketManager* pPacketManager;
+	class PacketManager* pPacketManager;
 };
 

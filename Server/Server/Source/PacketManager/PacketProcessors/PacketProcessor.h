@@ -22,7 +22,6 @@ public:
 	virtual void Process(unsigned char* buffer) {}
 
 protected:
-	flatbuffers::FlatBufferBuilder mBuilder;
 	Server* pServer = nullptr;
 	PacketSender* pPacketSender = nullptr;
 };

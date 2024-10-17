@@ -16,8 +16,7 @@ class TestThread
 public:
 	TestThread(class Server* pServer, class Timer* pTimer)
 		:m_pServer(pServer),
-		m_pTimer(pTimer),
-		m_pPacketManager(nullptr)
+		m_pTimer(pTimer)
 	{};
 	~TestThread();
 
@@ -27,7 +26,6 @@ public:
 private:
 	bool isRun = true;
 	class Server* m_pServer = nullptr;
-	PacketManager* m_pPacketManager = nullptr;
 	Timer* m_pTimer = nullptr;
 };
 

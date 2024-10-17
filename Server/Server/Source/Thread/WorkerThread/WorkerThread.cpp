@@ -1,16 +1,14 @@
 #include "WorkerThread.h"
-#include"../../Server/Server.h"
+#include "../../Server/Server.h"
+#include "../../PacketManager/PacketManager.h"
 
 WorkerThread::~WorkerThread()
 {
-    delete pPacketManager;
+
 }
 
 void WorkerThread::RunWorker()
 {
-    pPacketManager = new PacketManager();
-    pPacketManager->Init(pServer);
-
     while (isRun) {
         DWORD Transferred;
         ULONG key;
@@ -31,11 +29,6 @@ void WorkerThread::RunWorker()
             if (newKey != INVALIDKEY) {
                 Session* newSession = pServer->GetSessions()[newKey];
                 SOCKET cSocket = reinterpret_cast<SOCKET>(exOver->mWsaBuf.buf);
-                /*newSession->SetSocket(cSocket);
-                newSession->GetExOver().SetOpType(eOpType::OP_RECV);
-                newSession->SetPrevDataSize(0);
-                newSession->SetSessionID(newKey);
-                newSession->SetPlayedSoloGameBefore(false);*/
                 newSession->SessionInit(cSocket, newKey);
 
                 CreateIoCompletionPort((HANDLE)newSession->GetSocket(), pServer->GetHcp(), newKey, 0);
