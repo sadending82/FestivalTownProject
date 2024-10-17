@@ -9,6 +9,7 @@ using static UnityEngine.GraphicsBuffer;
 using UnityEngine.Playables;
 using UnityEditor;
 using ExcelDataStructure;
+using Unity.VisualScripting;
 
 public class PlayerController : MonoBehaviour
 {
@@ -51,7 +52,8 @@ public class PlayerController : MonoBehaviour
     private int holdAndWalkStaminaConsume;
     private float holdAndRunSpeed;
     private int holdAndRunStaminaConsume;
-    private float jumpSpeedOffset = 0.6f;
+    private float jumpSpeedOffset = 0.5f;
+    private bool doubleJumpChecker;
 
     private bool isLeftShiftKeyDown;
     private bool beforeIsLeftShiftKeyDown;
@@ -149,6 +151,7 @@ public class PlayerController : MonoBehaviour
         fKeyDownTimer = 0f;
         isGrap = false;
         isJump = false;
+        doubleJumpChecker = false;
         isPickUpMode = false;
         isDropMode = false;
         isGrounded = false;
@@ -165,9 +168,9 @@ public class PlayerController : MonoBehaviour
     {
         if (gameStart == true)
         {
-            if (isGrounded == false)
+            FallDownCheck();
+            if (isGrounded == false && doubleJumpChecker == false)
             {
-                FallDownCheck();
                 CheckIsGround();
             }
             if (playerStatus.GetIsDie() == false)
@@ -175,7 +178,7 @@ public class PlayerController : MonoBehaviour
                 // 살아있고 그로기 상태가 아님
                 if (playerStatus.GetIsGroggy() == false)
                 {
-                    if (amIPlayer == true)
+                    if (amIPlayer == true && pelvis.transform.position.y > 0)
                     {
                         Move();
                     }
@@ -454,13 +457,14 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-
+        // Jump
         if (Input.GetAxis("Jump") > 0)
         {
             if (isGrounded == true)
             {
                 if (pelvis != null)
                 {
+                    Debug.Log("Jump");
                     packetManager.SendPlayerMovePacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_JUMP);
                     Managers.Sound.Play3D("Sfx_Ch_Jump", gameObject);
                 }
@@ -475,7 +479,17 @@ public class PlayerController : MonoBehaviour
     public void Jump()
     {
         isGrounded = false;
-        pelvisRigidbody.velocity = Vector3.up * jumpForce;
+        doubleJumpChecker = true;
+        pelvisRigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        StartCoroutine(WaitIsGroundCheck());
+    }
+    /// <summary>
+    /// 더블 점프 방지를 위한 함수
+    /// </summary>
+    IEnumerator WaitIsGroundCheck()
+    {
+        yield return new WaitForSeconds(0.5f);
+        doubleJumpChecker = false;
     }
     public void SetWalkState()
     {
