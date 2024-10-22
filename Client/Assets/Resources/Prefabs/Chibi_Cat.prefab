@@ -1368,8 +1368,8 @@ MonoBehaviour:
   handR: {fileID: 7439394265932431664}
   leftFootRigidbody: {fileID: 6490085632441195103}
   rightFootRigidbody: {fileID: 5402061227843248073}
-  jumpForce: 120
-  floorDetectionDistance: 0.04
+  jumpForce: 150
+  floorDetectionDistance: 0.03
   rotateSpeed: 5
   bombInvenTransform: {fileID: 4805236475303947220}
   nearObjectChecker: {fileID: 0}
