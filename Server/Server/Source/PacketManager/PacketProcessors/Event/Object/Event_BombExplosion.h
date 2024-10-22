@@ -28,12 +28,9 @@ public:
 				return;
 			}
 
-			room->GetBombListLock().lock_shared();
-			if (room->GetBombList()[bombid] == nullptr) {
-				room->GetBombListLock().unlock_shared();
+			if (room->GetBomb(bombid) == nullptr) {
 				return;
 			}
-			room->GetBombListLock().unlock_shared();
 
 			pPacketSender->SendBombExplosionPacket(roomid, bombid);
 			room->DeleteBomb(bombid);

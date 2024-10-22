@@ -5,13 +5,16 @@
 class Weapon : public Object
 {
 public:
-	Weapon(eWeaponType type, WeaponStat& stat) : mType(type), mStat(stat) {}
+	Weapon() {}
+	Weapon(int id, eObjectType type) : Object(id, type) {}
 	~Weapon();
 
-	eWeaponType GetType() { return mType; }
+	void WeaponInit(eWeaponType type, WeaponStat& stat);
+
+	eWeaponType GetWeaponType() { return mWeaponType; }
 	WeaponStat&	GetStat() { return mStat; }
 
 private:
-	eWeaponType mType;
+	eWeaponType mWeaponType;
 	WeaponStat  mStat = WeaponStat();
 };

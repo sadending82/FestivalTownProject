@@ -63,6 +63,11 @@ enum class MapCode {
 	TEST
 };
 
+enum class eObjectType {
+	WEAPON,
+	BOMB
+};
+
 #pragma pack (push, 1)
 
 struct HEADER {

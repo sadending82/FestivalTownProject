@@ -29,10 +29,8 @@ public:
 				int bombid = read->id();
 
 				Room* room = pServer->GetRooms().at(roomid);
-				room->GetBombListLock().lock_shared();
-				Bomb* bomb = dynamic_cast<Bomb*>(room->GetBombList().at(bombid));
+				Bomb* bomb = room->GetBomb(bombid);
 				if (bomb == nullptr) {
-					room->GetBombListLock().unlock_shared();
 					return;
 				}
 
@@ -40,7 +38,6 @@ public:
 
 				std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_BOMB_POS_SYNC, data, size);
 				pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomid);
-				room->GetBombListLock().unlock_shared();
 			}
 		}
 		catch (const std::exception& e) {

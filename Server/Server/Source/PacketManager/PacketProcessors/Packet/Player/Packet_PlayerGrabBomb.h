@@ -37,11 +37,9 @@ public:
 				}
 				int bombid = read->bomb_id();
 
-				room->GetBombListLock().lock_shared();
-				Bomb* bomb = dynamic_cast<Bomb*>(room->GetBombList()[bombid]);
+				Bomb* bomb = room->GetBomb(bombid);
 				if (bomb == nullptr) {
 					player->GetBombLock().unlock();
-					room->GetBombListLock().unlock_shared();
 					return;
 				}
 				if (bomb->SetIsGrabbed(true) == true) {
@@ -55,7 +53,6 @@ public:
 					COUT << "ÆøÅº ÁÖÀÎ ÀÌ¹Ì ÀÖÀ½\n";
 				}
 				player->GetBombLock().unlock();
-				room->GetBombListLock().unlock_shared();
 			}
 		}
 		catch (const std::exception& e) {

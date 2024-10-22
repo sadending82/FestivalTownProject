@@ -36,13 +36,11 @@ public:
 					return;
 				}
 
-				room->GetWeaponListLock().lock();
-				if (room->GetWeaponList()[weaponid] != nullptr) {
+				if (room->GetWeapon(weaponid) != nullptr) {
 					std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_WEAPON_DELETE, data, size);
 					pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomid);
 					room->DeleteWeapon(weaponid);
 				}
-				room->GetWeaponListLock().unlock();
 			}
 		}
 		catch (const std::exception& e) {

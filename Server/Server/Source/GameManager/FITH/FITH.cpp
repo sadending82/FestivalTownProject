@@ -342,7 +342,8 @@ void FITH::BombSpawn(Room* room, int roomID)
         newPos.x = pos.x + (float)dis_value(gen);
         newPos.z = pos.z + (float)dis_value(gen);
 
-        int bombid = room->AddBomb(new Bomb, newPos);
+        int bombid = room->AddBomb(newPos);
+
         if (bombid == INVALIDKEY) continue;
         poses.push_back(newPos);
         bombIDs.push_back(bombid);
@@ -375,7 +376,7 @@ void FITH::WeaponSpawn(Room* room, int roomID, eWeaponType weaponType, int spawn
         newPos.x = pos.x + (float)dis_value(gen);
         newPos.z = pos.z + (float)dis_value(gen);
 
-        int weaponid = room->AddWeapon(new Weapon(weaponType, weaponStat), newPos);
+        int weaponid = room->AddWeapon(weaponType, weaponStat, newPos);
         if (weaponid == INVALIDKEY) continue;
 
         poses.push_back(newPos);

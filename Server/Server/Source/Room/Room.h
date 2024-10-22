@@ -5,6 +5,7 @@
 #include "../Object/Bomb/Bomb.h"
 #include "../Object/Weapon/Weapon.h"
 #include "../TableManager/Tables/FITH.h"
+#include "../Object/ObjectPool/ObjectPool.h"
 #include <shared_mutex>
 
 #define SESSION_ID std::atomic<int>
@@ -24,8 +25,8 @@ public:
 
 	bool AddPlayer(Player* player);
 
-	int  AddBomb(Bomb* object, Vector3f position, Vector3f direction = Vector3f(0, 0, 0));
-	int  AddWeapon(Weapon* object, Vector3f position, Vector3f direction = Vector3f(0, 0, 0));
+	int  AddBomb(Vector3f position, Vector3f direction = Vector3f(0, 0, 0));
+	int  AddWeapon(eWeaponType weaponType, WeaponStat& weaponStat, Vector3f position, Vector3f direction = Vector3f(0, 0, 0));
 
 	bool DeleteBomb(int id);
 	bool DeleteWeapon(int id);
@@ -33,9 +34,12 @@ public:
 	std::array<SESSION_ID, MAXPLAYER>& GetPlayerList() { return mPlayerList; }
 	std::unordered_map<int, Team>& GetTeams() { return mTeams; }
 	std::unordered_map<int, sPlayerGameRecord>& GetPlayerRecordList() { return mPlayerRecordList; }
-	std::array<Bomb*, MAXOBJECT>& GetBombList() { return mBombList; }
-	std::array<Weapon*, MAXOBJECT>& GetWeaponList() { return mWeaponList; }
-	void GetAllObjects(std::vector<Object*>& objectList);
+
+	ObjectPool& GetObjectPool() { return mObjectPool; }
+
+	Weapon* GetWeapon(int id);
+	Bomb* GetBomb(int id);
+
 	int GetPlayerCnt() { return mPlayerCnt; }
 	int GetReadyCnt() { return mReadyCnt; }
 	GameMode GetGameMode() { return mGameMode; }
@@ -43,8 +47,7 @@ public:
 	TIMEPOINT GetStartTime() { return mStartTime; }
 	eRoomState GetState() { return mState; }
 	std::shared_mutex& GetStateLock() { return mStateLock; }
-	std::shared_mutex& GetBombListLock() { return mBombListLock; }
-	std::shared_mutex& GetWeaponListLock() { return mWeaponListLock; }
+
 	int GetHostID() { return mHostID; }
 	long long GetRoomCode() { return mRoomCode; }
 	bool GetAllPlayerReady() { return mAllPlayerReady.load(); }
@@ -72,11 +75,11 @@ private:
 	class Server* pServer = nullptr;
 
 	std::shared_mutex mStateLock;
-	std::shared_mutex mBombListLock;
-	std::shared_mutex mWeaponListLock;
+
 	std::array<SESSION_ID, MAXPLAYER> mPlayerList;
-	std::array<Bomb*, MAXOBJECT> mBombList = { nullptr };
-	std::array<Weapon*, MAXOBJECT> mWeaponList = { nullptr };
+
+	ObjectPool mObjectPool;
+
 	std::unordered_map<int, sPlayerGameRecord> mPlayerRecordList;
 	std::unordered_map<int, Team> mTeams;
 

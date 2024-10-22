@@ -130,14 +130,11 @@ void PacketSender::SendBombSpawnPacket(std::vector<Vector3f>& positions, std::ve
 
 void PacketSender::SendBombExplosionPacket(int roomID, int bombID)
 {
-    mServer->GetRooms()[roomID]->GetBombListLock().lock_shared();
-    Object* object = mServer->GetRooms()[roomID]->GetBombList()[bombID];
-    if (object == nullptr) {
-        mServer->GetRooms()[roomID]->GetBombListLock().unlock_shared();
+    Bomb* bomb = mServer->GetRooms()[roomID]->GetBomb(bombID);
+    if (bomb == nullptr) {
         return;
     }
-    Vector3f pos = object->GetPosition();
-    mServer->GetRooms()[roomID]->GetBombListLock().unlock_shared();
+    Vector3f pos = bomb->GetPosition();
     std::vector<uint8_t> send_buffer = mPacketMaker->MakeBombExplosionPacket(bombID, pos);
     mServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }

@@ -174,6 +174,7 @@ if exist "$(ProjectDir)\Config" xcopy /Y /d /e /i "$(ProjectDir)\Config" "$(OutD
     <ClCompile Include="Source\Network\ExOver.cpp" />
     <ClCompile Include="Source\Network\Session\Session.cpp" />
     <ClCompile Include="Source\Object\Object.cpp" />
+    <ClCompile Include="Source\Object\ObjectPool\ObjectPool.cpp" />
     <ClCompile Include="Source\Object\Weapon\Weapon.cpp" />
     <ClCompile Include="Source\PacketManager\PacketMaker\PacketMaker.cpp" />
     <ClCompile Include="Source\PacketManager\PacketManager.cpp" />
@@ -204,6 +205,7 @@ if exist "$(ProjectDir)\Config" xcopy /Y /d /e /i "$(ProjectDir)\Config" "$(OutD
     <ClInclude Include="Source\Event\Event.h" />
     <ClInclude Include="Source\Object\Map\Map.h" />
     <ClInclude Include="Source\Object\Object.h" />
+    <ClInclude Include="Source\Object\ObjectPool\ObjectPool.h" />
     <ClInclude Include="Source\Object\Weapon\Weapon.h" />
     <ClInclude Include="Source\PacketManager\flatbuffer\block_generated.h" />
     <ClInclude Include="Source\PacketManager\flatbuffer\Bomb_generated.h" />

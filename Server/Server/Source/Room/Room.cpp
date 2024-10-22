@@ -5,12 +5,6 @@
 
 Room::~Room()
 {
-	for (int i = 0; i < MAXOBJECT; ++i) {
-		delete mBombList[i];
-	}
-	for (int i = 0; i < MAXOBJECT; ++i) {
-		delete mWeaponList[i];
-	}
 	delete mMap;
 }
 
@@ -22,17 +16,10 @@ void Room::Reset()
 	mHostID = INVALIDKEY;
 	mRoomCode = 0;
 
-	for (int i = 0; i < MAXOBJECT; ++i) {
-		delete mBombList[i];
-	}
-	for (int i = 0; i < MAXOBJECT; ++i) {
-		delete mWeaponList[i];
-	}
+	mObjectPool.AllObjectDeactive();
 	delete mMap;
 
 	std::fill(mPlayerList.begin(), mPlayerList.end(), INVALIDKEY);
-	std::fill(mBombList.begin(), mBombList.end(), nullptr);
-	std::fill(mWeaponList.begin(), mWeaponList.end(), nullptr);
 	mMap = nullptr;
 
 	mPlayerRecordList.clear();
@@ -51,6 +38,7 @@ void Room::Init(int id, GameMode gameMode, GameModeData& GameModeData)
 	mHostID = INVALIDKEY;
 	InitRoomCode();
 
+	mObjectPool.AllObjectDeactive();
 	std::fill(mPlayerList.begin(), mPlayerList.end(), INVALIDKEY);
 
 	// team game
@@ -99,51 +87,40 @@ bool Room::AddPlayer(Player* player)
 	return false;
 }
 
-int Room::AddBomb(Bomb* object, Vector3f position, Vector3f direction)
+int Room::AddBomb(Vector3f position, Vector3f direction)
 {
-	for (int i = 0; i < MAXOBJECT; ++i) {
-		mBombListLock.lock();
-		if (mBombList[i] == nullptr) {
-			mBombList[i] = object;
-			mBombListLock.unlock();
-			object->SetID(i);
-			object->SetPosition(position);
-			object->SetDirection(direction);
-			return i;
-		}
-		mBombListLock.unlock();
-	}
+	Bomb* bomb = dynamic_cast<Bomb*>(mObjectPool.GetFreeObject(eObjectType::BOMB));
 
-	return INVALIDKEY;
+	if (bomb == nullptr) { return INVALIDKEY; }
+
+	bomb->BombInit();
+	bomb->SetPosition(position);
+	bomb->SetDirection(direction);
+
+	return bomb->GetID();
 }
 
-int Room::AddWeapon(Weapon* object, Vector3f position, Vector3f direction)
+int Room::AddWeapon(eWeaponType weaponType, WeaponStat& weaponStat, Vector3f position, Vector3f direction)
 {
-	for (int i = 0; i < MAXOBJECT; ++i) {
-		mWeaponListLock.lock();
-		if (mWeaponList[i] == nullptr) {
-			mWeaponList[i] = object;
-			mWeaponListLock.unlock();
-			object->SetID(i);
-			object->SetPosition(position);
-			object->SetDirection(direction);
-			return i;
-		}
-		mWeaponListLock.unlock();
-	}
+	Weapon* weapon = dynamic_cast<Weapon*>(mObjectPool.GetFreeObject(eObjectType::WEAPON));
 
-	return INVALIDKEY;
+	if (weapon == nullptr) { return INVALIDKEY; }
+
+	weapon->WeaponInit(weaponType, weaponStat);
+	weapon->SetPosition(position);
+	weapon->SetDirection(direction);
+
+	return weapon->GetID();
 }
 
 bool Room::DeleteBomb(int id)
 {
-	mBombListLock.lock();
-	if (mBombList.at(id) == nullptr) {
-		mBombListLock.unlock();
+	Bomb* bomb = GetBomb(id);
+	if (bomb == nullptr) {
 		return false;
 	}
 	// 어떤 플레이어가 이 오브젝트를 가지고 있으면 해제시켜줘야함
-	int OwnerID = mBombList.at(id)->GetOwenrID();
+	int OwnerID = bomb->GetOwenrID();
 	if (OwnerID > INVALIDKEY) {
 		Player* player = dynamic_cast<Player*>(pServer->GetSessions()[mPlayerList[OwnerID].load()]);
 
@@ -153,19 +130,18 @@ bool Room::DeleteBomb(int id)
 		}
 		player->GetSessionStateLock().unlock();
 	}
-	delete mBombList.at(id);
-	mBombList.at(id) = nullptr;
-	mBombListLock.unlock();
+	bomb->SetIsActive(false);
 	return true;
 }
 
 bool Room::DeleteWeapon(int id)
 {
-	if (mWeaponList.at(id) == nullptr) {
+	Weapon* weapon = GetWeapon(id);
+	if (weapon == nullptr) {
 		return false;
 	}
 	// 어떤 플레이어가 이 오브젝트를 가지고 있으면 해제시켜줘야함
-	int OwnerID = mWeaponList.at(id)->GetOwenrID();
+	int OwnerID = weapon->GetOwenrID();
 	if (OwnerID > INVALIDKEY) {
 		Player* player = dynamic_cast<Player*>(pServer->GetSessions()[mPlayerList[OwnerID].load()]);
 
@@ -175,28 +151,18 @@ bool Room::DeleteWeapon(int id)
 		}
 		player->GetSessionStateLock().unlock();
 	}
-	delete mWeaponList.at(id);
-	mWeaponList.at(id) = nullptr;
+	weapon->SetIsActive(false);
 	return true;
 }
 
-void Room::GetAllObjects(std::vector<Object*>& objectList)
+Weapon* Room::GetWeapon(int id)
 {
-	mBombListLock.lock_shared();
-	for (Bomb* bomb : mBombList) {
-		if (bomb != nullptr) {
-			objectList.push_back(bomb);
-		}
-	}
-	mBombListLock.unlock_shared();
+	return dynamic_cast<Weapon*>(mObjectPool.GetObjectByID(id));
+}
 
-	mWeaponListLock.lock_shared();
-	for (Weapon* weapon : mWeaponList) {
-		if (weapon != nullptr) {
-			objectList.push_back(weapon);
-		}
-	}
-	mWeaponListLock.unlock_shared();
+Bomb* Room::GetBomb(int id)
+{
+	return dynamic_cast<Bomb*>(mObjectPool.GetObjectByID(id));
 }
 
 bool Room::SetIsRun(bool desired)

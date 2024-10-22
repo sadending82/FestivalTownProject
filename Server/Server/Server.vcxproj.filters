@@ -26,6 +26,7 @@
     <ClCompile Include="KISA_SHA256\KISA_SHA256.c" />
     <ClCompile Include="Source\GameManager\GameManager.cpp" />
     <ClCompile Include="Source\GameManager\FITH\FITH.cpp" />
+    <ClCompile Include="Source\Object\ObjectPool\ObjectPool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DB\DB.h" />
@@ -120,6 +121,7 @@
     <ClInclude Include="Source\DB\Tables\DB_Account.h" />
     <ClInclude Include="Source\DB\Tables\DB_UserInfo.h" />
     <ClInclude Include="Source\DB\Tables\DB_Tables.h" />
+    <ClInclude Include="Source\Object\ObjectPool\ObjectPool.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

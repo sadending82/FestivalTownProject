@@ -38,11 +38,9 @@ public:
 
 				int weaponid = read->weapon_id();
 
-				room->GetWeaponListLock().lock_shared();
-				Weapon* weapon = dynamic_cast<Weapon*>(room->GetWeaponList()[weaponid]);
+				Weapon* weapon = room->GetWeapon(weaponid);
 				if (weapon == nullptr) {
 					player->GetWeaponLock().unlock();
-					room->GetWeaponListLock().unlock_shared();
 					return;
 				}
 				if (weapon->SetIsGrabbed(true) == true) {
@@ -56,7 +54,6 @@ public:
 					COUT << "무기 주인 이미 있음\n";
 				}
 				player->GetWeaponLock().unlock();
-				room->GetWeaponListLock().unlock_shared();
 			}
 		}
 		catch (const std::exception& e) {
