@@ -40,8 +40,8 @@ public:
 	Weapon* GetWeapon(int id);
 	Bomb* GetBomb(int id);
 
-	int GetPlayerCnt() { return mPlayerCnt; }
-	int GetReadyCnt() { return mReadyCnt; }
+	int GetPlayerCnt() { return mPlayerCnt.load(); }
+	int GetReadyCnt() { return mReadyCnt.load(); }
 	GameMode GetGameMode() { return mGameMode; }
 	Map* GetMap() { return mMap; }
 	TIMEPOINT GetStartTime() { return mStartTime; }
@@ -55,9 +55,10 @@ public:
 	GameModeData& GetGameModeData() { return mGameModeData; }
 	
 
-	void AddPlayerCnt() { mPlayerCnt++; }
-	void SubPlayerCnt() { mPlayerCnt--; }
-	void AddReadyCnt() { mReadyCnt++; }
+	void AddPlayerCnt() { mPlayerCnt.fetch_add(1); }
+	void SubPlayerCnt() { mPlayerCnt.fetch_sub(1); }
+	void SetPlayerCnt(int count) { mPlayerCnt.store(count); }
+	void AddReadyCnt() { mReadyCnt.fetch_add(1); }
 	void SetGameMode(GameMode GameMode) { mGameMode = GameMode; }
 	void SetStartTime(TIMEPOINT time) { mStartTime = time; }
 	void SetState(eRoomState state) { mState = state; }
@@ -84,8 +85,8 @@ private:
 	std::unordered_map<int, Team> mTeams;
 
 	int mRoomID; // room array index
-	int mPlayerCnt = 0;
-	int mReadyCnt = 0;
+	std::atomic<int> mPlayerCnt = 0;
+	std::atomic<int> mReadyCnt = 0;
 	int mHostID = INVALIDKEY;
 	TIMEPOINT mStartTime;
 	long long mRoomCode = 0; // Room 고유 식별 번호

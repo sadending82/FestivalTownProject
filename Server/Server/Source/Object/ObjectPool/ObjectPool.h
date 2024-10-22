@@ -8,7 +8,10 @@
 
 class ObjectPool {
 public:
-	std::unordered_map<int, std::shared_ptr<Object>>& GetPool() { return mPool; }
+	ObjectPool();
+	~ObjectPool();
+
+	std::unordered_map<int, Object*>& GetPool() { return mPool; }
 
 	void AddWeapon();
 	void AddBomb();
@@ -21,7 +24,7 @@ public:
 	void AllObjectDeactive();
 
 private:
-	std::unordered_map<int, std::shared_ptr<Object>> mPool;
+	std::unordered_map<int, Object*> mPool;
 	std::shared_mutex mPoolLock;
 	std::atomic<int> nextID = 0;
 };

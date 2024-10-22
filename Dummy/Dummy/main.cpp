@@ -10,11 +10,11 @@
 HANDLE g_hiocp;
 
 #define PORTNUM 45872
-#define IPADDRESS "39.120.204.67"
+#define IPADDRESS "127.0.0.1"
 //
 
 inline constexpr int MAX_TEST = 250;
-inline constexpr int MAX_CLIENTS = MAX_TEST * 2;
+inline constexpr int MAX_CLIENTS = 5;
 
 std::array<int, MAX_CLIENTS> client_map;
 std::array<DummyClient, MAX_CLIENTS> g_clients;

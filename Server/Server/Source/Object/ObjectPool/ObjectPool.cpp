@@ -1,14 +1,25 @@
 #pragma once
 #include "ObjectPool.h"
 
+ObjectPool::ObjectPool()
+{
+}
+
+ObjectPool::~ObjectPool()
+{
+	for (auto obj : mPool) {
+		delete obj.second;
+	}
+}
+
 void ObjectPool::AddWeapon()
 {
-	mPool[nextID.load()] = std::make_shared<Weapon>(nextID.load(), eObjectType::WEAPON);
+	mPool[nextID.load()] = new Weapon(nextID.load(), eObjectType::WEAPON);
 }
 
 void ObjectPool::AddBomb()
 {
-	mPool[nextID.load()] = std::make_shared<Bomb>(nextID.load(), eObjectType::BOMB);
+	mPool[nextID.load()] = new Bomb(nextID.load(), eObjectType::BOMB);
 }
 
 void ObjectPool::ObjectDeactive(int id)
@@ -24,7 +35,7 @@ Object* ObjectPool::GetObjectByID(int id)
 	auto object = mPool[id];
 	mPoolLock.unlock_shared();
 
-	return object.get();
+	return object;
 }
 
 Object* ObjectPool::GetFreeObject(eObjectType type)
@@ -35,21 +46,21 @@ Object* ObjectPool::GetFreeObject(eObjectType type)
 		if (object->GetType() == type) {
 			if (object->SetIsActive(true)) {
 				mPoolLock.unlock_shared();
-				return object.get();
+				return object;
 			}
 		}
 	}
 	mPoolLock.unlock_shared();
 
-	std::shared_ptr<Object> newObject;
+	Object* newObject{};
 
 	switch (type) {
 	case eObjectType::WEAPON: {
-		newObject = std::make_shared<Weapon>(nextID.load(), eObjectType::WEAPON);
+		newObject = new Weapon(nextID.load(), eObjectType::WEAPON);
 	}
 							break;
 	case eObjectType::BOMB: {
-		newObject = std::make_shared<Bomb>(nextID.load(), eObjectType::BOMB);
+		newObject = new Bomb(nextID.load(), eObjectType::BOMB);
 	}
 							break;
 	}
@@ -60,7 +71,7 @@ Object* ObjectPool::GetFreeObject(eObjectType type)
 	nextID.fetch_add(1);
 	mPoolLock.unlock();
 
-	return newObject.get();
+	return newObject;
 }
 
 void ObjectPool::AllObjectDeactive()

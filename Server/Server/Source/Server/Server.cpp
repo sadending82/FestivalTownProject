@@ -417,10 +417,8 @@ void Server::MatchingComplete(int roomID, std::vector<Player*>& players)
                 if (room->GetHostID() == INVALIDKEY) {
                     room->SetHost(player->GetInGameID());
                 }
-                room->AddPlayerCnt();
 
                 if (player->GetIsBot() == true) {
-                    room->AddReadyCnt();
                 }
                 else {
                     mPacketSender->SendGameMatchingResponse(sessionID);
@@ -430,6 +428,8 @@ void Server::MatchingComplete(int roomID, std::vector<Player*>& players)
         }
         player->GetSessionStateLock().unlock();
     }
+
+    room->SetPlayerCnt(players.size());
 
     mPacketSender->SendPlayerAdd(roomID);
 }
