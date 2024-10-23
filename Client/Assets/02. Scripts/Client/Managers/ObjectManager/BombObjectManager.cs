@@ -11,7 +11,7 @@ public class BombObjectManager : MonoBehaviour
 
     [SerializeField]
     private GameObject bombs;
-    
+
     public void Init()
     {
         bombs = GameObject.Find("@Bombs");
@@ -50,5 +50,10 @@ public class BombObjectManager : MonoBehaviour
             }
         }
         return null;
+    }
+
+    public void Clear()
+    {
+        bombs.SetActive(false);
     }
 }

@@ -128,6 +128,10 @@ public class GameManager : MonoBehaviour
         isTimerStart = false;
         Managers.Player.GameEnd();
         Managers.Network.GetPacketManager().GameEnd();
+        Managers.ObjectPool.Clear();
+        Managers.CubeObject.Clear();
+        Managers.BombObject.Clear();
+        Managers.WeaponObject.Clear();
 
         isGameEnd = true;
     }

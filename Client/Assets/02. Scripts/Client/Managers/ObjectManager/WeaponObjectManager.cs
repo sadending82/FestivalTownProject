@@ -64,4 +64,9 @@ public class WeaponObjectManager : MonoBehaviour
         }
         return null;
     }
+
+    public void Clear()
+    {
+        weapons.SetActive(false);
+    }
 }
