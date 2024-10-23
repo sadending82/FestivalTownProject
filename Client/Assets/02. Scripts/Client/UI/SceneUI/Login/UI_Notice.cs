@@ -30,4 +30,15 @@ public class UI_Notice : UI_PopUp
         Get<GameObject>((int)GameObjects.NoticeText).GetComponent<TMP_Text>().text = str;
     }
 
+    public void BindGameEndEvent()
+    {
+        Get<GameObject>((int)GameObjects.OkButton).BindEvent((PointerEventData) => {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+        });
+    }
+
 }
