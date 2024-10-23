@@ -23,7 +23,11 @@ public class UI_StaminaBar : UI_Base
 
     public void SetStamina(float stamina, float maxStamina)
     {
-        if(maxStamina != 0)
-        Get<GameObject>((int)GameObjects.StaminaImage).GetComponent<Image>().fillAmount = stamina / maxStamina;
+        if (maxStamina != 0)
+        {
+            if (Get<GameObject>((int)GameObjects.StaminaImage) == null) return;
+            Get<GameObject>((int)GameObjects.StaminaImage).GetComponent<Image>().fillAmount = stamina / maxStamina;
+        }
+    
     }
 }

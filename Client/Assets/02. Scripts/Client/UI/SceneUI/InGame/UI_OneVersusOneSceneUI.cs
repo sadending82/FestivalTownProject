@@ -102,6 +102,8 @@ public class UI_OneVersusOneSceneUI : UI_Scene
 
             if (character == null) return;
 
+            if (Get<GameObject>((int)GameObjects.HPBar) == null) return;
+            
             Get<GameObject>((int)GameObjects.HPBar).GetComponent<UI_HPBar>().SetHP(character.GetHp(), character.GetMaxHp());
             Get<GameObject>((int)GameObjects.StaminaBar).GetComponent<UI_StaminaBar>().SetStamina(character.GetStamina(), character.GetMaxStamina());
             
