@@ -60,6 +60,11 @@ public class UI_HomeScene : UI_AlwaysOnTop
 
     }
 
+    public void SetNickName(string nickName)
+    {
+        Get<GameObject>((int)GameObjects.NickName).GetComponent<TMP_Text>().text = nickName;
+    }
+
     public void SetDiamond(int value)
     {
         Get<GameObject>((int)GameObjects.DiamondText).GetComponent<TMP_Text>().text = value.ToString();

@@ -28,6 +28,7 @@ public class HomeScene : BaseScene
         yield return null;
         homeSceneUI.SetDiamond(Managers.Data.GetDiamond());
         homeSceneUI.SetGold(Managers.Data.GetGold());
+        homeSceneUI.SetNickName(Managers.Data.GetNickName());
     }
 
     public override void Clear()

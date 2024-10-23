@@ -26,6 +26,7 @@ public class DataManager
 
     int Gold = 0;
     int Diamond = 0;
+    string NickName = "닉네임은여덟글자";
 
     public void Init()
     {
@@ -160,6 +161,16 @@ public class DataManager
     public void SetGold(int value)
     {
         Gold = value;
+    }
+
+    public void SetNickName(string value)
+    {
+        NickName = value;
+    }
+
+    public string GetNickName()
+    {
+        return NickName;
     }
 
 }
