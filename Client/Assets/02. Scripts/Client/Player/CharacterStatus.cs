@@ -298,6 +298,8 @@ public class CharacterStatus : MonoBehaviour
             {
                 Managers.SpectatorCamera.CheckSpectator(id);
             }
+
+            Managers.PostProcess.SetScreenGray();
         }
         else
         {
@@ -309,6 +311,8 @@ public class CharacterStatus : MonoBehaviour
             {
                 Managers.SpectatorCamera.SwitchMyCamera();
             }
+
+            Managers.PostProcess.SetScreenNormal();
         }
     }
     public bool GetIsDie()
