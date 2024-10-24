@@ -27,6 +27,7 @@
     <ClCompile Include="Source\GameManager\GameManager.cpp" />
     <ClCompile Include="Source\GameManager\FITH\FITH.cpp" />
     <ClCompile Include="Source\Object\ObjectPool\ObjectPool.cpp" />
+    <ClCompile Include="Source\MatchingManager\MatchingManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DB\DB.h" />
@@ -122,6 +123,8 @@
     <ClInclude Include="Source\DB\Tables\DB_UserInfo.h" />
     <ClInclude Include="Source\DB\Tables\DB_Tables.h" />
     <ClInclude Include="Source\Object\ObjectPool\ObjectPool.h" />
+    <ClInclude Include="Source\TableManager\Tables\Matching.h" />
+    <ClInclude Include="Source\MatchingManager\MatchingManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

@@ -32,7 +32,7 @@ public:
 	int GetPrevDataSize() { return mPrevDataSize; }
 	bool GetIsHeartbeatAck() { return mIsHeartbeatAck; }
 	bool GetPlayedSoloGameBefore() { return mPlayedSoloGameBefore; }
-	unsigned int GetMatchingRequestTime() { return mMatchingRequestTime; }
+	long long GetMatchingRequestTime() { return mMatchingRequestTime; }
 
 	void SetExOver(ExOver over) { mExOver = over; }
 	void SetSessionState(eSessionState state) { mSessionState = state; }
@@ -54,6 +54,6 @@ protected:
 	bool			mIsHeartbeatAck;
 
 	bool			mPlayedSoloGameBefore;
-	unsigned int	mMatchingRequestTime;
+	long long		mMatchingRequestTime;
 };
 

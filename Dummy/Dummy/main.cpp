@@ -14,7 +14,7 @@ HANDLE g_hiocp;
 //
 
 inline constexpr int MAX_TEST = 250;
-inline constexpr int MAX_CLIENTS = 5;
+inline constexpr int MAX_CLIENTS = 4;
 
 std::array<int, MAX_CLIENTS> client_map;
 std::array<DummyClient, MAX_CLIENTS> g_clients;

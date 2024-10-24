@@ -128,7 +128,7 @@ Vector3f ConvertVec3fToVec2i(Vector3f vec);
 Vector3f ConvertVec2iToVec3f(int x, int z);
 
 struct MatchingCompare {
-	bool operator()(class Player* a, class Player* b);
+	bool operator()(class Player* a, class Player* b) const;
 };
 
 GameMode CulculateGameMode(int playerCount);

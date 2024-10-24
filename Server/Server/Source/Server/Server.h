@@ -2,7 +2,10 @@
 #include "../Network/Session/Session.h"
 #include "../Room/Room.h"
 #include "../GameManager/FITH/FITH.h"
+#include "../TableManager/TableManager.h"
+#include "../DB/DB.h"
 #include "../PacketManager/PacketSender/PacketSender.h"
+#include "../MatchingManager/MatchingManager.h"
 
 #define SESSION_ARRAY std::array<Session*, MAXSESSION>
 #define ROOM_ARRAY std::array<Room*, MAXROOM>
@@ -51,8 +54,6 @@ public:
 
 	int							CreateNewRoom(GameMode gameMode);
 
-	void						MatchingComplete(int roomID, std::vector<Player*>& players);
-
 	SERVER_MODE					GetMode() { return mMode; }
 	HANDLE						GetHcp() { return mHcp; }
 	SOCKADDR_IN					GetServerAddr() { return mServerAddr; }
@@ -63,9 +64,8 @@ public:
 	Timer*						GetTimer() { return mTimer; }
 	TableManager*				GetTableManager() { return mTableManager; }
 	PacketSender*				GetPacketSender() { return mPacketSender; }
+	MatchingManager*			GetMatchingManager() { return mMatchingManager; }
 	GAMEMANAGER_MAP&			GetGameManagers() { return mGameManagers; }
-
-	std::mutex&					GetMatchingLock() { return mMatchingLock; }
 
 private:
 	SOCKADDR_IN							mServerAddr;
@@ -74,12 +74,15 @@ private:
 
 	SESSION_ARRAY						mSessions = { nullptr };
 	ROOM_ARRAY							mRooms = { nullptr };
+
 	DB*									mDB = nullptr;
 	Timer*								mTimer = nullptr;
 	TableManager*						mTableManager = nullptr;
 	class PacketManager*				mPacketManager = nullptr;
 	PacketMaker*						mPacketMaker = nullptr;
 	PacketSender*						mPacketSender = nullptr;
+	MatchingManager*					mMatchingManager = nullptr;
+
 	class TestThread*					mTestThreadRef = nullptr;
 	std::vector<class WorkerThread*>	mWorkerThreadRefs;
 	GAMEMANAGER_MAP						mGameManagers;
@@ -87,9 +90,6 @@ private:
 	std::vector<std::thread>			mWorkerThreads;
 	std::thread							mTimerThread;
 	std::thread							mTestThread;
-
-	// 매칭을 동시에 여러 스레드에서 하는거 방지
-	std::mutex							mMatchingLock;
 
 	std::wstring						mOdbc = L"";
 	std::wstring						mDB_ID = L"";

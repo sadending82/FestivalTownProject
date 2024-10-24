@@ -20,8 +20,15 @@ public:
 
 				Session* session = pServer->GetSessions()[key];
 
+				MatchingManager* matchingManager = pServer->GetMatchingManager();
+
 				session->GetSessionStateLock().lock();
 				session->SetSessionState(eSessionState::ST_ACCEPTED);
+
+				matchingManager->GetMatchingLock().lock();
+				matchingManager->GetMatchingQueue(eMatchingType::FITH_TEAM).erase(dynamic_cast<Player*>(session));
+				matchingManager->GetMatchingLock().unlock();
+
 				session->GetSessionStateLock().unlock();
 
 				std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_MATCHING_CANCEL, data, size);

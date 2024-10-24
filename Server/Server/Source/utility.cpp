@@ -35,11 +35,8 @@ Vector3f ConvertVec2iToVec3f(int x, int z)
 	return pos;
 }
 
-bool MatchingCompare::operator()(Player* a, Player* b) {
-    if (a->GetPlayedSoloGameBefore() != b->GetPlayedSoloGameBefore()) {
-        return a->GetPlayedSoloGameBefore();
-    }
-    return a->GetMatchingRequestTime() > b->GetMatchingRequestTime();
+bool MatchingCompare::operator()(Player* a, Player* b) const {
+    return a->GetMatchingRequestTime() < b->GetMatchingRequestTime();
 }
 
 GameMode CulculateGameMode(int playerCount)

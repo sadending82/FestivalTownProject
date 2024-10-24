@@ -7,8 +7,6 @@
 #include "../Thread/WorkerThread/WorkerThread.h"
 #include "../Thread/TimerThread/TimerThread.h"
 #include "../Thread/TestThread/TestThread.h"
-#include "../TableManager/TableManager.h"
-#include "../DB/DB.h"
 #include "../Event/Event.h"
 
 Server::Server()
@@ -28,6 +26,7 @@ Server::~Server()
     delete mPacketManager;
     delete mPacketMaker;
     delete mPacketSender;
+    delete mMatchingManager;
 
     delete mTestThreadRef;
     for (WorkerThread* pWorkerThreadRef : mWorkerThreadRefs) {
@@ -195,6 +194,7 @@ void Server::Run()
     mPacketMaker = new PacketMaker;
     mPacketSender = new PacketSender(this, mPacketMaker);
     mPacketManager = new PacketManager(this, mPacketSender);
+    mMatchingManager = new MatchingManager(this);
     mTimer = new Timer;
     mTimer->Init(mHcp);
 
@@ -375,61 +375,4 @@ int Server::CreateNewRoom(GameMode gameMode)
     room->InitMap(&GetTableManager()->GetMapData()[MapCode::TEST]);
 
     return roomID;
-}
-
-void Server::MatchingComplete(int roomID, std::vector<Player*>& players)
-{
-    Room* room = GetRooms()[roomID];
-
-    // Player Add Into New Room
-    for (Player* player : players) {
-        if (room->GetPlayerCnt() == room->GetGameModeData().Player_Count) {
-            break;
-        }
-        player->GetSessionStateLock().lock();
-        if (player->GetSessionState() == eSessionState::ST_MATCHWAITING) {
-            // 인원수가 적은 팀에 배치
-            int teamNum = 987654321;
-            int minTeammateCnt = 987654321;
-            for (auto& pair : room->GetTeams()) {
-                int key = pair.first;
-                Team& currTeam = pair.second;
-
-                int teammateCnt = currTeam.GetMembers().size();
-
-                if (teammateCnt < minTeammateCnt || (teammateCnt == minTeammateCnt && key < teamNum)) {
-                    teamNum = key;
-                    minTeammateCnt = teammateCnt;
-                }
-            }
-
-            player->SetTeam(teamNum);
-            player->ChangeCharacterType(this, eCharacterType::CT_TEST);
-            player->SetHP(player->GetCharacterStat().hp);
-            player->SetStamina(player->GetCharacterStat().stamina);
-
-            int sessionID = player->GetSessionID();
-            bool AddPlayerOk = room->AddPlayer(player);
-            if (AddPlayerOk == false) {
-                std::cout << "AddPlayer fail: Already Player Max\n";
-            }
-            else {
-                if (room->GetHostID() == INVALIDKEY) {
-                    room->SetHost(player->GetInGameID());
-                }
-
-                if (player->GetIsBot() == true) {
-                }
-                else {
-                    mPacketSender->SendGameMatchingResponse(sessionID);
-                    COUT << "Matched - " << sessionID << ENDL;
-                }
-            }
-        }
-        player->GetSessionStateLock().unlock();
-    }
-
-    room->SetPlayerCnt(players.size());
-
-    mPacketSender->SendPlayerAdd(roomID);
 }

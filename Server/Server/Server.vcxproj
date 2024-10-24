@@ -165,6 +165,7 @@ if exist "$(ProjectDir)\Config" xcopy /Y /d /e /i "$(ProjectDir)\Config" "$(OutD
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\MatchingManager\MatchingManager.cpp" />
     <ClCompile Include="Source\GameManager\FITH\FITH.cpp" />
     <ClCompile Include="Source\GameManager\GameManager.cpp" />
     <ClCompile Include="KISA_SHA256\KISA_SHA256.c" />
@@ -193,6 +194,7 @@ if exist "$(ProjectDir)\Config" xcopy /Y /d /e /i "$(ProjectDir)\Config" "$(OutD
     <ClCompile Include="Source\utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\MatchingManager\MatchingManager.h" />
     <ClInclude Include="Source\DB\Tables\DB_Account.h" />
     <ClInclude Include="Source\DB\Tables\DB_Tables.h" />
     <ClInclude Include="Source\DB\Tables\DB_UserInfo.h" />
@@ -275,6 +277,7 @@ if exist "$(ProjectDir)\Config" xcopy /Y /d /e /i "$(ProjectDir)\Config" "$(OutD
     <ClInclude Include="Source\TableManager\TableManager.h" />
     <ClInclude Include="Source\TableManager\Tables\CharacterStat.h" />
     <ClInclude Include="Source\TableManager\Tables\GameReward.h" />
+    <ClInclude Include="Source\TableManager\Tables\Matching.h" />
     <ClInclude Include="Source\TableManager\Tables\RandomBox.h" />
     <ClInclude Include="Source\TableManager\Tables\GachaItem.h" />
     <ClInclude Include="Source\TableManager\Tables\ItemTable.h" />

@@ -12,21 +12,13 @@ public:
         try {
             EV_GAME_MATCHING* event = reinterpret_cast<EV_GAME_MATCHING*>(buf);
 
-            pServer->GetMatchingLock().lock();
+            MatchingManager* matchingManager = pServer->GetMatchingManager();
 
-            std::priority_queue<Player*
-                , std::vector<Player*>
-                , MatchingCompare> readyPlayers;
+            matchingManager->GetMatchingLock().lock();
 
-            for (Session* s : pServer->GetSessions()) {
-                s->GetSessionStateLock().lock();
-                if (s->GetSessionState() == eSessionState::ST_MATCHWAITING) {
-                    readyPlayers.push(dynamic_cast<Player*>(s));
-                }
-                s->GetSessionStateLock().unlock();
-            }
+            MATCHING_QUEUE& matchingQueue = matchingManager->GetMatchingQueue(eMatchingType::FITH_TEAM);
 
-            int waitingPlayerCount = readyPlayers.size();
+            int waitingPlayerCount = matchingQueue.size();
 
             TableManager* tableManager = pServer->GetTableManager();
             GAMEMANAGER_MAP& gameManagers = pServer->GetGameManagers();
@@ -44,27 +36,20 @@ public:
 
                 std::vector<Player*> playerList;
                 for (int i = 0; i < matchedPlayerCount; ++i) {
-                    if (readyPlayers.empty()) {
+                    if (matchingQueue.empty()) {
                         break;
                     }
-                    Player* topPlayer = readyPlayers.top();
+                    Player* topPlayer = *matchingQueue.begin();
 
-                    // 다음 매칭에 참고하기 위해 지금 매칭된 게임 종류 저장
-                    if (gameMode == GameMode::FITH_Team_Battle_4 || gameMode == GameMode::FITH_Team_Battle_6) {
-                        topPlayer->SetPlayedSoloGameBefore(false);
-                    }
-                    else {
-                        topPlayer->SetPlayedSoloGameBefore(true);
-                    }
                     playerList.push_back(topPlayer);
-                    readyPlayers.pop();
+                    matchingQueue.erase(matchingQueue.begin());
                 }
-                waitingPlayerCount = readyPlayers.size();
-                pServer->MatchingComplete(roomid, playerList);
+                waitingPlayerCount = matchingQueue.size();
+                matchingManager->MatchingComplete(roomid, playerList);
                 std::cout << "Start Game room - " << roomid << "| GameMode - " << gameMode << std::endl;
             }
 
-            pServer->GetMatchingLock().unlock();
+            matchingManager->GetMatchingLock().unlock();
             PushEventGameMatching(pServer->GetTimer());
         }
         catch (const std::exception& e) {
