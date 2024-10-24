@@ -28,11 +28,11 @@ void TestThread::RunWorker()
             // 게임 시작
         case GameStartCommand: {
 
-            MatchingManager* matchingManager = m_pServer->GetMatchingManager();
+            MatchMakingManager* MatchMakingManager = m_pServer->GetMatchMakingManager();
 
-            matchingManager->GetMatchingLock().lock();
+            MatchMakingManager->GetMatchingLock().lock();
 
-            MATCHING_QUEUE& matchingQueue = matchingManager->GetMatchingQueue(eMatchingType::FITH_TEAM);
+            MATCHING_QUEUE& matchingQueue = MatchMakingManager->GetMatchingQueue(eMatchingType::FITH_TEAM);
 
             int waitingPlayerCount = matchingQueue.size();
 
@@ -68,11 +68,11 @@ void TestThread::RunWorker()
                     matchingQueue.erase(matchingQueue.begin());
                 }
                 waitingPlayerCount = matchingQueue.size();
-                matchingManager->MatchingComplete(roomid, playerList);
+                MatchMakingManager->MatchingComplete(roomid, playerList);
                 std::cout << "Start Game room - " << roomid << "| GameMode - " << gameMode << std::endl;
             }
 
-            matchingManager->GetMatchingLock().unlock();
+            MatchMakingManager->GetMatchingLock().unlock();
         }
         break;
             // 라이프 감소 전송

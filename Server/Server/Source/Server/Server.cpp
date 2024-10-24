@@ -26,7 +26,7 @@ Server::~Server()
     delete mPacketManager;
     delete mPacketMaker;
     delete mPacketSender;
-    delete mMatchingManager;
+    delete mMatchMakingManager;
 
     delete mTestThreadRef;
     for (WorkerThread* pWorkerThreadRef : mWorkerThreadRefs) {
@@ -194,7 +194,7 @@ void Server::Run()
     mPacketMaker = new PacketMaker;
     mPacketSender = new PacketSender(this, mPacketMaker);
     mPacketManager = new PacketManager(this, mPacketSender);
-    mMatchingManager = new MatchingManager(this);
+    mMatchMakingManager = new MatchMakingManager(this);
     mTimer = new Timer;
     mTimer->Init(mHcp);
 

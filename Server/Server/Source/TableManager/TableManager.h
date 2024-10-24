@@ -32,6 +32,8 @@ public:
 
 	void ReadGachaTable();
 
+	void ReadMatchingTable();
+
 	void Lock();
 	void UnLock();
 
@@ -54,6 +56,8 @@ public:
 
 
 	std::unordered_map<GameMode, std::vector<MapCode>>& getMapListByMode();
+
+	std::unordered_map<eMatchingType, std::vector<Matching_Table>>& GetMatchingDatas();
 
 private:
 	xlnt::workbook mWorkbook;
@@ -79,6 +83,8 @@ private:
 	std::unordered_map<GACHA_GROUP, std::unordered_map<INDEX, GachaItem>> GachaItemList;
 
 	std::unordered_map<GameMode, std::vector<MapCode>> MapListByMode;
+
+	std::unordered_map<eMatchingType, std::vector<Matching_Table>> MatchingDatas;
 
 	std::atomic_flag mLockFlag = ATOMIC_FLAG_INIT;
 	std::atomic<bool> mIsLoading;

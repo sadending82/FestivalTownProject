@@ -21,7 +21,7 @@ public:
 
 				SERVER_MODE serverMode = pServer->GetMode();
 
-				MatchingManager* matchingManager = pServer->GetMatchingManager();
+				MatchMakingManager* MatchMakingManager = pServer->GetMatchMakingManager();
 
 				session->SetMatchingRequestTime(std::chrono::duration_cast<std::chrono::seconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count());
 				session->GetSessionStateLock().lock();
@@ -30,9 +30,9 @@ public:
 
 				switch (serverMode) {
 				case SERVER_MODE::LIVE: {
-					matchingManager->GetMatchingLock().lock();
-					matchingManager->GetMatchingQueue(eMatchingType::FITH_TEAM).insert(dynamic_cast<Player*>(session));
-					matchingManager->GetMatchingLock().unlock();
+					MatchMakingManager->GetMatchingLock().lock();
+					MatchMakingManager->GetMatchingQueue(eMatchingType::FITH_TEAM).insert(dynamic_cast<Player*>(session));
+					MatchMakingManager->GetMatchingLock().unlock();
 
 				}break;
 				case SERVER_MODE::TEST: {
@@ -56,7 +56,7 @@ public:
 					Bot->SetIsBot(true);
 
 					std::vector<Player*> playerVector = { dynamic_cast<Player*>(session), Bot };
-					pServer->GetMatchingManager()->MatchingComplete(roomID, playerVector);
+					pServer->GetMatchMakingManager()->MatchingComplete(roomID, playerVector);
 				}break;
 				}
 			}

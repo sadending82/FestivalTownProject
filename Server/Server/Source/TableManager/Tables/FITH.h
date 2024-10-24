@@ -1,8 +1,8 @@
 #pragma once
 #include <string>
 
-#define Mode_Out_Sheet 0
-#define FITH_Mode_Sheet 1
+#define Mode_Out_Sheet 1
+#define FITH_Mode_Sheet 2
 
 enum class GameModeOut_Field {
 	Player_Count = 3,

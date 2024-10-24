@@ -12,11 +12,11 @@ public:
         try {
             EV_GAME_MATCHING* event = reinterpret_cast<EV_GAME_MATCHING*>(buf);
 
-            MatchingManager* matchingManager = pServer->GetMatchingManager();
+            MatchMakingManager* MatchMakingManager = pServer->GetMatchMakingManager();
 
-            matchingManager->GetMatchingLock().lock();
+            MatchMakingManager->GetMatchingLock().lock();
 
-            MATCHING_QUEUE& matchingQueue = matchingManager->GetMatchingQueue(eMatchingType::FITH_TEAM);
+            MATCHING_QUEUE& matchingQueue = MatchMakingManager->GetMatchingQueue(eMatchingType::FITH_TEAM);
 
             int waitingPlayerCount = matchingQueue.size();
 
@@ -45,11 +45,11 @@ public:
                     matchingQueue.erase(matchingQueue.begin());
                 }
                 waitingPlayerCount = matchingQueue.size();
-                matchingManager->MatchingComplete(roomid, playerList);
+                MatchMakingManager->MatchingComplete(roomid, playerList);
                 std::cout << "Start Game room - " << roomid << "| GameMode - " << gameMode << std::endl;
             }
 
-            matchingManager->GetMatchingLock().unlock();
+            MatchMakingManager->GetMatchingLock().unlock();
             PushEventGameMatching(pServer->GetTimer());
         }
         catch (const std::exception& e) {

@@ -1,6 +1,8 @@
 #pragma once
 #pragma pack (push, 1)
 
+#define Matching_Sheet 0
+
 enum class Matching_Field {
 	Matching_Mode,
 	Matching_Min_Time,
@@ -10,7 +12,7 @@ enum class Matching_Field {
 	Recruit_Player,
 };
 
-struct Matching{
+struct Matching_Table{
 	int Matching_Mode;
 	int	Matching_Min_Time;
 	int	Matching_Max_Time;

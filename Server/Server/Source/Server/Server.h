@@ -5,7 +5,7 @@
 #include "../TableManager/TableManager.h"
 #include "../DB/DB.h"
 #include "../PacketManager/PacketSender/PacketSender.h"
-#include "../MatchingManager/MatchingManager.h"
+#include "../MatchMakingManager/MatchMakingManager.h"
 
 #define SESSION_ARRAY std::array<Session*, MAXSESSION>
 #define ROOM_ARRAY std::array<Room*, MAXROOM>
@@ -64,7 +64,7 @@ public:
 	Timer*						GetTimer() { return mTimer; }
 	TableManager*				GetTableManager() { return mTableManager; }
 	PacketSender*				GetPacketSender() { return mPacketSender; }
-	MatchingManager*			GetMatchingManager() { return mMatchingManager; }
+	MatchMakingManager*			GetMatchMakingManager() { return mMatchMakingManager; }
 	GAMEMANAGER_MAP&			GetGameManagers() { return mGameManagers; }
 
 private:
@@ -81,7 +81,7 @@ private:
 	class PacketManager*				mPacketManager = nullptr;
 	PacketMaker*						mPacketMaker = nullptr;
 	PacketSender*						mPacketSender = nullptr;
-	MatchingManager*					mMatchingManager = nullptr;
+	MatchMakingManager*					mMatchMakingManager = nullptr;
 
 	class TestThread*					mTestThreadRef = nullptr;
 	std::vector<class WorkerThread*>	mWorkerThreadRefs;

@@ -1,4 +1,5 @@
 #pragma once
+#include "../protocol.h"
 #include "../utility.h"
 #include <unordered_map>
 #include <set>
@@ -7,17 +8,12 @@
 #define MATCHING_QUEUE		std::set<Player*,  MatchingCompare>
 #define MATCHING_QUEUE_MAP	std::unordered_map<eMatchingType, MATCHING_QUEUE>
 
-enum eMatchingType {
-	FITH_SOLO = 110,
-	FITH_TEAM = 120
-};
-
-class MatchingManager
+class MatchMakingManager
 {
 public:
-	MatchingManager(class Server* server) :pServer(server) {}
+	MatchMakingManager(class Server* server) :pServer(server) {}
 
-	~MatchingManager();
+	~MatchMakingManager();
 
 	std::mutex& GetMatchingLock() { return mMatchingLock; }
 	MATCHING_QUEUE& GetMatchingQueue(eMatchingType type) { return mMatchingQueue[type]; }

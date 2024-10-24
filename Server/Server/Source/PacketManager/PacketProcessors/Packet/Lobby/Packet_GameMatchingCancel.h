@@ -20,14 +20,14 @@ public:
 
 				Session* session = pServer->GetSessions()[key];
 
-				MatchingManager* matchingManager = pServer->GetMatchingManager();
+				MatchMakingManager* MatchMakingManager = pServer->GetMatchMakingManager();
 
 				session->GetSessionStateLock().lock();
 				session->SetSessionState(eSessionState::ST_ACCEPTED);
 
-				matchingManager->GetMatchingLock().lock();
-				matchingManager->GetMatchingQueue(eMatchingType::FITH_TEAM).erase(dynamic_cast<Player*>(session));
-				matchingManager->GetMatchingLock().unlock();
+				MatchMakingManager->GetMatchingLock().lock();
+				MatchMakingManager->GetMatchingQueue(eMatchingType::FITH_TEAM).erase(dynamic_cast<Player*>(session));
+				MatchMakingManager->GetMatchingLock().unlock();
 
 				session->GetSessionStateLock().unlock();
 

@@ -1,13 +1,13 @@
 #pragma once
-#include "MatchingManager.h"
+#include "MatchMakingManager.h"
 #include "../Server/Server.h"
 
-MatchingManager::~MatchingManager()
+MatchMakingManager::~MatchMakingManager()
 {
 
 }
 
-void MatchingManager::MatchingComplete(int roomID, std::vector<class Player*>& players)
+void MatchMakingManager::MatchingComplete(int roomID, std::vector<class Player*>& players)
 {
     Room* room = pServer->GetRooms()[roomID];
 

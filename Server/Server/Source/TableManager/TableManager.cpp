@@ -647,6 +647,44 @@ void TableManager::ReadGachaTable()
     }
 }
 
+void TableManager::ReadMatchingTable()
+{
+    try {
+
+        mWorkbook.load("GameData/Mode_Ver3.xlsx");
+        int idx = 0;
+        mWorksheet = mWorkbook.sheet_by_index(Matching_Sheet);
+
+        for (auto row : mWorksheet.rows(false)) {
+            if (idx == variableNameIdx) {
+                idx++;
+                continue;
+            }
+
+            if (!row.empty()) {
+
+                eMatchingType matchingMode = (eMatchingType)row[(int)(Matching_Field::Matching_Mode)].value<int>();
+
+                MatchingDatas[matchingMode].push_back(
+                    Matching_Table{
+                        matchingMode,
+                        row[(int)(Matching_Field::Matching_Min_Time)].value<int>(),
+                        row[(int)(Matching_Field::Matching_Max_Time)].value<int>(),
+                        row[(int)(Matching_Field::Mode1_Index)].value<int>(),
+                        row[(int)(Matching_Field::Mode2_Index)].value<int>(),
+                        row[(int)(Matching_Field::Recruit_Player)].value<int>()
+                    }
+                );
+            }
+
+            idx++;
+        }
+    }
+    catch (const xlnt::exception& e) {
+        std::cerr << "Excel File Load Fail: " << e.what() << std::endl;
+    }
+}
+
 void TableManager::Lock()
 {
     while (mLockFlag.test_and_set(std::memory_order_acquire)) {
@@ -745,4 +783,13 @@ std::unordered_map<GameMode, std::vector<MapCode>>& TableManager::getMapListByMo
 
     }
     return MapListByMode;
+}
+
+std::unordered_map<eMatchingType, std::vector<Matching_Table>>& TableManager::GetMatchingDatas()
+{
+    while (mIsLoading == true) {
+
+    }
+
+    return MatchingDatas;
 }

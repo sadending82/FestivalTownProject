@@ -33,16 +33,6 @@ MonoBehaviour:
     Play_Map: 2
     Open_Date: 0
     Close_Date: 0
-  - Index: 113
-    Name: 
-    ClassType: 0
-    Name_Info: 
-    Player_Count: 5
-    Team_Count: 5
-    Team_Color: 5
-    Play_Map: 3
-    Open_Date: 0
-    Close_Date: 0
   - Index: 121
     Name: 
     ClassType: 0
@@ -87,28 +77,6 @@ MonoBehaviour:
     Block2_Spawn_Count: 5
     Block2_Spawn_Time: 15
   - Index: 112
-    Name: 
-    ClassType: 0
-    Name_Info: 
-    Play_Time: 180
-    Player_Spawn_Time: 5
-    Life_Count: 3
-    Bomb_Spawn_Count: 2
-    Bomb_Spawn_Time: 15
-    Bomb_Delay_Time: 30
-    Weapon1_Spawn_Index: 2001
-    Weapon1_Spawn_Count: 1
-    Weapon1_Spawn_Time: 20
-    Weapon2_Spawn_Index: 2002
-    Weapon2_Spawn_Count: 1
-    Weapon2_Spawn_Time: 25
-    Block1_Spawn_Index: 3001
-    Block1_Spawn_Count: 5
-    Block1_Spawn_Time: 15
-    Block2_Spawn_Index: 3002
-    Block2_Spawn_Count: 5
-    Block2_Spawn_Time: 15
-  - Index: 113
     Name: 
     ClassType: 0
     Name_Info: 

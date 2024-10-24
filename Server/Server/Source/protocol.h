@@ -82,6 +82,11 @@ enum GameMode {
     FITH_Team_Battle_6 = 122
 };
 
+enum eMatchingType {
+    FITH_SOLO = 110,
+    FITH_TEAM = 120
+};
+
 enum BattleResult {
     BR_Win = 1,
     BR_Lose = 2
