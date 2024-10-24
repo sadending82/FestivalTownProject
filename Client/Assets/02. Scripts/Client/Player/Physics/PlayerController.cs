@@ -618,7 +618,10 @@ public class PlayerController : MonoBehaviour
         {
             // 수정 : 여기 애니메이션 Throw 있어야함
             GameObject targetBomb = Managers.BombObject.FindBombById(playerStatus.GetBombId());
-            packetManager.SendPlayerThrowBombPacket(targetBomb.transform.position, stabillizerDirection, myId, targetBomb.GetComponent<Bomb>().GetId());
+            if (targetBomb != null)
+            {
+                packetManager.SendPlayerThrowBombPacket(targetBomb.transform.position, stabillizerDirection, myId, targetBomb.GetComponent<Bomb>().GetId());
+            }
         }
     }
     public void GameStart()

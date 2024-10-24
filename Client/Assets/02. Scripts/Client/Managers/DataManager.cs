@@ -17,12 +17,16 @@ public class DataManager
     /// <summary>
     /// 데이터들이 들어가 있는 딕셔너리
     /// </summary>
-    public Dictionary<int, GameDataEntity> GameDataDict = new();
+    public Dictionary<int, GameDataEntity> GameDataDict = new(); // 나중에 겹치는 경우가 생길 수 있으므로 따로 분리해 두라고 함.
     public Dictionary<int, ModeOutEntity> ModeOutDataDict = new();
     public Dictionary<int, FITHModeEntity> FITHModeDataDict = new();
     public Dictionary<int, ModePointEntity> ModePointDataDict = new();
     public Dictionary<int, ModeRewardEntity> ModeRewardDataDict = new();
     public Dictionary<int, ModeBonusRewardEntity> ModeBonusRewardDataDict = new();
+
+    int Gold = 0;
+    int Diamond = 0;
+    string NickName = "닉네임은여덟글자";
 
     public void Init()
     {
@@ -138,6 +142,35 @@ public class DataManager
                 GameDataDict[entity.Index].ClassType = Define.ExcelDataClassType.WeaponStat;
             }
         }
+    }
+
+    public int GetDiamond()
+    {
+        return Diamond;
+    }
+    public void SetDiamond(int value)
+    {
+        Diamond = value;
+    }
+
+    public int GetGold()
+    {
+        return Gold;
+    }
+
+    public void SetGold(int value)
+    {
+        Gold = value;
+    }
+
+    public void SetNickName(string value)
+    {
+        NickName = value;
+    }
+
+    public string GetNickName()
+    {
+        return NickName;
     }
 
 }

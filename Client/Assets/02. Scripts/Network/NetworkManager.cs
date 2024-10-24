@@ -131,6 +131,7 @@ public class NetworkManager : MonoBehaviour
         var ui = Managers.UI.ShowPopUpUI<UI_Notice>();
         yield return null;
         ui.NoticeTextChange("서버에 접속할 수 없습니다.");
+        ui.BindGameEndEvent();
     }
 
     public TcpClient GetTcpClient()

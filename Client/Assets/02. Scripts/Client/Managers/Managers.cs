@@ -23,7 +23,7 @@ public class Managers : MonoBehaviour
     BombObjectManager _bombObject = new BombObjectManager();
     WeaponObjectManager _weaponObject = new WeaponObjectManager();
     SpectatorCameraManager _spectatorCamera = new SpectatorCameraManager();
-
+    PostProcessManager _postProcess = new PostProcessManager();
     //------------
 
     public static UIManager UI { get { return Instance._ui; } }
@@ -42,6 +42,7 @@ public class Managers : MonoBehaviour
     public static BombObjectManager BombObject { get { return Instance._bombObject; } }
     public static WeaponObjectManager WeaponObject { get { return Instance._weaponObject; } }
     public static SpectatorCameraManager SpectatorCamera { get { return Instance._spectatorCamera; } }
+    public static PostProcessManager PostProcess { get { return Instance._postProcess; } }
 
     private void Start()
     {
@@ -86,5 +87,6 @@ public class Managers : MonoBehaviour
         Sound.Clear();
         Scene.Clear();
         UI.Clear();
+        PostProcess.Clear();
     }
 }

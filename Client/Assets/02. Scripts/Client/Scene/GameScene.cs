@@ -107,6 +107,8 @@ public class GameScene : BaseScene
 
         Managers.Resource.Destroy(GameObject.Find("UI_Loading"));
 
+        Managers.PostProcess.SetPostProcesser();
+
         StartCoroutine(GameStartTimerActive());
     }
 

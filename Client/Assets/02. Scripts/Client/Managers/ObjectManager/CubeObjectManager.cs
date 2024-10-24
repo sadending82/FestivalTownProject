@@ -81,5 +81,7 @@ public class CubeObjectManager : MonoBehaviour
                 aMapHeight[i, j] = 0f;
             }
         }
+
+        cubes.SetActive(false);
     }
 }

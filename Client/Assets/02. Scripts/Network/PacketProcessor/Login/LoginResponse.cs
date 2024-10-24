@@ -21,6 +21,9 @@ namespace Network.PacketProcessor
 
             if (resultCode == 1)
             {
+                Managers.Data.SetGold(Data.Gold);
+                Managers.Data.SetDiamond(Data.Point);
+                Managers.Data.SetNickName(Data.Nickname);
                 Managers.Scene.LoadScene(Define.Scene.Home);
             }
         }
