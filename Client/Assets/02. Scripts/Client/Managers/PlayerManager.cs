@@ -96,8 +96,6 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
-            //Debug.Log($"Add Player {id}");
-
             var playerObject = players.transform.GetChild(id).gameObject;
             playerObject.SetActive(true);
             playerObject.GetComponent<CharacterStatus>().SetTeamNumber(teamNumber);
@@ -192,11 +190,11 @@ public class PlayerManager : MonoBehaviour
     {
         return faceMaterial[Random.Range(0, FACE_MAT_NUM)];
     }
-    private Material GetSkinMaterial(int index)
+    public Material GetSkinMaterial(int index)
     {
         return skinMaterial[index];
     }
-    private Material GetFaceMaterial(int index)
+    public Material GetFaceMaterial(int index)
     {
         return faceMaterial[index];
     }
