@@ -464,7 +464,6 @@ public class PlayerController : MonoBehaviour
             {
                 if (pelvis != null)
                 {
-                    Debug.Log("Jump");
                     packetManager.SendPlayerMovePacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_JUMP);
                     Managers.Sound.Play3D("Sfx_Ch_Jump", gameObject);
                 }
@@ -508,8 +507,8 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F))
         {
             if (nearObjectChecker.GetNearObject() != null &&
-                ((nearObjectChecker.GetNearObject().tag == "Bomb" && playerStatus.GetIsHaveBomb() == false) ||
-                (nearObjectChecker.GetNearObject().tag == "Weapon" && playerStatus.GetIsHaveWeapon() == false)))
+                (playerStatus.GetIsHaveBomb() == false && playerStatus.GetIsHaveWeapon() == false) &&
+                (nearObjectChecker.GetNearObject().tag == "Weapon" || nearObjectChecker.GetNearObject().tag == "Bomb"))
             {
                 fKeyDownTimer = 0;
                 isPickUpMode = true;
