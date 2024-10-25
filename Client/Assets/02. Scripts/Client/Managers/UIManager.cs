@@ -7,13 +7,12 @@ using UnityEngine;
 public class UIManager
 {
     int _order = 10; // 마지막 놈이 몇번째 순서인지 기억하기 위한 거. 점점 늘어남
+    int _dictKeyOrder = 0; // WorldSpace 용 Dictionary Key 부여를 위한 숫자. 이거도 점점 늘어남
 
     Stack<UI_PopUp> _popupStack = new Stack<UI_PopUp>(); // UI를 스택에 담아두면 뺄때 편하겠지?
+    Dictionary<int, UI_WorldSpace> _worldList = new ();
     UI_Scene _sceneUI = null; // 팝업으로 여는거 말고 고정되어 있는 놈이 누구임
     UI_AlwaysOnTop _AlwaysOnTopUI = null; // 항상 가장 위에 있어야 하는 놈이 누구임
-    //TODO:
-    // 나중에 가장 위에 고정되는 UI도 하나 따로 두는게 맞을 것 같습니다.
-    // 매칭 중 UI 같은 경우 항상 가장 위에 떠야 하니까요
 
     public GameObject Root
     {
@@ -155,7 +154,7 @@ public class UIManager
         _AlwaysOnTopUI = null;
     }
 
-    public T MakeWorldSpace<T>(Transform parent = null, string name = null) where T : UI_Base
+    public T MakeWorldSpace<T>(Transform parent = null, string name = null) where T : UI_WorldSpace
     {
         if (string.IsNullOrEmpty(name))
             name = typeof(T).Name;
@@ -168,7 +167,10 @@ public class UIManager
         canvas.renderMode = RenderMode.WorldSpace;
         canvas.worldCamera = Camera.main;
 
-        return Util.GetOrAddComponent<T>(go);
+        T worldSpace = Util.GetOrAddComponent<T>(go);
+        worldSpace.SetKey(_dictKeyOrder++);
+
+        return worldSpace;
     }
 
     public void Clear()
@@ -176,5 +178,6 @@ public class UIManager
         CloseAllPopUpUI();
         CloseAOTUI();
         CloseSceneUI();
+        
     }
 }
