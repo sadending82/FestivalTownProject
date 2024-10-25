@@ -29,9 +29,15 @@ public:
 					return;
 				}
 
+				player->GetWeaponLock().lock();
+				if (player->GetWeapon() != nullptr) {
+					player->GetWeaponLock().unlock();
+					return;
+				}
+				player->GetWeaponLock().unlock();
+
 				player->GetBombLock().lock();
 				if (player->GetBomb() != nullptr) {
-					COUT << "ÆøÅº ÀÌ¹Ì ÀÖÀ½\n";
 					player->GetBombLock().unlock();
 					return;
 				}
@@ -50,7 +56,6 @@ public:
 				}
 				else {
 					player->SetBomb(nullptr);
-					COUT << "ÆøÅº ÁÖÀÎ ÀÌ¹Ì ÀÖÀ½\n";
 				}
 				player->GetBombLock().unlock();
 			}

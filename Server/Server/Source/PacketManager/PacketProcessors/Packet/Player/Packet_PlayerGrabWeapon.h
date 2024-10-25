@@ -29,9 +29,15 @@ public:
 					return;
 				}
 
+				player->GetBombLock().lock();
+				if (player->GetBomb() != nullptr) {
+					player->GetBombLock().unlock();
+					return;
+				}
+				player->GetBombLock().unlock();
+
 				player->GetWeaponLock().lock();
 				if (player->GetWeapon() != nullptr) {
-					COUT << "무기 이미 있음\n";
 					player->GetWeaponLock().unlock();
 					return;
 				}
@@ -51,7 +57,6 @@ public:
 				}
 				else {
 					player->SetWeapon(nullptr);
-					COUT << "무기 주인 이미 있음\n";
 				}
 				player->GetWeaponLock().unlock();
 			}
