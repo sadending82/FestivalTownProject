@@ -47,7 +47,7 @@ struct EVENT {
 };
 
 struct EV_GAME_MATCHING : EVENT {
-	
+
 };
 
 struct EV_GAME_START : EVENT {

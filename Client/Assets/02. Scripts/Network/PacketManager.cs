@@ -155,9 +155,9 @@ public class PacketManager : MonoBehaviour
         if (packet == null) { return; }
         SendPacket(packet);
     }
-    public void SendGameMatchingRequest()
+    public void SendGameMatchingRequest(eMatchingType type = eMatchingType.FITH_TEAM)
     {
-        byte[] packet = _packetMaker.MakeGameMatchingRequestPacket();
+        byte[] packet = _packetMaker.MakeGameMatchingRequestPacket(type);
         if (packet == null) { return; }
         SendPacket(packet);
     }

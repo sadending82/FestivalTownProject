@@ -18,6 +18,8 @@ public:
 	std::mutex& GetMatchingLock() { return mMatchingLock; }
 	MATCHING_QUEUE& GetMatchingQueue(eMatchingType type) { return mMatchingQueue[type]; }
 
+	void CheckMatchMaking(eMatchingType matchingType);
+
 	void MatchingComplete(int roomID, std::vector<class Player*>& players);
 
 private:

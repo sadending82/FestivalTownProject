@@ -96,6 +96,11 @@ namespace NetworkProtocol
         FITH_Team_Battle_4 = 121,
         FITH_Team_Battle_6 = 122
     };
+    public enum eMatchingType
+    {
+        FITH_SOLO = 110,
+        FITH_TEAM = 120
+    };
 
     public enum ePlayerMoveState
     {

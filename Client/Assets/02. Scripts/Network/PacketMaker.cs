@@ -402,10 +402,11 @@ public class PacketMaker
         return result;
     }
 
-    public byte[] MakeGameMatchingRequestPacket()
+    public byte[] MakeGameMatchingRequestPacket(eMatchingType type)
     {
         var builder = new FlatBufferBuilder(1);
         GameMatchingRequest.StartGameMatchingRequest(builder);
+        GameMatchingRequest.AddMatchingType(builder, (int)type);
         var offset = GameMatchingRequest.EndGameMatchingRequest(builder);
         builder.Finish(offset.Value);
 

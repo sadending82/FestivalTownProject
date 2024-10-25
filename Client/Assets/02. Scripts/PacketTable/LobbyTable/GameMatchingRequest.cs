@@ -20,16 +20,20 @@ public struct GameMatchingRequest : IFlatbufferObject
   public GameMatchingRequest __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public int Id { get { int o = __p.__offset(4); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int MatchingType { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
 
   public static Offset<PacketTable.LobbyTable.GameMatchingRequest> CreateGameMatchingRequest(FlatBufferBuilder builder,
-      int id = 0) {
-    builder.StartTable(1);
+      int id = 0,
+      int matching_type = 0) {
+    builder.StartTable(2);
+    GameMatchingRequest.AddMatchingType(builder, matching_type);
     GameMatchingRequest.AddId(builder, id);
     return GameMatchingRequest.EndGameMatchingRequest(builder);
   }
 
-  public static void StartGameMatchingRequest(FlatBufferBuilder builder) { builder.StartTable(1); }
+  public static void StartGameMatchingRequest(FlatBufferBuilder builder) { builder.StartTable(2); }
   public static void AddId(FlatBufferBuilder builder, int id) { builder.AddInt(0, id, 0); }
+  public static void AddMatchingType(FlatBufferBuilder builder, int matchingType) { builder.AddInt(1, matchingType, 0); }
   public static Offset<PacketTable.LobbyTable.GameMatchingRequest> EndGameMatchingRequest(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<PacketTable.LobbyTable.GameMatchingRequest>(o);
@@ -43,6 +47,7 @@ static public class GameMatchingRequestVerify
   {
     return verifier.VerifyTableStart(tablePos)
       && verifier.VerifyField(tablePos, 4 /*Id*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 6 /*MatchingType*/, 4 /*int*/, 4, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }

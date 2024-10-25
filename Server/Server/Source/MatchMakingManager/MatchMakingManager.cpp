@@ -7,6 +7,46 @@ MatchMakingManager::~MatchMakingManager()
 
 }
 
+void MatchMakingManager::CheckMatchMaking(eMatchingType matchingType)
+{
+    mMatchingLock.lock();
+
+    MATCHING_QUEUE& matchingQueue = mMatchingQueue[eMatchingType::FITH_TEAM];
+
+    int waitingPlayerCount = matchingQueue.size();
+
+    TableManager* tableManager = pServer->GetTableManager();
+    GAMEMANAGER_MAP& gameManagers = pServer->GetGameManagers();
+
+    while (waitingPlayerCount >= MINPLAYER) {
+        GameMode gameMode = CulculateGameMode(waitingPlayerCount);
+
+        int matchedPlayerCount = tableManager->GetGameModeData()[gameMode].Player_Count;
+
+        int roomid = pServer->CreateNewRoom(gameMode);
+        if (roomid == INVALIDKEY) {
+            std::cout << "Fali Create New Room\n";
+            break;
+        }
+
+        std::vector<Player*> playerList;
+        for (int i = 0; i < matchedPlayerCount; ++i) {
+            if (matchingQueue.empty()) {
+                break;
+            }
+            Player* topPlayer = *matchingQueue.begin();
+
+            playerList.push_back(topPlayer);
+            matchingQueue.erase(matchingQueue.begin());
+        }
+        waitingPlayerCount = matchingQueue.size();
+       MatchingComplete(roomid, playerList);
+        std::cout << "Start Game room - " << roomid << "| GameMode - " << gameMode << std::endl;
+    }
+
+    mMatchingLock.unlock();
+}
+
 void MatchMakingManager::MatchingComplete(int roomID, std::vector<class Player*>& players)
 {
     Room* room = pServer->GetRooms()[roomID];
