@@ -18,11 +18,12 @@ namespace Network.PacketProcessor
 
             var Data = GameResult.GetRootAsGameResult(bb);
 
+            int winningTeam = 0;
             for (int i = 0; i < Data.WiningTeamLength; ++i)
             {
-                var winningTeam = Data.WiningTeam(i);
+                winningTeam = Data.WiningTeam(i);
             }
-            Managers.Game.SetWinningTeam(0);
+            Managers.Game.SetWinningTeam(winningTeam);
 
             for (int i = 0; i < Data.PlayerRecordsLength; ++i){
                 var playerRecord = Data.PlayerRecords(i);

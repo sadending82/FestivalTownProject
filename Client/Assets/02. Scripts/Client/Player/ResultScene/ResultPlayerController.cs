@@ -32,6 +32,8 @@ public class ResultPlayerController : MonoBehaviour
                 // 이긴 팀 플레이어면
                 if (winningTeam == teamNumber)
                 {
+                    // 스킨 적용
+                    rPlayer.GetComponent<ResultPlayerState>().SetStyle(Managers.Player.GetSkinMaterial(i), Managers.Player.GetFaceMaterial(i));
                     rPlayer.transform.position = winnerOffset;
                     winnerOffset.x += winnerXInterval;
                     rPlayer.GetComponent<ResultAnimationController>().SetWinAnimation();
@@ -39,6 +41,8 @@ public class ResultPlayerController : MonoBehaviour
                 // 진 팀 플레이어면
                 else
                 {
+                    // 스킨 적용
+                    rPlayer.GetComponent<ResultPlayerState>().SetStyle(Managers.Player.GetSkinMaterial(i), Managers.Player.GetFaceMaterial(i));
                     rPlayer.transform.position = loserOffset;
                     loserOffset.x += loserXInterval;
                     rPlayer.GetComponent <ResultAnimationController>().SetLoseAnimation();
