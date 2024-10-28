@@ -780,13 +780,15 @@ public class PlayerController : MonoBehaviour
         packetManager.SendPlayerThrowOtherPlayerPacket(playerStatus.GetId(), GetPosition(), GetDirection(),
             playerStatus.GetGrapTargetPlayerId(), targetPlayerController.GetPosition(), targetPlayerController.GetDirection());
     }
-    public void Spawn(float x, float z)
+    public void FirstSpawn(float x, float z)
     {
         SetDirectionByTeam();
 
         Vector3 targetPos = new Vector3(x, createHeight, z);
 
         SetPosition(targetPos);
+
+        Managers.Sound.Play("Sfx_Ch_Respawn");
     }
     public void Respawn(float x, float z)
     {

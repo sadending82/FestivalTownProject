@@ -101,7 +101,7 @@ public class PlayerManager : MonoBehaviour
             playerObject.GetComponent<CharacterStatus>().SetTeamNumber(teamNumber);
             playerObject.GetComponent<CharacterStatus>().SetStyle(GetSkinMaterial(id), GetFaceMaterial(id));  
             playerObject.GetComponent<PlayerController>().SetMyId(id);
-            playerObject.GetComponent<PlayerController>().Spawn(position.x, position.z);
+            playerObject.GetComponent<PlayerController>().FirstSpawn(position.x, position.z);
             nowPlayerNum++;
         }
     }
@@ -121,7 +121,6 @@ public class PlayerManager : MonoBehaviour
             tPlayer.GetComponent<CharacterStatus>().SetAmIPlayer(true);
             tPlayer.GetComponent<PlayerController>().SetMyId(myId);
         }
-
     }
     public GameObject FindPlayerById(int targetId)
     {

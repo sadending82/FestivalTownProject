@@ -87,6 +87,7 @@ public class CharacterStatus : MonoBehaviour
         isGameEnd = false;
         playerController.GameStart();
         animationController.GameStart();
+        isDie = false;
         myCamera.gameObject.GetComponent<PlayerCameraController>().GameStart();
     }
     public void GameEnd()
@@ -314,7 +315,6 @@ public class CharacterStatus : MonoBehaviour
                 Managers.SpectatorCamera.SwitchMyCamera();
                 Managers.PostProcess.SetScreenNormal();
             }
-            
         }
     }
     public bool GetIsDie()
