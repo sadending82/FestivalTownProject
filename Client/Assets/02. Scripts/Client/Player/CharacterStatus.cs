@@ -293,13 +293,14 @@ public class CharacterStatus : MonoBehaviour
             if (amIPlayer == true)
             {
                 Managers.SpectatorCamera.SwitchNextCamera();
+                Managers.PostProcess.SetScreenGray();
             }
             else
             {
                 Managers.SpectatorCamera.CheckSpectator(id);
             }
 
-            Managers.PostProcess.SetScreenGray();
+            
         }
         else
         {
@@ -310,9 +311,9 @@ public class CharacterStatus : MonoBehaviour
             if (amIPlayer == true)
             {
                 Managers.SpectatorCamera.SwitchMyCamera();
+                Managers.PostProcess.SetScreenNormal();
             }
-
-            Managers.PostProcess.SetScreenNormal();
+            
         }
     }
     public bool GetIsDie()

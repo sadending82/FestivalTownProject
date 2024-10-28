@@ -24,6 +24,8 @@ public class PostProcessManager
 
     public void SetScreenGray()
     {
+        if(PostProcesser == null) return;
+
         ColorGrading cg;
 
         if(PostProcesser.profile.TryGetSettings(out cg))
@@ -34,6 +36,8 @@ public class PostProcessManager
 
     public void SetScreenNormal()
     {
+        if (PostProcesser == null) return;
+
         ColorGrading cg;
 
         if (PostProcesser.profile.TryGetSettings(out cg))
