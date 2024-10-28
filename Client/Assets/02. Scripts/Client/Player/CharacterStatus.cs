@@ -134,6 +134,7 @@ public class CharacterStatus : MonoBehaviour
     public void SetTeamNumber(int teamNumber)
     {
         this.teamNumber = teamNumber;
+        SetUITeam();
     }
     public int GetTeamNumber()
     {

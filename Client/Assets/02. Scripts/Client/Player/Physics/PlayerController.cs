@@ -10,6 +10,7 @@ using UnityEngine.Playables;
 using UnityEditor;
 using ExcelDataStructure;
 using Unity.VisualScripting;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
@@ -779,7 +780,14 @@ public class PlayerController : MonoBehaviour
         packetManager.SendPlayerThrowOtherPlayerPacket(playerStatus.GetId(), GetPosition(), GetDirection(),
             playerStatus.GetGrapTargetPlayerId(), targetPlayerController.GetPosition(), targetPlayerController.GetDirection());
     }
+    public void Spawn(float x, float z)
+    {
+        SetDirectionByTeam();
 
+        Vector3 targetPos = new Vector3(x, createHeight, z);
+
+        SetPosition(targetPos);
+    }
     public void Respawn(float x, float z)
     {
         playerStatus.SetIsDie(false);
