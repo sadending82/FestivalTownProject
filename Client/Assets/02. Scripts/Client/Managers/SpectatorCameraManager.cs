@@ -41,6 +41,7 @@ public class SpectatorCameraManager : MonoBehaviour
         cameraControllers[myCameraNumber].SpectatorModeOn();
 
         nowCameraNumber = myCameraNumber;
+        SetCameraInPlayerUIControllers();
     }
     public void SwitchNextCamera()
     {
@@ -56,6 +57,7 @@ public class SpectatorCameraManager : MonoBehaviour
                 cameras[i].enabled = true;
                 cameraControllers[i].SpectatorModeOn();
                 nowCameraNumber = i;
+                SetCameraInPlayerUIControllers();
                 break;
             }
             // 한바퀴 돌 동안 못찾은거니까 그냥 리턴
@@ -80,5 +82,13 @@ public class SpectatorCameraManager : MonoBehaviour
         cameraCount = 0;
         myCameraNumber = -1;
         nowCameraNumber = -1;
+    }
+    public Camera GetNowCamera()
+    {
+        return cameras[nowCameraNumber];
+    }
+    public void SetCameraInPlayerUIControllers()
+    {
+        Managers.Player.SetCameraInPlayerUIControllers(cameras[nowCameraNumber]);
     }
 }

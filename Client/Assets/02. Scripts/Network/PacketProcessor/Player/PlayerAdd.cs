@@ -30,7 +30,5 @@ namespace Network.PacketProcessor
                 Managers.Player.GetComponent<PlayerManager>().AddPlayer(id, pos, team);
             }
         }
-
-        
     }
 }

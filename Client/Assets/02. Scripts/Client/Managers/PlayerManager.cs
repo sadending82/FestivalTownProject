@@ -99,6 +99,7 @@ public class PlayerManager : MonoBehaviour
             var playerObject = players.transform.GetChild(id).gameObject;
             playerObject.SetActive(true);
             playerObject.GetComponent<CharacterStatus>().SetTeamNumber(teamNumber);
+            playerObject.GetComponent<CharacterStatus>().SetUITeam();
             playerObject.GetComponent<CharacterStatus>().SetStyle(GetSkinMaterial(id), GetFaceMaterial(id));  
             playerObject.GetComponent<PlayerController>().SetMyId(id);
             playerObject.GetComponent<PlayerController>().Respawn(position.x, position.z);
@@ -160,6 +161,16 @@ public class PlayerManager : MonoBehaviour
             if (tPlayer.activeSelf == true)
             {
                 tPlayer.GetComponent<CharacterStatus>().GameEnd();
+            }
+        }
+    }
+    public void SetCameraInPlayerUIControllers(Camera targetCamera)
+    {
+        for (int i = 0; i < maxPlayerNum; ++i)
+        {
+            if (players.transform.GetChild(i).gameObject.activeSelf == true)
+            {
+                players.transform.GetChild(i).GetComponent<CharacterStatus>().SetUINowCamera(targetCamera);
             }
         }
     }

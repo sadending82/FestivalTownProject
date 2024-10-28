@@ -9,6 +9,7 @@ public class CharacterStatus : MonoBehaviour
 {
     private Camera myCamera;
     private PlayerController playerController;
+    private PlayerUIController playerUIController;
     private bool isGameEnd;
 
     // Ω∫≈»
@@ -63,6 +64,7 @@ public class CharacterStatus : MonoBehaviour
     private void Awake()
     {
         myCamera = GetComponentInChildren<Camera>();
+        playerUIController = GetComponentInChildren<PlayerUIController>();
         animationController = GetComponentInChildren<AnimationController>();
         animationMoudule = GetComponent<ActiveRagdoll.AnimationModule>();
         playerController = GetComponent<PlayerController>();
@@ -116,8 +118,8 @@ public class CharacterStatus : MonoBehaviour
         {
             CancelInvoke("StaminaUpdate");
             InvokeRepeating("StaminaUpdate", 0, 1);
+            Managers.SpectatorCamera.SetCameraInPlayerUIControllers();
         }
-
         playerController.ResetPlayerControllerSetting();
     }
     public void SetId(int id)
@@ -299,8 +301,6 @@ public class CharacterStatus : MonoBehaviour
             {
                 Managers.SpectatorCamera.CheckSpectator(id);
             }
-
-            
         }
         else
         {
@@ -332,6 +332,7 @@ public class CharacterStatus : MonoBehaviour
             Managers.UI.ClosePopUpUI(GameObject.FindObjectOfType<UI_Loading>());
 
             headRig.gameObject.GetComponent<AudioListener>().enabled = true;
+            SetUIMe();
         }
     }
     public bool GetAmIPlayer()
@@ -537,5 +538,19 @@ public class CharacterStatus : MonoBehaviour
     {
         Material[] mat = new Material[] { skinMaterial, faceMaterial };
         playerMesh.GetComponent<SkinnedMeshRenderer>().materials = mat;
+    }
+
+    // ------------------- UI --------------------
+    public void SetUINowCamera(Camera targetCamera)
+    {
+        playerUIController.SetCamera(targetCamera);
+    }
+    public void SetUITeam()
+    {
+        playerUIController.gameObject.transform.GetChild(teamNumber + 1).gameObject.SetActive(true);
+    }
+    public void SetUIMe()
+    {
+        playerUIController.gameObject.transform.GetChild(0).gameObject.SetActive(true);
     }
 }
