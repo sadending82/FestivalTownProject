@@ -32,6 +32,8 @@ public:
 
 	int GetMatchingSequence(eMatchingType type) { return mMatchingSequence[type]; }
 
+	void SetMatchingSequence(eMatchingType type, eMatchingSequence sequence) { mMatchingSequence[type] = sequence; }
+
 	bool CheckMatchMaking(eMatchingType matchingType);
 
 	void MatchingComplete(int roomID, std::vector<int>& sessionIDs);

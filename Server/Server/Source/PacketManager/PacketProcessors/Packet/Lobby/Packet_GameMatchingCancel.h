@@ -26,7 +26,21 @@ public:
 				session->SetSessionState(eSessionState::ST_ACCEPTED);
 
 				MatchMakingManager->GetMatchingLock().lock();
-				MatchMakingManager->GetMatchingQueue(session->GetMatchingRequestType()).erase({key, session->GetMatchingRequestTime()});
+
+				eMatchingType matchingType = session->GetMatchingRequestType();
+
+				MATCHING_QUEUE& matchingQueue = MatchMakingManager->GetMatchingQueue(matchingType);
+
+				int top_ID = matchingQueue.begin()->first;
+				long long top_requestTime = matchingQueue.begin()->second;
+
+				matchingQueue.erase({key, session->GetMatchingRequestTime()});
+
+				// 최장 대기 유저가 매칭 취소 시 그 다음 최장 대기 유저 기준으로 매칭 시퀀스 갱신
+				if (top_ID == key && session->GetMatchingRequestTime() == top_requestTime) {
+					MatchMakingManager->SetMatchingSequence(matchingType, eMatchingSequence::MS_None);
+					MatchMakingManager->UpdateMatchingSequence(matchingType);
+				}
 
 				session->SetMatchingRequestTime(0);
 

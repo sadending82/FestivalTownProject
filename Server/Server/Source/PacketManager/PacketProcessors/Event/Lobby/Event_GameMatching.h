@@ -41,7 +41,6 @@ public:
                 MatchMakingManager->GetMatchingLock().unlock();
                 return;
             }
-
             bool matchingResult = MatchMakingManager->CheckMatchMaking(event->matchingType);
             MatchMakingManager->UpdateMatchingSequence(event->matchingType);
 

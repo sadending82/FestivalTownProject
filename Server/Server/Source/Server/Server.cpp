@@ -117,7 +117,21 @@ bool Server::Disconnect(int key)
     // Delete Player In Matching Queue
     if (player->GetSessionState() == eSessionState::ST_MATCHWAITING) {
         mMatchMakingManager->GetMatchingLock().lock();
-        mMatchMakingManager->GetMatchingQueue(player->GetMatchingRequestType()).erase({ key, player->GetMatchingRequestTime() });
+
+        eMatchingType matchingType = player->GetMatchingRequestType();
+
+        MATCHING_QUEUE& matchingQueue = mMatchMakingManager->GetMatchingQueue(player->GetMatchingRequestType());
+
+        int top_ID = matchingQueue.begin()->first;
+        long long top_requestTime = matchingQueue.begin()->second;
+
+        matchingQueue.erase({ key, player->GetMatchingRequestTime() });
+
+        // 그 다음 최장 대기 유저 기준으로 매칭 시퀀스 갱신
+        if (top_ID == key && player->GetMatchingRequestTime() == top_requestTime) {
+            mMatchMakingManager->SetMatchingSequence(matchingType, eMatchingSequence::MS_None);
+            mMatchMakingManager->UpdateMatchingSequence(matchingType);
+        }
 
         player->SetMatchingRequestTime(0);
 
