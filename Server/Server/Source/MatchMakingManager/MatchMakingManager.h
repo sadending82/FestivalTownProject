@@ -34,7 +34,7 @@ public:
 
 	bool CheckMatchMaking(eMatchingType matchingType);
 
-	void MatchingComplete(int roomID, std::vector<int>& sessions);
+	void MatchingComplete(int roomID, std::vector<int>& sessionIDs);
 
 	void UpdateMatchingSequence(eMatchingType matchingType);
 

@@ -16,8 +16,6 @@ public:
 
             MatchMakingManager->GetMatchingLock().lock();
 
-            COUT << "¸ÅÄª ÀÌº¥Æ®: " << event->matchingType << " | " << event->requesterID << " | " << event->requestTime << ENDL;
-
             MATCHING_QUEUE matchingQueue = MatchMakingManager->GetMatchingQueue(event->matchingType);
 
             if (matchingQueue.empty()) {

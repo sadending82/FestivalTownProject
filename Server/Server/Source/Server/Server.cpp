@@ -75,6 +75,7 @@ int Server::SetSessionID()
         if (session == nullptr) continue;
         session->GetSessionStateLock().lock();
         if (eSessionState::ST_FREE == session->GetSessionState()) {
+            session->SetSessionID(i);
             session->SetSessionState(eSessionState::ST_ACCEPTED);
             session->GetSessionStateLock().unlock();
             return i;

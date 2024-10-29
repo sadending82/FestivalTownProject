@@ -71,14 +71,14 @@ bool MatchMakingManager::CheckMatchMaking(eMatchingType matchingType)
     return true;
 }
 
-void MatchMakingManager::MatchingComplete(int roomID, std::vector<int>& sessions)
+void MatchMakingManager::MatchingComplete(int roomID, std::vector<int>& sessionIDs)
 {
     Room* room = pServer->GetRooms()[roomID];
 
-    room->SetPlayerCnt(sessions.size());
+    room->SetPlayerCnt(sessionIDs.size());
 
     // Player Add Into New Room
-    for (int sessionID : sessions) {
+    for (int sessionID : sessionIDs) {
 
         Player* player = dynamic_cast<Player*>(pServer->GetSessions()[sessionID]);
 

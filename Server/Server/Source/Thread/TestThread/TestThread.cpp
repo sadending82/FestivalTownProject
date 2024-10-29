@@ -21,51 +21,13 @@ void TestThread::RunWorker()
 
     while (isRun) {
         char command;
-        std::cout << "Please Input Command (s = GameStart)" << std::endl;
+        std::cout << "Please Input Command" << std::endl;
         std::cin >> command;
 
         switch (command) {
             // 게임 시작
         case GameStartCommand: {
 
-            /*MatchMakingManager* MatchMakingManager = m_pServer->GetMatchMakingManager();
-
-            MatchMakingManager->GetMatchingLock().lock();
-
-            MATCHING_QUEUE& matchingQueue = MatchMakingManager->GetMatchingQueue(eMatchingType::FITH_TEAM);
-
-            int waitingPlayerCount = matchingQueue.size();
-
-            TableManager* tableManager = m_pServer->GetTableManager();
-            GAMEMANAGER_MAP& gameManagers = m_pServer->GetGameManagers();
-
-            while (waitingPlayerCount >= 1) {
-                GameMode gameMode = CulculateGameMode(waitingPlayerCount);
-
-                int matchedPlayerCount = tableManager->GetGameModeData()[gameMode].Player_Count;
-
-                int roomid = m_pServer->CreateNewRoom(gameMode);
-                if (roomid == INVALIDKEY) {
-                    std::cout << "Fali Create New Room\n";
-                    break;
-                }
-
-                std::vector<Player*> playerList;
-                for (int i = 0; i < matchedPlayerCount; ++i) {
-                    if (matchingQueue.empty()) {
-                        break;
-                    }
-                    Player* topPlayer = *matchingQueue.begin();
-
-                    playerList.push_back(topPlayer);
-                    matchingQueue.erase(matchingQueue.begin());
-                }
-                waitingPlayerCount = matchingQueue.size();
-                MatchMakingManager->MatchingComplete(roomid, playerList);
-                std::cout << "Start Game room - " << roomid << "| GameMode - " << gameMode << std::endl;
-            }
-
-            MatchMakingManager->GetMatchingLock().unlock();*/
         }
         break;
             // 라이프 감소 전송

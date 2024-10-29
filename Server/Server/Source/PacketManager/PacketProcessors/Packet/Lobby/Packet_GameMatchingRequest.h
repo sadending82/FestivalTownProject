@@ -53,28 +53,21 @@ public:
 
 				}break;
 				case SERVER_MODE::TEST: {
-					///*Room* room = pServer->GetRooms()[TESTROOM];
-					//room->GetStateLock().lock();
-					//if (room->GetState() == eRoomState::RS_FREE) {
-					//	pServer->MakeTestRoom();
-					//}
-					//room->GetStateLock().unlock();*/
+					int roomID = pServer->CreateNewRoom(GameMode::FITH_Indiv_Battle_2);
 
-					//int roomID = pServer->CreateNewRoom(GameMode::FITH_Indiv_Battle_2);
+					int botID = pServer->SetSessionID();
 
-					//int botID = pServer->SetSessionID();
+					if (botID == INVALIDKEY) {
+						MatchMakingManager->GetMatchingLock().unlock();
+						return;
+					}
 
-					//if (botID == INVALIDKEY) {
-					//	MatchMakingManager->GetMatchingLock().unlock();
-					//	return;
-					//}
+					Player* Bot = dynamic_cast<Player*>(pServer->GetSessions()[botID]);
+					Bot->SetSessionState(eSessionState::ST_MATCHWAITING);
+					Bot->SetIsBot(true);
 
-					//Player* Bot = dynamic_cast<Player*>(pServer->GetSessions()[botID]);
-					//Bot->SetSessionState(eSessionState::ST_MATCHWAITING);
-					//Bot->SetIsBot(true);
-
-					//std::vector<Player*> playerVector = { dynamic_cast<Player*>(session), Bot };
-					//pServer->GetMatchMakingManager()->MatchingComplete(roomID, playerVector);
+					std::vector<int> sessions = { key, Bot->GetSessionID()};
+					pServer->GetMatchMakingManager()->MatchingComplete(roomID, sessions);
 				}break;
 				}
 				MatchMakingManager->GetMatchingLock().unlock();
