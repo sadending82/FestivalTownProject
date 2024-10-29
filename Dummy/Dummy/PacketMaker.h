@@ -14,7 +14,7 @@ public:
 	std::vector<uint8_t> MakeLoginRequestPacket(std::string& id, std::string& password);
 	std::vector<uint8_t> MakePlayerMovePacket(Vector3f pos, Vector3f dir, int id, ePlayerMoveState state);
 	std::vector<uint8_t> MakeHeartBeatPacket();
-	std::vector<uint8_t> MakeMatchingRequestPacket(int id);
+	std::vector<uint8_t> MakeMatchingRequestPacket(int id, eMatchingType type);
 	std::vector<uint8_t> MakeGameReadyPacket(int roomId);
 	std::vector<uint8_t> MakePlayerPosSyncPacket(int id, Vector3f pos, Vector3f dir, int stamina);
 };

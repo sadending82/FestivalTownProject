@@ -155,13 +155,13 @@ public class PacketManager : MonoBehaviour
         if (packet == null) { return; }
         SendPacket(packet);
     }
-    public void SendGameMatchingRequest(eMatchingType type = eMatchingType.FITH_TEAM)
+    public void SendGameMatchingRequest(eMatchingType type)
     {
         byte[] packet = _packetMaker.MakeGameMatchingRequestPacket(type);
         if (packet == null) { return; }
         SendPacket(packet);
     }
-    public void SendGameMatchingCancle()
+    public void SendGameMatchingCancel()
     {
         byte[] packet = _packetMaker.MakeGameMatchingCancelPacket();
         if (packet == null) { return; }

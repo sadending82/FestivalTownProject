@@ -41,10 +41,10 @@ std::vector<uint8_t> PacketMaker::MakeHeartBeatPacket()
     return MakeBuffer(ePacketType::C2S_HEART_BEAT, builder.GetBufferPointer(), builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakeMatchingRequestPacket(int id)
+std::vector<uint8_t> PacketMaker::MakeMatchingRequestPacket(int id, eMatchingType type)
 {
     flatbuffers::FlatBufferBuilder builder;
-    builder.Finish(PacketTable::LobbyTable::CreateGameMatchingRequest(builder, id));
+    builder.Finish(PacketTable::LobbyTable::CreateGameMatchingRequest(builder, id, type));
     return MakeBuffer(ePacketType::C2S_MATCHING_REQUEST, builder.GetBufferPointer(), builder.GetSize());
 }
 

@@ -17,7 +17,7 @@ inline constexpr int TESTROOM = 0;
 inline constexpr int BUFSIZE = 1000;
 
 inline constexpr int MAXSESSION = 1000;
-inline constexpr int MAXROOM = 100;
+inline constexpr int MAXROOM = 500;
 inline constexpr int MAXPLAYER = 6;
 inline constexpr int MINPLAYER = 2;
 inline constexpr int MAXOBJECT = 100;
@@ -126,9 +126,3 @@ std::vector<uint8_t> MakeBuffer(const int type, const uint8_t* data, const int s
 
 Vector3f ConvertVec3fToVec2i(Vector3f vec);
 Vector3f ConvertVec2iToVec3f(int x, int z);
-
-struct MatchingCompare {
-	bool operator()(class Player* a, class Player* b) const;
-};
-
-GameMode CulculateGameMode(int playerCount);

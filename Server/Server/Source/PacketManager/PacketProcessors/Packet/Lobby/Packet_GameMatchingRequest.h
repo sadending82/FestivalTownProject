@@ -17,48 +17,67 @@ public:
 
 				const GameMatchingRequest* read = flatbuffers::GetRoot<GameMatchingRequest>(data);
 
-				Session* session = pServer->GetSessions()[key];
+				Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
 
 				SERVER_MODE serverMode = pServer->GetMode();
 
+				eMatchingType matchingType = (eMatchingType)read->matching_type();
+
 				MatchMakingManager* MatchMakingManager = pServer->GetMatchMakingManager();
 
-				session->SetMatchingRequestTime(std::chrono::duration_cast<std::chrono::seconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count());
-				session->GetSessionStateLock().lock();
-				session->SetSessionState(eSessionState::ST_MATCHWAITING);
-				session->GetSessionStateLock().unlock();
+				MatchMakingManager->GetMatchingLock().lock();
+
+				long long requestTime = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+
+				player->SetMatchingRequestType(matchingType);
+				player->SetMatchingRequestTime(requestTime);
+
+				player->GetSessionStateLock().lock();
+				player->SetSessionState(eSessionState::ST_MATCHWAITING);
+				player->GetSessionStateLock().unlock();
 
 				switch (serverMode) {
-				case SERVER_MODE::LIVE: {
-					MatchMakingManager->GetMatchingLock().lock();
-					MatchMakingManager->GetMatchingQueue(eMatchingType::FITH_TEAM).insert(dynamic_cast<Player*>(session));
-					MatchMakingManager->GetMatchingLock().unlock();
+				case SERVER_MODE::LIVE:{
+
+					int matchingSequence = MatchMakingManager->GetMatchingSequence(matchingType);
+
+					MatchMakingManager->GetMatchingQueue(matchingType).insert({key, requestTime});
+
+					if (matchingSequence == eMatchingSequence::MS_None) {
+						
+					}
+					else {
+						MatchMakingManager->CheckMatchMaking(matchingType);
+					}
+					MatchMakingManager->UpdateMatchingSequence(matchingType);
 
 				}break;
 				case SERVER_MODE::TEST: {
-					/*Room* room = pServer->GetRooms()[TESTROOM];
-					room->GetStateLock().lock();
-					if (room->GetState() == eRoomState::RS_FREE) {
-						pServer->MakeTestRoom();
-					}
-					room->GetStateLock().unlock();*/
+					///*Room* room = pServer->GetRooms()[TESTROOM];
+					//room->GetStateLock().lock();
+					//if (room->GetState() == eRoomState::RS_FREE) {
+					//	pServer->MakeTestRoom();
+					//}
+					//room->GetStateLock().unlock();*/
 
-					int roomID = pServer->CreateNewRoom(GameMode::FITH_Indiv_Battle_2);
+					//int roomID = pServer->CreateNewRoom(GameMode::FITH_Indiv_Battle_2);
 
-					int botID = pServer->SetSessionID();
+					//int botID = pServer->SetSessionID();
 
-					if (botID == INVALIDKEY) {
-						return;
-					}
+					//if (botID == INVALIDKEY) {
+					//	MatchMakingManager->GetMatchingLock().unlock();
+					//	return;
+					//}
 
-					Player* Bot = dynamic_cast<Player*>(pServer->GetSessions()[botID]);
-					Bot->SetSessionState(eSessionState::ST_MATCHWAITING);
-					Bot->SetIsBot(true);
+					//Player* Bot = dynamic_cast<Player*>(pServer->GetSessions()[botID]);
+					//Bot->SetSessionState(eSessionState::ST_MATCHWAITING);
+					//Bot->SetIsBot(true);
 
-					std::vector<Player*> playerVector = { dynamic_cast<Player*>(session), Bot };
-					pServer->GetMatchMakingManager()->MatchingComplete(roomID, playerVector);
+					//std::vector<Player*> playerVector = { dynamic_cast<Player*>(session), Bot };
+					//pServer->GetMatchMakingManager()->MatchingComplete(roomID, playerVector);
 				}break;
 				}
+				MatchMakingManager->GetMatchingLock().unlock();
 			}
 		}
 		catch (const std::exception& e) {

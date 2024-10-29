@@ -26,7 +26,7 @@ public class UI_TimerPanel : UI_Base
 
         Get<GameObject>((int)GameObjects.QuitButton).BindEvent((PointerEventData) =>
         {
-            Managers.Network.GetPacketManager().SendGameMatchingCancle();
+            Managers.Network.GetPacketManager().SendGameMatchingCancel();
         });
     }
 

@@ -17,10 +17,8 @@ void Room::Reset()
 	mRoomCode = 0;
 
 	mObjectPool.AllObjectDeactive();
-	delete mMap;
 
 	std::fill(mPlayerList.begin(), mPlayerList.end(), INVALIDKEY);
-	mMap = nullptr;
 
 	mPlayerRecordList.clear();
 	mTeams.clear();
@@ -46,6 +44,12 @@ void Room::Init(int id, GameMode gameMode, GameModeData& GameModeData)
 	mTeams[(int)TeamCode::BLUE].Init(mGameModeData.Life_Count);
 }
 
+
+void Room::InitMap(Map* map)
+{
+	delete mMap;
+	mMap = new Map(*map);
+}
 
 void Room::InitRoomCode()
 {

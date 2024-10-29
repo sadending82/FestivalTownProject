@@ -47,7 +47,9 @@ struct EVENT {
 };
 
 struct EV_GAME_MATCHING : EVENT {
-
+	int requesterID;
+	long long requestTime;
+	eMatchingType matchingType;
 };
 
 struct EV_GAME_START : EVENT {
@@ -108,7 +110,7 @@ struct EV_GROGGY_RECOVERY : EVENT {
 #pragma pack(pop)
 
 bool PushEventHeartBeat(Timer* pTimer, int sessionID);
-bool PushEventGameMatching(Timer* pTimer);
+bool PushEventGameMatching(Timer* pTimer, int requesterID, eMatchingType matchingType, long long requestTime, int intervalSecond);
 
 // InGameEvent
 bool PushEventGameStart(Timer* pTimer, int roomID, long long roomCode);

@@ -50,6 +50,7 @@ public:
 				return;
 			}
 			}
+
 			PushEventBlockDrop(pServer->GetTimer(), event->roomID, event->roomCode, blockType, nextEventTime);
 
 			pPacketSender->SendBlockDropPacket(event->roomID, spawnCnt, blockType);

@@ -68,6 +68,8 @@ void TableManager::ReadAllDataTable()
     ReadGachaTable();
     ReadGameReward();
 
+    ReadMatchingTable();
+
     mIsLoading = false;
 }
 

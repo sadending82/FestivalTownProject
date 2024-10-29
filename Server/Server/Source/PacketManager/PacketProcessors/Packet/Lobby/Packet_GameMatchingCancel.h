@@ -26,7 +26,10 @@ public:
 				session->SetSessionState(eSessionState::ST_ACCEPTED);
 
 				MatchMakingManager->GetMatchingLock().lock();
-				MatchMakingManager->GetMatchingQueue(eMatchingType::FITH_TEAM).erase(dynamic_cast<Player*>(session));
+				MatchMakingManager->GetMatchingQueue(session->GetMatchingRequestType()).erase({key, session->GetMatchingRequestTime()});
+
+				session->SetMatchingRequestTime(0);
+
 				MatchMakingManager->GetMatchingLock().unlock();
 
 				session->GetSessionStateLock().unlock();

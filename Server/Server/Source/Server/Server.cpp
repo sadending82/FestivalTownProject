@@ -113,6 +113,17 @@ bool Server::Disconnect(int key)
         return false;
     }
 
+    // Delete Player In Matching Queue
+    if (player->GetSessionState() == eSessionState::ST_MATCHWAITING) {
+        mMatchMakingManager->GetMatchingLock().lock();
+        mMatchMakingManager->GetMatchingQueue(player->GetMatchingRequestType()).erase({ key, player->GetMatchingRequestTime() });
+
+        player->SetMatchingRequestTime(0);
+
+        mMatchMakingManager->GetMatchingLock().unlock();
+    }
+
+
     // Delete Player In Room
     if (player->GetSessionState() == eSessionState::ST_INGAME) {
         int roomID = player->GetRoomID();
@@ -219,8 +230,7 @@ void Server::Run()
 
     switch (mMode) {
     case SERVER_MODE::LIVE: {
-        // matching start
-        PushEventGameMatching(mTimer);
+
     }break;
     case SERVER_MODE::TEST: {
         DEBUGMSGNOPARAM("START TEST MODE \n");

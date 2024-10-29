@@ -17,14 +17,18 @@ bool PushEventHeartBeat(Timer* pTimer, int sessionID) {
 	return true;
 }
 
-bool PushEventGameMatching(Timer* pTimer)
+bool PushEventGameMatching(Timer* pTimer, int requesterID, eMatchingType matchingType, long long requestTime, int intervalSecond)
 {
 	EV_GAME_MATCHING e;
 	e.size = sizeof(EV_GAME_MATCHING);
 	e.type = eEventType::GAMEMATCHING;
+	e.requesterID = requesterID;
+	e.matchingType = matchingType;
+	e.requestTime = requestTime;
+
 
 	EVENT_HEADER header;
-	header.start_time = std::chrono::system_clock::now() + std::chrono::milliseconds(GAMEMATCHINGINTERVAL);
+	header.start_time = std::chrono::system_clock::now() + std::chrono::seconds(intervalSecond);
 	memcpy(header.message, reinterpret_cast<char*>(&e), sizeof(EV_GAME_MATCHING));
 
 	pTimer->PushEvent(header);

@@ -20,7 +20,7 @@ public:
 	void Reset();
 	void Init(int id, GameMode gameMode, GameModeData& GameModeData);
 
-	void InitMap(Map* map) { mMap = new Map(*map); }
+	void InitMap(Map* map);
 	void InitRoomCode();
 
 	bool AddPlayer(Player* player);

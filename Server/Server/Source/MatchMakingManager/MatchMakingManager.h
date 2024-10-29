@@ -5,28 +5,51 @@
 #include <set>
 #include <mutex>
 
-#define MATCHING_QUEUE		std::set<Player*,  MatchingCompare>
+//									sessionID - requestTime
+#define MATCHING_QUEUE		std::set<std::pair<int, long long>,  MatchingCompare>
 #define MATCHING_QUEUE_MAP	std::unordered_map<eMatchingType, MATCHING_QUEUE>
+
+enum eMatchingSequence {
+	MS_None = -1,
+	MS_1 = 0,
+	MS_2 = 1,
+	MS_Last = 2
+};
+
+struct MatchingCompare {
+	bool operator()(const std::pair<int, long long>& a, const std::pair<int, long long>& b) const;
+};
 
 class MatchMakingManager
 {
 public:
-	MatchMakingManager(class Server* server) :pServer(server) {}
+	MatchMakingManager(class Server* server);
 
 	~MatchMakingManager();
 
 	std::mutex& GetMatchingLock() { return mMatchingLock; }
 	MATCHING_QUEUE& GetMatchingQueue(eMatchingType type) { return mMatchingQueue[type]; }
 
-	void CheckMatchMaking(eMatchingType matchingType);
+	int GetMatchingSequence(eMatchingType type) { return mMatchingSequence[type]; }
 
-	void MatchingComplete(int roomID, std::vector<class Player*>& players);
+	bool CheckMatchMaking(eMatchingType matchingType);
+
+	void MatchingComplete(int roomID, std::vector<int>& sessions);
+
+	void UpdateMatchingSequence(eMatchingType matchingType);
 
 private:
 	class Server* pServer;
 
+	// 매치메이킹 작업은 무조건 한 스레드에서만 할 것
+	// 멤버 함수 사용, 멤버 변수 읽기/쓰기 작업시 무조건 Lock 사용
 	std::mutex	mMatchingLock;
 
+
 	MATCHING_QUEUE_MAP mMatchingQueue;
+
+	std::unordered_map<eMatchingType, eMatchingSequence> mMatchingSequence;
+
+	std::unordered_map<eMatchingType, std::vector<struct Matching_Table>>* pMatchingDataTables;
 };
 

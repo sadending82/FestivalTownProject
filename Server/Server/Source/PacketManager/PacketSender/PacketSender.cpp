@@ -96,6 +96,11 @@ void PacketSender::SendHeartBeatPacket(int sessionID)
 
 void PacketSender::SendBlockDropPacket(int roomID, int spawnCount, int blockType)
 {
+    Room* room = mServer->GetRooms()[roomID];
+    if (room->GetState() == eRoomState::RS_FREE) {
+        return;
+    }
+
     std::vector<std::pair<int, int>>& spawnPoses = mServer->GetRooms()[roomID]->GetMap()->GetBlockDropIndexes();
     GameMode gameMode = mServer->GetRooms()[roomID]->GetGameMode();
 

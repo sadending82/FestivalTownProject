@@ -30,5 +30,4 @@ void Session::SessionInit(SOCKET sock, int key)
 	mExOver.SetOpType(eOpType::OP_RECV);
 	mPrevDataSize = 0 ;
 	mSessionID = key;
-	mPlayedSoloGameBefore = false;
 }

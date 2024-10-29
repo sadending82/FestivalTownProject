@@ -14,7 +14,7 @@ HANDLE g_hiocp;
 //
 
 inline constexpr int MAX_TEST = 250;
-inline constexpr int MAX_CLIENTS = 4;
+inline constexpr int MAX_CLIENTS = 369;
 
 std::array<int, MAX_CLIENTS> client_map;
 std::array<DummyClient, MAX_CLIENTS> g_clients;
@@ -300,6 +300,10 @@ void ProcessPacket(unsigned char* data, const int ci)
 	int flatBufSize = header->flatBufferSize;
 	int headerSize = sizeof(HEADER);
 
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<> matchingType_distrib(0, 1);
+
 	switch ((ePacketType)type)
 	{
 	case ePacketType::S2C_LOGIN_RESPONSE:
@@ -307,7 +311,15 @@ void ProcessPacket(unsigned char* data, const int ci)
 		g_clients[ci].connected = true;
 		std::cout << ci << "가 로그인을 시도했습니다." << std::endl;
 		std::cout << ci << "가 매칭을 시도해요!" << std::endl;
-		auto packet = pm.MakeMatchingRequestPacket(ci);
+		eMatchingType mtype;
+		if (matchingType_distrib(gen) == 0) {
+			mtype = eMatchingType::FITH_SOLO;
+		}
+		else {
+			mtype = eMatchingType::FITH_TEAM;
+		}
+
+		auto packet = pm.MakeMatchingRequestPacket(ci, mtype);
 		g_clients[ci].DoSend(packet.data(), packet.size());
 	}	
 		break;
@@ -372,7 +384,16 @@ void ProcessPacket(unsigned char* data, const int ci)
 	{
 		std::cout << ci << "가 결과를 전송 받았어요." << std::endl;
 		std::cout << ci << "가 바로 다시 매칭을 신청해요" << std::endl;
-		auto packet = pm.MakeMatchingRequestPacket(ci);
+
+		eMatchingType mtype;
+		if (matchingType_distrib(gen) == 0) {
+			mtype = eMatchingType::FITH_SOLO;
+		}
+		else {
+			mtype = eMatchingType::FITH_TEAM;
+		}
+
+		auto packet = pm.MakeMatchingRequestPacket(ci, mtype);
 		g_clients[ci].DoSend(packet.data(), packet.size());
 	}
 		break;

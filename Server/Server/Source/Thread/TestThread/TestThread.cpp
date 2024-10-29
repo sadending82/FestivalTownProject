@@ -28,7 +28,7 @@ void TestThread::RunWorker()
             // 게임 시작
         case GameStartCommand: {
 
-            MatchMakingManager* MatchMakingManager = m_pServer->GetMatchMakingManager();
+            /*MatchMakingManager* MatchMakingManager = m_pServer->GetMatchMakingManager();
 
             MatchMakingManager->GetMatchingLock().lock();
 
@@ -57,13 +57,6 @@ void TestThread::RunWorker()
                     }
                     Player* topPlayer = *matchingQueue.begin();
 
-                    // 다음 매칭에 참고하기 위해 지금 매칭된 게임 종류 저장
-                    if (gameMode == GameMode::FITH_Team_Battle_4 || gameMode == GameMode::FITH_Team_Battle_6) {
-                        topPlayer->SetPlayedSoloGameBefore(false);
-                    }
-                    else {
-                        topPlayer->SetPlayedSoloGameBefore(true);
-                    }
                     playerList.push_back(topPlayer);
                     matchingQueue.erase(matchingQueue.begin());
                 }
@@ -72,7 +65,7 @@ void TestThread::RunWorker()
                 std::cout << "Start Game room - " << roomid << "| GameMode - " << gameMode << std::endl;
             }
 
-            MatchMakingManager->GetMatchingLock().unlock();
+            MatchMakingManager->GetMatchingLock().unlock();*/
         }
         break;
             // 라이프 감소 전송
