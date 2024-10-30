@@ -35,8 +35,6 @@ bool MatchMakingManager::CheckMatchMaking(eMatchingType matchingType)
         return false;
     }
 
-    COUT << waitingPlayerCount << " || " << matchingTable.Recruit_Player << ENDL;
-
     std::vector<int> matchingModes = { matchingTable.Mode1_Index, matchingTable.Mode2_Index };
 
     GAMEMANAGER_MAP& gameManagers = pServer->GetGameManagers();
