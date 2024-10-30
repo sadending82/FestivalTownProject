@@ -9,6 +9,7 @@
 #include "Packet/Player/Packet_PlayerStop.h"
 #include "Packet/Player/Packet_PlayerSync.h"
 #include "Packet/Player/Packet_PlayerGrabBomb.h"
+#include "Packet/Player/Packet_PlayerDropBomb.h"
 #include "Packet/Player/Packet_PlayerThrowBomb.h"
 #include "Packet/Player/Packet_PlayerAnimation.h"
 #include "Packet/Player/Packet_PlayerDamageReceive.h"

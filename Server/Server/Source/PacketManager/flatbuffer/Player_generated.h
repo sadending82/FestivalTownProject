@@ -42,6 +42,9 @@ struct PlayerStopBuilder;
 struct PlayerGrabBomb;
 struct PlayerGrabBombBuilder;
 
+struct PlayerDropBomb;
+struct PlayerDropBombBuilder;
+
 struct PlayerThrowBomb;
 struct PlayerThrowBombBuilder;
 
@@ -634,6 +637,68 @@ inline ::flatbuffers::Offset<PlayerGrabBomb> CreatePlayerGrabBomb(
   PlayerGrabBombBuilder builder_(_fbb);
   builder_.add_bomb_id(bomb_id);
   builder_.add_direction(direction);
+  builder_.add_pos(pos);
+  builder_.add_id(id);
+  return builder_.Finish();
+}
+
+struct PlayerDropBomb FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef PlayerDropBombBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ID = 4,
+    VT_POS = 6,
+    VT_BOMB_ID = 8
+  };
+  int32_t id() const {
+    return GetField<int32_t>(VT_ID, 0);
+  }
+  const PacketTable::UtilitiesTable::Vec3f *pos() const {
+    return GetPointer<const PacketTable::UtilitiesTable::Vec3f *>(VT_POS);
+  }
+  int32_t bomb_id() const {
+    return GetField<int32_t>(VT_BOMB_ID, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_ID, 4) &&
+           VerifyOffset(verifier, VT_POS) &&
+           verifier.VerifyTable(pos()) &&
+           VerifyField<int32_t>(verifier, VT_BOMB_ID, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct PlayerDropBombBuilder {
+  typedef PlayerDropBomb Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_id(int32_t id) {
+    fbb_.AddElement<int32_t>(PlayerDropBomb::VT_ID, id, 0);
+  }
+  void add_pos(::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> pos) {
+    fbb_.AddOffset(PlayerDropBomb::VT_POS, pos);
+  }
+  void add_bomb_id(int32_t bomb_id) {
+    fbb_.AddElement<int32_t>(PlayerDropBomb::VT_BOMB_ID, bomb_id, 0);
+  }
+  explicit PlayerDropBombBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<PlayerDropBomb> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<PlayerDropBomb>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<PlayerDropBomb> CreatePlayerDropBomb(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t id = 0,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> pos = 0,
+    int32_t bomb_id = 0) {
+  PlayerDropBombBuilder builder_(_fbb);
+  builder_.add_bomb_id(bomb_id);
   builder_.add_pos(pos);
   builder_.add_id(id);
   return builder_.Finish();

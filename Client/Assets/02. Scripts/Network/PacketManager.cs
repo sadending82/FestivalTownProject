@@ -56,6 +56,7 @@ public class PacketManager : MonoBehaviour
             { ePacketType.S2C_PLAYER_STOP, new PlayerStopProcessor() },
             { ePacketType.S2C_PLAYER_SYNC, new PlayerSyncProcessor() },
             { ePacketType.S2C_PLAYER_GRAB_BOMB, new PlayerGrabBombProcessor() },
+            { ePacketType.S2C_PLAYER_DROP_BOMB, new PlayerDropBombProcessor() },
             { ePacketType.S2C_PLAYER_THROW_BOMB, new PlayerThrowBombProcessor() },
             { ePacketType.S2C_PLAYER_GRAB_WEAPON, new PlayerGrabWeaponProcessor() },
             { ePacketType.S2C_PLAYER_DROP_WEAPON, new PlayerDropWeaponProcessor() },
@@ -204,6 +205,12 @@ public class PacketManager : MonoBehaviour
     public void SendPlayerGrabBombPacket(Vector3 position, Vector3 direction, int playerID, int BombID)
     {
         byte[] packet = _packetMaker.MakePlayerGrabBombPacket(position, direction, playerID, BombID);
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+    public void SendPlayerDropBombPacket(Vector3 position, int playerID, int BombID)
+    {
+        byte[] packet = _packetMaker.MakePlayerDropBombPacket(position, playerID, BombID);
         if (packet == null) { return; }
         SendPacket(packet);
     }

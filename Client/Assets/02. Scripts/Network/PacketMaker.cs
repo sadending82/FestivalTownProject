@@ -270,6 +270,28 @@ public class PacketMaker
         return result;
     }
 
+    public byte[] MakePlayerDropBombPacket(Vector3 position, int playerID, int BombID)
+    {
+        var builder = new FlatBufferBuilder(1);
+        var pos = Vec3f.CreateVec3f(builder, position.x, position.y, position.z);
+        PlayerDropBomb.StartPlayerDropBomb(builder);
+        PlayerDropBomb.AddId(builder, playerID);
+        PlayerDropBomb.AddPos(builder, pos);
+        PlayerDropBomb.AddBombId(builder, BombID);
+        var offset = PlayerDropBomb.EndPlayerDropBomb(builder);
+        builder.Finish(offset.Value);
+
+        byte[] data = builder.SizedByteArray();
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PLAYER_DROP_BOMB, flatBufferSize = (ushort)data.Length };
+        byte[] headerdata = Serialize<HEADER>(header);
+        byte[] result = new byte[data.Length + headerdata.Length];
+
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
+
+        return result;
+    }
+
     public byte[] MakePlayerThrowBombPacket(Vector3 position, Vector3 direction, int playerID, int BombID)
     {
         var builder = new FlatBufferBuilder(1);
