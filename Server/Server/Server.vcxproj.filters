@@ -125,6 +125,7 @@
     <ClInclude Include="Source\Object\ObjectPool\ObjectPool.h" />
     <ClInclude Include="Source\TableManager\Tables\MatchMaking.h" />
     <ClInclude Include="Source\MatchMakingManager\MatchMakingManager.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Player\Packet_PlayerDropBomb.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

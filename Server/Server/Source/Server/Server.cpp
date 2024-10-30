@@ -109,13 +109,14 @@ bool Server::Disconnect(int key)
     Player* player = dynamic_cast<Player*>(GetSessions()[key]);
 
     player->GetSessionStateLock().lock();
-    if (player->GetSessionState() == eSessionState::ST_FREE) {
+
+    switch (player->GetSessionState()) {
+    case eSessionState::ST_FREE: {
         player->GetSessionStateLock().unlock();
         return false;
     }
-
-    // Delete Player In Matching Queue
-    if (player->GetSessionState() == eSessionState::ST_MATCHWAITING) {
+    break;
+    case eSessionState::ST_MATCHWAITING: {
         mMatchMakingManager->GetMatchingLock().lock();
 
         eMatchingType matchingType = player->GetMatchingRequestType();
@@ -137,10 +138,47 @@ bool Server::Disconnect(int key)
 
         mMatchMakingManager->GetMatchingLock().unlock();
     }
+    break;
 
+    case eSessionState::ST_GAMELOADING: {
 
-    // Delete Player In Room
-    if (player->GetSessionState() == eSessionState::ST_INGAME) {
+        int roomID = player->GetRoomID();
+        int inGameID = player->GetInGameID();
+
+        if (roomID != INVALIDKEY) {
+            Room* room = mRooms[roomID];
+
+            room->GetTeams()[player->GetTeam()].GetMembers().erase(inGameID);
+            room->GetPlayerList()[inGameID].store(INVALIDKEY);
+            if (room->GetPlayerCnt() > 0) {
+                room->SubPlayerCnt();
+                room->SubReadyCnt();
+            }
+
+            mPacketSender->SendPlayerDelete(roomID, inGameID);
+
+            switch (mMode) {
+            case SERVER_MODE::LIVE: {
+                if (room->GetReadyCnt() == room->GetPlayerCnt()) {
+                    if (room->SetAllPlayerReady(true) == true) {
+                        COUT << "로딩 중에 누구 끊겨서 그냥 시작함\n";
+                        mPacketSender->SendAllPlayerReady(roomID);
+                        room->ChangeAllPlayerInGame();
+                        PushEventGameStart(mTimer, roomID, room->GetRoomCode());
+                    }
+                }
+            }break;
+
+            }
+
+            if (inGameID == room->GetHostID()) {
+                int newHostSessionID = room->ChangeHost();
+                mPacketSender->SendGameHostChange(newHostSessionID);
+            }
+        }
+    }
+    break;
+    case eSessionState::ST_INGAME: {
         int roomID = player->GetRoomID();
         int inGameID = player->GetInGameID();
 
@@ -160,6 +198,9 @@ bool Server::Disconnect(int key)
         }
 
     }
+    break;
+    }
+
     player->GetSessionStateLock().unlock();
     player->Disconnect();
 

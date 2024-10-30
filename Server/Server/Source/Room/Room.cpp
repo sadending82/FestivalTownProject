@@ -73,7 +73,7 @@ bool Room::AddPlayer(Player* player)
 
 			// 외부에서 Session Lock 걸고 있음
 			//player->GetSessionStateLock().lock();
-			player->SetSessionState(eSessionState::ST_INGAME);
+			player->SetSessionState(eSessionState::ST_GAMELOADING);
 			//player->GetSessionStateLock().unlock();
 
 			player->GetPlayerStateLock().lock();
@@ -179,6 +179,18 @@ bool Room::SetAllPlayerReady(bool desired)
 {
 	bool expected = !desired;
 	return mAllPlayerReady.compare_exchange_strong(expected, desired);
+}
+
+void Room::ChangeAllPlayerInGame()
+{
+	for (const auto& sID : mPlayerList) {
+		int id = sID.load();
+		if (id == INVALIDKEY) continue;
+		Player* p = dynamic_cast<Player*>(pServer->GetSessions()[id]);
+		p->GetSessionStateLock().lock();
+		p->SetSessionState(eSessionState::ST_INGAME);
+		p->GetSessionStateLock().unlock();
+	}
 }
 
 int Room::ChangeHost()

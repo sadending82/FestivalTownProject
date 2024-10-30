@@ -39,7 +39,11 @@ inline constexpr float offsetZ = 10;
 
 enum class eSessionState
 {
-	ST_FREE, ST_ACCEPTED, ST_MATCHWAITING, ST_INGAME
+	ST_FREE,
+	ST_ACCEPTED,
+	ST_MATCHWAITING,
+	ST_GAMELOADING,
+	ST_INGAME
 };
 
 enum class ePlayerState {

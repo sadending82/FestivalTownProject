@@ -59,12 +59,15 @@ public:
 	void SubPlayerCnt() { mPlayerCnt.fetch_sub(1); }
 	void SetPlayerCnt(int count) { mPlayerCnt.store(count); }
 	void AddReadyCnt() { mReadyCnt.fetch_add(1); }
+	void SubReadyCnt() { mReadyCnt.fetch_sub(1); }
 	void SetGameMode(GameMode GameMode) { mGameMode = GameMode; }
 	void SetStartTime(TIMEPOINT time) { mStartTime = time; }
 	void SetState(eRoomState state) { mState = state; }
 	void SetHost(int ingameid) { mHostID = ingameid; }
 	bool SetIsRun(bool desired);
 	bool SetAllPlayerReady(bool desired);
+
+	void ChangeAllPlayerInGame();
 
 	int ChangeHost();
 

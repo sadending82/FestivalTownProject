@@ -35,6 +35,8 @@ bool MatchMakingManager::CheckMatchMaking(eMatchingType matchingType)
         return false;
     }
 
+    COUT << waitingPlayerCount << " || " << matchingTable.Recruit_Player << ENDL;
+
     std::vector<int> matchingModes = { matchingTable.Mode1_Index, matchingTable.Mode2_Index };
 
     GAMEMANAGER_MAP& gameManagers = pServer->GetGameManagers();
@@ -75,13 +77,15 @@ void MatchMakingManager::MatchingComplete(int roomID, std::vector<int>& sessionI
 {
     Room* room = pServer->GetRooms()[roomID];
 
-    room->SetPlayerCnt(sessionIDs.size());
+    PacketSender* packetSender = pServer->GetPacketSender();
+
+    room->SetPlayerCnt(9999);
+
+    int addCompletePlayerCnt = 0;
 
     // Player Add Into New Room
     for (int sessionID : sessionIDs) {
-
         Player* player = dynamic_cast<Player*>(pServer->GetSessions()[sessionID]);
-
         player->GetSessionStateLock().lock();
         if (player->GetSessionState() == eSessionState::ST_MATCHWAITING) {
             // 인원수가 적은 팀에 배치
@@ -118,14 +122,21 @@ void MatchMakingManager::MatchingComplete(int roomID, std::vector<int>& sessionI
                 }
                 else {
                     player->SetMatchingRequestTime(0);
-                    pServer->GetPacketSender()->SendGameMatchingResponse(sessionID);
                     COUT << "Matched - " << sessionID << ENDL;
                 }
+                addCompletePlayerCnt++;
             }
         }
         player->GetSessionStateLock().unlock();
     }
 
+    room->SetPlayerCnt(addCompletePlayerCnt);
+
+    for (const auto& sID : room->GetPlayerList()) {
+        int id = sID.load();
+        if (id == INVALIDKEY) continue;
+        packetSender->SendGameMatchingResponse(sID);
+    }
     pServer->GetPacketSender()->SendPlayerAdd(roomID);
 }
 

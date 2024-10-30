@@ -14,7 +14,7 @@ HANDLE g_hiocp;
 //
 
 inline constexpr int MAX_TEST = 250;
-inline constexpr int MAX_CLIENTS = 3;
+inline constexpr int MAX_CLIENTS = 1;
 
 std::array<int, MAX_CLIENTS> client_map;
 std::array<DummyClient, MAX_CLIENTS> g_clients;
@@ -318,7 +318,7 @@ void ProcessPacket(unsigned char* data, const int ci)
 		else {
 			mtype = eMatchingType::FITH_TEAM;
 		}*/
-		mtype = eMatchingType::FITH_TEAM;
+		mtype = eMatchingType::FITH_SOLO;
 		auto packet = pm.MakeMatchingRequestPacket(ci, mtype);
 		g_clients[ci].DoSend(packet.data(), packet.size());
 	}	

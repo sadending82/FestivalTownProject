@@ -29,6 +29,13 @@ public:
 					return;
 				}
 
+				player->GetSessionStateLock().lock();
+				if (player->GetSessionState() != eSessionState::ST_GAMELOADING) {
+					player->GetSessionStateLock().unlock();
+					return;
+				}
+				player->GetSessionStateLock().unlock();
+
 				room->AddReadyCnt();
 
 				SERVER_MODE serverMode = pServer->GetMode();
@@ -37,12 +44,14 @@ public:
 					if (room->GetReadyCnt() == room->GetPlayerCnt()) {
 						if (room->SetAllPlayerReady(true) == true) {
 							pPacketSender->SendAllPlayerReady(roomid);
+							room->ChangeAllPlayerInGame();
 							PushEventGameStart(pServer->GetTimer(), roomid, room->GetRoomCode());
 						}
 					}
 				}break;
 				case SERVER_MODE::TEST: {
 					pPacketSender->SendAllPlayerReady(roomid);
+					room->ChangeAllPlayerInGame();
 					PushEventGameStart(pServer->GetTimer(), roomid, pServer->GetRooms()[roomid]->GetRoomCode());
 				}break;
 				}
