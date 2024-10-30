@@ -721,7 +721,7 @@ public class PlayerController : MonoBehaviour
     }
     private void SpectatorCameraControl()
     {
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0) || Input.GetKeyDown(KeyCode.Tab))
         {
             Managers.SpectatorCamera.SwitchNextCamera();
         }
