@@ -31,6 +31,7 @@ public:
 	std::vector<uint8_t> MakeHeartBeatPacket();
 	std::vector<uint8_t> MakeBlockDropPacket(std::vector<std::pair<int, int>>& positions, std::vector<int>& blockTypes);
 	std::vector<uint8_t> MakeBombSpawnPacket(std::vector<Vector3f>& Positions, std::vector<int>& bombIDs, int explosionInterval);
+	std::vector<uint8_t> MakeBombDropPacket(Vector3f position, int roomID, int bombID);
 	std::vector<uint8_t> MakeWeaponSpawnPacket(std::vector<Vector3f>& positions, std::vector<int>& weaponIDs, std::vector<int>& weaponTypes);
 	std::vector<uint8_t> MakeWeaponDropPacket(Vector3f position, int weaponid);
 	std::vector<uint8_t> MakeBombExplosionPacket(int bombID, Vector3f position);

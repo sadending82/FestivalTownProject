@@ -85,14 +85,13 @@ bool Player::ChangeToGroggyState(Server* pServer)
 	}
 	mWeaponLock.unlock();
 
-	// 들고있는 폭탄 폭발
+	// 들고있는 폭탄 해제
 	mBombLock.lock();
 	if (mBomb != nullptr) {
 		if (mBomb->SetIsGrabbed(false) == true) {
 			int bombID = mBomb->GetID();
 			mBomb = nullptr;
-			pServer->GetPacketSender()->SendBombExplosionPacket(mRoomID, bombID);
-			pServer->GetRooms().at(mRoomID)->DeleteBomb(bombID);
+			pServer->GetPacketSender()->SendBombDropPacket(mPosition, mRoomID, bombID);
 		}
 	}
 	mBombLock.unlock();
@@ -144,14 +143,13 @@ bool Player::ChangeToDeadState(Server* pServer, int spawn_time)
 	}
 	mWeaponLock.unlock();
 
-	// 들고있는 폭탄 폭발
+	// 들고있는 폭탄 해제
 	mBombLock.lock();
 	if (mBomb != nullptr) {
 		if (mBomb->SetIsGrabbed(false) == true) {
 			int bombID = mBomb->GetID();
 			mBomb = nullptr;
-			pServer->GetPacketSender()->SendBombExplosionPacket(mRoomID, bombID);
-			pServer->GetRooms().at(mRoomID)->DeleteBomb(bombID);
+			pServer->GetPacketSender()->SendBombDropPacket(mPosition, mRoomID, bombID);
 		}
 	}
 	mBombLock.unlock();

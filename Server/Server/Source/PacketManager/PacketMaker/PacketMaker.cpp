@@ -174,6 +174,15 @@ std::vector<uint8_t> PacketMaker::MakeBombSpawnPacket(std::vector<Vector3f>& pos
 	return MakeBuffer(ePacketType::S2C_BOMB_SPAWN, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
+std::vector<uint8_t> PacketMaker::MakeBombDropPacket(Vector3f position, int roomID, int bombID)
+{
+	flatbuffers::FlatBufferBuilder Builder;
+
+	auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, position.x, position.y, position.z);
+	Builder.Finish(PacketTable::ObjectTable::CreateWeaponPosition(Builder, pos,bombID));
+	return MakeBuffer(ePacketType::S2C_PLAYER_DROP_BOMB, Builder.GetBufferPointer(), Builder.GetSize());
+}
+
 std::vector<uint8_t> PacketMaker::MakeWeaponSpawnPacket(std::vector<Vector3f>& positions, std::vector<int>& weaponIDs, std::vector<int>& weaponTypes)
 {
 	flatbuffers::FlatBufferBuilder Builder;

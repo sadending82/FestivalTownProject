@@ -246,6 +246,13 @@ void PacketSender::SendWeaponSpawnPacket(std::vector<Vector3f>& positions, std::
     mServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
 
+void PacketSender::SendBombDropPacket(Vector3f position, int roomID, int bombID)
+{
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakeBombDropPacket(position, roomID, bombID);
+    mServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
+}
+
+
 void PacketSender::SendWeaponDropPacket(Vector3f position, int roomID, int weaponID)
 {
     std::vector<uint8_t> send_buffer = mPacketMaker->MakeWeaponDropPacket(position, weaponID);

@@ -258,15 +258,14 @@ bool FITH::DeletePlayer(int playerID, int roomID)
     }
     player->GetWeaponLock().unlock();
 
-    // µé°íÀÖ´Â ÆøÅº Æø¹ß
+    // µé°íÀÖ´Â ÆøÅº ÇØÁ¦
     player->GetBombLock().lock();
     Bomb* bomb = player->GetBomb();
     if (bomb != nullptr) {
         if (bomb->SetIsGrabbed(false) == true) {
             int bombID = bomb->GetID();
             bomb = nullptr;
-            pPacketSender->SendBombExplosionPacket(roomID, bombID);
-            room->DeleteBomb(bombID);
+            pPacketSender->SendBombDropPacket(pos, roomID, bombID);
         }
     }
     player->GetBombLock().unlock();
