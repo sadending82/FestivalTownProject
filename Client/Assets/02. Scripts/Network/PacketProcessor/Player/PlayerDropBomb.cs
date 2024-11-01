@@ -23,7 +23,7 @@ namespace Network.PacketProcessor
 
             Debug.Log("Server Drop");
 
-            GameObject go = Managers.BombObject.FindBombById(playerID);
+            GameObject go = Managers.BombObject.FindBombById(bombID);
             if (go == null) return;
 
             Bomb targetBomb = go.GetComponent<Bomb>();
