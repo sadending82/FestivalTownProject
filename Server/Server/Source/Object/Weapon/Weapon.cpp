@@ -13,4 +13,5 @@ void Weapon::WeaponInit(eWeaponType type, WeaponStat& stat)
 	mStat = stat;
 	mOwnerID = INVALIDKEY;
 	SetIsGrabbed(false);
+	SetUniqueCode();
 }

@@ -75,6 +75,7 @@ struct EV_BOMB_SPAWN : EVENT{
 struct EV_BOMB_EXPLOSION : EVENT {
 	int roomID;
 	int bombID;
+	long long bombUniqueCode;
 	long long roomCode;
 };
 
@@ -118,7 +119,7 @@ bool PushEventBlockDrop(Timer* pTimer, int roomID, long long roomCode, int block
 bool PushEventBombSpawn(Timer* pTimer, int roomID, long long roomCode, int intervalSecond);
 bool PushEventWeaponSpawn(Timer* pTimer, int roomID, long long roomCode, int weaponType, int intervalSecond);
 bool PushEventRemainTimeSync(Timer* pTimer, int roomID, long long roomCode);
-bool PushEventBombExplosion(Timer* pTimer, int roomID, int bombID, long long roomCode, int intervalSecond);
+bool PushEventBombExplosion(Timer* pTimer, int roomID, int bombID, long long bombUniqueCode, long long roomCode, int intervalSecond);
 bool PushEventTimeOverCheck(Timer* pTimer, int roomID, long long roomCode);
 bool PushEventPlayerRespawn(Timer* pTimer, int playerID, int roomID, long long roomCode, int intervalSecond);
 bool PushEventGroggyRecovery(Timer* pTimer, int playerID, int roomID, long long roomCode, int intervalSecond);

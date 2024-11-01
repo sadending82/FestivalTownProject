@@ -122,13 +122,14 @@ bool PushEventRemainTimeSync(Timer* pTimer, int roomID, long long roomCode)
 	return true;
 }
 
-bool PushEventBombExplosion(Timer* pTimer, int roomID, int bombID, long long roomCode, int intervalSecond)
+bool PushEventBombExplosion(Timer* pTimer, int roomID, int bombID, long long bombUniqueCode, long long roomCode, int intervalSecond)
 {
 	EV_BOMB_EXPLOSION e;
 	e.size = sizeof(EV_BOMB_EXPLOSION);
 	e.type = eEventType::BOMBEXPLOSION;
 	e.roomID = roomID;
 	e.bombID = bombID;
+	e.bombUniqueCode = bombUniqueCode;
 	e.roomCode = roomCode;
 
 	EVENT_HEADER header;

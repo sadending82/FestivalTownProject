@@ -15,4 +15,5 @@ void Bomb::BombInit()
 {
 	mOwnerID = INVALIDKEY;
 	SetIsGrabbed(false);
+	SetUniqueCode();
 }

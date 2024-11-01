@@ -28,7 +28,13 @@ public:
 				return;
 			}
 
-			if (room->GetBomb(bombid) == nullptr) {
+			Bomb* bomb = room->GetBomb(bombid);
+
+			if (bomb == nullptr) {
+				return;
+			}
+
+			if (bomb->GetUniqueCode() != event->bombUniqueCode) {
 				return;
 			}
 

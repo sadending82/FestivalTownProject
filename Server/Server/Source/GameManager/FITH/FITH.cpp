@@ -351,7 +351,8 @@ void FITH::BombSpawn(Room* room, int roomID)
     pPacketSender->SendBombSpawnPacket(poses, bombIDs, explosionInterval, roomID);
 
     for (const int id : bombIDs) {
-        PushEventBombExplosion(pServer->GetTimer(), roomID, id, room->GetRoomCode(), explosionInterval);
+        long long uniqueCode = room->GetBomb(id)->GetUniqueCode();
+        PushEventBombExplosion(pServer->GetTimer(), roomID, id, uniqueCode, room->GetRoomCode(), explosionInterval);
     }
 }
 

@@ -8,7 +8,7 @@ class Object {
 
 public:
 	Object();
-	Object(int id, eObjectType type) : mID(id), mType(type), mIsActive(false) {}
+	Object(int id, eObjectType type) : mID(id), mType(type), mIsActive(false) {};
 	virtual ~Object();
 
 	eObjectType GetType() { return mType; }
@@ -18,6 +18,7 @@ public:
 	Vector3f	GetDirection() { return mDirection; }
 	bool		GetIsGrabbed() { return mIsGrabbed.load(); }
 	int			GetOwenrID() { return mOwnerID; }
+	long long	GetUniqueCode() { return mUniqueCode; }
 
 	void		SetID(int id) { mID = id; }
 	void		SetPosition(float x, float y, float z) { mPosition = Vector3f(x, y, z); }
@@ -38,4 +39,6 @@ protected:
 	Vector3f	mDirection;
 	std::atomic<bool> mIsGrabbed;
 	int			mOwnerID = INVALIDKEY;
+
+	long long	mUniqueCode = 0;
 };
