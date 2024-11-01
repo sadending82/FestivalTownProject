@@ -10,6 +10,7 @@ public class UI_CreateAccount : UI_PopUp
         Blocker,
         CreateAccountPanel,
         CreateAccountButton,
+        QuitButton,
     }
 
     void Start()
@@ -40,6 +41,15 @@ public class UI_CreateAccount : UI_PopUp
             {
                 Debug.Log("회원가입 실패");
             }
+        });
+
+        Get<GameObject>((int)GameObjects.QuitButton).BindEvent((PointerEventData) =>
+        {
+            if (Camera.main.gameObject.GetComponent<SuperBlur.SuperBlur>() != null)
+            {
+                Camera.main.gameObject.GetComponent<SuperBlur.SuperBlur>().enabled = false;
+            }
+            Managers.UI.ClosePopUpUI();
         });
     }
 

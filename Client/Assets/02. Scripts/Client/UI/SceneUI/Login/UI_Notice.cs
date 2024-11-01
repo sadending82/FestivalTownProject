@@ -30,6 +30,15 @@ public class UI_Notice : UI_PopUp
         Get<GameObject>((int)GameObjects.NoticeText).GetComponent<TMP_Text>().text = str;
     }
 
+    public void BindPopupCloseEvent()
+    {
+        Get<GameObject>((int)GameObjects.OkButton).BindEvent((PointerEventData) =>
+        {
+            ClosePopUpUI();
+        });
+
+    }
+
     public void BindGameEndEvent()
     {
         Get<GameObject>((int)GameObjects.OkButton).BindEvent((PointerEventData) => {

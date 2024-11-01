@@ -26,6 +26,8 @@ public class Managers : MonoBehaviour
     PostProcessManager _postProcess = new PostProcessManager();
     //------------
 
+    CheatManager _cheat = new CheatManager();
+
     public static UIManager UI { get { return Instance._ui; } }
     public static ResourceManager Resource { get { return Instance._resource; } }
     public static NetworkManager Network { get { return Instance._network; } }
@@ -43,6 +45,10 @@ public class Managers : MonoBehaviour
     public static WeaponObjectManager WeaponObject { get { return Instance._weaponObject; } }
     public static SpectatorCameraManager SpectatorCamera { get { return Instance._spectatorCamera; } }
     public static PostProcessManager PostProcess { get { return Instance._postProcess; } }
+
+    //-----------
+
+    public static CheatManager Cheat { get { return Instance._cheat; } }
 
     private void Start()
     {
@@ -76,6 +82,7 @@ public class Managers : MonoBehaviour
             s_instance._objPool.Init();
             s_instance._data.Init();
             s_instance._sound.Init();
+            s_instance._cheat.Init();
             //s_instance._game.Init();
         }
     }
