@@ -47,7 +47,7 @@ public class UI_MatchingSelect: UI_PopUp
         // 테스트용 매칭
         Get<GameObject>((int)GameObjects.TestMatchingButton).BindEvent((PointerEventData) =>
         {
-            Managers.Network.GetPacketManager().SendGameMatchingRequest(NetworkProtocol.eMatchingType.FITH_SOLO);
+            Managers.Network.GetPacketManager().SendGameMatchingRequest(NetworkProtocol.eMatchingType.FITH_TEST);
             Managers.UI.ShowPopUpUI<UI_MatchingProgress>();
         });
     }

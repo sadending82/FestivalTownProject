@@ -101,7 +101,8 @@ namespace NetworkProtocol
     public enum eMatchingType
     {
         FITH_SOLO = 110,
-        FITH_TEAM = 120
+        FITH_TEAM = 120,
+        FITH_TEST = 190
     };
 
     public enum ePlayerMoveState

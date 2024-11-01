@@ -36,23 +36,13 @@ public:
 				player->SetSessionState(eSessionState::ST_MATCHWAITING);
 				player->GetSessionStateLock().unlock();
 
-				switch (serverMode) {
-				case SERVER_MODE::LIVE:{
+				switch (matchingType) {
+				case eMatchingType::FITH_TEST: {
 
-					int matchingSequence = MatchMakingManager->GetMatchingSequence(matchingType);
-
-					MatchMakingManager->GetMatchingQueue(matchingType).insert({key, requestTime});
-
-					if (matchingSequence == eMatchingSequence::MS_None) {
-						
+					if (serverMode != SERVER_MODE::TEST) {
+						break;
 					}
-					else {
-						MatchMakingManager->CheckMatchMaking(matchingType);
-					}
-					MatchMakingManager->UpdateMatchingSequence(matchingType);
 
-				}break;
-				case SERVER_MODE::TEST: {
 					int roomID = pServer->CreateNewRoom(GameMode::FITH_Indiv_Battle_2);
 
 					int botID = pServer->SetSessionID();
@@ -66,8 +56,23 @@ public:
 					Bot->SetSessionState(eSessionState::ST_MATCHWAITING);
 					Bot->SetIsBot(true);
 
-					std::vector<int> sessions = { key, Bot->GetSessionID()};
+					std::vector<int> sessions = { key, Bot->GetSessionID() };
 					pServer->GetMatchMakingManager()->MatchingComplete(roomID, sessions);
+				}break;
+				default:{
+
+					int matchingSequence = MatchMakingManager->GetMatchingSequence(matchingType);
+
+					MatchMakingManager->GetMatchingQueue(matchingType).insert({key, requestTime});
+
+					if (matchingSequence == eMatchingSequence::MS_None) {
+						
+					}
+					else {
+						MatchMakingManager->CheckMatchMaking(matchingType);
+					}
+					MatchMakingManager->UpdateMatchingSequence(matchingType);
+
 				}break;
 				}
 				MatchMakingManager->GetMatchingLock().unlock();
