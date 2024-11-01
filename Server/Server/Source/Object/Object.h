@@ -26,6 +26,7 @@ public:
 	void		SetDirection(float x, float y, float z) { mDirection = Vector3f(x, y, z); }
 	void		SetDirection(Vector3f v3f) { mDirection = v3f; }
 	void		SetOwenrID(int playerid) { mOwnerID = playerid; }
+	void		SetUniqueCode();
 
 	// cas
 	bool		SetIsGrabbed(bool desired);
