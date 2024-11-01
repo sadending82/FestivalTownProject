@@ -179,7 +179,7 @@ std::vector<uint8_t> PacketMaker::MakeBombDropPacket(Vector3f position, int room
 	flatbuffers::FlatBufferBuilder Builder;
 
 	auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, position.x, position.y, position.z);
-	Builder.Finish(PacketTable::ObjectTable::CreateWeaponPosition(Builder, pos,bombID));
+	Builder.Finish(PacketTable::PlayerTable::CreatePlayerDropBomb(Builder, 0, pos, bombID));
 	return MakeBuffer(ePacketType::S2C_PLAYER_DROP_BOMB, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
