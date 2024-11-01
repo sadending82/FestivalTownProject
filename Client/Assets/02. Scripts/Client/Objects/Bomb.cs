@@ -115,7 +115,6 @@ public class Bomb : MonoBehaviour
     }
     public void Drop(Vector3 position)
     {
-        Debug.Log("BOOOOOMB!!!");
         this.transform.position = position;
         SetRigidBodyBasic();
         PickUpOff();

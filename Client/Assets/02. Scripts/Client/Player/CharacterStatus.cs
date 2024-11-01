@@ -88,6 +88,7 @@ public class CharacterStatus : MonoBehaviour
         playerController.GameStart();
         animationController.GameStart();
         isDie = false;
+        ResetCharacterState();
         myCamera.gameObject.GetComponent<PlayerCameraController>().GameStart();
     }
     public void GameEnd()
@@ -103,7 +104,6 @@ public class CharacterStatus : MonoBehaviour
     {
         var data = Managers.Data.GetData(1000);
         CharacterStatEntity cse = (CharacterStatEntity)data;
-        
         SetMaxHp(cse.Ch_Hp);
         SetHp(cse.Ch_Hp);
         SetMaxStamina(cse.Ch_Stamina);
@@ -189,56 +189,26 @@ public class CharacterStatus : MonoBehaviour
         {
             case LowerBodyAnimationState.IDLE:
                 {
-                    if (playerController.GetisGrounded() == true)
-                    {
-                        data = Managers.Data.GetData(20001);
-                        cme = (CharacterMoveEntity)data;
-                        staminaConsumption = cme.Ch_StaminaConsume;
-                        staminaRecoveryAmount = cme.Ch_Stamina_recovery;
-                    }
-                    else
-                    {
-                        data = Managers.Data.GetData(20004);
-                        cme = (CharacterMoveEntity)data;
-                        staminaConsumption = cme.Ch_StaminaConsume;
-                        staminaRecoveryAmount = cme.Ch_Stamina_recovery;
-                    }
+                    data = Managers.Data.GetData(20001);
+                    cme = (CharacterMoveEntity)data;
+                    staminaConsumption = cme.Ch_StaminaConsume;
+                    staminaRecoveryAmount = cme.Ch_Stamina_recovery;
                     break;
                 }
             case LowerBodyAnimationState.WALK:
                 {
-                    if (playerController.GetisGrounded() == true)
-                    {
-                        data = Managers.Data.GetData(20002);
-                        cme = (CharacterMoveEntity)data;
-                        staminaConsumption = cme.Ch_StaminaConsume;
-                        staminaRecoveryAmount = cme.Ch_Stamina_recovery;
-                    }
-                    else
-                    {
-                        data = Managers.Data.GetData(20004);
-                        cme = (CharacterMoveEntity)data;
-                        staminaConsumption = cme.Ch_StaminaConsume;
-                        staminaRecoveryAmount = cme.Ch_Stamina_recovery;
-                    }
+                    data = Managers.Data.GetData(20002);
+                    cme = (CharacterMoveEntity)data;
+                    staminaConsumption = cme.Ch_StaminaConsume;
+                    staminaRecoveryAmount = cme.Ch_Stamina_recovery;
                     break;
                 }
             case LowerBodyAnimationState.RUN:
                 {
-                    if (playerController.GetisGrounded() == true)
-                    {
-                        data = Managers.Data.GetData(20003);
-                        cme = (CharacterMoveEntity)data;
-                        staminaConsumption = cme.Ch_StaminaConsume;
-                        staminaRecoveryAmount = cme.Ch_Stamina_recovery;
-                    }
-                    else
-                    {
-                        data = Managers.Data.GetData(20004);
-                        cme = (CharacterMoveEntity)data;
-                        staminaConsumption = cme.Ch_StaminaConsume;
-                        staminaRecoveryAmount = cme.Ch_Stamina_recovery;
-                    }
+                    data = Managers.Data.GetData(20003);
+                    cme = (CharacterMoveEntity)data;
+                    staminaConsumption = cme.Ch_StaminaConsume;
+                    staminaRecoveryAmount = cme.Ch_Stamina_recovery;
                     break;
                 }
         }
@@ -257,6 +227,7 @@ public class CharacterStatus : MonoBehaviour
     private void StaminaUpdate()
     {
         int staminaIncrease = CalculateStaminaIncrease();
+        Debug.Log("sIncrease " + staminaIncrease);
 
         if(stamina == 0 && (stamina + staminaIncrease) > 0)
         {
@@ -278,6 +249,14 @@ public class CharacterStatus : MonoBehaviour
         else if (stamina > maxStamina)
         {
             stamina = maxStamina;
+        }
+    }
+    public void ConsumeStamina(int staminaConsume)
+    {
+        stamina -= staminaConsume;
+        if(stamina < 0)
+        {
+            stamina = 0;
         }
     }
     public float GetThrowPower()

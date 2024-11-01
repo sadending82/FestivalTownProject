@@ -53,6 +53,7 @@ public class PlayerController : MonoBehaviour
     private int holdAndWalkStaminaConsume;
     private float holdAndRunSpeed;
     private int holdAndRunStaminaConsume;
+    private int jumpStaminaConsume;
     private float jumpSpeedOffset = 0.5f;
     private bool doubleJumpChecker;
 
@@ -130,6 +131,10 @@ public class PlayerController : MonoBehaviour
         cme = (CharacterMoveEntity)data;
         holdAndRunSpeed = cme.Value * chSpeed;
         holdAndRunStaminaConsume = cme.Ch_StaminaConsume;
+
+        data = Managers.Data.GetData(20004);
+        cme = (CharacterMoveEntity)data;
+        jumpStaminaConsume = cme.Ch_StaminaConsume;
 
         // 픽업 관련
         CharacterActionEntity cae;
@@ -459,12 +464,13 @@ public class PlayerController : MonoBehaviour
             }
         }
         // Jump
-        if (Input.GetAxis("Jump") > 0)
+        if (Input.GetAxis("Jump") > 0 && playerStatus.GetStamina() >= jumpStaminaConsume)
         {
             if (isGrounded == true)
             {
                 if (pelvis != null)
                 {
+                    playerStatus.ConsumeStamina(jumpStaminaConsume);
                     packetManager.SendPlayerMovePacket(pelvis.transform.position, stabillizerDirection, myId, ePlayerMoveState.PS_JUMP);
                     Managers.Sound.Play3D("Sfx_Ch_Jump", gameObject);
                 }
@@ -517,7 +523,6 @@ public class PlayerController : MonoBehaviour
             }
             else if ((playerStatus.GetIsHaveBomb() == true || playerStatus.GetIsHaveWeapon() == true) && isPickUpMode == false)
             {
-                Debug.Log("Drop Mode!!");
                 fKeyDownTimer = 0;
                 isDropMode = true;
             }
@@ -570,7 +575,6 @@ public class PlayerController : MonoBehaviour
                     }
                     if (playerStatus.GetIsHaveBomb() == true)
                     {
-                        Debug.Log("Drop Packet");
                         fKeyDownTimer = 0;
                         packetManager.SendPlayerDropBombPacket(GetPosition(), myId, playerStatus.GetBombId());
                         isDropMode = false;
