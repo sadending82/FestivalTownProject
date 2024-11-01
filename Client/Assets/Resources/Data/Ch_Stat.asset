@@ -139,3 +139,15 @@ MonoBehaviour:
     Action_Speed: 0.5
     Action_Range: 1
     Ch_StaminaConsume: 0
+  - Index: 30003
+    Name: Ch_WeaponDrop
+    ClassType: 0
+    Action_Speed: 1
+    Action_Range: 1
+    Ch_StaminaConsume: 0
+  - Index: 30004
+    Name: Ch_BombDrop
+    ClassType: 0
+    Action_Speed: 1
+    Action_Range: 1
+    Ch_StaminaConsume: 0
