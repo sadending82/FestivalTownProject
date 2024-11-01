@@ -131,7 +131,7 @@ public:
 				}break;
 
 				case eDamageType::AT_BOMB_ATTACK: {
-					damageAmount += 20; // 임시
+					damageAmount += room->GetGameModeData().Bomb_Damage;
 
 					// 타겟의 기력이 없으면 그로기 상태로
 					if (target->GetStamina() == 0) {
