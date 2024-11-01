@@ -17,6 +17,7 @@ enum class GameModeData_Field {
 	Play_Time = 3,
 	Player_Spawn_Time,
 	Life_Count,
+	Bomb_Damage,
 	Bomb_Spawn_Count,
 	Bomb_Spawn_Time,
 	Bomb_Delay_Time,
@@ -46,6 +47,7 @@ struct GameModeData {
 	int Play_Time;
 	int Player_Spawn_Time;
 	int Life_Count;
+	int Bomb_Damage;
 	int Bomb_Spawn_Count;
 	int Bomb_Spawn_Time;
 	int Bomb_Delay_Time;

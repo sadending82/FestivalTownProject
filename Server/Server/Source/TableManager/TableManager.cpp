@@ -301,6 +301,7 @@ void TableManager::ReadGameModeTable()
                 GameModeDatas[(GameMode)index].Play_Time = row[(int)(GameModeData_Field::Play_Time)].value<int>();
                 GameModeDatas[(GameMode)index].Player_Spawn_Time = row[(int)(GameModeData_Field::Player_Spawn_Time)].value<int>();
                 GameModeDatas[(GameMode)index].Life_Count = row[(int)(GameModeData_Field::Life_Count)].value<int>();
+                GameModeDatas[(GameMode)index].Bomb_Damage = row[(int)(GameModeData_Field::Bomb_Damage)].value<int>();
                 GameModeDatas[(GameMode)index].Bomb_Spawn_Count = row[(int)(GameModeData_Field::Bomb_Spawn_Count)].value<int>();
                 GameModeDatas[(GameMode)index].Bomb_Spawn_Time = row[(int)(GameModeData_Field::Bomb_Spawn_Time)].value<int>();
                 GameModeDatas[(GameMode)index].Bomb_Delay_Time = row[(int)(GameModeData_Field::Bomb_Delay_Time)].value<int>();
