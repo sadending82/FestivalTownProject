@@ -53,6 +53,7 @@ public:
 	bool GetAllPlayerReady() { return mAllPlayerReady.load(); }
 	bool GetIsRun() { return mIsRun.load(); }
 	GameModeData& GetGameModeData() { return mGameModeData; }
+	bool GetIsTestRoom() { return mIsTestRoom; }
 	
 
 	void AddPlayerCnt() { mPlayerCnt.fetch_add(1); }
@@ -66,6 +67,7 @@ public:
 	void SetHost(int ingameid) { mHostID = ingameid; }
 	bool SetIsRun(bool desired);
 	bool SetAllPlayerReady(bool desired);
+	void SetIsTestRoom(bool value) { mIsTestRoom = value; }
 
 	void ChangeAllPlayerInGame();
 
@@ -96,6 +98,7 @@ private:
 
 	std::atomic<bool> mAllPlayerReady = false;
 	std::atomic<bool> mIsRun = false;
+	bool	mIsTestRoom = false;
 
 	GameModeData mGameModeData;
 };

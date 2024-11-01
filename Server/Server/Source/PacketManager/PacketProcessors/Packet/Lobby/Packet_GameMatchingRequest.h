@@ -45,6 +45,14 @@ public:
 
 					int roomID = pServer->CreateNewRoom(GameMode::FITH_Indiv_Battle_2);
 
+					if (roomID == INVALIDKEY) {
+						break;;
+					}
+
+					Room* room = pServer->GetRooms()[roomID];
+
+					room->SetIsTestRoom(true);
+
 					int botID = pServer->SetSessionID();
 
 					if (botID == INVALIDKEY) {

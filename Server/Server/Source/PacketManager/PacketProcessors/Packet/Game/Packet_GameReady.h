@@ -39,8 +39,16 @@ public:
 				room->AddReadyCnt();
 
 				SERVER_MODE serverMode = pServer->GetMode();
-				switch (serverMode) {
-				case SERVER_MODE::LIVE: {
+				
+
+				switch (room->GetIsTestRoom()) {
+				case true: {
+					pPacketSender->SendAllPlayerReady(roomid);
+					room->ChangeAllPlayerInGame();
+					PushEventGameStart(pServer->GetTimer(), roomid, pServer->GetRooms()[roomid]->GetRoomCode());
+				}break;
+
+				default : {
 					if (room->GetReadyCnt() == room->GetPlayerCnt()) {
 						if (room->SetAllPlayerReady(true) == true) {
 							pPacketSender->SendAllPlayerReady(roomid);
@@ -48,11 +56,6 @@ public:
 							PushEventGameStart(pServer->GetTimer(), roomid, room->GetRoomCode());
 						}
 					}
-				}break;
-				case SERVER_MODE::TEST: {
-					pPacketSender->SendAllPlayerReady(roomid);
-					room->ChangeAllPlayerInGame();
-					PushEventGameStart(pServer->GetTimer(), roomid, pServer->GetRooms()[roomid]->GetRoomCode());
 				}break;
 				}
 			}

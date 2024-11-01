@@ -126,6 +126,10 @@ bool Room::DeleteBomb(int id)
 	// 어떤 플레이어가 이 오브젝트를 가지고 있으면 해제시켜줘야함
 	int OwnerID = bomb->GetOwenrID();
 	if (OwnerID > INVALIDKEY) {
+
+		if (mPlayerList[OwnerID].load() == INVALIDKEY) {
+			return false;
+		}
 		Player* player = dynamic_cast<Player*>(pServer->GetSessions()[mPlayerList[OwnerID].load()]);
 
 		player->GetSessionStateLock().lock();
@@ -147,6 +151,11 @@ bool Room::DeleteWeapon(int id)
 	// 어떤 플레이어가 이 오브젝트를 가지고 있으면 해제시켜줘야함
 	int OwnerID = weapon->GetOwenrID();
 	if (OwnerID > INVALIDKEY) {
+
+		if (mPlayerList[OwnerID].load() == INVALIDKEY) {
+			return false;
+		}
+
 		Player* player = dynamic_cast<Player*>(pServer->GetSessions()[mPlayerList[OwnerID].load()]);
 
 		player->GetSessionStateLock().lock();
