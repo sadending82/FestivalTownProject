@@ -97,7 +97,13 @@ public class Bomb : MonoBehaviour
     }
     public void PickUpOff()
     {
-        CharacterStatus pickUpPlayerStatus = Managers.Player.GetPlayers().transform.GetChild(pickUpPlayerId).GetComponent<CharacterStatus>();
+        GameObject tPlayer = Managers.Player.FindPlayerById(pickUpPlayerId);
+        if(tPlayer == null)
+        {
+            Debug.Log("ERROR!! PickUpOff: Player is Null");
+            return;
+        }
+        CharacterStatus pickUpPlayerStatus = tPlayer.GetComponent<CharacterStatus>();
         pickUpPlayerStatus.SetIsHaveBomb(false);
 
         isPickUp = false;
@@ -108,15 +114,13 @@ public class Bomb : MonoBehaviour
     {
         this.throwDirection = throwDirection;
         SetRigidBodyBasic();
-
         rig.AddForce(throwDirection * throwPower, ForceMode.Impulse);
-
         PickUpOff();
     }
     public void Drop(Vector3 position)
     {
-        this.transform.position = position;
         SetRigidBodyBasic();
+        this.transform.position = position;
         PickUpOff();
     }
 
