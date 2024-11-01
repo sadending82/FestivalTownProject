@@ -104,7 +104,6 @@ public class Bomb : MonoBehaviour
         this.pickUpPlayerId = -1;
         this.targetTransform = null;
     }
-
     public void Throw(Vector3 throwDirection, float throwPower)
     {
         this.throwDirection = throwDirection;
@@ -116,6 +115,7 @@ public class Bomb : MonoBehaviour
     }
     public void Drop(Vector3 position)
     {
+        Debug.Log("BOOOOOMB!!!");
         this.transform.position = position;
         SetRigidBodyBasic();
         PickUpOff();

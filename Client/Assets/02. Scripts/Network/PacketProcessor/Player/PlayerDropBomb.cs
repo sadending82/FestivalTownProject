@@ -21,8 +21,13 @@ namespace Network.PacketProcessor
             Vector3 pos = new Vector3(Data.Pos.Value.X, Data.Pos.Value.Y, Data.Pos.Value.Z);
             int bombID = Data.BombId;
 
-        }
+            Debug.Log("Server Drop");
 
-        
+            Bomb targetBomb = Managers.BombObject.FindBombById(bombID).GetComponent<Bomb>();
+            if (targetBomb != null)
+            {
+                targetBomb.Drop(pos);
+            }
+        }
     }
 }

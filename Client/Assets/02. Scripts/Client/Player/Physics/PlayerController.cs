@@ -515,8 +515,9 @@ public class PlayerController : MonoBehaviour
                 isPickUpMode = true;
                 targetItem = nearObjectChecker.GetNearObject();
             }
-            else if (playerStatus.GetIsHaveWeapon() == true && isPickUpMode == false)
+            else if ((playerStatus.GetIsHaveBomb() == true || playerStatus.GetIsHaveWeapon() == true) && isPickUpMode == false)
             {
+                Debug.Log("Drop Mode!!");
                 fKeyDownTimer = 0;
                 isDropMode = true;
             }
@@ -545,12 +546,14 @@ public class PlayerController : MonoBehaviour
                         Bomb targetBomb = targetItem.GetComponent<Bomb>();
                         fKeyDownTimer = 0;
                         packetManager.SendPlayerGrabBombPacket(pelvis.transform.position, stabillizerDirection, myId, targetBomb.GetId());
+                        isPickUpMode = false;
                     }
                     else if (targetItem.tag == "Weapon" && playerStatus.GetIsHaveWeapon() == false && fKeyDownTimer >= weaponPickUpSpeed)
                     {
                         Weapon targetWeapon = targetItem.GetComponent<Weapon>();
                         fKeyDownTimer = 0;
                         packetManager.SendPlayerGrabWeaponPacket(pelvis.transform.position, stabillizerDirection, myId, targetWeapon.GetId());
+                        isPickUpMode = false;
                     }
                 }
             }
@@ -563,6 +566,14 @@ public class PlayerController : MonoBehaviour
                     {
                         fKeyDownTimer = 0;
                         packetManager.SendPlayerDropWeaponPacket(GetPosition(), playerStatus.GetWeaponId());
+                        isDropMode = false;
+                    }
+                    if (playerStatus.GetIsHaveBomb() == true)
+                    {
+                        Debug.Log("Drop Packet");
+                        fKeyDownTimer = 0;
+                        packetManager.SendPlayerDropBombPacket(GetPosition(), myId, playerStatus.GetBombId());
+                        isDropMode = false;
                     }
                 }
             }
