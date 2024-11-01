@@ -18,6 +18,7 @@ namespace Network.PacketProcessor
 
             var Data = PlayerDropBomb.GetRootAsPlayerDropBomb(bb);
             int playerID = Data.Id;
+            if (Data.Pos.HasValue == false) return;
             Vector3 pos = new Vector3(Data.Pos.Value.X, Data.Pos.Value.Y, Data.Pos.Value.Z);
             int bombID = Data.BombId;
 
