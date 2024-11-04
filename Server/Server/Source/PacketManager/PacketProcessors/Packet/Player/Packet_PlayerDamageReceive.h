@@ -45,14 +45,6 @@ public:
 					return;
 				}
 
-				target->GetPlayerStateLock().lock();
-				// 살아있는지 확인
-				if (target->GetPlayerState() != ePlayerState::PS_ALIVE) {
-					target->GetPlayerStateLock().unlock();
-					return;
-				}
-				target->GetPlayerStateLock().unlock();
-
 				TableManager* tableManager = pServer->GetTableManager();
 				CharacterStat& attackerStat = attacker->GetCharacterStat();
 
@@ -81,6 +73,15 @@ public:
 					if (target->GetTeam() == attacker->GetTeam()) {
 						return;
 					}
+
+					target->GetPlayerStateLock().lock();
+					// 살아있는지 확인
+					if (target->GetPlayerState() != ePlayerState::PS_ALIVE) {
+						target->GetPlayerStateLock().unlock();
+						return;
+					}
+					target->GetPlayerStateLock().unlock();
+
 
 					// 타겟의 기력이 없으면 그로기 상태로
 					if (target->GetStamina() == 0) {
@@ -128,6 +129,16 @@ public:
 				}break;
 
 				case eDamageType::AT_BOMB_ATTACK: {
+
+					target->GetPlayerStateLock().lock();
+					// 살아있는지 확인
+					if (target->GetPlayerState() != ePlayerState::PS_ALIVE) {
+						target->GetPlayerStateLock().unlock();
+						return;
+					}
+					target->GetPlayerStateLock().unlock();
+
+
 					damageAmount += room->GetGameModeData().Bomb_Damage;
 
 					// 타겟의 기력이 없으면 그로기 상태로
