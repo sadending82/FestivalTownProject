@@ -42,7 +42,7 @@ public:
 				if (playerState == ePlayerState::PS_ALIVE) {
 					// 그로기 상태로 만듬
 					player->ChangeToGroggyState(pServer);
-					PushEventGroggyRecovery(pServer->GetTimer(), playerid, roomid, roomCode, player->GroggyRecoverTime());
+					PushEventGroggyRecovery(pServer->GetTimer(), playerid, roomid, roomCode, room->GetGameModeData().Ch_Groggy);
 				}
 				else if (playerState == ePlayerState::PS_GROGGY) {
 					int spawnTime = room->GetGameModeData().Player_Spawn_Time;

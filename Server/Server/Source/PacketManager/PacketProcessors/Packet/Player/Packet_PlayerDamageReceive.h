@@ -88,7 +88,7 @@ public:
 					// 타겟의 기력이 없으면 그로기 상태로
 					if (target->GetStamina() == 0) {
 						if (target->ChangeToGroggyState(pServer)) {
-							PushEventGroggyRecovery(pServer->GetTimer(), target_id, roomid, room->GetRoomCode(), target->GroggyRecoverTime());
+							PushEventGroggyRecovery(pServer->GetTimer(), target_id, roomid, room->GetRoomCode(), room->GetGameModeData().Ch_Groggy);
 						}
 					}
 
@@ -123,7 +123,7 @@ public:
 						// 타격 후 스테미너가 0미만이면 그로기로
 						if (target->GetStamina() < 0) {
 							if (target->ChangeToGroggyState(pServer)) {
-								PushEventGroggyRecovery(pServer->GetTimer(), target_id, roomid, room->GetRoomCode(), target->GroggyRecoverTime());
+								PushEventGroggyRecovery(pServer->GetTimer(), target_id, roomid, room->GetRoomCode(), room->GetGameModeData().Ch_Groggy);
 							}
 						}
 					}
@@ -136,7 +136,7 @@ public:
 					// 타겟의 기력이 없으면 그로기 상태로
 					if (target->GetStamina() == 0) {
 						if (target->ChangeToGroggyState(pServer)) {
-							PushEventGroggyRecovery(pServer->GetTimer(), target_id, roomid, room->GetRoomCode(), target->GroggyRecoverTime());
+							PushEventGroggyRecovery(pServer->GetTimer(), target_id, roomid, room->GetRoomCode(), room->GetGameModeData().Ch_Groggy);
 						}
 					}
 

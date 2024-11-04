@@ -317,6 +317,7 @@ void TableManager::ReadGameModeTable()
                 GameModeDatas[(GameMode)index].Block2_Spawn_Index = row[(int)(GameModeData_Field::Block2_Spawn_Index)].value<int>();
                 GameModeDatas[(GameMode)index].Block2_Spawn_Count = row[(int)(GameModeData_Field::Block2_Spawn_Count)].value<int>();
                 GameModeDatas[(GameMode)index].Block2_Spawn_Time = row[(int)(GameModeData_Field::Block2_Spawn_Time)].value<int>();
+                GameModeDatas[(GameMode)index].Ch_Groggy = row[(int)(GameModeData_Field::Ch_Groggy)].value<int>();
             }
 
             idx++;
