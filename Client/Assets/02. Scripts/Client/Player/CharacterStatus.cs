@@ -485,6 +485,7 @@ public class CharacterStatus : MonoBehaviour
     public void Attacked(Vector3 direction)
     {
         headRig.AddForce(direction * AttackedMotionPower, ForceMode.Impulse);
+        pelvis.GetComponent<Rigidbody>().AddForce(direction * AttackedMotionPower * 0.5f, ForceMode.Impulse);
     }
     public Vector3 GetAttackedDirection(Vector3 attackerPosition)
     {
