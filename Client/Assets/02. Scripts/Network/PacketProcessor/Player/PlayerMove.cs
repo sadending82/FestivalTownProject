@@ -25,8 +25,8 @@ namespace Network.PacketProcessor
 
             PlayerController pController = Managers.Player.GetPlayers().transform.GetChild(id).GetComponent<PlayerController>();
 
-            pController.SetDirection(dir);
             pController.SetPosition(pos);
+            pController.SetDirection(dir);
             if (pController != null)
             {
                 switch (state)
@@ -51,6 +51,12 @@ namespace Network.PacketProcessor
                         }
                         break;
 
+                    case (int)ePlayerMoveState.PS_DASH:
+                        {
+                            pController.SetIsMove(true);
+                            pController.SetIsDash(true);
+                        }
+                        break;
                     default:
                         {
                             UnityEngine.Debug.Log("ERROR!! : PlayerMove.cs, Wrong MoveState !!!");

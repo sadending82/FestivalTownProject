@@ -1429,6 +1429,7 @@ MonoBehaviour:
   pelvis: {fileID: 4437203293968950405}
   headRig: {fileID: 71571893083169489}
   hitbox: {fileID: 2672182746622162311}
+  collider: {fileID: 0}
   playerMesh: {fileID: 8491244148625121900}
   weaponInven: {fileID: 6241508891433731045}
 --- !u!114 &2266266892710373593
@@ -1453,9 +1454,9 @@ MonoBehaviour:
   handR: {fileID: 7439394265932431664}
   leftFootRigidbody: {fileID: 6490085632441195103}
   rightFootRigidbody: {fileID: 5402061227843248073}
-  jumpForce: 150
-  floorDetectionDistance: 0.03
-  rotateSpeed: 5
+  JumpForce: 150
+  FloorDetectionDistance: 0.03
+  RotateSpeed: 5
   bombInvenTransform: {fileID: 4805236475303947220}
   nearObjectChecker: {fileID: 0}
 --- !u!114 &7513450559464735725

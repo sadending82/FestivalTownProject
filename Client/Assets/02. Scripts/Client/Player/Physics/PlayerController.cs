@@ -28,9 +28,9 @@ public class PlayerController : MonoBehaviour
     public Rigidbody rightFootRigidbody;
 
     [Header("--- State ---")]
-    public float jumpForce;
-    public float floorDetectionDistance;
-    public float rotateSpeed;
+    public float JumpForce;
+    public float FloorDetectionDistance;
+    public float RotateSpeed;
 
     private int myId;
     private bool amIPlayer;
@@ -39,6 +39,7 @@ public class PlayerController : MonoBehaviour
 
     private bool isGrounded;
     private bool isJump;
+    private bool isDash;
     private bool recoveryStaminaChecker;
 
     private bool isMove;
@@ -53,6 +54,10 @@ public class PlayerController : MonoBehaviour
     private int holdAndWalkStaminaConsume;
     private float holdAndRunSpeed;
     private int holdAndRunStaminaConsume;
+    private float dashForce;
+    private int dashStaminaConsume;
+    private float dashCooltime = 1.0f;
+    private bool dashCooltimeChecker;
     private int jumpStaminaConsume;
     private float jumpSpeedOffset = 0.5f;
     private bool doubleJumpChecker;
@@ -122,6 +127,11 @@ public class PlayerController : MonoBehaviour
         runSpeed = cme.Value * chSpeed;
         runStaminaConsume = cme.Ch_StaminaConsume;
 
+        data = Managers.Data.GetData(20005);
+        cme = (CharacterMoveEntity)data;
+        dashForce = cme.Value * chSpeed;
+        dashStaminaConsume = cme.Ch_StaminaConsume;
+
         data = Managers.Data.GetData(20006);
         cme = (CharacterMoveEntity)data;
         holdAndWalkSpeed = cme.Value * chSpeed;
@@ -157,7 +167,9 @@ public class PlayerController : MonoBehaviour
         fKeyDownTimer = 0f;
         isGrap = false;
         isJump = false;
+        isDash = false;
         doubleJumpChecker = false;
+        dashCooltimeChecker = false;
         isPickUpMode = false;
         isDropMode = false;
         isGrounded = false;
@@ -255,6 +267,14 @@ public class PlayerController : MonoBehaviour
                                 {
                                     Jump();
                                     isJump = false;
+                                }
+                            }
+                            if (isDash == true)
+                            {
+                                if (isGrounded == true)
+                                {
+                                    Dash(moveDirection);
+                                    isDash = false;
                                 }
                             }
                         }
@@ -486,7 +506,7 @@ public class PlayerController : MonoBehaviour
     {
         isGrounded = false;
         doubleJumpChecker = true;
-        pelvisRigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        pelvisRigidbody.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
         StartCoroutine(WaitIsGroundCheck());
     }
     /// <summary>
@@ -496,6 +516,20 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         doubleJumpChecker = false;
+    }
+    public void Dash(Vector3 direction)
+    {
+        dashCooltimeChecker = true;
+        pelvisRigidbody.AddForce(direction * dashForce * 10, ForceMode.Impulse);
+        StartCoroutine(WaitDashCooltime());
+    }
+    /// <summary>
+    /// 대쉬 쿨타임 적용
+    /// </summary>
+    IEnumerator WaitDashCooltime()
+    {
+        yield return new WaitForSeconds(dashCooltime);
+        dashCooltimeChecker = false;
     }
     public void SetWalkState()
     {
@@ -638,6 +672,25 @@ public class PlayerController : MonoBehaviour
                 packetManager.SendPlayerThrowBombPacket(targetBomb.transform.position, stabillizerDirection, myId, targetBomb.GetComponent<Bomb>().GetId());
             }
         }
+
+        // 마우스 휠클릭 다운(대쉬)
+        if (Input.GetMouseButtonDown(2))
+        {
+            if (isGrounded == true && isLeftShiftKeyDown == true && dashCooltimeChecker == false
+                && playerStatus.GetStamina() >= dashStaminaConsume && moveDirection != Vector3.zero)
+            {
+                if (pelvis != null)
+                {
+                    playerStatus.ConsumeStamina(dashStaminaConsume);
+                    packetManager.SendPlayerMovePacket(pelvis.transform.position, moveDirection, myId, ePlayerMoveState.PS_DASH);
+                }
+                else
+                {
+                    Debug.Log("Not Send Dash Packet, Pelvis is Null !!!");
+                }
+                Dash(moveDirection);
+            }
+        }
     }
     public void GameStart()
     {
@@ -658,7 +711,7 @@ public class PlayerController : MonoBehaviour
         Ray rayR = new Ray(rightFootRigidbody.position, Vector3.down);
 
         RaycastHit hitInfoL, hitinfoR;
-        if (Physics.Raycast(rayL, out hitInfoL, floorDetectionDistance) == true)
+        if (Physics.Raycast(rayL, out hitInfoL, FloorDetectionDistance) == true)
         {
             if (hitInfoL.collider.gameObject.tag == "Ground")
             {
@@ -676,7 +729,7 @@ public class PlayerController : MonoBehaviour
                 isGrounded = true;
             }
         }
-        else if (Physics.Raycast(rayR, out hitinfoR, floorDetectionDistance) == true)
+        else if (Physics.Raycast(rayR, out hitinfoR, FloorDetectionDistance) == true)
         {
             if (hitinfoR.collider.gameObject.tag == "Ground")
             {
@@ -850,6 +903,10 @@ public class PlayerController : MonoBehaviour
     public void SetIsJump(bool isJump)
     {
         this.isJump = isJump;
+    }
+    public void SetIsDash(bool isDash)
+    {
+        this.isDash = isDash;
     }
     public void SetMyId(int myId)
     {
