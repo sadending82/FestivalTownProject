@@ -9,9 +9,6 @@ public:
 
 	virtual void Process(const uint8_t* data, const int size, const int key) { 
 		try {
-
-			
-
 			flatbuffers::Verifier verifier(data, size);
 			if (verifier.VerifyBuffer<PlayerDamageReceive>(nullptr)) {
 

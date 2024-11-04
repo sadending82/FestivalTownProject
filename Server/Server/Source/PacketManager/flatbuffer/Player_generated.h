@@ -81,6 +81,12 @@ struct PlayerGrabOtherPlayerBuilder;
 struct PlayerThrowOtherPlayer;
 struct PlayerThrowOtherPlayerBuilder;
 
+struct PlayerFlyingKick;
+struct PlayerFlyingKickBuilder;
+
+struct PlayerDash;
+struct PlayerDashBuilder;
+
 struct PlayerPos FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef PlayerPosBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -1583,6 +1589,90 @@ inline ::flatbuffers::Offset<PlayerThrowOtherPlayer> CreatePlayerThrowOtherPlaye
   builder_.add_direction(direction);
   builder_.add_pos(pos);
   builder_.add_id(id);
+  return builder_.Finish();
+}
+
+struct PlayerFlyingKick FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef PlayerFlyingKickBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_PLAYER_INFO = 4
+  };
+  const PacketTable::PlayerTable::PlayerPos *player_info() const {
+    return GetPointer<const PacketTable::PlayerTable::PlayerPos *>(VT_PLAYER_INFO);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_PLAYER_INFO) &&
+           verifier.VerifyTable(player_info()) &&
+           verifier.EndTable();
+  }
+};
+
+struct PlayerFlyingKickBuilder {
+  typedef PlayerFlyingKick Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_player_info(::flatbuffers::Offset<PacketTable::PlayerTable::PlayerPos> player_info) {
+    fbb_.AddOffset(PlayerFlyingKick::VT_PLAYER_INFO, player_info);
+  }
+  explicit PlayerFlyingKickBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<PlayerFlyingKick> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<PlayerFlyingKick>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<PlayerFlyingKick> CreatePlayerFlyingKick(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<PacketTable::PlayerTable::PlayerPos> player_info = 0) {
+  PlayerFlyingKickBuilder builder_(_fbb);
+  builder_.add_player_info(player_info);
+  return builder_.Finish();
+}
+
+struct PlayerDash FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef PlayerDashBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_PLAYER_INFO = 4
+  };
+  const PacketTable::PlayerTable::PlayerPos *player_info() const {
+    return GetPointer<const PacketTable::PlayerTable::PlayerPos *>(VT_PLAYER_INFO);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_PLAYER_INFO) &&
+           verifier.VerifyTable(player_info()) &&
+           verifier.EndTable();
+  }
+};
+
+struct PlayerDashBuilder {
+  typedef PlayerDash Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_player_info(::flatbuffers::Offset<PacketTable::PlayerTable::PlayerPos> player_info) {
+    fbb_.AddOffset(PlayerDash::VT_PLAYER_INFO, player_info);
+  }
+  explicit PlayerDashBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<PlayerDash> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<PlayerDash>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<PlayerDash> CreatePlayerDash(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<PacketTable::PlayerTable::PlayerPos> player_info = 0) {
+  PlayerDashBuilder builder_(_fbb);
+  builder_.add_player_info(player_info);
   return builder_.Finish();
 }
 

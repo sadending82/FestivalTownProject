@@ -16,6 +16,9 @@ static_assert(FLATBUFFERS_VERSION_MAJOR == 24 &&
 namespace PacketTable {
 namespace LoginTable {
 
+struct VersionCheck;
+struct VersionCheckBuilder;
+
 struct SignUpRequest;
 struct SignUpRequestBuilder;
 
@@ -27,6 +30,57 @@ struct LoginRequestBuilder;
 
 struct LoginResponse;
 struct LoginResponseBuilder;
+
+struct VersionCheck FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef VersionCheckBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_VERSION = 4
+  };
+  const ::flatbuffers::String *version() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_VERSION);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_VERSION) &&
+           verifier.VerifyString(version()) &&
+           verifier.EndTable();
+  }
+};
+
+struct VersionCheckBuilder {
+  typedef VersionCheck Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_version(::flatbuffers::Offset<::flatbuffers::String> version) {
+    fbb_.AddOffset(VersionCheck::VT_VERSION, version);
+  }
+  explicit VersionCheckBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<VersionCheck> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<VersionCheck>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<VersionCheck> CreateVersionCheck(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::String> version = 0) {
+  VersionCheckBuilder builder_(_fbb);
+  builder_.add_version(version);
+  return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<VersionCheck> CreateVersionCheckDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    const char *version = nullptr) {
+  auto version__ = version ? _fbb.CreateString(version) : 0;
+  return PacketTable::LoginTable::CreateVersionCheck(
+      _fbb,
+      version__);
+}
 
 struct SignUpRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef SignUpRequestBuilder Builder;

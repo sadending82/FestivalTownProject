@@ -18,6 +18,7 @@ namespace NetworkProtocol
     {
         // Server -> Client
         PACKET_TYPE_NONE,
+        S2C_VERSION_CHECK,
         S2C_LOGIN_RESPONSE,
         S2C_SIGNUP_RESPONSE,
 
@@ -41,6 +42,8 @@ namespace NetworkProtocol
         S2C_PLAYER_GROGGY_RECOVERY,
         S2C_PLAYER_GRAB_OTHER_PLAYER,
         S2C_PLAYER_THROW_OTHER_PLAYER,
+        S2C_PLAYER_DASH,
+        S2C_PLAYER_FLYING_KICK,
 
         S2C_BLOCK_DROP,
         S2C_BOMB_SPAWN,
@@ -61,6 +64,7 @@ namespace NetworkProtocol
         S2C_REMAIN_TIME_SYNC,
 
         // Client -> Server
+        C2S_VERSION_CHECK,
         C2S_LOGIN_REQUEST,
         C2S_SIGNUP_REQUEST,
 
@@ -78,6 +82,8 @@ namespace NetworkProtocol
         C2S_PLAYER_COLLISION_BLOCK,
         C2S_PLAYER_GRAB_OTHER_PLAYER,
         C2S_PLAYER_THROW_OTHER_PLAYER,
+        C2S_PLAYER_DASH,
+        C2S_PLAYER_FLYING_KICK,
 
         C2S_BOMB_INPUT,
         C2S_BOMB_POS_SYNC,

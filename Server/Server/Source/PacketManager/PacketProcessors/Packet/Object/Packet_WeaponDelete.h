@@ -9,10 +9,7 @@ public:
 	Packet_WeaponDelete(Server* server, PacketSender* packetSender) : PacketProcessor(server, packetSender) {}
 
 	virtual void Process(const uint8_t* data, const int size, const int key) {
-
 		try {
-			
-
 			flatbuffers::Verifier verifier(data, size);
 			if (verifier.VerifyBuffer<WeaponDelete>(nullptr)) {
 				const WeaponDelete* read = flatbuffers::GetRoot<WeaponDelete>(data);

@@ -10,9 +10,6 @@ public:
 
 	virtual void Process(const uint8_t* data, const int size, const int key) {
 		try {
-
-			
-
 			flatbuffers::Verifier verifier(data, size);
 			if (verifier.VerifyBuffer<HeartBeat>(nullptr)) {
 				const HeartBeat* read = flatbuffers::GetRoot<HeartBeat>(data);

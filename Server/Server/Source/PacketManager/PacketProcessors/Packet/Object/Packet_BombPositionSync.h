@@ -9,11 +9,7 @@ public:
 	Packet_BombPositionSync(Server* server, PacketSender* packetSender) : PacketProcessor(server, packetSender) {}
 
 	virtual void Process(const uint8_t* data, const int size, const int key) {
-
 		try {
-			
-
-			// 지금은 버퍼 내용은 사용 X 유효한 버퍼인지만 확인해서 처리
 			flatbuffers::Verifier verifier(data, size);
 			if (verifier.VerifyBuffer<BombPosition>(nullptr)) {
 				const BombPosition* read = flatbuffers::GetRoot<BombPosition>(data);

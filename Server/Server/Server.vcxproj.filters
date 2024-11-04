@@ -126,6 +126,9 @@
     <ClInclude Include="Source\TableManager\Tables\MatchMaking.h" />
     <ClInclude Include="Source\MatchMakingManager\MatchMakingManager.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Player\Packet_PlayerDropBomb.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Player\Packet_PlayerFlyingKick.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Player\Packet_PlayerDash.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Login\Packet_VersionCheck.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />
