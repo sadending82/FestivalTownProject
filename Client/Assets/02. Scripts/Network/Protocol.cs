@@ -117,6 +117,7 @@ namespace NetworkProtocol
         PS_RUN,
         PS_JUMP,
         PS_DASH,
+        PS_FLYING_KICK,
         PS_MOVESTOP,
         PS_JUMPSTOP
     };

@@ -57,6 +57,13 @@ namespace Network.PacketProcessor
                             pController.SetIsDash(true);
                         }
                         break;
+
+                    case (int)ePlayerMoveState.PS_FLYING_KICK:
+                        {
+                            pController.SetIsMove(true);
+                            pController.SetIsFlyingKick(true);
+                        }
+                        break;
                     default:
                         {
                             UnityEngine.Debug.Log("ERROR!! : PlayerMove.cs, Wrong MoveState !!!");

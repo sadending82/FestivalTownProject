@@ -40,6 +40,7 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
     private bool isJump;
     private bool isDash;
+    private bool isFlyingKick;
     private bool recoveryStaminaChecker;
 
     private bool isMove;
@@ -61,6 +62,9 @@ public class PlayerController : MonoBehaviour
     private int jumpStaminaConsume;
     private float jumpSpeedOffset = 0.5f;
     private bool doubleJumpChecker;
+    private float flyingKickForce;
+    private int flyingKickStaminaConsume;
+    private bool flyingKickChecker;
 
     private bool isLeftShiftKeyDown;
     private bool beforeIsLeftShiftKeyDown;
@@ -110,10 +114,12 @@ public class PlayerController : MonoBehaviour
     }
     void Start()
     {
+        // 스탯 관련
         GameDataEntity data = Managers.Data.GetData(1000);
         CharacterStatEntity cse = (CharacterStatEntity)data;
 
         float chSpeed = (float)cse.Ch_Speed;
+        float chStrength = (float)cse.Ch_Strength;
 
         // 이동 관련
         CharacterMoveEntity cme;
@@ -146,6 +152,15 @@ public class PlayerController : MonoBehaviour
         cme = (CharacterMoveEntity)data;
         jumpStaminaConsume = cme.Ch_StaminaConsume;
 
+        // 공격 관련
+        CharacterAttackEntity cate;
+
+        data = Managers.Data.GetData(10002);
+        cate = (CharacterAttackEntity)data;
+        flyingKickForce = cate.Value * chStrength;
+        flyingKickStaminaConsume = cme.Ch_StaminaConsume;
+
+
         // 픽업 관련
         CharacterActionEntity cae;
 
@@ -168,8 +183,10 @@ public class PlayerController : MonoBehaviour
         isGrap = false;
         isJump = false;
         isDash = false;
+        isFlyingKick = false;
         doubleJumpChecker = false;
         dashCooltimeChecker = false;
+        flyingKickChecker = false;
         isPickUpMode = false;
         isDropMode = false;
         isGrounded = false;
@@ -275,6 +292,14 @@ public class PlayerController : MonoBehaviour
                                 {
                                     Dash(moveDirection);
                                     isDash = false;
+                                }
+                            }
+                            if (isFlyingKick == true)
+                            {
+                                if (isGrounded == false)
+                                {
+                                    FlyingKick(moveDirection);
+                                    isFlyingKick = false;
                                 }
                             }
                         }
@@ -507,6 +532,7 @@ public class PlayerController : MonoBehaviour
         isGrounded = false;
         doubleJumpChecker = true;
         pelvisRigidbody.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
+        flyingKickChecker = false;
         StartCoroutine(WaitIsGroundCheck());
     }
     /// <summary>
@@ -530,6 +556,11 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(dashCooltime);
         dashCooltimeChecker = false;
+    }
+    public void FlyingKick(Vector3 direction)
+    {
+        flyingKickChecker = true;
+        pelvisRigidbody.AddForce(direction * flyingKickForce * 10, ForceMode.Impulse);
     }
     public void SetWalkState()
     {
@@ -623,6 +654,24 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             leftMouseClickTimer = 0f;
+            
+            // 날라차기
+            if(isLeftShiftKeyDown == true && isGrounded == false)
+            {
+                if (playerStatus.GetStamina() >= flyingKickStaminaConsume && moveDirection != Vector3.zero)
+                {
+                    if (pelvis != null)
+                    {
+                        playerStatus.ConsumeStamina(flyingKickStaminaConsume);
+                        packetManager.SendPlayerMovePacket(pelvis.transform.position, moveDirection, myId, ePlayerMoveState.PS_FLYING_KICK);
+                    }
+                    else
+                    {
+                        Debug.Log("Not Send Dash Packet, Pelvis is Null !!!");
+                    }
+                    FlyingKick(moveDirection);
+                }
+            }
         }
         // 마우스 좌클릭 홀드
         if (Input.GetMouseButton(0))
@@ -907,6 +956,10 @@ public class PlayerController : MonoBehaviour
     public void SetIsDash(bool isDash)
     {
         this.isDash = isDash;
+    }
+    public void SetIsFlyingKick(bool isFlyingKick)
+    {
+        this.isFlyingKick = isFlyingKick;
     }
     public void SetMyId(int myId)
     {
