@@ -15,8 +15,8 @@ void Object::SetUniqueCode()
 	auto duration = now.time_since_epoch();
 	long long millis = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
 
-	int numDigits = log10(mID) + 1;
-	mUniqueCode = millis * pow(10, numDigits) + mID;
+	int numDigits = log10(millis) + 1;
+	mUniqueCode = (mID+1) * pow(10, numDigits) + millis;
 }
 
 bool Object::SetIsGrabbed(bool desired)

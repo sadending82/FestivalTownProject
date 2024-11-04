@@ -57,8 +57,8 @@ void Room::InitRoomCode()
 	auto duration = now.time_since_epoch();
 	long long millis = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
 
-	int numDigits = log10(mRoomID) + 1;
-	mRoomCode = millis * pow(10, numDigits) + mRoomID;
+	int numDigits = log10(millis) + 1;
+	mRoomCode = (mRoomID + 1) * pow(10, numDigits) + millis;
 }
 
 bool Room::AddPlayer(Player* player)
