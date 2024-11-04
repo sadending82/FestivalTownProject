@@ -17,8 +17,8 @@ public class SoundManager
     // 3d 사운드 관리를 위한 데이터
     Dictionary<GameObject, AudioSource> _3dAudioSource = new();
 
-    public float _bgmVolume = 0.5f;
-    public float _effVolume = 0.3f;
+    public float _bgmVolume = 1.0f;
+    public float _effVolume = 1.0f;
 
     public void Init()
     {
