@@ -227,7 +227,6 @@ public class CharacterStatus : MonoBehaviour
     private void StaminaUpdate()
     {
         int staminaIncrease = CalculateStaminaIncrease();
-        Debug.Log("sIncrease " + staminaIncrease);
 
         if(stamina == 0 && (stamina + staminaIncrease) > 0)
         {
@@ -262,6 +261,10 @@ public class CharacterStatus : MonoBehaviour
     public float GetThrowPower()
     {
         return throwPower;
+    }
+    public Vector3 GetDirection()
+    {
+        return playerController.GetDirection();
     }
     public void SetIsDie(bool isDie)
     {
