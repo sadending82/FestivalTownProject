@@ -18,7 +18,7 @@ namespace NetworkProtocol
     {
         // Server -> Client
         PACKET_TYPE_NONE,
-        S2C_VERSION_CHECK,
+        S2C_VERSION_CHECK_RESPONSE,
         S2C_LOGIN_RESPONSE,
         S2C_SIGNUP_RESPONSE,
 
@@ -66,7 +66,7 @@ namespace NetworkProtocol
         S2C_REMAIN_TIME_SYNC,
 
         // Client -> Server
-        C2S_VERSION_CHECK,
+        C2S_VERSION_CHECK_REQUEST,
         C2S_LOGIN_REQUEST,
         C2S_SIGNUP_REQUEST,
 
@@ -97,6 +97,13 @@ namespace NetworkProtocol
         C2S_MATCHING_REQUEST,
         C2S_MATCHING_CANCEL,
         C2S_GAME_READY
+    };
+
+    public enum ERROR_CODE
+    {
+        ER_NONE = 0,
+
+        ER_VERSION_MISMATCH = 101
     };
 
     public enum GameMode

@@ -22,6 +22,9 @@ struct UtilitiesBuilder;
 struct HeartBeat;
 struct HeartBeatBuilder;
 
+struct Customizing;
+struct CustomizingBuilder;
+
 struct PlayerGameRecord;
 struct PlayerGameRecordBuilder;
 
@@ -98,6 +101,35 @@ inline ::flatbuffers::Offset<HeartBeat> CreateHeartBeat(
     int64_t time = 0) {
   HeartBeatBuilder builder_(_fbb);
   builder_.add_time(time);
+  return builder_.Finish();
+}
+
+struct Customizing FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef CustomizingBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct CustomizingBuilder {
+  typedef Customizing Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit CustomizingBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<Customizing> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<Customizing>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<Customizing> CreateCustomizing(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  CustomizingBuilder builder_(_fbb);
   return builder_.Finish();
 }
 

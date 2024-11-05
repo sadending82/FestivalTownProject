@@ -9,15 +9,15 @@ using global::System;
 using global::System.Collections.Generic;
 using global::Google.FlatBuffers;
 
-public struct VersionCheck : IFlatbufferObject
+public struct VersionCheckRequest : IFlatbufferObject
 {
   private Table __p;
   public ByteBuffer ByteBuffer { get { return __p.bb; } }
   public static void ValidateVersion() { FlatBufferConstants.FLATBUFFERS_24_3_25(); }
-  public static VersionCheck GetRootAsVersionCheck(ByteBuffer _bb) { return GetRootAsVersionCheck(_bb, new VersionCheck()); }
-  public static VersionCheck GetRootAsVersionCheck(ByteBuffer _bb, VersionCheck obj) { return (obj.__assign(_bb.GetInt(_bb.Position) + _bb.Position, _bb)); }
+  public static VersionCheckRequest GetRootAsVersionCheckRequest(ByteBuffer _bb) { return GetRootAsVersionCheckRequest(_bb, new VersionCheckRequest()); }
+  public static VersionCheckRequest GetRootAsVersionCheckRequest(ByteBuffer _bb, VersionCheckRequest obj) { return (obj.__assign(_bb.GetInt(_bb.Position) + _bb.Position, _bb)); }
   public void __init(int _i, ByteBuffer _bb) { __p = new Table(_i, _bb); }
-  public VersionCheck __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
+  public VersionCheckRequest __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public string Version { get { int o = __p.__offset(4); return o != 0 ? __p.__string(o + __p.bb_pos) : null; } }
 #if ENABLE_SPAN_T
@@ -27,23 +27,23 @@ public struct VersionCheck : IFlatbufferObject
 #endif
   public byte[] GetVersionArray() { return __p.__vector_as_array<byte>(4); }
 
-  public static Offset<PacketTable.LoginTable.VersionCheck> CreateVersionCheck(FlatBufferBuilder builder,
+  public static Offset<PacketTable.LoginTable.VersionCheckRequest> CreateVersionCheckRequest(FlatBufferBuilder builder,
       StringOffset versionOffset = default(StringOffset)) {
     builder.StartTable(1);
-    VersionCheck.AddVersion(builder, versionOffset);
-    return VersionCheck.EndVersionCheck(builder);
+    VersionCheckRequest.AddVersion(builder, versionOffset);
+    return VersionCheckRequest.EndVersionCheckRequest(builder);
   }
 
-  public static void StartVersionCheck(FlatBufferBuilder builder) { builder.StartTable(1); }
+  public static void StartVersionCheckRequest(FlatBufferBuilder builder) { builder.StartTable(1); }
   public static void AddVersion(FlatBufferBuilder builder, StringOffset versionOffset) { builder.AddOffset(0, versionOffset.Value, 0); }
-  public static Offset<PacketTable.LoginTable.VersionCheck> EndVersionCheck(FlatBufferBuilder builder) {
+  public static Offset<PacketTable.LoginTable.VersionCheckRequest> EndVersionCheckRequest(FlatBufferBuilder builder) {
     int o = builder.EndTable();
-    return new Offset<PacketTable.LoginTable.VersionCheck>(o);
+    return new Offset<PacketTable.LoginTable.VersionCheckRequest>(o);
   }
 }
 
 
-static public class VersionCheckVerify
+static public class VersionCheckRequestVerify
 {
   static public bool Verify(Google.FlatBuffers.Verifier verifier, uint tablePos)
   {

@@ -2,6 +2,14 @@
 #include "PacketMaker.h"
 #include "../../Object/Player.h"
 
+std::vector<uint8_t> PacketMaker::MakeVersionCheckResponsePacket(int result)
+{
+	flatbuffers::FlatBufferBuilder Builder;
+
+	Builder.Finish(PacketTable::LoginTable::CreateVersionCheckResponse(Builder, result));
+	return MakeBuffer(ePacketType::S2C_VERSION_CHECK_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
+}
+
 std::vector<uint8_t> PacketMaker::MakeLoginResponsePacket(int result, int uid, std::string& nickname, int point, int gold)
 {
 	flatbuffers::FlatBufferBuilder Builder;

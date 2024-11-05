@@ -45,6 +45,7 @@ public class PacketManager : MonoBehaviour
     {
         processorDict = new Dictionary<ePacketType, PacketProcessor>
         {
+            { ePacketType.S2C_VERSION_CHECK_RESPONSE, new VersionCheckResponseProcessor() },
             { ePacketType.S2C_LOGIN_RESPONSE, new LoginResponseProcessor() },
             { ePacketType.S2C_SIGNUP_RESPONSE, new SignUpResponseProcessor() },
             { ePacketType.S2C_GACHA_RESPONSE, new GachaResponseProcessor() },
@@ -141,6 +142,12 @@ public class PacketManager : MonoBehaviour
     public void SendHeartBeatPacket()
     {
         byte[] packet = _packetMaker.MakeHeartBeatPacket();
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+    public void SendVersionCheckRequestPacket()
+    {
+        byte[] packet = _packetMaker.MakeVersionCheckRequestPacket(Application.version);
         if (packet == null) { return; }
         SendPacket(packet);
     }

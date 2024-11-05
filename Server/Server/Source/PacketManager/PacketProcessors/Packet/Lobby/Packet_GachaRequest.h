@@ -19,6 +19,7 @@ public:
 				int randomBox = read->random_box_index();
 
 				TableManager* tableManager = pServer->GetTableManager();
+
 				int GachaGroup = tableManager->GetRandomBoxList()[randomBox].Gacha_Group;
 				std::unordered_map<INDEX, GachaItem>& items = tableManager->GetGachaItemList()[GachaGroup];
 
@@ -49,7 +50,9 @@ public:
 
 				// ....
 
-				pServer->GetPacketSender()->SendGachaResponsePacket(key, true, rewardItem, rewardValue, 0, 0, 0);
+				COUT << rewardItem << " " << rewardValue << ENDL;
+
+				pPacketSender->SendGachaResponsePacket(key, true, rewardItem, rewardValue, 0, 0, 0);
 			}
 		}
 		catch (const std::exception& e) {

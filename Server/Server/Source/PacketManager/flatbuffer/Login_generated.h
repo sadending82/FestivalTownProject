@@ -13,11 +13,16 @@ static_assert(FLATBUFFERS_VERSION_MAJOR == 24 &&
               FLATBUFFERS_VERSION_REVISION == 25,
              "Non-compatible flatbuffers version included");
 
+#include "Utilities_generated.h"
+
 namespace PacketTable {
 namespace LoginTable {
 
-struct VersionCheck;
-struct VersionCheckBuilder;
+struct VersionCheckRequest;
+struct VersionCheckRequestBuilder;
+
+struct VersionCheckResponse;
+struct VersionCheckResponseBuilder;
 
 struct SignUpRequest;
 struct SignUpRequestBuilder;
@@ -31,8 +36,8 @@ struct LoginRequestBuilder;
 struct LoginResponse;
 struct LoginResponseBuilder;
 
-struct VersionCheck FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef VersionCheckBuilder Builder;
+struct VersionCheckRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef VersionCheckRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_VERSION = 4
   };
@@ -47,39 +52,80 @@ struct VersionCheck FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   }
 };
 
-struct VersionCheckBuilder {
-  typedef VersionCheck Table;
+struct VersionCheckRequestBuilder {
+  typedef VersionCheckRequest Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
   void add_version(::flatbuffers::Offset<::flatbuffers::String> version) {
-    fbb_.AddOffset(VersionCheck::VT_VERSION, version);
+    fbb_.AddOffset(VersionCheckRequest::VT_VERSION, version);
   }
-  explicit VersionCheckBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+  explicit VersionCheckRequestBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  ::flatbuffers::Offset<VersionCheck> Finish() {
+  ::flatbuffers::Offset<VersionCheckRequest> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<VersionCheck>(end);
+    auto o = ::flatbuffers::Offset<VersionCheckRequest>(end);
     return o;
   }
 };
 
-inline ::flatbuffers::Offset<VersionCheck> CreateVersionCheck(
+inline ::flatbuffers::Offset<VersionCheckRequest> CreateVersionCheckRequest(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     ::flatbuffers::Offset<::flatbuffers::String> version = 0) {
-  VersionCheckBuilder builder_(_fbb);
+  VersionCheckRequestBuilder builder_(_fbb);
   builder_.add_version(version);
   return builder_.Finish();
 }
 
-inline ::flatbuffers::Offset<VersionCheck> CreateVersionCheckDirect(
+inline ::flatbuffers::Offset<VersionCheckRequest> CreateVersionCheckRequestDirect(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     const char *version = nullptr) {
   auto version__ = version ? _fbb.CreateString(version) : 0;
-  return PacketTable::LoginTable::CreateVersionCheck(
+  return PacketTable::LoginTable::CreateVersionCheckRequest(
       _fbb,
       version__);
+}
+
+struct VersionCheckResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef VersionCheckResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_RESULT = 4
+  };
+  int32_t result() const {
+    return GetField<int32_t>(VT_RESULT, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_RESULT, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct VersionCheckResponseBuilder {
+  typedef VersionCheckResponse Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_result(int32_t result) {
+    fbb_.AddElement<int32_t>(VersionCheckResponse::VT_RESULT, result, 0);
+  }
+  explicit VersionCheckResponseBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<VersionCheckResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<VersionCheckResponse>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<VersionCheckResponse> CreateVersionCheckResponse(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t result = 0) {
+  VersionCheckResponseBuilder builder_(_fbb);
+  builder_.add_result(result);
+  return builder_.Finish();
 }
 
 struct SignUpRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
@@ -273,9 +319,15 @@ struct LoginResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_RESULT_CODE = 4,
     VT_UID = 6,
     VT_NICKNAME = 8,
-    VT_POINT = 10,
-    VT_GOLD = 12,
-    VT_ATTENDANCE_DAY = 14
+    VT_LEVEL = 10,
+    VT_USER_TITLE = 12,
+    VT_PROFILE_SKIN = 14,
+    VT_POINT = 16,
+    VT_GOLD = 18,
+    VT_ATTENDANCE_DAY = 20,
+    VT_CUSTOMIZING = 22,
+    VT_HAS_UNCLAIMED_REWARD = 24,
+    VT_IS_NEW_UPDATE = 26
   };
   int32_t result_code() const {
     return GetField<int32_t>(VT_RESULT_CODE, 0);
@@ -286,6 +338,15 @@ struct LoginResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   const ::flatbuffers::String *nickname() const {
     return GetPointer<const ::flatbuffers::String *>(VT_NICKNAME);
   }
+  int32_t level() const {
+    return GetField<int32_t>(VT_LEVEL, 0);
+  }
+  int32_t user_title() const {
+    return GetField<int32_t>(VT_USER_TITLE, 0);
+  }
+  int32_t profile_skin() const {
+    return GetField<int32_t>(VT_PROFILE_SKIN, 0);
+  }
   int32_t point() const {
     return GetField<int32_t>(VT_POINT, 0);
   }
@@ -295,15 +356,31 @@ struct LoginResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   int32_t attendance_day() const {
     return GetField<int32_t>(VT_ATTENDANCE_DAY, 0);
   }
+  const PacketTable::UtilitiesTable::Customizing *customizing() const {
+    return GetPointer<const PacketTable::UtilitiesTable::Customizing *>(VT_CUSTOMIZING);
+  }
+  bool has_unclaimed_reward() const {
+    return GetField<uint8_t>(VT_HAS_UNCLAIMED_REWARD, 0) != 0;
+  }
+  bool is_new_update() const {
+    return GetField<uint8_t>(VT_IS_NEW_UPDATE, 0) != 0;
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_RESULT_CODE, 4) &&
            VerifyField<int32_t>(verifier, VT_UID, 4) &&
            VerifyOffset(verifier, VT_NICKNAME) &&
            verifier.VerifyString(nickname()) &&
+           VerifyField<int32_t>(verifier, VT_LEVEL, 4) &&
+           VerifyField<int32_t>(verifier, VT_USER_TITLE, 4) &&
+           VerifyField<int32_t>(verifier, VT_PROFILE_SKIN, 4) &&
            VerifyField<int32_t>(verifier, VT_POINT, 4) &&
            VerifyField<int32_t>(verifier, VT_GOLD, 4) &&
            VerifyField<int32_t>(verifier, VT_ATTENDANCE_DAY, 4) &&
+           VerifyOffset(verifier, VT_CUSTOMIZING) &&
+           verifier.VerifyTable(customizing()) &&
+           VerifyField<uint8_t>(verifier, VT_HAS_UNCLAIMED_REWARD, 1) &&
+           VerifyField<uint8_t>(verifier, VT_IS_NEW_UPDATE, 1) &&
            verifier.EndTable();
   }
 };
@@ -321,6 +398,15 @@ struct LoginResponseBuilder {
   void add_nickname(::flatbuffers::Offset<::flatbuffers::String> nickname) {
     fbb_.AddOffset(LoginResponse::VT_NICKNAME, nickname);
   }
+  void add_level(int32_t level) {
+    fbb_.AddElement<int32_t>(LoginResponse::VT_LEVEL, level, 0);
+  }
+  void add_user_title(int32_t user_title) {
+    fbb_.AddElement<int32_t>(LoginResponse::VT_USER_TITLE, user_title, 0);
+  }
+  void add_profile_skin(int32_t profile_skin) {
+    fbb_.AddElement<int32_t>(LoginResponse::VT_PROFILE_SKIN, profile_skin, 0);
+  }
   void add_point(int32_t point) {
     fbb_.AddElement<int32_t>(LoginResponse::VT_POINT, point, 0);
   }
@@ -329,6 +415,15 @@ struct LoginResponseBuilder {
   }
   void add_attendance_day(int32_t attendance_day) {
     fbb_.AddElement<int32_t>(LoginResponse::VT_ATTENDANCE_DAY, attendance_day, 0);
+  }
+  void add_customizing(::flatbuffers::Offset<PacketTable::UtilitiesTable::Customizing> customizing) {
+    fbb_.AddOffset(LoginResponse::VT_CUSTOMIZING, customizing);
+  }
+  void add_has_unclaimed_reward(bool has_unclaimed_reward) {
+    fbb_.AddElement<uint8_t>(LoginResponse::VT_HAS_UNCLAIMED_REWARD, static_cast<uint8_t>(has_unclaimed_reward), 0);
+  }
+  void add_is_new_update(bool is_new_update) {
+    fbb_.AddElement<uint8_t>(LoginResponse::VT_IS_NEW_UPDATE, static_cast<uint8_t>(is_new_update), 0);
   }
   explicit LoginResponseBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -346,16 +441,28 @@ inline ::flatbuffers::Offset<LoginResponse> CreateLoginResponse(
     int32_t result_code = 0,
     int32_t uid = 0,
     ::flatbuffers::Offset<::flatbuffers::String> nickname = 0,
+    int32_t level = 0,
+    int32_t user_title = 0,
+    int32_t profile_skin = 0,
     int32_t point = 0,
     int32_t gold = 0,
-    int32_t attendance_day = 0) {
+    int32_t attendance_day = 0,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::Customizing> customizing = 0,
+    bool has_unclaimed_reward = false,
+    bool is_new_update = false) {
   LoginResponseBuilder builder_(_fbb);
+  builder_.add_customizing(customizing);
   builder_.add_attendance_day(attendance_day);
   builder_.add_gold(gold);
   builder_.add_point(point);
+  builder_.add_profile_skin(profile_skin);
+  builder_.add_user_title(user_title);
+  builder_.add_level(level);
   builder_.add_nickname(nickname);
   builder_.add_uid(uid);
   builder_.add_result_code(result_code);
+  builder_.add_is_new_update(is_new_update);
+  builder_.add_has_unclaimed_reward(has_unclaimed_reward);
   return builder_.Finish();
 }
 
@@ -364,18 +471,30 @@ inline ::flatbuffers::Offset<LoginResponse> CreateLoginResponseDirect(
     int32_t result_code = 0,
     int32_t uid = 0,
     const char *nickname = nullptr,
+    int32_t level = 0,
+    int32_t user_title = 0,
+    int32_t profile_skin = 0,
     int32_t point = 0,
     int32_t gold = 0,
-    int32_t attendance_day = 0) {
+    int32_t attendance_day = 0,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::Customizing> customizing = 0,
+    bool has_unclaimed_reward = false,
+    bool is_new_update = false) {
   auto nickname__ = nickname ? _fbb.CreateString(nickname) : 0;
   return PacketTable::LoginTable::CreateLoginResponse(
       _fbb,
       result_code,
       uid,
       nickname__,
+      level,
+      user_title,
+      profile_skin,
       point,
       gold,
-      attendance_day);
+      attendance_day,
+      customizing,
+      has_unclaimed_reward,
+      is_new_update);
 }
 
 }  // namespace LoginTable

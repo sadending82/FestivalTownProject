@@ -2,6 +2,7 @@
 // Packet
 #include "Packet/Login/Packet_LoginRequest.h"
 #include "Packet/Login/Packet_SignUpRequest.h"
+#include "Packet/Login/Packet_VersionCheckRequest.h"
 
 #include "Packet/Lobby/Packet_GachaRequest.h"
 

@@ -57,7 +57,12 @@ public class NetworkManager : MonoBehaviour
 
         Debug.Log("Network Connect : " + isNetworkConnected);
 
-        if(isNetworkConnected) recvManager.CreateRecvThread(Connection);
+        if (isNetworkConnected)
+        {
+            recvManager.CreateRecvThread(Connection);
+            // 접속 성공 시 버전 체크
+            packetManager.SendVersionCheckRequestPacket();
+        }
         else
         {
             StartCoroutine(ShowNoticePopUp());

@@ -7,6 +7,7 @@ public:
 	PacketSender(class Server* server, class PacketMaker* packetMaker) :mServer(server), mPacketMaker(packetMaker) {}
 	~PacketSender();
 
+	void SendVersionCheckResponsePacket(int sessionID, int result);
 	void SendLoginResponse(int sessionID, int result, int uid, std::string& nickname, int point, int gold);
 	void SendSignUpResponse(int sessionID, int result);
 
