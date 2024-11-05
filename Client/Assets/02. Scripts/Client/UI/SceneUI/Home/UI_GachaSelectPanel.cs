@@ -1,15 +1,19 @@
+using ExcelDataStructure;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class UI_GachaSelectPanel : UI_Base
 {
     enum GameObjects
     {
-        NormalGacha,
-        UltraGacha,
+        GachaTypes,
+        LeftButton,
+        RightButton,
     }
 
+    int TypeCount = 0;
     public int CurrentSelected = 0;
 
     void Start()
@@ -21,43 +25,70 @@ public class UI_GachaSelectPanel : UI_Base
     {
         Bind<GameObject>(typeof(GameObjects));
 
+        Get<GameObject>((int)GameObjects.RightButton).BindEvent((PointerEventData) =>
+        {
+            SelectNextGacha();
+        });
+
+        Get<GameObject>((int)GameObjects.LeftButton).BindEvent((PointerEventData) =>
+        {
+            SelectPrevGacha();
+        });
+
+        foreach (var group in Managers.Data.GachaGroupDict)
+        {
+            var ui = Managers.UI.MakeSubItem<UI_GachaType>(Get<GameObject>((int)GameObjects.GachaTypes).transform);
+
+            ui.Init();
+
+            ui.SetName(group.Value.Name);
+            ui.SetGachaType(group.Value.Index);
+            Debug.Log(group.Value.Pay_Item_Index);
+            ui.SetRequireResource(group.Value.Pay_Item_Index);
+
+            TypeCount++;
+        }
+
         CurrentGachaOn();
+
     }
 
     void AllGachaOff()
     {
-        Get<GameObject>((int)GameObjects.NormalGacha).SetActive(false);
-        Get<GameObject>((int)GameObjects.UltraGacha).SetActive(false);
+        GameObject gt = Get<GameObject>((int)GameObjects.GachaTypes);
+        UI_GachaType[] allChildren = gt.GetComponentsInChildren<UI_GachaType>();
+        foreach(UI_GachaType child in allChildren)
+        {
+            if (child.name == gt.name)
+                continue;
+
+            child.gameObject.SetActive(false);
+        }
     }
 
     void CurrentGachaOn()
     {
         AllGachaOff();
-        Get<GameObject>(CurrentSelected).SetActive(true);
+        Debug.Log(CurrentSelected);
+        Get<GameObject>((int)GameObjects.GachaTypes).transform.GetChild(CurrentSelected).gameObject.SetActive(true);
     }
 
     public void SelectNextGacha()
     {
-        if(CurrentSelected == 1) 
+        CurrentSelected++;
+        if (CurrentSelected >= TypeCount) 
         {
             CurrentSelected = 0;
-        }
-        else
-        {
-            CurrentSelected++;
         }
         CurrentGachaOn();
     }
 
     public void SelectPrevGacha()
     {
-        if (CurrentSelected == 0)
+        CurrentSelected--;
+        if (CurrentSelected < 0)
         {
-            CurrentSelected = 1;
-        }
-        else
-        {
-            CurrentSelected--;
+            CurrentSelected = TypeCount - 1;
         }
         CurrentGachaOn();
     }

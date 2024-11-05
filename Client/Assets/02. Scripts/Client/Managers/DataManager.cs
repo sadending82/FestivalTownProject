@@ -18,6 +18,9 @@ public class DataManager
     /// 데이터들이 들어가 있는 딕셔너리
     /// </summary>
     public Dictionary<int, GameDataEntity> GameDataDict = new(); // 나중에 겹치는 경우가 생길 수 있으므로 따로 분리해 두라고 함.
+    public Dictionary<int, ItemEntity> ItemDict = new();
+    public Dictionary<int, GachaGroupEntity> GachaGroupDict = new();
+    public Dictionary<int, GachaGroupItemEntity> GachaGroupItemDict = new();
     public Dictionary<int, ModeOutEntity> ModeOutDataDict = new();
     public Dictionary<int, FITHModeEntity> FITHModeDataDict = new();
     public Dictionary<int, ModePointEntity> ModePointDataDict = new();
@@ -37,6 +40,39 @@ public class DataManager
     public GameDataEntity GetData(int dataIndex)
     {
         GameDataDict.TryGetValue(dataIndex, out GameDataEntity data);
+        if (data == null)
+        {
+            return null;
+        }
+
+        return data;
+    }
+
+    public ItemEntity GetItemData(int dataIndex)
+    {
+        ItemDict.TryGetValue(dataIndex, out ItemEntity data);
+        if (data == null)
+        {
+            return null;
+        }
+
+        return data;
+    }
+
+    public GachaGroupEntity GetGachaGroupData(int dataIndex)
+    {
+        GachaGroupDict.TryGetValue(dataIndex, out GachaGroupEntity data);
+        if (data == null)
+        {
+            return null;
+        }
+
+        return data;
+    }
+
+    public GachaGroupItemEntity GetGachaGroupItemData(int dataIndex)
+    {
+        GachaGroupItemDict.TryGetValue(dataIndex, out GachaGroupItemEntity data);
         if (data == null)
         {
             return null;
@@ -118,24 +154,24 @@ public class DataManager
         {
             foreach(GachaGroupEntity entity in gachaData.GachaGroup)
             {
-                GameDataDict.TryAdd(entity.Index, entity);
-                GameDataDict[entity.Index].ClassType = Define.ExcelDataClassType.GachaGroup;
+                GachaGroupDict.TryAdd(entity.Index, entity);
+                GachaGroupDict[entity.Index].ClassType = Define.ExcelDataClassType.GachaGroup;
             }
 
             foreach(GachaGroupItemEntity entity in gachaData.GachaGroup_Item)
             {
-                GameDataDict.TryAdd(entity.Index, entity);
-                GameDataDict[entity.Index].ClassType = Define.ExcelDataClassType.GachaGroupItem;
+                GachaGroupItemDict.TryAdd(entity.Index, entity);
+                GachaGroupItemDict[entity.Index].ClassType = Define.ExcelDataClassType.GachaGroupItem;
             }
         }
 
-        Item itemData = Managers.Resource.Load<Item>($"Data/Gacha");
+        Item itemData = Managers.Resource.Load<Item>($"Data/item");
         if (itemData != null)
         {
             foreach(ItemEntity entity in itemData.Item_List)
             {
-                GameDataDict.TryAdd(entity.Index, entity);
-                GameDataDict[entity.Index].ClassType = Define.ExcelDataClassType.Item;
+                ItemDict.TryAdd(entity.Index, entity);
+                ItemDict[entity.Index].ClassType = Define.ExcelDataClassType.Item;
             }
         }
 

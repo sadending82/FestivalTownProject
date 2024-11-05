@@ -52,7 +52,7 @@ namespace ExcelDataStructure
     {
         public int Gacha_Group;
         public int Pay_Item_Index;
-        public float Pay_Item_Value;
+        public int Pay_Item_Value;
         public int Open_Date;
         public int Close_Date;
         public float Exp;
