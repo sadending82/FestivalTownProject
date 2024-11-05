@@ -1,7 +1,7 @@
 #pragma once
 #pragma pack (push, 1)
 
-#define Mode_Point_Sheet 2
+#define Mode_Point_Sheet 3
 
 enum class PointConstant_Field {
 	Mode_Index = 2,	
