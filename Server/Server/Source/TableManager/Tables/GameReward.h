@@ -1,8 +1,8 @@
 #pragma once
 #pragma pack (push, 1)
 
-#define Mode_Reward_Sheet 3
-#define Mode_BonusReward_Sheet 4
+#define Mode_Reward_Sheet 4
+#define Mode_BonusReward_Sheet 5
 
 enum class Reward_Field {
 	Mode_Index = 2,
