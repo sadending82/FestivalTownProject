@@ -16,6 +16,8 @@ PacketManager::PacketManager(Server* server, PacketSender* packetSender)
         PacketProcessorMap[ePacketType::C2S_LOGIN_REQUEST] = std::make_unique<Packet_LoginRequest>(pServer, pPacketSender);
         PacketProcessorMap[ePacketType::C2S_SIGNUP_REQUEST] = std::make_unique<Packet_SignUpRequest>(pServer, pPacketSender);
 
+        PacketProcessorMap[ePacketType::C2S_GACHA_REQUEST] = std::make_unique<Packet_GachaRequest>(pServer, pPacketSender);
+
         PacketProcessorMap[ePacketType::C2S_HEART_BEAT] = std::make_unique<Packet_HeartBeat>(pServer, pPacketSender);
 
         PacketProcessorMap[ePacketType::C2S_MATCHING_REQUEST] = std::make_unique<Packet_GameMatchingRequest>(pServer, pPacketSender);

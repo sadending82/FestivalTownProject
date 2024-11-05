@@ -3,6 +3,8 @@
 #include "Packet/Login/Packet_LoginRequest.h"
 #include "Packet/Login/Packet_SignUpRequest.h"
 
+#include "Packet/Lobby/Packet_GachaRequest.h"
+
 #include "Packet/Utilities/Packet_HeartBeat.h"
 
 #include "Packet/Player/Packet_PlayerMove.h"

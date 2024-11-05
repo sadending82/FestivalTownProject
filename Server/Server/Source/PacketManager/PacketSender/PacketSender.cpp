@@ -23,6 +23,12 @@ void PacketSender::SendSignUpResponse(int sessionID, int result)
     mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
 }
 
+void PacketSender::SendGachaResponsePacket(int sessionID, int result, int acquired_item_type, int acquired_item_amount, int spent_resource_type, int spent_resource_amount, int remaining_resource_amount)
+{
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakeGachaResponsePacket(result, acquired_item_type, acquired_item_amount, spent_resource_type, spent_resource_amount, remaining_resource_amount);
+    mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
+}
+
 void PacketSender::SendPlayerAdd(int roomID)
 {
     Room* room = mServer->GetRooms()[roomID];

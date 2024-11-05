@@ -48,6 +48,8 @@ public:
 				}
 
 				// ....
+
+				pServer->GetPacketSender()->SendGachaResponsePacket(key, true, rewardItem, rewardValue, 0, 0, 0);
 			}
 		}
 		catch (const std::exception& e) {

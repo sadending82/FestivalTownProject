@@ -10,6 +10,8 @@ public:
 	void SendLoginResponse(int sessionID, int result, int uid, std::string& nickname, int point, int gold);
 	void SendSignUpResponse(int sessionID, int result);
 
+	void SendGachaResponsePacket(int sessionID, int result, int acquired_item_type, int acquired_item_amount, int spent_resource_type, int spent_resource_amount, int remaining_resource_amount);
+
 	void SendPlayerAdd(int roomID);
 	void SendPlayerDelete(int roomID, int inGameID);
 	void SendGameMatchingResponse(int sessionID);

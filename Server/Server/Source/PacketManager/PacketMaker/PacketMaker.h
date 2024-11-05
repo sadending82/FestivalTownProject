@@ -15,6 +15,8 @@ public:
 	std::vector<uint8_t> MakeLoginResponsePacket(int result, int uid, std::string& nickname, int point, int gold);
 	std::vector<uint8_t> MakeSignUpResponsePacket(int result);
 
+	std::vector<uint8_t> MakeGachaResponsePacket(int result, int acquired_item_type, int acquired_item_amount, int spent_resource_type, int spent_resource_amount, int remaining_resource_amount);
+
 	std::vector<uint8_t> MakePlayerAddPacket(std::vector<class Player*>& players);
 	std::vector<uint8_t> MakePlayerDeletePacket (int inGameID);
 	std::vector<uint8_t> MakePlayerDeadPacket(int inGameID, int roomID, Vector3f position, Vector3f direction, int spawn_delay);

@@ -22,6 +22,8 @@ namespace NetworkProtocol
         S2C_LOGIN_RESPONSE,
         S2C_SIGNUP_RESPONSE,
 
+        S2C_GACHA_RESPONSE,
+
         S2C_HEART_BEAT,
         S2C_PLAYER_ADD,
         S2C_PLAYER_DELETE,
@@ -67,6 +69,8 @@ namespace NetworkProtocol
         C2S_VERSION_CHECK,
         C2S_LOGIN_REQUEST,
         C2S_SIGNUP_REQUEST,
+
+        C2S_GACHA_REQUEST,
 
         C2S_HEART_BEAT,
         C2S_PLAYER_MOVE,

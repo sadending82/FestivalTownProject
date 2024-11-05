@@ -47,6 +47,7 @@ public class PacketManager : MonoBehaviour
         {
             { ePacketType.S2C_LOGIN_RESPONSE, new LoginResponseProcessor() },
             { ePacketType.S2C_SIGNUP_RESPONSE, new SignUpResponseProcessor() },
+            { ePacketType.S2C_GACHA_RESPONSE, new GachaResponseProcessor() },
 
             { ePacketType.S2C_HEART_BEAT, new HeartBeatProcessor() },
 
@@ -171,6 +172,12 @@ public class PacketManager : MonoBehaviour
     public void SendGameReady()
     {
         byte[] packet = _packetMaker.MakeGameReadyPacket();
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+    public void SendGachaRequestPacket(int gachaType)
+    {
+        byte[] packet = _packetMaker.MakeGachaRequestPacket(gachaType);
         if (packet == null) { return; }
         SendPacket(packet);
     }

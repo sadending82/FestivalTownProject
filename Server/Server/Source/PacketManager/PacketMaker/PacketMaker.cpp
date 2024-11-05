@@ -18,6 +18,15 @@ std::vector<uint8_t> PacketMaker::MakeSignUpResponsePacket(int result)
 	return MakeBuffer(ePacketType::S2C_SIGNUP_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
+std::vector<uint8_t> PacketMaker::MakeGachaResponsePacket(int result, int acquired_item_type, int acquired_item_amount, int spent_resource_type, int spent_resource_amount, int remaining_resource_amount)
+{
+	flatbuffers::FlatBufferBuilder Builder;
+
+	Builder.Finish(PacketTable::LobbyTable::CreateGachaResponse(Builder, result, acquired_item_type
+		, acquired_item_amount, spent_resource_type, spent_resource_amount, remaining_resource_amount));
+	return MakeBuffer(ePacketType::S2C_GACHA_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
+}
+
 std::vector<uint8_t> PacketMaker::MakePlayerAddPacket(std::vector<class Player*>& players)
 {
 	flatbuffers::FlatBufferBuilder Builder;
