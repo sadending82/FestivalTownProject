@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class HomeScene : BaseScene
 {
-    UI_HomeScene homeSceneUI; 
+    UI_HomeScene homeSceneUI;
+    UI_HomeStart homeStartUI;
     public bool isMatching = false;
     protected override void Init()
     {
@@ -14,7 +15,7 @@ public class HomeScene : BaseScene
 
         Managers.Sound.Play("Sfx_BGM_Lobby", Define.Sound.Bgm);
 
-        Managers.UI.ShowSceneUI<UI_HomeStart>();
+        homeStartUI = Managers.UI.ShowSceneUI<UI_HomeStart>();
         homeSceneUI = Managers.UI.ShowAOTUI<UI_HomeScene>();
 
         StartCoroutine(SetDatas());
@@ -28,7 +29,7 @@ public class HomeScene : BaseScene
         yield return null;
         homeSceneUI.SetDiamond(Managers.Data.GetDiamond());
         homeSceneUI.SetGold(Managers.Data.GetGold());
-        homeSceneUI.SetNickName(Managers.Data.GetNickName());
+        homeStartUI.SetNickName(Managers.Data.GetNickName());
     }
 
     public override void Clear()

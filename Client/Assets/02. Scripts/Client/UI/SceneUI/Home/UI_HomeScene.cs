@@ -7,21 +7,13 @@ public class UI_HomeScene : UI_AlwaysOnTop
 {
     enum GameObjects
     {
-        Panel,
-        PlayerImage,
-        NickName,
-        ShopButton,
-        PassButton,
-        AchieveButton,
         GoldPanel,
         GoldText,
         DiamondPanel,
         DiamondText,
     }
 
-    bool isShopOpen = false;
-    bool isPassOpen = false;
-    bool isAchieveOpen = false;
+
 
     void Start()
     {
@@ -34,35 +26,8 @@ public class UI_HomeScene : UI_AlwaysOnTop
 
         Bind<GameObject>(typeof(GameObjects));
 
-        Get<GameObject>((int)GameObjects.ShopButton).BindEvent((PointerEventData)=>
-        {
-            if(isShopOpen)
-            {
-                Managers.UI.ClosePopUpUI();
-            }
-            else
-            {
-                Managers.UI.ShowPopUpUI<UI_Shop>();
-            }
 
-            isShopOpen = !isShopOpen;
-        });
 
-        Get<GameObject>((int)GameObjects.PassButton).BindEvent((PointerEventData) =>
-        {
-
-        });
-
-        Get<GameObject>((int)GameObjects.AchieveButton).BindEvent((PointerEventData) =>
-        {
-
-        });
-
-    }
-
-    public void SetNickName(string nickName)
-    {
-        Get<GameObject>((int)GameObjects.NickName).GetComponent<TMP_Text>().text = nickName;
     }
 
     public void SetDiamond(int value)

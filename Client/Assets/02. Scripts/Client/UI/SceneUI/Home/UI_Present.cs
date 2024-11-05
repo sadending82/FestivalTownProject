@@ -8,14 +8,15 @@ public class UI_Present : UI_PopUp
     enum GameObjects
     {
         Panel,
-        Text,
-        GachaButton,
-        BackButton
+        TitleText,
+        CharacterImage,
+        BackButton,
+        GachaSelectPanel,
+
     }
 
     void Start()
-    {
-        
+    {    
         Init();
     }
 
@@ -25,14 +26,11 @@ public class UI_Present : UI_PopUp
 
         Bind<GameObject>(typeof(GameObjects));
 
-        Get<GameObject>((int)GameObjects.GachaButton).BindEvent((PointerEventData) =>
-        {
-            Debug.Log("킹치만 아직 뽑기 기능은 없음 ㅋ");
-        });
-
         Get<GameObject>((int)GameObjects.BackButton).BindEvent((PointerEventData) =>
         {
             Managers.UI.ClosePopUpUI(GetComponent<UI_Present>());
         });
+
+        
     }
 }
