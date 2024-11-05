@@ -19,17 +19,37 @@ public struct GachaResponse : IFlatbufferObject
   public void __init(int _i, ByteBuffer _bb) { __p = new Table(_i, _bb); }
   public GachaResponse __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public int Item { get { int o = __p.__offset(4); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int Result { get { int o = __p.__offset(4); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int AcquiredItemType { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int AcquiredItemAmount { get { int o = __p.__offset(8); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int SpentResourceType { get { int o = __p.__offset(10); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int SpentResourceAmount { get { int o = __p.__offset(12); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int RemainingResourceAmount { get { int o = __p.__offset(14); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
 
   public static Offset<PacketTable.LobbyTable.GachaResponse> CreateGachaResponse(FlatBufferBuilder builder,
-      int item = 0) {
-    builder.StartTable(1);
-    GachaResponse.AddItem(builder, item);
+      int result = 0,
+      int acquired_item_type = 0,
+      int acquired_item_amount = 0,
+      int spent_resource_type = 0,
+      int spent_resource_amount = 0,
+      int remaining_resource_amount = 0) {
+    builder.StartTable(6);
+    GachaResponse.AddRemainingResourceAmount(builder, remaining_resource_amount);
+    GachaResponse.AddSpentResourceAmount(builder, spent_resource_amount);
+    GachaResponse.AddSpentResourceType(builder, spent_resource_type);
+    GachaResponse.AddAcquiredItemAmount(builder, acquired_item_amount);
+    GachaResponse.AddAcquiredItemType(builder, acquired_item_type);
+    GachaResponse.AddResult(builder, result);
     return GachaResponse.EndGachaResponse(builder);
   }
 
-  public static void StartGachaResponse(FlatBufferBuilder builder) { builder.StartTable(1); }
-  public static void AddItem(FlatBufferBuilder builder, int item) { builder.AddInt(0, item, 0); }
+  public static void StartGachaResponse(FlatBufferBuilder builder) { builder.StartTable(6); }
+  public static void AddResult(FlatBufferBuilder builder, int result) { builder.AddInt(0, result, 0); }
+  public static void AddAcquiredItemType(FlatBufferBuilder builder, int acquiredItemType) { builder.AddInt(1, acquiredItemType, 0); }
+  public static void AddAcquiredItemAmount(FlatBufferBuilder builder, int acquiredItemAmount) { builder.AddInt(2, acquiredItemAmount, 0); }
+  public static void AddSpentResourceType(FlatBufferBuilder builder, int spentResourceType) { builder.AddInt(3, spentResourceType, 0); }
+  public static void AddSpentResourceAmount(FlatBufferBuilder builder, int spentResourceAmount) { builder.AddInt(4, spentResourceAmount, 0); }
+  public static void AddRemainingResourceAmount(FlatBufferBuilder builder, int remainingResourceAmount) { builder.AddInt(5, remainingResourceAmount, 0); }
   public static Offset<PacketTable.LobbyTable.GachaResponse> EndGachaResponse(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<PacketTable.LobbyTable.GachaResponse>(o);
@@ -42,7 +62,12 @@ static public class GachaResponseVerify
   static public bool Verify(Google.FlatBuffers.Verifier verifier, uint tablePos)
   {
     return verifier.VerifyTableStart(tablePos)
-      && verifier.VerifyField(tablePos, 4 /*Item*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 4 /*Result*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 6 /*AcquiredItemType*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 8 /*AcquiredItemAmount*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 10 /*SpentResourceType*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 12 /*SpentResourceAmount*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 14 /*RemainingResourceAmount*/, 4 /*int*/, 4, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }

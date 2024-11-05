@@ -17,7 +17,6 @@ namespace Network.PacketProcessor
 
             var Data = GachaResponse.GetRootAsGachaResponse(bb);
 
-
         }
 
 
