@@ -36,7 +36,13 @@ public class DataManager
 
     public GameDataEntity GetData(int dataIndex)
     {
-        return GameDataDict[dataIndex];
+        GameDataDict.TryGetValue(dataIndex, out GameDataEntity data);
+        if (data == null)
+        {
+            return null;
+        }
+
+        return data;
     }
 
     void LoadModeData()
