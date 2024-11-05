@@ -12,7 +12,6 @@ public class UI_Present : UI_PopUp
         CharacterImage,
         BackButton,
         GachaSelectPanel,
-
     }
 
     void Start()
@@ -30,7 +29,6 @@ public class UI_Present : UI_PopUp
         {
             Managers.UI.ClosePopUpUI(GetComponent<UI_Present>());
         });
-
         
     }
 }

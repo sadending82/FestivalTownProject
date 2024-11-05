@@ -26,19 +26,18 @@ public class UI_GachaType : UI_Base
 
         Get<GameObject>((int)GameObjects.RightButton).BindEvent((PointerEventData)=>
         {
-            Debug.Log("이전 버튼");
             transform.parent.GetComponent<UI_GachaSelectPanel>().SelectNextGacha();
         });
 
         Get<GameObject>((int)GameObjects.LeftButton).BindEvent((PointerEventData) =>
         {
-            Debug.Log("이후 버튼");
             transform.parent.GetComponent<UI_GachaSelectPanel>().SelectPrevGacha();
         });
 
         Get<GameObject>((int)GameObjects.GachaButton).BindEvent((PointerEventData) =>
         {
-            // 가챠 실행
+            var popup = Managers.UI.ShowPopUpUI<UI_GachaPopup>();
+            popup.SetGachaType(transform.parent.GetComponent<UI_GachaSelectPanel>().CurrentSelected);
         });
     }
 }

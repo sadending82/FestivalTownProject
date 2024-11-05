@@ -13,9 +13,14 @@ public class UI_Notice : UI_PopUp
         NoticeText,
     }
 
+    bool isInitialized = false;
+
     void Start()
     {
-        Init();
+        if (!isInitialized)
+        {
+            Init();
+        }
     }
 
     public override void Init()
@@ -23,10 +28,22 @@ public class UI_Notice : UI_PopUp
         base.Init();
 
         Bind<GameObject>(typeof(GameObjects));
+
+        isInitialized = true;
     }
 
     public void NoticeTextChange(string str)
     {
+        GameObject go = Get<GameObject>((int)GameObjects.NoticeText);
+        if (go == null) {
+            StartCoroutine(TextChangeAfterStart(str));
+        }
+        else { go.GetComponent<TMP_Text>().text = str; }
+    }
+
+    IEnumerator TextChangeAfterStart(string str)
+    {
+        yield return null;
         Get<GameObject>((int)GameObjects.NoticeText).GetComponent<TMP_Text>().text = str;
     }
 
