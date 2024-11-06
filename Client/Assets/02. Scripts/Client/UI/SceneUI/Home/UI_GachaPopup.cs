@@ -18,8 +18,10 @@ public class UI_GachaPopup : UI_PopUp
 
     void Start()
     {
+
         base.Init();
         Init();
+
     }
 
     public void SetGachaType(int value)
@@ -33,6 +35,7 @@ public class UI_GachaPopup : UI_PopUp
 
         Get<GameObject>((int)GameObjects.OkButton).BindEvent((PointerEventData) =>
         {
+            Debug.Log($"{GachaType} ±×·ì");
             Managers.Network.GetPacketManager().SendGachaRequestPacket(GachaType);
             Managers.UI.ClosePopUpUI(this);
         });
@@ -42,6 +45,5 @@ public class UI_GachaPopup : UI_PopUp
             Managers.UI.ClosePopUpUI(this);
         });
 
-        GachaType = 0;
     }
 }
