@@ -72,8 +72,6 @@ public class CharacterStatus : MonoBehaviour
         amIPlayer = false;
         myCamera.enabled = false;
         isGameEnd = false;
-
-        ResetCharacterState();
     }
 
     private void Start()
@@ -88,6 +86,8 @@ public class CharacterStatus : MonoBehaviour
         playerController.GameStart();
         animationController.GameStart();
         isDie = false;
+        SetUITeam();
+        SetUIMe();
         ResetCharacterState();
         myCamera.gameObject.GetComponent<PlayerCameraController>().GameStart();
     }
@@ -135,7 +135,6 @@ public class CharacterStatus : MonoBehaviour
     public void SetTeamNumber(int teamNumber)
     {
         this.teamNumber = teamNumber;
-        SetUITeam();
     }
     public int GetTeamNumber()
     {
@@ -317,7 +316,6 @@ public class CharacterStatus : MonoBehaviour
             Managers.UI.ClosePopUpUI(GameObject.FindObjectOfType<UI_Loading>());
 
             headRig.gameObject.GetComponent<AudioListener>().enabled = true;
-            SetUIMe();
         }
     }
     public bool GetAmIPlayer()
@@ -537,6 +535,9 @@ public class CharacterStatus : MonoBehaviour
     }
     public void SetUIMe()
     {
-        playerUIController.gameObject.transform.GetChild(0).gameObject.SetActive(true);
+        if (amIPlayer == true)
+        {
+            playerUIController.gameObject.transform.GetChild(0).gameObject.SetActive(true);
+        }
     }
 }
