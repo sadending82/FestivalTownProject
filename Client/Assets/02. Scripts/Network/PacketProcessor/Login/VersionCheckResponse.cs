@@ -25,6 +25,8 @@ namespace Network.PacketProcessor
                 var ui = Managers.UI.ShowPopUpUI<UI_Notice>();
                 ui.NoticeTextChange("버전이 다릅니다.\n 최신 버전으로 업데이트 해주세요.");
 
+                ui.BindGameEndEvent();
+
             }
         }
 

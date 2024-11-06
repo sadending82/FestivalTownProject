@@ -20,7 +20,7 @@ namespace Network.PacketProcessor
 
 
 
-            var itemData = Managers.Data.GetData(Data.AcquiredItemType);
+            var itemData = Managers.Data.GetItemData(Data.AcquiredItemType);
 
             Debug.Log($"Gacha ItemType : {Data.AcquiredItemType}, Amount : {Data.AcquiredItemAmount}, SpentType : {Data.SpentResourceType}," +
                 $"SpentAmount : {Data.SpentResourceAmount}");
@@ -32,7 +32,7 @@ namespace Network.PacketProcessor
 
             ItemEntity ie = (ItemEntity)itemData;
 
-            popup.NoticeTextChange($"나온 아이템은 Type : {itemData.Name}, {Data.AcquiredItemAmount}개 입니다.");
+            popup.NoticeTextChange($"나온 아이템은 {itemData.Name}, {Data.AcquiredItemAmount}개 입니다.");
 
             popup.BindPopupCloseEvent();
         }
