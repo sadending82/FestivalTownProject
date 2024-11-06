@@ -22,8 +22,11 @@ struct UtilitiesBuilder;
 struct HeartBeat;
 struct HeartBeatBuilder;
 
-struct Customizing;
-struct CustomizingBuilder;
+struct GameSetting;
+struct GameSettingBuilder;
+
+struct CharacterCustomizing;
+struct CharacterCustomizingBuilder;
 
 struct PlayerGameRecord;
 struct PlayerGameRecordBuilder;
@@ -104,32 +107,61 @@ inline ::flatbuffers::Offset<HeartBeat> CreateHeartBeat(
   return builder_.Finish();
 }
 
-struct Customizing FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef CustomizingBuilder Builder;
+struct GameSetting FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef GameSettingBuilder Builder;
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            verifier.EndTable();
   }
 };
 
-struct CustomizingBuilder {
-  typedef Customizing Table;
+struct GameSettingBuilder {
+  typedef GameSetting Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  explicit CustomizingBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+  explicit GameSettingBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  ::flatbuffers::Offset<Customizing> Finish() {
+  ::flatbuffers::Offset<GameSetting> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = ::flatbuffers::Offset<Customizing>(end);
+    auto o = ::flatbuffers::Offset<GameSetting>(end);
     return o;
   }
 };
 
-inline ::flatbuffers::Offset<Customizing> CreateCustomizing(
+inline ::flatbuffers::Offset<GameSetting> CreateGameSetting(
     ::flatbuffers::FlatBufferBuilder &_fbb) {
-  CustomizingBuilder builder_(_fbb);
+  GameSettingBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct CharacterCustomizing FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef CharacterCustomizingBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct CharacterCustomizingBuilder {
+  typedef CharacterCustomizing Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit CharacterCustomizingBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<CharacterCustomizing> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<CharacterCustomizing>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<CharacterCustomizing> CreateCharacterCustomizing(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  CharacterCustomizingBuilder builder_(_fbb);
   return builder_.Finish();
 }
 

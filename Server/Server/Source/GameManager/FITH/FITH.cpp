@@ -214,11 +214,13 @@ void FITH::CalculateGameResult(int roomID, std::set<int>& winningTeams)
     // DB에 데이터 업데이트
     for (auto& pair : records) {
         sPlayerGameRecord record = pair.second;
+        Player* player = dynamic_cast<Player*>(pServer->GetSessions()[pair.first]);
 
-        //// 테스트용
-        //pDB->UpdateRanking(pair.first + 1001, record.kill_count, record.death_count, record.point);
-        //pDB->UpdateUserGold(pair.first + 1001, record.earn_gold);
-        //pDB->UpdateUserPoint(pair.first + 1001, record.point);
+        int uid = player->GetUID();
+
+        pDB->UpdateRanking(uid, record.kill_count, record.death_count, record.point);
+        pDB->UpdateUserGold(uid, record.earn_gold);
+        pDB->UpdateUserPoint(uid, record.point);
     }
 
     pPacketSender->SendGameResultPacket(roomID, winningTeams);

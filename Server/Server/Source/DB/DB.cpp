@@ -154,6 +154,8 @@ bool DB::InsertNewUser(const char* id, const char* nickname)
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
+	int uid;
+
 	if (mSecurity->VerifyString(id) == false || mSecurity->VerifyString(nickname) == false) {
 		return false;
 	}
@@ -166,7 +168,7 @@ bool DB::InsertNewUser(const char* id, const char* nickname)
 
 	UseGameDB(hStmt);
 
-	const WCHAR* query = L"INSERT INTO UserInfo (AccountID, NickName) VALUES (?, ?)";
+	const WCHAR* query = L"INSERT INTO UserInfo (AccountID, NickName) OUTPUT INSERTED.uid as uid VALUES (?, ?)";
 
 	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
 
@@ -177,7 +179,18 @@ bool DB::InsertNewUser(const char* id, const char* nickname)
 
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
 
+		SQLLEN col1;
+
+		while (SQLFetch(hStmt) == SQL_SUCCESS) {
+			SQLGetData(hStmt, 1, SQL_C_LONG, &uid, sizeof(uid), &col1);
+		}
+
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+
+		// Gold / Dia
+		InsertUserItem(uid, 100001, 0, 0);
+		InsertUserItem(uid, 100002, 0, 0);
+
 		return true;
 	}
 
@@ -185,6 +198,8 @@ bool DB::InsertNewUser(const char* id, const char* nickname)
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	return false;
 }
+
+
 
 bool DB::InsertRanking(const int uid)
 {
@@ -214,6 +229,41 @@ bool DB::InsertRanking(const int uid)
 	}
 
 	DEBUGMSGNOPARAM("Execute Query Error : (InsertRanking)\n");
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	return false;
+}
+
+bool DB::InsertUserItem(const int owner_uid, const int itemCode, const int itemCount, const int itemType)
+{
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGNOPARAM("hStmt Error : (InsertRanking) \n");
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return false;
+	}
+
+	UseGameDB(hStmt);
+
+	const WCHAR* query = L"INSERT INTO UserItem (owner_uid, itemCode, count, itemType) VALUES (?, ?, ?, ?)";
+
+	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&owner_uid), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&itemCode), 0, NULL);
+	SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&itemCount), 0, NULL);
+	SQLBindParameter(hStmt, 4, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&itemType), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return true;
+	}
+
+	DEBUGMSGNOPARAM("Execute Query Error : (InsertUserItem)\n");
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	return false;
 }
@@ -249,19 +299,22 @@ std::pair<bool, UserInfo> DB::SelectUserInfoForLogin(const char* id)
 
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
 
-		SQLLEN col1, col2, col3, col4, col5, col6, col7, col8;
+		SQLLEN col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11;
 		TIMESTAMP_STRUCT date{};
 		SQLINTEGER t = 0;
 
 		while (SQLFetch(hStmt) == SQL_SUCCESS) {
-			SQLGetData(hStmt, 1, SQL_C_LONG, &userInfo.UID, sizeof(userInfo.UID), &col1);
-			SQLGetData(hStmt, 2, SQL_C_CHAR, &userInfo.AccountID[0], userInfo.AccountID.size(), &col2);
-			SQLGetData(hStmt, 3, SQL_C_CHAR, &userInfo.NickName[0], userInfo.NickName.size(), &col3);
-			SQLGetData(hStmt, 4, SQL_C_LONG, &userInfo.Point, sizeof(userInfo.Point), &col4);
-			SQLGetData(hStmt, 5, SQL_C_LONG, &userInfo.Gold, sizeof(userInfo.Gold), &col5);
-			SQLGetData(hStmt, 6, SQL_C_TYPE_TIMESTAMP, &date, sizeof(date), &col6);
-			SQLGetData(hStmt, 7, SQL_C_LONG, &userInfo.AttendanceDay, sizeof(userInfo.AttendanceDay), &col7);
-			SQLGetData(hStmt, 8, SQL_C_LONG, &t, sizeof(t), &col8);
+			SQLGetData(hStmt, (int)UserInfo_Field::UID, SQL_C_LONG, &userInfo.UID, sizeof(userInfo.UID), &col1);
+			SQLGetData(hStmt, (int)UserInfo_Field::AccountID, SQL_C_CHAR, &userInfo.AccountID[0], userInfo.AccountID.size(), &col2);
+			SQLGetData(hStmt, (int)UserInfo_Field::NickName, SQL_C_CHAR, &userInfo.NickName[0], userInfo.NickName.size(), &col3);
+			SQLGetData(hStmt, (int)UserInfo_Field::UserLevel, SQL_C_LONG, &userInfo.UserLevel, sizeof(userInfo.UserLevel), &col4);
+			SQLGetData(hStmt, (int)UserInfo_Field::PassLevel, SQL_C_LONG, &userInfo.PassLevel, sizeof(userInfo.PassLevel), &col5);
+			SQLGetData(hStmt, (int)UserInfo_Field::UserTitle, SQL_C_LONG, &userInfo.UserTitle, sizeof(userInfo.UserTitle), &col6);
+			SQLGetData(hStmt, (int)UserInfo_Field::ProfileSkin, SQL_C_LONG, &userInfo.ProfileSkin, sizeof(userInfo.ProfileSkin), &col7);
+			SQLGetData(hStmt, (int)UserInfo_Field::Point, SQL_C_LONG, &userInfo.Point, sizeof(userInfo.Point), &col8);
+			SQLGetData(hStmt, (int)UserInfo_Field::LastLoginTime, SQL_C_TYPE_TIMESTAMP, &date, sizeof(date), &col9);
+			SQLGetData(hStmt, (int)UserInfo_Field::AttendanceDay, SQL_C_LONG, &userInfo.AttendanceDay, sizeof(userInfo.AttendanceDay), &col10);
+			SQLGetData(hStmt, (int)UserInfo_Field::State, SQL_C_LONG, &t, sizeof(t), &col11);
 		}
 
 		userInfo.date.tm_year = date.year;
@@ -271,6 +324,9 @@ std::pair<bool, UserInfo> DB::SelectUserInfoForLogin(const char* id)
 		userInfo.State = t;
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+
+		userInfo.Gold = SelectGold(userInfo.UID);
+
 		return { true, userInfo };
 	}
 
@@ -305,31 +361,124 @@ std::pair<bool, UserInfo> DB::SelectUserInfo(const int uid)
 
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
 
-		SQLLEN col1, col2, col3, col4, col5, col6, col7, col8;
+		SQLLEN col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11;
 		TIMESTAMP_STRUCT date{};
+		SQLINTEGER t = 0;
 
 		while (SQLFetch(hStmt) == SQL_SUCCESS) {
-			SQLGetData(hStmt, 1, SQL_C_LONG, &userInfo.UID, sizeof(userInfo.UID), &col1);
-			SQLGetData(hStmt, 2, SQL_C_CHAR, &userInfo.AccountID[0], userInfo.AccountID.size(), &col2);
-			SQLGetData(hStmt, 3, SQL_C_CHAR, &userInfo.NickName[0], userInfo.NickName.size(), &col3);
-			SQLGetData(hStmt, 4, SQL_C_LONG, &userInfo.Point, sizeof(userInfo.Point), &col4);
-			SQLGetData(hStmt, 5, SQL_C_LONG, &userInfo.Gold, sizeof(userInfo.Gold), &col5);
-			SQLGetData(hStmt, 6, SQL_C_TYPE_TIMESTAMP, &date, sizeof(date), &col6);
-			SQLGetData(hStmt, 7, SQL_C_LONG, &userInfo.AttendanceDay, sizeof(userInfo.AttendanceDay), &col7);
-			SQLGetData(hStmt, 8, SQL_C_LONG, &userInfo.State, sizeof(userInfo.State), &col8);
+			SQLGetData(hStmt, (int)UserInfo_Field::UID, SQL_C_LONG, &userInfo.UID, sizeof(userInfo.UID), &col1);
+			SQLGetData(hStmt, (int)UserInfo_Field::AccountID, SQL_C_CHAR, &userInfo.AccountID[0], userInfo.AccountID.size(), &col2);
+			SQLGetData(hStmt, (int)UserInfo_Field::NickName, SQL_C_CHAR, &userInfo.NickName[0], userInfo.NickName.size(), &col3);
+			SQLGetData(hStmt, (int)UserInfo_Field::UserLevel, SQL_C_LONG, &userInfo.UserLevel, sizeof(userInfo.UserLevel), &col4);
+			SQLGetData(hStmt, (int)UserInfo_Field::PassLevel, SQL_C_LONG, &userInfo.PassLevel, sizeof(userInfo.PassLevel), &col5);
+			SQLGetData(hStmt, (int)UserInfo_Field::UserTitle, SQL_C_LONG, &userInfo.UserTitle, sizeof(userInfo.UserTitle), &col6);
+			SQLGetData(hStmt, (int)UserInfo_Field::ProfileSkin, SQL_C_LONG, &userInfo.ProfileSkin, sizeof(userInfo.ProfileSkin), &col7);
+			SQLGetData(hStmt, (int)UserInfo_Field::Point, SQL_C_LONG, &userInfo.Point, sizeof(userInfo.Point), &col8);
+			SQLGetData(hStmt, (int)UserInfo_Field::LastLoginTime, SQL_C_TYPE_TIMESTAMP, &date, sizeof(date), &col9);
+			SQLGetData(hStmt, (int)UserInfo_Field::AttendanceDay, SQL_C_LONG, &userInfo.AttendanceDay, sizeof(userInfo.AttendanceDay), &col10);
+			SQLGetData(hStmt, (int)UserInfo_Field::State, SQL_C_LONG, &t, sizeof(t), &col11);
 		}
 
 		userInfo.date.tm_year = date.year;
 		userInfo.date.tm_mon = date.month;
 		userInfo.date.tm_mday = date.day;
 
+		userInfo.State = t;
+
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+
+		userInfo.Gold = SelectGold(userInfo.UID);
+
 		return { true, userInfo };
 	}
 
 	DEBUGMSGNOPARAM("Execute Query Error : (SelectUserInfo)\n");
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	return { false,UserInfo() };
+}
+
+int DB::SelectGold(const int uid)
+{
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	int gold = 0;
+	int itemCode = 100001;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGNOPARAM("hStmt Error : (InsertRanking) \n");
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return 0;
+	}
+
+	UseGameDB(hStmt);
+
+	const WCHAR* query = L"SELECT count FROM UserItem WHERE UID = ? AND ItemCode = ?";
+
+	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&itemCode), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		SQLLEN col1;
+
+		while (SQLFetch(hStmt) == SQL_SUCCESS) {
+			SQLGetData(hStmt, 1, SQL_C_LONG, &gold, sizeof(gold), &col1);
+		}
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return gold;
+	}
+
+	DEBUGMSGNOPARAM("Execute Query Error : (SelectGold)\n");
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	return 0;
+}
+
+int DB::SelectDia(const int uid)
+{
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	int dia = 0;
+	int itemCode = 100002;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGNOPARAM("hStmt Error : (InsertRanking) \n");
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return 0;
+	}
+
+	UseGameDB(hStmt);
+
+	const WCHAR* query = L"SELECT count FROM UserItem WHERE UID = ? AND ItemCode = ?";
+
+	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&itemCode), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		SQLLEN col1;
+
+		while (SQLFetch(hStmt) == SQL_SUCCESS) {
+			SQLGetData(hStmt, 1, SQL_C_LONG, &dia, sizeof(dia), &col1);
+		}
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return dia;
+	}
+
+	DEBUGMSGNOPARAM("Execute Query Error : (SelectDia)\n");
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	return 0;
 }
 
 bool DB::UpdateUserConnectionState(const int uid, const int state)
@@ -370,6 +519,8 @@ bool DB::UpdateUserGold(const int uid, const int valueOfChange)
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
+	const int itemCode = 100001;
+
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGNOPARAM("hStmt Error : (UpdateUserGold) \n");
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
@@ -378,12 +529,49 @@ bool DB::UpdateUserGold(const int uid, const int valueOfChange)
 
 	UseGameDB(hStmt);
 
-	const WCHAR* query = L"UPDATE UserInfo SET Gold = Gold + ? WHERE UID = ?";
+	const WCHAR* query = L"UPDATE UserItem SET ItemCount = ItemCount + ? WHERE UID = ? AND ItemCode = ?";
 
 	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&valueOfChange), 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+	SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&itemCode), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return true;
+	}
+
+	DEBUGMSGNOPARAM("Execute Query Error : (UpdateUserGold)\n");
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	return false;
+}
+
+bool DB::UpdateUserDia(const int uid, const int valueOfChange)
+{
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	const int itemCode = 100002;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGNOPARAM("hStmt Error : (UpdateUserGold) \n");
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return false;
+	}
+
+	UseGameDB(hStmt);
+
+	const WCHAR* query = L"UPDATE UserItem SET ItemCount = ItemCount + ? WHERE UID = ? AND ItemCode = ?";
+
+	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&valueOfChange), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+	SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&itemCode), 0, NULL);
 
 	retcode = SQLExecute(hStmt);
 

@@ -28,37 +28,46 @@ public struct LoginResponse : IFlatbufferObject
   public ArraySegment<byte>? GetNicknameBytes() { return __p.__vector_as_arraysegment(8); }
 #endif
   public byte[] GetNicknameArray() { return __p.__vector_as_array<byte>(8); }
-  public int Level { get { int o = __p.__offset(10); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public int UserTitle { get { int o = __p.__offset(12); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public int ProfileSkin { get { int o = __p.__offset(14); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public int Point { get { int o = __p.__offset(16); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public int Gold { get { int o = __p.__offset(18); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int UserLevel { get { int o = __p.__offset(10); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int PassLevel { get { int o = __p.__offset(12); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int Point { get { int o = __p.__offset(14); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int Gold { get { int o = __p.__offset(16); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int Dia { get { int o = __p.__offset(18); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
   public int AttendanceDay { get { int o = __p.__offset(20); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public PacketTable.UtilitiesTable.Customizing? Customizing { get { int o = __p.__offset(22); return o != 0 ? (PacketTable.UtilitiesTable.Customizing?)(new PacketTable.UtilitiesTable.Customizing()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
-  public bool HasUnclaimedReward { get { int o = __p.__offset(24); return o != 0 ? 0!=__p.bb.Get(o + __p.bb_pos) : (bool)false; } }
-  public bool IsNewUpdate { get { int o = __p.__offset(26); return o != 0 ? 0!=__p.bb.Get(o + __p.bb_pos) : (bool)false; } }
+  public PacketTable.UtilitiesTable.CharacterCustomizing? CharacterCustomizing { get { int o = __p.__offset(22); return o != 0 ? (PacketTable.UtilitiesTable.CharacterCustomizing?)(new PacketTable.UtilitiesTable.CharacterCustomizing()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
+  public int UserTitle { get { int o = __p.__offset(24); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int ProfileSkin { get { int o = __p.__offset(26); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public PacketTable.UtilitiesTable.GameSetting? GameSetting { get { int o = __p.__offset(28); return o != 0 ? (PacketTable.UtilitiesTable.GameSetting?)(new PacketTable.UtilitiesTable.GameSetting()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
+  public bool HasUnclaimedReward { get { int o = __p.__offset(30); return o != 0 ? 0!=__p.bb.Get(o + __p.bb_pos) : (bool)false; } }
+  public bool IsNewUpdate { get { int o = __p.__offset(32); return o != 0 ? 0!=__p.bb.Get(o + __p.bb_pos) : (bool)false; } }
 
   public static Offset<PacketTable.LoginTable.LoginResponse> CreateLoginResponse(FlatBufferBuilder builder,
       int result_code = 0,
       int uid = 0,
       StringOffset nicknameOffset = default(StringOffset),
-      int level = 0,
-      int user_title = 0,
-      int profile_skin = 0,
+      int user_level = 0,
+      int pass_level = 0,
       int point = 0,
       int gold = 0,
+      int dia = 0,
       int attendance_day = 0,
-      Offset<PacketTable.UtilitiesTable.Customizing> customizingOffset = default(Offset<PacketTable.UtilitiesTable.Customizing>),
+      Offset<PacketTable.UtilitiesTable.CharacterCustomizing> character_customizingOffset = default(Offset<PacketTable.UtilitiesTable.CharacterCustomizing>),
+      int user_title = 0,
+      int profile_skin = 0,
+      Offset<PacketTable.UtilitiesTable.GameSetting> game_settingOffset = default(Offset<PacketTable.UtilitiesTable.GameSetting>),
       bool has_unclaimed_reward = false,
       bool is_new_update = false) {
-    builder.StartTable(12);
-    LoginResponse.AddCustomizing(builder, customizingOffset);
-    LoginResponse.AddAttendanceDay(builder, attendance_day);
-    LoginResponse.AddGold(builder, gold);
-    LoginResponse.AddPoint(builder, point);
+    builder.StartTable(15);
+    LoginResponse.AddGameSetting(builder, game_settingOffset);
     LoginResponse.AddProfileSkin(builder, profile_skin);
     LoginResponse.AddUserTitle(builder, user_title);
-    LoginResponse.AddLevel(builder, level);
+    LoginResponse.AddCharacterCustomizing(builder, character_customizingOffset);
+    LoginResponse.AddAttendanceDay(builder, attendance_day);
+    LoginResponse.AddDia(builder, dia);
+    LoginResponse.AddGold(builder, gold);
+    LoginResponse.AddPoint(builder, point);
+    LoginResponse.AddPassLevel(builder, pass_level);
+    LoginResponse.AddUserLevel(builder, user_level);
     LoginResponse.AddNickname(builder, nicknameOffset);
     LoginResponse.AddUid(builder, uid);
     LoginResponse.AddResultCode(builder, result_code);
@@ -67,19 +76,22 @@ public struct LoginResponse : IFlatbufferObject
     return LoginResponse.EndLoginResponse(builder);
   }
 
-  public static void StartLoginResponse(FlatBufferBuilder builder) { builder.StartTable(12); }
+  public static void StartLoginResponse(FlatBufferBuilder builder) { builder.StartTable(15); }
   public static void AddResultCode(FlatBufferBuilder builder, int resultCode) { builder.AddInt(0, resultCode, 0); }
   public static void AddUid(FlatBufferBuilder builder, int uid) { builder.AddInt(1, uid, 0); }
   public static void AddNickname(FlatBufferBuilder builder, StringOffset nicknameOffset) { builder.AddOffset(2, nicknameOffset.Value, 0); }
-  public static void AddLevel(FlatBufferBuilder builder, int level) { builder.AddInt(3, level, 0); }
-  public static void AddUserTitle(FlatBufferBuilder builder, int userTitle) { builder.AddInt(4, userTitle, 0); }
-  public static void AddProfileSkin(FlatBufferBuilder builder, int profileSkin) { builder.AddInt(5, profileSkin, 0); }
-  public static void AddPoint(FlatBufferBuilder builder, int point) { builder.AddInt(6, point, 0); }
-  public static void AddGold(FlatBufferBuilder builder, int gold) { builder.AddInt(7, gold, 0); }
+  public static void AddUserLevel(FlatBufferBuilder builder, int userLevel) { builder.AddInt(3, userLevel, 0); }
+  public static void AddPassLevel(FlatBufferBuilder builder, int passLevel) { builder.AddInt(4, passLevel, 0); }
+  public static void AddPoint(FlatBufferBuilder builder, int point) { builder.AddInt(5, point, 0); }
+  public static void AddGold(FlatBufferBuilder builder, int gold) { builder.AddInt(6, gold, 0); }
+  public static void AddDia(FlatBufferBuilder builder, int dia) { builder.AddInt(7, dia, 0); }
   public static void AddAttendanceDay(FlatBufferBuilder builder, int attendanceDay) { builder.AddInt(8, attendanceDay, 0); }
-  public static void AddCustomizing(FlatBufferBuilder builder, Offset<PacketTable.UtilitiesTable.Customizing> customizingOffset) { builder.AddOffset(9, customizingOffset.Value, 0); }
-  public static void AddHasUnclaimedReward(FlatBufferBuilder builder, bool hasUnclaimedReward) { builder.AddBool(10, hasUnclaimedReward, false); }
-  public static void AddIsNewUpdate(FlatBufferBuilder builder, bool isNewUpdate) { builder.AddBool(11, isNewUpdate, false); }
+  public static void AddCharacterCustomizing(FlatBufferBuilder builder, Offset<PacketTable.UtilitiesTable.CharacterCustomizing> characterCustomizingOffset) { builder.AddOffset(9, characterCustomizingOffset.Value, 0); }
+  public static void AddUserTitle(FlatBufferBuilder builder, int userTitle) { builder.AddInt(10, userTitle, 0); }
+  public static void AddProfileSkin(FlatBufferBuilder builder, int profileSkin) { builder.AddInt(11, profileSkin, 0); }
+  public static void AddGameSetting(FlatBufferBuilder builder, Offset<PacketTable.UtilitiesTable.GameSetting> gameSettingOffset) { builder.AddOffset(12, gameSettingOffset.Value, 0); }
+  public static void AddHasUnclaimedReward(FlatBufferBuilder builder, bool hasUnclaimedReward) { builder.AddBool(13, hasUnclaimedReward, false); }
+  public static void AddIsNewUpdate(FlatBufferBuilder builder, bool isNewUpdate) { builder.AddBool(14, isNewUpdate, false); }
   public static Offset<PacketTable.LoginTable.LoginResponse> EndLoginResponse(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<PacketTable.LoginTable.LoginResponse>(o);
@@ -95,15 +107,18 @@ static public class LoginResponseVerify
       && verifier.VerifyField(tablePos, 4 /*ResultCode*/, 4 /*int*/, 4, false)
       && verifier.VerifyField(tablePos, 6 /*Uid*/, 4 /*int*/, 4, false)
       && verifier.VerifyString(tablePos, 8 /*Nickname*/, false)
-      && verifier.VerifyField(tablePos, 10 /*Level*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 12 /*UserTitle*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 14 /*ProfileSkin*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 16 /*Point*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 18 /*Gold*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 10 /*UserLevel*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 12 /*PassLevel*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 14 /*Point*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 16 /*Gold*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 18 /*Dia*/, 4 /*int*/, 4, false)
       && verifier.VerifyField(tablePos, 20 /*AttendanceDay*/, 4 /*int*/, 4, false)
-      && verifier.VerifyTable(tablePos, 22 /*Customizing*/, PacketTable.UtilitiesTable.CustomizingVerify.Verify, false)
-      && verifier.VerifyField(tablePos, 24 /*HasUnclaimedReward*/, 1 /*bool*/, 1, false)
-      && verifier.VerifyField(tablePos, 26 /*IsNewUpdate*/, 1 /*bool*/, 1, false)
+      && verifier.VerifyTable(tablePos, 22 /*CharacterCustomizing*/, PacketTable.UtilitiesTable.CharacterCustomizingVerify.Verify, false)
+      && verifier.VerifyField(tablePos, 24 /*UserTitle*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 26 /*ProfileSkin*/, 4 /*int*/, 4, false)
+      && verifier.VerifyTable(tablePos, 28 /*GameSetting*/, PacketTable.UtilitiesTable.GameSettingVerify.Verify, false)
+      && verifier.VerifyField(tablePos, 30 /*HasUnclaimedReward*/, 1 /*bool*/, 1, false)
+      && verifier.VerifyField(tablePos, 32 /*IsNewUpdate*/, 1 /*bool*/, 1, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }

@@ -50,8 +50,6 @@ public:
 
 				// ....
 
-				COUT << rewardItem << " " << rewardValue << ENDL;
-
 				pPacketSender->SendGachaResponsePacket(key, true, rewardItem, rewardValue, 0, 0, 0);
 			}
 		}

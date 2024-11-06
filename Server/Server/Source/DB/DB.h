@@ -29,12 +29,16 @@ public:
     bool InsertNewAcccount(const char* id, const char* password);
     bool InsertNewUser(const char* id, const char* nickname);
     bool InsertRanking(const int uid);
+    bool InsertUserItem(const int owner_uid, const int itemCode, const int itemCount, const int itemType);
 
     std::pair<bool, UserInfo> SelectUserInfoForLogin(const char* id);
     std::pair<bool, UserInfo> SelectUserInfo(const int uid);
+    int SelectGold(const int uid);
+    int SelectDia(const int uid);
 
     bool UpdateUserConnectionState(const int uid, const int state);
     bool UpdateUserGold(const int uid, const int valueOfChange);
+    bool UpdateUserDia(const int uid, const int valueOfChange);
     bool UpdateUserPoint(const int uid, const int valueOfChange);
     bool UpdateRanking(const int uid, const int killCount, const int deathCount, const int point);
 
