@@ -17,20 +17,22 @@ MonoBehaviour:
     Name: "\uB0E5\uB0E5\uAC00\uCC60"
     ClassType: 0
     Gacha_Group: 1001
-    Pay_Item_Index: 0
-    Pay_Item_Value: 0
+    Pay_Item1_Index: 100001
+    Pay_Item1_Value: 1000
+    Pay_Item2_Index: 100004
+    Pay_Item2_Value: 1
     Open_Date: 45292
     Close_Date: 73050
-    Exp: 0
   - Index: 100012
     Name: "\uC6B8\uD2B8\uB77C \uB0E5\uB0E5\uAC00\uCC60"
     ClassType: 0
     Gacha_Group: 1002
-    Pay_Item_Index: 0
-    Pay_Item_Value: 0
+    Pay_Item1_Index: 100002
+    Pay_Item1_Value: 100
+    Pay_Item2_Index: 100005
+    Pay_Item2_Value: 1
     Open_Date: 45292
     Close_Date: 73050
-    Exp: 0
   GachaGroup_Item:
   - Index: 1001001
     Name: "\uACE8\uB4DC \uD655\uB960 "

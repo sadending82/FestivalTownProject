@@ -610,11 +610,12 @@ void TableManager::ReadGachaTable()
                     index,
                     (std::string)row[(int)(RandomBox_Field::name)].to_string(),
                     row[(int)(RandomBox_Field::Gacha_Group)].value<int>(),
-                    row[(int)(RandomBox_Field::Pay_Item_Index)].value<int>(),
-                    row[(int)(RandomBox_Field::Pay_Item_Value)].value<int>(),
+                    row[(int)(RandomBox_Field::Pay_Item_Index1)].value<int>(),
+                    row[(int)(RandomBox_Field::Pay_Item_Value1)].value<int>(),
+                     row[(int)(RandomBox_Field::Pay_Item_Index2)].value<int>(),
+                    row[(int)(RandomBox_Field::Pay_Item_Value2)].value<int>(),
                     openDate,
-                    closeDate,
-                    row[(int)(RandomBox_Field::Exp)].value<int>()
+                    closeDate
                 };
             }
             rowIdx++;

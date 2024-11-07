@@ -46,7 +46,7 @@ public class UI_GachaType : UI_Base
             return;
         }
         string resourceName = Managers.Data.GetItemData(dataIndex).Name;
-        int requireAmount = Managers.Data.GetGachaGroupData(GachaTypeNum).Pay_Item_Value;
+        int requireAmount = Managers.Data.GetGachaGroupData(GachaTypeNum).Pay_Item1_Value;
         Get<GameObject>((int)GameObjects.GachaButton).GetComponentInChildren<TMP_Text>().text = $"1È¸ »Ì±â\n\n{requireAmount} {resourceName}";
     }
 

@@ -194,10 +194,11 @@ if exist "$(ProjectDir)\Config" xcopy /Y /d /e /i "$(ProjectDir)\Config" "$(OutD
     <ClCompile Include="Source\utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\DB\Schema\DB_UserItem.h" />
     <ClInclude Include="Source\MatchMakingManager\MatchMakingManager.h" />
-    <ClInclude Include="Source\DB\Tables\DB_Account.h" />
-    <ClInclude Include="Source\DB\Tables\DB_Tables.h" />
-    <ClInclude Include="Source\DB\Tables\DB_UserInfo.h" />
+    <ClInclude Include="Source\DB\Schema\DB_Account.h" />
+    <ClInclude Include="Source\DB\Schema\Schemas.h" />
+    <ClInclude Include="Source\DB\Schema\DB_UserInfo.h" />
     <ClInclude Include="Source\GameManager\FITH\FITH.h" />
     <ClInclude Include="Source\GameManager\GameManager.h" />
     <ClInclude Include="KISA_SHA256\KISA_SHA256.h" />

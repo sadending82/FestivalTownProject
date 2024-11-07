@@ -19,12 +19,15 @@ public:
 				int randomBox = read->random_box_index();
 
 				TableManager* tableManager = pServer->GetTableManager();
+				DB* db = pServer->GetDB();
 
 				int GachaGroup = tableManager->GetRandomBoxList()[randomBox].Gacha_Group;
 				std::unordered_map<INDEX, GachaItem>& items = tableManager->GetGachaItemList()[GachaGroup];
 
-				int pay_item = tableManager->GetRandomBoxList()[randomBox].Pay_Item_Index;
+				/*int pay_item = tableManager->GetRandomBoxList()[randomBox].Pay_Item_Index;
 				int pay_Price = tableManager->GetRandomBoxList()[randomBox].Pay_Item_Value;
+
+				db.*/
 
 				int totalWeight = 0;
 
