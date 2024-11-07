@@ -26,23 +26,31 @@ MonoBehaviour:
     ClassType: 0
     File_Name: Money_Dia
     Item_Type: 1
+    Item_Grade: 2
+    Open_Date: 45292
+    Close_Date: 73050
+  - Index: 100003
+    Name: "\uB9C8\uC77C\uB9AC\uC9C0"
+    ClassType: 0
+    File_Name: Money_mileage
+    Item_Type: 1
     Item_Grade: 1
     Open_Date: 45292
     Close_Date: 73050
-  - Index: 100011
-    Name: "\uAE30\uBCF8 \uC0C1\uC790"
+  - Index: 100004
+    Name: "\uB0E5\uB0E5\uAC00\uCC60 \uBF51\uAE30\uAD8C"
     ClassType: 0
-    File_Name: Basic_Box
-    Item_Type: 5
+    File_Name: Ticket_Basic
+    Item_Type: 1
     Item_Grade: 1
     Open_Date: 45292
     Close_Date: 73050
-  - Index: 100012
-    Name: "\uACE0\uAE09\uC0C1\uC790"
+  - Index: 100005
+    Name: "\uC6B8\uD2B8\uB77C \uB0E5\uB0E5\uAC00\uCC60 \uBF51\uAE30\uAD8C"
     ClassType: 0
-    File_Name: High_Box
-    Item_Type: 5
-    Item_Grade: 3
+    File_Name: Ticket_Rare
+    Item_Type: 1
+    Item_Grade: 2
     Open_Date: 45292
     Close_Date: 73050
   - Index: 201001
