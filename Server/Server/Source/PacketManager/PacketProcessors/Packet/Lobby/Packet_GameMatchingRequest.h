@@ -44,7 +44,7 @@ public:
 					int roomID = pServer->CreateNewRoom(GameMode::FITH_Indiv_Battle_2);
 
 					if (roomID == INVALIDKEY) {
-						break;;
+						break;
 					}
 
 					Room* room = pServer->GetRooms()[roomID];
@@ -61,6 +61,7 @@ public:
 					Player* Bot = dynamic_cast<Player*>(pServer->GetSessions()[botID]);
 					Bot->SetSessionState(eSessionState::ST_MATCHWAITING);
 					Bot->SetIsBot(true);
+					Bot->SetUID(INVALIDKEY);
 
 					std::vector<int> sessions = { key, Bot->GetSessionID() };
 					pServer->GetMatchMakingManager()->MatchingComplete(roomID, sessions);

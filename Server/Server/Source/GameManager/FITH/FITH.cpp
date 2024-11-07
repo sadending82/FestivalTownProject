@@ -78,7 +78,15 @@ void FITH::CheckGameEnd(int roomID)
                 Player* player = dynamic_cast<Player*>(pServer->GetSessions()[session_id]);
 
                 player->GetSessionStateLock().lock();
-                player->SetSessionState(eSessionState::ST_ACCEPTED);
+                if (player->GetIsBot() == true) {
+                    player->Init();
+                    player->SetIsBot(false);
+                    player->SetSessionState(eSessionState::ST_FREE);
+                }
+                else {
+                    player->Init();
+                    player->SetSessionState(eSessionState::ST_ACCEPTED);
+                }
                 player->GetSessionStateLock().unlock();
             }
             room->Reset();
@@ -117,8 +125,14 @@ void FITH::TimeoverGameEnd(int roomID)
             if (session_id == INVALIDKEY) continue;
             Player* player = dynamic_cast<Player*>(pServer->GetSessions()[session_id]);
             player->GetSessionStateLock().lock();
-            player->Init();
-            player->SetSessionState(eSessionState::ST_ACCEPTED);
+            if (player->GetIsBot() == true) {
+                player->Init();
+                player->SetSessionState(eSessionState::ST_FREE);
+            }
+            else {
+                player->Init();
+                player->SetSessionState(eSessionState::ST_ACCEPTED);
+            }
             player->GetSessionStateLock().unlock();
         }
         room->Reset();
@@ -214,11 +228,22 @@ void FITH::CalculateGameResult(int roomID, std::set<int>& winningTeams)
     // DB에 데이터 업데이트
     for (auto& pair : records) {
         sPlayerGameRecord record = pair.second;
-        Player* player = dynamic_cast<Player*>(pServer->GetSessions()[pair.first]);
+
+        int sessionID = room->GetPlayerList()[pair.first].load();
+
+        if (sessionID == INVALIDKEY) {
+            continue;
+        }
+
+        Player* player = dynamic_cast<Player*>(pServer->GetSessions()[sessionID]);
 
         int uid = player->GetUID();
 
-        pDB->UpdateRanking(uid, record.kill_count, record.death_count, record.point);
+        if (uid == INVALIDKEY) {
+            continue;
+        }
+
+        //pDB->UpdateRanking(uid, record.kill_count, record.death_count, record.point);
         pDB->UpdateUserGold(uid, record.earn_gold);
         pDB->UpdateUserPoint(uid, record.point);
     }

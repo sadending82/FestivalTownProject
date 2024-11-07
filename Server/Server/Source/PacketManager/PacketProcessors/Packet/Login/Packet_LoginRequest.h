@@ -24,6 +24,11 @@ public:
 				UserInfo userInfo = result.second;
 
 				pPacketSender->SendLoginResponse(key, result.first, userInfo.UID, userInfo.NickName, userInfo.Point, userInfo.Gold);
+
+				if (result.first == true) {
+					Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
+					player->SetUserInfoFromDB(userInfo);
+				}
 			}
 		}
 		catch (const std::exception& e) {

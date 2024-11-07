@@ -285,7 +285,7 @@ std::pair<bool, UserInfo> DB::SelectUserInfoForLogin(const char* id)
 	int state = true;
 
 	const WCHAR* query = L"UPDATE UserInfo\
-							SET State = ?\
+							SET ConnectionState = ?\
 							OUTPUT deleted.*\
 							WHERE AccountID = ?;";
 
@@ -413,7 +413,7 @@ int DB::SelectGold(const int uid)
 
 	UseGameDB(hStmt);
 
-	const WCHAR* query = L"SELECT count FROM UserItem WHERE UID = ? AND ItemCode = ?";
+	const WCHAR* query = L"SELECT count FROM UserItem WHERE owner_UID = ? AND ItemCode = ?";
 
 	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
 
@@ -494,7 +494,7 @@ bool DB::UpdateUserConnectionState(const int uid, const int state)
 
 	UseGameDB(hStmt);
 
-	const WCHAR* query = L"UPDATE UserInfo SET State = ? WHERE UID = ?";
+	const WCHAR* query = L"UPDATE UserInfo SET ConnectionState = ? WHERE UID = ?";
 
 	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
 
@@ -529,7 +529,7 @@ bool DB::UpdateUserGold(const int uid, const int valueOfChange)
 
 	UseGameDB(hStmt);
 
-	const WCHAR* query = L"UPDATE UserItem SET ItemCount = ItemCount + ? WHERE UID = ? AND ItemCode = ?";
+	const WCHAR* query = L"UPDATE UserItem SET count = count + ? WHERE owner_UID = ? AND ItemCode = ?";
 
 	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
 

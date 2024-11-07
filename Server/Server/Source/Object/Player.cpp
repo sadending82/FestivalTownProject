@@ -18,8 +18,6 @@ void Player::Init()
 	mIsGrabbed = false;
 	mAttachedPlayerID = INVALIDKEY;
 	mCharacterStat = CharacterStat();
-
-	mIsBot = false;
 }
 
 void Player::Disconnect()
