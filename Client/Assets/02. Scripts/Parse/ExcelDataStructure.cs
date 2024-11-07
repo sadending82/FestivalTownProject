@@ -51,11 +51,12 @@ namespace ExcelDataStructure
     public class GachaGroupEntity : GameDataEntity
     {
         public int Gacha_Group;
-        public int Pay_Item_Index;
-        public int Pay_Item_Value;
+        public int Pay_Item1_Index;
+        public int Pay_Item1_Value;
+        public int Pay_Item2_Index;
+        public int Pay_Item2_Value;
         public int Open_Date;
         public int Close_Date;
-        public float Exp;
     }
 
     [System.Serializable]
