@@ -1,7 +1,7 @@
 #pragma once
 #include "../Network/Session/Session.h"
 #include "../TableManager/Tables/CharacterStat.h"
-#include "../DB/Tables/DB_UserInfo.h"
+#include "../DB/Schema/DB_UserInfo.h"
 #include <shared_mutex>
 
 class Player : public Session
