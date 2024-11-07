@@ -560,6 +560,7 @@ public class PlayerController : MonoBehaviour
     public void FlyingKick(Vector3 direction)
     {
         flyingKickChecker = true;
+        head.GetComponent<Rigidbody>().AddForce(-direction * flyingKickForce * 5, ForceMode.Impulse);
         pelvisRigidbody.AddForce(direction * flyingKickForce * 10, ForceMode.Impulse);
     }
     public void SetWalkState()
