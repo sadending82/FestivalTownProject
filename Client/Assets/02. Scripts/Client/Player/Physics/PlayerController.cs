@@ -918,6 +918,8 @@ public class PlayerController : MonoBehaviour
 
         SetPosition(targetPos);
 
+        targetPos = new Vector3(x, 0.01f, z);
+        Managers.Effect.PlayEffect("Ch_Respawn", targetPos);
         Managers.Sound.Play("Sfx_Ch_Respawn");
     }
     public void SetAmIPlayer(bool amIPlayer)

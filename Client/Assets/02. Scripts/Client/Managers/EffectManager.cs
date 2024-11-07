@@ -4,29 +4,60 @@ using UnityEngine;
 
 public class EffectManager : MonoBehaviour
 {
-    [Header("--- Object ---")]
-    public ParticleSystem BombExplosionEffect;
-    public ParticleSystem CubeFalldownEffect;
-
-    [Header("--- Character ---")]
-    public ParticleSystem CharacterGroggyEffect;
-    public ParticleSystem CharacterRespawnEffect;
-
-    [Header("--- Other ---")]
-    public ParticleSystem VictorySceneEffect;
-
-    public void LoadPrefabs()
+    /// <summary>
+    /// 이펙트를 플레이하는 함수
+    /// </summary>
+    /// <param name="effectName">
+    /// BombExplosion, CubeFalldown, Ch_Groggy, Ch_Respawn, Victory
+    /// </param>
+    /// <param name="position"></param>
+    public void PlayEffect(string effectName, Vector3 position)
     {
-        //Objects
-        BombExplosionEffect = Managers.Resource.Instantiate("Effect_BombExplosion").GetComponent<ParticleSystem>();
-        CubeFalldownEffect = Managers.Resource.Instantiate("Effect_CubeFalldown").GetComponent<ParticleSystem>();
-
-        //Character
-        CharacterGroggyEffect = Managers.Resource.Instantiate("Effect_Ch_Groggy").GetComponent<ParticleSystem>();
-        CharacterRespawnEffect = Managers.Resource.Instantiate("Effect_Ch_Respawn").GetComponent<ParticleSystem>();
-        
-        //Other
-        VictorySceneEffect = Managers.Resource.Instantiate("Effect_Victory1").GetComponent<ParticleSystem>();
-        VictorySceneEffect = Managers.Resource.Instantiate("Effect_Victory2").GetComponent<ParticleSystem>();
+        ParticleSystem tEffect;
+        switch (effectName)
+        {
+            case "BombExplosion":
+                {
+                    tEffect = Managers.Resource.Instantiate("Effect_BombExplosion").GetComponent<ParticleSystem>();
+                    tEffect.transform.position = position;
+                }
+                break;
+            case "CubeFalldown":
+                {
+                    tEffect = Managers.Resource.Instantiate("Effect_CubeFalldown").GetComponent<ParticleSystem>();
+                    tEffect.transform.position = position;
+                }
+                break;
+            case "Ch_Groggy":
+                {
+                    tEffect = Managers.Resource.Instantiate("Effect_Ch_Groggy").GetComponent<ParticleSystem>();
+                    tEffect.transform.position = position;
+                }
+                break;
+            case "Ch_Respawn":
+                {
+                    tEffect = Managers.Resource.Instantiate("Effect_Ch_Respawn").GetComponent<ParticleSystem>();
+                    tEffect.transform.position = position;
+                }
+                break;
+            case "Victory":
+                {
+                    if((int)Time.deltaTime % 2 == 0)
+                    {
+                        tEffect = Managers.Resource.Instantiate("Effect_Victory1").GetComponent<ParticleSystem>();
+                    }
+                    else
+                    {
+                        tEffect = Managers.Resource.Instantiate("Effect_Victory2").GetComponent<ParticleSystem>();
+                    }
+                    tEffect.transform.position = position;
+                }
+                break;
+            default:
+                {
+                    Debug.Log("ERROR!!! PlayEffect(): Wrong Name!!!");
+                }
+                break;
+        }
     }
 }

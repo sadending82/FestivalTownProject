@@ -1,6 +1,7 @@
 using ActiveRagdoll;
 using ClientProtocol;
 using ExcelDataStructure;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 using static UnityEngine.GraphicsBuffer;
@@ -407,6 +408,7 @@ public class CharacterStatus : MonoBehaviour
             SetUpperBodyAnimationState(UpperBodyAnimationState.NONE);
             SetLowerBodyAnimationState(LowerBodyAnimationState.IDLE);
             isGroggy = true;
+            Managers.Effect.PlayEffect("Ch_Groggy", playerUIController.gameObject.transform.position);
             animationMoudule.GroggyOn();
         }
     }
