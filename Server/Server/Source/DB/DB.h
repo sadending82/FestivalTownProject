@@ -1,6 +1,6 @@
 #pragma once
 #include "../DB/Security/Security.h"
-#include "Tables/DB_Tables.h"
+#include "Schema/Schemas.h"
 
 #define _WINSOCKAPI_
 #include <windows.h>  
@@ -33,6 +33,7 @@ public:
 
     std::pair<bool, UserInfo> SelectUserInfoForLogin(const char* id);
     std::pair<bool, UserInfo> SelectUserInfo(const int uid);
+    
     int SelectGold(const int uid);
     int SelectDia(const int uid);
 

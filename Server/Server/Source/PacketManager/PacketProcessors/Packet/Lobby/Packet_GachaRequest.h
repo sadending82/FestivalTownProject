@@ -23,6 +23,9 @@ public:
 				int GachaGroup = tableManager->GetRandomBoxList()[randomBox].Gacha_Group;
 				std::unordered_map<INDEX, GachaItem>& items = tableManager->GetGachaItemList()[GachaGroup];
 
+				int pay_item = tableManager->GetRandomBoxList()[randomBox].Pay_Item_Index;
+				int pay_Price = tableManager->GetRandomBoxList()[randomBox].Pay_Item_Value;
+
 				int totalWeight = 0;
 
 				for (auto& item : items) {
