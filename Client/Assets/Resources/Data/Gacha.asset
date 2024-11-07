@@ -14,31 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GachaGroup:
   - Index: 100011
-    Name: "\uAE30\uBCF8 \uC0C1\uC790"
+    Name: "\uB0E5\uB0E5\uAC00\uCC60"
     ClassType: 0
     Gacha_Group: 1001
-    Pay_Item_Index: 100001
-    Pay_Item_Value: 1000
-    Open_Date: 0
-    Close_Date: 0
+    Pay_Item_Index: 0
+    Pay_Item_Value: 0
+    Open_Date: 45292
+    Close_Date: 73050
     Exp: 0
   - Index: 100012
-    Name: "\uACE0\uAE09\uC0C1\uC790"
+    Name: "\uC6B8\uD2B8\uB77C \uB0E5\uB0E5\uAC00\uCC60"
     ClassType: 0
     Gacha_Group: 1002
-    Pay_Item_Index: 100003
-    Pay_Item_Value: 100
-    Open_Date: 0
-    Close_Date: 0
-    Exp: 0
-  - Index: 100013
-    Name: "\uB2E4\uC774\uC544 \uC0C1\uC790"
-    ClassType: 0
-    Gacha_Group: 1003
-    Pay_Item_Index: 100002
-    Pay_Item_Value: 5
-    Open_Date: 0
-    Close_Date: 0
+    Pay_Item_Index: 0
+    Pay_Item_Value: 0
+    Open_Date: 45292
+    Close_Date: 73050
     Exp: 0
   GachaGroup_Item:
   - Index: 1001001
@@ -49,11 +40,11 @@ MonoBehaviour:
     Reward_Item_Index: 100001
     Reward_Item_Value: 200
   - Index: 1001002
-    Name: "\uACE0\uAE09\uC0C1\uC790 \uD2F0\uCF13 \uD655\uB960 "
+    Name: "\uB0E5\uB0E5\uAC00\uCC60 \uBF51\uAE30\uAD8C \uD655\uB960 "
     ClassType: 0
     Gacha_Group: 1001
-    Gacha_Weight: 4000
-    Reward_Item_Index: 100003
+    Gacha_Weight: 1000
+    Reward_Item_Index: 100004
     Reward_Item_Value: 1
   - Index: 1001003
     Name: "\uD558\uC580\uC0C9 \uC2A4\uD0A8"
@@ -161,12 +152,12 @@ MonoBehaviour:
     Reward_Item_Index: 100001
     Reward_Item_Value: 2000
   - Index: 1002002
-    Name: "\uACE0\uAE09\uC0C1\uC790 \uD2F0\uCF13 \uD655\uB960 "
+    Name: "\uC6B8\uD2B8\uB77C \uB0E5\uB0E5\uAC00\uCC60 \uBF51\uAE30\uAD8C \uD655\uB960 "
     ClassType: 0
     Gacha_Group: 1002
     Gacha_Weight: 3000
-    Reward_Item_Index: 100003
-    Reward_Item_Value: 5
+    Reward_Item_Index: 100005
+    Reward_Item_Value: 1
   - Index: 1002003
     Name: "\uBE68\uAC04\uC548\uACBD"
     ClassType: 0
@@ -228,19 +219,5 @@ MonoBehaviour:
     ClassType: 0
     Gacha_Group: 1002
     Gacha_Weight: 3000
-    Reward_Item_Index: 333001
-    Reward_Item_Value: 1
-  - Index: 1003001
-    Name: "\uD558\uC774\uD0B9 \uBAA8\uC790"
-    ClassType: 0
-    Gacha_Group: 1003
-    Gacha_Weight: 5000
-    Reward_Item_Index: 313001
-    Reward_Item_Value: 1
-  - Index: 1003002
-    Name: "\uBE75\uAC00\uBC29"
-    ClassType: 0
-    Gacha_Group: 1003
-    Gacha_Weight: 5000
     Reward_Item_Index: 333001
     Reward_Item_Value: 1

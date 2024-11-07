@@ -55,6 +55,7 @@ public class CharacterStatus : MonoBehaviour
     public GameObject hitbox;
     public GameObject playerMesh;
     public GameObject weaponInven;
+    public ParticleSystem RunEffect;
 
     // ¼­¹ö
     private NetworkManager network;
@@ -86,6 +87,8 @@ public class CharacterStatus : MonoBehaviour
         playerController.GameStart();
         animationController.GameStart();
         isDie = false;
+        RunEffect.gameObject.SetActive(true);
+        RunEffect.Stop();
         SetUITeam();
         SetUIMe();
         ResetCharacterState();
@@ -472,6 +475,14 @@ public class CharacterStatus : MonoBehaviour
     {
         if (this.lowerBodyAnimationState != lowerBodyAnimationState && isGroggy == false)
         {
+            if(lowerBodyAnimationState == LowerBodyAnimationState.RUN)
+            {
+                RunEffect.Play();
+            }
+            else
+            {
+                RunEffect.Stop();
+            }
             this.lowerBodyAnimationState = lowerBodyAnimationState;
             animationController.SetLowerBodyAnimationState(lowerBodyAnimationState);
         }
