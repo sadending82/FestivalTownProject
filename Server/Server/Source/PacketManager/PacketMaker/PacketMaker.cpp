@@ -14,8 +14,10 @@ std::vector<uint8_t> PacketMaker::MakeLoginResponsePacket(int result, UserInfo u
 {
 	flatbuffers::FlatBufferBuilder Builder;
 
-	Builder.Finish(PacketTable::LoginTable::CreateLoginResponse(Builder, result, userInfo.UID, Builder.CreateString(userInfo.NickName), userInfo.UserLevel, userInfo.PassLevel
-		, userInfo.UserTitle, userInfo.ProfileSkin, userInfo.Point, userInfo.AttendanceDay, NULL
+	auto db_userInfo = PacketTable::UtilitiesTable::CreateDB_UserInfo(Builder, userInfo.UID, Builder.CreateString(userInfo.NickName), userInfo.UserLevel, userInfo.PassLevel
+		, userInfo.UserTitle, userInfo.ProfileSkin, userInfo.Point, userInfo.AttendanceDay, NULL);
+
+	Builder.Finish(PacketTable::LoginTable::CreateLoginResponse(Builder, result, db_userInfo
 		, userInfo.Gold, userInfo.Dia, userInfo.Mileage));
 	return MakeBuffer(ePacketType::S2C_LOGIN_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }
