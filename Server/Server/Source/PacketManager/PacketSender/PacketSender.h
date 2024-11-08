@@ -8,7 +8,7 @@ public:
 	~PacketSender();
 
 	void SendVersionCheckResponsePacket(int sessionID, int result);
-	void SendLoginResponse(int sessionID, int result, int uid, std::string& nickname, int point, int gold);
+	void SendLoginResponse(int sessionID, int result, UserInfo userInfo);
 	void SendSignUpResponse(int sessionID, int result);
 
 	void SendGachaResponsePacket(int sessionID, int result, int acquired_item_type, int acquired_item_amount, int spent_resource_type, int spent_resource_amount, int remaining_resource_amount);

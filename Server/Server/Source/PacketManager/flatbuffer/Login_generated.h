@@ -321,14 +321,14 @@ struct LoginResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_NICKNAME = 8,
     VT_USER_LEVEL = 10,
     VT_PASS_LEVEL = 12,
-    VT_POINT = 14,
-    VT_GOLD = 16,
-    VT_DIA = 18,
+    VT_USER_TITLE = 14,
+    VT_PROFILE_SKIN = 16,
+    VT_POINT = 18,
     VT_ATTENDANCE_DAY = 20,
     VT_CHARACTER_CUSTOMIZING = 22,
-    VT_USER_TITLE = 24,
-    VT_PROFILE_SKIN = 26,
-    VT_GAME_SETTING = 28,
+    VT_GOLD = 24,
+    VT_DIA = 26,
+    VT_MILEAGE = 28,
     VT_HAS_UNCLAIMED_REWARD = 30,
     VT_IS_NEW_UPDATE = 32
   };
@@ -347,14 +347,14 @@ struct LoginResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   int32_t pass_level() const {
     return GetField<int32_t>(VT_PASS_LEVEL, 0);
   }
+  int32_t user_title() const {
+    return GetField<int32_t>(VT_USER_TITLE, 0);
+  }
+  int32_t profile_skin() const {
+    return GetField<int32_t>(VT_PROFILE_SKIN, 0);
+  }
   int32_t point() const {
     return GetField<int32_t>(VT_POINT, 0);
-  }
-  int32_t gold() const {
-    return GetField<int32_t>(VT_GOLD, 0);
-  }
-  int32_t dia() const {
-    return GetField<int32_t>(VT_DIA, 0);
   }
   int32_t attendance_day() const {
     return GetField<int32_t>(VT_ATTENDANCE_DAY, 0);
@@ -362,14 +362,14 @@ struct LoginResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   const PacketTable::UtilitiesTable::CharacterCustomizing *character_customizing() const {
     return GetPointer<const PacketTable::UtilitiesTable::CharacterCustomizing *>(VT_CHARACTER_CUSTOMIZING);
   }
-  int32_t user_title() const {
-    return GetField<int32_t>(VT_USER_TITLE, 0);
+  int32_t gold() const {
+    return GetField<int32_t>(VT_GOLD, 0);
   }
-  int32_t profile_skin() const {
-    return GetField<int32_t>(VT_PROFILE_SKIN, 0);
+  int32_t dia() const {
+    return GetField<int32_t>(VT_DIA, 0);
   }
-  const PacketTable::UtilitiesTable::GameSetting *game_setting() const {
-    return GetPointer<const PacketTable::UtilitiesTable::GameSetting *>(VT_GAME_SETTING);
+  int32_t mileage() const {
+    return GetField<int32_t>(VT_MILEAGE, 0);
   }
   bool has_unclaimed_reward() const {
     return GetField<uint8_t>(VT_HAS_UNCLAIMED_REWARD, 0) != 0;
@@ -385,16 +385,15 @@ struct LoginResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            verifier.VerifyString(nickname()) &&
            VerifyField<int32_t>(verifier, VT_USER_LEVEL, 4) &&
            VerifyField<int32_t>(verifier, VT_PASS_LEVEL, 4) &&
+           VerifyField<int32_t>(verifier, VT_USER_TITLE, 4) &&
+           VerifyField<int32_t>(verifier, VT_PROFILE_SKIN, 4) &&
            VerifyField<int32_t>(verifier, VT_POINT, 4) &&
-           VerifyField<int32_t>(verifier, VT_GOLD, 4) &&
-           VerifyField<int32_t>(verifier, VT_DIA, 4) &&
            VerifyField<int32_t>(verifier, VT_ATTENDANCE_DAY, 4) &&
            VerifyOffset(verifier, VT_CHARACTER_CUSTOMIZING) &&
            verifier.VerifyTable(character_customizing()) &&
-           VerifyField<int32_t>(verifier, VT_USER_TITLE, 4) &&
-           VerifyField<int32_t>(verifier, VT_PROFILE_SKIN, 4) &&
-           VerifyOffset(verifier, VT_GAME_SETTING) &&
-           verifier.VerifyTable(game_setting()) &&
+           VerifyField<int32_t>(verifier, VT_GOLD, 4) &&
+           VerifyField<int32_t>(verifier, VT_DIA, 4) &&
+           VerifyField<int32_t>(verifier, VT_MILEAGE, 4) &&
            VerifyField<uint8_t>(verifier, VT_HAS_UNCLAIMED_REWARD, 1) &&
            VerifyField<uint8_t>(verifier, VT_IS_NEW_UPDATE, 1) &&
            verifier.EndTable();
@@ -420,14 +419,14 @@ struct LoginResponseBuilder {
   void add_pass_level(int32_t pass_level) {
     fbb_.AddElement<int32_t>(LoginResponse::VT_PASS_LEVEL, pass_level, 0);
   }
+  void add_user_title(int32_t user_title) {
+    fbb_.AddElement<int32_t>(LoginResponse::VT_USER_TITLE, user_title, 0);
+  }
+  void add_profile_skin(int32_t profile_skin) {
+    fbb_.AddElement<int32_t>(LoginResponse::VT_PROFILE_SKIN, profile_skin, 0);
+  }
   void add_point(int32_t point) {
     fbb_.AddElement<int32_t>(LoginResponse::VT_POINT, point, 0);
-  }
-  void add_gold(int32_t gold) {
-    fbb_.AddElement<int32_t>(LoginResponse::VT_GOLD, gold, 0);
-  }
-  void add_dia(int32_t dia) {
-    fbb_.AddElement<int32_t>(LoginResponse::VT_DIA, dia, 0);
   }
   void add_attendance_day(int32_t attendance_day) {
     fbb_.AddElement<int32_t>(LoginResponse::VT_ATTENDANCE_DAY, attendance_day, 0);
@@ -435,14 +434,14 @@ struct LoginResponseBuilder {
   void add_character_customizing(::flatbuffers::Offset<PacketTable::UtilitiesTable::CharacterCustomizing> character_customizing) {
     fbb_.AddOffset(LoginResponse::VT_CHARACTER_CUSTOMIZING, character_customizing);
   }
-  void add_user_title(int32_t user_title) {
-    fbb_.AddElement<int32_t>(LoginResponse::VT_USER_TITLE, user_title, 0);
+  void add_gold(int32_t gold) {
+    fbb_.AddElement<int32_t>(LoginResponse::VT_GOLD, gold, 0);
   }
-  void add_profile_skin(int32_t profile_skin) {
-    fbb_.AddElement<int32_t>(LoginResponse::VT_PROFILE_SKIN, profile_skin, 0);
+  void add_dia(int32_t dia) {
+    fbb_.AddElement<int32_t>(LoginResponse::VT_DIA, dia, 0);
   }
-  void add_game_setting(::flatbuffers::Offset<PacketTable::UtilitiesTable::GameSetting> game_setting) {
-    fbb_.AddOffset(LoginResponse::VT_GAME_SETTING, game_setting);
+  void add_mileage(int32_t mileage) {
+    fbb_.AddElement<int32_t>(LoginResponse::VT_MILEAGE, mileage, 0);
   }
   void add_has_unclaimed_reward(bool has_unclaimed_reward) {
     fbb_.AddElement<uint8_t>(LoginResponse::VT_HAS_UNCLAIMED_REWARD, static_cast<uint8_t>(has_unclaimed_reward), 0);
@@ -468,25 +467,25 @@ inline ::flatbuffers::Offset<LoginResponse> CreateLoginResponse(
     ::flatbuffers::Offset<::flatbuffers::String> nickname = 0,
     int32_t user_level = 0,
     int32_t pass_level = 0,
-    int32_t point = 0,
-    int32_t gold = 0,
-    int32_t dia = 0,
-    int32_t attendance_day = 0,
-    ::flatbuffers::Offset<PacketTable::UtilitiesTable::CharacterCustomizing> character_customizing = 0,
     int32_t user_title = 0,
     int32_t profile_skin = 0,
-    ::flatbuffers::Offset<PacketTable::UtilitiesTable::GameSetting> game_setting = 0,
+    int32_t point = 0,
+    int32_t attendance_day = 0,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::CharacterCustomizing> character_customizing = 0,
+    int32_t gold = 0,
+    int32_t dia = 0,
+    int32_t mileage = 0,
     bool has_unclaimed_reward = false,
     bool is_new_update = false) {
   LoginResponseBuilder builder_(_fbb);
-  builder_.add_game_setting(game_setting);
-  builder_.add_profile_skin(profile_skin);
-  builder_.add_user_title(user_title);
-  builder_.add_character_customizing(character_customizing);
-  builder_.add_attendance_day(attendance_day);
+  builder_.add_mileage(mileage);
   builder_.add_dia(dia);
   builder_.add_gold(gold);
+  builder_.add_character_customizing(character_customizing);
+  builder_.add_attendance_day(attendance_day);
   builder_.add_point(point);
+  builder_.add_profile_skin(profile_skin);
+  builder_.add_user_title(user_title);
   builder_.add_pass_level(pass_level);
   builder_.add_user_level(user_level);
   builder_.add_nickname(nickname);
@@ -504,14 +503,14 @@ inline ::flatbuffers::Offset<LoginResponse> CreateLoginResponseDirect(
     const char *nickname = nullptr,
     int32_t user_level = 0,
     int32_t pass_level = 0,
-    int32_t point = 0,
-    int32_t gold = 0,
-    int32_t dia = 0,
-    int32_t attendance_day = 0,
-    ::flatbuffers::Offset<PacketTable::UtilitiesTable::CharacterCustomizing> character_customizing = 0,
     int32_t user_title = 0,
     int32_t profile_skin = 0,
-    ::flatbuffers::Offset<PacketTable::UtilitiesTable::GameSetting> game_setting = 0,
+    int32_t point = 0,
+    int32_t attendance_day = 0,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::CharacterCustomizing> character_customizing = 0,
+    int32_t gold = 0,
+    int32_t dia = 0,
+    int32_t mileage = 0,
     bool has_unclaimed_reward = false,
     bool is_new_update = false) {
   auto nickname__ = nickname ? _fbb.CreateString(nickname) : 0;
@@ -522,14 +521,14 @@ inline ::flatbuffers::Offset<LoginResponse> CreateLoginResponseDirect(
       nickname__,
       user_level,
       pass_level,
-      point,
-      gold,
-      dia,
-      attendance_day,
-      character_customizing,
       user_title,
       profile_skin,
-      game_setting,
+      point,
+      attendance_day,
+      character_customizing,
+      gold,
+      dia,
+      mileage,
       has_unclaimed_reward,
       is_new_update);
 }

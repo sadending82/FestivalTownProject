@@ -2,6 +2,7 @@
 #include "../../utility.h"
 #include "../../protocol.h"
 #include "../flatbuffer/FlatBufferManager.h"
+#include "../../DB/Schema/Schemas.h"
 
 #include <unordered_map>
 #include <array>
@@ -13,7 +14,7 @@ public:
 	~PacketMaker() {};
 
 	std::vector<uint8_t> MakeVersionCheckResponsePacket(int result);
-	std::vector<uint8_t> MakeLoginResponsePacket(int result, int uid, std::string& nickname, int point, int gold);
+	std::vector<uint8_t> MakeLoginResponsePacket(int result, UserInfo userInfo);
 	std::vector<uint8_t> MakeSignUpResponsePacket(int result);
 
 	std::vector<uint8_t> MakeGachaResponsePacket(int result, int acquired_item_type, int acquired_item_amount, int spent_resource_type, int spent_resource_amount, int remaining_resource_amount);

@@ -10,11 +10,13 @@ std::vector<uint8_t> PacketMaker::MakeVersionCheckResponsePacket(int result)
 	return MakeBuffer(ePacketType::S2C_VERSION_CHECK_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakeLoginResponsePacket(int result, int uid, std::string& nickname, int point, int gold)
+std::vector<uint8_t> PacketMaker::MakeLoginResponsePacket(int result, UserInfo userInfo)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 
-	Builder.Finish(PacketTable::LoginTable::CreateLoginResponse(Builder, result, uid, Builder.CreateString(nickname), point, gold));
+	Builder.Finish(PacketTable::LoginTable::CreateLoginResponse(Builder, result, userInfo.UID, Builder.CreateString(userInfo.NickName), userInfo.UserLevel, userInfo.PassLevel
+		, userInfo.UserTitle, userInfo.ProfileSkin, userInfo.Point, userInfo.AttendanceDay, NULL
+		, userInfo.Gold, userInfo.Dia, userInfo.Mileage));
 	return MakeBuffer(ePacketType::S2C_LOGIN_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 

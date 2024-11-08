@@ -13,7 +13,7 @@ enum class UserInfo_Field {
 	Point,
 	LastLoginTime,
 	AttendanceDay,
-	// characterCustomizing
+	characterCustomizing,
 	State = 12
 };
 
@@ -27,11 +27,14 @@ struct UserInfo {
 	int UserTitle;
 	int ProfileSkin;
 	int Point;
-	int Gold;
 	std::tm date;
 	int AttendanceDay;
-	// characterCustomizing
+	std::string characterCustomizing = std::string(20, '\0');
 	int State;
+
+	int Gold;
+	int Dia;
+	int Mileage;
 };
 
 

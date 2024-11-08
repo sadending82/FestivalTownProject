@@ -405,6 +405,10 @@ std::pair<bool, UserInfo> Server::UserLogin(const char* accountID, const char* a
 
     UserInfo& userInfo = result.second;
 
+    userInfo.Gold = mDB->SelectUserItemCount(userInfo.UID, 100001);
+    userInfo.Dia = mDB->SelectUserItemCount(userInfo.UID, 100002);
+    //userInfo.Mileage = mDB->SelectUserItemCount(userInfo.UID, 100003);
+
     if (result.first == false) {
         return result;
     }
