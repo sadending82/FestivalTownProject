@@ -28,6 +28,9 @@ struct GameSettingBuilder;
 struct CharacterCustomizing;
 struct CharacterCustomizingBuilder;
 
+struct DB_UserInfo;
+struct DB_UserInfoBuilder;
+
 struct PlayerGameRecord;
 struct PlayerGameRecordBuilder;
 
@@ -163,6 +166,154 @@ inline ::flatbuffers::Offset<CharacterCustomizing> CreateCharacterCustomizing(
     ::flatbuffers::FlatBufferBuilder &_fbb) {
   CharacterCustomizingBuilder builder_(_fbb);
   return builder_.Finish();
+}
+
+struct DB_UserInfo FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef DB_UserInfoBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_UID = 4,
+    VT_NICKNAME = 6,
+    VT_USER_LEVEL = 8,
+    VT_PASS_LEVEL = 10,
+    VT_USER_TITLE = 12,
+    VT_PROFILE_SKIN = 14,
+    VT_POINT = 16,
+    VT_ATTENDANCE_DAY = 18,
+    VT_CHARACTER_CUSTOMIZING = 20
+  };
+  int32_t uid() const {
+    return GetField<int32_t>(VT_UID, 0);
+  }
+  const ::flatbuffers::String *nickname() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_NICKNAME);
+  }
+  int32_t user_level() const {
+    return GetField<int32_t>(VT_USER_LEVEL, 0);
+  }
+  int32_t pass_level() const {
+    return GetField<int32_t>(VT_PASS_LEVEL, 0);
+  }
+  int32_t user_title() const {
+    return GetField<int32_t>(VT_USER_TITLE, 0);
+  }
+  int32_t profile_skin() const {
+    return GetField<int32_t>(VT_PROFILE_SKIN, 0);
+  }
+  int32_t point() const {
+    return GetField<int32_t>(VT_POINT, 0);
+  }
+  int32_t attendance_day() const {
+    return GetField<int32_t>(VT_ATTENDANCE_DAY, 0);
+  }
+  const PacketTable::UtilitiesTable::CharacterCustomizing *character_customizing() const {
+    return GetPointer<const PacketTable::UtilitiesTable::CharacterCustomizing *>(VT_CHARACTER_CUSTOMIZING);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_UID, 4) &&
+           VerifyOffset(verifier, VT_NICKNAME) &&
+           verifier.VerifyString(nickname()) &&
+           VerifyField<int32_t>(verifier, VT_USER_LEVEL, 4) &&
+           VerifyField<int32_t>(verifier, VT_PASS_LEVEL, 4) &&
+           VerifyField<int32_t>(verifier, VT_USER_TITLE, 4) &&
+           VerifyField<int32_t>(verifier, VT_PROFILE_SKIN, 4) &&
+           VerifyField<int32_t>(verifier, VT_POINT, 4) &&
+           VerifyField<int32_t>(verifier, VT_ATTENDANCE_DAY, 4) &&
+           VerifyOffset(verifier, VT_CHARACTER_CUSTOMIZING) &&
+           verifier.VerifyTable(character_customizing()) &&
+           verifier.EndTable();
+  }
+};
+
+struct DB_UserInfoBuilder {
+  typedef DB_UserInfo Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_uid(int32_t uid) {
+    fbb_.AddElement<int32_t>(DB_UserInfo::VT_UID, uid, 0);
+  }
+  void add_nickname(::flatbuffers::Offset<::flatbuffers::String> nickname) {
+    fbb_.AddOffset(DB_UserInfo::VT_NICKNAME, nickname);
+  }
+  void add_user_level(int32_t user_level) {
+    fbb_.AddElement<int32_t>(DB_UserInfo::VT_USER_LEVEL, user_level, 0);
+  }
+  void add_pass_level(int32_t pass_level) {
+    fbb_.AddElement<int32_t>(DB_UserInfo::VT_PASS_LEVEL, pass_level, 0);
+  }
+  void add_user_title(int32_t user_title) {
+    fbb_.AddElement<int32_t>(DB_UserInfo::VT_USER_TITLE, user_title, 0);
+  }
+  void add_profile_skin(int32_t profile_skin) {
+    fbb_.AddElement<int32_t>(DB_UserInfo::VT_PROFILE_SKIN, profile_skin, 0);
+  }
+  void add_point(int32_t point) {
+    fbb_.AddElement<int32_t>(DB_UserInfo::VT_POINT, point, 0);
+  }
+  void add_attendance_day(int32_t attendance_day) {
+    fbb_.AddElement<int32_t>(DB_UserInfo::VT_ATTENDANCE_DAY, attendance_day, 0);
+  }
+  void add_character_customizing(::flatbuffers::Offset<PacketTable::UtilitiesTable::CharacterCustomizing> character_customizing) {
+    fbb_.AddOffset(DB_UserInfo::VT_CHARACTER_CUSTOMIZING, character_customizing);
+  }
+  explicit DB_UserInfoBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<DB_UserInfo> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<DB_UserInfo>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<DB_UserInfo> CreateDB_UserInfo(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t uid = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> nickname = 0,
+    int32_t user_level = 0,
+    int32_t pass_level = 0,
+    int32_t user_title = 0,
+    int32_t profile_skin = 0,
+    int32_t point = 0,
+    int32_t attendance_day = 0,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::CharacterCustomizing> character_customizing = 0) {
+  DB_UserInfoBuilder builder_(_fbb);
+  builder_.add_character_customizing(character_customizing);
+  builder_.add_attendance_day(attendance_day);
+  builder_.add_point(point);
+  builder_.add_profile_skin(profile_skin);
+  builder_.add_user_title(user_title);
+  builder_.add_pass_level(pass_level);
+  builder_.add_user_level(user_level);
+  builder_.add_nickname(nickname);
+  builder_.add_uid(uid);
+  return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<DB_UserInfo> CreateDB_UserInfoDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t uid = 0,
+    const char *nickname = nullptr,
+    int32_t user_level = 0,
+    int32_t pass_level = 0,
+    int32_t user_title = 0,
+    int32_t profile_skin = 0,
+    int32_t point = 0,
+    int32_t attendance_day = 0,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::CharacterCustomizing> character_customizing = 0) {
+  auto nickname__ = nickname ? _fbb.CreateString(nickname) : 0;
+  return PacketTable::UtilitiesTable::CreateDB_UserInfo(
+      _fbb,
+      uid,
+      nickname__,
+      user_level,
+      pass_level,
+      user_title,
+      profile_skin,
+      point,
+      attendance_day,
+      character_customizing);
 }
 
 struct PlayerGameRecord FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {

@@ -1,9 +1,10 @@
 ﻿using Google.FlatBuffers;
-using PacketTable.GameTable;
+using PacketTable.UtilitiesTable;
 using PacketTable.LoginTable;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 
 
 namespace Network.PacketProcessor
@@ -21,10 +22,11 @@ namespace Network.PacketProcessor
 
             if (resultCode == 1)
             {
+                var userInfo = Data.UserInfo.Value;
                 Debug.Log($"gold : {Data.Gold}, dia : {Data.Dia}");
                 Managers.Data.SetGold(Data.Gold);
                 Managers.Data.SetDiamond(Data.Dia);
-                Managers.Data.SetNickName(Data.Nickname);
+                Managers.Data.SetNickName(userInfo.Nickname);
                 Managers.Scene.LoadScene(Define.Scene.Home);
             }
         }
