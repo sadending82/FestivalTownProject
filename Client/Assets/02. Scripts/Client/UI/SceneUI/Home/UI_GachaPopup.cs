@@ -17,12 +17,14 @@ public class UI_GachaPopup : UI_PopUp
 
     int GachaType;
     int ResourceIndexToUse;
+    bool isInitialized = false;
 
     void Start()
     {
-
-        base.Init();
-        Init();
+        if (!isInitialized)
+        {         
+            Init();
+        }
 
     }
 
@@ -44,6 +46,8 @@ public class UI_GachaPopup : UI_PopUp
 
     public override void Init()
     {
+        base.Init();
+
         Bind<GameObject>(typeof(GameObjects));
 
         Get<GameObject>((int)GameObjects.OkButton).BindEvent((PointerEventData) =>
@@ -57,6 +61,8 @@ public class UI_GachaPopup : UI_PopUp
         {
             Managers.UI.ClosePopUpUI(this);
         });
+
+        isInitialized = true;
 
     }
 }
