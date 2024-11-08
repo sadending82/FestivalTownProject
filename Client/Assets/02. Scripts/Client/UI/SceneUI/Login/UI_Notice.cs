@@ -59,6 +59,10 @@ public class UI_Notice : UI_PopUp
     public void BindGameEndEvent()
     {
         Get<GameObject>((int)GameObjects.OkButton).BindEvent((PointerEventData) => {
+
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #else
