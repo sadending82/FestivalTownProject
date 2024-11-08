@@ -479,11 +479,12 @@ public class PacketMaker
         return result;
     }
 
-    public byte[] MakeGachaRequestPacket(int gachaType)
+    public byte[] MakeGachaRequestPacket(int gachaType, int pay_item)
     {
         var builder = new FlatBufferBuilder(1);
         GachaRequest.StartGachaRequest(builder);
         GachaRequest.AddRandomBoxIndex(builder, gachaType);
+        GachaRequest.AddPayItem(builder, pay_item);
         var offset = GachaRequest.EndGachaRequest(builder);
         builder.Finish(offset.Value);
 

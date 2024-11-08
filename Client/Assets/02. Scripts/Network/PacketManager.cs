@@ -182,9 +182,9 @@ public class PacketManager : MonoBehaviour
         if (packet == null) { return; }
         SendPacket(packet);
     }
-    public void SendGachaRequestPacket(int gachaType)
+    public void SendGachaRequestPacket(int gachaType, int pay_item = 0)
     {
-        byte[] packet = _packetMaker.MakeGachaRequestPacket(gachaType);
+        byte[] packet = _packetMaker.MakeGachaRequestPacket(gachaType, pay_item);
         if (packet == null) { return; }
         SendPacket(packet);
     }

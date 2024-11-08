@@ -20,16 +20,20 @@ public struct GachaRequest : IFlatbufferObject
   public GachaRequest __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public int RandomBoxIndex { get { int o = __p.__offset(4); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int PayItem { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
 
   public static Offset<PacketTable.LobbyTable.GachaRequest> CreateGachaRequest(FlatBufferBuilder builder,
-      int random_box_index = 0) {
-    builder.StartTable(1);
+      int random_box_index = 0,
+      int pay_item = 0) {
+    builder.StartTable(2);
+    GachaRequest.AddPayItem(builder, pay_item);
     GachaRequest.AddRandomBoxIndex(builder, random_box_index);
     return GachaRequest.EndGachaRequest(builder);
   }
 
-  public static void StartGachaRequest(FlatBufferBuilder builder) { builder.StartTable(1); }
+  public static void StartGachaRequest(FlatBufferBuilder builder) { builder.StartTable(2); }
   public static void AddRandomBoxIndex(FlatBufferBuilder builder, int randomBoxIndex) { builder.AddInt(0, randomBoxIndex, 0); }
+  public static void AddPayItem(FlatBufferBuilder builder, int payItem) { builder.AddInt(1, payItem, 0); }
   public static Offset<PacketTable.LobbyTable.GachaRequest> EndGachaRequest(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<PacketTable.LobbyTable.GachaRequest>(o);
@@ -43,6 +47,7 @@ static public class GachaRequestVerify
   {
     return verifier.VerifyTableStart(tablePos)
       && verifier.VerifyField(tablePos, 4 /*RandomBoxIndex*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 6 /*PayItem*/, 4 /*int*/, 4, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }

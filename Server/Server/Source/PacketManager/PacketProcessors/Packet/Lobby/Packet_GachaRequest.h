@@ -24,10 +24,10 @@ public:
 				int GachaGroup = tableManager->GetRandomBoxList()[randomBox].Gacha_Group;
 				std::unordered_map<INDEX, GachaItem>& items = tableManager->GetGachaItemList()[GachaGroup];
 
-				/*int pay_item = tableManager->GetRandomBoxList()[randomBox].Pay_Item_Index;
-				int pay_Price = tableManager->GetRandomBoxList()[randomBox].Pay_Item_Value;
-
-				db.*/
+				int pay_item1 = tableManager->GetRandomBoxList()[randomBox].Pay_Item_Index1;
+				int pay_Price1 = tableManager->GetRandomBoxList()[randomBox].Pay_Item_Value1;
+				int pay_item2 = tableManager->GetRandomBoxList()[randomBox].Pay_Item_Index2;
+				int pay_Price2 = tableManager->GetRandomBoxList()[randomBox].Pay_Item_Value2;
 
 				int totalWeight = 0;
 

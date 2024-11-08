@@ -237,14 +237,19 @@ inline ::flatbuffers::Offset<GameMatchingCancel> CreateGameMatchingCancel(
 struct GachaRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef GachaRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_RANDOM_BOX_INDEX = 4
+    VT_RANDOM_BOX_INDEX = 4,
+    VT_PAY_ITEM = 6
   };
   int32_t random_box_index() const {
     return GetField<int32_t>(VT_RANDOM_BOX_INDEX, 0);
   }
+  int32_t pay_item() const {
+    return GetField<int32_t>(VT_PAY_ITEM, 0);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_RANDOM_BOX_INDEX, 4) &&
+           VerifyField<int32_t>(verifier, VT_PAY_ITEM, 4) &&
            verifier.EndTable();
   }
 };
@@ -255,6 +260,9 @@ struct GachaRequestBuilder {
   ::flatbuffers::uoffset_t start_;
   void add_random_box_index(int32_t random_box_index) {
     fbb_.AddElement<int32_t>(GachaRequest::VT_RANDOM_BOX_INDEX, random_box_index, 0);
+  }
+  void add_pay_item(int32_t pay_item) {
+    fbb_.AddElement<int32_t>(GachaRequest::VT_PAY_ITEM, pay_item, 0);
   }
   explicit GachaRequestBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -269,8 +277,10 @@ struct GachaRequestBuilder {
 
 inline ::flatbuffers::Offset<GachaRequest> CreateGachaRequest(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    int32_t random_box_index = 0) {
+    int32_t random_box_index = 0,
+    int32_t pay_item = 0) {
   GachaRequestBuilder builder_(_fbb);
+  builder_.add_pay_item(pay_item);
   builder_.add_random_box_index(random_box_index);
   return builder_.Finish();
 }
