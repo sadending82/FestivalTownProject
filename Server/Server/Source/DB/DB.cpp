@@ -325,7 +325,7 @@ std::pair<bool, UserInfo> DB::SelectUserInfoForLogin(const char* id)
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 
-		userInfo.Gold = SelectGold(userInfo.UID);
+		userInfo.Gold = SelectUserItemCount(userInfo.UID, 100001);
 
 		return { true, userInfo };
 	}
@@ -387,7 +387,7 @@ std::pair<bool, UserInfo> DB::SelectUserInfo(const int uid)
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 
-		userInfo.Gold = SelectGold(userInfo.UID);
+		userInfo.Gold = SelectUserItemCount(userInfo.UID, 100001);
 
 		return { true, userInfo };
 	}
@@ -397,13 +397,12 @@ std::pair<bool, UserInfo> DB::SelectUserInfo(const int uid)
 	return { false,UserInfo() };
 }
 
-int DB::SelectGold(const int uid)
+int DB::SelectUserItemCount(const int uid, const int item_index)
 {
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
-	int gold = 0;
-	int itemCode = 100001;
+	int count = 0;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGNOPARAM("hStmt Error : (InsertRanking) \n");
@@ -418,7 +417,7 @@ int DB::SelectGold(const int uid)
 	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
-	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&itemCode), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&item_index), 0, NULL);
 
 	retcode = SQLExecute(hStmt);
 
@@ -427,56 +426,14 @@ int DB::SelectGold(const int uid)
 		SQLLEN col1;
 
 		while (SQLFetch(hStmt) == SQL_SUCCESS) {
-			SQLGetData(hStmt, 1, SQL_C_LONG, &gold, sizeof(gold), &col1);
+			SQLGetData(hStmt, 1, SQL_C_LONG, &count, sizeof(count), &col1);
 		}
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-		return gold;
+		return count;
 	}
 
-	DEBUGMSGNOPARAM("Execute Query Error : (SelectGold)\n");
-	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-	return 0;
-}
-
-int DB::SelectDia(const int uid)
-{
-	SQLHSTMT hStmt = NULL;
-	SQLRETURN retcode;
-
-	int dia = 0;
-	int itemCode = 100002;
-
-	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
-		DEBUGMSGNOPARAM("hStmt Error : (InsertRanking) \n");
-		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-		return 0;
-	}
-
-	UseGameDB(hStmt);
-
-	const WCHAR* query = L"SELECT count FROM UserItem WHERE UID = ? AND ItemCode = ?";
-
-	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
-
-	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
-	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&itemCode), 0, NULL);
-
-	retcode = SQLExecute(hStmt);
-
-	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
-
-		SQLLEN col1;
-
-		while (SQLFetch(hStmt) == SQL_SUCCESS) {
-			SQLGetData(hStmt, 1, SQL_C_LONG, &dia, sizeof(dia), &col1);
-		}
-
-		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-		return dia;
-	}
-
-	DEBUGMSGNOPARAM("Execute Query Error : (SelectDia)\n");
+	DEBUGMSGNOPARAM("Execute Query Error : (SelectItemCount)\n");
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	return 0;
 }
@@ -514,12 +471,10 @@ bool DB::UpdateUserConnectionState(const int uid, const int state)
 	return false;
 }
 
-bool DB::UpdateUserGold(const int uid, const int valueOfChange)
+bool DB::UpdateUserItemCount(const int uid, const int item_Code, const int valueOfChange)
 {
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
-
-	const int itemCode = 100001;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGNOPARAM("hStmt Error : (UpdateUserGold) \n");
@@ -535,7 +490,7 @@ bool DB::UpdateUserGold(const int uid, const int valueOfChange)
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&valueOfChange), 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
-	SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&itemCode), 0, NULL);
+	SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&item_Code), 0, NULL);
 
 	retcode = SQLExecute(hStmt);
 
@@ -545,46 +500,11 @@ bool DB::UpdateUserGold(const int uid, const int valueOfChange)
 		return true;
 	}
 
-	DEBUGMSGNOPARAM("Execute Query Error : (UpdateUserGold)\n");
+	DEBUGMSGNOPARAM("Execute Query Error : (UpdateUserItemCount)\n");
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	return false;
 }
 
-bool DB::UpdateUserDia(const int uid, const int valueOfChange)
-{
-	SQLHSTMT hStmt = NULL;
-	SQLRETURN retcode;
-
-	const int itemCode = 100002;
-
-	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
-		DEBUGMSGNOPARAM("hStmt Error : (UpdateUserGold) \n");
-		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-		return false;
-	}
-
-	UseGameDB(hStmt);
-
-	const WCHAR* query = L"UPDATE UserItem SET ItemCount = ItemCount + ? WHERE UID = ? AND ItemCode = ?";
-
-	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
-
-	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&valueOfChange), 0, NULL);
-	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
-	SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&itemCode), 0, NULL);
-
-	retcode = SQLExecute(hStmt);
-
-	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
-
-		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-		return true;
-	}
-
-	DEBUGMSGNOPARAM("Execute Query Error : (UpdateUserGold)\n");
-	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-	return false;
-}
 
 bool DB::UpdateUserPoint(const int uid, const int valueOfChange)
 {

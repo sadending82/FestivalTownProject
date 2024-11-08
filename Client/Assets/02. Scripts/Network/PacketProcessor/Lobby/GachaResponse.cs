@@ -18,23 +18,31 @@ namespace Network.PacketProcessor
 
             var Data = GachaResponse.GetRootAsGachaResponse(bb);
 
-
-
-            var itemData = Managers.Data.GetItemData(Data.AcquiredItemType);
-
-            Debug.Log($"Gacha ItemType : {Data.AcquiredItemType}, Amount : {Data.AcquiredItemAmount}, SpentType : {Data.SpentResourceType}," +
-                $"SpentAmount : {Data.SpentResourceAmount}");
-
-            if (itemData == null) { return; }
-
             var popup = Managers.UI.ShowPopUpUI<UI_Notice>();
             popup.Init();
 
-            ItemEntity ie = (ItemEntity)itemData;
+            if (Data.Result == 1)
+            {
+                var itemData = Managers.Data.GetItemData(Data.AcquiredItemType);
 
-            popup.NoticeTextChange($"나온 아이템은 {itemData.Name}, {Data.AcquiredItemAmount}개 입니다.");
+                Debug.Log($"Gacha ItemType : {Data.AcquiredItemType}, Amount : {Data.AcquiredItemAmount}, SpentType : {Data.SpentResourceType}," +
+                    $"SpentAmount : {Data.SpentResourceAmount}");
 
-            popup.BindPopupCloseEvent();
+                if (itemData == null) { return; }
+
+                ItemEntity ie = (ItemEntity)itemData;
+
+                popup.NoticeTextChange($"나온 아이템은 {itemData.Name}, {Data.AcquiredItemAmount}개 입니다.");
+
+                popup.BindPopupCloseEvent();
+
+            }
+            else
+            {
+                popup.NoticeTextChange($"재화가 없습니다.");
+
+                popup.BindPopupCloseEvent();
+            }
         }
 
 

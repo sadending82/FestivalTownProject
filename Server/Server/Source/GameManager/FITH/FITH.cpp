@@ -244,7 +244,7 @@ void FITH::CalculateGameResult(int roomID, std::set<int>& winningTeams)
         }
 
         //pDB->UpdateRanking(uid, record.kill_count, record.death_count, record.point);
-        pDB->UpdateUserGold(uid, record.earn_gold);
+        pDB->UpdateUserItemCount(uid, 100001, record.earn_gold);
         pDB->UpdateUserPoint(uid, record.point);
     }
 

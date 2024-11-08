@@ -34,12 +34,10 @@ public:
     std::pair<bool, UserInfo> SelectUserInfoForLogin(const char* id);
     std::pair<bool, UserInfo> SelectUserInfo(const int uid);
     
-    int SelectGold(const int uid);
-    int SelectDia(const int uid);
+    int SelectUserItemCount(const int uid, const int item_index);
 
     bool UpdateUserConnectionState(const int uid, const int state);
-    bool UpdateUserGold(const int uid, const int valueOfChange);
-    bool UpdateUserDia(const int uid, const int valueOfChange);
+    bool UpdateUserItemCount(const int uid, const int item_index, const int valueOfChange);
     bool UpdateUserPoint(const int uid, const int valueOfChange);
     bool UpdateRanking(const int uid, const int killCount, const int deathCount, const int point);
 
