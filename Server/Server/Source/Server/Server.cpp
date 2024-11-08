@@ -212,7 +212,7 @@ void Server::Run()
     ReadConfig();
     mTableManager = new TableManager;
     mTableManager->ReadAllDataTable();
-    mDB = new DB;
+    mDB = new DB(mTableManager);
     mDB->Connect(mOdbc, mDB_ID, mDB_Password);
 
     WSADATA wsa;

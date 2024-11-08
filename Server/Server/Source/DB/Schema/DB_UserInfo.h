@@ -14,8 +14,7 @@ enum class UserInfo_Field {
 	LastLoginTime,
 	AttendanceDay,
 	// characterCustomizing
-	// GameSetting
-	State = 13
+	State = 12
 };
 
 
@@ -32,7 +31,6 @@ struct UserInfo {
 	std::tm date;
 	int AttendanceDay;
 	// characterCustomizing
-	// GameSetting
 	int State;
 };
 

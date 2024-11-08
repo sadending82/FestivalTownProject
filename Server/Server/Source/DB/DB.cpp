@@ -1,11 +1,7 @@
 #pragma once
 #include <Windows.h>
 #include "DB.h"
-
-
-DB::DB()
-{
-}
+#include "../TableManager/TableManager.h"
 
 DB::~DB()
 {
@@ -561,6 +557,103 @@ bool DB::UpdateRanking(const int uid, const int killCount, const int deathCount,
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&deathCount), 0, NULL);
 	SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&point), 0, NULL);
 	SQLBindParameter(hStmt, 4, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return true;
+	}
+
+	DEBUGMSGNOPARAM("Execute Query Error : (UpdateRanking)\n");
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	return false;
+}
+
+bool DB::DeleteAcccount(const char* id)
+{
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGNOPARAM("hStmt Error : (UpdateRanking) \n");
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return false;
+	}
+
+	UseAccountDB(hStmt);
+
+	const WCHAR* query = L"DELETE FROM Acount WHERE ID = ?";
+
+	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(id), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return true;
+	}
+
+	DEBUGMSGNOPARAM("Execute Query Error : (UpdateRanking)\n");
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	return false;
+}
+
+bool DB::DeleteUserInfo(const int uid)
+{
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGNOPARAM("hStmt Error : (UpdateRanking) \n");
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return false;
+	}
+
+	UseGameDB(hStmt);
+
+	const WCHAR* query = L"DELETE FROM UserInfo WHERE UID = ?";
+
+	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(uid), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return true;
+	}
+
+	DEBUGMSGNOPARAM("Execute Query Error : (UpdateRanking)\n");
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	return false;
+}
+
+bool DB::DeleteUserItem(const int owner_uid, const int itemCode)
+{
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGNOPARAM("hStmt Error : (UpdateRanking) \n");
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return false;
+	}
+
+	UseGameDB(hStmt);
+
+	const WCHAR* query = L"DELETE FROM UserItem WHERE Item_UID = (SELECT TOP 1 Item_UID FROM UserItem WHERE owner_UID = ? and ItemCode = ? ORDER BY Item_UID ASC)";
+
+	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(owner_uid), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(itemCode), 0, NULL);
 
 	retcode = SQLExecute(hStmt);
 
