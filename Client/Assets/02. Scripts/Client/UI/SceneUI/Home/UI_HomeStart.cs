@@ -61,7 +61,13 @@ public class UI_HomeStart : UI_Scene
 
         Get<GameObject>((int)GameObjects.SettingButton).BindEvent((PointerEventData) => { Debug.Log($"설정 버튼을 클릭했군요!"); });
 
-        Get<GameObject>((int)GameObjects.ExitButton).BindEvent((PointerEventData) => { Debug.Log($"게임 종료 버튼을 클릭했군요!"); });
+        Get<GameObject>((int)GameObjects.ExitButton).BindEvent((PointerEventData) => {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+        });
 
 
         Get<GameObject>((int)GameObjects.ShopButton).BindEvent((PointerEventData) =>
