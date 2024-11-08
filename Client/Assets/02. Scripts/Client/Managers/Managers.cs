@@ -24,6 +24,8 @@ public class Managers : MonoBehaviour
     WeaponObjectManager _weaponObject = new WeaponObjectManager();
     SpectatorCameraManager _spectatorCamera = new SpectatorCameraManager();
     PostProcessManager _postProcess = new PostProcessManager();
+    EffectManager _effect = new EffectManager();
+
     //------------
 
     CheatManager _cheat = new CheatManager();
@@ -45,6 +47,7 @@ public class Managers : MonoBehaviour
     public static WeaponObjectManager WeaponObject { get { return Instance._weaponObject; } }
     public static SpectatorCameraManager SpectatorCamera { get { return Instance._spectatorCamera; } }
     public static PostProcessManager PostProcess { get { return Instance._postProcess; } }
+    public static EffectManager Effect { get { return Instance._effect; } }
 
     //-----------
 
@@ -58,6 +61,7 @@ public class Managers : MonoBehaviour
         _bombObject = gameObject.AddComponent<BombObjectManager>();
         _player = gameObject.AddComponent<PlayerManager>();
         _spectatorCamera = gameObject.AddComponent<SpectatorCameraManager>();
+        _effect = gameObject.AddComponent<EffectManager>();
 
         Init();
         _game.Init();

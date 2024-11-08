@@ -46,6 +46,8 @@ public class Cube : MonoBehaviour
 
             int soundNum = Random.Range(1, 4);
             Managers.Sound.Play3D($"Sfx_Block_Impact{soundNum}", gameObject);
+            Vector3 tPosition = new Vector3(this.transform.position.x, this.transform.position.y - this.transform.localScale.y, this.transform.position.z);
+            Managers.Effect.PlayEffect("CubeFalldown", tPosition);
         }
     }
     public void SetTargetHeight(float targetHeight)
