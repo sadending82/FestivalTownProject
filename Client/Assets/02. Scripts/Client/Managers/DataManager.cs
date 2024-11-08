@@ -13,6 +13,12 @@ using static UnityEngine.EventSystems.EventTrigger;
 /// </summary>
 public class DataManager
 {
+    const int GoldIndex = 100001;
+    const int DiamondIndex = 100002;
+    const int MileageIndex = 100003;
+    const int TicketBaseIndex = 100004;
+    const int TicketRareIndex = 100005;
+
 
     /// <summary>
     /// 데이터들이 들어가 있는 딕셔너리
@@ -27,8 +33,7 @@ public class DataManager
     public Dictionary<int, ModeRewardEntity> ModeRewardDataDict = new();
     public Dictionary<int, ModeBonusRewardEntity> ModeBonusRewardDataDict = new();
 
-    int Gold = 0;
-    int Diamond = 0;
+    public Dictionary<int, int> PlayerDataDict = new();
     string NickName = "닉네임은여덟글자";
 
     public void Init()
@@ -171,6 +176,10 @@ public class DataManager
             foreach(ItemEntity entity in itemData.Item_List)
             {
                 ItemDict.TryAdd(entity.Index, entity);
+                if(entity.Index >= 100000 && entity.Index <= 100999)
+                {
+                    PlayerDataDict.TryAdd(entity.Index, -1);
+                }
                 ItemDict[entity.Index].ClassType = Define.ExcelDataClassType.Item;
             }
         }
@@ -188,21 +197,21 @@ public class DataManager
 
     public int GetDiamond()
     {
-        return Diamond;
+        return PlayerDataDict[DiamondIndex];
     }
     public void SetDiamond(int value)
     {
-        Diamond = value;
+        PlayerDataDict[DiamondIndex] = value;
     }
 
     public int GetGold()
     {
-        return Gold;
+        return PlayerDataDict[GoldIndex];
     }
 
     public void SetGold(int value)
     {
-        Gold = value;
+        PlayerDataDict[GoldIndex] = value;
     }
 
     public void SetNickName(string value)
@@ -213,6 +222,31 @@ public class DataManager
     public string GetNickName()
     {
         return NickName;
+    }
+
+    public void SetTicketBase(int value)
+    {
+        PlayerDataDict[TicketBaseIndex] = value;
+    }
+
+    public int GetTicketBase()
+    {
+        return PlayerDataDict[TicketBaseIndex];
+    }
+
+    public void SetTicketRare(int value)
+    {
+        PlayerDataDict[TicketRareIndex] = value;
+    }
+
+    public int GetTicketRare()
+    {
+        return PlayerDataDict[TicketRareIndex];
+    }
+
+    public int GetPlayerData(int index)
+    {
+        return PlayerDataDict[index];
     }
 
 }

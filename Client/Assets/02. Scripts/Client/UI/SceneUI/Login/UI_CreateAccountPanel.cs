@@ -205,7 +205,6 @@ public class UI_CreateAccountPanel : UI_Base
 
     void Update()
     {
-        Debug.Log("Panel Update");
         var emailCircle = Get<GameObject>((int)GameObjects.EmailAddressCheckCircle).GetComponent<UI_CompatibilityCircle>();
 
         switch (EmailCheck())

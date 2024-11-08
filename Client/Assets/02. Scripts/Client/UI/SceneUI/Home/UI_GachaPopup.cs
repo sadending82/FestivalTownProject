@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ public class UI_GachaPopup : UI_PopUp
     }
 
     int GachaType;
+    int ResourceIndexToUse;
 
     void Start()
     {
@@ -29,6 +31,17 @@ public class UI_GachaPopup : UI_PopUp
         GachaType = value;
     }
 
+    public void SetResourceIndexToUse(int index)
+    {
+        ResourceIndexToUse = index;
+    }
+
+    public void SetText(string str)
+    {
+        if(Get<GameObject>((int)GameObjects.Text) == null) return;
+        Get<GameObject>((int)GameObjects.Text).GetComponent<TMP_Text>().text = str;
+    }
+
     public override void Init()
     {
         Bind<GameObject>(typeof(GameObjects));
@@ -36,7 +49,7 @@ public class UI_GachaPopup : UI_PopUp
         Get<GameObject>((int)GameObjects.OkButton).BindEvent((PointerEventData) =>
         {
             Debug.Log($"{GachaType} ±×·ì");
-            Managers.Network.GetPacketManager().SendGachaRequestPacket(GachaType);
+            Managers.Network.GetPacketManager().SendGachaRequestPacket(GachaType, ResourceIndexToUse);
             Managers.UI.ClosePopUpUI(this);
         });
 
