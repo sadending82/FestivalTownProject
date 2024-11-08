@@ -183,9 +183,9 @@ bool DB::InsertNewUser(const char* id, const char* nickname)
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 
-		// Gold / Dia
-		InsertUserItem(uid, 100001, 0, 0);
-		InsertUserItem(uid, 100002, 0, 0);
+		//// Gold / Dia
+		//InsertUserItem(uid, 100001, 0, 0);
+		//InsertUserItem(uid, 100002, 0, 0);
 
 		return true;
 	}
@@ -469,8 +469,12 @@ bool DB::UpdateUserConnectionState(const int uid, const int state)
 
 bool DB::UpdateUserItemCount(const int uid, const int item_Code, const int valueOfChange)
 {
+	// 아이템 테이블에서 중첩 불가능한지 필터링하는 코드 필요
+
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
+
+	int itemType = 1;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGNOPARAM("hStmt Error : (UpdateUserGold) \n");
@@ -480,13 +484,24 @@ bool DB::UpdateUserItemCount(const int uid, const int item_Code, const int value
 
 	UseGameDB(hStmt);
 
-	const WCHAR* query = L"UPDATE UserItem SET count = count + ? WHERE owner_UID = ? AND ItemCode = ?";
+	const WCHAR* query = L"MERGE INTO UserItem AS a "
+		L"USING (SELECT 1 AS match) AS b "
+		L"ON a.itemCode = ? AND a.owner_UID = ? "
+		L"WHEN MATCHED THEN "
+		L"UPDATE SET count = count + ? "
+		L"WHEN NOT MATCHED THEN "
+		L"INSERT (owner_UID, itemCode, count, itemType) VALUES (?, ?, ?, ?);";
+							
 
 	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
 
-	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&valueOfChange), 0, NULL);
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&item_Code), 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
-	SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&item_Code), 0, NULL);
+	SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&valueOfChange), 0, NULL);
+	SQLBindParameter(hStmt, 4, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+	SQLBindParameter(hStmt, 5, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&item_Code), 0, NULL);
+	SQLBindParameter(hStmt, 6, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&valueOfChange), 0, NULL);
+	SQLBindParameter(hStmt, 7, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&itemType), 0, NULL);
 
 	retcode = SQLExecute(hStmt);
 
