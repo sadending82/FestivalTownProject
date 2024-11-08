@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -15,12 +16,15 @@ public class UI_GachaPopup : UI_PopUp
     }
 
     int GachaType;
+    int ResourceIndexToUse;
+    bool isInitialized = false;
 
     void Start()
     {
-
-        base.Init();
-        Init();
+        if (!isInitialized)
+        {         
+            Init();
+        }
 
     }
 
@@ -29,14 +33,27 @@ public class UI_GachaPopup : UI_PopUp
         GachaType = value;
     }
 
+    public void SetResourceIndexToUse(int index)
+    {
+        ResourceIndexToUse = index;
+    }
+
+    public void SetText(string str)
+    {
+        if(Get<GameObject>((int)GameObjects.Text) == null) return;
+        Get<GameObject>((int)GameObjects.Text).GetComponent<TMP_Text>().text = str;
+    }
+
     public override void Init()
     {
+        base.Init();
+
         Bind<GameObject>(typeof(GameObjects));
 
         Get<GameObject>((int)GameObjects.OkButton).BindEvent((PointerEventData) =>
         {
             Debug.Log($"{GachaType} ±×·ì");
-            Managers.Network.GetPacketManager().SendGachaRequestPacket(GachaType);
+            Managers.Network.GetPacketManager().SendGachaRequestPacket(GachaType, ResourceIndexToUse);
             Managers.UI.ClosePopUpUI(this);
         });
 
@@ -44,6 +61,8 @@ public class UI_GachaPopup : UI_PopUp
         {
             Managers.UI.ClosePopUpUI(this);
         });
+
+        isInitialized = true;
 
     }
 }

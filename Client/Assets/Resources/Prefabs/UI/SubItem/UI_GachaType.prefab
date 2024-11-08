@@ -199,7 +199,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "1\uD68C \uBF51\uAE30\n\n1000 \uACE8\uB4DC"
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 46f26711be0fceb46845711fc8a3102b, type: 2}
   m_sharedMaterial: {fileID: 6467981381325983169, guid: 46f26711be0fceb46845711fc8a3102b, type: 2}
@@ -304,8 +304,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1320, y: -463}
-  m_SizeDelta: {x: 450, y: 200}
+  m_AnchoredPosition: {x: 1280, y: -463}
+  m_SizeDelta: {x: 500, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6084742637843565520
 CanvasRenderer:
