@@ -23,6 +23,7 @@ namespace NetworkProtocol
         S2C_SIGNUP_RESPONSE,
 
         S2C_GACHA_RESPONSE,
+        S2C_CURRENCY_AMOUNT_RESPONSE,
 
         S2C_HEART_BEAT,
         S2C_PLAYER_ADD,
@@ -71,6 +72,7 @@ namespace NetworkProtocol
         C2S_SIGNUP_REQUEST,
 
         C2S_GACHA_REQUEST,
+        C2S_CURRENCY_AMOUNT_REQUEST,
 
         C2S_HEART_BEAT,
         C2S_PLAYER_MOVE,

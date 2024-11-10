@@ -36,6 +36,7 @@ public:
     // SELECT
     std::pair<bool, UserInfo> SelectUserInfoForLogin(const char* id);
     std::pair<bool, UserInfo> SelectUserInfo(const int uid);
+    bool SelectUserAllCurrency(const int uid, std::vector<int>& currency_types_output, std::vector<int>& currency_amounts_output);
     
     int SelectUserItemCount(const int uid, const int item_index);
 

@@ -393,6 +393,51 @@ std::pair<bool, UserInfo> DB::SelectUserInfo(const int uid)
 	return { false,UserInfo() };
 }
 
+bool DB::SelectUserAllCurrency(const int uid, std::vector<int>& currency_types_output, std::vector<int>& currency_amounts_output)
+{
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	int itemType = 1;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGNOPARAM("hStmt Error : (InsertRanking) \n");
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return 0;
+	}
+
+	UseGameDB(hStmt);
+
+	const WCHAR* query = L"SELECT count, itemCode FROM UserItem WHERE owner_UID = ? AND itemType = ?";
+
+	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&itemType), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		SQLLEN col1, col2;
+		int itemCode = 0;
+		int amount = 0;
+		while (SQLFetch(hStmt) == SQL_SUCCESS) {
+			SQLGetData(hStmt, 1, SQL_C_LONG, &amount, sizeof(amount), &col1);
+			SQLGetData(hStmt, 2, SQL_C_LONG, &itemCode, sizeof(itemCode), &col2);
+			currency_types_output.push_back(itemCode);
+			currency_amounts_output.push_back(amount);
+		}
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return true;
+	}
+
+	DEBUGMSGNOPARAM("Execute Query Error : (SelectItemCount)\n");
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	return false;
+}
+
 int DB::SelectUserItemCount(const int uid, const int item_index)
 {
 	SQLHSTMT hStmt = NULL;

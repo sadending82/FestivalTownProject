@@ -31,6 +31,12 @@ struct GachaRequestBuilder;
 struct GachaResponse;
 struct GachaResponseBuilder;
 
+struct CurrencyAmountRequest;
+struct CurrencyAmountRequestBuilder;
+
+struct CurrencyAmountResponse;
+struct CurrencyAmountResponseBuilder;
+
 struct GameMatchingRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef GameMatchingRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -374,6 +380,124 @@ inline ::flatbuffers::Offset<GachaResponse> CreateGachaResponse(
   builder_.add_acquired_item_type(acquired_item_type);
   builder_.add_result(result);
   return builder_.Finish();
+}
+
+struct CurrencyAmountRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef CurrencyAmountRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_UID = 4
+  };
+  int32_t uid() const {
+    return GetField<int32_t>(VT_UID, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_UID, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct CurrencyAmountRequestBuilder {
+  typedef CurrencyAmountRequest Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_uid(int32_t uid) {
+    fbb_.AddElement<int32_t>(CurrencyAmountRequest::VT_UID, uid, 0);
+  }
+  explicit CurrencyAmountRequestBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<CurrencyAmountRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<CurrencyAmountRequest>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<CurrencyAmountRequest> CreateCurrencyAmountRequest(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t uid = 0) {
+  CurrencyAmountRequestBuilder builder_(_fbb);
+  builder_.add_uid(uid);
+  return builder_.Finish();
+}
+
+struct CurrencyAmountResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef CurrencyAmountResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_RESULT = 4,
+    VT_CURRENCY_TYPE = 6,
+    VT_CURRENCY_AMOUNT = 8
+  };
+  int32_t result() const {
+    return GetField<int32_t>(VT_RESULT, 0);
+  }
+  const ::flatbuffers::Vector<int32_t> *currency_type() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_CURRENCY_TYPE);
+  }
+  const ::flatbuffers::Vector<int32_t> *currency_amount() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_CURRENCY_AMOUNT);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_RESULT, 4) &&
+           VerifyOffset(verifier, VT_CURRENCY_TYPE) &&
+           verifier.VerifyVector(currency_type()) &&
+           VerifyOffset(verifier, VT_CURRENCY_AMOUNT) &&
+           verifier.VerifyVector(currency_amount()) &&
+           verifier.EndTable();
+  }
+};
+
+struct CurrencyAmountResponseBuilder {
+  typedef CurrencyAmountResponse Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_result(int32_t result) {
+    fbb_.AddElement<int32_t>(CurrencyAmountResponse::VT_RESULT, result, 0);
+  }
+  void add_currency_type(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> currency_type) {
+    fbb_.AddOffset(CurrencyAmountResponse::VT_CURRENCY_TYPE, currency_type);
+  }
+  void add_currency_amount(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> currency_amount) {
+    fbb_.AddOffset(CurrencyAmountResponse::VT_CURRENCY_AMOUNT, currency_amount);
+  }
+  explicit CurrencyAmountResponseBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<CurrencyAmountResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<CurrencyAmountResponse>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<CurrencyAmountResponse> CreateCurrencyAmountResponse(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t result = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> currency_type = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> currency_amount = 0) {
+  CurrencyAmountResponseBuilder builder_(_fbb);
+  builder_.add_currency_amount(currency_amount);
+  builder_.add_currency_type(currency_type);
+  builder_.add_result(result);
+  return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<CurrencyAmountResponse> CreateCurrencyAmountResponseDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t result = 0,
+    const std::vector<int32_t> *currency_type = nullptr,
+    const std::vector<int32_t> *currency_amount = nullptr) {
+  auto currency_type__ = currency_type ? _fbb.CreateVector<int32_t>(*currency_type) : 0;
+  auto currency_amount__ = currency_amount ? _fbb.CreateVector<int32_t>(*currency_amount) : 0;
+  return PacketTable::LobbyTable::CreateCurrencyAmountResponse(
+      _fbb,
+      result,
+      currency_type__,
+      currency_amount__);
 }
 
 }  // namespace LobbyTable

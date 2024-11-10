@@ -35,6 +35,12 @@ void PacketSender::SendGachaResponsePacket(int sessionID, int result, int acquir
     mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
 }
 
+void PacketSender::SendCurrencyAmountResponsePacket(int sessionID, int result, std::vector<int>& currency_types, std::vector<int>& currency_amounts)
+{
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakeCurrencyAmountResponsePacket(result, currency_types, currency_amounts);
+    mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
+}
+
 void PacketSender::SendPlayerAdd(int roomID)
 {
     Room* room = mServer->GetRooms()[roomID];

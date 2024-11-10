@@ -5,6 +5,7 @@
 #include "Packet/Login/Packet_VersionCheckRequest.h"
 
 #include "Packet/Lobby/Packet_GachaRequest.h"
+#include "Packet/Lobby/Packet_CurrencyAmountRequest.h"
 
 #include "Packet/Utilities/Packet_HeartBeat.h"
 

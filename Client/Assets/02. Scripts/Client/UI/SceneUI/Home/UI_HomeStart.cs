@@ -52,7 +52,7 @@ public class UI_HomeStart : UI_Scene
 
         Get<GameObject>((int)GameObjects.PresentButton).BindEvent((PointerEventData) => {
             Debug.Log($"선물 상자 버튼을 클릭했군요!");
-
+            Managers.Network.GetPacketManager().SendCurrencyAmountRequestPacket();
             Managers.UI.ShowPopUpUI<UI_Present>();
             
         });

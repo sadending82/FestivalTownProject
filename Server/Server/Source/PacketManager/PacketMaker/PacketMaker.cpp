@@ -39,6 +39,15 @@ std::vector<uint8_t> PacketMaker::MakeGachaResponsePacket(int result, int acquir
 	return MakeBuffer(ePacketType::S2C_GACHA_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
+std::vector<uint8_t> PacketMaker::MakeCurrencyAmountResponsePacket(int result, std::vector<int>& currency_types, std::vector<int>& currency_amounts)
+{
+	flatbuffers::FlatBufferBuilder Builder;
+	auto types = Builder.CreateVector(currency_types);
+	auto amounts = Builder.CreateVector(currency_amounts);
+	Builder.Finish(PacketTable::LobbyTable::CreateCurrencyAmountResponse(Builder, result, types, amounts));
+	return MakeBuffer(ePacketType::S2C_CURRENCY_AMOUNT_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
+}
+
 std::vector<uint8_t> PacketMaker::MakePlayerAddPacket(std::vector<class Player*>& players)
 {
 	flatbuffers::FlatBufferBuilder Builder;

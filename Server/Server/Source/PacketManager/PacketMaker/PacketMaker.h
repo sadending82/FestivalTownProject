@@ -18,6 +18,7 @@ public:
 	std::vector<uint8_t> MakeSignUpResponsePacket(int result);
 
 	std::vector<uint8_t> MakeGachaResponsePacket(int result, int acquired_item_type, int acquired_item_amount, int spent_resource_type, int spent_resource_amount, int remaining_resource_amount);
+	std::vector<uint8_t> MakeCurrencyAmountResponsePacket(int result, std::vector<int>& currency_types, std::vector<int>& currency_amounts);
 
 	std::vector<uint8_t> MakePlayerAddPacket(std::vector<class Player*>& players);
 	std::vector<uint8_t> MakePlayerDeletePacket (int inGameID);
