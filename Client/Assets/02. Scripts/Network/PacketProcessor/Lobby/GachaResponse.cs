@@ -36,6 +36,38 @@ namespace Network.PacketProcessor
 
                 popup.BindPopupCloseEvent();
 
+                switch (Managers.Data.GetResourceIndexType(Data.SpentResourceType))
+                {
+                    case DataManager.ResourceIndexType.Gold:
+                        int gold = Managers.Data.GetGold();
+                        gold -= Data.SpentResourceAmount;
+                        Managers.Data.SetGold(gold);
+                        break;
+                    case DataManager.ResourceIndexType.Diamond:
+                        int dia = Managers.Data.GetDiamond();
+                        dia -= Data.SpentResourceAmount;
+                        Managers.Data.SetDiamond(dia);
+                        break;
+                    case DataManager.ResourceIndexType.Mileage:
+                        int mileage = Managers.Data.GetMileage();
+                        mileage -= Data.SpentResourceAmount;
+                        Managers.Data.SetMileage(mileage);
+                        break;
+                    case DataManager.ResourceIndexType.TicketBase:
+                        int ticketBase = Managers.Data.GetTicketBase();
+                        ticketBase -= Data.SpentResourceAmount;
+                        Managers.Data.SetTicketBase(ticketBase);
+                        break;
+                    case DataManager.ResourceIndexType.TicketRare:
+                        int ticketRare = Managers.Data.GetTicketRare();
+                        ticketRare -= Data.SpentResourceAmount;
+                        Managers.Data.SetTicketRare(ticketRare);
+                        break;
+                    default:
+                        Debug.Log("가챠 결과 데이터 잘못 받았음");
+                        break;
+                }
+
             }
             else
             {

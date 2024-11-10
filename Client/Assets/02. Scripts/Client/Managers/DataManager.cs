@@ -13,6 +13,17 @@ using static UnityEngine.EventSystems.EventTrigger;
 /// </summary>
 public class DataManager
 {
+
+    public enum ResourceIndexType
+    {
+        None,
+        Gold,
+        Diamond,
+        Mileage,
+        TicketBase,
+        TicketRare,
+    }
+
     const int GoldIndex = 100001;
     const int DiamondIndex = 100002;
     const int MileageIndex = 100003;
@@ -244,9 +255,29 @@ public class DataManager
         return PlayerDataDict[TicketRareIndex];
     }
 
+    public void SetMileage(int value)
+    {
+        PlayerDataDict[MileageIndex] = value;
+    }
+
+    public int GetMileage()
+    {
+        return PlayerDataDict[MileageIndex];
+    }
+
     public int GetPlayerData(int index)
     {
         return PlayerDataDict[index];
     }
 
+    public ResourceIndexType GetResourceIndexType(int index)
+    {
+        if (index == GoldIndex) return ResourceIndexType.Gold;
+        if (index == DiamondIndex) return ResourceIndexType.Diamond;
+        if (index == MileageIndex) return ResourceIndexType.Mileage;
+        if (index == TicketBaseIndex) return ResourceIndexType.TicketBase;
+        if (index == TicketRareIndex) return ResourceIndexType.TicketRare;
+
+        return ResourceIndexType.None;
+    }
 }

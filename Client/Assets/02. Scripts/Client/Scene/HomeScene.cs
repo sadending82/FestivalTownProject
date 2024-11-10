@@ -18,18 +18,19 @@ public class HomeScene : BaseScene
         homeStartUI = Managers.UI.ShowSceneUI<UI_HomeStart>();
         homeSceneUI = Managers.UI.ShowAOTUI<UI_HomeScene>();
 
-        StartCoroutine(SetDatas());
+        homeStartUI.Init();
+        homeSceneUI.Init();
+
+
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
 
-    IEnumerator SetDatas()
+    private void Update()
     {
-        yield return null;
         homeSceneUI.SetDiamond(Managers.Data.GetDiamond());
         homeSceneUI.SetGold(Managers.Data.GetGold());
-        homeStartUI.SetNickName(Managers.Data.GetNickName());
     }
 
     public override void Clear()

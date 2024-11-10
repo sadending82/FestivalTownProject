@@ -13,11 +13,14 @@ public class UI_HomeScene : UI_AlwaysOnTop
         DiamondText,
     }
 
-
+    bool isInitialized = false;
 
     void Start()
     {
-        Init();
+        if (!isInitialized)
+        {
+            Init();
+        }
     }
 
     public override void Init()
@@ -26,8 +29,7 @@ public class UI_HomeScene : UI_AlwaysOnTop
 
         Bind<GameObject>(typeof(GameObjects));
 
-
-
+        isInitialized = true;
     }
 
     public void SetDiamond(int value)
@@ -38,5 +40,10 @@ public class UI_HomeScene : UI_AlwaysOnTop
     public void SetGold(int value)
     {
         Get<GameObject>((int)GameObjects.GoldText).GetComponent<TMP_Text>().text = value.ToString();
+    }
+
+    private void Update()
+    {
+        
     }
 }

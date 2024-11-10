@@ -28,13 +28,18 @@ public class UI_HomeStart : UI_Scene
         AchieveButton,
     }
 
+    bool isInitialized = false;
+
     bool isShopOpen = false;
     bool isPassOpen = false;
     bool isAchieveOpen = false;
 
     void Start()
     {
-        Init();
+        if (!isInitialized)
+        {
+            Init();
+        }
     }
 
     public override void Init()
@@ -44,18 +49,14 @@ public class UI_HomeStart : UI_Scene
         Bind<GameObject>(typeof(GameObjects));
 
         Get<GameObject>((int)GameObjects.GameStartButton).BindEvent((PointerEventData) => { 
-            //Debug.Log($"게임 시작 버튼을 클릭했군요!");
-
             if (Managers.Scene.CurrentScene.GetComponent<HomeScene>() == null) return;
 
             Managers.UI.ShowPopUpUI<UI_MatchingSelect>();
         });
 
         Get<GameObject>((int)GameObjects.PresentButton).BindEvent((PointerEventData) => {
-            Debug.Log($"선물 상자 버튼을 클릭했군요!");
             Managers.Network.GetPacketManager().SendCurrencyAmountRequestPacket();
             Managers.UI.ShowPopUpUI<UI_Present>();
-            
         });
 
         Get<GameObject>((int)GameObjects.GalleryButton).BindEvent((PointerEventData) => { Debug.Log($"갤러리 버튼을 클릭했군요!"); });
@@ -94,6 +95,8 @@ public class UI_HomeStart : UI_Scene
         {
 
         });
+
+        isInitialized = true;
     }
 
     public void SetNickName(string nickName)

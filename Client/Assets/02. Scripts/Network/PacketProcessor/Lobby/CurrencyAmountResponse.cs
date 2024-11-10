@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Network.PacketProcessor
@@ -25,7 +26,27 @@ namespace Network.PacketProcessor
                     int type = Data.CurrencyType(i);
                     int amount = Data.CurrencyAmount(i);
 
-                    // 여기에 추가 작업 필요
+                    switch(Managers.Data.GetResourceIndexType(type))
+                    {
+                        case DataManager.ResourceIndexType.Gold:
+                            Managers.Data.SetGold(amount);
+                            break;
+                        case DataManager.ResourceIndexType.Diamond:
+                            Managers.Data.SetDiamond(amount);
+                            break;
+                        case DataManager.ResourceIndexType.Mileage:
+                            Managers.Data.SetMileage(amount);
+                            break;
+                        case DataManager.ResourceIndexType.TicketBase:
+                            Managers.Data.SetTicketBase(amount);
+                            break;
+                        case DataManager.ResourceIndexType.TicketRare:
+                            Managers.Data.SetTicketRare(amount);
+                            break;
+                        default:
+                            Debug.Log("재화 데이터 잘못 받았음");
+                            break;
+                    }
                 }
             }
             else
