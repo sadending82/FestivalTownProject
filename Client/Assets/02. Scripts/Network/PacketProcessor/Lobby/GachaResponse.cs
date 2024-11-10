@@ -36,6 +36,37 @@ namespace Network.PacketProcessor
 
                 popup.BindPopupCloseEvent();
 
+                switch (Managers.Data.GetResourceIndexType(Data.AcquiredItemType))
+                {
+                    case DataManager.ResourceIndexType.Gold:
+                        int gold = Managers.Data.GetGold();
+                        gold += Data.AcquiredItemAmount;
+                        Managers.Data.SetGold(gold);
+                        break;
+                    case DataManager.ResourceIndexType.Diamond:
+                        int dia = Managers.Data.GetDiamond();
+                        dia += Data.AcquiredItemAmount;
+                        Managers.Data.SetDiamond(dia);
+                        break;
+                    case DataManager.ResourceIndexType.Mileage:
+                        int mileage = Managers.Data.GetMileage();
+                        mileage += Data.AcquiredItemAmount;
+                        Managers.Data.SetMileage(mileage);
+                        break;
+                    case DataManager.ResourceIndexType.TicketBase:
+                        int ticketBase = Managers.Data.GetTicketBase();
+                        ticketBase += Data.AcquiredItemAmount;
+                        Managers.Data.SetTicketBase(ticketBase);
+                        break;
+                    case DataManager.ResourceIndexType.TicketRare:
+                        int ticketRare = Managers.Data.GetTicketRare();
+                        ticketRare += Data.AcquiredItemAmount;
+                        Managers.Data.SetTicketRare(ticketRare);
+                        break;
+                    default:
+                        break;
+                }
+
                 switch (Managers.Data.GetResourceIndexType(Data.SpentResourceType))
                 {
                     case DataManager.ResourceIndexType.Gold:

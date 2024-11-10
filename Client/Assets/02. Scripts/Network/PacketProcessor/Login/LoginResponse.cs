@@ -24,8 +24,10 @@ namespace Network.PacketProcessor
             {
                 var userInfo = Data.UserInfo.Value;
                 Debug.Log($"gold : {Data.Gold}, dia : {Data.Dia}");
+                
                 Managers.Data.SetGold(Data.Gold);
                 Managers.Data.SetDiamond(Data.Dia);
+                Managers.Data.SetMileage(Data.Mileage);
                 Managers.Data.SetNickName(userInfo.Nickname);
                 Managers.Scene.LoadScene(Define.Scene.Home);
             }
