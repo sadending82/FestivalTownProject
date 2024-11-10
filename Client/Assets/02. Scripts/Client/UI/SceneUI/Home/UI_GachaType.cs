@@ -14,7 +14,7 @@ public class UI_GachaType : UI_Base
         GachaButton,
     }
 
-    bool isIsnitialized = false;
+    bool isInitialized = false;
     int GachaTypeNum = 0;
 
     int RequireResource1Index = 0;
@@ -24,7 +24,7 @@ public class UI_GachaType : UI_Base
 
     void Start()
     {
-        if (!isIsnitialized)
+        if (!isInitialized)
         {
             Init();
         }
@@ -103,6 +103,6 @@ public class UI_GachaType : UI_Base
         GetComponent<RectTransform>().localPosition = Vector3.zero;
         GetComponent<RectTransform>().localScale = Vector3.one;
 
-        isIsnitialized = true;
+        isInitialized = true;
     }
 }

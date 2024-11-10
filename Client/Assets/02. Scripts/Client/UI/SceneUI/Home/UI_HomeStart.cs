@@ -11,7 +11,8 @@ public class UI_HomeStart : UI_Scene
 
     enum GameObjects
     {
-        Panel,
+        BGBase,
+        BGPattern,
         Title,
         GameStartButton,
         PresentButton,
