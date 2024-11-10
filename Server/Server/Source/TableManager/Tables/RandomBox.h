@@ -14,6 +14,11 @@ enum class RandomBox_Field {
 	Close_Date		= 8,
 };
 
+enum class GachaWhenDup_Field {
+	item_grade = 0,
+	acquired_mileage = 1,
+};
+
 
 struct RandomBox {
 	int			index;

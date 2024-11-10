@@ -646,6 +646,24 @@ void TableManager::ReadGachaTable()
             }
             rowIdx++;
         }
+
+        // Acquired Mileages
+        mWorksheet = mWorkbook.sheet_by_index(2);
+        rowIdx = 0;
+        for (auto row : mWorksheet.rows(false)) {
+            if (rowIdx < startRow) {
+                rowIdx++;
+                continue;
+            }
+
+            if (!row.empty()) {
+                int itemGrade = row[(int)(GachaWhenDup_Field::item_grade)].value<int>();
+                int acquiredMileage = row[(int)(GachaWhenDup_Field::acquired_mileage)].value<int>();
+
+                GachaAcquiredMileages[itemGrade] = acquiredMileage;
+            }
+            rowIdx++;
+        }
     }
     catch (const xlnt::exception& e) {
         std::cerr << "Gacha.xlsx Excel File Load Fail: " << e.what() << std::endl;
@@ -780,6 +798,14 @@ std::unordered_map<GACHA_GROUP, std::unordered_map<INDEX, GachaItem>>& TableMana
 
     }
     return GachaItemList;
+}
+
+std::unordered_map<int, int>& TableManager::GetGachaAcquiredMileages()
+{
+    while (mIsLoading == true) {
+
+    }
+    return GachaAcquiredMileages;
 }
 
 std::unordered_map<GameMode, std::vector<MapCode>>& TableManager::getMapListByMode()

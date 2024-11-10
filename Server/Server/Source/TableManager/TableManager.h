@@ -53,6 +53,7 @@ public:
 
 	std::unordered_map<INDEX, RandomBox>& GetRandomBoxList();
 	std::unordered_map<GACHA_GROUP, std::unordered_map<INDEX, GachaItem>>& GetGachaItemList();
+	std::unordered_map<int, int>& GetGachaAcquiredMileages();
 
 
 	std::unordered_map<GameMode, std::vector<MapCode>>& getMapListByMode();
@@ -81,6 +82,7 @@ private:
 
 	std::unordered_map<INDEX, RandomBox> RandomBoxList;
 	std::unordered_map<GACHA_GROUP, std::unordered_map<INDEX, GachaItem>> GachaItemList;
+	std::unordered_map<int, int> GachaAcquiredMileages;
 
 	std::unordered_map<GameMode, std::vector<MapCode>> MapListByMode;
 
