@@ -70,38 +70,39 @@ public:
 
 						}
 
-						int currItemCount = db->SelectUserItemCount(uid, rewardItem);
 						int itemType = (int)tableManager->GetItemInfos()[rewardItem].Item_Type;
 
-						// 새로 얻은 경우
-						if (currItemCount == 0) {
-							bool insert_result = db->InsertUserItem(uid, rewardItem, rewardValue, itemType);
-							if (insert_result == false) {
-								gacha_result = false;
-								break;
-							}
+						// 재화나 티켓인 경우
+						if (itemType == (int)ItemType::Money) {
+							db->UpsertUserItemCount(uid, rewardItem, rewardValue);
+							db->UpsertUserItemCount(uid, pay_item[i], -pay_Price[i]);
+							gacha_result = true;
+							break;
 						}
-						// 이미 있는 경우
 						else {
-							// 얻은게 재화 일 경우
-							if (itemType == (int)ItemType::Money) {
-								db->UpsertUserItemCount(uid, rewardItem, rewardValue);
-								db->UpsertUserItemCount(uid, pay_item[i], -pay_Price[i]);
-								gacha_result = true;
-								break;
+							int currItemCount = db->SelectUserItemCount(uid, rewardItem);
+							// 새로 얻은 경우
+							if (currItemCount == 0) {
+								bool insert_result = db->InsertUserItem(uid, rewardItem, rewardValue, itemType);
+								if (insert_result == false) {
+									gacha_result = false;
+									break;
+								}
 							}
+							// 이미 있는 경우
+							else {
+								// 마일리지 지급
+								int itemGrade = (int)tableManager->GetItemInfos()[rewardItem].Item_Grade;
+								int mileage = tableManager->GetGachaAcquiredMileages()[itemGrade];
+								bool update_result = db->UpsertUserItemCount(uid, mileageIndex, mileage);
+								if (update_result == false) {
+									gacha_result = false;
+									break;
+								}
 
-							// 아니면 마일리지 지급
-							int itemGrade = (int)tableManager->GetItemInfos()[rewardItem].Item_Grade;
-							int mileage = tableManager->GetGachaAcquiredMileages()[itemGrade];
-							bool update_result = db->UpsertUserItemCount(uid, mileageIndex, mileage);
-							if (update_result == false) {
-								gacha_result = false;
-								break;
+								rewardItem = mileageIndex;
+								rewardValue = mileage;
 							}
-
-							rewardItem = mileageIndex;
-							rewardValue = mileage;
 						}
 
 						db->UpsertUserItemCount(uid, pay_item[i], -pay_Price[i]);
