@@ -41,9 +41,11 @@ public:
 
     // UPDATE
     bool UpdateUserConnectionState(const int uid, const int state);
-    bool UpdateUserItemCount(const int uid, const int item_index, const int valueOfChange);
     bool UpdateUserPoint(const int uid, const int valueOfChange);
     bool UpdateRanking(const int uid, const int killCount, const int deathCount, const int point);
+
+    // UPSERT
+    bool UpsertUserItemCount(const int uid, const int item_index, const int valueOfChange);
 
     // DELETE
     bool DeleteAcccount(const char* id);

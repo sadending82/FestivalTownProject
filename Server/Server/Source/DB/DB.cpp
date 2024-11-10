@@ -467,7 +467,7 @@ bool DB::UpdateUserConnectionState(const int uid, const int state)
 	return false;
 }
 
-bool DB::UpdateUserItemCount(const int uid, const int item_Code, const int valueOfChange)
+bool DB::UpsertUserItemCount(const int uid, const int item_Code, const int valueOfChange)
 {
 	// 아이템 테이블에서 중첩 불가능한지 필터링하는 코드 필요
 
@@ -511,7 +511,7 @@ bool DB::UpdateUserItemCount(const int uid, const int item_Code, const int value
 		return true;
 	}
 
-	DEBUGMSGNOPARAM("Execute Query Error : (UpdateUserItemCount)\n");
+	DEBUGMSGNOPARAM("Execute Query Error : (UpsertUserItemCount)\n");
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	return false;
 }

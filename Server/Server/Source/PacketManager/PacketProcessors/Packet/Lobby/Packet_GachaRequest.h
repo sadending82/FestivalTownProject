@@ -17,8 +17,10 @@ public:
 				const GachaRequest* read = flatbuffers::GetRoot<GachaRequest>(data);
 
 				Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
+				int uid = player->GetUID();
 
 				int randomBox = read->random_box_index();
+				int mileageIndex = 100003;
 
 				TableManager* tableManager = pServer->GetTableManager();
 				DB* db = pServer->GetDB();
@@ -40,11 +42,9 @@ public:
 				int rewardValue = 0;
 
 				for (int i = 1; i >= 0; i--) {
-					int currAmount = db->SelectUserItemCount(player->GetUID(), pay_item[i]);
+					int currPayItemAmount = db->SelectUserItemCount(uid, pay_item[i]);
 
-					COUT << currAmount << ENDL;
-
-					if (pay_Price[i] <= currAmount) {
+					if (pay_Price[i] <= currPayItemAmount) {
 						int totalWeight = 0;
 
 						for (auto& item : items) {
@@ -70,7 +70,41 @@ public:
 
 						}
 
-						db->UpdateUserItemCount(player->GetUID(), pay_item[i], -pay_Price[i]);
+						int currItemCount = db->SelectUserItemCount(uid, rewardItem);
+						int itemType = (int)tableManager->GetItemInfos()[rewardItem].Item_Type;
+
+						// 새로 얻은 경우
+						if (currItemCount == 0) {
+							bool insert_result = db->InsertUserItem(uid, rewardItem, rewardValue, itemType);
+							if (insert_result == false) {
+								gacha_result = false;
+								break;
+							}
+						}
+						// 이미 있는 경우
+						else {
+							// 얻은게 재화 일 경우
+							if (itemType == (int)ItemType::Money) {
+								db->UpsertUserItemCount(uid, rewardItem, rewardValue);
+								db->UpsertUserItemCount(uid, pay_item[i], -pay_Price[i]);
+								gacha_result = true;
+								break;
+							}
+
+							// 아니면 마일리지 지급
+							int itemGrade = (int)tableManager->GetItemInfos()[rewardItem].Item_Grade;
+							int mileage = tableManager->GetGachaAcquiredMileages()[itemGrade];
+							bool update_result = db->UpsertUserItemCount(uid, mileageIndex, mileage);
+							if (update_result == false) {
+								gacha_result = false;
+								break;
+							}
+
+							rewardItem = mileageIndex;
+							rewardValue = mileage;
+						}
+
+						db->UpsertUserItemCount(uid, pay_item[i], -pay_Price[i]);
 						gacha_result = true;
 						break;
 					}
