@@ -83,6 +83,11 @@ public:
 							db->UpsertUserItemCount(uid, rewardItem, rewardValue);
 							db->UpsertUserItemCount(uid, pay_item[i], -pay_Price[i]);
 							gacha_result = true;
+
+							usedItemCode = pay_item[i];
+							usedItemAmount = pay_Price[i];
+							usedItemRemaining = currPayItemAmount - usedItemAmount;
+
 							break;
 						}
 						else {
