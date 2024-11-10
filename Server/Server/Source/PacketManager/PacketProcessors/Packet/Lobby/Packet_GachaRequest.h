@@ -41,6 +41,12 @@ public:
 				int rewardItem = 0;
 				int rewardValue = 0;
 
+				// 구매 이후 사용된 재화 정보
+				int usedItemCode = 0;
+				int usedItemAmount = 0;
+				int usedItemRemaining = 0;
+				//
+
 				for (int i = 1; i >= 0; i--) {
 					int currPayItemAmount = db->SelectUserItemCount(uid, pay_item[i]);
 
@@ -107,13 +113,17 @@ public:
 
 						db->UpsertUserItemCount(uid, pay_item[i], -pay_Price[i]);
 						gacha_result = true;
+
+						usedItemCode = pay_item[i];
+						usedItemAmount = pay_Price[i];
+						usedItemRemaining = currPayItemAmount - usedItemAmount;
 						break;
 					}
 				}
 
 				// ....
 
-				pPacketSender->SendGachaResponsePacket(key, gacha_result, rewardItem, rewardValue, 0, 0, 0);
+				pPacketSender->SendGachaResponsePacket(key, gacha_result, rewardItem, rewardValue, usedItemCode, usedItemAmount, usedItemRemaining);
 			}
 		}
 		catch (const std::exception& e) {
