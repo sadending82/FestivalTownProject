@@ -114,6 +114,10 @@ bool DB::InsertNewAcccount(const char* id, const char* password)
 		return false;
 	}
 
+	if (mSecurity->VerifyEmail(id) == false) {
+		return false;
+	}
+
 	std::string salt = mSecurity->GenerateSalt();
 	std::string hashedPassword = mSecurity->HashingPassword(password, salt);
 

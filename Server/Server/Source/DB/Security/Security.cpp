@@ -2,6 +2,7 @@
 #include "Security.h"
 #include <string>
 #include <random>
+#include <regex>
 
 std::string Security::GenerateSalt()
 {
@@ -59,4 +60,12 @@ bool Security::VerifyString(const char* input)
 	}
 
 	return true;
+}
+
+bool Security::VerifyEmail(const std::string email)
+{
+
+	std::regex email_pattern("[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}");
+
+	return std::regex_match(email.c_str(), email_pattern);
 }

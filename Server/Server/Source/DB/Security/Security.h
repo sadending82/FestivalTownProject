@@ -17,5 +17,7 @@ public:
 
 	bool VerifyString(const char* input);
 
+	bool VerifyEmail(const std::string email);
+
 private:
 };
