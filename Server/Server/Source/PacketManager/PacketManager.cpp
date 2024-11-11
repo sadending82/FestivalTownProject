@@ -19,6 +19,7 @@ PacketManager::PacketManager(Server* server, PacketSender* packetSender)
 
         PacketProcessorMap[ePacketType::C2S_GACHA_REQUEST] = std::make_unique<Packet_GachaRequest>(pServer, pPacketSender);
         PacketProcessorMap[ePacketType::C2S_CURRENCY_AMOUNT_REQUEST] = std::make_unique<Packet_CurrencyAmountRequest>(pServer, pPacketSender);
+        PacketProcessorMap[ePacketType::C2S_USER_ITEMS_REQUEST] = std::make_unique<Packet_UserItemsRequest>(pServer, pPacketSender);
 
         PacketProcessorMap[ePacketType::C2S_HEART_BEAT] = std::make_unique<Packet_HeartBeat>(pServer, pPacketSender);
 

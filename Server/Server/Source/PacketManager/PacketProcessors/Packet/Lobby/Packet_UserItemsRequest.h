@@ -4,17 +4,17 @@
 
 using namespace PacketTable::LobbyTable;
 
-class Packet_CurrencyAmountRequest : public PacketProcessor {
+class Packet_UserItemsRequest : public PacketProcessor {
 
 public:
-	Packet_CurrencyAmountRequest(Server* server, PacketSender* packetSender) : PacketProcessor(server, packetSender) {}
+	Packet_UserItemsRequest(Server* server, PacketSender* packetSender) : PacketProcessor(server, packetSender) {}
 
 	virtual void Process(const uint8_t* data, const int size, const int key) {
 		try {
 			flatbuffers::Verifier verifier(data, size);
-			if (verifier.VerifyBuffer<CurrencyAmountRequest>(nullptr)) {
+			if (verifier.VerifyBuffer<UserItemsRequest>(nullptr)) {
 
-				const CurrencyAmountRequest* read = flatbuffers::GetRoot<CurrencyAmountRequest>(data);
+				//const UserItemsRequest* read = flatbuffers::GetRoot<UserItemsRequest>(data);
 
 				Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
 				int uid = player->GetUID();
@@ -22,12 +22,11 @@ public:
 				TableManager* tableManager = pServer->GetTableManager();
 				DB* db = pServer->GetDB();
 
-				std::vector<int> currencyTypes;
-				std::vector<int> currencyAmounts;
+				std::vector<UserItem> UserItems;
 
-				bool result = db->SelectUserAllCurrency(uid, currencyTypes, currencyAmounts);
+				bool result = db->SelectUserAllItems(uid, UserItems);
 
-				pPacketSender->SendCurrencyAmountResponsePacket(key, result, currencyTypes, currencyAmounts);
+				pPacketSender->SendUserItemsResponsePacket(key, result, UserItems);
 			}
 		}
 		catch (const std::exception& e) {
