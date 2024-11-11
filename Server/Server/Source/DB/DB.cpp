@@ -156,10 +156,6 @@ bool DB::InsertNewUser(const char* id, const char* nickname)
 
 	int uid;
 
-	if (mSecurity->VerifyString(id) == false || mSecurity->VerifyString(nickname) == false) {
-		return false;
-	}
-
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGNOPARAM("hStmt Error : (InsertNewUser) \n");
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
