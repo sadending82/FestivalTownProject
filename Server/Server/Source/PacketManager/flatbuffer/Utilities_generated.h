@@ -28,6 +28,9 @@ struct GameSettingBuilder;
 struct CharacterCustomizing;
 struct CharacterCustomizingBuilder;
 
+struct ItemInfo;
+struct ItemInfoBuilder;
+
 struct DB_UserInfo;
 struct DB_UserInfoBuilder;
 
@@ -165,6 +168,87 @@ struct CharacterCustomizingBuilder {
 inline ::flatbuffers::Offset<CharacterCustomizing> CreateCharacterCustomizing(
     ::flatbuffers::FlatBufferBuilder &_fbb) {
   CharacterCustomizingBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct ItemInfo FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef ItemInfoBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ITEM_UID = 4,
+    VT_OWNER_UID = 6,
+    VT_ITEM_CODE = 8,
+    VT_COUNT = 10,
+    VT_ITEM_TYPE = 12
+  };
+  int32_t item_uid() const {
+    return GetField<int32_t>(VT_ITEM_UID, 0);
+  }
+  int32_t owner_uid() const {
+    return GetField<int32_t>(VT_OWNER_UID, 0);
+  }
+  int32_t item_code() const {
+    return GetField<int32_t>(VT_ITEM_CODE, 0);
+  }
+  int32_t count() const {
+    return GetField<int32_t>(VT_COUNT, 0);
+  }
+  int32_t item_type() const {
+    return GetField<int32_t>(VT_ITEM_TYPE, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_ITEM_UID, 4) &&
+           VerifyField<int32_t>(verifier, VT_OWNER_UID, 4) &&
+           VerifyField<int32_t>(verifier, VT_ITEM_CODE, 4) &&
+           VerifyField<int32_t>(verifier, VT_COUNT, 4) &&
+           VerifyField<int32_t>(verifier, VT_ITEM_TYPE, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct ItemInfoBuilder {
+  typedef ItemInfo Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_item_uid(int32_t item_uid) {
+    fbb_.AddElement<int32_t>(ItemInfo::VT_ITEM_UID, item_uid, 0);
+  }
+  void add_owner_uid(int32_t owner_uid) {
+    fbb_.AddElement<int32_t>(ItemInfo::VT_OWNER_UID, owner_uid, 0);
+  }
+  void add_item_code(int32_t item_code) {
+    fbb_.AddElement<int32_t>(ItemInfo::VT_ITEM_CODE, item_code, 0);
+  }
+  void add_count(int32_t count) {
+    fbb_.AddElement<int32_t>(ItemInfo::VT_COUNT, count, 0);
+  }
+  void add_item_type(int32_t item_type) {
+    fbb_.AddElement<int32_t>(ItemInfo::VT_ITEM_TYPE, item_type, 0);
+  }
+  explicit ItemInfoBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<ItemInfo> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<ItemInfo>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<ItemInfo> CreateItemInfo(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t item_uid = 0,
+    int32_t owner_uid = 0,
+    int32_t item_code = 0,
+    int32_t count = 0,
+    int32_t item_type = 0) {
+  ItemInfoBuilder builder_(_fbb);
+  builder_.add_item_type(item_type);
+  builder_.add_count(count);
+  builder_.add_item_code(item_code);
+  builder_.add_owner_uid(owner_uid);
+  builder_.add_item_uid(item_uid);
   return builder_.Finish();
 }
 

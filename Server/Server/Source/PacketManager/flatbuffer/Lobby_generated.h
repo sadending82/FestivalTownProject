@@ -13,6 +13,8 @@ static_assert(FLATBUFFERS_VERSION_MAJOR == 24 &&
               FLATBUFFERS_VERSION_REVISION == 25,
              "Non-compatible flatbuffers version included");
 
+#include "Utilities_generated.h"
+
 namespace PacketTable {
 namespace LobbyTable {
 
@@ -36,6 +38,12 @@ struct CurrencyAmountRequestBuilder;
 
 struct CurrencyAmountResponse;
 struct CurrencyAmountResponseBuilder;
+
+struct UserItemsRequest;
+struct UserItemsRequestBuilder;
+
+struct UserItemsResponse;
+struct UserItemsResponseBuilder;
 
 struct GameMatchingRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef GameMatchingRequestBuilder Builder;
@@ -427,14 +435,14 @@ struct CurrencyAmountResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::T
   typedef CurrencyAmountResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_RESULT = 4,
-    VT_CURRENCY_TYPE = 6,
+    VT_CURRENCY_CODE = 6,
     VT_CURRENCY_AMOUNT = 8
   };
   int32_t result() const {
     return GetField<int32_t>(VT_RESULT, 0);
   }
-  const ::flatbuffers::Vector<int32_t> *currency_type() const {
-    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_CURRENCY_TYPE);
+  const ::flatbuffers::Vector<int32_t> *currency_code() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_CURRENCY_CODE);
   }
   const ::flatbuffers::Vector<int32_t> *currency_amount() const {
     return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_CURRENCY_AMOUNT);
@@ -442,8 +450,8 @@ struct CurrencyAmountResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::T
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_RESULT, 4) &&
-           VerifyOffset(verifier, VT_CURRENCY_TYPE) &&
-           verifier.VerifyVector(currency_type()) &&
+           VerifyOffset(verifier, VT_CURRENCY_CODE) &&
+           verifier.VerifyVector(currency_code()) &&
            VerifyOffset(verifier, VT_CURRENCY_AMOUNT) &&
            verifier.VerifyVector(currency_amount()) &&
            verifier.EndTable();
@@ -457,8 +465,8 @@ struct CurrencyAmountResponseBuilder {
   void add_result(int32_t result) {
     fbb_.AddElement<int32_t>(CurrencyAmountResponse::VT_RESULT, result, 0);
   }
-  void add_currency_type(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> currency_type) {
-    fbb_.AddOffset(CurrencyAmountResponse::VT_CURRENCY_TYPE, currency_type);
+  void add_currency_code(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> currency_code) {
+    fbb_.AddOffset(CurrencyAmountResponse::VT_CURRENCY_CODE, currency_code);
   }
   void add_currency_amount(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> currency_amount) {
     fbb_.AddOffset(CurrencyAmountResponse::VT_CURRENCY_AMOUNT, currency_amount);
@@ -477,11 +485,11 @@ struct CurrencyAmountResponseBuilder {
 inline ::flatbuffers::Offset<CurrencyAmountResponse> CreateCurrencyAmountResponse(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t result = 0,
-    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> currency_type = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> currency_code = 0,
     ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> currency_amount = 0) {
   CurrencyAmountResponseBuilder builder_(_fbb);
   builder_.add_currency_amount(currency_amount);
-  builder_.add_currency_type(currency_type);
+  builder_.add_currency_code(currency_code);
   builder_.add_result(result);
   return builder_.Finish();
 }
@@ -489,15 +497,108 @@ inline ::flatbuffers::Offset<CurrencyAmountResponse> CreateCurrencyAmountRespons
 inline ::flatbuffers::Offset<CurrencyAmountResponse> CreateCurrencyAmountResponseDirect(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t result = 0,
-    const std::vector<int32_t> *currency_type = nullptr,
+    const std::vector<int32_t> *currency_code = nullptr,
     const std::vector<int32_t> *currency_amount = nullptr) {
-  auto currency_type__ = currency_type ? _fbb.CreateVector<int32_t>(*currency_type) : 0;
+  auto currency_code__ = currency_code ? _fbb.CreateVector<int32_t>(*currency_code) : 0;
   auto currency_amount__ = currency_amount ? _fbb.CreateVector<int32_t>(*currency_amount) : 0;
   return PacketTable::LobbyTable::CreateCurrencyAmountResponse(
       _fbb,
       result,
-      currency_type__,
+      currency_code__,
       currency_amount__);
+}
+
+struct UserItemsRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef UserItemsRequestBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct UserItemsRequestBuilder {
+  typedef UserItemsRequest Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit UserItemsRequestBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<UserItemsRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<UserItemsRequest>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<UserItemsRequest> CreateUserItemsRequest(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  UserItemsRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct UserItemsResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef UserItemsResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_RESULT = 4,
+    VT_ITEMS = 6
+  };
+  int32_t result() const {
+    return GetField<int32_t>(VT_RESULT, 0);
+  }
+  const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::ItemInfo>> *items() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::ItemInfo>> *>(VT_ITEMS);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_RESULT, 4) &&
+           VerifyOffset(verifier, VT_ITEMS) &&
+           verifier.VerifyVector(items()) &&
+           verifier.VerifyVectorOfTables(items()) &&
+           verifier.EndTable();
+  }
+};
+
+struct UserItemsResponseBuilder {
+  typedef UserItemsResponse Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_result(int32_t result) {
+    fbb_.AddElement<int32_t>(UserItemsResponse::VT_RESULT, result, 0);
+  }
+  void add_items(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::ItemInfo>>> items) {
+    fbb_.AddOffset(UserItemsResponse::VT_ITEMS, items);
+  }
+  explicit UserItemsResponseBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<UserItemsResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<UserItemsResponse>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<UserItemsResponse> CreateUserItemsResponse(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t result = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::ItemInfo>>> items = 0) {
+  UserItemsResponseBuilder builder_(_fbb);
+  builder_.add_items(items);
+  builder_.add_result(result);
+  return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<UserItemsResponse> CreateUserItemsResponseDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t result = 0,
+    const std::vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::ItemInfo>> *items = nullptr) {
+  auto items__ = items ? _fbb.CreateVector<::flatbuffers::Offset<PacketTable::UtilitiesTable::ItemInfo>>(*items) : 0;
+  return PacketTable::LobbyTable::CreateUserItemsResponse(
+      _fbb,
+      result,
+      items__);
 }
 
 }  // namespace LobbyTable

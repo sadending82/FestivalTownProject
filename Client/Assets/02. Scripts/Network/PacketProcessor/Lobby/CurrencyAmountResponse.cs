@@ -23,10 +23,10 @@ namespace Network.PacketProcessor
             {
                 for (int i = 0; i < Data.CurrencyAmountLength; ++i)
                 {
-                    int type = Data.CurrencyType(i);
+                    int Code = Data.CurrencyCode(i);
                     int amount = Data.CurrencyAmount(i);
 
-                    switch(Managers.Data.GetResourceIndexType(type))
+                    switch(Managers.Data.GetResourceIndexType(Code))
                     {
                         case DataManager.ResourceIndexType.Gold:
                             Managers.Data.SetGold(amount);

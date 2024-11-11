@@ -131,6 +131,7 @@
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Login\Packet_VersionCheckRequest.h" />
     <ClInclude Include="Source\DB\Schema\DB_UserItem.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_CurrencyAmountRequest.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_UserItemsRequest.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

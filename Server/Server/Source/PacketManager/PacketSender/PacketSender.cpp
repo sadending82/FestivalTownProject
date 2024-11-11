@@ -41,6 +41,12 @@ void PacketSender::SendCurrencyAmountResponsePacket(int sessionID, int result, s
     mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
 }
 
+void PacketSender::SendUserItemsResponsePacket(int sessionID, int result, std::vector<UserItem>& user_items)
+{
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakeUserItemsResponsePacket(result, user_items);
+    mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
+}
+
 void PacketSender::SendPlayerAdd(int roomID)
 {
     Room* room = mServer->GetRooms()[roomID];

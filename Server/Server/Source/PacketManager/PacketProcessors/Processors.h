@@ -6,6 +6,7 @@
 
 #include "Packet/Lobby/Packet_GachaRequest.h"
 #include "Packet/Lobby/Packet_CurrencyAmountRequest.h"
+#include "Packet/Lobby/Packet_UserItemsRequest.h"
 
 #include "Packet/Utilities/Packet_HeartBeat.h"
 

@@ -442,6 +442,51 @@ bool DB::SelectUserAllCurrency(const int uid, std::vector<int>& currency_types_o
 	return false;
 }
 
+bool DB::SelectUserAllItems(const int uid, std::vector<UserItem>& UserItems_output)
+{
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	int itemType = 1;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGNOPARAM("hStmt Error : (InsertRanking) \n");
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return 0;
+	}
+
+	UseGameDB(hStmt);
+
+	const WCHAR* query = L"SELECT * FROM UserItem WHERE owner_UID = ?";
+
+	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		SQLLEN col1, col2, col3, col4, col5;
+		UserItem item;
+		while (SQLFetch(hStmt) == SQL_SUCCESS) {
+			SQLGetData(hStmt, (int)UserItem_Field::item_UID, SQL_C_LONG, &item.item_UID, sizeof(item.item_UID), &col1);
+			SQLGetData(hStmt, (int)UserItem_Field::owner_UID, SQL_C_LONG, &item.owner_UID, sizeof(item.owner_UID), &col2);
+			SQLGetData(hStmt, (int)UserItem_Field::itemCode, SQL_C_LONG, &item.itemCode, sizeof(item.itemCode), &col3);
+			SQLGetData(hStmt, (int)UserItem_Field::count, SQL_C_LONG, &item.count, sizeof(item.count), &col4);
+			SQLGetData(hStmt, (int)UserItem_Field::itemType, SQL_C_LONG, &item.itemType, sizeof(item.itemType), &col5);
+			UserItems_output.push_back(item);
+		}
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return true;
+	}
+
+	DEBUGMSGNOPARAM("Execute Query Error : (SelectItemCount)\n");
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	return false;
+}
+
 int DB::SelectUserItemCount(const int uid, const int item_index)
 {
 	SQLHSTMT hStmt = NULL;

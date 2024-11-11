@@ -20,14 +20,14 @@ public struct CurrencyAmountResponse : IFlatbufferObject
   public CurrencyAmountResponse __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public int Result { get { int o = __p.__offset(4); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public int CurrencyType(int j) { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(__p.__vector(o) + j * 4) : (int)0; }
-  public int CurrencyTypeLength { get { int o = __p.__offset(6); return o != 0 ? __p.__vector_len(o) : 0; } }
+  public int CurrencyCode(int j) { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(__p.__vector(o) + j * 4) : (int)0; }
+  public int CurrencyCodeLength { get { int o = __p.__offset(6); return o != 0 ? __p.__vector_len(o) : 0; } }
 #if ENABLE_SPAN_T
-  public Span<int> GetCurrencyTypeBytes() { return __p.__vector_as_span<int>(6, 4); }
+  public Span<int> GetCurrencyCodeBytes() { return __p.__vector_as_span<int>(6, 4); }
 #else
-  public ArraySegment<byte>? GetCurrencyTypeBytes() { return __p.__vector_as_arraysegment(6); }
+  public ArraySegment<byte>? GetCurrencyCodeBytes() { return __p.__vector_as_arraysegment(6); }
 #endif
-  public int[] GetCurrencyTypeArray() { return __p.__vector_as_array<int>(6); }
+  public int[] GetCurrencyCodeArray() { return __p.__vector_as_array<int>(6); }
   public int CurrencyAmount(int j) { int o = __p.__offset(8); return o != 0 ? __p.bb.GetInt(__p.__vector(o) + j * 4) : (int)0; }
   public int CurrencyAmountLength { get { int o = __p.__offset(8); return o != 0 ? __p.__vector_len(o) : 0; } }
 #if ENABLE_SPAN_T
@@ -39,23 +39,23 @@ public struct CurrencyAmountResponse : IFlatbufferObject
 
   public static Offset<PacketTable.LobbyTable.CurrencyAmountResponse> CreateCurrencyAmountResponse(FlatBufferBuilder builder,
       int result = 0,
-      VectorOffset currency_typeOffset = default(VectorOffset),
+      VectorOffset currency_codeOffset = default(VectorOffset),
       VectorOffset currency_amountOffset = default(VectorOffset)) {
     builder.StartTable(3);
     CurrencyAmountResponse.AddCurrencyAmount(builder, currency_amountOffset);
-    CurrencyAmountResponse.AddCurrencyType(builder, currency_typeOffset);
+    CurrencyAmountResponse.AddCurrencyCode(builder, currency_codeOffset);
     CurrencyAmountResponse.AddResult(builder, result);
     return CurrencyAmountResponse.EndCurrencyAmountResponse(builder);
   }
 
   public static void StartCurrencyAmountResponse(FlatBufferBuilder builder) { builder.StartTable(3); }
   public static void AddResult(FlatBufferBuilder builder, int result) { builder.AddInt(0, result, 0); }
-  public static void AddCurrencyType(FlatBufferBuilder builder, VectorOffset currencyTypeOffset) { builder.AddOffset(1, currencyTypeOffset.Value, 0); }
-  public static VectorOffset CreateCurrencyTypeVector(FlatBufferBuilder builder, int[] data) { builder.StartVector(4, data.Length, 4); for (int i = data.Length - 1; i >= 0; i--) builder.AddInt(data[i]); return builder.EndVector(); }
-  public static VectorOffset CreateCurrencyTypeVectorBlock(FlatBufferBuilder builder, int[] data) { builder.StartVector(4, data.Length, 4); builder.Add(data); return builder.EndVector(); }
-  public static VectorOffset CreateCurrencyTypeVectorBlock(FlatBufferBuilder builder, ArraySegment<int> data) { builder.StartVector(4, data.Count, 4); builder.Add(data); return builder.EndVector(); }
-  public static VectorOffset CreateCurrencyTypeVectorBlock(FlatBufferBuilder builder, IntPtr dataPtr, int sizeInBytes) { builder.StartVector(1, sizeInBytes, 1); builder.Add<int>(dataPtr, sizeInBytes); return builder.EndVector(); }
-  public static void StartCurrencyTypeVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(4, numElems, 4); }
+  public static void AddCurrencyCode(FlatBufferBuilder builder, VectorOffset currencyCodeOffset) { builder.AddOffset(1, currencyCodeOffset.Value, 0); }
+  public static VectorOffset CreateCurrencyCodeVector(FlatBufferBuilder builder, int[] data) { builder.StartVector(4, data.Length, 4); for (int i = data.Length - 1; i >= 0; i--) builder.AddInt(data[i]); return builder.EndVector(); }
+  public static VectorOffset CreateCurrencyCodeVectorBlock(FlatBufferBuilder builder, int[] data) { builder.StartVector(4, data.Length, 4); builder.Add(data); return builder.EndVector(); }
+  public static VectorOffset CreateCurrencyCodeVectorBlock(FlatBufferBuilder builder, ArraySegment<int> data) { builder.StartVector(4, data.Count, 4); builder.Add(data); return builder.EndVector(); }
+  public static VectorOffset CreateCurrencyCodeVectorBlock(FlatBufferBuilder builder, IntPtr dataPtr, int sizeInBytes) { builder.StartVector(1, sizeInBytes, 1); builder.Add<int>(dataPtr, sizeInBytes); return builder.EndVector(); }
+  public static void StartCurrencyCodeVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(4, numElems, 4); }
   public static void AddCurrencyAmount(FlatBufferBuilder builder, VectorOffset currencyAmountOffset) { builder.AddOffset(2, currencyAmountOffset.Value, 0); }
   public static VectorOffset CreateCurrencyAmountVector(FlatBufferBuilder builder, int[] data) { builder.StartVector(4, data.Length, 4); for (int i = data.Length - 1; i >= 0; i--) builder.AddInt(data[i]); return builder.EndVector(); }
   public static VectorOffset CreateCurrencyAmountVectorBlock(FlatBufferBuilder builder, int[] data) { builder.StartVector(4, data.Length, 4); builder.Add(data); return builder.EndVector(); }
@@ -75,7 +75,7 @@ static public class CurrencyAmountResponseVerify
   {
     return verifier.VerifyTableStart(tablePos)
       && verifier.VerifyField(tablePos, 4 /*Result*/, 4 /*int*/, 4, false)
-      && verifier.VerifyVectorOfData(tablePos, 6 /*CurrencyType*/, 4 /*int*/, false)
+      && verifier.VerifyVectorOfData(tablePos, 6 /*CurrencyCode*/, 4 /*int*/, false)
       && verifier.VerifyVectorOfData(tablePos, 8 /*CurrencyAmount*/, 4 /*int*/, false)
       && verifier.VerifyTableEnd(tablePos);
   }

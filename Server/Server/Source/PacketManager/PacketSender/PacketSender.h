@@ -13,6 +13,7 @@ public:
 
 	void SendGachaResponsePacket(int sessionID, int result, int acquired_item_type, int acquired_item_amount, int spent_resource_type, int spent_resource_amount, int remaining_resource_amount);
 	void SendCurrencyAmountResponsePacket(int sessionID, int result, std::vector<int>& currency_types, std::vector<int>& currency_amounts);
+	void SendUserItemsResponsePacket(int sessionID, int result, std::vector<UserItem>& user_items);
 
 	void SendPlayerAdd(int roomID);
 	void SendPlayerDelete(int roomID, int inGameID);
