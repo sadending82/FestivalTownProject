@@ -17,13 +17,17 @@ public:
 
 				DB* pDB = pServer->GetDB();
 
-				bool result = pDB->InsertNewAcccount(read->account_id()->c_str(), read->account_password()->c_str());
+				const char* id = read->account_id()->c_str();
+				const char* pw = read->account_password()->c_str();
+				const char* nickName = read->nickname()->c_str();
+
+				bool result = pDB->InsertNewAcccount(id, pw);
 
 				if (result == true) {
-					pDB->InsertNewUser(read->account_id()->c_str(), read->nickname()->c_str());
+					pDB->InsertNewUser(id, nickName);
 				}
 				else {
-					//rollback (Delete Account)
+					pDB->DeleteAcccount(id);
 				}
 
 				pPacketSender->SendSignUpResponse(key, result);
