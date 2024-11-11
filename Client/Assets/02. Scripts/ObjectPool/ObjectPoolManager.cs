@@ -51,6 +51,8 @@ public class ObjectPoolManager
     /// <returns></returns>
     public Poolable Pop(GameObject origin, Transform parent = null)
     {
+        if (_pool != null) return null;
+        
         if (!_pool.ContainsKey(origin.name))
         {
             CreatePool(origin);

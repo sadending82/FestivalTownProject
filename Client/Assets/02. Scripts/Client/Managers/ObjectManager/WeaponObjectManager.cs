@@ -48,6 +48,8 @@ public class WeaponObjectManager : MonoBehaviour
                 break;
         }
 
+        if (reusedWeapon == null) return; 
+
         reusedWeapon.gameObject.SetActive(true);
         reusedWeapon.gameObject.GetComponent<Weapon>().SetId(id);
         reusedWeapon.gameObject.transform.position = new Vector3(x, createHeight, z);

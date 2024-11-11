@@ -17,14 +17,18 @@ namespace Network.PacketProcessor
             Vector3 pos = new Vector3(Data.Pos.Value.X, Data.Pos.Value.Y, Data.Pos.Value.Z);
             int bombId = Data.Id;
 
-            GameObject targetBomb = Managers.BombObject.FindBombById(bombId);
-            if (targetBomb != null)
+            if (Managers.Game.isInGame)
             {
-                targetBomb.GetComponent<Bomb>().Boom();
-            }
-            else
-            {
-                Debug.Log("BombExplosionProcessor Target Bomb is NULL !!!");
+
+                GameObject targetBomb = Managers.BombObject.FindBombById(bombId);
+                if (targetBomb != null)
+                {
+                    targetBomb.GetComponent<Bomb>().Boom();
+                }
+                else
+                {
+                    Debug.Log("BombExplosionProcessor Target Bomb is NULL !!!");
+                }
             }
         }
 
