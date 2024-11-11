@@ -18,18 +18,22 @@ namespace Network.PacketProcessor
             int resultCode = Data.ResultCode;
 
             Debug.Log($"SignUp Result Code : {resultCode}");
+
+
+
             if (resultCode == 1)
             {
-                Managers.UI.ShowPopUpUI<UI_SignInSuccess>();
+                var ui = Managers.UI.ShowPopUpUI<UI_SignInSuccess>();
+                ui.Init();
+                ui.TextChange("회원가입에 성공했습니다.");
             }
             else
             {
-                if (Camera.main.gameObject.GetComponent<SuperBlur.SuperBlur>() != null)
-                {
-                    Camera.main.gameObject.GetComponent<SuperBlur.SuperBlur>().enabled = false;
-                }
+                var ui = Managers.UI.ShowPopUpUI<UI_Notice>();
+                ui.Init();
+                ui.NoticeTextChange("회원가입에 실패했습니다.");
 
-                Managers.UI.ClosePopUpUI();
+                ui.BindPopupCloseEvent();
             }
         }
 
