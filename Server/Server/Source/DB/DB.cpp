@@ -110,9 +110,9 @@ bool DB::InsertNewAcccount(const char* id, const char* password)
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
-	if (mSecurity->VerifyString(id) == false) {
+	/*if (mSecurity->VerifyString(password) == false) {
 		return false;
-	}
+	}*/
 
 	if (mSecurity->VerifyEmail(id) == false) {
 		return false;
