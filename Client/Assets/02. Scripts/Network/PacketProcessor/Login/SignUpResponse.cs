@@ -19,8 +19,6 @@ namespace Network.PacketProcessor
 
             Debug.Log($"SignUp Result Code : {resultCode}");
 
-
-
             if (resultCode == 1)
             {
                 var ui = Managers.UI.ShowPopUpUI<UI_SignInSuccess>();
