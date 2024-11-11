@@ -21,18 +21,18 @@ public class UI_LobbyPatterns : UI_Base
     /// </summary>
     int _currentTop = 0;
 
-    float _startOpacity = 0.3f;
+    const float _startOpacity = 0.3f;
     float _currentOpacity = 0.3f;
     
-    float _maxOpacity = 0.3f;
-    float _minOpacity = 0.1f;
+    const float _maxOpacity = 0.3f;
+    const float _minOpacity = 0.1f;
 
     bool _isOpacityIncreasing = false;
-    float _opacityIncreasingSpeed = 0.05f;
+    const float _opacityIncreasingSpeed = 0.05f;
 
-    float _patternChangeY = 1799.0f;
+    const float _patternChangeY = 1799.0f;
 
-    float _moveSpeed = 20f;
+    const float _moveSpeed = 20f;
 
     Vector3 _positionToMove = Vector3.zero;
     Color ColorToChange = Color.white;
@@ -79,28 +79,16 @@ public class UI_LobbyPatterns : UI_Base
             GameObject go = Get<GameObject>(i);
             _positionToMove = go.transform.localPosition;
             _positionToMove.y += _moveSpeed * Time.deltaTime;
-            go.transform.localPosition = _positionToMove;
+            if(_positionToMove.y > _patternChangeY)
+            {
+                _positionToMove.y -= _patternChangeY * 3;
+            }
+            go.transform.localPosition = _positionToMove;     
 
             ColorToChange = Color.white;
             ColorToChange.a = _currentOpacity;
 
-            go.GetComponent<Image>().color = ColorToChange;
-        }
-
-        GameObject curTopGo = Get<GameObject>(_currentTop);
-
-        if (curTopGo.transform.localPosition.y > _patternChangeY)
-        {
-            _positionToMove = curTopGo.transform.localPosition;
-            _positionToMove.y -= _patternChangeY * 2.0f;
-            curTopGo.transform.localPosition = _positionToMove;
-
-            _currentTop++;
-            
-            if(_currentTop > (int)GameObjects.End)
-            {
-                _currentTop = 0;
-            }
+            go.GetComponent<Image>().color = ColorToChange;    
         }
         
     }

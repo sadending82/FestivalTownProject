@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UI_LoginPanel: UI_Base
@@ -20,6 +21,9 @@ public class UI_LoginPanel: UI_Base
         ButtonTextSpacer,
         LoginButton,
     }
+
+    bool isSelected = false;
+    Selectable currentSelected;
 
     void Start()
     {
@@ -40,6 +44,31 @@ public class UI_LoginPanel: UI_Base
             Debug.Log("로그인 버튼 클릭");
             Login();
         });
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Tab))
+        {
+            if (EventSystem.current.currentSelectedGameObject == null)
+            {
+                Get<GameObject>((int)GameObjects.IDInputField).GetComponent<Selectable>().Select();
+            }
+            else
+            {
+                Selectable next = EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>().FindSelectableOnDown();
+
+                if (next != null)
+                {
+                    next.Select();
+                }
+            }
+        }
+
+        if(Input.GetKeyDown(KeyCode.Return))
+        {
+            Login();
+        }
     }
 
     public void Login()

@@ -68,7 +68,6 @@ public class UI_GachaSelectPanel : UI_Base
     void CurrentGachaOn()
     {
         AllGachaOff();
-        Debug.Log(CurrentSelected);
         Get<GameObject>((int)GameObjects.GachaTypes).transform.GetChild(CurrentSelected).gameObject.SetActive(true);
     }
 
