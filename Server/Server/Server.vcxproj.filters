@@ -28,6 +28,7 @@
     <ClCompile Include="Source\GameManager\FITH\FITH.cpp" />
     <ClCompile Include="Source\Object\ObjectPool\ObjectPool.cpp" />
     <ClCompile Include="Source\MatchMakingManager\MatchMakingManager.cpp" />
+    <ClCompile Include="Source\LobbyManager\LobbyManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DB\DB.h" />
@@ -132,6 +133,7 @@
     <ClInclude Include="Source\DB\Schema\DB_UserItem.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_CurrencyAmountRequest.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_UserItemsRequest.h" />
+    <ClInclude Include="Source\LobbyManager\LobbyManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

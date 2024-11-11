@@ -27,6 +27,7 @@ Server::~Server()
     delete mPacketMaker;
     delete mPacketSender;
     delete mMatchMakingManager;
+    delete mLobbyManager;
 
     delete mTestThreadRef;
     for (WorkerThread* pWorkerThreadRef : mWorkerThreadRefs) {
@@ -214,6 +215,7 @@ void Server::Run()
     mTableManager->ReadAllDataTable();
     mDB = new DB(mTableManager);
     mDB->Connect(mOdbc, mDB_ID, mDB_Password);
+    mLobbyManager = new LobbyManager(this);
 
     WSADATA wsa;
     WSAStartup(MAKEWORD(2, 2), &wsa);

@@ -680,6 +680,43 @@ bool DB::UpdateRanking(const int uid, const int killCount, const int deathCount,
 	return false;
 }
 
+bool DB::UpdateUserItemCount(const int uid, const int item_index, const int valueOfChange)
+{
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	int itemType = 1;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGNOPARAM("hStmt Error : (UpdateUserGold) \n");
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return false;
+	}
+
+	UseGameDB(hStmt);
+
+	const WCHAR* query = L"UPDATE UserItem SET count = count + ? WHERE owner_UID = ? AND itemCode = ?";
+
+
+	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&valueOfChange), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+	SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&item_index), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return true;
+	}
+
+	DEBUGMSGNOPARAM("Execute Query Error : (UpdateUserItemCount)\n");
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	return false;
+}
+
 bool DB::DeleteAcccount(const char* id)
 {
 	SQLHSTMT hStmt = NULL;

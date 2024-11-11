@@ -165,6 +165,7 @@ if exist "$(ProjectDir)\Config" xcopy /Y /d /e /i "$(ProjectDir)\Config" "$(OutD
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\LobbyManager\LobbyManager.cpp" />
     <ClCompile Include="Source\MatchMakingManager\MatchMakingManager.cpp" />
     <ClCompile Include="Source\GameManager\FITH\FITH.cpp" />
     <ClCompile Include="Source\GameManager\GameManager.cpp" />
@@ -194,6 +195,7 @@ if exist "$(ProjectDir)\Config" xcopy /Y /d /e /i "$(ProjectDir)\Config" "$(OutD
     <ClCompile Include="Source\utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\LobbyManager\LobbyManager.h" />
     <ClInclude Include="Source\DB\Schema\DB_UserItem.h" />
     <ClInclude Include="Source\MatchMakingManager\MatchMakingManager.h" />
     <ClInclude Include="Source\DB\Schema\DB_Account.h" />

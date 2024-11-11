@@ -6,6 +6,7 @@
 #include "../DB/DB.h"
 #include "../PacketManager/PacketSender/PacketSender.h"
 #include "../MatchMakingManager/MatchMakingManager.h"
+#include "../LobbyManager/LobbyManager.h"
 
 #define SESSION_ARRAY std::array<Session*, MAXSESSION>
 #define ROOM_ARRAY std::array<Room*, MAXROOM>
@@ -72,6 +73,7 @@ public:
 	PacketSender*				GetPacketSender() { return mPacketSender; }
 	MatchMakingManager*			GetMatchMakingManager() { return mMatchMakingManager; }
 	GAMEMANAGER_MAP&			GetGameManagers() { return mGameManagers; }
+	LobbyManager*				GetLobbyManager() { return mLobbyManager; }
 
 private:
 	SOCKADDR_IN							mServerAddr;
@@ -88,6 +90,7 @@ private:
 	PacketMaker*						mPacketMaker = nullptr;
 	PacketSender*						mPacketSender = nullptr;
 	MatchMakingManager*					mMatchMakingManager = nullptr;
+	LobbyManager*						mLobbyManager = nullptr;
 
 	class TestThread*					mTestThreadRef = nullptr;
 	std::vector<class WorkerThread*>	mWorkerThreadRefs;

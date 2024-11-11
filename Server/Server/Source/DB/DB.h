@@ -45,6 +45,7 @@ public:
     bool UpdateUserConnectionState(const int uid, const int state);
     bool UpdateUserPoint(const int uid, const int valueOfChange);
     bool UpdateRanking(const int uid, const int killCount, const int deathCount, const int point);
+    bool UpdateUserItemCount(const int uid, const int item_index, const int valueOfChange);
 
     // UPSERT
     bool UpsertUserItemCount(const int uid, const int item_index, const int valueOfChange);
