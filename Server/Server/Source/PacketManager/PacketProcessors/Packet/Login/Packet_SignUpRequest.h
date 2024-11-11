@@ -24,10 +24,10 @@ public:
 				bool result = pDB->InsertNewAcccount(id, pw);
 
 				if (result == true) {
-					pDB->InsertNewUser(id, nickName);
-				}
-				else {
-					pDB->DeleteAcccount(id);
+					if (pDB->InsertNewUser(id, nickName) == false) {
+						pDB->DeleteAcccount(id);
+						result = false;
+					}
 				}
 
 				pPacketSender->SendSignUpResponse(key, result);
