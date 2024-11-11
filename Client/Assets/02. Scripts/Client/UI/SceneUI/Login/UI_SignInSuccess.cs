@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class UI_SignInSuccess : UI_PopUp
@@ -13,9 +14,11 @@ public class UI_SignInSuccess : UI_PopUp
         SignInSuccessText,
     }
 
+    bool isInitialized = false;
+    
     void Start()
     {
-        Init();
+        if(!isInitialized) Init();
     }
 
     public override void Init()
@@ -33,5 +36,12 @@ public class UI_SignInSuccess : UI_PopUp
             Managers.UI.ClosePopUpUI();
             Managers.UI.ClosePopUpUI();
         });
+
+        isInitialized = true;
+    }
+
+    public void TextChange(string text)
+    {
+        Get<GameObject>((int)GameObjects.SignInSuccessText).GetComponent<TMP_Text>().text = text;
     }
 }
