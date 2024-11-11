@@ -15,14 +15,17 @@ namespace Network.PacketProcessor
             var bb = new ByteBuffer(data);
             var Data = BlockDrop.GetRootAsBlockDrop(bb);
 
-            for (int i = 0; i < Data.PosLength; ++i)
+            if (Managers.Game.isInGame)
             {
+                for (int i = 0; i < Data.PosLength; ++i)
+                {
 
-                int posX = Data.Pos(i).Value.X;
-                int posY = Data.Pos(i).Value.Y;
-                int type = Data.Type(i);
+                    int posX = Data.Pos(i).Value.X;
+                    int posY = Data.Pos(i).Value.Y;
+                    int type = Data.Type(i);
 
-                Managers.CubeObject.SpawnCube(posX, posY, (eBlockType)type);
+                    Managers.CubeObject.SpawnCube(posX, posY, (eBlockType)type);
+                }
             }
         }
 
