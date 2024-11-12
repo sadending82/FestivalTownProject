@@ -23,7 +23,7 @@ namespace Network.PacketProcessor
             if (resultCode == 1)
             {
                 var userInfo = Data.UserInfo.Value;
-                Debug.Log($"gold : {Data.Gold}, dia : {Data.Dia}");
+                Debug.Log($"gold : {Data.Gold}, dia : {Data.Dia}, Mileage : {Data.Mileage}, NickName : {userInfo.Nickname}");
                 
                 Managers.Data.SetGold(Data.Gold);
                 Managers.Data.SetDiamond(Data.Dia);

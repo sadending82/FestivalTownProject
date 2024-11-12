@@ -21,7 +21,9 @@ public class HomeScene : BaseScene
         homeStartUI.Init();
         homeSceneUI.Init();
 
-
+        homeSceneUI.SetDiamond(Managers.Data.GetDiamond());
+        homeSceneUI.SetGold(Managers.Data.GetGold());
+        homeStartUI.SetNickName(Managers.Data.GetNickName());
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -31,6 +33,7 @@ public class HomeScene : BaseScene
     {
         homeSceneUI.SetDiamond(Managers.Data.GetDiamond());
         homeSceneUI.SetGold(Managers.Data.GetGold());
+        homeStartUI.SetNickName(Managers.Data.GetNickName());
     }
 
     public override void Clear()
