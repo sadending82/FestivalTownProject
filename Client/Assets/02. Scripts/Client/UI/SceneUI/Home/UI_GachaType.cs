@@ -2,7 +2,6 @@ using ExcelDataStructure;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.Rendering;
 using UnityEngine;
 
 public class UI_GachaType : UI_Base
