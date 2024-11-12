@@ -417,6 +417,11 @@ void TableManager::ReadPointConstantTable()
                         PointConstantList[modeIndex].Lose_Kill_Point.Value = row[(int)PointConstant_Field::Value].value<int>();
                     }
                     break;
+                    case BattleResult::BR_Draw: {
+                        PointConstantList[modeIndex].Draw_Kill_Point.WorkType = row[(int)PointConstant_Field::WorkType].value<int>();
+                        PointConstantList[modeIndex].Draw_Kill_Point.Value = row[(int)PointConstant_Field::Value].value<int>();
+                    }
+                    break;
                     default:
                         break;
                     }
@@ -434,6 +439,11 @@ void TableManager::ReadPointConstantTable()
                         PointConstantList[modeIndex].Lose_Death_Point.Value = row[(int)PointConstant_Field::Value].value<int>();
                     }
                                               break;
+                    case BattleResult::BR_Draw: {
+                        PointConstantList[modeIndex].Draw_Death_Point.WorkType = row[(int)PointConstant_Field::WorkType].value<int>();
+                        PointConstantList[modeIndex].Draw_Death_Point.Value = row[(int)PointConstant_Field::Value].value<int>();
+                    }
+                                              break;
                     default:
                         break;
                     }
@@ -449,6 +459,11 @@ void TableManager::ReadPointConstantTable()
                     case BattleResult::BR_Lose: {
                         PointConstantList[modeIndex].Lose_Bomb_Point.WorkType = row[(int)PointConstant_Field::WorkType].value<int>();
                         PointConstantList[modeIndex].Lose_Bomb_Point.Value = row[(int)PointConstant_Field::Value].value<int>();
+                    }
+                                              break;
+                    case BattleResult::BR_Draw: {
+                        PointConstantList[modeIndex].Draw_Bomb_Point.WorkType = row[(int)PointConstant_Field::WorkType].value<int>();
+                        PointConstantList[modeIndex].Draw_Bomb_Point.Value = row[(int)PointConstant_Field::Value].value<int>();
                     }
                                               break;
                     default:
@@ -506,6 +521,15 @@ void TableManager::ReadGameReward()
                     GameRewardList[modeIndex].Lose_Reward3_Value = row[(int)Reward_Field::Reward3_Value].value<int>();
                 }
                 break;
+                case BattleResult::BR_Draw: {
+                    GameRewardList[modeIndex].Draw_Reward1_Index = row[(int)Reward_Field::Reward1_Index].value<int>();
+                    GameRewardList[modeIndex].Draw_Reward1_Value = row[(int)Reward_Field::Reward1_Value].value<int>();
+                    GameRewardList[modeIndex].Draw_Reward2_Index = row[(int)Reward_Field::Reward2_Index].value<int>();
+                    GameRewardList[modeIndex].Draw_Reward2_Value = row[(int)Reward_Field::Reward2_Value].value<int>();
+                    GameRewardList[modeIndex].Draw_Reward3_Index = row[(int)Reward_Field::Reward3_Index].value<int>();
+                    GameRewardList[modeIndex].Draw_Reward3_Value = row[(int)Reward_Field::Reward3_Value].value<int>();
+                }
+                break;
                 default:{
 
                 }
@@ -542,7 +566,7 @@ void TableManager::ReadGameReward()
                         GameBonusRewardList[modeIndex][point].Win_Reward3_Index = row[(int)BonusReward_Field::Reward3_Index].value<int>();
                         GameBonusRewardList[modeIndex][point].Win_Reward3_Value = row[(int)BonusReward_Field::Reward3_Value].value<int>();
                     }
-                          break;
+                    break;
                     case 2: {
                         GameBonusRewardList[modeIndex][point].MVP_Reward1_Index = row[(int)BonusReward_Field::Reward1_Index].value<int>();
                         GameBonusRewardList[modeIndex][point].MVP_Reward1_Value = row[(int)BonusReward_Field::Reward1_Value].value<int>();
@@ -565,6 +589,15 @@ void TableManager::ReadGameReward()
                     GameBonusRewardList[modeIndex][point].Lose_Reward2_Value = row[(int)BonusReward_Field::Reward2_Value].value<int>();
                     GameBonusRewardList[modeIndex][point].Lose_Reward3_Index = row[(int)BonusReward_Field::Reward3_Index].value<int>();
                     GameBonusRewardList[modeIndex][point].Lose_Reward3_Value = row[(int)BonusReward_Field::Reward3_Value].value<int>();
+                }
+                break;
+                case BattleResult::BR_Draw: {
+                    GameBonusRewardList[modeIndex][point].Draw_Reward1_Index = row[(int)BonusReward_Field::Reward1_Index].value<int>();
+                    GameBonusRewardList[modeIndex][point].Draw_Reward1_Value = row[(int)BonusReward_Field::Reward1_Value].value<int>();
+                    GameBonusRewardList[modeIndex][point].Draw_Reward2_Index = row[(int)BonusReward_Field::Reward2_Index].value<int>();
+                    GameBonusRewardList[modeIndex][point].Draw_Reward2_Value = row[(int)BonusReward_Field::Reward2_Value].value<int>();
+                    GameBonusRewardList[modeIndex][point].Draw_Reward3_Index = row[(int)BonusReward_Field::Reward3_Index].value<int>();
+                    GameBonusRewardList[modeIndex][point].Draw_Reward3_Value = row[(int)BonusReward_Field::Reward3_Value].value<int>();
                 }
                 break;
                 default: 

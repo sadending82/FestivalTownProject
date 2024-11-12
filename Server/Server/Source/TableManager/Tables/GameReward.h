@@ -31,6 +31,14 @@ struct GameReward {
 	int	Lose_Reward2_Value;
 	int	Lose_Reward3_Index;
 	int	Lose_Reward3_Value;
+
+	// draw
+	int Draw_Reward1_Index;
+	int	Draw_Reward1_Value;
+	int	Draw_Reward2_Index;
+	int	Draw_Reward2_Value;
+	int	Draw_Reward3_Index;
+	int	Draw_Reward3_Value;
 };
 
 enum class BonusReward_Field {
@@ -62,6 +70,14 @@ struct BonusReward {
 	int	Lose_Reward2_Value;
 	int	Lose_Reward3_Index;
 	int	Lose_Reward3_Value;
+
+	// draw
+	int Draw_Reward1_Index;
+	int	Draw_Reward1_Value;
+	int	Draw_Reward2_Index;
+	int	Draw_Reward2_Value;
+	int	Draw_Reward3_Index;
+	int	Draw_Reward3_Value;
 
 	// MVP
 	int MVP_Reward1_Index;

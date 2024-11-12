@@ -112,7 +112,8 @@ enum eMatchingType {
 
 enum BattleResult {
     BR_Win = 1,
-    BR_Lose = 2
+    BR_Lose = 2,
+    BR_Draw = 3
 };
 
 enum eCharacterType {

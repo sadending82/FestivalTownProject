@@ -37,6 +37,10 @@ struct PointConstants {
 	struct PointConstant Lose_Kill_Point;
 	struct PointConstant Lose_Death_Point;
 	struct PointConstant Lose_Bomb_Point;
+
+	struct PointConstant Draw_Kill_Point;
+	struct PointConstant Draw_Death_Point;
+	struct PointConstant Draw_Bomb_Point;
 };
 
 #pragma pack(pop) 
