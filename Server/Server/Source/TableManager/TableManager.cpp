@@ -112,7 +112,7 @@ void TableManager::ReadItemTable()
         }
     }
     catch (const xlnt::exception& e) {
-        std::cerr << "Excel File Load Fail: " << e.what() << std::endl;
+        std::cerr << "ReadItemTable Excel File Load Fail: " << e.what() << std::endl;
     }
 }
 
@@ -202,7 +202,7 @@ void TableManager::ReadCharacterStat()
 
     }
     catch (const xlnt::exception& e) {
-        std::cerr << "Excel Character_Stat File Load Fail: " << e.what() << std::endl;
+        std::cerr << "ReadCharacterStat Excel File Load Fail: " << e.what() << std::endl;
     }
 
 }
@@ -239,7 +239,7 @@ void TableManager::ReadWeaponStat()
         }
     }
     catch (const xlnt::exception& e) {
-        std::cerr << "Excel Weapon File Load Fail: " << e.what() << std::endl;
+        std::cerr << "ReadWeaponStat Excel File Load Fail: " << e.what() << std::endl;
     }
 
 }
@@ -324,7 +324,7 @@ void TableManager::ReadGameModeTable()
         }
     }
     catch (const xlnt::exception& e) {
-        std::cerr << "Excel File Load Fail: " << e.what() << std::endl;
+        std::cerr << "ReadGameModeTable Excel File Load Fail: " << e.what() << std::endl;
     }
 }
 
@@ -465,7 +465,7 @@ void TableManager::ReadPointConstantTable()
         }
     }
     catch (const xlnt::exception& e) {
-        std::cerr << "Excel File Load Fail: " << e.what() << std::endl;
+        std::cerr << "ReadPointConstantTable Excel File Load Fail: " << e.what() << std::endl;
     }
 }
 
@@ -576,7 +576,7 @@ void TableManager::ReadGameReward()
         }
     }
     catch (const xlnt::exception& e) {
-        std::cerr << "Excel File Load Fail: " << e.what() << std::endl;
+        std::cerr << "ReadGameReward Excel File Load Fail: " << e.what() << std::endl;
     }
 }
 
@@ -666,7 +666,7 @@ void TableManager::ReadGachaTable()
         }
     }
     catch (const xlnt::exception& e) {
-        std::cerr << "Gacha.xlsx Excel File Load Fail: " << e.what() << std::endl;
+        std::cerr << "ReadGachaTable Excel File Load Fail: " << e.what() << std::endl;
     }
 }
 
@@ -704,7 +704,7 @@ void TableManager::ReadMatchingTable()
         }
     }
     catch (const xlnt::exception& e) {
-        std::cerr << "Excel File Load Fail: " << e.what() << std::endl;
+        std::cerr << "ReadMatchingTable Excel File Load Fail: " << e.what() << std::endl;
     }
 }
 

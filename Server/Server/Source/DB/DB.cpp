@@ -164,7 +164,7 @@ bool DB::InsertNewUser(const char* id, const char* nickname)
 
 	UseGameDB(hStmt);
 
-	const WCHAR* query = L"INSERT INTO UserInfo (AccountID, NickName) OUTPUT INSERTED.uid as uid VALUES (?, ?)";
+	const WCHAR* query = L"INSERT INTO UserInfo (AccountID, NickName) OUTPUT INSERTED.uid as uid VALUES (?, N?)";
 
 	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
 
