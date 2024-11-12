@@ -141,21 +141,25 @@ void FITH::TimeoverGameEnd(int roomID)
     }
 }
 
-int FITH::CalculatePoint(sPlayerGameRecord record, bool isWin)
+int FITH::CalculatePoint(sPlayerGameRecord record, BattleResult result)
 {
     int point = 0;
 
     auto& constants = pTableManager->GetPointConstantList()[mGameMode];
 
-    switch (isWin) {
-    case true: {
+    switch (result) {
+    case BattleResult::BR_Win: {
         point = (record.kill_count * constants.Win_Kill_Point.Value) - (record.death_count * constants.Win_Death_Point.Value) + (record.bomb_insert_count * constants.Win_Bomb_Point.Value);
     }
              break;
-    case false: {
+    case BattleResult::BR_Lose: {
         point = (record.kill_count * constants.Lose_Kill_Point.Value) - (record.death_count * constants.Lose_Death_Point.Value) + (record.bomb_insert_count * constants.Lose_Bomb_Point.Value);
     }
               break;
+    case BattleResult::BR_Draw: {
+        point = (record.kill_count * constants.Draw_Kill_Point.Value) - (record.death_count * constants.Draw_Death_Point.Value) + (record.bomb_insert_count * constants.Draw_Bomb_Point.Value);
+    }
+                              break;
     default:
         break;
     }
@@ -163,7 +167,7 @@ int FITH::CalculatePoint(sPlayerGameRecord record, bool isWin)
     return (point < 0) ? 0 : point;
 }
 
-int FITH::CalculateGoldReward(int point, bool isMvp, bool isWin)
+int FITH::CalculateGoldReward(int point, bool isMvp, BattleResult result)
 {
     int pointIdx = (point > 10) ? 10 : point;
 
@@ -172,8 +176,8 @@ int FITH::CalculateGoldReward(int point, bool isMvp, bool isWin)
 
     int gold = 0;
 
-    switch (isWin) {
-    case true: {
+    switch (result) {
+    case BattleResult::BR_Win: {
         gold += rewards.Win_Reward1_Value;
         if (isMvp) {
             gold += BonusRewards.MVP_Reward1_Value;
@@ -184,11 +188,14 @@ int FITH::CalculateGoldReward(int point, bool isMvp, bool isWin)
     }
              break;
 
-    case false: {
+    case BattleResult::BR_Lose: {
         gold += rewards.Lose_Reward1_Value + BonusRewards.Lose_Reward1_Value;
     }
               break;
-
+    case BattleResult::BR_Draw: {
+        gold += rewards.Draw_Reward1_Value + BonusRewards.Draw_Reward1_Value;
+    }
+                              break;
     default:
         break;
     }
@@ -204,15 +211,23 @@ void FITH::CalculateGameResult(int roomID, std::set<int>& winningTeams)
     int mvp_id = INVALIDKEY;
     int mvp_point = -1;
 
+    BattleResult winFlag = BattleResult::BR_Win;
+
+    if (winningTeams.size() > 1) {
+        winFlag = BattleResult::BR_Draw;
+    }
+
+
     // 해당 게임 기록으로 결과 계산
     for (auto& pair : records) {
         int id = pair.first;
 
         int team = pair.second.team;
-        bool isWin = (winningTeams.find(team) != winningTeams.end()) ? true : false;
-        int point = CalculatePoint(pair.second, isWin);
+        BattleResult result = (winningTeams.find(team) != winningTeams.end()) ? winFlag : BattleResult::BR_Lose;
+
+        int point = CalculatePoint(pair.second, result);
         pair.second.point = point;
-        pair.second.earn_gold = CalculateGoldReward(point, false, isWin);
+        pair.second.earn_gold = CalculateGoldReward(point, false, result);
 
         if (point > mvp_point) {
             mvp_id = id;
@@ -220,9 +235,11 @@ void FITH::CalculateGameResult(int roomID, std::set<int>& winningTeams)
         }
     }
 
-    if (mvp_id != INVALIDKEY) {
-        records[mvp_id].earn_gold = CalculateGoldReward(records[mvp_id].point, true, true);
-        records[mvp_id].is_mvp = true;
+    if (winFlag == BattleResult::BR_Win) {
+        if (mvp_id != INVALIDKEY) {
+            records[mvp_id].earn_gold = CalculateGoldReward(records[mvp_id].point, true, BattleResult::BR_Win);
+            records[mvp_id].is_mvp = true;
+        }
     }
 
     // DB에 데이터 업데이트
