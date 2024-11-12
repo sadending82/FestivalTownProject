@@ -21,7 +21,7 @@ enum class UserInfo_Field {
 struct UserInfo {
 	int UID;
 	std::string AccountID = std::string(50, '\0');
-	std::string NickName = std::string(20, '\0');
+	std::wstring NickName = std::wstring(50, '\0');
 	int UserLevel;
 	int PassLevel;
 	int UserTitle;

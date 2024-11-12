@@ -156,6 +156,10 @@ bool DB::InsertNewUser(const char* id, const char* nickname)
 
 	int uid;
 
+	int wNicknameLen = MultiByteToWideChar(CP_UTF8, 0, nickname, -1, NULL, 0);
+	wchar_t* wNickname = new wchar_t[wNicknameLen];
+	MultiByteToWideChar(CP_UTF8, 0, nickname, -1, wNickname, wNicknameLen);
+
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGNOPARAM("hStmt Error : (InsertNewUser) \n");
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
@@ -164,12 +168,12 @@ bool DB::InsertNewUser(const char* id, const char* nickname)
 
 	UseGameDB(hStmt);
 
-	const WCHAR* query = L"INSERT INTO UserInfo (AccountID, NickName) OUTPUT INSERTED.uid as uid VALUES (?, N?)";
+	const WCHAR* query = L"INSERT INTO UserInfo (AccountID, NickName) OUTPUT INSERTED.uid as uid VALUES (?, ?)";
 
 	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, strlen(id), 0, (SQLCHAR*)id, 0, NULL);
-	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_WCHAR, strlen(nickname), 0, (SQLCHAR*)nickname, 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_WCHAR, SQL_WVARCHAR, wcslen(wNickname), 0, (SQLPOINTER)wNickname, 0, NULL);
 
 	retcode = SQLExecute(hStmt);
 
@@ -187,11 +191,14 @@ bool DB::InsertNewUser(const char* id, const char* nickname)
 		//InsertUserItem(uid, 100001, 0, 0);
 		//InsertUserItem(uid, 100002, 0, 0);
 
+		delete[] wNickname;
+
 		return true;
 	}
 
 	DEBUGMSGNOPARAM("Execute Query Error : (InsertNewUser)\n");
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	delete[] wNickname;
 	return false;
 }
 
@@ -305,7 +312,7 @@ std::pair<bool, UserInfo> DB::SelectUserInfoForLogin(const char* id)
 		while (SQLFetch(hStmt) == SQL_SUCCESS) {
 			SQLGetData(hStmt, (int)UserInfo_Field::UID, SQL_C_LONG, &userInfo.UID, sizeof(userInfo.UID), &col1);
 			SQLGetData(hStmt, (int)UserInfo_Field::AccountID, SQL_C_CHAR, &userInfo.AccountID[0], userInfo.AccountID.size(), &col2);
-			SQLGetData(hStmt, (int)UserInfo_Field::NickName, SQL_C_CHAR, &userInfo.NickName[0], userInfo.NickName.size(), &col3);
+			SQLGetData(hStmt, (int)UserInfo_Field::NickName, SQL_C_WCHAR, &userInfo.NickName[0], userInfo.NickName.capacity(), &col3);
 			SQLGetData(hStmt, (int)UserInfo_Field::UserLevel, SQL_C_LONG, &userInfo.UserLevel, sizeof(userInfo.UserLevel), &col4);
 			SQLGetData(hStmt, (int)UserInfo_Field::PassLevel, SQL_C_LONG, &userInfo.PassLevel, sizeof(userInfo.PassLevel), &col5);
 			SQLGetData(hStmt, (int)UserInfo_Field::UserTitle, SQL_C_LONG, &userInfo.UserTitle, sizeof(userInfo.UserTitle), &col6);
@@ -724,14 +731,14 @@ bool DB::DeleteAcccount(const char* id)
 	SQLRETURN retcode;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
-		DEBUGMSGNOPARAM("hStmt Error : (UpdateRanking) \n");
+		DEBUGMSGNOPARAM("hStmt Error : (DeleteAcccount) \n");
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 		return false;
 	}
 
 	UseAccountDB(hStmt);
 
-	const WCHAR* query = L"DELETE FROM Acount WHERE ID = ?";
+	const WCHAR* query = L"DELETE FROM Account WHERE ID = ?";
 
 	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
 
@@ -745,7 +752,7 @@ bool DB::DeleteAcccount(const char* id)
 		return true;
 	}
 
-	DEBUGMSGNOPARAM("Execute Query Error : (UpdateRanking)\n");
+	DEBUGMSGNOPARAM("Execute Query Error : (DeleteAcccount)\n");
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	return false;
 }
@@ -756,7 +763,7 @@ bool DB::DeleteUserInfo(const int uid)
 	SQLRETURN retcode;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
-		DEBUGMSGNOPARAM("hStmt Error : (UpdateRanking) \n");
+		DEBUGMSGNOPARAM("hStmt Error : (DeleteUserInfo) \n");
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 		return false;
 	}
@@ -777,7 +784,7 @@ bool DB::DeleteUserInfo(const int uid)
 		return true;
 	}
 
-	DEBUGMSGNOPARAM("Execute Query Error : (UpdateRanking)\n");
+	DEBUGMSGNOPARAM("Execute Query Error : (DeleteUserInfo)\n");
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	return false;
 }
@@ -788,7 +795,7 @@ bool DB::DeleteUserItem(const int owner_uid, const int itemCode)
 	SQLRETURN retcode;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
-		DEBUGMSGNOPARAM("hStmt Error : (UpdateRanking) \n");
+		DEBUGMSGNOPARAM("hStmt Error : (DeleteUserInfo) \n");
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 		return false;
 	}
@@ -810,7 +817,7 @@ bool DB::DeleteUserItem(const int owner_uid, const int itemCode)
 		return true;
 	}
 
-	DEBUGMSGNOPARAM("Execute Query Error : (UpdateRanking)\n");
+	DEBUGMSGNOPARAM("Execute Query Error : (DeleteUserInfo)\n");
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	return false;
 }

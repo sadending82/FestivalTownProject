@@ -74,7 +74,7 @@ MonoBehaviour:
     Block1_Spawn_Count: 7
     Block1_Spawn_Time: 10
     Block2_Spawn_Index: 3002
-    Block2_Spawn_Count: 15
+    Block2_Spawn_Count: 10
     Block2_Spawn_Time: 10
   - Index: 112
     Name: 

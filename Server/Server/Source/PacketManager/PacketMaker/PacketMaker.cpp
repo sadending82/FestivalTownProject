@@ -14,7 +14,7 @@ std::vector<uint8_t> PacketMaker::MakeLoginResponsePacket(int result, UserInfo u
 {
 	flatbuffers::FlatBufferBuilder Builder;
 
-	auto db_userInfo = PacketTable::UtilitiesTable::CreateDB_UserInfo(Builder, userInfo.UID, Builder.CreateString(userInfo.NickName), userInfo.UserLevel, userInfo.PassLevel
+	auto db_userInfo = PacketTable::UtilitiesTable::CreateDB_UserInfo(Builder, userInfo.UID, Builder.CreateString(wstringToString(userInfo.NickName)), userInfo.UserLevel, userInfo.PassLevel
 		, userInfo.UserTitle, userInfo.ProfileSkin, userInfo.Point, userInfo.AttendanceDay, NULL);
 
 	Builder.Finish(PacketTable::LoginTable::CreateLoginResponse(Builder, result, db_userInfo
@@ -82,7 +82,7 @@ std::vector<uint8_t> PacketMaker::MakePlayerAddPacket(std::vector<class Player*>
 			, dir
 			, player->GetTeam()
 			, player->GetCharacterType()
-			, Builder.CreateString(player->GetName())
+			, Builder.CreateString(wstringToString(player->GetName()))
 		);
 
 		player_vec.push_back(pInfo);
@@ -288,10 +288,11 @@ std::vector<uint8_t> PacketMaker::MakeGameResultPacket(std::set<int>& winningTea
 
 	for (auto& pair : records) {
 		int id = pair.first;
-		std::string playerName = "NULL";
+		std::string playerName = "Unknown";
 		if (players[id] != nullptr) {
-			playerName = players[id]->GetName();
+			playerName = wstringToString(players[id]->GetName());
 		}
+
 		sPlayerGameRecord record = pair.second;
 		auto fRecord = PacketTable::UtilitiesTable::CreatePlayerGameRecord(Builder
 			, id

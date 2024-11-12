@@ -26,7 +26,7 @@ public:
 	int					GetInGameID() { return mInGameID; }
 	int					GetTeam() { return mTeam; }
 	bool				GetIsBot(){ return mIsBot; }
-	std::string			GetName() { return mName; }
+	std::wstring		GetName() { return mName; }
 	Vector3f&			GetPosition() { return mPosition; }
 	Vector3f&			GetDirection() { return mDirection; }
 	ePlayerState		GetPlayerState() { return mPlayerState; }
@@ -49,7 +49,7 @@ public:
 	void				SetInGameID(int id) { mInGameID = id; }
 	void				SetTeam(int team) { mTeam = team; }
 	void				SetIsBot(bool isBot) { mIsBot = isBot; }
-	void				SetName(std::string name) { mName = name; }
+	void				SetName(std::wstring name) { mName = name; }
 	void				SetPosition(float x, float y, float z) { mPosition = Vector3f(x, y, z); }
 	void				SetPosition(Vector3f v3f) { mPosition = v3f; }
 	void				SetDirection(float x, float y, float z) { mDirection = Vector3f(x, y, z); }
@@ -91,7 +91,7 @@ protected:
 
 	int					mUID = INVALIDKEY;	// GameDB에서 PK로 사용하는 Unique ID
 	std::string			mAccountID = ""; // 계정 ID
-	std::string			mName = "test"; // 임시 닉네임
+	std::wstring		mName = L"test"; // 임시 닉네임
 
 	bool				mIsBot = false;
 

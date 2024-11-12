@@ -34,3 +34,11 @@ Vector3f ConvertVec2iToVec3f(int x, int z)
 
 	return pos;
 }
+
+std::string wstringToString(const std::wstring& input)
+{
+	int size = WideCharToMultiByte(CP_UTF8, 0, input.c_str(), -1, NULL, 0, NULL, NULL);
+	std::string utf8_string(size, 0);
+	WideCharToMultiByte(CP_UTF8, 0, input.c_str(), -1, &utf8_string[0], size, NULL, NULL);
+	return utf8_string;
+}

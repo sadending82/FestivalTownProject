@@ -130,3 +130,5 @@ std::vector<uint8_t> MakeBuffer(const int type, const uint8_t* data, const int s
 
 Vector3f ConvertVec3fToVec2i(Vector3f vec);
 Vector3f ConvertVec2iToVec3f(int x, int z);
+
+std::string wstringToString(const std::wstring& input);
