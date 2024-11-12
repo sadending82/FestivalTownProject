@@ -69,7 +69,7 @@ MonoBehaviour:
     Weapon1_Spawn_Time: 30
     Weapon2_Spawn_Index: 2002
     Weapon2_Spawn_Count: 1
-    Weapon2_Spawn_Time: 40
+    Weapon2_Spawn_Time: 30
     Block1_Spawn_Index: 3001
     Block1_Spawn_Count: 7
     Block1_Spawn_Time: 10
