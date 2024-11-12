@@ -26,19 +26,20 @@ namespace Network.PacketProcessor
             Managers.Game.SetWinningTeam(winningTeam);
 
             for (int i = 0; i < Data.PlayerRecordsLength; ++i){
-                var playerRecord = Data.PlayerRecords(i);
+                var playerRecord = Data.PlayerRecords(i).Value;
 
-                Debug.Log($"Player {playerRecord.Value.Id}:  Kill = {playerRecord.Value.KillCount}, Death = {playerRecord.Value.DeathCount}" +
-                    $",  Gold = {playerRecord.Value.EarnGold}, Point = {playerRecord.Value.Point} Is MVP = {playerRecord.Value.IsMvp}");
+                Debug.Log($"Player {playerRecord.Id}:  Kill = {playerRecord.KillCount}, Death = {playerRecord.DeathCount}" +
+                    $",  Gold = {playerRecord.EarnGold}, Point = {playerRecord.Point} Is MVP = {playerRecord.IsMvp}");
 
                 Define.PlayerResult result;
-                result.kill = playerRecord.Value.KillCount;
-                result.death = playerRecord.Value.DeathCount;
-                result.bombInsert = playerRecord.Value.BombInsertCount;
-                result.gold = playerRecord.Value.EarnGold;
-                result.isMvp = playerRecord.Value.IsMvp;
+                result.Name = playerRecord.Name;
+                result.kill = playerRecord.KillCount;
+                result.death = playerRecord.DeathCount;
+                result.bombInsert = playerRecord.BombInsertCount;
+                result.gold = playerRecord.EarnGold;
+                result.isMvp = playerRecord.IsMvp;
 
-                Managers.Game.PlayerResultData.Add(playerRecord.Value.Id, result);
+                Managers.Game.PlayerResultData.Add(playerRecord.Id, result);
             }
 
             

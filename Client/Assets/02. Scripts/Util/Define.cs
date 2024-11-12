@@ -80,6 +80,7 @@ public class Define
 
     public struct PlayerResult
     {
+        public string Name;
         public int kill;
         public int death;
         public int bombInsert;
