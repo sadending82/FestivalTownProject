@@ -14,11 +14,11 @@ public class UI_Result : UI_Scene
         BackToLobbyButton,
 
     }
-
+    bool isInitialized = false;
     bool isResultChecked = false;
     void Start()
     {
-        Init();
+        if(!isInitialized) Init();
     }
 
     public override void Init()
@@ -40,6 +40,8 @@ public class UI_Result : UI_Scene
             Managers.Player.Clear();
             Managers.SpectatorCamera.Clear();
         });
+
+        isInitialized = true;
     }
 
     public void SetPlayerResult(string nickname, int playerId, int kill, int death, int bombInsert, int gold, bool isMvp)

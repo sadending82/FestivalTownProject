@@ -151,7 +151,8 @@ public class GameScene : BaseScene
             Managers.Sound.Play("Sfx_Lose");
         }
 
-        Managers.UI.ShowSceneUI<UI_Result>();
+        var ui = Managers.UI.ShowSceneUI<UI_Result>();
+        ui.Init();
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
