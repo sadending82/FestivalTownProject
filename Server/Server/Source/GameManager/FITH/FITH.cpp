@@ -79,12 +79,12 @@ void FITH::CheckGameEnd(int roomID)
 
                 player->GetSessionStateLock().lock();
                 if (player->GetIsBot() == true) {
-                    player->Init();
+                    player->IngameInfoInit();
                     player->SetIsBot(false);
                     player->SetSessionState(eSessionState::ST_FREE);
                 }
                 else {
-                    player->Init();
+                    player->IngameInfoInit();
                     player->SetSessionState(eSessionState::ST_ACCEPTED);
                 }
                 player->GetSessionStateLock().unlock();
@@ -126,11 +126,11 @@ void FITH::TimeoverGameEnd(int roomID)
             Player* player = dynamic_cast<Player*>(pServer->GetSessions()[session_id]);
             player->GetSessionStateLock().lock();
             if (player->GetIsBot() == true) {
-                player->Init();
+                player->IngameInfoInit();
                 player->SetSessionState(eSessionState::ST_FREE);
             }
             else {
-                player->Init();
+                player->IngameInfoInit();
                 player->SetSessionState(eSessionState::ST_ACCEPTED);
             }
             player->GetSessionStateLock().unlock();

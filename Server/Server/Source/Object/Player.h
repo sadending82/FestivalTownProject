@@ -13,6 +13,7 @@ public:
 	~Player() {}
 
 	void				Init();
+	void				IngameInfoInit();
 
 	virtual void		Disconnect() override;
 	

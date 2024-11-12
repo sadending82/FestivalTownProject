@@ -24,7 +24,7 @@ public:
 				// 응답이 없었다면 연결 종료
 				bool result = pServer->Disconnect(target);
 
-				if (result == true) {
+				if (result == true && player->GetUID() != INVALIDKEY) {
 					pServer->GetDB()->UpdateUserConnectionState(player->GetUID(), false);
 				}
 			}

@@ -3,6 +3,19 @@
 
 void Player::Init()
 {
+	mUID = INVALIDKEY;	
+	mAccountID = ""; 
+	mName = L"test"; 
+
+	mIsBot = false;
+
+	mCharacterType = eCharacterType::CT_TEST;
+
+	IngameInfoInit();
+}
+
+void Player::IngameInfoInit()
+{
 	mPlayerState = ePlayerState::PS_NONE;
 
 	mRoomID = INVALIDKEY;
