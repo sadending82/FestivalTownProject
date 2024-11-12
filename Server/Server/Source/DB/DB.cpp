@@ -293,7 +293,10 @@ std::pair<bool, UserInfo> DB::SelectUserInfoForLogin(const char* id)
 
 	retcode = SQLExecute(hStmt);
 
-	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+	bool result = false;
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) 
+	{
 
 		SQLLEN col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11;
 		TIMESTAMP_STRUCT date{};
@@ -311,19 +314,21 @@ std::pair<bool, UserInfo> DB::SelectUserInfoForLogin(const char* id)
 			SQLGetData(hStmt, (int)UserInfo_Field::LastLoginTime, SQL_C_TYPE_TIMESTAMP, &date, sizeof(date), &col9);
 			SQLGetData(hStmt, (int)UserInfo_Field::AttendanceDay, SQL_C_LONG, &userInfo.AttendanceDay, sizeof(userInfo.AttendanceDay), &col10);
 			SQLGetData(hStmt, (int)UserInfo_Field::State, SQL_C_LONG, &t, sizeof(t), &col11);
+
+			userInfo.date.tm_year = date.year;
+			userInfo.date.tm_mon = date.month;
+			userInfo.date.tm_mday = date.day;
+
+			userInfo.State = t;
+
+			userInfo.Gold = SelectUserItemCount(userInfo.UID, 100001);
+
+			result = true;
 		}
-
-		userInfo.date.tm_year = date.year;
-		userInfo.date.tm_mon = date.month;
-		userInfo.date.tm_mday = date.day;
-
-		userInfo.State = t;
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 
-		userInfo.Gold = SelectUserItemCount(userInfo.UID, 100001);
-
-		return { true, userInfo };
+		return { result, userInfo };
 	}
 
 	DEBUGMSGNOPARAM("Execute Query Error : (SelectUserInfoForLogin)\n");
