@@ -15,10 +15,13 @@ namespace Network.PacketProcessor
             var Data = WeaponDelete.GetRootAsWeaponDelete(bb);
             int id = Data.Id;
 
-            GameObject targetWeapon = Managers.WeaponObject.FindWeaponById(id);
-            if (targetWeapon != null)
+            if (Managers.Game.isInGame)
             {
-                targetWeapon.GetComponent<Weapon>().DeleteWeapon();
+                GameObject targetWeapon = Managers.WeaponObject.FindWeaponById(id);
+                if (targetWeapon != null)
+                {
+                    targetWeapon.GetComponent<Weapon>().DeleteWeapon();
+                }
             }
         }
     }

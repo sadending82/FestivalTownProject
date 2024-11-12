@@ -19,7 +19,6 @@ namespace Network.PacketProcessor
 
             if (Managers.Game.isInGame)
             {
-
                 GameObject targetBomb = Managers.BombObject.FindBombById(bombId);
                 if (targetBomb != null)
                 {
