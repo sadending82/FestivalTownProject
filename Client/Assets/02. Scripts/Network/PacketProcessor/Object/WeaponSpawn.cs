@@ -15,15 +15,18 @@ namespace Network.PacketProcessor
             var bb = new ByteBuffer(data);
             var Data = WeaponSpawn.GetRootAsWeaponSpawn(bb);
 
-            for (int i = 0; i < Data.PosLength; ++i)
+            if (Managers.Game.isInGame)
             {
-                float posX = Data.Pos(i).Value.X;
-                float posZ = Data.Pos(i).Value.Z;
-                int id = Data.Id(i);
-                eWeaponType type = (eWeaponType)Data.Type(i);
+                for (int i = 0; i < Data.PosLength; ++i)
+                {
+                    float posX = Data.Pos(i).Value.X;
+                    float posZ = Data.Pos(i).Value.Z;
+                    int id = Data.Id(i);
+                    eWeaponType type = (eWeaponType)Data.Type(i);
 
-                // 무기 생성
-                Managers.WeaponObject.SpawnWeapon(posX, posZ, type, id);
+                    // 무기 생성
+                    Managers.WeaponObject.SpawnWeapon(posX, posZ, type, id);
+                }
             }
         }
 
