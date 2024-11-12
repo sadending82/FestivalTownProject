@@ -61,20 +61,20 @@ MonoBehaviour:
     Play_Time: 180
     Player_Spawn_Time: 5
     Life_Count: 3
-    Bomb_Spawn_Count: 2
+    Bomb_Spawn_Count: 1
     Bomb_Spawn_Time: 15
     Bomb_Delay_Time: 20
     Weapon1_Spawn_Index: 2001
     Weapon1_Spawn_Count: 1
-    Weapon1_Spawn_Time: 20
+    Weapon1_Spawn_Time: 30
     Weapon2_Spawn_Index: 2002
     Weapon2_Spawn_Count: 1
-    Weapon2_Spawn_Time: 25
+    Weapon2_Spawn_Time: 40
     Block1_Spawn_Index: 3001
     Block1_Spawn_Count: 7
     Block1_Spawn_Time: 10
     Block2_Spawn_Index: 3002
-    Block2_Spawn_Count: 7
+    Block2_Spawn_Count: 15
     Block2_Spawn_Time: 10
   - Index: 112
     Name: 
