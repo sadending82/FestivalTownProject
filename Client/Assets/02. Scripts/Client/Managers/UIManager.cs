@@ -89,6 +89,15 @@ public class UIManager
         return popup;
     }
 
+    public UI_PopUp GetTopOfPopUPUI()
+    {
+        if (_popupStack.Count == 0) return null;
+
+        UI_PopUp pop = _popupStack.Peek();
+
+        return pop;
+    }
+
     
 
     public void ClosePopUpUI(UI_PopUp popUp)

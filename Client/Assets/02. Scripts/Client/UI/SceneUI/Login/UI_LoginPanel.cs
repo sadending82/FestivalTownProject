@@ -67,7 +67,14 @@ public class UI_LoginPanel: UI_Base
 
         if(Input.GetKeyDown(KeyCode.Return))
         {
-            Login();
+            if (Managers.UI.GetTopOfPopUPUI() != null && Managers.UI.GetTopOfPopUPUI().GetComponent<UI_SignInSuccess>() != null)
+            {
+                Managers.UI.ClosePopUpUI();
+            }
+            else
+            {
+                Login();
+            }
         }
     }
 

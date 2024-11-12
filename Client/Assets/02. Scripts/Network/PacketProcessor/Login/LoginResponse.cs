@@ -31,6 +31,13 @@ namespace Network.PacketProcessor
                 Managers.Data.SetNickName(userInfo.Nickname);
                 Managers.Scene.LoadScene(Define.Scene.Home);
             }
+            else
+            {
+                var ui = Managers.UI.ShowPopUpUI<UI_SignInSuccess>();
+                ui.Init();
+                ui.TextChange("로그인을 실패했습니다.");
+                
+            }
         }
 
 
