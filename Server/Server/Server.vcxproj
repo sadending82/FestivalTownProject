@@ -129,10 +129,10 @@
       <AdditionalDependencies>xlntd.lib;%(AdditionalDependencies);Kernel32.lib</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>if exist "$(ProjectDir)..\..\Client\Assets\11. GameData" robocopy "$(ProjectDir)..\..\Client\Assets\11. GameData" "$(ProjectDir)\GameData" /E /XF *.meta
-if exist "$(ProjectDir)\xlnt\xlnt_Debug\bin\xlntd.dll" xcopy /Y /d "$(ProjectDir)\xlnt\xlnt_Debug\bin\xlntd.dll" "$(OutDir)"
-if exist "$(ProjectDir)\GameData" xcopy /Y /d /e /i "$(ProjectDir)\GameData" "$(OutDir)GameData"
-if exist "$(ProjectDir)\Config" xcopy /Y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
+      <Command>robocopy "$(ProjectDir)..\..\Client\Assets\11. GameData" "$(ProjectDir)\GameData" /E /XF *.meta
+xcopy /Y /d "$(ProjectDir)\xlnt\xlnt_Debug\bin\xlntd.dll" "$(OutDir)"
+xcopy /Y /d /e /i "$(ProjectDir)\GameData" "$(OutDir)GameData"
+xcopy /Y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

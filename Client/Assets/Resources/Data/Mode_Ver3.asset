@@ -96,7 +96,7 @@ MonoBehaviour:
     Block1_Spawn_Count: 7
     Block1_Spawn_Time: 10
     Block2_Spawn_Index: 3002
-    Block2_Spawn_Count: 7
+    Block2_Spawn_Count: 10
     Block2_Spawn_Time: 10
   - Index: 121
     Name: 
@@ -118,7 +118,7 @@ MonoBehaviour:
     Block1_Spawn_Count: 7
     Block1_Spawn_Time: 10
     Block2_Spawn_Index: 3002
-    Block2_Spawn_Count: 7
+    Block2_Spawn_Count: 10
     Block2_Spawn_Time: 10
   - Index: 122
     Name: 
@@ -140,7 +140,7 @@ MonoBehaviour:
     Block1_Spawn_Count: 7
     Block1_Spawn_Time: 10
     Block2_Spawn_Index: 3002
-    Block2_Spawn_Count: 7
+    Block2_Spawn_Count: 10
     Block2_Spawn_Time: 10
   Mode_Point:
   - Index: 111101
