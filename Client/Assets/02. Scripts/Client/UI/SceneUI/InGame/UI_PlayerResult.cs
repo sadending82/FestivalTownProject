@@ -26,8 +26,9 @@ public class UI_PlayerResult : UI_Base
         Bind<GameObject>(typeof(GameObjects));
     }
 
-    public void SetPlayerResult(int kill, int death, int bombInsert, int gold, bool isMvp)
+    public void SetPlayerResult(string nickname, int kill, int death, int bombInsert, int gold, bool isMvp)
     {
+        Get<GameObject>((int)GameObjects.NickNameText).GetComponent<TMP_Text>().text = nickname;
         if (Get<GameObject>((int)GameObjects.KillText) == null) Debug.Log("text null");
         if (Get<GameObject>((int)GameObjects.KillText).GetComponent<TMP_Text>() == null) Debug.Log("tmp null");
         Debug.Log(Get<GameObject>((int)GameObjects.KillText).GetComponent<TMP_Text>().text);
