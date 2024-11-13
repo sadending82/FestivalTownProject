@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,9 +31,14 @@ public class BombObjectManager : MonoBehaviour
 
         GameObject reusedBomb = null;
 
-        reusedBomb = Managers.ObjectPool.Pop(Managers.ObjectPool.GetOrigin("Bomb"), bombs.transform).gameObject;
-
-        if(reusedBomb == null) { return; }
+        try
+        {
+            reusedBomb = Managers.ObjectPool.Pop(Managers.ObjectPool.GetOrigin("Bomb"), bombs.transform).gameObject;
+        }
+        catch (NullReferenceException)
+        {
+            return;
+        }
 
         reusedBomb.gameObject.SetActive(true);
         reusedBomb.gameObject.GetComponent<Bomb>().SetId(id);

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using NetworkProtocol;
+using System;
 
 public class WeaponObjectManager : MonoBehaviour
 {
@@ -29,26 +30,31 @@ public class WeaponObjectManager : MonoBehaviour
 
         GameObject reusedWeapon = null;
 
-        switch(type)
+        try
         {
-            case eWeaponType.WT_BAT:
-                {
-                    reusedWeapon = Managers.ObjectPool.Pop(Managers.ObjectPool.GetOrigin("Bat"), weapons.transform).gameObject;
-                }
-                break;
-            case eWeaponType.WT_FRYING_PAN:
-                {
-                    reusedWeapon = Managers.ObjectPool.Pop(Managers.ObjectPool.GetOrigin("Frypan"), weapons.transform).gameObject;
-                }
-                break;
-            default:
-                {
-                    Debug.Log("Error !!! SpawnWeapon, Wrong Weapon Type !!!");
-                }
-                break;
+            switch (type)
+            {
+                case eWeaponType.WT_BAT:
+                    {
+                        reusedWeapon = Managers.ObjectPool.Pop(Managers.ObjectPool.GetOrigin("Bat"), weapons.transform).gameObject;
+                    }
+                    break;
+                case eWeaponType.WT_FRYING_PAN:
+                    {
+                        reusedWeapon = Managers.ObjectPool.Pop(Managers.ObjectPool.GetOrigin("Frypan"), weapons.transform).gameObject;
+                    }
+                    break;
+                default:
+                    {
+                        Debug.Log("Error !!! SpawnWeapon, Wrong Weapon Type !!!");
+                    }
+                    break;
+            }
         }
-
-        if (reusedWeapon == null) return; 
+        catch(NullReferenceException)
+        {
+            return;
+        }   
 
         reusedWeapon.gameObject.SetActive(true);
         reusedWeapon.gameObject.GetComponent<Weapon>().SetId(id);

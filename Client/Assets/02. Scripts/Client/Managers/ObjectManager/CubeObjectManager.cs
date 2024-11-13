@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using NetworkProtocol;
+using System;
 
 public class CubeObjectManager : MonoBehaviour
 {
@@ -60,9 +61,15 @@ public class CubeObjectManager : MonoBehaviour
         x *= 2;
         y *= 2;
 
-        reusedCube = Managers.ObjectPool.Pop(Managers.ObjectPool.GetOrigin("Cube"), cubes.transform).gameObject;
+        try
+        {
+            reusedCube = Managers.ObjectPool.Pop(Managers.ObjectPool.GetOrigin("Cube"), cubes.transform).gameObject;
+        }           
+        catch (NullReferenceException)
+        {
+            return;
+        }
 
-        if(reusedCube == null) { return; }
 
         // 큐브 생성 위치와 큐브 타입 설정, 플레이어를 밀어내는 Pusher 작동
         reusedCube.SetActive(true);
