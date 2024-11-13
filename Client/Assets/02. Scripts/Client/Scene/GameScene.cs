@@ -208,11 +208,6 @@ public class GameScene : BaseScene
 
     public override void Clear()
     {
-        if (Managers.Game != null)
-        {
-            Managers.Game.Clear();
-        }
-
         ResultObjectOff();
     }
 
