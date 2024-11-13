@@ -13,6 +13,8 @@ public class CharacterStatus : MonoBehaviour
     private PlayerUIController playerUIController;
     private bool isGameEnd;
 
+    private const float RESPAWN_DELAY_TIME = 1.0f;
+
     // Ω∫≈»
     [Header("--- Status ---")]
     [SerializeField] private int id;
@@ -271,7 +273,6 @@ public class CharacterStatus : MonoBehaviour
     }
     public void SetIsDie(bool isDie)
     {
-        this.isDie = isDie;
         if (isDie == true)
         {
             hp = 0;
@@ -288,6 +289,7 @@ public class CharacterStatus : MonoBehaviour
             {
                 Managers.SpectatorCamera.CheckSpectator(id);
             }
+            this.isDie = isDie;
         }
         else
         {
@@ -302,7 +304,13 @@ public class CharacterStatus : MonoBehaviour
                 Managers.SpectatorCamera.SwitchMyCamera();
                 Managers.PostProcess.SetScreenNormal();
             }
+
+            Invoke("RespawnDelay", RESPAWN_DELAY_TIME);
         }
+    }
+    private void RespawnDelay()
+    {
+        isDie = false;
     }
     public bool GetIsDie()
     {
