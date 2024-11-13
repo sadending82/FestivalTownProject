@@ -847,16 +847,25 @@ public class PlayerController : MonoBehaviour
     public void s_PickUpBomb(int playerId, int bombId)
     {
         // 폭탄과 플레이어 붙여주기
-        Bomb targetBomb = Managers.BombObject.FindBombById(bombId).GetComponent<Bomb>();
-        targetBomb.PickUp(playerId, bombInvenTransform);
+        GameObject targetBomb = Managers.BombObject.FindBombById(bombId);
+        if(targetBomb == null)
+        {
+            Debug.Log("ERROR!! s_PickUpBomb(): targetBomb is Null!!!");
+            return;
+        }
+        targetBomb.GetComponent<Bomb>().PickUp(playerId, bombInvenTransform);
         playerStatus.SetIsHaveBomb(true, bombId);
     }
     public void s_PickUpWeapon(int playerId, int weaponId)
     {
         // 무기와 플레이어 붙여주기
-        Weapon targetWeapon = Managers.WeaponObject.FindWeaponById(weaponId).GetComponent<Weapon>();
-
-        targetWeapon.PickUp(playerId);
+        GameObject targetWeapon = Managers.WeaponObject.FindWeaponById(weaponId);
+        if (targetWeapon == null)
+        {
+            Debug.Log("ERROR!! s_PickUpWeapon(): targetWeapon is Null!!!");
+            return;
+        }
+        targetWeapon.GetComponent<Weapon>().PickUp(playerId);
         playerStatus.SetIsHaveWeapon(true, weaponId);
     }
     public void s_Throw(Vector3 bombPosition, int bombId)
