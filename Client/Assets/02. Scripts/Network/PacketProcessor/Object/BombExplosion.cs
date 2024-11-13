@@ -17,7 +17,7 @@ namespace Network.PacketProcessor
             Vector3 pos = new Vector3(Data.Pos.Value.X, Data.Pos.Value.Y, Data.Pos.Value.Z);
             int bombId = Data.Id;
 
-            if (Managers.Game.isInGame)
+            if (Managers.Game.isInGame && !Managers.Game.isGameEnd)
             {
                 GameObject targetBomb = Managers.BombObject.FindBombById(bombId);
                 if (targetBomb != null)

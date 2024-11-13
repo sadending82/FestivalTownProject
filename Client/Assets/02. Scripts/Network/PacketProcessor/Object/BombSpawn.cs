@@ -14,7 +14,7 @@ namespace Network.PacketProcessor
             var bb = new ByteBuffer(data);
             var Data = BombSpawn.GetRootAsBombSpawn(bb);
 
-            if (Managers.Game.isInGame)
+            if (Managers.Game.isInGame && !Managers.Game.isGameEnd)
             {
                 for (int i = 0; i < Data.PosLength; ++i)
                 {

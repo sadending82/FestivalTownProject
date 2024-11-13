@@ -107,6 +107,7 @@ public class GameManager : MonoBehaviour
     public void Clear()
     {
         isTimerStart = false;
+        isInGame = false;
         //GameRemainTime = 300.0f;
         TeamLife = new();
         isHost = false;

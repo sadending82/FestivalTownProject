@@ -15,7 +15,7 @@ namespace Network.PacketProcessor
             var Data = WeaponDelete.GetRootAsWeaponDelete(bb);
             int id = Data.Id;
 
-            if (Managers.Game.isInGame)
+            if (Managers.Game.isInGame && !Managers.Game.isGameEnd)
             {
                 GameObject targetWeapon = Managers.WeaponObject.FindWeaponById(id);
                 if (targetWeapon != null)

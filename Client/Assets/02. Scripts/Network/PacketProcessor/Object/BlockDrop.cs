@@ -24,7 +24,10 @@ namespace Network.PacketProcessor
                     int posY = Data.Pos(i).Value.Y;
                     int type = Data.Type(i);
 
-                    Managers.CubeObject.SpawnCube(posX, posY, (eBlockType)type);
+                    if (Managers.Game.isInGame && !Managers.Game.isGameEnd)
+                    {
+                        Managers.CubeObject.SpawnCube(posX, posY, (eBlockType)type);
+                    }
                 }
             }
         }

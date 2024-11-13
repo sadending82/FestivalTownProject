@@ -24,8 +24,11 @@ namespace Network.PacketProcessor
                     int id = Data.Id(i);
                     eWeaponType type = (eWeaponType)Data.Type(i);
 
-                    // 무기 생성
-                    Managers.WeaponObject.SpawnWeapon(posX, posZ, type, id);
+                    if (Managers.Game.isInGame && !Managers.Game.isGameEnd)
+                    {
+                        // 무기 생성
+                        Managers.WeaponObject.SpawnWeapon(posX, posZ, type, id);
+                    }
                 }
             }
         }
