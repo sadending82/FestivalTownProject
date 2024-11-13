@@ -32,6 +32,8 @@ public class BombObjectManager : MonoBehaviour
 
         reusedBomb = Managers.ObjectPool.Pop(Managers.ObjectPool.GetOrigin("Bomb"), bombs.transform).gameObject;
 
+        if(reusedBomb == null) { return; }
+
         reusedBomb.gameObject.SetActive(true);
         reusedBomb.gameObject.GetComponent<Bomb>().SetId(id);
         reusedBomb.gameObject.transform.position = new Vector3(x, createHeight, z);

@@ -62,6 +62,8 @@ public class CubeObjectManager : MonoBehaviour
 
         reusedCube = Managers.ObjectPool.Pop(Managers.ObjectPool.GetOrigin("Cube"), cubes.transform).gameObject;
 
+        if(reusedCube == null) { return; }
+
         // 큐브 생성 위치와 큐브 타입 설정, 플레이어를 밀어내는 Pusher 작동
         reusedCube.SetActive(true);
         // 타입에 해당하는 큐브 활성화, 포지션 설정
