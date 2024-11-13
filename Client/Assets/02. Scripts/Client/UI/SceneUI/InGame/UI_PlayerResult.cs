@@ -16,14 +16,18 @@ public class UI_PlayerResult : UI_Base
         MVPImage,
     }
 
+    bool isInitialzed = false;
+
     void Start()
     {
-        Init();
+       if(!isInitialzed) Init();
     }
 
     public override void Init()
     {
         Bind<GameObject>(typeof(GameObjects));
+
+        isInitialzed = true;
     }
 
     public void SetPlayerResult(string nickname, int kill, int death, int bombInsert, int gold, bool isMvp)

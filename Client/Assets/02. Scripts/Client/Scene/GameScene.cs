@@ -11,6 +11,8 @@ public class GameScene : BaseScene
 
         SceneType = Define.Scene.Game;
 
+        //맵 관련 부분 여기에 넣어
+
         Managers.Player.Init();
 
         LoadStatue();
@@ -151,7 +153,8 @@ public class GameScene : BaseScene
             Managers.Sound.Play("Sfx_Lose");
         }
 
-        Managers.UI.ShowSceneUI<UI_Result>();
+        var ui = Managers.UI.ShowSceneUI<UI_Result>();
+        ui.Init();
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;

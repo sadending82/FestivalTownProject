@@ -15,11 +15,11 @@ public class UI_ResultPanel : UI_Base
         PlayerResult6,
     }
 
-
+    bool isInitialized = false;
 
     void Start()
     {
-        Init();
+        if(!isInitialized) Init();
     }
 
     public override void Init()
@@ -30,6 +30,8 @@ public class UI_ResultPanel : UI_Base
         {
             Get<GameObject>(i).gameObject.SetActive(false);
         }
+
+        isInitialized = true;
 
     }
 

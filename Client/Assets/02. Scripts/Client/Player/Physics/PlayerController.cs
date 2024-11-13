@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
     private int myId;
     private bool amIPlayer;
     private CharacterStatus playerStatus;
-    private float createHeight = 4;
+    private float createHeight = 1;
 
     private bool isGrounded;
     private bool isJump;
