@@ -337,6 +337,7 @@ void TableManager::ReadGameModeTable()
 
 void TableManager::ReadMapData()
 {
+    // ÆÀÀü ¸Ê
     std::ifstream map1_inputFile("GameData/Map/Map1.txt");
 
     if (!map1_inputFile.is_open()) {
@@ -345,20 +346,26 @@ void TableManager::ReadMapData()
     }
 
     std::string line;
-    int lineCnt = 0;
-
-    MapData[MapCode::Map_FITH_1vs1].SetMapCode(MapCode::Map_FITH_1vs1);
-
     while (std::getline(map1_inputFile, line)) {
         std::vector<char> row;
         char character;
         std::istringstream iss(line);
 
-        int colCnt = 0;
         while (iss >> character) {
             row.push_back(character);
+        }
 
-            switch ((int)character) {
+        MapData[MapCode::Map_FITH_1vs1].GetStructure().push_back(row);
+    }
+    std::reverse(MapData[MapCode::Map_FITH_1vs1].GetStructure().begin(), MapData[MapCode::Map_FITH_1vs1].GetStructure().end());
+
+    int size = MapData[MapCode::Map_FITH_1vs1].GetStructure().size();
+    for (int lineCnt = 0; lineCnt < size; ++lineCnt) {
+        std::vector<char>& row = MapData[MapCode::Map_FITH_1vs1].GetStructure()[lineCnt];
+
+        for (int colCnt = 0; colCnt < row.size(); ++colCnt) {
+            char block = row[colCnt];
+            switch ((int)block) {
             case FITH_MapBlock::FM_Normal: {
                 MapData[MapCode::Map_FITH_1vs1].GetBlockDropIndexes().push_back({ colCnt, lineCnt });
             }break;
@@ -366,7 +373,7 @@ void TableManager::ReadMapData()
                 MapData[MapCode::Map_FITH_1vs1].GetObjectSpawnIndexes().push_back({ colCnt, lineCnt });
             }break;
             case FITH_MapBlock::FM_TeamRedSpawn: {
-                MapData[MapCode::Map_FITH_1vs1].GetPlayerSpawnIndexes(TeamCode::Team_RED).push_back({colCnt, lineCnt});
+                MapData[MapCode::Map_FITH_1vs1].GetPlayerSpawnIndexes(TeamCode::Team_RED).push_back({ colCnt, lineCnt });
             }break;
             case FITH_MapBlock::FM_TeamBlueSpawn: {
                 MapData[MapCode::Map_FITH_1vs1].GetPlayerSpawnIndexes(TeamCode::Team_BLUE).push_back({ colCnt, lineCnt });
@@ -378,14 +385,13 @@ void TableManager::ReadMapData()
 
             }break;
             }
-
-            colCnt++;
         }
-        MapData[MapCode::Map_FITH_1vs1].GetStructure().push_back(row);
-        lineCnt++;
+        COUT << ENDL;
     }
     map1_inputFile.close();
 
+
+    // °³ÀÎÀü ¸Ê
     std::ifstream map2_inputFile("GameData/Map/Map2.txt");
 
     if (!map2_inputFile.is_open()) {
@@ -395,17 +401,29 @@ void TableManager::ReadMapData()
 
     MapData[MapCode::Map_FITH_1vs1vs1].SetMapCode(MapCode::Map_FITH_1vs1vs1);
 
-    lineCnt = 0;
     while (std::getline(map2_inputFile, line)) {
         std::vector<char> row;
         char character;
         std::istringstream iss(line);
 
-        int colCnt = 0;
         while (iss >> character) {
             row.push_back(character);
+        }
 
-            switch ((int)character) {
+        MapData[MapCode::Map_FITH_1vs1vs1].GetStructure().push_back(row);
+    }
+
+    std::reverse(MapData[MapCode::Map_FITH_1vs1vs1].GetStructure().begin(), MapData[MapCode::Map_FITH_1vs1vs1].GetStructure().end());
+
+    size = MapData[MapCode::Map_FITH_1vs1vs1].GetStructure().size();
+    for (int lineCnt = 0; lineCnt < size; ++lineCnt) {
+        std::vector<char>& row = MapData[MapCode::Map_FITH_1vs1vs1].GetStructure()[lineCnt];
+
+        for (int colCnt = 0; colCnt < row.size(); ++colCnt) {
+   
+            char block = row[colCnt];
+
+            switch ((int)block) {
             case FITH_MapBlock::FM_Normal: {
                 MapData[MapCode::Map_FITH_1vs1vs1].GetBlockDropIndexes().push_back({ colCnt, lineCnt });
             }break;
@@ -425,14 +443,9 @@ void TableManager::ReadMapData()
 
             }break;
             }
-
-            colCnt++;
         }
-
-        MapData[MapCode::Map_FITH_1vs1vs1].GetStructure().push_back(row);
-        lineCnt++;
+        COUT << ENDL;
     }
-
     map2_inputFile.close();
 }
 
