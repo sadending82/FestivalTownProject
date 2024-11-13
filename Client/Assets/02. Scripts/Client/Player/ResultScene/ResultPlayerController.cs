@@ -2,6 +2,7 @@ using PacketTable.PlayerTable;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using NetworkProtocol;
 
 public class ResultPlayerController : MonoBehaviour
 {
@@ -13,41 +14,81 @@ public class ResultPlayerController : MonoBehaviour
         int winningTeam = Managers.Game.GetWinningTeam();
 
         // TODO: 추가 - 모드 - 모드별 플레이어 위치 수정
-        Vector3 winnerOffset = new Vector3(-2, 75.3f, 13);
-        float winnerXInterval = 2f;
-        Vector3 loserOffset = new Vector3(-2, 73.3f, 11);
-        float loserXInterval = 2f;
-
-        int playerCount = 0;
-
-        for (int i = 0; i < maxPlayerNum; ++i)
+        if (Managers.Game.mapCode == MapCode.Map_FITH_1vs1)
         {
-            GameObject tPlayer = Managers.Player.FindPlayerById(i);
-            if (tPlayer.activeSelf == true)
-            {
-                int teamNumber = tPlayer.GetComponent<CharacterStatus>().GetTeamNumber();
-                GameObject rPlayer = this.transform.GetChild(playerCount).gameObject;
-                rPlayer.SetActive(true);
+            Vector3 winnerOffset = new Vector3(-2, 75.3f, 13);
+            float winnerXInterval = 2f;
+            Vector3 loserOffset = new Vector3(-2, 73.3f, 11);
+            float loserXInterval = 2f;
 
-                // 이긴 팀 플레이어면
-                if (winningTeam == teamNumber)
+            int playerCount = 0;
+
+            for (int i = 0; i < maxPlayerNum; ++i)
+            {
+                GameObject tPlayer = Managers.Player.FindPlayerById(i);
+                if (tPlayer.activeSelf == true)
                 {
-                    // 스킨 적용
-                    rPlayer.GetComponent<ResultPlayerState>().SetStyle(Managers.Player.GetSkinMaterial(i), Managers.Player.GetFaceMaterial(i));
-                    rPlayer.transform.position = winnerOffset;
-                    winnerOffset.x += winnerXInterval;
-                    rPlayer.GetComponent<ResultAnimationController>().SetWinAnimation();
+                    int teamNumber = tPlayer.GetComponent<CharacterStatus>().GetTeamNumber();
+                    GameObject rPlayer = this.transform.GetChild(playerCount).gameObject;
+                    rPlayer.SetActive(true);
+
+                    // 이긴 팀 플레이어면
+                    if (winningTeam == teamNumber)
+                    {
+                        // 스킨 적용
+                        rPlayer.GetComponent<ResultPlayerState>().SetStyle(Managers.Player.GetSkinMaterial(i), Managers.Player.GetFaceMaterial(i));
+                        rPlayer.transform.position = winnerOffset;
+                        winnerOffset.x += winnerXInterval;
+                        rPlayer.GetComponent<ResultAnimationController>().SetWinAnimation();
+                    }
+                    // 진 팀 플레이어면
+                    else
+                    {
+                        // 스킨 적용
+                        rPlayer.GetComponent<ResultPlayerState>().SetStyle(Managers.Player.GetSkinMaterial(i), Managers.Player.GetFaceMaterial(i));
+                        rPlayer.transform.position = loserOffset;
+                        loserOffset.x += loserXInterval;
+                        rPlayer.GetComponent<ResultAnimationController>().SetLoseAnimation();
+                    }
+                    playerCount++;
                 }
-                // 진 팀 플레이어면
-                else
+            }
+        }
+        else if(Managers.Game.mapCode == MapCode.Map_FITH_1vs1vs1)
+        {
+            Vector3 winnerOffset = new Vector3(0, 75.3f, 13);
+            Vector3 loserOffset = new Vector3(-1, 73.3f, 11);
+            float loserXInterval = 2f;
+
+            int playerCount = 0;
+            for (int i = 0; i < maxPlayerNum; ++i)
+            {
+                GameObject tPlayer = Managers.Player.FindPlayerById(i);
+                if (tPlayer.activeSelf == true)
                 {
-                    // 스킨 적용
-                    rPlayer.GetComponent<ResultPlayerState>().SetStyle(Managers.Player.GetSkinMaterial(i), Managers.Player.GetFaceMaterial(i));
-                    rPlayer.transform.position = loserOffset;
-                    loserOffset.x += loserXInterval;
-                    rPlayer.GetComponent <ResultAnimationController>().SetLoseAnimation();
+                    int teamNumber = tPlayer.GetComponent<CharacterStatus>().GetTeamNumber();
+                    GameObject rPlayer = this.transform.GetChild(playerCount).gameObject;
+                    rPlayer.SetActive(true);
+
+                    // 이긴 팀 플레이어면
+                    if (winningTeam == teamNumber)
+                    {
+                        // 스킨 적용
+                        rPlayer.GetComponent<ResultPlayerState>().SetStyle(Managers.Player.GetSkinMaterial(i), Managers.Player.GetFaceMaterial(i));
+                        rPlayer.transform.position = winnerOffset;
+                        rPlayer.GetComponent<ResultAnimationController>().SetWinAnimation();
+                    }
+                    // 진 팀 플레이어면
+                    else
+                    {
+                        // 스킨 적용
+                        rPlayer.GetComponent<ResultPlayerState>().SetStyle(Managers.Player.GetSkinMaterial(i), Managers.Player.GetFaceMaterial(i));
+                        rPlayer.transform.position = loserOffset;
+                        loserOffset.x += loserXInterval;
+                        rPlayer.GetComponent<ResultAnimationController>().SetLoseAnimation();
+                    }
+                    playerCount++;
                 }
-                playerCount++;
             }
         }
     }
