@@ -190,6 +190,8 @@ public class GameScene : BaseScene
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+
+        Managers.Network.GetPacketManager().SendCurrencyAmountRequestPacket();
     }
 
     public void WaitAndShowResult()
