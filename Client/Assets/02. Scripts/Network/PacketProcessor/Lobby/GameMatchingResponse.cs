@@ -1,4 +1,5 @@
 ﻿using Google.FlatBuffers;
+using NetworkProtocol;
 using PacketTable.GameTable;
 using PacketTable.LobbyTable;
 using System;
@@ -22,8 +23,7 @@ namespace Network.PacketProcessor
             int roomID = Data.Roomid;
             bool isHost = Data.IsHost;
             int gameTime = Data.GameTime; // Seconds
-
-            int mapCode = Data.MapCode;
+            MapCode mapCode = (MapCode)Data.MapCode;
 
             Debug.Log("Game Maching Complete");
 
@@ -31,9 +31,8 @@ namespace Network.PacketProcessor
             Managers.Game.RoomID = roomID;
             Managers.Game.inGameID = id;
             Managers.Game.isHost = isHost;
+            Managers.Game.mapCode = mapCode;
             Managers.Game.GameRemainTime = gameTime;
         }
-
-        
     }
 }

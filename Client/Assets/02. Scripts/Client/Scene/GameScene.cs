@@ -11,7 +11,7 @@ public class GameScene : BaseScene
 
         SceneType = Define.Scene.Game;
 
-        //맵 관련 부분 여기에 넣어
+        Managers.Game.LoadGameMap();
 
         Managers.Player.Init();
 

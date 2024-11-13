@@ -1,4 +1,5 @@
 using ExcelDataStructure;
+using NetworkProtocol;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,6 +21,7 @@ public class GameManager : MonoBehaviour
     public bool isHost = false;
     public int inGameID = -1;
     public int RoomID = -1;
+    public MapCode mapCode;
     public bool isAnounnced15s = false;
     public Dictionary<int, Define.PlayerResult> PlayerResultData = new();
     private int winningTeam = -1;
@@ -115,6 +117,30 @@ public class GameManager : MonoBehaviour
         PlayerResultData.Clear();
         winningTeam = -1;
     }
+
+    public void LoadGameMap()
+    {
+        GameObject maps = GameObject.Find("Maps");
+        switch(mapCode)
+        {
+            case MapCode.Map_FITH_1vs1:
+                {
+                    maps.transform.GetChild(1).gameObject.SetActive(true);
+                }
+                break;
+            case MapCode.Map_FITH_1vs1vs1:
+                {
+                    maps.transform.GetChild(0).gameObject.SetActive(true);
+                }
+                break;
+            default:
+                {
+                    Debug.Log("ERROR!!! LoadGameMap: Wrong MapCode!!!");
+                }
+                break;
+        }
+    }
+
     public void GameStart()
     {
         isTimerStart = true;

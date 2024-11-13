@@ -1012,14 +1012,35 @@ public class PlayerController : MonoBehaviour
     public void SetDirectionByTeam()
     {
         int teamNumber = playerStatus.GetTeamNumber();
+
         switch (teamNumber)
         {
             case 0:
                 {
-                    stabilizer.transform.eulerAngles = new Vector3(0.0f, 90f, 0.0f);
+                    if (Managers.Game.mapCode == MapCode.Map_FITH_1vs1)
+                    {
+                        stabilizer.transform.eulerAngles = new Vector3(0.0f, 90f, 0.0f);
+                    }
+                    else
+                    {
+                        stabilizer.transform.eulerAngles = new Vector3(0.0f, 180f, 0.0f);
+                    }
+
                 }
                 break;
             case 1:
+                {
+                    if (Managers.Game.mapCode == MapCode.Map_FITH_1vs1)
+                    {
+                        stabilizer.transform.eulerAngles = new Vector3(0.0f, 270f, 0.0f);
+                    }
+                    else
+                    {
+                        stabilizer.transform.eulerAngles = new Vector3(0.0f, 0f, 0.0f);
+                    }
+                }
+                break;
+            case 2:
                 {
                     stabilizer.transform.eulerAngles = new Vector3(0.0f, 270f, 0.0f);
                 }
