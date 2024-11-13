@@ -29,9 +29,7 @@ public class GameManager : MonoBehaviour
 
     public void Init()
     {
-        // 이건 임시로 만든 거라서 나중에 바꿔줘야 합니당
-        isInGame = true;
-        SetDefaultGameData(Define.GameMode.FireInTheHoleTeam1);
+        Clear();
     }
 
     public void SetDefaultGameData(Define.GameMode mode)
@@ -127,11 +125,13 @@ public class GameManager : MonoBehaviour
             case MapCode.Map_FITH_1vs1vs1:
                 {
                     maps.transform.GetChild(0).gameObject.SetActive(true);
+                    SetDefaultGameData(Define.GameMode.FireInTheHoleIndivisual3);
                 }
                 break;
             case MapCode.Map_FITH_1vs1:
                 {
                     maps.transform.GetChild(1).gameObject.SetActive(true);
+                    SetDefaultGameData(Define.GameMode.FireInTheHoleTeam1);
                 }
                 break;
             default:
@@ -161,6 +161,7 @@ public class GameManager : MonoBehaviour
         Managers.WeaponObject.Clear();
 
         isGameEnd = true;
+        isInGame = false;
     }
 
     public void SetWinningTeam(int winningTeam)

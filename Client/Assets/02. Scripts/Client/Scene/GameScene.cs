@@ -12,6 +12,7 @@ public class GameScene : BaseScene
 
         SceneType = Define.Scene.Game;
 
+        Managers.Game.Init();
         Managers.Game.LoadGameMap();
 
         Managers.Player.Init();
@@ -142,6 +143,8 @@ public class GameScene : BaseScene
         Managers.Resource.Destroy(GameObject.Find("UI_Loading"));
 
         Managers.PostProcess.SetPostProcesser();
+
+        Managers.Game.isInGame = true;
 
         StartCoroutine(GameStartTimerActive());
     }
