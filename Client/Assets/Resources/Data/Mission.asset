@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 680c3d1f59a3dd944999c7ad0b51542c, type: 3}
+  m_Name: Mission
+  m_EditorClassIdentifier: 
+  Type_Mission:
+  - Index: 1001
+    Name: Kill_Count
+    ClassType: 0
+  - Index: 1002
+    Name: Kill_Weapon_Count
+    ClassType: 0
+  - Index: 1003
+    Name: Kill_Punch_Count
+    ClassType: 0
+  - Index: 1004
+    Name: Bomb_Count
+    ClassType: 0
+  - Index: 1005
+    Name: Groggy_Count
+    ClassType: 0
+  - Index: 1006
+    Name: Pick_Weapon_Count
+    ClassType: 0
+  - Index: 1007
+    Name: Pick_Bomb_Count
+    ClassType: 0
+  - Index: 1008
+    Name: Battle_Count
+    ClassType: 0
+  - Index: 1009
+    Name: FITH_Team_Count
+    ClassType: 0
+  - Index: 1010
+    Name: FITH_Indiv_Count
+    ClassType: 0
+  - Index: 1011
+    Name: Victory_Count
+    ClassType: 0
+  - Index: 2001
+    Name: Gacha_Count
+    ClassType: 0
+  - Index: 2002
+    Name: Skin_Count
+    ClassType: 0
+  - Index: 2003
+    Name: Costume_Count
+    ClassType: 0
+  - Index: 2004
+    Name: Box_Count
+    ClassType: 0
+  - Index: 2005
+    Name: Login_Count
+    ClassType: 0
+  - Index: 2006
+    Name: Play_Time_Count
+    ClassType: 0
+  List_Mission:
+  - Index: 11001
+    Name: 
+    ClassType: 0
+    Info: "\uCCAB \uBC88\uC9F8 \uD0AC"
+    Type: 1
+    Reset_Time: 0
+    Open_Date: 20241105
+    Close_Date: 99990101
+    Overlap_Count: 0
+    Reward1_Index: 100001
+    Reward1_value: 0
+    Element1_Index: 0
+    Element1_Count: 0

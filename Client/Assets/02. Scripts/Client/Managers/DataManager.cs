@@ -43,9 +43,13 @@ public class DataManager
     public Dictionary<int, ModePointEntity> ModePointDataDict = new();
     public Dictionary<int, ModeRewardEntity> ModeRewardDataDict = new();
     public Dictionary<int, ModeBonusRewardEntity> ModeBonusRewardDataDict = new();
+    public Dictionary<int, EventMainEntity> EventMainDataDict = new();
+    public Dictionary<int, EventListEntity> EventListDataDict = new();
+    public Dictionary<int, MissionTypeEntity> MissionTypeDataDict = new();
+    public Dictionary<int, MissionListEntity> MissionListDataDict = new();
 
     public Dictionary<int, int> PlayerDataDict = new();
-    string NickName = "닉네임은여덟글자";
+    string NickName = "DefaultNick";
 
     public void Init()
     {
@@ -202,6 +206,38 @@ public class DataManager
             {
                 GameDataDict.TryAdd(entity.Index, entity);
                 GameDataDict[entity.Index].ClassType = Define.ExcelDataClassType.WeaponStat;
+            }
+        }
+
+        Event eventData = Managers.Resource.Load<Event>($"Data/Event");
+        if (eventData != null)
+        {
+            foreach(EventMainEntity entity in eventData.Event_Main)
+            {
+                EventMainDataDict.TryAdd(entity.Event_Id, entity);
+                EventMainDataDict[entity.Event_Id].ClassType = Define.ExcelDataClassType.EventMain;
+            }
+
+            foreach(EventListEntity entity in eventData.Event_List)
+            {
+                EventListDataDict.TryAdd(entity.Index, entity);
+                EventListDataDict[entity.Index].ClassType = Define.ExcelDataClassType.EventList;
+            }
+        }
+
+        Mission missionData = Managers.Resource.Load<Mission>($"Data/Mission");
+        if (missionData != null)
+        {
+            foreach(MissionTypeEntity entity in missionData.Type_Mission)
+            {
+                MissionTypeDataDict.TryAdd(entity.Index, entity);
+                MissionTypeDataDict[entity.Index].ClassType = Define.ExcelDataClassType.MissionType;
+            }
+
+            foreach(MissionListEntity entity in  missionData.List_Mission)
+            {
+                MissionListDataDict.TryAdd(entity.Index, entity);
+                MissionListDataDict[entity.Index].ClassType = Define.ExcelDataClassType.MissionList;
             }
         }
     }

@@ -69,6 +69,10 @@ public class Define
         ModeReward,
         ModeBonusReward,
         WeaponStat,
+        EventMain,
+        EventList,
+        MissionType,
+        MissionList,
     }
 
     public enum CompatibilityColor

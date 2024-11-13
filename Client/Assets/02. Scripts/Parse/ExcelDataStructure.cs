@@ -163,4 +163,50 @@ namespace ExcelDataStructure
         public int Weapon_Type;
         public int Weapon_StaminaConsume;
     }
+
+    [System.Serializable]
+    public class EventMainEntity
+    {
+        public int Event_Id;
+        public string Name;
+        public int Type;
+        public int Open_Date;
+        public int Close_Date;
+        public Define.ExcelDataClassType ClassType;
+    }
+
+    [System.Serializable]
+    public class EventListEntity
+    {
+        public int Index;
+        public int EventList;
+        public int Day;
+        public int Reward_Item_Index;
+        public int Reward_Item_Value;
+        public int Open_Date;
+        public int Close_Date;
+        public bool is_received;
+        public Define.ExcelDataClassType ClassType;
+    }
+
+    [System.Serializable]
+    public class MissionTypeEntity : GameDataEntity
+    {
+
+    }
+
+    [System.Serializable]
+    public class MissionListEntity : GameDataEntity
+    {
+        public string Info;
+        public int Type;
+        public int Reset_Time;
+        public int Open_Date;
+        public int Close_Date;
+        public int Overlap_Count;
+        public int Reward1_Index;
+        public int Reward1_value;
+        public int Element1_Index;
+        public int Element1_Count;
+    }
 }
