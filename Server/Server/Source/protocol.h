@@ -110,6 +110,17 @@ enum eMatchingType {
     FITH_TEST = 190
 };
 
+enum TeamCode {
+    Team_RED = 0,
+    Team_BLUE = 1,
+    Team_GREEN = 2
+};
+
+enum MapCode {
+    Map_FITH_1vs1,
+    Map_FITH_1vs1vs1,
+};
+
 enum BattleResult {
     BR_Win = 1,
     BR_Lose = 2,

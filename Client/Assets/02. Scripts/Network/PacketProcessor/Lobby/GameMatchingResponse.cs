@@ -23,6 +23,8 @@ namespace Network.PacketProcessor
             bool isHost = Data.IsHost;
             int gameTime = Data.GameTime; // Seconds
 
+            int mapCode = Data.MapCode;
+
             Debug.Log("Game Maching Complete");
 
             Managers.Scene.LoadScene(Define.Scene.Loading);

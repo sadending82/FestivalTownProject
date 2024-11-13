@@ -58,15 +58,6 @@ enum class eRoomState {
 	RS_INGAME
 };
 
-enum class TeamCode {
-	RED,
-	BLUE
-};
-
-enum class MapCode {
-	TEST
-};
-
 enum class eObjectType {
 	WEAPON,
 	BOMB

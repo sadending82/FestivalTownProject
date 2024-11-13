@@ -103,9 +103,10 @@ struct GameMatchingResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Tab
     VT_ROOMID = 6,
     VT_TEAM = 8,
     VT_GAMEMODE = 10,
-    VT_GAME_TIME = 12,
-    VT_IS_HOST = 14,
-    VT_TOTAL_PLAYER_COUNT = 16
+    VT_MAP_CODE = 12,
+    VT_GAME_TIME = 14,
+    VT_IS_HOST = 16,
+    VT_TOTAL_PLAYER_COUNT = 18
   };
   int32_t ingameid() const {
     return GetField<int32_t>(VT_INGAMEID, 0);
@@ -118,6 +119,9 @@ struct GameMatchingResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Tab
   }
   int32_t gamemode() const {
     return GetField<int32_t>(VT_GAMEMODE, 0);
+  }
+  int32_t map_code() const {
+    return GetField<int32_t>(VT_MAP_CODE, 0);
   }
   int32_t game_time() const {
     return GetField<int32_t>(VT_GAME_TIME, 0);
@@ -134,6 +138,7 @@ struct GameMatchingResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Tab
            VerifyField<int32_t>(verifier, VT_ROOMID, 4) &&
            VerifyField<int32_t>(verifier, VT_TEAM, 4) &&
            VerifyField<int32_t>(verifier, VT_GAMEMODE, 4) &&
+           VerifyField<int32_t>(verifier, VT_MAP_CODE, 4) &&
            VerifyField<int32_t>(verifier, VT_GAME_TIME, 4) &&
            VerifyField<uint8_t>(verifier, VT_IS_HOST, 1) &&
            VerifyField<int32_t>(verifier, VT_TOTAL_PLAYER_COUNT, 4) &&
@@ -156,6 +161,9 @@ struct GameMatchingResponseBuilder {
   }
   void add_gamemode(int32_t gamemode) {
     fbb_.AddElement<int32_t>(GameMatchingResponse::VT_GAMEMODE, gamemode, 0);
+  }
+  void add_map_code(int32_t map_code) {
+    fbb_.AddElement<int32_t>(GameMatchingResponse::VT_MAP_CODE, map_code, 0);
   }
   void add_game_time(int32_t game_time) {
     fbb_.AddElement<int32_t>(GameMatchingResponse::VT_GAME_TIME, game_time, 0);
@@ -183,12 +191,14 @@ inline ::flatbuffers::Offset<GameMatchingResponse> CreateGameMatchingResponse(
     int32_t roomid = 0,
     int32_t team = 0,
     int32_t gamemode = 0,
+    int32_t map_code = 0,
     int32_t game_time = 0,
     bool is_host = false,
     int32_t total_player_count = 0) {
   GameMatchingResponseBuilder builder_(_fbb);
   builder_.add_total_player_count(total_player_count);
   builder_.add_game_time(game_time);
+  builder_.add_map_code(map_code);
   builder_.add_gamemode(gamemode);
   builder_.add_team(team);
   builder_.add_roomid(roomid);

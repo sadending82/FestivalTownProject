@@ -87,14 +87,15 @@ void PacketSender::SendGameMatchingResponse(int sessionID)
     int roomID = player->GetRoomID();
     int team = player->GetTeam();
     Room* room = mServer->GetRooms()[roomID];
-    GameMode GameMode = mServer->GetRooms()[roomID]->GetGameMode();
+    GameMode GameMode = room->GetGameMode();
+    MapCode mapCode = room->GetMap()->GetMapCode();
     int playTime = mServer->GetTableManager()->GetGameModeData()[GameMode].Play_Time;
     std::vector<uint8_t> send_buffer;
     if (inGameID == room->GetHostID()) {
-        send_buffer = mPacketMaker->MakeGameMatchingResponsePacket(inGameID, roomID, team, room->GetGameMode(), playTime, room->GetGameModeData().Player_Count, true);
+        send_buffer = mPacketMaker->MakeGameMatchingResponsePacket(inGameID, roomID, team, room->GetGameMode(), mapCode, playTime, room->GetGameModeData().Player_Count, true);
     }
     else {
-        send_buffer = mPacketMaker->MakeGameMatchingResponsePacket(inGameID, roomID, team, room->GetGameMode(), playTime, room->GetGameModeData().Player_Count);
+        send_buffer = mPacketMaker->MakeGameMatchingResponsePacket(inGameID, roomID, team, room->GetGameMode(), mapCode, playTime, room->GetGameModeData().Player_Count);
     }
 
     mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());

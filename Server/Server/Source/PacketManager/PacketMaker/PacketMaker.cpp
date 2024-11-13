@@ -155,11 +155,11 @@ std::vector<uint8_t> PacketMaker::MakePlayerThrowOtherPlayerPacket(int playerID,
 	return MakeBuffer(ePacketType::S2C_PLAYER_THROW_OTHER_PLAYER, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakeGameMatchingResponsePacket(int inGameID, int roomID, int team, int gameMode, int gameTime, int totalPlayerCount, bool isHost)
+std::vector<uint8_t> PacketMaker::MakeGameMatchingResponsePacket(int inGameID, int roomID, int team, int gameMode, MapCode mapCode, int gameTime, int totalPlayerCount, bool isHost)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 	
-	Builder.Finish(PacketTable::LobbyTable::CreateGameMatchingResponse(Builder, inGameID, roomID, team, gameMode, gameTime, isHost, totalPlayerCount));
+	Builder.Finish(PacketTable::LobbyTable::CreateGameMatchingResponse(Builder, inGameID, roomID, team, gameMode, mapCode,gameTime, isHost, totalPlayerCount));
 	return MakeBuffer(ePacketType::S2C_MATCHING_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 

@@ -266,18 +266,25 @@ void TableManager::ReadGameModeTable()
                 ssCloseDate >> std::get_time(&closeDate, "%Y-%m-%d");
 
                 int index = row[0].value<int>();
+                int teamCount = row[(int)(GameModeOut_Field::Team_Count)].value<int>();
 
                GameModeDatas[(GameMode)index]
                     =  GameModeData{
                     row[(int)(GameModeOut_Field::Player_Count)].value<int>(),
-                    row[(int)(GameModeOut_Field::Team_Count)].value<int>(),
+                    teamCount,
                     row[(int)(GameModeOut_Field::Team_Color)].value<int>(),
                     row[(int)(GameModeOut_Field::Play_Map)].value<int>(),
                     openDate,
                     closeDate
                 };
 
-               MapListByMode[(GameMode)index].push_back(MapCode::TEST);
+
+               if (teamCount == 2) {
+                   MapListByMode[(GameMode)index].push_back(MapCode::Map_FITH_1vs1);
+               }
+               else if (teamCount == 3) {
+                   MapListByMode[(GameMode)index].push_back(MapCode::Map_FITH_1vs1vs1);
+               }
             }
 
             idx++;
@@ -330,16 +337,19 @@ void TableManager::ReadGameModeTable()
 
 void TableManager::ReadMapData()
 {
-    std::ifstream inputFile("GameData/Map1.txt");
+    std::ifstream map1_inputFile("GameData/Map/Map1.txt");
 
-    if (!inputFile.is_open()) {
+    if (!map1_inputFile.is_open()) {
         std::cerr << "File Not Exist" << std::endl;
         return;
     }
 
     std::string line;
     int lineCnt = 0;
-    while (std::getline(inputFile, line)) {
+
+    MapData[MapCode::Map_FITH_1vs1].SetMapCode(MapCode::Map_FITH_1vs1);
+
+    while (std::getline(map1_inputFile, line)) {
         std::vector<char> row;
         char character;
         std::istringstream iss(line);
@@ -348,24 +358,68 @@ void TableManager::ReadMapData()
         while (iss >> character) {
             row.push_back(character);
 
-            switch (character) {
-            case 'n': {
-                MapData[MapCode::TEST].GetBlockDropIndexes().push_back({ colCnt, lineCnt });
+            switch ((int)character) {
+            case FITH_MapBlock::FM_Normal: {
+                MapData[MapCode::Map_FITH_1vs1].GetBlockDropIndexes().push_back({ colCnt, lineCnt });
             }break;
-            case 'b': {
-                MapData[MapCode::TEST].GetObjectSpawnIndexes().push_back({ colCnt, lineCnt });
-                if (colCnt < 10) {
-                    MapData[MapCode::TEST].GetRedObjectSpawnIndexes().push_back({ colCnt, lineCnt });
-                }
-                else {
-                    MapData[MapCode::TEST].GetBlueObjectSpawnIndexes().push_back({ colCnt, lineCnt });
-                }
+            case FITH_MapBlock::FM_ObjectSpwan: {
+                MapData[MapCode::Map_FITH_1vs1].GetObjectSpawnIndexes().push_back({ colCnt, lineCnt });
             }break;
-            case 'R': {
-                MapData[MapCode::TEST].GetPlayerSpawnIndexes((int)TeamCode::RED).push_back({colCnt, lineCnt});
+            case FITH_MapBlock::FM_TeamRedSpawn: {
+                MapData[MapCode::Map_FITH_1vs1].GetPlayerSpawnIndexes(TeamCode::Team_RED).push_back({colCnt, lineCnt});
             }break;
-            case 'B': {
-                MapData[MapCode::TEST].GetPlayerSpawnIndexes((int)TeamCode::BLUE).push_back({ colCnt, lineCnt });
+            case FITH_MapBlock::FM_TeamBlueSpawn: {
+                MapData[MapCode::Map_FITH_1vs1].GetPlayerSpawnIndexes(TeamCode::Team_BLUE).push_back({ colCnt, lineCnt });
+            }break;
+            case FITH_MapBlock::FM_TeamGreenSpawn: {
+                MapData[MapCode::Map_FITH_1vs1].GetPlayerSpawnIndexes(TeamCode::Team_GREEN).push_back({ colCnt, lineCnt });
+            }break;
+            default: {
+
+            }break;
+            }
+
+            colCnt++;
+        }
+        MapData[MapCode::Map_FITH_1vs1].GetStructure().push_back(row);
+        lineCnt++;
+    }
+    map1_inputFile.close();
+
+    std::ifstream map2_inputFile("GameData/Map/Map2.txt");
+
+    if (!map2_inputFile.is_open()) {
+        std::cerr << "File Not Exist" << std::endl;
+        return;
+    }
+
+    MapData[MapCode::Map_FITH_1vs1vs1].SetMapCode(MapCode::Map_FITH_1vs1vs1);
+
+    lineCnt = 0;
+    while (std::getline(map2_inputFile, line)) {
+        std::vector<char> row;
+        char character;
+        std::istringstream iss(line);
+
+        int colCnt = 0;
+        while (iss >> character) {
+            row.push_back(character);
+
+            switch ((int)character) {
+            case FITH_MapBlock::FM_Normal: {
+                MapData[MapCode::Map_FITH_1vs1vs1].GetBlockDropIndexes().push_back({ colCnt, lineCnt });
+            }break;
+            case FITH_MapBlock::FM_ObjectSpwan: {
+                MapData[MapCode::Map_FITH_1vs1vs1].GetObjectSpawnIndexes().push_back({ colCnt, lineCnt });
+            }break;
+            case FITH_MapBlock::FM_TeamRedSpawn: {
+                MapData[MapCode::Map_FITH_1vs1vs1].GetPlayerSpawnIndexes(TeamCode::Team_RED).push_back({ colCnt, lineCnt });
+            }break;
+            case FITH_MapBlock::FM_TeamBlueSpawn: {
+                MapData[MapCode::Map_FITH_1vs1vs1].GetPlayerSpawnIndexes(TeamCode::Team_BLUE).push_back({ colCnt, lineCnt });
+            }break;
+            case FITH_MapBlock::FM_TeamGreenSpawn: {
+                MapData[MapCode::Map_FITH_1vs1vs1].GetPlayerSpawnIndexes(TeamCode::Team_GREEN).push_back({ colCnt, lineCnt });
             }break;
             default: {
 
@@ -375,11 +429,11 @@ void TableManager::ReadMapData()
             colCnt++;
         }
 
-        MapData[MapCode::TEST].GetStructure().push_back(row);
+        MapData[MapCode::Map_FITH_1vs1vs1].GetStructure().push_back(row);
         lineCnt++;
     }
 
-    inputFile.close();
+    map2_inputFile.close();
 }
 
 void TableManager::ReadPointConstantTable()

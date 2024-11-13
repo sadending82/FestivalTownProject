@@ -39,9 +39,12 @@ void Room::Init(int id, GameMode gameMode, GameModeData& GameModeData)
 	mObjectPool.AllObjectDeactive();
 	std::fill(mPlayerList.begin(), mPlayerList.end(), INVALIDKEY);
 
-	// team game
-	mTeams[(int)TeamCode::RED].Init(mGameModeData.Life_Count);
-	mTeams[(int)TeamCode::BLUE].Init(mGameModeData.Life_Count);
+
+	int teamCount = mGameModeData.Team_Count;
+
+	for (int i = 0; i < teamCount; ++i) {
+		mTeams[i].Init(mGameModeData.Life_Count);
+	}
 }
 
 

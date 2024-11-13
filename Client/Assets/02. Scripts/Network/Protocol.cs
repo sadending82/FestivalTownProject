@@ -126,6 +126,19 @@ namespace NetworkProtocol
         FITH_TEST = 190
     };
 
+    public enum TeamCode
+    {
+        Team_RED = 0,
+        Team_BLUE = 1,
+        Team_GREEN = 2
+    };
+
+    public enum MapCode
+    {
+        Map_FITH_1vs1,
+        Map_FITH_1vs1vs1,
+    };
+
     public enum ePlayerMoveState
     {
         PS_WALK,

@@ -330,7 +330,7 @@ void Server::MakeTestRoom()
     GameModeData& modeInfo = mTableManager->GetGameModeData()[gameMode];
     Room* room = mRooms[TESTROOM];
     room->Init(TESTROOM, gameMode, modeInfo);
-    room->InitMap(&mTableManager->GetMapData()[MapCode::TEST]);
+    room->InitMap(&mTableManager->GetMapData()[MapCode::Map_FITH_1vs1]);
     room->SetState(eRoomState::RS_INGAME);
 
     // Push Event
@@ -444,7 +444,8 @@ int Server::CreateNewRoom(GameMode gameMode)
     }
     Room* room = GetRooms()[roomID];
     room->Init(roomID, gameMode, mTableManager->GetGameModeData()[gameMode]);
-    room->InitMap(&GetTableManager()->GetMapData()[MapCode::TEST]);
+    MapCode mapCode = mTableManager->getMapListByMode()[gameMode][0];
+    room->InitMap(&GetTableManager()->GetMapData()[mapCode]);
 
     return roomID;
 }
