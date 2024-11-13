@@ -345,6 +345,7 @@ void TableManager::ReadMapData()
         return;
     }
 
+    MapData[MapCode::Map_FITH_1vs1].SetMapCode(MapCode::Map_FITH_1vs1);
     std::string line;
     while (std::getline(map1_inputFile, line)) {
         std::vector<char> row;
@@ -386,7 +387,6 @@ void TableManager::ReadMapData()
             }break;
             }
         }
-        COUT << ENDL;
     }
     map1_inputFile.close();
 
@@ -444,7 +444,6 @@ void TableManager::ReadMapData()
             }break;
             }
         }
-        COUT << ENDL;
     }
     map2_inputFile.close();
 }

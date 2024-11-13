@@ -89,6 +89,7 @@ void PacketSender::SendGameMatchingResponse(int sessionID)
     Room* room = mServer->GetRooms()[roomID];
     GameMode GameMode = room->GetGameMode();
     MapCode mapCode = room->GetMap()->GetMapCode();
+
     int playTime = mServer->GetTableManager()->GetGameModeData()[GameMode].Play_Time;
     std::vector<uint8_t> send_buffer;
     if (inGameID == room->GetHostID()) {
