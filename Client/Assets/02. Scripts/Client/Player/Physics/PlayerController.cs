@@ -1023,7 +1023,7 @@ public class PlayerController : MonoBehaviour
                     }
                     else
                     {
-                        stabilizer.transform.eulerAngles = new Vector3(0.0f, 180f, 0.0f);
+                        stabilizer.transform.eulerAngles = new Vector3(0.0f, 0.0f, 0.0f);
                     }
 
                 }
@@ -1036,7 +1036,7 @@ public class PlayerController : MonoBehaviour
                     }
                     else
                     {
-                        stabilizer.transform.eulerAngles = new Vector3(0.0f, 0f, 0.0f);
+                        stabilizer.transform.eulerAngles = new Vector3(0.0f, 90f, 0.0f);
                     }
                 }
                 break;
