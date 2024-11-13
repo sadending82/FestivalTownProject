@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cceadf01d179a0a4a87e42cb488cfd68, type: 3}
+  m_Name: Event
+  m_EditorClassIdentifier: 
+  Event_Main:
+  - Event_Id: 31001
+    Name: "\uB514\uB809\uD130\uC758 \uAC10\uC0AC \uD3B8\uC9C0"
+    Type: 1
+    Open_Date: 45573
+    Close_Date: 72686
+    ClassType: 0
+  - Event_Id: 32001
+    Name: "\uC624\uD508 \uAE30\uB150 \uCD9C\uC11D \uC774\uBCA4\uD2B8"
+    Type: 2
+    Open_Date: 45573
+    Close_Date: 72686
+    ClassType: 0
+  Event_List:
+  - Index: 132001
+    EventList: 0
+    Day: 1
+    Reward_Item_Index: 100001
+    Reward_Item_Value: 3000
+    Open_Date: 45573
+    Close_Date: 72686
+    is_received: 0
+    ClassType: 0
+  - Index: 132002
+    EventList: 0
+    Day: 2
+    Reward_Item_Index: 100002
+    Reward_Item_Value: 100
+    Open_Date: 45573
+    Close_Date: 72686
+    is_received: 0
+    ClassType: 0
+  - Index: 132003
+    EventList: 0
+    Day: 3
+    Reward_Item_Index: 100001
+    Reward_Item_Value: 3000
+    Open_Date: 45573
+    Close_Date: 72686
+    is_received: 0
+    ClassType: 0
+  - Index: 132004
+    EventList: 0
+    Day: 4
+    Reward_Item_Index: 100002
+    Reward_Item_Value: 100
+    Open_Date: 45573
+    Close_Date: 72686
+    is_received: 0
+    ClassType: 0
+  - Index: 132005
+    EventList: 0
+    Day: 5
+    Reward_Item_Index: 331002
+    Reward_Item_Value: 1
+    Open_Date: 45573
+    Close_Date: 72686
+    is_received: 0
+    ClassType: 0
