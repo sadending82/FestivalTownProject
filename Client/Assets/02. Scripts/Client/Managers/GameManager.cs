@@ -123,19 +123,19 @@ public class GameManager : MonoBehaviour
         GameObject maps = GameObject.Find("Maps");
         switch(mapCode)
         {
-            case MapCode.Map_FITH_1vs1:
-                {
-                    maps.transform.GetChild(1).gameObject.SetActive(true);
-                }
-                break;
             case MapCode.Map_FITH_1vs1vs1:
                 {
                     maps.transform.GetChild(0).gameObject.SetActive(true);
                 }
                 break;
+            case MapCode.Map_FITH_1vs1:
+                {
+                    maps.transform.GetChild(1).gameObject.SetActive(true);
+                }
+                break;
             default:
                 {
-                    Debug.Log("ERROR!!! LoadGameMap: Wrong MapCode!!!");
+                    Debug.Log("ERROR!!! LoadGameMap(): Wrong MapCode!!!");
                 }
                 break;
         }
