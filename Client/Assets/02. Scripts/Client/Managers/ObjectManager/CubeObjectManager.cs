@@ -93,4 +93,13 @@ public class CubeObjectManager : MonoBehaviour
 
         cubes.SetActive(false);
     }
+
+    public float GetMapHeight(int x, int z)
+    {
+        if (x < 0 || z < 0)
+        {
+            return -1.0f;
+        }
+        return aMapHeight[x, z];
+    }
 }

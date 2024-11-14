@@ -1,28 +1,20 @@
+using NetworkProtocol;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Checker : MonoBehaviour
 {
-    private bool check;
-
     private PacketManager packetManager;
-
-    private GameObject pusher;
+    private bool groundChecker = false;
 
     private void Start()
     {
-        check = true;
         packetManager = Managers.Network.GetPacketManager();
-    }
-    public void CreatePusher()
-    {
-        pusher = Managers.Resource.Instantiate("CubePusher");
-        pusher.transform.position = new Vector3(this.transform.position.x, 0, this.transform.position.z);
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (check == true)
+        if (groundChecker == false)
         {
             if (other.gameObject.tag == "Bomb")
             {
@@ -38,17 +30,51 @@ public class Checker : MonoBehaviour
                     packetManager.SendWeaponDeletePacket(other.gameObject.GetComponent<Weapon>().GetId());
                 }
             }
-            if (other.gameObject.tag == "Ground")
+            if (other.gameObject.tag == "HitBox")
             {
-                check = false;
-                pusher.SetActive(true);
-                pusher.GetComponent<Pusher>().StartPush();
+                if (Managers.Player.GetIsHost() == true)
+                {
+                    CharacterStatus tPlayerState = other.gameObject.transform.GetComponentInParent<CharacterStatus>();
+                    PlayerController tPlayerController = other.gameObject.transform.GetComponentInParent<PlayerController>();
+
+                    Vector3 tPlayerPos = tPlayerController.GetPosition();
+                    int mapPosX = (int)transform.position.x / 2;
+                    int mapPosZ = (int)transform.position.z / 2;
+                    float xInterval = transform.position.x - tPlayerPos.x;
+                    float yInterval = transform.position.z - tPlayerPos.z;
+
+                    int mapPosXOffset = 0, mapPosZOffset = 0;
+                    float pushPower;
+                    if (Mathf.Abs(xInterval) < Mathf.Abs(yInterval))
+                    {
+                        pushPower = (1.5f - Mathf.Abs(yInterval)) * 150.0f; 
+                        if (yInterval > 0) mapPosZOffset = -1;
+                        else mapPosZOffset = 1;
+                    }
+                    else
+                    {
+                        pushPower = (1.5f - Mathf.Abs(xInterval)) * 150.0f;
+                        if (xInterval > 0) mapPosXOffset = -1;
+                        else mapPosXOffset = 1;
+                    }
+
+                    float tPosMapHeight = Managers.CubeObject.GetMapHeight(mapPosX + mapPosXOffset, mapPosZ + mapPosZOffset);
+                    if (tPosMapHeight > tPlayerPos.y)
+                    {
+                        packetManager.SendPlayerDamageReceivePacket(tPlayerState.GetId(), tPlayerState.GetId(), -1, eDamageType.AT_FALLDOWN, Vector3.zero);
+                    }
+                    else
+                    {
+                        Vector3 pushDirection = new Vector3(mapPosXOffset, 0.0f, mapPosZOffset);
+                        tPlayerController.Pushed(pushDirection, pushPower);
+                        packetManager.SendPlayerCollisionToBlockPacket(tPlayerState.GetId());
+                    }
+                }
             }
         }
     }
-
-    public void SetCheck(bool check)
+    public void SetGroundChecker(bool groundChecker)
     {
-        this.check = check;
+        this.groundChecker = groundChecker;
     }
 }
