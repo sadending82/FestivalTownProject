@@ -293,16 +293,16 @@ std::vector<uint8_t> PacketMaker::MakeGameResultPacket(std::set<int>& winningTea
 			playerName = wstringToString(players[id]->GetName());
 		}
 
-		sPlayerGameRecord record = pair.second;
+		sPlayerGameRecord& record = pair.second;
 		auto fRecord = PacketTable::UtilitiesTable::CreatePlayerGameRecord(Builder
 			, id
 			, Builder.CreateString(playerName)
 			, record.team
-			, record.kill_count
-			, record.death_count
-			, record.bomb_insert_count
+			, record.gameRecord.KillCount
+			, record.gameRecord.DeathCount
+			, record.gameRecord.Bomb_Count
 			, record.earn_gold
-			, record.point
+			, record.gameRecord.Point
 			, record.is_mvp);
 
 		record_vec.push_back(fRecord);

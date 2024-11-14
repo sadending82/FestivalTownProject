@@ -36,9 +36,12 @@ public:
 				ePlayerState playerState = player->GetPlayerState();
 				player->GetPlayerStateLock().unlock_shared();
 
+				sPlayerGameRecord& playerGameRecord = room->GetPlayerRecordList().at(playerid);
+
 				if (playerState == ePlayerState::PS_ALIVE) {
 					// 그로기 상태로 만듬
 					player->ChangeToGroggyState(pServer);
+					playerGameRecord.gameRecord.Groggy_Count.fetch_add(1);
 					PushEventGroggyRecovery(pServer->GetTimer(), playerid, roomid, roomCode, room->GetGameModeData().Ch_Groggy);
 				}
 				else if (playerState == ePlayerState::PS_GROGGY) {
@@ -47,7 +50,7 @@ public:
 					player->ChangeToDeadState(pServer, spawnTime);
 
 					// record update
-					room->GetPlayerRecordList().at(playerid).death_count++;
+					playerGameRecord.gameRecord.DeathCount.fetch_add(1);
 					PushEventPlayerRespawn(pServer->GetTimer(), playerid, roomid, roomCode, spawnTime);
 				}
 			}

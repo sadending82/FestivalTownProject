@@ -48,6 +48,9 @@ public:
 				TableManager* tableManager = pServer->GetTableManager();
 				CharacterStat& attackerStat = attacker->GetCharacterStat();
 
+				sPlayerGameRecord& attackerGameRecord = room->GetPlayerRecordList().at(target_id);
+				sPlayerGameRecord& targetGameRecord = room->GetPlayerRecordList().at(target_id);
+
 				int damageAmount = 0;
 				int TargetStaminaLoss = 0;
 
@@ -60,7 +63,7 @@ public:
 					int spawnTime = room->GetGameModeData().Player_Spawn_Time;
 					if (target->ChangeToDeadState(pServer, spawnTime)) {
 						// record update
-						room->GetPlayerRecordList()[target_id].death_count++;
+						targetGameRecord.gameRecord.DeathCount.fetch_add(1);
 						PushEventPlayerRespawn(pServer->GetTimer(), target_id, roomid, room->GetRoomCode(), spawnTime);
 					}
 				}break;
@@ -86,6 +89,7 @@ public:
 					// 타겟의 기력이 없으면 그로기 상태로
 					if (target->GetStamina() == 0) {
 						if (target->ChangeToGroggyState(pServer)) {
+							targetGameRecord.gameRecord.Groggy_Count.fetch_add(1);
 							PushEventGroggyRecovery(pServer->GetTimer(), target_id, roomid, room->GetRoomCode(), room->GetGameModeData().Ch_Groggy);
 						}
 					}
@@ -96,7 +100,6 @@ public:
 					if (attacker->GetWeapon() != nullptr) {
 						damageAmount = attackerStat.strength + attacker->GetWeapon()->GetStat().Weapon_Power;
 					}
-					attacker->GetWeaponLock().unlock_shared();
 					TargetStaminaLoss += attackerStat.attackStats[eDamageType::AT_ATTACK].Vanish_Stamina;
 
 					// 데미지 적용
@@ -110,8 +113,16 @@ public:
 						target->ChangeToDeadState(pServer, spawnTime);
 
 						// record update
-						room->GetPlayerRecordList().at(target_id).death_count++;
-						room->GetPlayerRecordList().at(attacker_id).kill_count++;
+						attackerGameRecord.gameRecord.KillCount.fetch_add(1);
+						targetGameRecord.gameRecord.DeathCount.fetch_add(1);
+
+						if (attacker->GetWeapon() != nullptr) {
+							attackerGameRecord.gameRecord.Weapon_Kill_Count.fetch_add(1);
+						}
+						else {
+							attackerGameRecord.gameRecord.Punch_Kill_Count.fetch_add(1);
+						}
+
 						PushEventPlayerRespawn(pServer->GetTimer(), target_id, roomid, room->GetRoomCode(), spawnTime);
 					}
 					else {
@@ -121,10 +132,12 @@ public:
 						// 타격 후 스테미너가 0미만이면 그로기로
 						if (target->GetStamina() < 0) {
 							if (target->ChangeToGroggyState(pServer)) {
+								targetGameRecord.gameRecord.Groggy_Count.fetch_add(1);
 								PushEventGroggyRecovery(pServer->GetTimer(), target_id, roomid, room->GetRoomCode(), room->GetGameModeData().Ch_Groggy);
 							}
 						}
 					}
+					attacker->GetWeaponLock().unlock_shared();
 
 				}break;
 
@@ -157,7 +170,7 @@ public:
 						target->ChangeToDeadState(pServer, spawnTime);
 
 						// record update
-						room->GetPlayerRecordList()[target_id].death_count++;
+						targetGameRecord.gameRecord.DeathCount.fetch_add(1);
 						PushEventPlayerRespawn(pServer->GetTimer(), target_id, roomid, room->GetRoomCode(), spawnTime);
 					}
 					else {

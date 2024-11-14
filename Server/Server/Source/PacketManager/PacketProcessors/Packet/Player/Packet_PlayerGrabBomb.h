@@ -14,7 +14,8 @@ public:
 			if (verifier.VerifyBuffer<PlayerGrabBomb>(nullptr)) {
 				const PlayerGrabBomb* read = flatbuffers::GetRoot<PlayerGrabBomb>(data);
 				Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
-				if (player == nullptr && player->GetInGameID() != read->id()) {
+				int playerid = player->GetInGameID();
+				if (player == nullptr && playerid != read->id()) {
 					return;
 				}
 
@@ -47,8 +48,9 @@ public:
 					return;
 				}
 				if (bomb->SetIsGrabbed(true) == true) {
-					bomb->SetOwenrID(player->GetInGameID());
+					bomb->SetOwenrID(playerid);
 					player->SetBomb(bomb);
+					room->GetPlayerRecordList()[playerid].gameRecord.Pick_Bomb_Count.fetch_add(1);
 					std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYER_GRAB_BOMB, data, size);
 					pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomid);
 				}

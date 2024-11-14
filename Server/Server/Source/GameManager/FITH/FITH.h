@@ -13,7 +13,7 @@ public:
 
 	virtual void CheckGameEnd(int roomID) override;
 	virtual void TimeoverGameEnd(int roomID) override;
-	virtual int CalculatePoint(sPlayerGameRecord record, BattleResult result) override;
+	virtual int CalculatePoint(sPlayerGameRecord& record, BattleResult result) override;
 	virtual int CalculateGoldReward(int point, bool isMvp, BattleResult result) override;
 	virtual void CalculateGameResult(int roomID, std::set<int>& winningTeams) override;
 

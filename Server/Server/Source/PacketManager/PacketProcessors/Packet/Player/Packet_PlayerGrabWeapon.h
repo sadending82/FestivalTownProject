@@ -14,7 +14,8 @@ public:
 			if (verifier.VerifyBuffer<PlayerGrabWeapon>(nullptr)) {
 				const PlayerGrabWeapon* read = flatbuffers::GetRoot<PlayerGrabWeapon>(data);
 				Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
-				if (player == nullptr && player->GetInGameID() != read->id()) {
+				int playerid = player->GetInGameID();
+				if (player == nullptr && playerid != read->id()) {
 					return;
 				}
 
@@ -48,8 +49,9 @@ public:
 					return;
 				}
 				if (weapon->SetIsGrabbed(true) == true) {
-					weapon->SetOwenrID(player->GetInGameID());
+					weapon->SetOwenrID(playerid);
 					player->SetWeapon(weapon);
+					room->GetPlayerRecordList()[playerid].gameRecord.Pick_Weapon_Count.fetch_add(1);
 					std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYER_GRAB_WEAPON, data, size);
 					pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomid);
 				}

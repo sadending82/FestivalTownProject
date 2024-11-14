@@ -3,6 +3,7 @@
 #include <chrono>
 #include <vector>
 #include "protocol.h"
+#include "DB/Schema/DB_UserGameRecords.h"
 
 #define TIMEPOINT std::chrono::system_clock::time_point
 
@@ -95,23 +96,18 @@ struct Vector3f {
 
 struct sPlayerGameRecord {
 	int team;
-	int kill_count;
-	int death_count;
-	int bomb_insert_count;
 	int earn_gold;
-	int point;
 	int is_mvp;
 
-	sPlayerGameRecord() : team(0), kill_count(0), death_count(0), bomb_insert_count(0), earn_gold(0), point(0), is_mvp(false) {};
+	UserGameRecords gameRecord;
+
+	sPlayerGameRecord() : team(0), earn_gold(0), is_mvp(false) {};
 
 	void Init() {
 		team = 0;
-		kill_count = 0;
-		death_count = 0;
-		bomb_insert_count = 0;
 		earn_gold = 0;
-		point = 0;
 		is_mvp = false;
+		gameRecord.Init();
 	}
 };
 

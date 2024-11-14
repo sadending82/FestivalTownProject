@@ -14,6 +14,9 @@
 #include <sqltypes.h>
 #include <fstream>
 
+#define SQLBindAtomic_int(stmt, index, value) int bindValue##index = value.load(); SQLBindParameter(hStmt, index, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (&bindValue##index), 0, NULL);
+
+
 class DB {
 public:
 
@@ -29,8 +32,8 @@ public:
 
     // INSERT
     bool InsertNewAcccount(const char* id, const char* password);
-    bool InsertNewUser(const char* id, const char* nickname);
-    bool InsertRanking(const int uid);
+    int InsertNewUser(const char* id, const char* nickname); // return UID
+    bool InsertUserGameRecords(const int uid);
     bool InsertUserItem(const int owner_uid, const int itemCode, const int itemCount, const int itemType);
 
     // SELECT
@@ -44,7 +47,7 @@ public:
     // UPDATE
     bool UpdateUserConnectionState(const int uid, const int state);
     bool UpdateUserPoint(const int uid, const int valueOfChange);
-    bool UpdateRanking(const int uid, const int killCount, const int deathCount, const int point);
+    bool UpdateBattleRecords(const int uid, const UserGameRecords& gameRecords);
     bool UpdateUserItemCount(const int uid, const int item_index, const int valueOfChange);
 
     // UPSERT

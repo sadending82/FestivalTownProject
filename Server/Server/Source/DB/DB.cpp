@@ -149,7 +149,7 @@ bool DB::InsertNewAcccount(const char* id, const char* password)
 	return false;
 }
 
-bool DB::InsertNewUser(const char* id, const char* nickname)
+int DB::InsertNewUser(const char* id, const char* nickname)
 {
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
@@ -163,7 +163,7 @@ bool DB::InsertNewUser(const char* id, const char* nickname)
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGNOPARAM("hStmt Error : (InsertNewUser) \n");
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-		return false;
+		return INVALIDKEY;
 	}
 
 	UseGameDB(hStmt);
@@ -193,31 +193,29 @@ bool DB::InsertNewUser(const char* id, const char* nickname)
 
 		delete[] wNickname;
 
-		return true;
+		return uid;
 	}
 
 	DEBUGMSGNOPARAM("Execute Query Error : (InsertNewUser)\n");
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	delete[] wNickname;
-	return false;
+	return INVALIDKEY;
 }
 
-
-
-bool DB::InsertRanking(const int uid)
+bool DB::InsertUserGameRecords(const int uid)
 {
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
-		DEBUGMSGNOPARAM("hStmt Error : (InsertRanking) \n");
+		DEBUGMSGNOPARAM("hStmt Error : (InsertUserGameRecords) \n");
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 		return false;
 	}
 
 	UseGameDB(hStmt);
 
-	const WCHAR* query = L"INSERT INTO Ranking (UID) VALUES (?)";
+	const WCHAR* query = L"INSERT INTO UserGameRecords (UID) VALUES (?)";
 
 	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
 
@@ -231,7 +229,7 @@ bool DB::InsertRanking(const int uid)
 		return true;
 	}
 
-	DEBUGMSGNOPARAM("Execute Query Error : (InsertRanking)\n");
+	DEBUGMSGNOPARAM("Execute Query Error : (InsertUserGameRecords)\n");
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	return false;
 }
@@ -653,27 +651,53 @@ bool DB::UpdateUserPoint(const int uid, const int valueOfChange)
 	return false;
 }
 
-bool DB::UpdateRanking(const int uid, const int killCount, const int deathCount, const int point)
+bool DB::UpdateBattleRecords(const int uid, const UserGameRecords& gameRecords)
 {
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
-		DEBUGMSGNOPARAM("hStmt Error : (UpdateRanking) \n");
+		DEBUGMSGNOPARAM("hStmt Error : (UpdateBattleRecords) \n");
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 		return false;
 	}
 
 	UseGameDB(hStmt);
 
-	const WCHAR* query = L"UPDATE Ranking SET KillCount = KillCount + ?, deathCount = deathCount + ?, Point = Point + ?  WHERE UID = ?";
+	const WCHAR* query = L"UPDATE UserGameRecords SET " 
+		L" Kill_Count = Kill_Count + ? " 
+		L", Death_Count = Death_Count + ? "
+		L", Point = Point + ? "
+		L", Weapon_Kill_Count = Weapon_Kill_Count + ? "
+		L", Punch_Kill_Count = Punch_Kill_Count + ? "
+		L", Bomb_Count = Bomb_Count + ? "
+		L", Groggy_Count = Groggy_Count + ? "
+		L", Pick_Weapon_Count = Pick_Weapon_Count + ? "
+		L", Pick_Bomb_Count = Pick_Bomb_Count + ? "
+		L", Battle_Count = Battle_Count + ? "
+		L", FITH_Team_Count = FITH_Team_Count + ? "
+		L", FITH_Indiv_Count = FITH_Indiv_Count + ? "
+		L", Victory_Count = Victory_Count + ? "
+		L" WHERE UID = ?";
 
 	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
 
-	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&killCount), 0, NULL);
-	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&deathCount), 0, NULL);
-	SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&point), 0, NULL);
-	SQLBindParameter(hStmt, 4, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+	int c = gameRecords.KillCount.load();
+
+	SQLBindAtomic_int(hStmt, 1, gameRecords.KillCount);
+	SQLBindAtomic_int(hStmt, 2, gameRecords.DeathCount);
+	SQLBindAtomic_int(hStmt, 3, gameRecords.Point);
+	SQLBindAtomic_int(hStmt, 4, gameRecords.Weapon_Kill_Count);
+	SQLBindAtomic_int(hStmt, 5, gameRecords.Punch_Kill_Count);
+	SQLBindAtomic_int(hStmt, 6, gameRecords.Bomb_Count);
+	SQLBindAtomic_int(hStmt, 7, gameRecords.Groggy_Count);
+	SQLBindAtomic_int(hStmt, 8, gameRecords.Pick_Weapon_Count);
+	SQLBindAtomic_int(hStmt, 9, gameRecords.Pick_Bomb_Count);
+	SQLBindAtomic_int(hStmt, 10, gameRecords.Battle_Count);
+	SQLBindAtomic_int(hStmt, 11, gameRecords.FITH_Team_Count);
+	SQLBindAtomic_int(hStmt, 12, gameRecords.FITH_Indiv_Count);
+	SQLBindAtomic_int(hStmt, 13, gameRecords.Victory_Count);
+	SQLBindParameter(hStmt, 14, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
 
 	retcode = SQLExecute(hStmt);
 
@@ -681,12 +705,14 @@ bool DB::UpdateRanking(const int uid, const int killCount, const int deathCount,
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 		return true;
+
 	}
 
-	DEBUGMSGNOPARAM("Execute Query Error : (UpdateRanking)\n");
+	DEBUGMSGNOPARAM("Execute Query Error : (UpdateBattleRecords)\n");
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	return false;
 }
+
 
 bool DB::UpdateUserItemCount(const int uid, const int item_index, const int valueOfChange)
 {

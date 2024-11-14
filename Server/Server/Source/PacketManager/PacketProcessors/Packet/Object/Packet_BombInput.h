@@ -39,6 +39,7 @@ public:
 
 				GameMode gameMode = room->GetGameMode();
 				GameManager* gameManager = pServer->GetGameManagers()[gameMode];
+				sPlayerGameRecord& playerGameRecord = room->GetPlayerRecordList().at(playerid);
 
 				room->DeleteBomb(bombid);
 
@@ -49,7 +50,7 @@ public:
 					player->ChangeToDeadState(pServer, spawnTime);
 
 					// record update
-					room->GetPlayerRecordList().at(playerid).death_count++;
+					playerGameRecord.gameRecord.DeathCount.fetch_add(1);
 					PushEventPlayerRespawn(pServer->GetTimer(), playerid, roomid, room->GetRoomCode(), spawnTime);
 					return;
 				}
@@ -59,7 +60,7 @@ public:
 				pPacketSender->SendLifeReducePacket(team, lifeCount, roomid);
 
 				// record update
-				room->GetPlayerRecordList().at(playerid).bomb_insert_count++;
+				playerGameRecord.gameRecord.Bomb_Count.fetch_add(1);
 
 				if (lifeCount <= 0) {
 					gameManager->CheckGameEnd(roomid);

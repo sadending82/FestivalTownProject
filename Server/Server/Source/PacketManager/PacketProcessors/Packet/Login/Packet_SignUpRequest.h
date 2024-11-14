@@ -24,8 +24,15 @@ public:
 				bool result = pDB->InsertNewAcccount(id, pw);
 
 				if (result == true) {
-					if (pDB->InsertNewUser(id, nickName) == false) {
+					int uid = pDB->InsertNewUser(id, nickName);
+					if (uid == INVALIDKEY) {
 						pDB->DeleteAcccount(id);
+						result = false;
+					}
+
+					if (pDB->InsertUserGameRecords(uid) == false) {
+						pDB->DeleteAcccount(id);
+						pDB->DeleteUserInfo(uid);
 						result = false;
 					}
 				}

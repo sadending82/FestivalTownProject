@@ -141,7 +141,7 @@ void FITH::TimeoverGameEnd(int roomID)
     }
 }
 
-int FITH::CalculatePoint(sPlayerGameRecord record, BattleResult result)
+int FITH::CalculatePoint(sPlayerGameRecord& record, BattleResult result)
 {
     int point = 0;
 
@@ -149,15 +149,15 @@ int FITH::CalculatePoint(sPlayerGameRecord record, BattleResult result)
 
     switch (result) {
     case BattleResult::BR_Win: {
-        point = (record.kill_count * constants.Win_Kill_Point.Value) - (record.death_count * constants.Win_Death_Point.Value) + (record.bomb_insert_count * constants.Win_Bomb_Point.Value);
+        point = (record.gameRecord.KillCount.load() * constants.Win_Kill_Point.Value) - (record.gameRecord.DeathCount.load() * constants.Win_Death_Point.Value) + (record.gameRecord.Bomb_Count.load() * constants.Win_Bomb_Point.Value);
     }
              break;
     case BattleResult::BR_Lose: {
-        point = (record.kill_count * constants.Lose_Kill_Point.Value) - (record.death_count * constants.Lose_Death_Point.Value) + (record.bomb_insert_count * constants.Lose_Bomb_Point.Value);
+        point = (record.gameRecord.KillCount.load() * constants.Lose_Kill_Point.Value) - (record.gameRecord.DeathCount.load() * constants.Lose_Death_Point.Value) + (record.gameRecord.Bomb_Count.load() * constants.Lose_Bomb_Point.Value);
     }
               break;
     case BattleResult::BR_Draw: {
-        point = (record.kill_count * constants.Draw_Kill_Point.Value) - (record.death_count * constants.Draw_Death_Point.Value) + (record.bomb_insert_count * constants.Draw_Bomb_Point.Value);
+        point = (record.gameRecord.KillCount.load() * constants.Draw_Kill_Point.Value) - (record.gameRecord.DeathCount.load() * constants.Draw_Death_Point.Value) + (record.gameRecord.Bomb_Count.load() * constants.Draw_Bomb_Point.Value);
     }
                               break;
     default:
@@ -222,29 +222,33 @@ void FITH::CalculateGameResult(int roomID, std::set<int>& winningTeams)
     for (auto& pair : records) {
         int id = pair.first;
 
+        UserGameRecords& userGameRecord = pair.second.gameRecord;
+
         int team = pair.second.team;
         BattleResult result = (winningTeams.find(team) != winningTeams.end()) ? winFlag : BattleResult::BR_Lose;
 
         int point = CalculatePoint(pair.second, result);
-        pair.second.point = point;
+        userGameRecord.Point = point;
         pair.second.earn_gold = CalculateGoldReward(point, false, result);
 
         if (point > mvp_point) {
             mvp_id = id;
             mvp_point = point;
         }
+
     }
 
     if (winFlag == BattleResult::BR_Win) {
         if (mvp_id != INVALIDKEY) {
-            records[mvp_id].earn_gold = CalculateGoldReward(records[mvp_id].point, true, BattleResult::BR_Win);
+            records[mvp_id].earn_gold = CalculateGoldReward(records[mvp_id].gameRecord.Point, true, BattleResult::BR_Win);
             records[mvp_id].is_mvp = true;
         }
     }
 
+
     // DB에 데이터 업데이트
     for (auto& pair : records) {
-        sPlayerGameRecord record = pair.second;
+        sPlayerGameRecord& record = pair.second;
 
         int sessionID = room->GetPlayerList()[pair.first].load();
 
@@ -260,9 +264,9 @@ void FITH::CalculateGameResult(int roomID, std::set<int>& winningTeams)
             continue;
         }
 
-        //pDB->UpdateRanking(uid, record.kill_count, record.death_count, record.point);
+        pDB->UpdateBattleRecords(uid, record.gameRecord);
         pDB->UpsertUserItemCount(uid, 100001, record.earn_gold);
-        pDB->UpdateUserPoint(uid, record.point);
+        pDB->UpdateUserPoint(uid, record.gameRecord.Point);
     }
 
     pPacketSender->SendGameResultPacket(roomID, winningTeams);

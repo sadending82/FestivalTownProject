@@ -15,7 +15,7 @@ public:
 	virtual void StartGame(int roomID) {}
 	virtual void CheckGameEnd(int roomID) {}
 	virtual void TimeoverGameEnd(int roomID) {}
-	virtual int CalculatePoint(sPlayerGameRecord record, BattleResult result) { return 0; }
+	virtual int CalculatePoint(sPlayerGameRecord& record, BattleResult result) { return 0; }
 	virtual int CalculateGoldReward(int point, bool isMvp, BattleResult result) { return 0; }
 	virtual void CalculateGameResult(int roomID, std::set<int>& winningTeams) {}
 

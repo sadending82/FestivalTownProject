@@ -40,7 +40,7 @@ public:
 						// record update
 						int roomid = player->GetRoomID();
 						Room* room = pServer->GetRooms().at(roomid);
-						room->GetPlayerRecordList().at(playerid).death_count++;
+						room->GetPlayerRecordList().at(playerid).gameRecord.DeathCount.fetch_add(1);
 						PushEventPlayerRespawn(pServer->GetTimer(), playerid, roomid, room->GetRoomCode(), spawnTime);
 					}
 					return;
