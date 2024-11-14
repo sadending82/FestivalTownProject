@@ -26,7 +26,7 @@ namespace Network.PacketProcessor
             MapCode mapCode = (MapCode)Data.MapCode;
 
             Debug.Log("Game Maching Complete");
-
+            Managers.Game.Init();
             Managers.Scene.LoadScene(Define.Scene.Loading);
             Managers.Game.RoomID = roomID;
             Managers.Game.inGameID = id;

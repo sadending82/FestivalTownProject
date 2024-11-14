@@ -12,7 +12,6 @@ public class GameScene : BaseScene
 
         SceneType = Define.Scene.Game;
 
-        Managers.Game.Init();
         Managers.Game.LoadGameMap();
 
         Managers.Player.Init();
