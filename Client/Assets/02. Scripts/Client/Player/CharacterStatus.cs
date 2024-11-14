@@ -60,6 +60,12 @@ public class CharacterStatus : MonoBehaviour
     public GameObject weaponInven;
     public ParticleSystem RunEffect;
 
+    // 커스터마이징
+    [Header("--- Customizing ---")]
+    public GameObject Head_Equipment;
+    public GameObject Face_Equipment;
+    public GameObject Body_Equipment;
+
     // 서버
     private NetworkManager network;
     private PacketManager packetManager;

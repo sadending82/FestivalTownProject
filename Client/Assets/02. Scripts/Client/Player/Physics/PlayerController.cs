@@ -648,6 +648,25 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+
+        // Ctrl(대쉬)
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            if (isGrounded == true && dashCooltimeChecker == false
+                && playerStatus.GetStamina() >= dashStaminaConsume && moveDirection != Vector3.zero)
+            {
+                if (pelvis != null)
+                {
+                    playerStatus.ConsumeStamina(dashStaminaConsume);
+                    packetManager.SendPlayerMovePacket(pelvis.transform.position, moveDirection, myId, ePlayerMoveState.PS_DASH);
+                }
+                else
+                {
+                    Debug.Log("Not Send Dash Packet, Pelvis is Null !!!");
+                }
+                Dash(moveDirection);
+            }
+        }
     }
     private void MouseInput()
     {
@@ -668,7 +687,7 @@ public class PlayerController : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log("Not Send Dash Packet, Pelvis is Null !!!");
+                        Debug.Log("Not Send FlyingKick Packet, Pelvis is Null !!!");
                     }
                     FlyingKick(moveDirection);
                 }
@@ -720,25 +739,6 @@ public class PlayerController : MonoBehaviour
             if (targetBomb != null)
             {
                 packetManager.SendPlayerThrowBombPacket(targetBomb.transform.position, stabillizerDirection, myId, targetBomb.GetComponent<Bomb>().GetId());
-            }
-        }
-
-        // 마우스 휠클릭 다운(대쉬)
-        if (Input.GetMouseButtonDown(2))
-        {
-            if (isGrounded == true && isLeftShiftKeyDown == true && dashCooltimeChecker == false
-                && playerStatus.GetStamina() >= dashStaminaConsume && moveDirection != Vector3.zero)
-            {
-                if (pelvis != null)
-                {
-                    playerStatus.ConsumeStamina(dashStaminaConsume);
-                    packetManager.SendPlayerMovePacket(pelvis.transform.position, moveDirection, myId, ePlayerMoveState.PS_DASH);
-                }
-                else
-                {
-                    Debug.Log("Not Send Dash Packet, Pelvis is Null !!!");
-                }
-                Dash(moveDirection);
             }
         }
     }
