@@ -48,7 +48,7 @@ public:
 				TableManager* tableManager = pServer->GetTableManager();
 				CharacterStat& attackerStat = attacker->GetCharacterStat();
 
-				sPlayerGameRecord& attackerGameRecord = room->GetPlayerRecordList().at(target_id);
+				sPlayerGameRecord& attackerGameRecord = room->GetPlayerRecordList().at(attacker_id);
 				sPlayerGameRecord& targetGameRecord = room->GetPlayerRecordList().at(target_id);
 
 				int damageAmount = 0;
