@@ -7,7 +7,8 @@ public class Cube : MonoBehaviour
     private float targetHeight;
     private bool heightChecker = false;
 
-    public Checker checker;
+    private Checker checker;
+    private bool fixChecker = false;
 
     private void Start()
     {
@@ -30,24 +31,29 @@ public class Cube : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        // 바닥에 도달했을때 더이상 움직이지 않도록 고정
-        if(collision.gameObject.tag == "Ground")
+        if (fixChecker == false)
         {
-            this.transform.position = new Vector3(this.transform.position.x, targetHeight, this.transform.position.z);
-            heightChecker = true;
-            Rigidbody rigidbody = this.GetComponent<Rigidbody>();
-            rigidbody.constraints = RigidbodyConstraints.FreezePositionX |
-                                    RigidbodyConstraints.FreezePositionY |
-                                    RigidbodyConstraints.FreezePositionZ |
-                                    RigidbodyConstraints.FreezeRotationX |
-                                    RigidbodyConstraints.FreezeRotationY |
-                                    RigidbodyConstraints.FreezeRotationZ;
-            checker.SetCheck(false);
+            // 바닥에 도달했을때 더이상 움직이지 않도록 고정
+            if (collision.gameObject.tag == "Ground")
+            {
+                fixChecker = true;
 
-            int soundNum = Random.Range(1, 4);
-            Managers.Sound.Play3D($"Sfx_Block_Impact{soundNum}", gameObject);
-            Vector3 tPosition = new Vector3(this.transform.position.x, this.transform.position.y - this.transform.localScale.y, this.transform.position.z);
-            Managers.Effect.PlayEffect("CubeFalldown", tPosition);
+                this.transform.position = new Vector3(this.transform.position.x, targetHeight, this.transform.position.z);
+                heightChecker = true;
+                Rigidbody rigidbody = this.GetComponent<Rigidbody>();
+                rigidbody.constraints = RigidbodyConstraints.FreezePositionX |
+                                        RigidbodyConstraints.FreezePositionY |
+                                        RigidbodyConstraints.FreezePositionZ |
+                                        RigidbodyConstraints.FreezeRotationX |
+                                        RigidbodyConstraints.FreezeRotationY |
+                                        RigidbodyConstraints.FreezeRotationZ;
+                checker.SetCheck(false);
+
+                int soundNum = Random.Range(1, 4);
+                Managers.Sound.Play3D($"Sfx_Block_Impact{soundNum}", gameObject);
+                Vector3 tPosition = new Vector3(this.transform.position.x, this.transform.position.y - this.transform.localScale.y, this.transform.position.z);
+                Managers.Effect.PlayEffect("CubeFalldown", tPosition);
+            }
         }
     }
     public void SetTargetHeight(float targetHeight)
