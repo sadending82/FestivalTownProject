@@ -130,7 +130,10 @@ public class GameScene : BaseScene
     {
         Managers.Sound.Play("Sfx_BGM_Ingame", Define.Sound.Bgm);
 
-        Managers.UI.ShowSceneUI<UI_OneVersusOneSceneUI>();
+        var ui = Managers.UI.ShowSceneUI<UI_IngameScene>();
+        ui.Init();
+        ui.SetCurrentClientTeam(Managers.Game.currentTeamID);
+        ui.PointPanelPositionSet();
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;

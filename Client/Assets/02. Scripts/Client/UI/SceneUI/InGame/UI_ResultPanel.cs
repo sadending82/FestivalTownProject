@@ -28,6 +28,7 @@ public class UI_ResultPanel : UI_Base
 
         for(int i = 1; i < (int)GameObjects.PlayerResult6 + 1; ++i)
         {
+            Get<GameObject>(i).GetComponent<UI_PlayerResult>().Init();
             Get<GameObject>(i).gameObject.SetActive(false);
         }
 
