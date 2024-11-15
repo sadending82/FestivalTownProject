@@ -21,7 +21,7 @@ enum class GameModeData_Field {
 	Bomb_Spawn_Count,
 	Bomb_Spawn_Time,
 	Bomb_Delay_Time,
-	Weapon1_Spawn_Index,
+	Weapon1_Spawn_Index = 14,
 	Weapon1_Spawn_Count,
 	Weapon1_Spawn_Time,
 	Weapon2_Spawn_Index,
