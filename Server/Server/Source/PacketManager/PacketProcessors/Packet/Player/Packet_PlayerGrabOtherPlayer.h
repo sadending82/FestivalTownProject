@@ -19,18 +19,18 @@ public:
 					return;
 				}
 				int playerID = read->id();
-				int targetID = read->target_id();
+				int targetID = read->targetID();
 
-				int roomid = player->GetRoomID();
-				if (roomid == INVALIDKEY) {
+				int roomID = player->GetRoomID();
+				if (roomID == INVALIDKEY) {
 					return;
 				}
-				Room* room = pServer->GetRooms().at(roomid);
+				Room* room = pServer->GetRooms().at(roomID);
 				if (room == nullptr && (room->GetState() != eRoomState::RS_INGAME)) {
 					return;
 				}
 
-				int target_sessionID = room->GetPlayerList()[read->target_id()].load();
+				int target_sessionID = room->GetPlayerList()[read->targetID()].load();
 				if (target_sessionID == INVALIDKEY) {
 					return;
 				}
@@ -47,7 +47,7 @@ public:
 					player->SetDirection(read->direction()->x(), read->direction()->y(), read->direction()->z());
 					std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYER_GRAB_OTHER_PLAYER, data, size);
 
-					pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomid);
+					pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 				}
 				
 			}

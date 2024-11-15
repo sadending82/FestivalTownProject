@@ -72,7 +72,7 @@ bool Room::AddPlayer(Player* player)
 		int expected = INVALIDKEY;
 		if (mPlayerList[i].compare_exchange_strong(expected, sessionID)) {
 			player->SetInGameID(i);
-			player->SetRoomID(mRoomID);
+			player->SetroomID(mRoomID);
 
 			// 외부에서 Session Lock 걸고 있음
 			//player->GetSessionStateLock().lock();

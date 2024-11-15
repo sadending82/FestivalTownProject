@@ -451,6 +451,171 @@ void FITH::WeaponSpawn(Room* room, int roomID, eWeaponType weaponType, int spawn
     pPacketSender->SendWeaponSpawnPacket(poses, weaponIDs, weaponTypes, roomID);
 }
 
+bool FITH::PlayerDamageReceive(int roomID, Room* room, int attackerID, Player* attacker, int targetID, Player* target
+    , Vector3f knockback_direction, eDamageType damageType)
+{
+    switch (damageType)
+    {
+    case eDamageType::AT_FALLDOWN: {
+        return PlayerDieInstant(roomID, room, targetID, target);
+    }break;
+
+    case eDamageType::AT_ATTACK: {
+        return PlayerDamagedFromOther(roomID, room, attackerID, attacker, targetID, target, knockback_direction);
+    }break;
+
+    case eDamageType::AT_BOMB_ATTACK: {
+        return PlayerDamagedFromBomb(roomID, room, targetID, target, knockback_direction);
+    }break;
+
+    default: {
+        return false;
+    }break;
+    }
+    return false;
+}
+
+bool FITH::PlayerDieInstant(int roomID, Room* room, int targetID, Player* target)
+{
+    sPlayerGameRecord& targetGameRecord = room->GetPlayerRecordList().at(targetID);
+
+    int damageAmount = 9999999;
+    int spawnTime = room->GetGameModeData().Player_Spawn_Time;
+    if (target->ChangeToDeadState(pServer, spawnTime)) {
+        // 사망 처리
+        target->ReduceHP(damageAmount);
+        // record update
+        targetGameRecord.gameRecord.DeathCount.fetch_add(1);
+        PushEventPlayerRespawn(pServer->GetTimer(), targetID, roomID, room->GetRoomCode(), spawnTime);
+        return true;
+    }
+
+    return false;
+}
+
+bool FITH::PlayerDamagedFromOther(int roomID, Room* room, int attackerID, Player* attacker
+    , int targetID, Player* target, Vector3f knockback_direction)
+{
+    sPlayerGameRecord& attackerGameRecord = room->GetPlayerRecordList().at(attackerID);
+    sPlayerGameRecord& targetGameRecord = room->GetPlayerRecordList().at(targetID);
+
+    CharacterStat& attackerStat = attacker->GetCharacterStat();
+    int damageAmount = 0;
+    int TargetStaminaLoss = 0;
+
+    if (targetID == attackerID) {
+        return false;
+    }
+    // 팀킬 방지
+    if (target->GetTeam() == attacker->GetTeam()) {
+        return false;
+    }
+
+    target->GetPlayerStateLock().lock();
+    // 살아있는지 확인
+    if (target->GetPlayerState() != ePlayerState::PS_ALIVE) {
+        target->GetPlayerStateLock().unlock();
+        return false;
+    }
+    target->GetPlayerStateLock().unlock();
+
+
+    // 타겟의 기력이 없으면 그로기 상태로
+    if (target->GetStamina() == 0) {
+        if (target->ChangeToGroggyState(pServer)) {
+            targetGameRecord.gameRecord.Groggy_Count.fetch_add(1);
+            PushEventGroggyRecovery(pServer->GetTimer(), targetID, roomID, room->GetRoomCode(), room->GetGameModeData().Ch_Groggy);
+        }
+    }
+
+    // 데미지 계산
+    damageAmount += attackerStat.strength * attackerStat.attackStats[eDamageType::AT_ATTACK].Value;
+    attacker->GetWeaponLock().lock_shared();
+    if (attacker->GetWeapon() != nullptr) {
+        damageAmount = attackerStat.strength + attacker->GetWeapon()->GetStat().Weapon_Power;
+    }
+    TargetStaminaLoss += attackerStat.attackStats[eDamageType::AT_ATTACK].Vanish_Stamina;
+
+    // 데미지 적용
+    target->ReduceHP(damageAmount);
+    target->ReduceStamina(TargetStaminaLoss);
+
+
+    if (target->GetHP() <= 0) {
+        // 사망 처리
+        int spawnTime = room->GetGameModeData().Player_Spawn_Time;
+        target->ChangeToDeadState(pServer, spawnTime);
+
+        // record update
+        attackerGameRecord.gameRecord.KillCount.fetch_add(1);
+        targetGameRecord.gameRecord.DeathCount.fetch_add(1);
+
+        if (attacker->GetWeapon() != nullptr) {
+            attackerGameRecord.gameRecord.Weapon_Kill_Count.fetch_add(1);
+        }
+        else {
+            attackerGameRecord.gameRecord.Punch_Kill_Count.fetch_add(1);
+        }
+
+        PushEventPlayerRespawn(pServer->GetTimer(), targetID, roomID, room->GetRoomCode(), spawnTime);
+    }
+    else {
+        pPacketSender->SendPlayerCalculatedDamage(targetID, roomID, eDamageType::AT_ATTACK, target->GetHP(), damageAmount, TargetStaminaLoss, knockback_direction);
+
+        // 타격 후 스테미너가 0미만이면 그로기로
+        if (target->GetStamina() < 0) {
+            if (target->ChangeToGroggyState(pServer)) {
+                targetGameRecord.gameRecord.Groggy_Count.fetch_add(1);
+                PushEventGroggyRecovery(pServer->GetTimer(), targetID, roomID, room->GetRoomCode(), room->GetGameModeData().Ch_Groggy);
+            }
+        }
+    }
+    attacker->GetWeaponLock().unlock_shared();
+
+    return true;
+}
+
+bool FITH::PlayerDamagedFromBomb(int roomID, Room* room, int targetID, Player* target, Vector3f knockback_direction)
+{
+    sPlayerGameRecord& targetGameRecord = room->GetPlayerRecordList().at(targetID);
+
+    target->GetPlayerStateLock().lock();
+    // 살아있는지 확인
+    if (target->GetPlayerState() != ePlayerState::PS_ALIVE) {
+        target->GetPlayerStateLock().unlock();
+        return false;
+    }
+    target->GetPlayerStateLock().unlock();
+
+
+    int damageAmount = room->GetGameModeData().Bomb_Damage;
+
+    // 타겟의 기력이 없으면 그로기 상태로
+    if (target->GetStamina() == 0) {
+        if (target->ChangeToGroggyState(pServer)) {
+            PushEventGroggyRecovery(pServer->GetTimer(), targetID, roomID, room->GetRoomCode(), room->GetGameModeData().Ch_Groggy);
+        }
+    }
+
+    // 데미지 적용
+    target->ReduceHP(damageAmount);
+
+    if (target->GetHP() <= 0) {
+        // 사망 처리
+        int spawnTime = room->GetGameModeData().Player_Spawn_Time;
+        target->ChangeToDeadState(pServer, spawnTime);
+
+        // record update
+        targetGameRecord.gameRecord.DeathCount.fetch_add(1);
+        PushEventPlayerRespawn(pServer->GetTimer(), targetID, roomID, room->GetRoomCode(), spawnTime);
+    }
+    else {
+        pPacketSender->SendPlayerCalculatedDamage(targetID, roomID, eDamageType::AT_BOMB_ATTACK, target->GetHP(), damageAmount, 0, knockback_direction);
+    }
+
+    return true;
+}
+
 bool FITH::CheckValidPlayerPosition(Vector3f& position)
 {
     if (position.y <= -15) {

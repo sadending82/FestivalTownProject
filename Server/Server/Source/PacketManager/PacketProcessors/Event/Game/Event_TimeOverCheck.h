@@ -11,8 +11,8 @@ public:
 		try {
 			EV_TIMEOVER_CHECK* event = reinterpret_cast<EV_TIMEOVER_CHECK*>(buf);
 
-			int roomid = event->roomID;
-			Room* room = pServer->GetRooms().at(roomid);
+			int roomID = event->roomID;
+			Room* room = pServer->GetRooms().at(roomID);
 			if (room == nullptr) {
 				return;
 			}
@@ -32,11 +32,11 @@ public:
 			TIMEPOINT endTime = startTime + playTime;
 			TIMEPOINT currTime = std::chrono::system_clock::now();
 			if (endTime <= currTime) {
-				gameManager->TimeoverGameEnd(roomid);
+				gameManager->TimeoverGameEnd(roomID);
 				return;
 			}
 
-			PushEventTimeOverCheck(pServer->GetTimer(), roomid, event->roomCode);
+			PushEventTimeOverCheck(pServer->GetTimer(), roomID, event->roomCode);
 		}
 		catch (const std::exception& e) {
 			std::cerr << "[Event_TimeOverCheck ERROR] : " << e.what() << std::endl;

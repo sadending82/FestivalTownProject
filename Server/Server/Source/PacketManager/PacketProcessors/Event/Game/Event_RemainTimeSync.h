@@ -11,8 +11,8 @@ public:
 		try {
 			EV_TIME_SYNC* event = reinterpret_cast<EV_TIME_SYNC*>(buf);
 
-			int roomid = event->roomID;
-			Room* room = pServer->GetRooms().at(roomid);
+			int roomID = event->roomID;
+			Room* room = pServer->GetRooms().at(roomID);
 			if (room == nullptr) {
 				return;
 			}
@@ -26,8 +26,8 @@ public:
 
 			GameMode gameMode = room->GetGameMode();
 
-			PushEventRemainTimeSync(pServer->GetTimer(), roomid, event->roomCode);
-			pPacketSender->SendRemainTimeSync(roomid);
+			PushEventRemainTimeSync(pServer->GetTimer(), roomID, event->roomCode);
+			pPacketSender->SendRemainTimeSync(roomID);
 		}
 		catch (const std::exception& e) {
 			std::cerr << "[Event_RemainTimeSync ERROR] : " << e.what() << std::endl;

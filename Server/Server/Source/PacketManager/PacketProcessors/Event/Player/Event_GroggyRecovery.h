@@ -11,9 +11,9 @@ public:
 		try {
 			EV_GROGGY_RECOVERY* event = reinterpret_cast<EV_GROGGY_RECOVERY*>(buf);
 
-			int roomid = event->roomID;
+			int roomID = event->roomID;
 			int playerid = event->playerID;
-			Room* room = pServer->GetRooms().at(roomid);
+			Room* room = pServer->GetRooms().at(roomID);
 			if (room == nullptr) {
 				return;
 			}
@@ -49,7 +49,7 @@ public:
 				player->SetAttachedPlayerID(INVALIDKEY);
 				grabber->SetAttachedPlayerID(INVALIDKEY);
 
-				pPacketSender->SendPlayerThrowOtherPlayerPacket(roomid, grabberID, grabber->GetPosition(), grabber->GetDirection()
+				pPacketSender->SendPlayerThrowOtherPlayerPacket(roomID, grabberID, grabber->GetPosition(), grabber->GetDirection()
 					, playerid, player->GetPosition(), player->GetDirection());
 			}
 
@@ -64,7 +64,7 @@ public:
 			player->SetPlayerState(ePlayerState::PS_ALIVE);
 			player->GetPlayerStateLock().unlock();
 
-			pPacketSender->SendPlayerGroggyRecoveryPacket(playerid, roomid, staminaRecoveryValue);
+			pPacketSender->SendPlayerGroggyRecoveryPacket(playerid, roomID, staminaRecoveryValue);
 		}
 		catch (const std::exception& e) {
 			std::cerr << "[Event_GroggyRecovery ERROR] : " << e.what() << std::endl;

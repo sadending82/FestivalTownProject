@@ -100,7 +100,7 @@ struct GameMatchingResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Tab
   typedef GameMatchingResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_INGAMEID = 4,
-    VT_ROOMID = 6,
+    VT_roomID = 6,
     VT_TEAM = 8,
     VT_GAMEMODE = 10,
     VT_MAP_CODE = 12,
@@ -111,8 +111,8 @@ struct GameMatchingResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Tab
   int32_t ingameid() const {
     return GetField<int32_t>(VT_INGAMEID, 0);
   }
-  int32_t roomid() const {
-    return GetField<int32_t>(VT_ROOMID, 0);
+  int32_t roomID() const {
+    return GetField<int32_t>(VT_roomID, 0);
   }
   int32_t team() const {
     return GetField<int32_t>(VT_TEAM, 0);
@@ -135,7 +135,7 @@ struct GameMatchingResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Tab
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_INGAMEID, 4) &&
-           VerifyField<int32_t>(verifier, VT_ROOMID, 4) &&
+           VerifyField<int32_t>(verifier, VT_roomID, 4) &&
            VerifyField<int32_t>(verifier, VT_TEAM, 4) &&
            VerifyField<int32_t>(verifier, VT_GAMEMODE, 4) &&
            VerifyField<int32_t>(verifier, VT_MAP_CODE, 4) &&
@@ -153,8 +153,8 @@ struct GameMatchingResponseBuilder {
   void add_ingameid(int32_t ingameid) {
     fbb_.AddElement<int32_t>(GameMatchingResponse::VT_INGAMEID, ingameid, 0);
   }
-  void add_roomid(int32_t roomid) {
-    fbb_.AddElement<int32_t>(GameMatchingResponse::VT_ROOMID, roomid, 0);
+  void add_roomID(int32_t roomID) {
+    fbb_.AddElement<int32_t>(GameMatchingResponse::VT_roomID, roomID, 0);
   }
   void add_team(int32_t team) {
     fbb_.AddElement<int32_t>(GameMatchingResponse::VT_TEAM, team, 0);
@@ -188,7 +188,7 @@ struct GameMatchingResponseBuilder {
 inline ::flatbuffers::Offset<GameMatchingResponse> CreateGameMatchingResponse(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t ingameid = 0,
-    int32_t roomid = 0,
+    int32_t roomID = 0,
     int32_t team = 0,
     int32_t gamemode = 0,
     int32_t map_code = 0,
@@ -201,7 +201,7 @@ inline ::flatbuffers::Offset<GameMatchingResponse> CreateGameMatchingResponse(
   builder_.add_map_code(map_code);
   builder_.add_gamemode(gamemode);
   builder_.add_team(team);
-  builder_.add_roomid(roomid);
+  builder_.add_roomID(roomID);
   builder_.add_ingameid(ingameid);
   builder_.add_is_host(is_host);
   return builder_.Finish();

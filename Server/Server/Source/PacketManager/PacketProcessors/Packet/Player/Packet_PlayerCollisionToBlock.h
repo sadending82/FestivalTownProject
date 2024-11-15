@@ -19,11 +19,11 @@ public:
 				if (player == nullptr && player->GetInGameID() != read->id()) {
 					return;
 				}
-				int roomid = player->GetRoomID();
-				if (roomid == INVALIDKEY) {
+				int roomID = player->GetRoomID();
+				if (roomID == INVALIDKEY) {
 					return;
 				}
-				Room* room = pServer->GetRooms().at(roomid);
+				Room* room = pServer->GetRooms().at(roomID);
 				room->GetStateLock().lock_shared();
 				if (room->GetState() != eRoomState::RS_INGAME) {
 					room->GetStateLock().unlock_shared();
@@ -42,7 +42,7 @@ public:
 					// 그로기 상태로 만듬
 					player->ChangeToGroggyState(pServer);
 					playerGameRecord.gameRecord.Groggy_Count.fetch_add(1);
-					PushEventGroggyRecovery(pServer->GetTimer(), playerid, roomid, roomCode, room->GetGameModeData().Ch_Groggy);
+					PushEventGroggyRecovery(pServer->GetTimer(), playerid, roomID, roomCode, room->GetGameModeData().Ch_Groggy);
 				}
 				else if (playerState == ePlayerState::PS_GROGGY) {
 					int spawnTime = room->GetGameModeData().Player_Spawn_Time;
@@ -51,7 +51,7 @@ public:
 
 					// record update
 					playerGameRecord.gameRecord.DeathCount.fetch_add(1);
-					PushEventPlayerRespawn(pServer->GetTimer(), playerid, roomid, roomCode, spawnTime);
+					PushEventPlayerRespawn(pServer->GetTimer(), playerid, roomID, roomCode, spawnTime);
 				}
 			}
 		}

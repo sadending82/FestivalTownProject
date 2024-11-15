@@ -18,13 +18,13 @@ public:
 				if (player == nullptr) {
 					return;
 				}
-				int roomid = player->GetRoomID();
-				if (roomid == INVALIDKEY) {
+				int roomID = player->GetRoomID();
+				if (roomID == INVALIDKEY) {
 					return;
 				}
 				int bombid = read->id();
 
-				Room* room = pServer->GetRooms().at(roomid);
+				Room* room = pServer->GetRooms().at(roomID);
 				Bomb* bomb = room->GetBomb(bombid);
 				if (bomb == nullptr) {
 					return;
@@ -33,7 +33,7 @@ public:
 				bomb->SetPosition(Vector3f(read->pos()->x(), read->pos()->y(), read->pos()->z()));
 
 				std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_BOMB_POS_SYNC, data, size);
-				pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomid);
+				pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 			}
 		}
 		catch (const std::exception& e) {

@@ -13,8 +13,8 @@ public:
 		try {
 			EV_WEAPON_SPAWN* event = reinterpret_cast<EV_WEAPON_SPAWN*>(buf);
 
-			int roomid = event->roomID;
-			Room* room = pServer->GetRooms().at(roomid);
+			int roomID = event->roomID;
+			Room* room = pServer->GetRooms().at(roomID);
 			if (room == nullptr) {
 				return;
 			}

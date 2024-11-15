@@ -13,8 +13,8 @@ public:
 		try {
 			EV_OBJECT_DROP* event = reinterpret_cast<EV_OBJECT_DROP*>(buf);
 
-			int roomid = event->roomID;
-			Room* room = pServer->GetRooms().at(roomid);
+			int roomID = event->roomID;
+			Room* room = pServer->GetRooms().at(roomID);
 			if (room == nullptr) {
 				return;
 			}

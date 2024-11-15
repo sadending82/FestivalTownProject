@@ -14,15 +14,15 @@ public:
 			if (verifier.VerifyBuffer<BombExplosion>(nullptr)) {
 				const BombExplosion* read = flatbuffers::GetRoot<BombExplosion>(data);
 
-				int roomid = dynamic_cast<Player*>(pServer->GetSessions()[key])->GetRoomID();
-				if (roomid == INVALIDKEY) {
+				int roomID = dynamic_cast<Player*>(pServer->GetSessions()[key])->GetRoomID();
+				if (roomID == INVALIDKEY) {
 					return;
 				}
 				int bombid = read->id();
 				if (bombid <= INVALIDKEY) {
 					return;
 				}
-				Room* room = pServer->GetRooms().at(roomid);
+				Room* room = pServer->GetRooms().at(roomID);
 				if (room == nullptr) {
 					return;
 				}
@@ -30,7 +30,7 @@ public:
 					return;
 				}
 
-				pPacketSender->SendBombExplosionPacket(roomid, bombid);
+				pPacketSender->SendBombExplosionPacket(roomID, bombid);
 				room->DeleteBomb(bombid);
 			}
 		}

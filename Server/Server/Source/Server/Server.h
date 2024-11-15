@@ -41,7 +41,7 @@ public:
 
 	bool						ReadConfig();
 	int							SetSessionID();
-	int							SetRoomID();
+	int							SetroomID();
 	bool						Disconnect(int key);
 	void						Run();
 	void						ThreadJoin();

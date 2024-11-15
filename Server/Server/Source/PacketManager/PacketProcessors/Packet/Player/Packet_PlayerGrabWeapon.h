@@ -19,11 +19,11 @@ public:
 					return;
 				}
 
-				int roomid = player->GetRoomID();
-				if (roomid == INVALIDKEY) {
+				int roomID = player->GetRoomID();
+				if (roomID == INVALIDKEY) {
 					return;
 				}
-				Room* room = pServer->GetRooms().at(roomid);
+				Room* room = pServer->GetRooms().at(roomID);
 				if (room == nullptr && (room->GetState() != eRoomState::RS_INGAME)) {
 					return;
 				}
@@ -53,7 +53,7 @@ public:
 					player->SetWeapon(weapon);
 					room->GetPlayerRecordList()[playerid].gameRecord.Pick_Weapon_Count.fetch_add(1);
 					std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYER_GRAB_WEAPON, data, size);
-					pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomid);
+					pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 				}
 				else {
 					player->SetWeapon(nullptr);

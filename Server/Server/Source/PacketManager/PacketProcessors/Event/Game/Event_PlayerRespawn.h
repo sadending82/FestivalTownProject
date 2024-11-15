@@ -12,9 +12,9 @@ public:
 
 			EV_PLAYER_RESPAWN* event = reinterpret_cast<EV_PLAYER_RESPAWN*>(buf);
 
-			int roomid = event->roomID;
+			int roomID = event->roomID;
 			int playerid = event->playerID;
-			Room* room = pServer->GetRooms().at(roomid);
+			Room* room = pServer->GetRooms().at(roomID);
 			if (room == nullptr) {
 				return;
 			}
@@ -53,7 +53,7 @@ public:
 			player->SetBomb(nullptr);
 			player->GetBombLock().unlock();
 
-			pPacketSender->SendPlayerRespawn(playerid, roomid);
+			pPacketSender->SendPlayerRespawn(playerid, roomID);
 		}
 		catch (const std::exception& e) {
 			std::cerr << "[Event_PlayerRespawn ERROR] : " << e.what() << std::endl;

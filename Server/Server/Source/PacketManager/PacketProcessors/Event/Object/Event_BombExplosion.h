@@ -13,9 +13,9 @@ public:
 		try {
 			EV_BOMB_EXPLOSION* event = reinterpret_cast<EV_BOMB_EXPLOSION*>(buf);
 
-			int roomid = event->roomID;
+			int roomID = event->roomID;
 			int bombid = event->bombID;
-			Room* room = pServer->GetRooms().at(roomid);
+			Room* room = pServer->GetRooms().at(roomID);
 			if (room == nullptr) {
 				return;
 			}
@@ -38,7 +38,7 @@ public:
 				return;
 			}
 
-			pPacketSender->SendBombExplosionPacket(roomid, bombid);
+			pPacketSender->SendBombExplosionPacket(roomID, bombid);
 			room->DeleteBomb(bombid);
 		}
 		catch (const std::exception& e) {

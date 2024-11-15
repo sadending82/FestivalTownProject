@@ -24,6 +24,13 @@ public:
 	virtual void BombSpawn(class Room* room, int roomID) override;
 	virtual void WeaponSpawn(class Room* room, int roomID, eWeaponType weaponType, int spawnCount) override;
 
+	virtual bool PlayerDamageReceive(int roomID, class Room* room, int attackerID, class Player* attacker, int targetID, class Player* target
+		, Vector3f knockback_direction, eDamageType damageType) override;
+	bool PlayerDieInstant(int roomID, Room* room, int targetID, Player* target);
+	bool PlayerDamagedFromOther(int roomID, Room* room, int attackerID, Player* attacker, int targetID, Player* target, Vector3f knockback_direction);
+	bool PlayerDamagedFromBomb(int roomID, Room* room, int targetID, Player* target, Vector3f knockback_direction);
+
+
 	virtual bool CheckValidPlayerPosition(Vector3f& position) override;
 
 private:

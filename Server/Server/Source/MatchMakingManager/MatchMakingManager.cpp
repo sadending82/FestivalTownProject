@@ -48,8 +48,8 @@ bool MatchMakingManager::CheckMatchMaking(eMatchingType matchingType)
         GameMode gameMode = (GameMode)(mode);
         int matchedPlayerCount = tableManager->GetGameModeData()[gameMode].Player_Count;
 
-        int roomid = pServer->CreateNewRoom(gameMode);
-        if (roomid == INVALIDKEY) {
+        int roomID = pServer->CreateNewRoom(gameMode);
+        if (roomID == INVALIDKEY) {
             std::cout << "Fali Create New Room\n";
             break;
         }
@@ -64,8 +64,8 @@ bool MatchMakingManager::CheckMatchMaking(eMatchingType matchingType)
             sessionList.push_back(topPlayer);
             matchingQueue.erase(matchingQueue.begin());
         }
-        MatchingComplete(roomid, sessionList);
-        std::cout << "Start Game room - " << roomid << "| GameMode - " << gameMode << std::endl;
+        MatchingComplete(roomID, sessionList);
+        std::cout << "Start Game room - " << roomID << "| GameMode - " << gameMode << std::endl;
     }
 
     return true;

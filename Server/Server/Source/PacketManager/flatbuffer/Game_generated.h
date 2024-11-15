@@ -81,18 +81,18 @@ struct GameHostChange FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef GameHostChangeBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_IN_GAME_ID = 4,
-    VT_ROOMID = 6
+    VT_roomID = 6
   };
   int32_t in_game_id() const {
     return GetField<int32_t>(VT_IN_GAME_ID, 0);
   }
-  int32_t roomid() const {
-    return GetField<int32_t>(VT_ROOMID, 0);
+  int32_t roomID() const {
+    return GetField<int32_t>(VT_roomID, 0);
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_IN_GAME_ID, 4) &&
-           VerifyField<int32_t>(verifier, VT_ROOMID, 4) &&
+           VerifyField<int32_t>(verifier, VT_roomID, 4) &&
            verifier.EndTable();
   }
 };
@@ -104,8 +104,8 @@ struct GameHostChangeBuilder {
   void add_in_game_id(int32_t in_game_id) {
     fbb_.AddElement<int32_t>(GameHostChange::VT_IN_GAME_ID, in_game_id, 0);
   }
-  void add_roomid(int32_t roomid) {
-    fbb_.AddElement<int32_t>(GameHostChange::VT_ROOMID, roomid, 0);
+  void add_roomID(int32_t roomID) {
+    fbb_.AddElement<int32_t>(GameHostChange::VT_roomID, roomID, 0);
   }
   explicit GameHostChangeBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -121,9 +121,9 @@ struct GameHostChangeBuilder {
 inline ::flatbuffers::Offset<GameHostChange> CreateGameHostChange(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t in_game_id = 0,
-    int32_t roomid = 0) {
+    int32_t roomID = 0) {
   GameHostChangeBuilder builder_(_fbb);
-  builder_.add_roomid(roomid);
+  builder_.add_roomID(roomID);
   builder_.add_in_game_id(in_game_id);
   return builder_.Finish();
 }
@@ -131,14 +131,14 @@ inline ::flatbuffers::Offset<GameHostChange> CreateGameHostChange(
 struct GameReady FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef GameReadyBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_ROOMID = 4
+    VT_roomID = 4
   };
-  int32_t roomid() const {
-    return GetField<int32_t>(VT_ROOMID, 0);
+  int32_t roomID() const {
+    return GetField<int32_t>(VT_roomID, 0);
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<int32_t>(verifier, VT_ROOMID, 4) &&
+           VerifyField<int32_t>(verifier, VT_roomID, 4) &&
            verifier.EndTable();
   }
 };
@@ -147,8 +147,8 @@ struct GameReadyBuilder {
   typedef GameReady Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_roomid(int32_t roomid) {
-    fbb_.AddElement<int32_t>(GameReady::VT_ROOMID, roomid, 0);
+  void add_roomID(int32_t roomID) {
+    fbb_.AddElement<int32_t>(GameReady::VT_roomID, roomID, 0);
   }
   explicit GameReadyBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -163,9 +163,9 @@ struct GameReadyBuilder {
 
 inline ::flatbuffers::Offset<GameReady> CreateGameReady(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    int32_t roomid = 0) {
+    int32_t roomID = 0) {
   GameReadyBuilder builder_(_fbb);
-  builder_.add_roomid(roomid);
+  builder_.add_roomID(roomID);
   return builder_.Finish();
 }
 
@@ -201,18 +201,18 @@ inline ::flatbuffers::Offset<AllPlayerReady> CreateAllPlayerReady(
 struct GameStart FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef GameStartBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_ROOMID = 4,
+    VT_roomID = 4,
     VT_TIME = 6
   };
-  int32_t roomid() const {
-    return GetField<int32_t>(VT_ROOMID, 0);
+  int32_t roomID() const {
+    return GetField<int32_t>(VT_roomID, 0);
   }
   int64_t time() const {
     return GetField<int64_t>(VT_TIME, 0);
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<int32_t>(verifier, VT_ROOMID, 4) &&
+           VerifyField<int32_t>(verifier, VT_roomID, 4) &&
            VerifyField<int64_t>(verifier, VT_TIME, 8) &&
            verifier.EndTable();
   }
@@ -222,8 +222,8 @@ struct GameStartBuilder {
   typedef GameStart Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_roomid(int32_t roomid) {
-    fbb_.AddElement<int32_t>(GameStart::VT_ROOMID, roomid, 0);
+  void add_roomID(int32_t roomID) {
+    fbb_.AddElement<int32_t>(GameStart::VT_roomID, roomID, 0);
   }
   void add_time(int64_t time) {
     fbb_.AddElement<int64_t>(GameStart::VT_TIME, time, 0);
@@ -241,11 +241,11 @@ struct GameStartBuilder {
 
 inline ::flatbuffers::Offset<GameStart> CreateGameStart(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    int32_t roomid = 0,
+    int32_t roomID = 0,
     int64_t time = 0) {
   GameStartBuilder builder_(_fbb);
   builder_.add_time(time);
-  builder_.add_roomid(roomid);
+  builder_.add_roomID(roomID);
   return builder_.Finish();
 }
 

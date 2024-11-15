@@ -87,7 +87,7 @@ int Server::SetSessionID()
     return INVALIDKEY;
 }
 
-int Server::SetRoomID()
+int Server::SetroomID()
 {
     for (int i = STARTKEY; i < MAXROOM; ++i) {
         auto room = GetRooms()[i];
@@ -437,7 +437,7 @@ std::pair<bool, UserInfo> Server::UserLogin(const char* accountID, const char* a
 
 int Server::CreateNewRoom(GameMode gameMode)
 {
-    int roomID = SetRoomID();
+    int roomID = SetroomID();
     if (roomID == INVALIDKEY) {
         std::cout << "Fali Create New Room\n";
         return INVALIDKEY;

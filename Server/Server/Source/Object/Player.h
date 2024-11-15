@@ -46,7 +46,7 @@ public:
 
 	void				SetUID(int uid) { mUID = uid; }
 	void				SetAccountID(std::string accountID) { mAccountID = accountID; }
-	void				SetRoomID(int id) { mRoomID = id; }
+	void				SetroomID(int id) { mRoomID = id; }
 	void				SetInGameID(int id) { mInGameID = id; }
 	void				SetTeam(int team) { mTeam = team; }
 	void				SetIsBot(bool isBot) { mIsBot = isBot; }

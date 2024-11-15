@@ -24,7 +24,8 @@ public:
 	virtual std::set<Vector3f> SetObjectSpawnPos(int roomID, int spawnCount) { return std::set<Vector3f>(); }
 	virtual void BombSpawn(class Room* room, int roomID) {}
 	virtual void WeaponSpawn(class Room* room, int roomID, eWeaponType weaponType, int spawnCount) {}
-	virtual void PlayerDamageReceive(class Room* room, class Player* attacker, class Player* target) {}
+	virtual bool PlayerDamageReceive(int roomID, class Room* room, int attackerID, class Player* attacker, int targetID, class Player* target
+		, Vector3f knockback_direction, eDamageType damageType) { return false; }
 
 	virtual bool CheckValidPlayerPosition(Vector3f& position) { return false; }
 

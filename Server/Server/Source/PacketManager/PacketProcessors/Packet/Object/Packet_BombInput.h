@@ -20,11 +20,11 @@ public:
 
 				Player* host = dynamic_cast<Player*>(pServer->GetSessions()[key]);
 
-				int roomid = host->GetRoomID();
-				if (roomid == INVALIDKEY) {
+				int roomID = host->GetRoomID();
+				if (roomID == INVALIDKEY) {
 					return;
 				}
-				Room* room = pServer->GetRooms().at(roomid);
+				Room* room = pServer->GetRooms().at(roomID);
 
 				int player_sessionID = room->GetPlayerList()[playerid].load();
 
@@ -51,20 +51,20 @@ public:
 
 					// record update
 					playerGameRecord.gameRecord.DeathCount.fetch_add(1);
-					PushEventPlayerRespawn(pServer->GetTimer(), playerid, roomid, room->GetRoomCode(), spawnTime);
+					PushEventPlayerRespawn(pServer->GetTimer(), playerid, roomID, room->GetRoomCode(), spawnTime);
 					return;
 				}
 				Team& teamInfo = room->GetTeams()[team];
 				teamInfo.ReduceLife();
 				int lifeCount = teamInfo.GetLife();
-				pPacketSender->SendLifeReducePacket(team, lifeCount, roomid);
+				pPacketSender->SendLifeReducePacket(team, lifeCount, roomID);
 
 				// record update
 				playerGameRecord.gameRecord.Bomb_Count.fetch_add(1);
 
 				if (lifeCount <= 0) {
 					// life가 0인데 게임이 안끝나면 바로 죽이고 관전상태로
-					if (gameManager->CheckGameEnd(roomid) == false) {
+					if (gameManager->CheckGameEnd(roomID) == false) {
 						for (int member : teamInfo.GetMembers()) {
 							dynamic_cast<Player*>(pServer->GetSessions()[member])->ChangeToDeadState(pServer, 0);
 						}

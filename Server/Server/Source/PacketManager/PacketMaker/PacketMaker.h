@@ -32,7 +32,7 @@ public:
 
 	std::vector<uint8_t> MakeGameMatchingResponsePacket(int inGameID, int roomID, int team, int gameMode, MapCode mapCode, int gameTime, int totalPlayerCount, bool isHost = false);
 	std::vector<uint8_t> MakeAllPlayerReadyPacket();
-	std::vector<uint8_t> MakeGameStartPacket(int roomid, long time = 0);
+	std::vector<uint8_t> MakeGameStartPacket(int roomID, long time = 0);
 
 	std::vector<uint8_t> MakeHeartBeatPacket();
 	std::vector<uint8_t> MakeBlockDropPacket(std::vector<std::pair<int, int>>& positions, std::vector<int>& blockTypes);

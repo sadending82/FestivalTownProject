@@ -21,11 +21,11 @@ public:
 					return;
 				}
 
-				int roomid = player->GetRoomID();
-				if (roomid == INVALIDKEY) {
+				int roomID = player->GetRoomID();
+				if (roomID == INVALIDKEY) {
 					return;
 				}
-				Room* room = pServer->GetRooms().at(roomid);
+				Room* room = pServer->GetRooms().at(roomID);
 				if (room == nullptr && (room->GetState() != eRoomState::RS_INGAME)) {
 					return;
 				}
@@ -38,10 +38,10 @@ public:
 					int spawnTime = room->GetGameModeData().Player_Spawn_Time;
 					if (player->ChangeToDeadState(pServer, spawnTime)) {
 						// record update
-						int roomid = player->GetRoomID();
-						Room* room = pServer->GetRooms().at(roomid);
+						int roomID = player->GetRoomID();
+						Room* room = pServer->GetRooms().at(roomID);
 						room->GetPlayerRecordList().at(playerid).gameRecord.DeathCount.fetch_add(1);
-						PushEventPlayerRespawn(pServer->GetTimer(), playerid, roomid, room->GetRoomCode(), spawnTime);
+						PushEventPlayerRespawn(pServer->GetTimer(), playerid, roomID, room->GetRoomCode(), spawnTime);
 					}
 					return;
 				}

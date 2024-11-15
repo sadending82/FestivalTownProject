@@ -14,18 +14,18 @@ public:
 			if (verifier.VerifyBuffer<WeaponDelete>(nullptr)) {
 				const WeaponDelete* read = flatbuffers::GetRoot<WeaponDelete>(data);
 
-				int roomid = dynamic_cast<Player*>(pServer->GetSessions()[key])->GetRoomID();
-				if (roomid == INVALIDKEY) {
+				int roomID = dynamic_cast<Player*>(pServer->GetSessions()[key])->GetRoomID();
+				if (roomID == INVALIDKEY) {
 					return;
 				}
 				int weaponid = read->id();
 				if (weaponid <= INVALIDKEY) {
 					return;
 				}
-				if (roomid == INVALIDKEY) {
+				if (roomID == INVALIDKEY) {
 					return;
 				}
-				Room* room = pServer->GetRooms().at(roomid);
+				Room* room = pServer->GetRooms().at(roomID);
 				if (room == nullptr) {
 					return;
 				}
@@ -35,7 +35,7 @@ public:
 
 				if (room->GetWeapon(weaponid) != nullptr) {
 					std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_WEAPON_DELETE, data, size);
-					pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomid);
+					pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 					room->DeleteWeapon(weaponid);
 				}
 			}

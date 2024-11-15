@@ -18,11 +18,11 @@ public:
 				if (player == nullptr) {
 					return;
 				}
-				int roomid = player->GetRoomID();
-				if (roomid == INVALIDKEY) {
+				int roomID = player->GetRoomID();
+				if (roomID == INVALIDKEY) {
 					return;
 				}
-				Room* room = pServer->GetRooms().at(roomid);
+				Room* room = pServer->GetRooms().at(roomID);
 				if (room == nullptr) {
 					return;
 				}
@@ -41,17 +41,17 @@ public:
 
 				switch (room->GetIsTestRoom()) {
 				case true: {
-					pPacketSender->SendAllPlayerReady(roomid);
+					pPacketSender->SendAllPlayerReady(roomID);
 					room->ChangeAllPlayerInGame();
-					PushEventGameStart(pServer->GetTimer(), roomid, pServer->GetRooms()[roomid]->GetRoomCode());
+					PushEventGameStart(pServer->GetTimer(), roomID, pServer->GetRooms()[roomID]->GetRoomCode());
 				}break;
 
 				default : {
 					if (room->GetReadyCnt() == room->GetPlayerCnt()) {
 						if (room->SetAllPlayerReady(true) == true) {
-							pPacketSender->SendAllPlayerReady(roomid);
+							pPacketSender->SendAllPlayerReady(roomID);
 							room->ChangeAllPlayerInGame();
-							PushEventGameStart(pServer->GetTimer(), roomid, room->GetRoomCode());
+							PushEventGameStart(pServer->GetTimer(), roomID, room->GetRoomCode());
 						}
 					}
 				}break;

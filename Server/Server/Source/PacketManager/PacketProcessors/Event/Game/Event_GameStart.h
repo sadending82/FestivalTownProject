@@ -11,8 +11,8 @@ public:
 		try {
 			EV_GAME_START* event = reinterpret_cast<EV_GAME_START*>(buf);
 
-			int roomid = event->roomID;
-			Room* room = pServer->GetRooms().at(roomid);
+			int roomID = event->roomID;
+			Room* room = pServer->GetRooms().at(roomID);
 			if (room == nullptr) {
 				return;
 			}
@@ -26,7 +26,7 @@ public:
 
 			GameMode gameMode = room->GetGameMode();
 
-			pServer->GetGameManagers()[gameMode]->StartGame(roomid);
+			pServer->GetGameManagers()[gameMode]->StartGame(roomID);
 		}
 		catch (const std::exception& e) {
 			std::cerr << "[Event_GameStart ERROR] : " << e.what() << std::endl;

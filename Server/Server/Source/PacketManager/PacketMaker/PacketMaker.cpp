@@ -171,11 +171,11 @@ std::vector<uint8_t> PacketMaker::MakeAllPlayerReadyPacket()
 	return MakeBuffer(ePacketType::S2C_ALL_PLAYER_READY, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakeGameStartPacket(int roomid, long time)
+std::vector<uint8_t> PacketMaker::MakeGameStartPacket(int roomID, long time)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 	
-	Builder.Finish(PacketTable::GameTable::CreateGameStart(Builder, roomid, time));
+	Builder.Finish(PacketTable::GameTable::CreateGameStart(Builder, roomID, time));
 	return MakeBuffer(ePacketType::S2C_GAME_START, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
