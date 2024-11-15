@@ -54,16 +54,21 @@ public:
 					PushEventPlayerRespawn(pServer->GetTimer(), playerid, roomid, room->GetRoomCode(), spawnTime);
 					return;
 				}
-
-				room->GetTeams()[team].ReduceLife();
-				int lifeCount = room->GetTeams()[team].GetLife();
+				Team& teamInfo = room->GetTeams()[team];
+				teamInfo.ReduceLife();
+				int lifeCount = teamInfo.GetLife();
 				pPacketSender->SendLifeReducePacket(team, lifeCount, roomid);
 
 				// record update
 				playerGameRecord.gameRecord.Bomb_Count.fetch_add(1);
 
 				if (lifeCount <= 0) {
-					gameManager->CheckGameEnd(roomid);
+					// life가 0인데 게임이 안끝나면 바로 죽이고 관전상태로
+					if (gameManager->CheckGameEnd(roomid) == false) {
+						for (int member : teamInfo.GetMembers()) {
+							dynamic_cast<Player*>(pServer->GetSessions()[member])->ChangeToDeadState(pServer, 0);
+						}
+					}
 				}
 			}
 		}

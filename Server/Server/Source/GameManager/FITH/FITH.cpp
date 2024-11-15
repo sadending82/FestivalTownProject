@@ -50,10 +50,10 @@ void FITH::StartGame(int roomID)
     }
 }
 
-void FITH::CheckGameEnd(int roomID)
+bool FITH::CheckGameEnd(int roomID)
 {
     Room* room = pServer->GetRooms()[roomID];
-    int teamCnt = 2; // 팀 수 (임시 나중에 게임 데이터로 읽어야 함)
+    int teamCnt = pTableManager->GetGameModeData().at(mGameMode).Team_Count; // 팀 수
     int loseTeamCnt = 0;
     std::set<int> winningTeams;
     for (auto iter = room->GetTeams().begin(); iter != room->GetTeams().end(); ++iter) {
@@ -65,6 +65,7 @@ void FITH::CheckGameEnd(int roomID)
         }
     }
 
+    // 한명만 남았을 경우
     if (loseTeamCnt == teamCnt - 1) {
         if (room->SetIsRun(false) == true) {
             pPacketSender->SendGameEndPacket(roomID, 0);
@@ -92,11 +93,13 @@ void FITH::CheckGameEnd(int roomID)
             room->Reset();
 
             std::cout << "Game End - " << roomID << std::endl;
+            return true;
         }
     }
+    return false;
 }
 
-void FITH::TimeoverGameEnd(int roomID)
+bool FITH::TimeoverGameEnd(int roomID)
 {
     Room* room = pServer->GetRooms()[roomID];
 
@@ -138,7 +141,10 @@ void FITH::TimeoverGameEnd(int roomID)
         room->Reset();
 
         std::cout << "Game End - " << roomID << std::endl;
+        return true;
     }
+
+    return false;
 }
 
 int FITH::CalculatePoint(sPlayerGameRecord& record, BattleResult result)
@@ -226,6 +232,17 @@ void FITH::CalculateGameResult(int roomID, std::set<int>& winningTeams)
 
         int team = pair.second.team;
         BattleResult result = (winningTeams.find(team) != winningTeams.end()) ? winFlag : BattleResult::BR_Lose;
+
+        if (result == BattleResult::BR_Win) {
+            userGameRecord.Victory_Count.store(1);
+        }
+
+        if (GameMode::FITH_Indiv_Battle_2 <= mGameMode && mGameMode <= GameMode::FITH_Indiv_Battle_5) {
+            userGameRecord.FITH_Indiv_Count.store(1);
+        }
+        else if (GameMode::FITH_Team_Battle_4 <= mGameMode && mGameMode <= GameMode::FITH_Team_Battle_6){
+            userGameRecord.FITH_Team_Count.store(1);
+        }
 
         int point = CalculatePoint(pair.second, result);
         userGameRecord.Point = point;

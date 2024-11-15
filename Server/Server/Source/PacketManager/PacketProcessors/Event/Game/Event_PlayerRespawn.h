@@ -35,6 +35,10 @@ public:
 				return;
 			}
 
+			if (room->GetTeams().at(player->GetTeam()).GetLife() <= 0) {
+				return;
+			}
+
 			player->GetPlayerStateLock().lock();
 			player->SetPlayerState(ePlayerState::PS_ALIVE);
 			player->GetPlayerStateLock().unlock();

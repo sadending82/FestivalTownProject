@@ -13,8 +13,8 @@ public:
 	~GameManager() {}
 
 	virtual void StartGame(int roomID) {}
-	virtual void CheckGameEnd(int roomID) {}
-	virtual void TimeoverGameEnd(int roomID) {}
+	virtual bool CheckGameEnd(int roomID) { return false; }
+	virtual bool TimeoverGameEnd(int roomID) { return false; }
 	virtual int CalculatePoint(sPlayerGameRecord& record, BattleResult result) { return 0; }
 	virtual int CalculateGoldReward(int point, bool isMvp, BattleResult result) { return 0; }
 	virtual void CalculateGameResult(int roomID, std::set<int>& winningTeams) {}
@@ -24,9 +24,9 @@ public:
 	virtual std::set<Vector3f> SetObjectSpawnPos(int roomID, int spawnCount) { return std::set<Vector3f>(); }
 	virtual void BombSpawn(class Room* room, int roomID) {}
 	virtual void WeaponSpawn(class Room* room, int roomID, eWeaponType weaponType, int spawnCount) {}
+	virtual void PlayerDamageReceive(class Room* room, class Player* attacker, class Player* target) {}
 
 	virtual bool CheckValidPlayerPosition(Vector3f& position) { return false; }
-
 
 private:
 	class Server* mServer = nullptr;
