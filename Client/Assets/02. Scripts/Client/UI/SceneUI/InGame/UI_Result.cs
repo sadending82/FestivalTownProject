@@ -41,6 +41,13 @@ public class UI_Result : UI_Scene
             Managers.SpectatorCamera.Clear();
         });
 
+        UI_ResultPanel[] panels = Get<GameObject>((int)GameObjects.ResultPanel).transform.GetComponentsInChildren<UI_ResultPanel>();
+
+        foreach(UI_ResultPanel pan in panels)
+        {
+            pan.Init();
+        }
+
         isInitialized = true;
     }
 

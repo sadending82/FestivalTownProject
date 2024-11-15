@@ -319,6 +319,11 @@ public class PlayerController : MonoBehaviour
                 {
                     packetManager.SendPlayerCollisionToBlockPacket(playerStatus.GetId());
                 }
+                if (Input.GetKeyUp(KeyCode.Y))
+                {
+                    Vector3 tPos = GetPosition();
+                    Managers.CubeObject.SpawnCube((int)tPos.x / 2, (int)tPos.z / 2, eBlockType.BT_BLOCK_2_2_1);
+                }
             }
 
             if (playerStatus.GetIsDie() == false)
@@ -556,6 +561,11 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(dashCooltime);
         dashCooltimeChecker = false;
+    }
+    public void Pushed(Vector3 direction, float power)
+    {
+        pelvisRigidbody.velocity = Vector3.zero;
+        pelvisRigidbody.AddForce(direction * power, ForceMode.Impulse);
     }
     public void FlyingKick(Vector3 direction)
     {

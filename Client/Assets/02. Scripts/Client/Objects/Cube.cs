@@ -16,7 +16,6 @@ public class Cube : MonoBehaviour
         {
             checker = this.transform.GetChild(0).GetComponent<Checker>();
         }
-        checker.CreatePusher();
     }
     private void FixedUpdate()
     {
@@ -37,6 +36,7 @@ public class Cube : MonoBehaviour
             if (collision.gameObject.tag == "Ground")
             {
                 fixChecker = true;
+                checker.SetGroundChecker(true);
 
                 this.transform.position = new Vector3(this.transform.position.x, targetHeight, this.transform.position.z);
                 heightChecker = true;
@@ -47,7 +47,6 @@ public class Cube : MonoBehaviour
                                         RigidbodyConstraints.FreezeRotationX |
                                         RigidbodyConstraints.FreezeRotationY |
                                         RigidbodyConstraints.FreezeRotationZ;
-                checker.SetCheck(false);
 
                 int soundNum = Random.Range(1, 4);
                 Managers.Sound.Play3D($"Sfx_Block_Impact{soundNum}", gameObject);
