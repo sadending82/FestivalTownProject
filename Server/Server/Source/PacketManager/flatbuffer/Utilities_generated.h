@@ -144,8 +144,30 @@ inline ::flatbuffers::Offset<GameSetting> CreateGameSetting(
 
 struct CharacterCustomizing FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef CharacterCustomizingBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_SKIN = 4,
+    VT_HEAD = 6,
+    VT_FACE = 8,
+    VT_BACK = 10
+  };
+  int32_t skin() const {
+    return GetField<int32_t>(VT_SKIN, 0);
+  }
+  int32_t head() const {
+    return GetField<int32_t>(VT_HEAD, 0);
+  }
+  int32_t face() const {
+    return GetField<int32_t>(VT_FACE, 0);
+  }
+  int32_t back() const {
+    return GetField<int32_t>(VT_BACK, 0);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_SKIN, 4) &&
+           VerifyField<int32_t>(verifier, VT_HEAD, 4) &&
+           VerifyField<int32_t>(verifier, VT_FACE, 4) &&
+           VerifyField<int32_t>(verifier, VT_BACK, 4) &&
            verifier.EndTable();
   }
 };
@@ -154,6 +176,18 @@ struct CharacterCustomizingBuilder {
   typedef CharacterCustomizing Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
+  void add_skin(int32_t skin) {
+    fbb_.AddElement<int32_t>(CharacterCustomizing::VT_SKIN, skin, 0);
+  }
+  void add_head(int32_t head) {
+    fbb_.AddElement<int32_t>(CharacterCustomizing::VT_HEAD, head, 0);
+  }
+  void add_face(int32_t face) {
+    fbb_.AddElement<int32_t>(CharacterCustomizing::VT_FACE, face, 0);
+  }
+  void add_back(int32_t back) {
+    fbb_.AddElement<int32_t>(CharacterCustomizing::VT_BACK, back, 0);
+  }
   explicit CharacterCustomizingBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -166,8 +200,16 @@ struct CharacterCustomizingBuilder {
 };
 
 inline ::flatbuffers::Offset<CharacterCustomizing> CreateCharacterCustomizing(
-    ::flatbuffers::FlatBufferBuilder &_fbb) {
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t skin = 0,
+    int32_t head = 0,
+    int32_t face = 0,
+    int32_t back = 0) {
   CharacterCustomizingBuilder builder_(_fbb);
+  builder_.add_back(back);
+  builder_.add_face(face);
+  builder_.add_head(head);
+  builder_.add_skin(skin);
   return builder_.Finish();
 }
 
