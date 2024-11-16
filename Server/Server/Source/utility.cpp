@@ -1,5 +1,7 @@
+#pragma once
 #include "utility.h"
 #include "Object/Player.h"
+#include "PacketManager/flatbuffer/FlatBufferManager.h"
 #include <vector>
 #include <cmath>
 
@@ -41,4 +43,47 @@ std::string wstringToString(const std::wstring& input)
 	std::string utf8_string(size, 0);
 	WideCharToMultiByte(CP_UTF8, 0, input.c_str(), -1, &utf8_string[0], size, NULL, NULL);
 	return utf8_string;
+}
+
+sCharacterCustomizing DeserializationCharacterCustomizing(const uint8_t* data, const int size)
+{
+	sCharacterCustomizing sCustomizing;
+	flatbuffers::Verifier verifier(data, size);
+	if (verifier.VerifyBuffer<PacketTable::UtilitiesTable::CharacterCustomizing>(nullptr)) {
+
+		const PacketTable::UtilitiesTable::CharacterCustomizing* fCustomizing = flatbuffers::GetRoot<PacketTable::UtilitiesTable::CharacterCustomizing>(data);
+
+		auto items = fCustomizing->customizing_items();
+
+		for (const auto& item : *items) {
+			sCustomizing.SetItem((CustomizingItemType)item->type(), item->item_code());
+		}
+	}
+	else {
+		return sCharacterCustomizing();
+	}
+
+	return sCustomizing;
+}
+
+std::vector<uint8_t> SerializationCharacterCustomizing(sCharacterCustomizing characterCustomizing)
+{
+	flatbuffers::FlatBufferBuilder Builder;
+	std::vector<flatbuffers::Offset<PacketTable::UtilitiesTable::CustomizingItem>> item_vecter;
+
+	for (auto& pair : characterCustomizing.customizingItems) {
+		int type = pair.first;
+		int itemCode = pair.second;
+
+		auto fCustomizingItem = PacketTable::UtilitiesTable::CreateCustomizingItem(Builder, type, itemCode);
+
+		item_vecter.push_back(fCustomizingItem);
+	}
+
+	Builder.Finish(PacketTable::UtilitiesTable::CreateCharacterCustomizing(Builder, Builder.CreateVector(item_vecter)));
+
+	std::vector<uint8_t> result(Builder.GetSize());
+	memcpy(result.data(), Builder.GetBufferPointer(), Builder.GetSize());
+
+	return result;
 }

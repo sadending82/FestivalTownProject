@@ -4,6 +4,7 @@
 #include <vector>
 #include "protocol.h"
 #include "DB/Schema/DB_UserGameRecords.h"
+#include <unordered_map>
 
 #define TIMEPOINT std::chrono::system_clock::time_point
 
@@ -64,6 +65,14 @@ enum class eObjectType {
 	BOMB
 };
 
+enum CustomizingItemType {
+	CI_SKIN = 10,
+	CI_HEAD = 21,
+	CI_FACE = 22,
+	CI_BACK = 23,
+
+};
+
 #pragma pack (push, 1)
 
 struct HEADER {
@@ -111,6 +120,18 @@ struct sPlayerGameRecord {
 	}
 };
 
+struct sCharacterCustomizing {
+	std::unordered_map<CustomizingItemType, int> customizingItems;
+
+	void SetItem(CustomizingItemType type, int itemCode) {
+		customizingItems[type] = itemCode;
+	}
+
+	int GetItemCode(CustomizingItemType type) {
+		return customizingItems[type];
+	}
+};
+
 #pragma pack(pop)
 
 std::vector<uint8_t> MakeBuffer(const int type, const uint8_t* data, const int size);
@@ -119,3 +140,6 @@ Vector3f ConvertVec3fToVec2i(Vector3f vec);
 Vector3f ConvertVec2iToVec3f(int x, int z);
 
 std::string wstringToString(const std::wstring& input);
+
+sCharacterCustomizing DeserializationCharacterCustomizing(const uint8_t* data, const int size);
+std::vector<uint8_t> SerializationCharacterCustomizing(sCharacterCustomizing characterCustomizing);
