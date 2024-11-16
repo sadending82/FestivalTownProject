@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include "DB.h"
 #include "../TableManager/TableManager.h"
+#include "../utility.h"
 
 DB::~DB()
 {
@@ -456,7 +457,7 @@ bool DB::SelectUserAllItems(const int uid, std::vector<UserItem>& UserItems_outp
 	int itemType = 1;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
-		DEBUGMSGNOPARAM("hStmt Error : (InsertRanking) \n");
+		DEBUGMSGNOPARAM("hStmt Error : (SelectUserAllItems) \n");
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 		return 0;
 	}
@@ -488,9 +489,55 @@ bool DB::SelectUserAllItems(const int uid, std::vector<UserItem>& UserItems_outp
 		return true;
 	}
 
-	DEBUGMSGNOPARAM("Execute Query Error : (SelectItemCount)\n");
+	DEBUGMSGNOPARAM("Execute Query Error : (SelectUserAllItems)\n");
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	return false;
+}
+
+sCharacterCustomizing DB::SelectCharacterCustomizing(const int uid)
+{
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGNOPARAM("hStmt Error : (SelectCharacterCustomizing) \n");
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return sCharacterCustomizing();
+	}
+
+	UseGameDB(hStmt);
+
+	const WCHAR* query = L"SELECT CharacterCustomizing FROM UserInfo WHERE UID = ?";
+
+	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	SQLLEN bufLen;
+
+	retcode = SQLGetData(hStmt, 1, SQL_C_BINARY, NULL, 0, &bufLen);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		std::vector<uint8_t> customizingData(bufLen);
+
+		while (SQLFetch(hStmt) == SQL_SUCCESS) {
+			SQLGetData(hStmt, 1, SQL_C_BINARY, &customizingData, bufLen, NULL);
+		}
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+
+		sCharacterCustomizing sCustomizingData = DeserializationCharacterCustomizing(customizingData.data(), bufLen);
+
+		return sCustomizingData;
+	}
+
+	DEBUGMSGNOPARAM("Execute Query Error : (SelectCharacterCustomizing)\n");
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+
+	return sCharacterCustomizing();
 }
 
 int DB::SelectUserItemCount(const int uid, const int item_index)
@@ -747,6 +794,43 @@ bool DB::UpdateUserItemCount(const int uid, const int item_index, const int valu
 	}
 
 	DEBUGMSGNOPARAM("Execute Query Error : (UpdateUserItemCount)\n");
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	return false;
+}
+
+bool DB::UpdateCharacterCustomizing(const int uid, const sCharacterCustomizing& characterCustomizing)
+{
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	int itemType = 1;
+
+	std::vector<uint8_t> serializationData = SerializationCharacterCustomizing(characterCustomizing);
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGNOPARAM("hStmt Error : (UpdateCharacterCustomizing) \n");
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return false;
+	}
+
+	UseGameDB(hStmt);
+
+	const WCHAR* query = L"UPDATE UserInfo SET CharacterCustomizing = ? WHERE UID = ?";
+
+	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_BINARY, SQL_VARBINARY, serializationData.size(), 0, (SQLPOINTER)serializationData.data(), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return true;
+	}
+
+	DEBUGMSGNOPARAM("Execute Query Error : (UpdateCharacterCustomizing)\n");
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	return false;
 }

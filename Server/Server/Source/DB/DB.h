@@ -41,6 +41,7 @@ public:
     std::pair<bool, UserInfo> SelectUserInfo(const int uid);
     bool SelectUserAllCurrency(const int uid, std::vector<int>& currency_types_output, std::vector<int>& currency_amounts_output);
     bool SelectUserAllItems(const int uid, std::vector<UserItem>& UserItems_output);
+    struct sCharacterCustomizing SelectCharacterCustomizing(const int uid);
     
     int SelectUserItemCount(const int uid, const int item_index);
 
@@ -49,6 +50,7 @@ public:
     bool UpdateUserPoint(const int uid, const int valueOfChange);
     bool UpdateBattleRecords(const int uid, const UserGameRecords& gameRecords);
     bool UpdateUserItemCount(const int uid, const int item_index, const int valueOfChange);
+    bool UpdateCharacterCustomizing(const int uid, const struct sCharacterCustomizing& characterCustomizing);
 
     // UPSERT
     bool UpsertUserItemCount(const int uid, const int item_index, const int valueOfChange);
