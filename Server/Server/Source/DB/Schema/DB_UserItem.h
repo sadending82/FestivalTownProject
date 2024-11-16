@@ -11,11 +11,16 @@ enum class UserItem_Field {
 
 
 struct UserItem {
-	int item_UID;
-	int	owner_UID;
-	int	itemCode;
-	int	count;
-	int	itemType;
+	int item_UID = -1;
+	int	owner_UID = -1;
+	int	itemCode = -1;
+	int	count = -1;
+	int	itemType = -1;
+};
+
+struct EquippedItem {
+	int item_UID = -1;
+	int itemCode = -1;
 };
 
 

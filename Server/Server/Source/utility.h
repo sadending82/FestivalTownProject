@@ -3,7 +3,7 @@
 #include <chrono>
 #include <vector>
 #include "protocol.h"
-#include "DB/Schema/DB_UserGameRecords.h"
+#include "DB/Schema/Schemas.h"
 #include <unordered_map>
 
 #define TIMEPOINT std::chrono::system_clock::time_point
@@ -65,14 +65,6 @@ enum class eObjectType {
 	BOMB
 };
 
-enum CustomizingItemType {
-	CI_SKIN = 10,
-	CI_HEAD = 21,
-	CI_FACE = 22,
-	CI_BACK = 23,
-
-};
-
 #pragma pack (push, 1)
 
 struct HEADER {
@@ -121,13 +113,13 @@ struct sPlayerGameRecord {
 };
 
 struct sCharacterCustomizing {
-	std::unordered_map<CustomizingItemType, int> customizingItems;
+	std::unordered_map<CustomizingItemType, EquippedItem> customizingItems;
 
-	void SetItem(CustomizingItemType type, int itemCode) {
-		customizingItems[type] = itemCode;
+	void SetItem(CustomizingItemType type, EquippedItem item) {
+		customizingItems[type] = item;
 	}
 
-	int GetItemCode(CustomizingItemType type) {
+	EquippedItem GetItemCode(CustomizingItemType type) {
 		return customizingItems[type];
 	}
 };

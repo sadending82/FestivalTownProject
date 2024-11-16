@@ -56,7 +56,10 @@ sCharacterCustomizing DeserializationCharacterCustomizing(const uint8_t* data, c
 		auto items = fCustomizing->customizing_items();
 
 		for (const auto& item : *items) {
-			sCustomizing.SetItem((CustomizingItemType)item->type(), item->item_code());
+			EquippedItem equippedItem;
+			equippedItem.item_UID = item->item_uid();
+			equippedItem.itemCode= item->item_code();
+			sCustomizing.SetItem((CustomizingItemType)item->type(), equippedItem);
 		}
 	}
 	else {
@@ -73,9 +76,9 @@ std::vector<uint8_t> SerializationCharacterCustomizing(sCharacterCustomizing cha
 
 	for (auto& pair : characterCustomizing.customizingItems) {
 		int type = pair.first;
-		int itemCode = pair.second;
+		EquippedItem equippedItem = pair.second;
 
-		auto fCustomizingItem = PacketTable::UtilitiesTable::CreateCustomizingItem(Builder, type, itemCode);
+		auto fCustomizingItem = PacketTable::UtilitiesTable::CreateCustomizingItem(Builder, type, equippedItem.item_UID, equippedItem.itemCode);
 
 		item_vecter.push_back(fCustomizingItem);
 	}

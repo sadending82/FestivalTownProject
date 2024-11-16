@@ -52,6 +52,7 @@ public class PacketManager : MonoBehaviour
             { ePacketType.S2C_GACHA_RESPONSE, new GachaResponseProcessor() },
             { ePacketType.S2C_CURRENCY_AMOUNT_RESPONSE, new CurrencyAmountResponseProcessor() },
             { ePacketType.S2C_USER_ITEMS_RESPONSE, new UserItemsResponseProcessor() },
+            { ePacketType.S2C_CHANGE_CHARACTER_CUSTOMIZING, new  ChangeCharacterCustomizingProcessor() },
 
             { ePacketType.S2C_HEART_BEAT, new HeartBeatProcessor() },
 
@@ -200,6 +201,12 @@ public class PacketManager : MonoBehaviour
     public void SendUserItemsRequestPacket()
     {
         byte[] packet = _packetMaker.MakeUserItemsRequestPacket();
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+    public void SendChangeCharacterCustomizingPacket(sCharacterCustomizing customizing)
+    {
+        byte[] packet = _packetMaker.MakeChangeCharacterCustomizingPacket(customizing);
         if (packet == null) { return; }
         SendPacket(packet);
     }

@@ -449,17 +449,16 @@ bool DB::SelectUserAllCurrency(const int uid, std::vector<int>& currency_types_o
 	return false;
 }
 
-bool DB::SelectUserAllItems(const int uid, std::vector<UserItem>& UserItems_output)
+std::unordered_map<int, UserItem> DB::SelectUserAllItems(const int uid)
 {
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
-
-	int itemType = 1;
+	std::unordered_map<int, UserItem> itemList;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGNOPARAM("hStmt Error : (SelectUserAllItems) \n");
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-		return 0;
+		return std::unordered_map<int, UserItem>();
 	}
 
 	UseGameDB(hStmt);
@@ -482,16 +481,16 @@ bool DB::SelectUserAllItems(const int uid, std::vector<UserItem>& UserItems_outp
 			SQLGetData(hStmt, (int)UserItem_Field::itemCode, SQL_C_LONG, &item.itemCode, sizeof(item.itemCode), &col3);
 			SQLGetData(hStmt, (int)UserItem_Field::count, SQL_C_LONG, &item.count, sizeof(item.count), &col4);
 			SQLGetData(hStmt, (int)UserItem_Field::itemType, SQL_C_LONG, &item.itemType, sizeof(item.itemType), &col5);
-			UserItems_output.push_back(item);
+			itemList[item.item_UID] = item;
 		}
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-		return true;
+		return std::move(itemList);
 	}
 
 	DEBUGMSGNOPARAM("Execute Query Error : (SelectUserAllItems)\n");
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-	return false;
+	return std::unordered_map<int, UserItem>();;
 }
 
 sCharacterCustomizing DB::SelectCharacterCustomizing(const int uid)

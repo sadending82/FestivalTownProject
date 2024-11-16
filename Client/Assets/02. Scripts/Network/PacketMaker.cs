@@ -14,6 +14,8 @@ using PacketTable.ObjectTable;
 using PacketTable.LobbyTable;
 using System.Diagnostics;
 using PacketTable.LoginTable;
+using static UnityEditor.ObjectChangeEventStream;
+using static UnityEditor.Progress;
 
 public class PacketMaker
 {
@@ -534,6 +536,38 @@ public class PacketMaker
 
         return result;
     }
+    public byte[] MakeChangeCharacterCustomizingPacket(sCharacterCustomizing customizing)
+    {
+        var builder = new FlatBufferBuilder(1);
+        ChangeCharacterCustomizing.StartChangeCharacterCustomizing(builder);
+
+        var itemList = customizing.itemList;
+        var items = new Offset<CustomizingItem>[customizing.itemList.Count];
+
+        int count = 0;
+        foreach (var item in itemList)
+        {
+            items[count] = CustomizingItem.CreateCustomizingItem(builder, item.Value.itemType, item.Value.item_UID, item.Value.itemCode);
+            count++;
+        }
+
+        var itemVector = ChangeCharacterCustomizing.CreateCustomizingItemsVector(builder, items);
+        ChangeCharacterCustomizing.AddCustomizingItems(builder, itemVector);
+        var offset = ChangeCharacterCustomizing.EndChangeCharacterCustomizing(builder);
+
+        builder.Finish(offset.Value);
+
+        byte[] data = builder.SizedByteArray();
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_CHANGE_CHARACTER_CUSTOMIZING, flatBufferSize = (ushort)data.Length };
+        byte[] headerdata = Serialize<HEADER>(header);
+        byte[] result = new byte[data.Length + headerdata.Length];
+
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
+
+        return result;
+    }
+
 
     public byte[] MakePlayerGrabWeaponPacket(Vector3 position, Vector3 direction, int playerID, int weaponID)
     {

@@ -14,6 +14,23 @@ namespace NetworkProtocol
         public ushort type;
     }
 
+    public struct EquippedItem
+    {
+        public int item_UID;
+        public int itemCode;
+        public int itemType;
+    }
+
+    public struct sCharacterCustomizing
+    {
+        public Dictionary<CustomizingItemType, EquippedItem> itemList;
+
+        public void Init()
+        {
+            itemList = new Dictionary<CustomizingItemType, EquippedItem>();
+        }
+    }
+
     public enum ePacketType
     {
         // Server -> Client
@@ -25,6 +42,7 @@ namespace NetworkProtocol
         S2C_GACHA_RESPONSE,
         S2C_CURRENCY_AMOUNT_RESPONSE,
         S2C_USER_ITEMS_RESPONSE,
+        S2C_CHANGE_CHARACTER_CUSTOMIZING,
 
         S2C_HEART_BEAT,
         S2C_PLAYER_ADD,
@@ -75,6 +93,7 @@ namespace NetworkProtocol
         C2S_GACHA_REQUEST,
         C2S_CURRENCY_AMOUNT_REQUEST,
         C2S_USER_ITEMS_REQUEST,
+        C2S_CHANGE_CHARACTER_CUSTOMIZING,
 
         C2S_HEART_BEAT,
         C2S_PLAYER_MOVE,
@@ -169,6 +188,15 @@ namespace NetworkProtocol
         AT_FALLDOWN,
         AT_BOMB_ATTACK,
         AT_ATTACK = 10001
+    };
+
+    public enum CustomizingItemType
+    {
+        CI_SKIN = 10,
+        CI_HEAD = 21,
+        CI_FACE = 22,
+        CI_BACK = 23,
+
     };
 }
 

@@ -20,20 +20,24 @@ public struct CustomizingItem : IFlatbufferObject
   public CustomizingItem __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public int Type { get { int o = __p.__offset(4); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public int ItemCode { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int ItemUid { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int ItemCode { get { int o = __p.__offset(8); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
 
   public static Offset<PacketTable.UtilitiesTable.CustomizingItem> CreateCustomizingItem(FlatBufferBuilder builder,
       int type = 0,
+      int item_uid = 0,
       int item_code = 0) {
-    builder.StartTable(2);
+    builder.StartTable(3);
     CustomizingItem.AddItemCode(builder, item_code);
+    CustomizingItem.AddItemUid(builder, item_uid);
     CustomizingItem.AddType(builder, type);
     return CustomizingItem.EndCustomizingItem(builder);
   }
 
-  public static void StartCustomizingItem(FlatBufferBuilder builder) { builder.StartTable(2); }
+  public static void StartCustomizingItem(FlatBufferBuilder builder) { builder.StartTable(3); }
   public static void AddType(FlatBufferBuilder builder, int type) { builder.AddInt(0, type, 0); }
-  public static void AddItemCode(FlatBufferBuilder builder, int itemCode) { builder.AddInt(1, itemCode, 0); }
+  public static void AddItemUid(FlatBufferBuilder builder, int itemUid) { builder.AddInt(1, itemUid, 0); }
+  public static void AddItemCode(FlatBufferBuilder builder, int itemCode) { builder.AddInt(2, itemCode, 0); }
   public static Offset<PacketTable.UtilitiesTable.CustomizingItem> EndCustomizingItem(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<PacketTable.UtilitiesTable.CustomizingItem>(o);
@@ -76,7 +80,8 @@ static public class CustomizingItemVerify
   {
     return verifier.VerifyTableStart(tablePos)
       && verifier.VerifyField(tablePos, 4 /*Type*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 6 /*ItemCode*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 6 /*ItemUid*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 8 /*ItemCode*/, 4 /*int*/, 4, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }

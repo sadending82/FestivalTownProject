@@ -149,7 +149,8 @@ struct CustomizingItem FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef CustomizingItemBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_TYPE = 4,
-    VT_ITEM_CODE = 6
+    VT_ITEM_UID = 6,
+    VT_ITEM_CODE = 8
   };
   int32_t type() const {
     return GetField<int32_t>(VT_TYPE, 0);
@@ -160,12 +161,16 @@ struct CustomizingItem FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   int KeyCompareWithValue(int32_t _type) const {
     return static_cast<int>(type() > _type) - static_cast<int>(type() < _type);
   }
+  int32_t item_uid() const {
+    return GetField<int32_t>(VT_ITEM_UID, 0);
+  }
   int32_t item_code() const {
     return GetField<int32_t>(VT_ITEM_CODE, 0);
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_TYPE, 4) &&
+           VerifyField<int32_t>(verifier, VT_ITEM_UID, 4) &&
            VerifyField<int32_t>(verifier, VT_ITEM_CODE, 4) &&
            verifier.EndTable();
   }
@@ -177,6 +182,9 @@ struct CustomizingItemBuilder {
   ::flatbuffers::uoffset_t start_;
   void add_type(int32_t type) {
     fbb_.AddElement<int32_t>(CustomizingItem::VT_TYPE, type, 0);
+  }
+  void add_item_uid(int32_t item_uid) {
+    fbb_.AddElement<int32_t>(CustomizingItem::VT_ITEM_UID, item_uid, 0);
   }
   void add_item_code(int32_t item_code) {
     fbb_.AddElement<int32_t>(CustomizingItem::VT_ITEM_CODE, item_code, 0);
@@ -195,9 +203,11 @@ struct CustomizingItemBuilder {
 inline ::flatbuffers::Offset<CustomizingItem> CreateCustomizingItem(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t type = 0,
+    int32_t item_uid = 0,
     int32_t item_code = 0) {
   CustomizingItemBuilder builder_(_fbb);
   builder_.add_item_code(item_code);
+  builder_.add_item_uid(item_uid);
   builder_.add_type(type);
   return builder_.Finish();
 }

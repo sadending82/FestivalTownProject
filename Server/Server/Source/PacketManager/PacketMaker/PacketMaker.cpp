@@ -48,20 +48,20 @@ std::vector<uint8_t> PacketMaker::MakeCurrencyAmountResponsePacket(int result, s
 	return MakeBuffer(ePacketType::S2C_CURRENCY_AMOUNT_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakeUserItemsResponsePacket(int result, std::vector<UserItem>& user_items)
+std::vector<uint8_t> PacketMaker::MakeUserItemsResponsePacket(int result, std::unordered_map<int, UserItem>& user_items)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 
 	std::vector<flatbuffers::Offset<PacketTable::UtilitiesTable::ItemInfo>> item_vector;
 
-	for (int i = 0; i < user_items.size(); ++i) {
-		UserItem item = user_items[i];
+	for (auto& pair : user_items) {
+		UserItem item = pair.second;
 		auto item_info = PacketTable::UtilitiesTable::CreateItemInfo(Builder, item.item_UID, item.owner_UID, item.itemCode, item.count, item.itemType);
 		item_vector.push_back(item_info);
 	}
 
 	Builder.Finish(PacketTable::LobbyTable::CreateUserItemsResponse(Builder, result, Builder.CreateVector(item_vector)));
-	return MakeBuffer(ePacketType::S2C_CURRENCY_AMOUNT_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
+	return MakeBuffer(ePacketType::S2C_USER_ITEMS_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
 std::vector<uint8_t> PacketMaker::MakePlayerAddPacket(std::vector<class Player*>& players)
