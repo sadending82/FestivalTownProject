@@ -27,6 +27,10 @@ public:
 				std::unordered_map<int, UserItem> itemList = db->SelectUserAllItems(uid);
 
 				for (const auto& item : *customizingInfo) {
+					if (item->item_code() == 0) {
+						continue;
+					}
+
 					if (itemList[item->item_uid()].itemCode != item->item_code()) {
 						return;
 					}
