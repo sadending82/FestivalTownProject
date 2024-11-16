@@ -91,4 +91,12 @@ public class Define
         public int gold;
         public bool isMvp;
     }
+
+    public struct ItemData
+    {
+        public int ItemUid;
+        public int ItemCode;
+        public int Count;
+        public int Type;
+    }
 }

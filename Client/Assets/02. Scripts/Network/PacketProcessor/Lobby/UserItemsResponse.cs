@@ -19,17 +19,26 @@ namespace Network.PacketProcessor
 
             var Data = UserItemsResponse.GetRootAsUserItemsResponse(bb);
 
+            Managers.Data.InventoryDataList.Clear();
+
+            Debug.Log($"UserItemData Result {Data.Result}");
+
             if (Data.Result == 1)
             {
                 for (int i = 0; i < Data.ItemsLength; ++i)
                 {
                     var item_info = Data.Items(i).Value;
 
-                    int item_uid = item_info.ItemUid;
-                    int item_code = item_info.ItemCode;
-                    int count = item_info.Count;
-                    int item_type = item_info.ItemType;
+                    Define.ItemData item = new Define.ItemData();
+                    item.ItemUid = item_info.ItemUid;
+                    item.ItemCode = item_info.ItemCode;
+                    item.Count = item_info.Count;
+                    item.Type = item_info.ItemType;
+
+                    Managers.Data.InventoryDataList.Add(item);
                 }
+
+                Managers.Data.SetInventoryDataRecved(true);
             }
             else
             {

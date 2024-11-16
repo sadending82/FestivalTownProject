@@ -30,6 +30,7 @@ public class DataManager
     const int TicketBaseIndex = 100004;
     const int TicketRareIndex = 100005;
 
+    bool isInventoryDataRecved = false;
 
     /// <summary>
     /// 데이터들이 들어가 있는 딕셔너리
@@ -49,6 +50,7 @@ public class DataManager
     public Dictionary<int, MissionListEntity> MissionListDataDict = new();
 
     public Dictionary<int, int> PlayerDataDict = new();
+    public List<Define.ItemData> InventoryDataList = new();
     string NickName = "DefaultNick";
 
     public void Init()
@@ -315,5 +317,15 @@ public class DataManager
         if (index == TicketRareIndex) return ResourceIndexType.TicketRare;
 
         return ResourceIndexType.None;
+    }
+
+    public bool IsInventoryDataRecved()
+    {
+        return isInventoryDataRecved;
+    }
+
+    public void SetInventoryDataRecved(bool value)
+    {
+        isInventoryDataRecved = value;
     }
 }

@@ -26,6 +26,8 @@ public class UI_HomeStart : UI_Scene
         ShopButton,
         PassButton,
         AchieveButton,
+        InventoryButton,
+
     }
 
     bool isInitialized = false;
@@ -96,11 +98,42 @@ public class UI_HomeStart : UI_Scene
 
         });
 
+        Get<GameObject>((int)GameObjects.InventoryButton).BindEvent((PointerEventData) =>
+        {
+            Managers.Data.SetInventoryDataRecved(false);
+            Managers.Network.GetPacketManager().SendUserItemsRequestPacket();
+            Debug.Log("Start Coroutine");
+            StartCoroutine(WaitRecvItemDataAndShowUI());
+        });
+
         isInitialized = true;
     }
 
     public void SetNickName(string nickName)
     {
         Get<GameObject>((int)GameObjects.NickName).GetComponent<TMP_Text>().text = nickName;
+    }
+
+    IEnumerator WaitRecvItemDataAndShowUI()
+    {
+        yield return null;
+        while(!Managers.Data.IsInventoryDataRecved())
+        {
+            Debug.Log($"IsInvectoryDataRecved {Managers.Data.IsInventoryDataRecved()}");
+
+            if(Managers.Scene.CurrentScene.GetComponent<HomeScene>() == null)
+            {
+                break;
+            }
+            yield return null;
+        }
+
+        Debug.Log("Recved!");
+
+        if(Managers.Data.IsInventoryDataRecved())
+        {
+            var ui = Managers.UI.ShowPopUpUI<UI_Inventory>();
+            ui.Init();
+        }
     }
 }
