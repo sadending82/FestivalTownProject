@@ -25,6 +25,9 @@ struct HeartBeatBuilder;
 struct GameSetting;
 struct GameSettingBuilder;
 
+struct CustomizingItem;
+struct CustomizingItemBuilder;
+
 struct CharacterCustomizing;
 struct CharacterCustomizingBuilder;
 
@@ -142,32 +145,76 @@ inline ::flatbuffers::Offset<GameSetting> CreateGameSetting(
   return builder_.Finish();
 }
 
-struct CharacterCustomizing FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
-  typedef CharacterCustomizingBuilder Builder;
+struct CustomizingItem FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef CustomizingItemBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_SKIN = 4,
-    VT_HEAD = 6,
-    VT_FACE = 8,
-    VT_BACK = 10
+    VT_TYPE = 4,
+    VT_ITEM_CODE = 6
   };
-  int32_t skin() const {
-    return GetField<int32_t>(VT_SKIN, 0);
+  int32_t type() const {
+    return GetField<int32_t>(VT_TYPE, 0);
   }
-  int32_t head() const {
-    return GetField<int32_t>(VT_HEAD, 0);
+  bool KeyCompareLessThan(const CustomizingItem * const o) const {
+    return type() < o->type();
   }
-  int32_t face() const {
-    return GetField<int32_t>(VT_FACE, 0);
+  int KeyCompareWithValue(int32_t _type) const {
+    return static_cast<int>(type() > _type) - static_cast<int>(type() < _type);
   }
-  int32_t back() const {
-    return GetField<int32_t>(VT_BACK, 0);
+  int32_t item_code() const {
+    return GetField<int32_t>(VT_ITEM_CODE, 0);
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<int32_t>(verifier, VT_SKIN, 4) &&
-           VerifyField<int32_t>(verifier, VT_HEAD, 4) &&
-           VerifyField<int32_t>(verifier, VT_FACE, 4) &&
-           VerifyField<int32_t>(verifier, VT_BACK, 4) &&
+           VerifyField<int32_t>(verifier, VT_TYPE, 4) &&
+           VerifyField<int32_t>(verifier, VT_ITEM_CODE, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct CustomizingItemBuilder {
+  typedef CustomizingItem Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_type(int32_t type) {
+    fbb_.AddElement<int32_t>(CustomizingItem::VT_TYPE, type, 0);
+  }
+  void add_item_code(int32_t item_code) {
+    fbb_.AddElement<int32_t>(CustomizingItem::VT_ITEM_CODE, item_code, 0);
+  }
+  explicit CustomizingItemBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<CustomizingItem> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<CustomizingItem>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<CustomizingItem> CreateCustomizingItem(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t type = 0,
+    int32_t item_code = 0) {
+  CustomizingItemBuilder builder_(_fbb);
+  builder_.add_item_code(item_code);
+  builder_.add_type(type);
+  return builder_.Finish();
+}
+
+struct CharacterCustomizing FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef CharacterCustomizingBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_CUSTOMIZING_ITEMS = 4
+  };
+  const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::CustomizingItem>> *customizing_items() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::CustomizingItem>> *>(VT_CUSTOMIZING_ITEMS);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_CUSTOMIZING_ITEMS) &&
+           verifier.VerifyVector(customizing_items()) &&
+           verifier.VerifyVectorOfTables(customizing_items()) &&
            verifier.EndTable();
   }
 };
@@ -176,17 +223,8 @@ struct CharacterCustomizingBuilder {
   typedef CharacterCustomizing Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_skin(int32_t skin) {
-    fbb_.AddElement<int32_t>(CharacterCustomizing::VT_SKIN, skin, 0);
-  }
-  void add_head(int32_t head) {
-    fbb_.AddElement<int32_t>(CharacterCustomizing::VT_HEAD, head, 0);
-  }
-  void add_face(int32_t face) {
-    fbb_.AddElement<int32_t>(CharacterCustomizing::VT_FACE, face, 0);
-  }
-  void add_back(int32_t back) {
-    fbb_.AddElement<int32_t>(CharacterCustomizing::VT_BACK, back, 0);
+  void add_customizing_items(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::CustomizingItem>>> customizing_items) {
+    fbb_.AddOffset(CharacterCustomizing::VT_CUSTOMIZING_ITEMS, customizing_items);
   }
   explicit CharacterCustomizingBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -201,16 +239,19 @@ struct CharacterCustomizingBuilder {
 
 inline ::flatbuffers::Offset<CharacterCustomizing> CreateCharacterCustomizing(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    int32_t skin = 0,
-    int32_t head = 0,
-    int32_t face = 0,
-    int32_t back = 0) {
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::CustomizingItem>>> customizing_items = 0) {
   CharacterCustomizingBuilder builder_(_fbb);
-  builder_.add_back(back);
-  builder_.add_face(face);
-  builder_.add_head(head);
-  builder_.add_skin(skin);
+  builder_.add_customizing_items(customizing_items);
   return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<CharacterCustomizing> CreateCharacterCustomizingDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    std::vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::CustomizingItem>> *customizing_items = nullptr) {
+  auto customizing_items__ = customizing_items ? _fbb.CreateVectorOfSortedTables<PacketTable::UtilitiesTable::CustomizingItem>(customizing_items) : 0;
+  return PacketTable::UtilitiesTable::CreateCharacterCustomizing(
+      _fbb,
+      customizing_items__);
 }
 
 struct ItemInfo FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {

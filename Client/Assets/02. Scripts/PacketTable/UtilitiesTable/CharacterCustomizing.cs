@@ -19,29 +19,24 @@ public struct CharacterCustomizing : IFlatbufferObject
   public void __init(int _i, ByteBuffer _bb) { __p = new Table(_i, _bb); }
   public CharacterCustomizing __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public int Skin { get { int o = __p.__offset(4); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public int Head { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public int Face { get { int o = __p.__offset(8); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public int Back { get { int o = __p.__offset(10); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public PacketTable.UtilitiesTable.CustomizingItem? CustomizingItems(int j) { int o = __p.__offset(4); return o != 0 ? (PacketTable.UtilitiesTable.CustomizingItem?)(new PacketTable.UtilitiesTable.CustomizingItem()).__assign(__p.__indirect(__p.__vector(o) + j * 4), __p.bb) : null; }
+  public int CustomizingItemsLength { get { int o = __p.__offset(4); return o != 0 ? __p.__vector_len(o) : 0; } }
+  public PacketTable.UtilitiesTable.CustomizingItem? CustomizingItemsByKey(int key) { int o = __p.__offset(4); return o != 0 ? PacketTable.UtilitiesTable.CustomizingItem.__lookup_by_key(__p.__vector(o), key, __p.bb) : null; }
 
   public static Offset<PacketTable.UtilitiesTable.CharacterCustomizing> CreateCharacterCustomizing(FlatBufferBuilder builder,
-      int skin = 0,
-      int head = 0,
-      int face = 0,
-      int back = 0) {
-    builder.StartTable(4);
-    CharacterCustomizing.AddBack(builder, back);
-    CharacterCustomizing.AddFace(builder, face);
-    CharacterCustomizing.AddHead(builder, head);
-    CharacterCustomizing.AddSkin(builder, skin);
+      VectorOffset customizing_itemsOffset = default(VectorOffset)) {
+    builder.StartTable(1);
+    CharacterCustomizing.AddCustomizingItems(builder, customizing_itemsOffset);
     return CharacterCustomizing.EndCharacterCustomizing(builder);
   }
 
-  public static void StartCharacterCustomizing(FlatBufferBuilder builder) { builder.StartTable(4); }
-  public static void AddSkin(FlatBufferBuilder builder, int skin) { builder.AddInt(0, skin, 0); }
-  public static void AddHead(FlatBufferBuilder builder, int head) { builder.AddInt(1, head, 0); }
-  public static void AddFace(FlatBufferBuilder builder, int face) { builder.AddInt(2, face, 0); }
-  public static void AddBack(FlatBufferBuilder builder, int back) { builder.AddInt(3, back, 0); }
+  public static void StartCharacterCustomizing(FlatBufferBuilder builder) { builder.StartTable(1); }
+  public static void AddCustomizingItems(FlatBufferBuilder builder, VectorOffset customizingItemsOffset) { builder.AddOffset(0, customizingItemsOffset.Value, 0); }
+  public static VectorOffset CreateCustomizingItemsVector(FlatBufferBuilder builder, Offset<PacketTable.UtilitiesTable.CustomizingItem>[] data) { builder.StartVector(4, data.Length, 4); for (int i = data.Length - 1; i >= 0; i--) builder.AddOffset(data[i].Value); return builder.EndVector(); }
+  public static VectorOffset CreateCustomizingItemsVectorBlock(FlatBufferBuilder builder, Offset<PacketTable.UtilitiesTable.CustomizingItem>[] data) { builder.StartVector(4, data.Length, 4); builder.Add(data); return builder.EndVector(); }
+  public static VectorOffset CreateCustomizingItemsVectorBlock(FlatBufferBuilder builder, ArraySegment<Offset<PacketTable.UtilitiesTable.CustomizingItem>> data) { builder.StartVector(4, data.Count, 4); builder.Add(data); return builder.EndVector(); }
+  public static VectorOffset CreateCustomizingItemsVectorBlock(FlatBufferBuilder builder, IntPtr dataPtr, int sizeInBytes) { builder.StartVector(1, sizeInBytes, 1); builder.Add<Offset<PacketTable.UtilitiesTable.CustomizingItem>>(dataPtr, sizeInBytes); return builder.EndVector(); }
+  public static void StartCustomizingItemsVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(4, numElems, 4); }
   public static Offset<PacketTable.UtilitiesTable.CharacterCustomizing> EndCharacterCustomizing(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<PacketTable.UtilitiesTable.CharacterCustomizing>(o);
@@ -54,10 +49,7 @@ static public class CharacterCustomizingVerify
   static public bool Verify(Google.FlatBuffers.Verifier verifier, uint tablePos)
   {
     return verifier.VerifyTableStart(tablePos)
-      && verifier.VerifyField(tablePos, 4 /*Skin*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 6 /*Head*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 8 /*Face*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 10 /*Back*/, 4 /*int*/, 4, false)
+      && verifier.VerifyVectorOfTables(tablePos, 4 /*CustomizingItems*/, PacketTable.UtilitiesTable.CustomizingItemVerify.Verify, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }
