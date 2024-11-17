@@ -24,13 +24,14 @@ public struct PlayerInfo : IFlatbufferObject
   public PacketTable.UtilitiesTable.Vec3f? Direction { get { int o = __p.__offset(8); return o != 0 ? (PacketTable.UtilitiesTable.Vec3f?)(new PacketTable.UtilitiesTable.Vec3f()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
   public int Team { get { int o = __p.__offset(10); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
   public int CharacterType { get { int o = __p.__offset(12); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public string Nickname { get { int o = __p.__offset(14); return o != 0 ? __p.__string(o + __p.bb_pos) : null; } }
+  public PacketTable.UtilitiesTable.CharacterCustomizing? CharacterCustomizing { get { int o = __p.__offset(14); return o != 0 ? (PacketTable.UtilitiesTable.CharacterCustomizing?)(new PacketTable.UtilitiesTable.CharacterCustomizing()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
+  public string Nickname { get { int o = __p.__offset(16); return o != 0 ? __p.__string(o + __p.bb_pos) : null; } }
 #if ENABLE_SPAN_T
-  public Span<byte> GetNicknameBytes() { return __p.__vector_as_span<byte>(14, 1); }
+  public Span<byte> GetNicknameBytes() { return __p.__vector_as_span<byte>(16, 1); }
 #else
-  public ArraySegment<byte>? GetNicknameBytes() { return __p.__vector_as_arraysegment(14); }
+  public ArraySegment<byte>? GetNicknameBytes() { return __p.__vector_as_arraysegment(16); }
 #endif
-  public byte[] GetNicknameArray() { return __p.__vector_as_array<byte>(14); }
+  public byte[] GetNicknameArray() { return __p.__vector_as_array<byte>(16); }
 
   public static Offset<PacketTable.PlayerTable.PlayerInfo> CreatePlayerInfo(FlatBufferBuilder builder,
       int id = 0,
@@ -38,9 +39,11 @@ public struct PlayerInfo : IFlatbufferObject
       Offset<PacketTable.UtilitiesTable.Vec3f> directionOffset = default(Offset<PacketTable.UtilitiesTable.Vec3f>),
       int team = 0,
       int character_type = 0,
+      Offset<PacketTable.UtilitiesTable.CharacterCustomizing> character_customizingOffset = default(Offset<PacketTable.UtilitiesTable.CharacterCustomizing>),
       StringOffset nicknameOffset = default(StringOffset)) {
-    builder.StartTable(6);
+    builder.StartTable(7);
     PlayerInfo.AddNickname(builder, nicknameOffset);
+    PlayerInfo.AddCharacterCustomizing(builder, character_customizingOffset);
     PlayerInfo.AddCharacterType(builder, character_type);
     PlayerInfo.AddTeam(builder, team);
     PlayerInfo.AddDirection(builder, directionOffset);
@@ -49,13 +52,14 @@ public struct PlayerInfo : IFlatbufferObject
     return PlayerInfo.EndPlayerInfo(builder);
   }
 
-  public static void StartPlayerInfo(FlatBufferBuilder builder) { builder.StartTable(6); }
+  public static void StartPlayerInfo(FlatBufferBuilder builder) { builder.StartTable(7); }
   public static void AddId(FlatBufferBuilder builder, int id) { builder.AddInt(0, id, 0); }
   public static void AddPos(FlatBufferBuilder builder, Offset<PacketTable.UtilitiesTable.Vec3f> posOffset) { builder.AddOffset(1, posOffset.Value, 0); }
   public static void AddDirection(FlatBufferBuilder builder, Offset<PacketTable.UtilitiesTable.Vec3f> directionOffset) { builder.AddOffset(2, directionOffset.Value, 0); }
   public static void AddTeam(FlatBufferBuilder builder, int team) { builder.AddInt(3, team, 0); }
   public static void AddCharacterType(FlatBufferBuilder builder, int characterType) { builder.AddInt(4, characterType, 0); }
-  public static void AddNickname(FlatBufferBuilder builder, StringOffset nicknameOffset) { builder.AddOffset(5, nicknameOffset.Value, 0); }
+  public static void AddCharacterCustomizing(FlatBufferBuilder builder, Offset<PacketTable.UtilitiesTable.CharacterCustomizing> characterCustomizingOffset) { builder.AddOffset(5, characterCustomizingOffset.Value, 0); }
+  public static void AddNickname(FlatBufferBuilder builder, StringOffset nicknameOffset) { builder.AddOffset(6, nicknameOffset.Value, 0); }
   public static Offset<PacketTable.PlayerTable.PlayerInfo> EndPlayerInfo(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<PacketTable.PlayerTable.PlayerInfo>(o);
@@ -73,7 +77,8 @@ static public class PlayerInfoVerify
       && verifier.VerifyTable(tablePos, 8 /*Direction*/, PacketTable.UtilitiesTable.Vec3fVerify.Verify, false)
       && verifier.VerifyField(tablePos, 10 /*Team*/, 4 /*int*/, 4, false)
       && verifier.VerifyField(tablePos, 12 /*CharacterType*/, 4 /*int*/, 4, false)
-      && verifier.VerifyString(tablePos, 14 /*Nickname*/, false)
+      && verifier.VerifyTable(tablePos, 14 /*CharacterCustomizing*/, PacketTable.UtilitiesTable.CharacterCustomizingVerify.Verify, false)
+      && verifier.VerifyString(tablePos, 16 /*Nickname*/, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }
