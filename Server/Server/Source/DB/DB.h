@@ -52,6 +52,7 @@ public:
     bool UpdateBattleRecords(const int uid, const UserGameRecords& gameRecords);
     bool UpdateUserItemCount(const int uid, const int item_index, const int valueOfChange);
     bool UpdateCharacterCustomizing(const int uid, const struct sCharacterCustomizing& characterCustomizing);
+    bool UpdateCharacterCustomizing(const int uid, const std::vector<uint8_t> characterCustomizing);
 
     // UPSERT
     bool UpsertUserItemCount(const int uid, const int item_index, const int valueOfChange);

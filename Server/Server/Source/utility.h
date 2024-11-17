@@ -112,18 +112,6 @@ struct sPlayerGameRecord {
 	}
 };
 
-struct sCharacterCustomizing {
-	std::unordered_map<CustomizingItemType, EquippedItem> customizingItems;
-
-	void SetItem(CustomizingItemType type, EquippedItem item) {
-		customizingItems[type] = item;
-	}
-
-	EquippedItem GetItemCode(CustomizingItemType type) {
-		return customizingItems[type];
-	}
-};
-
 #pragma pack(pop)
 
 std::vector<uint8_t> MakeBuffer(const int type, const uint8_t* data, const int size);

@@ -26,6 +26,8 @@ public:
 
 				std::unordered_map<int, UserItem> itemList = db->SelectUserAllItems(uid);
 
+				sCharacterCustomizing characterCustomizing;
+
 				for (const auto& item : *customizingInfo) {
 					if (item->item_code() == 0) {
 						continue;
@@ -34,6 +36,19 @@ public:
 					if (itemList[item->item_uid()].itemCode != item->item_code()) {
 						return;
 					}
+
+					EquippedItem itemInfo;
+					itemInfo.item_UID = item->item_uid();
+					itemInfo.itemCode = item->item_code();
+					itemInfo.itemType = item->type();
+					characterCustomizing.SetItem((CustomizingItemType)item->type(), itemInfo);
+				}
+
+				if (db->UpdateCharacterCustomizing(uid, characterCustomizing) == true) {
+					player->SetCharacterCustomizing(characterCustomizing);
+				}
+				else {
+					return;
 				}
 
 				std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::C2S_CHANGE_CHARACTER_CUSTOMIZING, data, size);

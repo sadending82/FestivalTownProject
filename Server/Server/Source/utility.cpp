@@ -58,7 +58,8 @@ sCharacterCustomizing DeserializationCharacterCustomizing(const uint8_t* data, c
 		for (const auto& item : *items) {
 			EquippedItem equippedItem;
 			equippedItem.item_UID = item->item_uid();
-			equippedItem.itemCode= item->item_code();
+			equippedItem.itemCode = item->item_code();
+			equippedItem.itemType = item->type();
 			sCustomizing.SetItem((CustomizingItemType)item->type(), equippedItem);
 		}
 	}

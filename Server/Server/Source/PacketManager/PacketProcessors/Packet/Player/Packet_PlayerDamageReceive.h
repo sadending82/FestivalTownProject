@@ -14,8 +14,8 @@ public:
 
 				const PlayerDamageReceive* read = flatbuffers::GetRoot<PlayerDamageReceive>(data);
 
-				int attackerID = read->attackerID();
-				int targetID = read->targetID();
+				int attackerID = read->attacker_id();
+				int targetID = read->target_id();
 				int roomID = dynamic_cast<Player*>(pServer->GetSessions()[key])->GetRoomID();
 				if (roomID == INVALIDKEY) {
 					return;
@@ -29,11 +29,11 @@ public:
 				}
 				room->GetStateLock().unlock_shared();
 
-				int target_sessionID = room->GetPlayerList()[read->targetID()].load();
+				int target_sessionID = room->GetPlayerList()[read->target_id()].load();
 				if (target_sessionID == INVALIDKEY) {
 					return;
 				}
-				int attacker_sessionID = room->GetPlayerList()[read->attackerID()].load();
+				int attacker_sessionID = room->GetPlayerList()[read->attacker_id()].load();
 				if (attacker_sessionID == INVALIDKEY) {
 					return;
 				}

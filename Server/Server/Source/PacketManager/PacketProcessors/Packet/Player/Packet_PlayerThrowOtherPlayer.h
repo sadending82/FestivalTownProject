@@ -20,7 +20,7 @@ public:
 				}
 
 				int playerID = read->id();
-				int targetID = read->targetID();
+				int targetID = read->target_id();
 
 				int roomID = player->GetRoomID();
 				if (roomID == INVALIDKEY) {
@@ -31,7 +31,7 @@ public:
 					return;
 				}
 
-				int target_sessionID = room->GetPlayerList()[read->targetID()].load();
+				int target_sessionID = room->GetPlayerList()[read->target_id()].load();
 				if (target_sessionID == INVALIDKEY) {
 					return;
 				}

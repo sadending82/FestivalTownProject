@@ -21,18 +21,19 @@ public:
 
 	virtual void		DoSend(void* packet, const int size) override;
 
-	int					GetUID() { return mUID; }
-	std::string			GetAccountID() { return mAccountID; }
+	int					GetUID() { return mUserInfo.UID; }
+	std::string			GetAccountID() { return mUserInfo.AccountID; }
 	int					GetRoomID() { return mRoomID; }
 	int					GetInGameID() { return mInGameID; }
 	int					GetTeam() { return mTeam; }
 	bool				GetIsBot(){ return mIsBot; }
-	std::wstring		GetName() { return mName; }
+	std::wstring		GetNickName() { return mUserInfo.NickName; }
 	Vector3f&			GetPosition() { return mPosition; }
 	Vector3f&			GetDirection() { return mDirection; }
 	ePlayerState		GetPlayerState() { return mPlayerState; }
 	std::shared_mutex&	GetPlayerStateLock() { return mPlayerStateLock; }
 	eCharacterType		GetCharacterType() { return mCharacterType; }
+	sCharacterCustomizing& GetCharacterCustomizing() { return mUserInfo.characterCustomizing; }
 	int					GetHP() { return mHP; }
 	int					GetStamina() { return mStamina; }
 	int					GetGroggyCount() { return mGroggyCount; }
@@ -44,19 +45,20 @@ public:
 	int					GetAttachedPlayerID() { return mAttachedPlayerID; }
 	CharacterStat&		GetCharacterStat() { return mCharacterStat; }
 
-	void				SetUID(int uid) { mUID = uid; }
-	void				SetAccountID(std::string accountID) { mAccountID = accountID; }
+	void				SetUID(int uid) { mUserInfo.UID = uid; }
+	void				SetAccountID(std::string accountID) { mUserInfo.AccountID = accountID; }
 	void				SetroomID(int id) { mRoomID = id; }
 	void				SetInGameID(int id) { mInGameID = id; }
 	void				SetTeam(int team) { mTeam = team; }
 	void				SetIsBot(bool isBot) { mIsBot = isBot; }
-	void				SetName(std::wstring name) { mName = name; }
+	void				SetNickName(std::wstring name) { mUserInfo.NickName = name; }
 	void				SetPosition(float x, float y, float z) { mPosition = Vector3f(x, y, z); }
 	void				SetPosition(Vector3f v3f) { mPosition = v3f; }
 	void				SetDirection(float x, float y, float z) { mDirection = Vector3f(x, y, z); }
 	void				SetDirection(Vector3f v3f) { mDirection = v3f; }
 	void				SetPlayerState(ePlayerState state) { mPlayerState = state; }
 	void				SetChacracterType(eCharacterType type) { mCharacterType = type; }
+	void				SetCharacterCustomizing(sCharacterCustomizing& characterCustomizing) { mUserInfo.characterCustomizing = characterCustomizing; }
 	void				SetHP(int hp) { mHP.store(hp); }
 	void				SetStamina(int stamina) { mStamina.store(stamina); }
 	void				SetGroggyCount(int count) { mGroggyCount = count; }
@@ -65,7 +67,7 @@ public:
 	void				SetAttachedPlayerID(int playerID) { mAttachedPlayerID = playerID; }
 	void				SetCharacterStat(CharacterStat& stat) { mCharacterStat = stat; }
 
-	void				SetUserInfoFromDB(UserInfo& userInfo);
+	void				SetUserInfoFromDB(UserInfo& userInfo) { mUserInfo = userInfo; }
 	// cas
 	bool				SetIsGrabbed(bool desired);
 
@@ -90,12 +92,16 @@ protected:
 
 	ePlayerState		mPlayerState;
 
-	int					mUID = INVALIDKEY;	// GameDB에서 PK로 사용하는 Unique ID
-	std::string			mAccountID = ""; // 계정 ID
-	std::wstring		mName = L"test"; // 임시 닉네임
+
+	//int					mUID = INVALIDKEY;	// GameDB에서 PK로 사용하는 Unique ID
+	//std::string			mAccountID = ""; // 계정 ID
+	//std::wstring		mName = L"test"; // 임시 닉네임
+
+	UserInfo			mUserInfo = UserInfo();
 
 	bool				mIsBot = false;
 
+	// InGame Info
 	int					mRoomID;
 	int					mInGameID; // 클라와 함께 인게임 내에서 구분하기 위한 id
 	int					mTeam;

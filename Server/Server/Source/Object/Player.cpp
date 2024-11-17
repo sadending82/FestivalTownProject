@@ -3,9 +3,7 @@
 
 void Player::Init()
 {
-	mUID = INVALIDKEY;	
-	mAccountID = ""; 
-	mName = L"test"; 
+	mUserInfo = UserInfo();
 
 	mIsBot = false;
 
@@ -47,13 +45,6 @@ void Player::DoRecv()
 void Player::DoSend(void* packet, const int size)
 {
 	__super::DoSend(packet, size);
-}
-
-void Player::SetUserInfoFromDB(UserInfo& userInfo)
-{
-	mUID = userInfo.UID;
-	mAccountID = userInfo.AccountID;
-	mName = userInfo.NickName;
 }
 
 bool Player::SetIsGrabbed(bool desired)

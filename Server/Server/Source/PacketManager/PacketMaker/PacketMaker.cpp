@@ -76,13 +76,25 @@ std::vector<uint8_t> PacketMaker::MakePlayerAddPacket(std::vector<class Player*>
 		Vector3f position = player->GetPosition();
 		auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, position.x, position.y, position.z);
 		auto dir = PacketTable::UtilitiesTable::CreateVec3f(Builder, 0, 0, 0);
+
+		std::vector<flatbuffers::Offset<PacketTable::UtilitiesTable::CustomizingItem>> customizingItems;
+
+		for (auto pair : player->GetCharacterCustomizing().customizingItems) {
+			auto itemInfo = pair.second;
+			auto fItem = PacketTable::UtilitiesTable::CreateCustomizingItem(Builder, itemInfo.itemType, itemInfo.item_UID, itemInfo.itemCode);
+			customizingItems.push_back(fItem);
+		}
+
+		auto customizingInfo = PacketTable::UtilitiesTable::CreateCharacterCustomizing(Builder, Builder.CreateVector(customizingItems));
+
 		auto pInfo = PacketTable::PlayerTable::CreatePlayerInfo(Builder
 			, player->GetInGameID()
 			, pos
 			, dir
 			, player->GetTeam()
 			, player->GetCharacterType()
-			, Builder.CreateString(wstringToString(player->GetName()))
+			, customizingInfo
+			, Builder.CreateString(wstringToString(player->GetNickName()))
 		);
 
 		player_vec.push_back(pInfo);
@@ -290,7 +302,7 @@ std::vector<uint8_t> PacketMaker::MakeGameResultPacket(std::set<int>& winningTea
 		int id = pair.first;
 		std::string playerName = "Unknown";
 		if (players[id] != nullptr) {
-			playerName = wstringToString(players[id]->GetName());
+			playerName = wstringToString(players[id]->GetNickName());
 		}
 
 		sPlayerGameRecord& record = pair.second;
