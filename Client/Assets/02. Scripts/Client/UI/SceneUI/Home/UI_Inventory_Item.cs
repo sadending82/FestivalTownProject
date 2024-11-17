@@ -18,11 +18,16 @@ public class UI_Inventory_Item : UI_Base
     bool isEquiped = false;
 
     int ItemIndex = -1;
-
+    UI_Inventory parentUI;
 
     private void Start()
     {
         if (!isInitialized) Init();
+    }
+
+    public void SetParentUI(UI_Inventory parentUi)
+    {
+        parentUI = parentUi;
     }
 
     public override void Init()

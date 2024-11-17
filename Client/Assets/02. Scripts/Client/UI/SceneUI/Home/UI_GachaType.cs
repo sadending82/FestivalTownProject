@@ -71,7 +71,7 @@ public class UI_GachaType : UI_Base
         Get<GameObject>((int)GameObjects.GachaButton).BindEvent((PointerEventData) =>
         {
             var r2 = Managers.Data.GetPlayerData(RequireResource2Index);
-            if (r2 > RequireResource2Amount)
+            if (r2 >= RequireResource2Amount)
             {
                 var popup = Managers.UI.ShowPopUpUI<UI_GachaPopup>();
                 popup.Init();
@@ -82,7 +82,7 @@ public class UI_GachaType : UI_Base
             }
 
             var r1 = Managers.Data.GetPlayerData(RequireResource1Index);
-            if (r1 > RequireResource1Amount)
+            if (r1 >= RequireResource1Amount)
             {
                 var popup = Managers.UI.ShowPopUpUI<UI_GachaPopup>();
                 popup.Init();

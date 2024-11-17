@@ -8,6 +8,7 @@ public class UI_Inventory : UI_PopUp
     {
         Panel,
         GridPanel,
+        ExitButton,
     }
 
     bool isInitialized = false;
@@ -34,6 +35,14 @@ public class UI_Inventory : UI_PopUp
             var ui = Managers.UI.MakeSubItem<UI_Inventory_Item>(gridPanel.transform);
             ui.Init();
             ui.SetItem(item.ItemCode);
+            ui.SetParentUI(this);
         }
+
+        Get<GameObject>((int)GameObjects.ExitButton).BindEvent((PointerEventData) =>
+        {
+            Managers.UI.ClosePopUpUI();
+        });
+
+        isInitialized = true;
     }
 }

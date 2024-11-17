@@ -102,8 +102,13 @@ public class UI_HomeStart : UI_Scene
         {
             Managers.Data.SetInventoryDataRecved(false);
             Managers.Network.GetPacketManager().SendUserItemsRequestPacket();
+            /*
             Debug.Log("Start Coroutine");
             StartCoroutine(WaitRecvItemDataAndShowUI());
+            */
+
+            var ui = Managers.UI.ShowPopUpUI<UI_Inventory>();
+            ui.Init();
         });
 
         isInitialized = true;
