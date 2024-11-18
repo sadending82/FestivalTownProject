@@ -102,13 +102,8 @@ public class UI_HomeStart : UI_Scene
         {
             Managers.Data.SetInventoryDataRecved(false);
             Managers.Network.GetPacketManager().SendUserItemsRequestPacket();
-            /*
-            Debug.Log("Start Coroutine");
             StartCoroutine(WaitRecvItemDataAndShowUI());
-            */
 
-            var ui = Managers.UI.ShowPopUpUI<UI_Inventory>();
-            ui.Init();
         });
 
         isInitialized = true;
@@ -124,16 +119,12 @@ public class UI_HomeStart : UI_Scene
         yield return null;
         while(!Managers.Data.IsInventoryDataRecved())
         {
-            Debug.Log($"IsInvectoryDataRecved {Managers.Data.IsInventoryDataRecved()}");
-
             if(Managers.Scene.CurrentScene.GetComponent<HomeScene>() == null)
             {
                 break;
             }
             yield return null;
         }
-
-        Debug.Log("Recved!");
 
         if(Managers.Data.IsInventoryDataRecved())
         {
