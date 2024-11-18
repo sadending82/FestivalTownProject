@@ -22,7 +22,9 @@ public class UI_Inventory_Item : UI_Base
 
     private void Start()
     {
+        transform.localScale = Vector3.one;
         if (!isInitialized) Init();
+
     }
 
     public void SetParentUI(UI_Inventory parentUi)
@@ -34,6 +36,9 @@ public class UI_Inventory_Item : UI_Base
     {
         Bind<GameObject>(typeof(GameObjects));
 
+        SetEquip(false);
+        SetSelect(false);
+
         isInitialized = true;
     }
 
@@ -42,16 +47,25 @@ public class UI_Inventory_Item : UI_Base
         var itemData = Managers.Data.GetItemData(index);
 
         Get<GameObject>((int)GameObjects.ItemNameText).GetComponent<TMP_Text>().text = itemData.Name;
+
+        Get<GameObject>((int)GameObjects.ItemIcon).BindEvent((PointerEventData) => {
+            if (!isSelected)
+            {
+                SetEquip(true);
+            }
+        });
     }
 
     public void SetEquip(bool equip)
     {
         isEquiped = equip;
+        Get<GameObject>((int)GameObjects.EquipedImage).SetActive(isEquiped);
     }
 
     public void SetSelect(bool select)
     {
         isSelected = select;
+        Get<GameObject>((int)GameObjects.SelectedImage).SetActive(isSelected);
     }
 
     public bool IsEquiped()

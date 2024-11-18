@@ -9,6 +9,7 @@ public class UI_Inventory : UI_PopUp
         Panel,
         GridPanel,
         ExitButton,
+        SetCustomizingButton,
     }
 
     bool isInitialized = false;
@@ -32,6 +33,8 @@ public class UI_Inventory : UI_PopUp
 
         foreach (Define.ItemData item in Managers.Data.InventoryDataList)
         {
+            if (item.ItemCode / 100000 == 1) continue;
+
             var ui = Managers.UI.MakeSubItem<UI_Inventory_Item>(gridPanel.transform);
             ui.Init();
             ui.SetItem(item.ItemCode);
@@ -42,6 +45,8 @@ public class UI_Inventory : UI_PopUp
         {
             Managers.UI.ClosePopUpUI();
         });
+
+
 
         isInitialized = true;
     }

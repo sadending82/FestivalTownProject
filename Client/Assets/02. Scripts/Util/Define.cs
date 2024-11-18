@@ -82,6 +82,16 @@ public class Define
         Green,
     }
 
+    public enum ItemType
+    {
+        Resource = 1,
+        Box = 5,
+        Skin = 10,
+        Accessory_Head = 21,
+        Accessory_Face = 22,
+        Accessory_Back = 23,
+    }
+
     public struct PlayerResult
     {
         public string Name;
