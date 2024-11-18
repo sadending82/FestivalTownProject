@@ -23,6 +23,19 @@ namespace Network.PacketProcessor
             if (resultCode == 1)
             {
                 var userInfo = Data.UserInfo.Value;
+
+                var characterCustomizing = userInfo.CharacterCustomizing.Value;
+
+                for (int i = 0; i < characterCustomizing.CustomizingItemsLength; i++)
+                {
+                    var item = characterCustomizing.CustomizingItems(i).Value;
+
+                    int item_UID = item.ItemUid;
+                    int item_Code = item.ItemCode;
+                    int item_Type = item.Type;
+
+                }
+
                 Debug.Log($"gold : {Data.Gold}, dia : {Data.Dia}, Mileage : {Data.Mileage}, NickName : {userInfo.Nickname}");
                 
                 Managers.Data.SetGold(Data.Gold);
@@ -30,6 +43,8 @@ namespace Network.PacketProcessor
                 Managers.Data.SetMileage(Data.Mileage);
                 Managers.Data.SetNickName(userInfo.Nickname);
                 Managers.Scene.LoadScene(Define.Scene.Home);
+
+
             }
             else
             {
