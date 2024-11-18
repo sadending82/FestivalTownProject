@@ -539,8 +539,6 @@ public class PacketMaker
     public byte[] MakeChangeCharacterCustomizingPacket(sCharacterCustomizing customizing)
     {
         var builder = new FlatBufferBuilder(1);
-        ChangeCharacterCustomizing.StartChangeCharacterCustomizing(builder);
-
         var itemList = customizing.itemList;
         var items = new Offset<CustomizingItem>[customizing.itemList.Count];
 
@@ -552,6 +550,8 @@ public class PacketMaker
         }
 
         var itemVector = ChangeCharacterCustomizing.CreateCustomizingItemsVector(builder, items);
+
+        ChangeCharacterCustomizing.StartChangeCharacterCustomizing(builder);
         ChangeCharacterCustomizing.AddCustomizingItems(builder, itemVector);
         var offset = ChangeCharacterCustomizing.EndChangeCharacterCustomizing(builder);
 

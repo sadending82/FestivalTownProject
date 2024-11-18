@@ -1,7 +1,6 @@
 #pragma once
 #include "../DB/Security/Security.h"
 #include "Schema/Schemas.h"
-#include "Query/Query.h"
 
 #define _WINSOCKAPI_
 #include <windows.h>  

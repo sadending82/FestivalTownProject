@@ -1,6 +1,7 @@
 #pragma once
 #include <Windows.h>
 #include "DB.h"
+#include "Query/Query.h"
 #include "../TableManager/TableManager.h"
 #include "../utility.h"
 
