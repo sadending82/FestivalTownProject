@@ -567,7 +567,7 @@ public class CharacterStatus : MonoBehaviour
             //Skin
             case 10:
                 {
-                    skinMaterial = Resources.Load<Material>($"Materials1/{tItem.File_Name}");
+                    skinMaterial = Resources.Load<Material>($"Materials/{tItem.File_Name}");
                     SetMaterial(skinMaterial, faceMaterial);
                 }
                 break;
@@ -628,7 +628,7 @@ public class CharacterStatus : MonoBehaviour
             //Face
             case 24:
                 {
-                    faceMaterial = Resources.Load<Material>($"Materials1/{tItem.File_Name}");
+                    faceMaterial = Resources.Load<Material>($"Materials/{tItem.File_Name}");
                     SetMaterial(skinMaterial, faceMaterial);
                 }
                 break;
@@ -638,6 +638,18 @@ public class CharacterStatus : MonoBehaviour
                 }
                 break;
         }
+    }
+    private void HideItem()
+    {
+        if (headItem != null) headItem.SetActive(false);
+        if (faceItem != null) faceItem.SetActive(false);
+        if (backItem != null) backItem.SetActive(false);
+    }
+    private void ShowItem()
+    {
+        if (headItem != null) headItem.SetActive(true);
+        if (faceItem != null) faceItem.SetActive(true);
+        if (backItem != null) backItem.SetActive(true);
     }
 
     // ------------------- UI --------------------

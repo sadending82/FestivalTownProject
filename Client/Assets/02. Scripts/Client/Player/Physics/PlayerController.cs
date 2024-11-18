@@ -566,6 +566,9 @@ public class PlayerController : MonoBehaviour
     {
         pelvisRigidbody.velocity = Vector3.zero;
         pelvisRigidbody.AddForce(direction * power, ForceMode.Impulse);
+        Rigidbody headRigidbody = GetHeadRigidbody();
+        headRigidbody.velocity = Vector3.zero;
+        headRigidbody.AddForce(direction * power, ForceMode.Impulse);
     }
     public void FlyingKick(Vector3 direction)
     {

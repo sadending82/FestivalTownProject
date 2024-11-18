@@ -36,6 +36,7 @@ namespace Network.PacketProcessor
                     int item_Code = item.ItemCode;
                     int item_Type = item.Type;
                     Debug.Log($"AddPlayer info ITEM UID : {item_UID}, ITEM CODE : {item_Code}, ITEM TYPE : {item_Type}");
+                    Managers.Game.SetCharacterCustomizingById(id, item_Code);
                 }
 
                 Vector3 pos = new Vector3(player.Value.Pos.Value.X, player.Value.Pos.Value.Y, player.Value.Pos.Value.Z);

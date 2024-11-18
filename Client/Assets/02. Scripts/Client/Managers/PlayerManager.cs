@@ -14,17 +14,9 @@ public class PlayerManager : MonoBehaviour
     private bool isHost;
 
     [SerializeField] private GameObject players;
-
-    // --------- Style ------------
-    private const int SKIN_MAT_NUM = 9;
-    private const int FACE_MAT_NUM = 26;
-    [SerializeField] private Material[] skinMaterial = new Material[SKIN_MAT_NUM + 1];
-    [SerializeField] private Material[] faceMaterial = new Material[FACE_MAT_NUM + 1];
     
     public void Init()
     {
-        LoadMaterial();
-
         players = GameObject.Find("@Players");
         if (players == null)
         {
@@ -99,8 +91,14 @@ public class PlayerManager : MonoBehaviour
             var playerObject = players.transform.GetChild(id).gameObject;
             playerObject.SetActive(true);
             playerObject.GetComponent<CharacterStatus>().SetTeamNumber(teamNumber);
-            playerObject.GetComponent<CharacterStatus>().SetMaterial(GetSkinMaterial(id), GetFaceMaterial(id));  
             playerObject.GetComponent<PlayerController>().SetMyId(id);
+
+            List<int> itemList = Managers.Game.GetCharacterCustomizingById(id);
+            foreach(int itemCode in itemList)
+            {
+                playerObject.GetComponent<CharacterStatus>().ChangeCustomizing(itemCode);
+            }
+
             playerObject.GetComponent<PlayerController>().FirstSpawn(position.x, position.z);
             nowPlayerNum++;
         }
@@ -172,42 +170,6 @@ public class PlayerManager : MonoBehaviour
             }
         }
     }
-
-    private void LoadMaterial()
-    {
-        // 피부 관련 불러오기
-        for (int i = 0; i <= SKIN_MAT_NUM; ++i)
-        {
-            string path = "M_Chibi_Cat_" + i;
-            Material mat = Resources.Load<Material>($"Materials/{path}");
-            skinMaterial[i] = mat;
-        }
-        
-        // 얼굴 관련 불러오기
-        for (int i = 0; i <= FACE_MAT_NUM; ++i)
-        {
-            string path = "M_Chibi_Emo_" + i;
-            Material mat = Resources.Load<Material>($"Materials/{path}");
-            faceMaterial[i] = mat;
-        }
-    }
-    private Material GetRandomSkinMaterial()
-    {
-        return skinMaterial[Random.Range(0, SKIN_MAT_NUM)];
-    }
-    private Material GetRandomFaceMaterial()
-    {
-        return faceMaterial[Random.Range(0, FACE_MAT_NUM)];
-    }
-    public Material GetSkinMaterial(int index)
-    {
-        return skinMaterial[index];
-    }
-    public Material GetFaceMaterial(int index)
-    {
-        return faceMaterial[index];
-    }
-
     public void Clear()
     {
         myId = -1;

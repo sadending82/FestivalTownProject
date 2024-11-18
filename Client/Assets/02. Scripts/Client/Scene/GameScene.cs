@@ -14,6 +14,8 @@ public class GameScene : BaseScene
 
         Managers.Game.LoadGameMap();
 
+        Managers.Game.MakeTestCustomizings();
+
         Managers.Player.Init();
 
         LoadStatue();
