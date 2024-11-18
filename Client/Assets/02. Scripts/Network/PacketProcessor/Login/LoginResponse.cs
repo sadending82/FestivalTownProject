@@ -36,6 +36,12 @@ namespace Network.PacketProcessor
                         int item_Code = item.ItemCode;
                         int item_Type = item.Type;
 
+                        Define.ItemData itemData = new Define.ItemData();
+                        itemData.ItemUid = item_UID;
+                        itemData.ItemCode = item_Code;
+                        itemData.Type = item_Type;
+
+                        Managers.Data.PlayerCustomizingData[item_Type] = itemData;
                     }
                 }
 

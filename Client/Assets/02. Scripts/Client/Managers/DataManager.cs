@@ -1,4 +1,5 @@
 using ExcelDataStructure;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
@@ -49,14 +50,28 @@ public class DataManager
     public Dictionary<int, MissionTypeEntity> MissionTypeDataDict = new();
     public Dictionary<int, MissionListEntity> MissionListDataDict = new();
 
+    // 플레이어 관련 데이터
     public Dictionary<int, int> PlayerDataDict = new();
     public List<Define.ItemData> InventoryDataList = new();
+
+    //페어 타입 -> 아이템 타입, 아이템 인덱스
+    public Dictionary<int, Define.ItemData> PlayerCustomizingData = new();
     string NickName = "DefaultNick";
 
     public void Init()
     {
         LoadGameData();
         LoadModeData();
+
+        Define.ItemData item = new Define.ItemData();
+        foreach(Define.ItemType type in Enum.GetValues(typeof(Define.ItemType)))
+        {
+            item.Type = (int)type;
+            item.ItemUid = -1;
+            item.ItemCode = -1;
+
+            PlayerCustomizingData.Add((int)type, item);
+        }  
     }
 
     public GameDataEntity GetData(int dataIndex)
