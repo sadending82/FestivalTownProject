@@ -51,8 +51,8 @@ public:
 					return;
 				}
 
-				std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::C2S_CHANGE_CHARACTER_CUSTOMIZING, data, size);
-				pServer->SendAllPlayerInRoomExceptSender(send_buffer.data(), send_buffer.size(), key);
+				std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_CHANGE_CHARACTER_CUSTOMIZING, data, size);
+				player->DoSend(send_buffer.data(), send_buffer.size());
 			}
 		}
 		catch (const std::exception& e) {

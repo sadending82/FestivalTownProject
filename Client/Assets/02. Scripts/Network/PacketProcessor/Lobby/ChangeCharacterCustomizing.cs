@@ -19,7 +19,6 @@ namespace Network.PacketProcessor
             var bb = new ByteBuffer(data);
 
             var Data = ChangeCharacterCustomizing.GetRootAsChangeCharacterCustomizing(bb);
-
             for (int i = 0; i < Data.CustomizingItemsLength; i++)
             {
                 var item = Data.CustomizingItems(i).Value;
