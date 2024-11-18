@@ -24,16 +24,19 @@ namespace Network.PacketProcessor
             {
                 var userInfo = Data.UserInfo.Value;
 
-                var characterCustomizing = userInfo.CharacterCustomizing.Value;
-
-                for (int i = 0; i < characterCustomizing.CustomizingItemsLength; i++)
+                if (userInfo.CharacterCustomizing.Value.Equals(null) == false)
                 {
-                    var item = characterCustomizing.CustomizingItems(i).Value;
+                    var characterCustomizing = userInfo.CharacterCustomizing.Value;
 
-                    int item_UID = item.ItemUid;
-                    int item_Code = item.ItemCode;
-                    int item_Type = item.Type;
+                    for (int i = 0; i < characterCustomizing.CustomizingItemsLength; i++)
+                    {
+                        var item = characterCustomizing.CustomizingItems(i).Value;
 
+                        int item_UID = item.ItemUid;
+                        int item_Code = item.ItemCode;
+                        int item_Type = item.Type;
+
+                    }
                 }
 
                 Debug.Log($"gold : {Data.Gold}, dia : {Data.Dia}, Mileage : {Data.Mileage}, NickName : {userInfo.Nickname}");

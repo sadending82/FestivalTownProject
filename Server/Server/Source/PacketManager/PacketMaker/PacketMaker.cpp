@@ -14,8 +14,17 @@ std::vector<uint8_t> PacketMaker::MakeLoginResponsePacket(int result, UserInfo u
 {
 	flatbuffers::FlatBufferBuilder Builder;
 
+	std::vector<flatbuffers::Offset<PacketTable::UtilitiesTable::CustomizingItem>> itemVector;
+
+	for (auto pair : userInfo.characterCustomizing.customizingItems) {
+		auto item = pair.second;
+		itemVector.push_back(PacketTable::UtilitiesTable::CreateCustomizingItem(Builder, item.itemType, item.item_UID, item.itemCode));
+	}
+
+	auto characterCustomizing = PacketTable::UtilitiesTable::CreateCharacterCustomizing(Builder, Builder.CreateVector(itemVector));
+
 	auto db_userInfo = PacketTable::UtilitiesTable::CreateDB_UserInfo(Builder, userInfo.UID, Builder.CreateString(wstringToString(userInfo.NickName)), userInfo.UserLevel, userInfo.PassLevel
-		, userInfo.UserTitle, userInfo.ProfileSkin, userInfo.Point, userInfo.AttendanceDay, NULL);
+		, userInfo.UserTitle, userInfo.ProfileSkin, userInfo.Point, userInfo.AttendanceDay, characterCustomizing);
 
 	Builder.Finish(PacketTable::LoginTable::CreateLoginResponse(Builder, result, db_userInfo
 		, userInfo.Gold, userInfo.Dia, userInfo.Mileage));
