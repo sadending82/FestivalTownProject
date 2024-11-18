@@ -22,10 +22,11 @@ public:
 
 			if (player->GetIsHeartbeatAck() == false) {
 				// 응답이 없었다면 연결 종료
+				int uid = player->GetUID();
 				bool result = pServer->Disconnect(target);
 
-				if (result == true && player->GetUID() != INVALIDKEY) {
-					pServer->GetDB()->UpdateUserConnectionState(player->GetUID(), false);
+				if (result == true && uid != 0) {
+					pServer->GetDB()->UpdateUserConnectionState(uid, false);
 				}
 			}
 			else {
