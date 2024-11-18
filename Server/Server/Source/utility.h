@@ -121,5 +121,5 @@ Vector3f ConvertVec2iToVec3f(int x, int z);
 
 std::string wstringToString(const std::wstring& input);
 
-sCharacterCustomizing DeserializationCharacterCustomizing(const uint8_t* data, const int size);
+sCharacterCustomizing DeserializationCharacterCustomizing(const std::vector<uint8_t>& buffer);
 std::vector<uint8_t> SerializationCharacterCustomizing(sCharacterCustomizing characterCustomizing);

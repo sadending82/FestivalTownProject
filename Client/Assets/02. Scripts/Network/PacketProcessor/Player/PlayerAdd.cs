@@ -30,12 +30,12 @@ namespace Network.PacketProcessor
 
                 for (int j = 0; j < characterCustomizing.CustomizingItemsLength; j++)
                 {
-                    var item = characterCustomizing.CustomizingItems(i).Value;
+                    var item = characterCustomizing.CustomizingItems(j).Value;
 
                     int item_UID = item.ItemUid;
                     int item_Code = item.ItemCode;
                     int item_Type = item.Type;
-                    
+                    Debug.Log($"AddPlayer info ITEM UID : {item_UID}, ITEM CODE : {item_Code}, ITEM TYPE : {item_Type}");
                 }
 
                 Vector3 pos = new Vector3(player.Value.Pos.Value.X, player.Value.Pos.Value.Y, player.Value.Pos.Value.Z);

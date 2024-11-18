@@ -19,7 +19,7 @@ const wchar_t* SelectUserAllCurrency_Query = L"SELECT count, itemCode FROM UserI
 
 const wchar_t* SelectUserAllItems_Query = L"SELECT * FROM UserItem WHERE owner_UID = ? AND NOT count = ?";
 
-const wchar_t* SelectCharacterCustomizing_Query = L"SELECT CharacterCustomizing FROM UserInfo WHERE UID = ?";
+const wchar_t* SelectCharacterCustomizing_Query = L"SELECT DATALENGTH(CharacterCustomizing), CharacterCustomizing FROM UserInfo WHERE UID = ?";
 
 const wchar_t* SelectUserItemCount_Query = L"SELECT count FROM UserItem WHERE owner_UID = ? AND ItemCode = ?";
 

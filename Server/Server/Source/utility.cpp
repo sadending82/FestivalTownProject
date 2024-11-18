@@ -45,26 +45,27 @@ std::string wstringToString(const std::wstring& input)
 	return utf8_string;
 }
 
-sCharacterCustomizing DeserializationCharacterCustomizing(const uint8_t* data, const int size)
+sCharacterCustomizing DeserializationCharacterCustomizing(const std::vector<uint8_t>& buffer)
 {
-	sCharacterCustomizing sCustomizing;
-	flatbuffers::Verifier verifier(data, size);
-	if (verifier.VerifyBuffer<PacketTable::UtilitiesTable::CharacterCustomizing>(nullptr)) {
 
-		const PacketTable::UtilitiesTable::CharacterCustomizing* fCustomizing = flatbuffers::GetRoot<PacketTable::UtilitiesTable::CharacterCustomizing>(data);
-
-		auto items = fCustomizing->customizing_items();
-
-		for (const auto& item : *items) {
-			EquippedItem equippedItem;
-			equippedItem.item_UID = item->item_uid();
-			equippedItem.itemCode = item->item_code();
-			equippedItem.itemType = item->type();
-			sCustomizing.SetItem((CustomizingItemType)item->type(), equippedItem);
-		}
-	}
-	else {
+	if (buffer.empty()) {
 		return sCharacterCustomizing();
+	}
+	sCharacterCustomizing sCustomizing;
+	const PacketTable::UtilitiesTable::CharacterCustomizing* fCustomizing = flatbuffers::GetRoot<PacketTable::UtilitiesTable::CharacterCustomizing>(buffer.data());
+
+	if (fCustomizing == nullptr) {
+		return sCharacterCustomizing();
+	}
+
+	auto items = fCustomizing->customizing_items();
+
+	for (const auto& item : *items) {
+		EquippedItem equippedItem;
+		equippedItem.item_UID = item->item_uid();
+		equippedItem.itemCode = item->item_code();
+		equippedItem.itemType = item->type();
+		sCustomizing.SetItem((CustomizingItemType)item->type(), equippedItem);
 	}
 
 	return sCustomizing;

@@ -286,11 +286,6 @@ std::pair<bool, UserInfo> DB::SelectUserInfoForLogin(const char* id)
 
 	retcode = SQLExecute(hStmt);
 
-	SQLLEN bufLen;
-	SQLRETURN getLenRet = SQLGetData(hStmt, (int)UserInfo_Field::characterCustomizing, SQL_C_BINARY, NULL, 0, &bufLen);
-	if (getLenRet == SQL_NULL_DATA) {
-		bufLen = 0;
-	}
 	bool result = false;
 
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) 
@@ -299,9 +294,10 @@ std::pair<bool, UserInfo> DB::SelectUserInfoForLogin(const char* id)
 		SQLLEN col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11;
 		TIMESTAMP_STRUCT date{};
 		SQLINTEGER t = 0;
-		std::vector<uint8_t> customizingData(bufLen);
+		SQLLEN bufLen = 0;
 
 		while (SQLFetch(hStmt) == SQL_SUCCESS) {
+			
 			SQLGetData(hStmt, (int)UserInfo_Field::UID, SQL_C_LONG, &userInfo.UID, sizeof(userInfo.UID), &col1);
 			SQLGetData(hStmt, (int)UserInfo_Field::AccountID, SQL_C_CHAR, &userInfo.AccountID[0], userInfo.AccountID.size(), &col2);
 			SQLGetData(hStmt, (int)UserInfo_Field::NickName, SQL_C_WCHAR, &userInfo.NickName[0], userInfo.NickName.capacity(), &col3);
@@ -312,13 +308,12 @@ std::pair<bool, UserInfo> DB::SelectUserInfoForLogin(const char* id)
 			SQLGetData(hStmt, (int)UserInfo_Field::Point, SQL_C_LONG, &userInfo.Point, sizeof(userInfo.Point), &col8);
 			SQLGetData(hStmt, (int)UserInfo_Field::LastLoginTime, SQL_C_TYPE_TIMESTAMP, &date, sizeof(date), &col9);
 			SQLGetData(hStmt, (int)UserInfo_Field::AttendanceDay, SQL_C_LONG, &userInfo.AttendanceDay, sizeof(userInfo.AttendanceDay), &col10);
-			SQLGetData(hStmt, (int)UserInfo_Field::characterCustomizing, SQL_C_BINARY, &customizingData, bufLen, NULL);
 			SQLGetData(hStmt, (int)UserInfo_Field::State, SQL_C_LONG, &t, sizeof(t), &col11);
 
 			userInfo.date.tm_year = date.year;
 			userInfo.date.tm_mon = date.month;
 			userInfo.date.tm_mday = date.day;
-			userInfo.characterCustomizing = DeserializationCharacterCustomizing(customizingData.data(), customizingData.size());
+			userInfo.characterCustomizing = SelectCharacterCustomizing(userInfo.UID);
 			userInfo.State = t;
 			userInfo.Gold = SelectUserItemCount(userInfo.UID, 100001);
 
@@ -357,18 +352,11 @@ std::pair<bool, UserInfo> DB::SelectUserInfo(const int uid)
 
 	retcode = SQLExecute(hStmt);
 
-	SQLLEN bufLen;
-	SQLRETURN getLenRet = SQLGetData(hStmt, (int)UserInfo_Field::characterCustomizing, SQL_C_BINARY, NULL, 0, &bufLen);
-	if (getLenRet == SQL_NULL_DATA) {
-		bufLen = 0;
-	}
-
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
 
 		SQLLEN col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11;
 		TIMESTAMP_STRUCT date{};
 		SQLINTEGER t = 0;
-		std::vector<uint8_t> customizingData(bufLen);
 
 		while (SQLFetch(hStmt) == SQL_SUCCESS) {
 			SQLGetData(hStmt, (int)UserInfo_Field::UID, SQL_C_LONG, &userInfo.UID, sizeof(userInfo.UID), &col1);
@@ -381,14 +369,13 @@ std::pair<bool, UserInfo> DB::SelectUserInfo(const int uid)
 			SQLGetData(hStmt, (int)UserInfo_Field::Point, SQL_C_LONG, &userInfo.Point, sizeof(userInfo.Point), &col8);
 			SQLGetData(hStmt, (int)UserInfo_Field::LastLoginTime, SQL_C_TYPE_TIMESTAMP, &date, sizeof(date), &col9);
 			SQLGetData(hStmt, (int)UserInfo_Field::AttendanceDay, SQL_C_LONG, &userInfo.AttendanceDay, sizeof(userInfo.AttendanceDay), &col10);
-			SQLGetData(hStmt, (int)UserInfo_Field::characterCustomizing, SQL_C_BINARY, &customizingData, bufLen, NULL);
 			SQLGetData(hStmt, (int)UserInfo_Field::State, SQL_C_LONG, &t, sizeof(t), &col11);
 		}
 
 		userInfo.date.tm_year = date.year;
 		userInfo.date.tm_mon = date.month;
 		userInfo.date.tm_mday = date.day;
-		userInfo.characterCustomizing = DeserializationCharacterCustomizing(customizingData.data(), customizingData.size());
+		userInfo.characterCustomizing = SelectCharacterCustomizing(userInfo.UID);
 		userInfo.State = t;
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
@@ -509,23 +496,26 @@ sCharacterCustomizing DB::SelectCharacterCustomizing(const int uid)
 
 	retcode = SQLExecute(hStmt);
 
-	SQLLEN bufLen;
-	SQLRETURN getLenRet = SQLGetData(hStmt, (int)UserInfo_Field::characterCustomizing, SQL_C_BINARY, NULL, 0, &bufLen);
-	if (getLenRet == SQL_NULL_DATA) {
-		bufLen = 0;
-	}
-
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
 
-		std::vector<uint8_t> customizingData(bufLen);
-
+		SQLLEN bufLen = 0;
+		sCharacterCustomizing sCustomizingData;
+		int len = 0;
 		while (SQLFetch(hStmt) == SQL_SUCCESS) {
-			SQLGetData(hStmt, 1, SQL_C_BINARY, &customizingData, bufLen, NULL);
+			SQLLEN col1;
+			SQLRETURN getLenRet = SQLGetData(hStmt, 1, SQL_C_LONG, &len, sizeof(len), &col1);
+			if (getLenRet == SQL_NULL_DATA) {
+				bufLen = 0;
+			}
+			std::vector<uint8_t> customizingData(len);
+			bufLen = len;
+
+			SQLGetData(hStmt, 2, SQL_C_BINARY, customizingData.data(), bufLen, &bufLen);
+
+			sCustomizingData = DeserializationCharacterCustomizing(customizingData);
 		}
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-
-		sCharacterCustomizing sCustomizingData = DeserializationCharacterCustomizing(customizingData.data(), customizingData.size());
 
 		return sCustomizingData;
 	}
@@ -776,8 +766,8 @@ bool DB::UpdateCharacterCustomizing(const int uid, const sCharacterCustomizing& 
 	UseGameDB(hStmt);
 
 	SQLPrepare(hStmt, (SQLWCHAR*)UpdateCharacterCustomizing_Query, SQL_NTS);
-
-	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_BINARY, SQL_VARBINARY, serializationData.size(), 0, (SQLPOINTER)serializationData.data(), 0, NULL);
+	SQLLEN dataLen = serializationData.size();
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_BINARY, SQL_VARBINARY, serializationData.size(), 0, (SQLPOINTER)serializationData.data(), serializationData.size(), &dataLen);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
 
 	retcode = SQLExecute(hStmt);

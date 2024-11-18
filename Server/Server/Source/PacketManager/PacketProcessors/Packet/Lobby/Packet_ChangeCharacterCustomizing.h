@@ -41,6 +41,7 @@ public:
 					itemInfo.item_UID = item->item_uid();
 					itemInfo.itemCode = item->item_code();
 					itemInfo.itemType = item->type();
+
 					characterCustomizing.SetItem((CustomizingItemType)item->type(), itemInfo);
 				}
 
