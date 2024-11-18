@@ -129,9 +129,7 @@ bool DB::InsertNewAcccount(const char* id, const char* password)
 	}
 	UseAccountDB(hStmt);
 
-	const WCHAR* query = L"INSERT INTO ACCOUNT VALUES (?, ?, ?)";
-
-	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)InsertAccount_Query, SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, strlen(id), 0, (SQLCHAR*)id, 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, hashedPassword.length(), 0, (SQLCHAR*)hashedPassword.c_str(), 0, NULL);
@@ -169,9 +167,7 @@ int DB::InsertNewUser(const char* id, const char* nickname)
 
 	UseGameDB(hStmt);
 
-	const WCHAR* query = L"INSERT INTO UserInfo (AccountID, NickName) OUTPUT INSERTED.uid as uid VALUES (?, ?)";
-
-	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)InsertNewUser_Query, SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, strlen(id), 0, (SQLCHAR*)id, 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_WCHAR, SQL_WVARCHAR, wcslen(wNickname), 0, (SQLPOINTER)wNickname, 0, NULL);
@@ -216,9 +212,7 @@ bool DB::InsertUserGameRecords(const int uid)
 
 	UseGameDB(hStmt);
 
-	const WCHAR* query = L"INSERT INTO UserGameRecords (UID) VALUES (?)";
-
-	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)InsertUserGameRecords_Query, SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
 
@@ -248,9 +242,7 @@ bool DB::InsertUserItem(const int owner_uid, const int itemCode, const int itemC
 
 	UseGameDB(hStmt);
 
-	const WCHAR* query = L"INSERT INTO UserItem (owner_uid, itemCode, count, itemType) VALUES (?, ?, ?, ?)";
-
-	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)InsertUserItem_Query, SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&owner_uid), 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&itemCode), 0, NULL);
@@ -286,13 +278,7 @@ std::pair<bool, UserInfo> DB::SelectUserInfoForLogin(const char* id)
 	UseGameDB(hStmt);
 	int state = true;
 
-	const WCHAR* query = L"UPDATE UserInfo\
-							SET ConnectionState = ?\
-							OUTPUT deleted.*\
-							WHERE AccountID = ?;";
-
-
-	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserInfoForLogin_Query, SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (&state), 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, strlen(id), 0, (SQLCHAR*)id, 0, NULL);
@@ -364,9 +350,7 @@ std::pair<bool, UserInfo> DB::SelectUserInfo(const int uid)
 
 	UseGameDB(hStmt);
 
-	const WCHAR* query = L"SELECT * FROM UserInfo WHERE UID = ?";
-
-	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserInfo_Query, SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
 
@@ -433,9 +417,7 @@ bool DB::SelectUserAllCurrency(const int uid, std::vector<int>& currency_types_o
 
 	UseGameDB(hStmt);
 
-	const WCHAR* query = L"SELECT count, itemCode FROM UserItem WHERE owner_UID = ? AND itemType = ?";
-
-	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserAllCurrency_Query, SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&itemType), 0, NULL);
@@ -467,6 +449,7 @@ std::unordered_map<int, UserItem> DB::SelectUserAllItems(const int uid)
 {
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
+	int zero = 0;
 	std::unordered_map<int, UserItem> itemList;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
@@ -477,11 +460,10 @@ std::unordered_map<int, UserItem> DB::SelectUserAllItems(const int uid)
 
 	UseGameDB(hStmt);
 
-	const WCHAR* query = L"SELECT * FROM UserItem WHERE owner_UID = ?";
-
-	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserAllItems_Query, SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&zero), 0, NULL);
 
 	retcode = SQLExecute(hStmt);
 
@@ -520,9 +502,7 @@ sCharacterCustomizing DB::SelectCharacterCustomizing(const int uid)
 
 	UseGameDB(hStmt);
 
-	const WCHAR* query = L"SELECT CharacterCustomizing FROM UserInfo WHERE UID = ?";
-
-	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)SelectCharacterCustomizing_Query, SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
 
@@ -570,9 +550,7 @@ int DB::SelectUserItemCount(const int uid, const int item_index)
 
 	UseGameDB(hStmt);
 
-	const WCHAR* query = L"SELECT count FROM UserItem WHERE owner_UID = ? AND ItemCode = ?";
-
-	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserItemCount_Query, SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&item_index), 0, NULL);
@@ -609,9 +587,7 @@ bool DB::UpdateUserConnectionState(const int uid, const int state)
 
 	UseGameDB(hStmt);
 
-	const WCHAR* query = L"UPDATE UserInfo SET ConnectionState = ? WHERE UID = ?";
-
-	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)UpdateUserConnectionState_Query, SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&state), 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
@@ -631,8 +607,6 @@ bool DB::UpdateUserConnectionState(const int uid, const int state)
 
 bool DB::UpsertUserItemCount(const int uid, const int item_Code, const int valueOfChange)
 {
-	// 아이템 테이블에서 중첩 불가능한지 필터링하는 코드 필요
-
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
@@ -646,16 +620,7 @@ bool DB::UpsertUserItemCount(const int uid, const int item_Code, const int value
 
 	UseGameDB(hStmt);
 
-	const WCHAR* query = L"MERGE INTO UserItem AS a "
-		L"USING (SELECT 1 AS match) AS b "
-		L"ON a.itemCode = ? AND a.owner_UID = ? "
-		L"WHEN MATCHED THEN "
-		L"UPDATE SET count = count + ? "
-		L"WHEN NOT MATCHED THEN "
-		L"INSERT (owner_UID, itemCode, count, itemType) VALUES (?, ?, ?, ?);";
-							
-
-	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)UpsertUserItemCount_Query, SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&item_Code), 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
@@ -692,9 +657,7 @@ bool DB::UpdateUserPoint(const int uid, const int valueOfChange)
 
 	UseGameDB(hStmt);
 
-	const WCHAR* query = L"UPDATE UserInfo SET Point = Point + ? WHERE UID = ?";
-
-	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)UpdateUserPoint_Query, SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&valueOfChange), 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
@@ -726,23 +689,7 @@ bool DB::UpdateBattleRecords(const int uid, const UserGameRecords& gameRecords)
 
 	UseGameDB(hStmt);
 
-	const WCHAR* query = L"UPDATE UserGameRecords SET " 
-		L" Kill_Count = Kill_Count + ? " 
-		L", Death_Count = Death_Count + ? "
-		L", Point = Point + ? "
-		L", Weapon_Kill_Count = Weapon_Kill_Count + ? "
-		L", Punch_Kill_Count = Punch_Kill_Count + ? "
-		L", Bomb_Count = Bomb_Count + ? "
-		L", Groggy_Count = Groggy_Count + ? "
-		L", Pick_Weapon_Count = Pick_Weapon_Count + ? "
-		L", Pick_Bomb_Count = Pick_Bomb_Count + ? "
-		L", Battle_Count = Battle_Count + ? "
-		L", FITH_Team_Count = FITH_Team_Count + ? "
-		L", FITH_Indiv_Count = FITH_Indiv_Count + ? "
-		L", Victory_Count = Victory_Count + ? "
-		L" WHERE UID = ?";
-
-	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)UpdateBattleRecords_Query, SQL_NTS);
 
 	int c = gameRecords.KillCount.load();
 
@@ -791,10 +738,7 @@ bool DB::UpdateUserItemCount(const int uid, const int item_index, const int valu
 
 	UseGameDB(hStmt);
 
-	const WCHAR* query = L"UPDATE UserItem SET count = count + ? WHERE owner_UID = ? AND itemCode = ?";
-
-
-	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)UpdateUserItemCount_Query, SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&valueOfChange), 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
@@ -830,9 +774,7 @@ bool DB::UpdateCharacterCustomizing(const int uid, const sCharacterCustomizing& 
 
 	UseGameDB(hStmt);
 
-	const WCHAR* query = L"UPDATE UserInfo SET CharacterCustomizing = ? WHERE UID = ?";
-
-	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)UpdateCharacterCustomizing_Query, SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_BINARY, SQL_VARBINARY, serializationData.size(), 0, (SQLPOINTER)serializationData.data(), 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
@@ -898,9 +840,7 @@ bool DB::DeleteAcccount(const char* id)
 
 	UseAccountDB(hStmt);
 
-	const WCHAR* query = L"DELETE FROM Account WHERE ID = ?";
-
-	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)DeleteAcccount_Query, SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(id), 0, NULL);
 
@@ -930,9 +870,7 @@ bool DB::DeleteUserInfo(const int uid)
 
 	UseGameDB(hStmt);
 
-	const WCHAR* query = L"DELETE FROM UserInfo WHERE UID = ?";
-
-	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)DeleteUserInfo_Query, SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(uid), 0, NULL);
 
@@ -962,9 +900,7 @@ bool DB::DeleteUserItem(const int owner_uid, const int itemCode)
 
 	UseGameDB(hStmt);
 
-	const WCHAR* query = L"DELETE FROM UserItem WHERE Item_UID = (SELECT TOP 1 Item_UID FROM UserItem WHERE owner_UID = ? and ItemCode = ? ORDER BY Item_UID ASC)";
-
-	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)DeleteUserItem_Query, SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(owner_uid), 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(itemCode), 0, NULL);
@@ -997,7 +933,7 @@ bool DB::CheckValidateLogin(const char* id, const char* password)
 	}
 	UseAccountDB(hStmt);
 
-	SQLPrepare(hStmt, (SQLWCHAR*)L"SELECT hashedPassword, salt FROM ACCOUNT WHERE ID = ?", SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)CheckValidateLogin_Query, SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, strlen(id), 0, (SQLCHAR*)id, 0, NULL);
 
