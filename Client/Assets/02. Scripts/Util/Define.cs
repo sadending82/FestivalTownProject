@@ -90,6 +90,7 @@ public class Define
         Accessory_Head = 21,
         Accessory_Face = 22,
         Accessory_Back = 23,
+        Emo = 24,
     }
 
     public struct PlayerResult

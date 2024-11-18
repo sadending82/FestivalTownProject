@@ -26,9 +26,20 @@ namespace Network.PacketProcessor
                 int item_UID = item.ItemUid;
                 int item_Code = item.ItemCode;
                 int item_Type = item.Type;
-                Debug.Log("창");
-                GameObject tPlayer = Managers.Player.GetMyPlayer();
-                tPlayer.GetComponent<CharacterStatus>().ChangeCustomizing(item_Code);
+
+                if (Managers.Scene.CurrentScene.GetComponent<GameScene>() != null)
+                {
+                    GameObject tPlayer = Managers.Player.GetMyPlayer();
+                    tPlayer.GetComponent<CharacterStatus>().ChangeCustomizing(item_Code);
+                }
+            }
+
+            if (Managers.Scene.CurrentScene.GetComponent<HomeScene>() != null)
+            {
+                var ui = Managers.UI.ShowPopUpUI<UI_Notice>();
+                ui.Init();
+                ui.NoticeTextChange("커스터마이징이 변경되었습니다.");
+                ui.BindPopupCloseEvent();
             }
         }
     }

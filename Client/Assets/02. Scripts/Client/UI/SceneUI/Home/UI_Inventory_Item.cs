@@ -18,6 +18,7 @@ public class UI_Inventory_Item : UI_Base
     bool isEquiped = false;
 
     int ItemIndex = -1;
+    int ItemUid = -1;
     UI_Inventory parentUI;
 
     private void Start()
@@ -42,18 +43,23 @@ public class UI_Inventory_Item : UI_Base
         isInitialized = true;
     }
 
-    public void SetItem(int index)
+    public void SetItem(int uid, int index)
     {
+        ItemUid = uid;
+        ItemIndex = index;
+
         var itemData = Managers.Data.GetItemData(index);
 
         Get<GameObject>((int)GameObjects.ItemNameText).GetComponent<TMP_Text>().text = itemData.Name;
 
         Get<GameObject>((int)GameObjects.ItemIcon).BindEvent((PointerEventData) => {
-            if (!isSelected)
-            {
-                SetEquip(true);
-            }
+            parentUI.SetAccessory(ItemIndex);
         });
+    }
+
+    public int GetItemUid()
+    {
+        return ItemUid;
     }
 
     public void SetEquip(bool equip)
