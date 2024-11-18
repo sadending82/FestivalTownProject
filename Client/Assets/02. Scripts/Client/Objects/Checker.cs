@@ -65,9 +65,9 @@ public class Checker : MonoBehaviour
                     }
                     else
                     {
+                        packetManager.SendPlayerCollisionToBlockPacket(tPlayerState.GetId());
                         Vector3 pushDirection = new Vector3(mapPosXOffset, 0.0f, mapPosZOffset);
                         tPlayerController.Pushed(pushDirection, pushPower);
-                        packetManager.SendPlayerCollisionToBlockPacket(tPlayerState.GetId());
                     }
                 }
             }

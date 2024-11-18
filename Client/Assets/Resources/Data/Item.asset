@@ -205,3 +205,219 @@ MonoBehaviour:
     Item_Grade: 1
     Open_Date: 45292
     Close_Date: 73050
+  - Index: 341001
+    Name: "\uAE30\uBCF8 \uD45C\uC8151"
+    ClassType: 0
+    File_Name: Ch_Emo_Basic1
+    Item_Type: 24
+    Item_Grade: 1
+    Open_Date: 45292
+    Close_Date: 73050
+  - Index: 341002
+    Name: "\uAE30\uBCF8 \uD45C\uC8152"
+    ClassType: 0
+    File_Name: Ch_Emo_Basic2
+    Item_Type: 24
+    Item_Grade: 1
+    Open_Date: 45292
+    Close_Date: 73050
+  - Index: 341003
+    Name: "\uD654\uB09C \uD45C\uC8151"
+    ClassType: 0
+    File_Name: Ch_Emo_Angry1
+    Item_Type: 24
+    Item_Grade: 1
+    Open_Date: 45292
+    Close_Date: 73050
+  - Index: 341004
+    Name: "\uD654\uB09C \uD45C\uC8152"
+    ClassType: 0
+    File_Name: Ch_Emo_Angry2
+    Item_Type: 24
+    Item_Grade: 1
+    Open_Date: 45292
+    Close_Date: 73050
+  - Index: 341005
+    Name: "\uD589\uBCF5 \uD45C\uC8151"
+    ClassType: 0
+    File_Name: Ch_Emo_Happy1
+    Item_Type: 24
+    Item_Grade: 1
+    Open_Date: 45292
+    Close_Date: 73050
+  - Index: 341006
+    Name: "\uD589\uBCF5 \uD45C\uC8152"
+    ClassType: 0
+    File_Name: Ch_Emo_Happy2
+    Item_Type: 24
+    Item_Grade: 1
+    Open_Date: 45292
+    Close_Date: 73050
+  - Index: 341007
+    Name: "\uC2AC\uD508 \uD45C\uC8151"
+    ClassType: 0
+    File_Name: Ch_Emo_Sad1
+    Item_Type: 24
+    Item_Grade: 1
+    Open_Date: 45292
+    Close_Date: 73050
+  - Index: 341008
+    Name: "\uC2AC\uD508 \uD45C\uC8152"
+    ClassType: 0
+    File_Name: Ch_Emo_Sad2
+    Item_Type: 24
+    Item_Grade: 1
+    Open_Date: 45292
+    Close_Date: 73050
+  - Index: 341009
+    Name: "\uC2AC\uD508 \uD45C\uC8153"
+    ClassType: 0
+    File_Name: Ch_Emo_Sad3
+    Item_Type: 24
+    Item_Grade: 1
+    Open_Date: 45292
+    Close_Date: 73050
+  - Index: 341010
+    Name: "\uC6C3\uB294 \uD45C\uC8151"
+    ClassType: 0
+    File_Name: Ch_Emo_Smile1
+    Item_Type: 24
+    Item_Grade: 1
+    Open_Date: 45292
+    Close_Date: 73050
+  - Index: 341011
+    Name: "\uC6C3\uB294 \uD45C\uC8152"
+    ClassType: 0
+    File_Name: Ch_Emo_Smile2
+    Item_Type: 24
+    Item_Grade: 1
+    Open_Date: 45292
+    Close_Date: 73050
+  - Index: 341012
+    Name: "\uC6C3\uB294 \uD45C\uC8153"
+    ClassType: 0
+    File_Name: Ch_Emo_Smile3
+    Item_Type: 24
+    Item_Grade: 1
+    Open_Date: 45292
+    Close_Date: 73050
+  - Index: 341013
+    Name: "\uB2F9\uD669 \uD45C\uC8151"
+    ClassType: 0
+    File_Name: Ch_Emo_Panic1
+    Item_Type: 24
+    Item_Grade: 1
+    Open_Date: 45292
+    Close_Date: 73050
+  - Index: 341014
+    Name: "\uB2F9\uD669 \uD45C\uC8152"
+    ClassType: 0
+    File_Name: Ch_Emo_Panic2
+    Item_Type: 24
+    Item_Grade: 1
+    Open_Date: 45292
+    Close_Date: 73050
+  - Index: 341015
+    Name: "\uC2DC\uD070\uB465 \uD45C\uC8151"
+    ClassType: 0
+    File_Name: Ch_Emo_Indiff1
+    Item_Type: 24
+    Item_Grade: 1
+    Open_Date: 45292
+    Close_Date: 73050
+  - Index: 341016
+    Name: "\uC2DC\uD070\uB465 \uD45C\uC8152"
+    ClassType: 0
+    File_Name: Ch_Emo_Indiff2
+    Item_Type: 24
+    Item_Grade: 1
+    Open_Date: 45292
+    Close_Date: 73050
+  - Index: 341017
+    Name: "\uC2DC\uD070\uB465 \uD45C\uC8153"
+    ClassType: 0
+    File_Name: Ch_Emo_Indiff3
+    Item_Type: 24
+    Item_Grade: 1
+    Open_Date: 45292
+    Close_Date: 73050
+  - Index: 341018
+    Name: "\uB180\uB9AC\uB294 \uD45C\uC815"
+    ClassType: 0
+    File_Name: Ch_Emo_Banter
+    Item_Type: 24
+    Item_Grade: 1
+    Open_Date: 45292
+    Close_Date: 73050
+  - Index: 341019
+    Name: "\uC8FD\uB294 \uD45C\uC815"
+    ClassType: 0
+    File_Name: Ch_Emo_Die
+    Item_Type: 24
+    Item_Grade: 1
+    Open_Date: 45292
+    Close_Date: 73050
+  - Index: 341020
+    Name: "\uBB34 \uD45C\uC815"
+    ClassType: 0
+    File_Name: Ch_Emo_Express
+    Item_Type: 24
+    Item_Grade: 1
+    Open_Date: 45292
+    Close_Date: 73050
+  - Index: 341021
+    Name: "\uBC30\uACE0\uD508 \uD45C\uC815"
+    ClassType: 0
+    File_Name: Ch_Emo_Hungry
+    Item_Type: 24
+    Item_Grade: 1
+    Open_Date: 45292
+    Close_Date: 73050
+  - Index: 341022
+    Name: "\uC0AC\uB791\uC5D0 \uBE60\uC9C4 \uD45C\uC815"
+    ClassType: 0
+    File_Name: Ch_Emo_Love
+    Item_Type: 24
+    Item_Grade: 1
+    Open_Date: 45292
+    Close_Date: 73050
+  - Index: 341023
+    Name: "\uC5F4\uC815\uAC00\uB4DD \uD45C\uC815"
+    ClassType: 0
+    File_Name: Ch_Emo_Passion
+    Item_Type: 24
+    Item_Grade: 1
+    Open_Date: 45292
+    Close_Date: 73050
+  - Index: 341024
+    Name: "\uBE44\uC6C3\uB294 \uD45C\uC815"
+    ClassType: 0
+    File_Name: Ch_Emo_Sneer
+    Item_Type: 24
+    Item_Grade: 1
+    Open_Date: 45292
+    Close_Date: 73050
+  - Index: 341025
+    Name: "\uB180\uB780 \uD45C\uC815"
+    ClassType: 0
+    File_Name: Ch_Emo_Surprise
+    Item_Type: 24
+    Item_Grade: 1
+    Open_Date: 45292
+    Close_Date: 73050
+  - Index: 341026
+    Name: "\uC0DD\uAC01\uD558\uB294 \uD45C\uC815"
+    ClassType: 0
+    File_Name: Ch_Emo_Think
+    Item_Type: 24
+    Item_Grade: 1
+    Open_Date: 45292
+    Close_Date: 73050
+  - Index: 341027
+    Name: "\uC719\uD06C\uD558\uB294 \uD45C\uC815"
+    ClassType: 0
+    File_Name: Ch_Emo_Wink
+    Item_Type: 24
+    Item_Grade: 1
+    Open_Date: 45292
+    Close_Date: 73050

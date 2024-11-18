@@ -1433,9 +1433,9 @@ MonoBehaviour:
   playerMesh: {fileID: 8491244148625121900}
   weaponInven: {fileID: 6241508891433731045}
   RunEffect: {fileID: 213488576075811781}
-  Head_Equipment: {fileID: 1584313136025502526}
-  Face_Equipment: {fileID: 5783418619616881098}
-  Body_Equipment: {fileID: 2494826194896390755}
+  Head_Equipments: {fileID: 0}
+  Face_Equipments: {fileID: 0}
+  Back_Equipments: {fileID: 0}
 --- !u!114 &2266266892710373593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3110,7 +3110,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3108541939963285627, guid: dd9ad4693355ca743acae7508c8df3ca, type: 3}
       propertyPath: m_Name
-      value: 7_Dead_fish
+      value: Back_Deadfish
       objectReference: {fileID: 0}
     - target: {fileID: 3108541939963285627, guid: dd9ad4693355ca743acae7508c8df3ca, type: 3}
       propertyPath: m_IsActive
@@ -3136,7 +3136,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3467622572854553130, guid: 9947819c514b2ba49ba315f736db3322, type: 3}
       propertyPath: m_Name
-      value: 1_Hiking
+      value: Hat_Hiking
       objectReference: {fileID: 0}
     - target: {fileID: 3467622572854553130, guid: 9947819c514b2ba49ba315f736db3322, type: 3}
       propertyPath: m_IsActive
@@ -3202,7 +3202,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1559889742890632970, guid: cd228ecfb3aac5f4394fbcb3111a3218, type: 3}
       propertyPath: m_Name
-      value: 6_Pan
+      value: Back_Pan
       objectReference: {fileID: 0}
     - target: {fileID: 1559889742890632970, guid: cd228ecfb3aac5f4394fbcb3111a3218, type: 3}
       propertyPath: m_IsActive
@@ -3268,7 +3268,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4830104240250080025, guid: afec23016c853804fbb3d582830258b8, type: 3}
       propertyPath: m_Name
-      value: 1_Grass_Red
+      value: Face_Grass_Red
       objectReference: {fileID: 0}
     - target: {fileID: 4830104240250080025, guid: afec23016c853804fbb3d582830258b8, type: 3}
       propertyPath: m_IsActive
@@ -3334,7 +3334,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5777235961168697063, guid: e01982846fe474948a7562281443ec75, type: 3}
       propertyPath: m_Name
-      value: 3_Windmill
+      value: Back_Windmill
       objectReference: {fileID: 0}
     - target: {fileID: 5777235961168697063, guid: e01982846fe474948a7562281443ec75, type: 3}
       propertyPath: m_IsActive
@@ -3440,7 +3440,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7516207744844627330, guid: 1ce07247bf01e734198059c9cb287636, type: 3}
       propertyPath: m_Name
-      value: 1_Bag_bread
+      value: Back_Bag_Bread
       objectReference: {fileID: 0}
     - target: {fileID: 7516207744844627330, guid: 1ce07247bf01e734198059c9cb287636, type: 3}
       propertyPath: m_IsActive
@@ -3466,7 +3466,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4706811380576737367, guid: 552ca013e4538374396cd484c14da1fb, type: 3}
       propertyPath: m_Name
-      value: 4_Branch
+      value: Back_Branch
       objectReference: {fileID: 0}
     - target: {fileID: 4706811380576737367, guid: 552ca013e4538374396cd484c14da1fb, type: 3}
       propertyPath: m_IsActive
@@ -3572,7 +3572,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4110578050611617138, guid: a3ce678abbeeb694bba1910afd1b3ff3, type: 3}
       propertyPath: m_Name
-      value: 8_Meat
+      value: Back_Meat
       objectReference: {fileID: 0}
     - target: {fileID: 4110578050611617138, guid: a3ce678abbeeb694bba1910afd1b3ff3, type: 3}
       propertyPath: m_IsActive
@@ -3598,7 +3598,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8099363357324775762, guid: 33bb2b50750361e4db306c8c6b871742, type: 3}
       propertyPath: m_Name
-      value: 5_Fork
+      value: Back_Fork
       objectReference: {fileID: 0}
     - target: {fileID: 8099363357324775762, guid: 33bb2b50750361e4db306c8c6b871742, type: 3}
       propertyPath: m_IsActive
@@ -5638,11 +5638,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.06
   m_Center: {x: 0, y: 0, z: 0}
---- !u!1 &1584313136025502526 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8952412208904830685, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}
-  m_PrefabInstance: {fileID: 7620590984462433763}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1669907530377206017 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9146092942837900514, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}

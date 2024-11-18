@@ -20,21 +20,6 @@ namespace Network.PacketProcessor
 
             var Data = ChangeCharacterCustomizing.GetRootAsChangeCharacterCustomizing(bb);
 
-            // 1. 그냥 때려 박음
-            int skin_itemUID = Data.CustomizingItemsByKey((int)CustomizingItemType.CI_SKIN).Value.ItemUid;
-            int skin_itemCode = Data.CustomizingItemsByKey((int)CustomizingItemType.CI_SKIN).Value.ItemCode;
-
-            int face_itemUID = Data.CustomizingItemsByKey((int)CustomizingItemType.CI_FACE).Value.ItemUid;
-            int face_itemCode = Data.CustomizingItemsByKey((int)CustomizingItemType.CI_FACE).Value.ItemCode;
-
-            int head_itemUID = Data.CustomizingItemsByKey((int)CustomizingItemType.CI_HEAD).Value.ItemUid;
-            int head_itemCode = Data.CustomizingItemsByKey((int)CustomizingItemType.CI_HEAD).Value.ItemCode;
-
-            int back_itemUID = Data.CustomizingItemsByKey((int)CustomizingItemType.CI_BACK).Value.ItemUid;
-            int back_itemCode = Data.CustomizingItemsByKey((int)CustomizingItemType.CI_BACK).Value.ItemCode;
-
-
-            // 2. for문돌림 알아서 골라서 쓰셈
             for (int i = 0; i < Data.CustomizingItemsLength; i++)
             {
                 var item = Data.CustomizingItems(i).Value;
@@ -42,10 +27,10 @@ namespace Network.PacketProcessor
                 int item_UID = item.ItemUid;
                 int item_Code = item.ItemCode;
                 int item_Type = item.Type;
-
+                Debug.Log("창");
+                GameObject tPlayer = Managers.Player.GetMyPlayer();
+                tPlayer.GetComponent<CharacterStatus>().ChangeCustomizing(item_Code);
             }
         }
-
-
     }
 }

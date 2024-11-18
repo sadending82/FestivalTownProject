@@ -1,6 +1,8 @@
 using ActiveRagdoll;
 using ClientProtocol;
 using ExcelDataStructure;
+using NetworkProtocol;
+using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
@@ -62,9 +64,14 @@ public class CharacterStatus : MonoBehaviour
 
     // Ä¿½ºÅÍ¸¶ÀÌÂ¡
     [Header("--- Customizing ---")]
-    public GameObject Head_Equipment;
-    public GameObject Face_Equipment;
-    public GameObject Body_Equipment;
+    public GameObject Head_Equipments;
+    public GameObject Face_Equipments;
+    public GameObject Back_Equipments;
+    private Material skinMaterial;
+    private Material faceMaterial;
+    private GameObject headItem;
+    private GameObject faceItem;
+    private GameObject backItem;
 
     // ¼­¹ö
     private NetworkManager network;
@@ -545,10 +552,72 @@ public class CharacterStatus : MonoBehaviour
     }
 
     // ------------------- Style --------------------
-    public void SetStyle(Material skinMaterial, Material faceMaterial)
+    public void SetMaterial(Material skinMaterial, Material faceMaterial)
     {
+        this.skinMaterial = skinMaterial;
+        this.faceMaterial = faceMaterial;
         Material[] mat = new Material[] { skinMaterial, faceMaterial };
         playerMesh.GetComponent<SkinnedMeshRenderer>().materials = mat;
+    }
+    public void ChangeCustomizing(int itemCode)
+    {
+        ItemEntity tItem = Managers.Data.GetItemData(itemCode);
+        Debug.Log("¼·");
+        switch(tItem.Item_Type)
+        {
+            //Skin
+            case 10:
+                {
+                    skinMaterial = Resources.Load<Material>($"Materials1/{tItem.File_Name}");
+                    SetMaterial(skinMaterial, faceMaterial);
+                }
+                break;
+            //Head Item
+            case 21:
+                {
+                    if(headItem != null)
+                    {
+                        headItem.SetActive(false);
+                    }
+                    headItem = Head_Equipments.transform.Find(tItem.File_Name).gameObject;
+                    headItem.SetActive(true);
+                }
+                break;
+            //Face Item
+            case 22:
+                {
+                    if (faceItem != null)
+                    {
+                        faceItem.SetActive(false);
+                    }
+                    faceItem = Face_Equipments.transform.Find(tItem.File_Name).gameObject;
+                    faceItem.SetActive(true);
+                }
+                break;
+            //Back Item
+            case 23:
+                {
+                    if (backItem != null)
+                    {
+                        backItem.SetActive(false);
+                    }
+                    backItem = Back_Equipments.transform.Find(tItem.File_Name).gameObject;
+                    backItem.SetActive(true);
+                }
+                break;
+            //Face
+            case 24:
+                {
+                    faceMaterial = Resources.Load<Material>($"Materials1/{tItem.File_Name}");
+                    SetMaterial(skinMaterial, faceMaterial);
+                }
+                break;
+            default:
+                {
+                    Debug.Log("ERROR!!! ChangeCustomizing(): Wrong Item Type!!!");
+                }
+                break;
+        }
     }
 
     // ------------------- UI --------------------

@@ -99,7 +99,7 @@ public class PlayerManager : MonoBehaviour
             var playerObject = players.transform.GetChild(id).gameObject;
             playerObject.SetActive(true);
             playerObject.GetComponent<CharacterStatus>().SetTeamNumber(teamNumber);
-            playerObject.GetComponent<CharacterStatus>().SetStyle(GetSkinMaterial(id), GetFaceMaterial(id));  
+            playerObject.GetComponent<CharacterStatus>().SetMaterial(GetSkinMaterial(id), GetFaceMaterial(id));  
             playerObject.GetComponent<PlayerController>().SetMyId(id);
             playerObject.GetComponent<PlayerController>().FirstSpawn(position.x, position.z);
             nowPlayerNum++;

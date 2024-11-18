@@ -319,10 +319,22 @@ public class PlayerController : MonoBehaviour
                 {
                     packetManager.SendPlayerCollisionToBlockPacket(playerStatus.GetId());
                 }
-                if (Input.GetKeyUp(KeyCode.Y))
+                //if (Input.GetKeyUp(KeyCode.Y))
+                //{
+                //    Vector3 tPos = GetPosition();
+                //    Managers.CubeObject.SpawnCube((int)tPos.x / 2, (int)tPos.z / 2, eBlockType.BT_BLOCK_2_2_1);
+                //}
+                if (Input.GetKeyUp(KeyCode.Z))
                 {
-                    Vector3 tPos = GetPosition();
-                    Managers.CubeObject.SpawnCube((int)tPos.x / 2, (int)tPos.z / 2, eBlockType.BT_BLOCK_2_2_1);
+                    sCharacterCustomizing tCustom = new();
+                    tCustom.Init();
+                    tCustom.itemList.Add(CustomizingItemType.CI_SKIN, new EquippedItem(105, 313001, 21));
+                    tCustom.itemList.Add(CustomizingItemType.CI_HEAD, new EquippedItem(106, 201008, 10));
+                    tCustom.itemList.Add(CustomizingItemType.CI_FACE, new EquippedItem(107, 322001, 22));
+                    tCustom.itemList.Add(CustomizingItemType.CI_BACK, new EquippedItem(108, 332001, 23));
+
+                    Debug.Log("½Å");
+                    packetManager.SendChangeCharacterCustomizingPacket(tCustom);
                 }
             }
 

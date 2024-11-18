@@ -19,6 +19,13 @@ namespace NetworkProtocol
         public int item_UID;
         public int itemCode;
         public int itemType;
+
+        public EquippedItem(int item_UID, int itemCode, int itemType)
+        {
+            this.item_UID = item_UID;
+            this.itemCode = itemCode;
+            this.itemType = itemType;
+        }
     }
 
     public struct sCharacterCustomizing

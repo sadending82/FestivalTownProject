@@ -36,7 +36,7 @@ public class ResultPlayerController : MonoBehaviour
                     if (winningTeam == teamNumber)
                     {
                         // 스킨 적용
-                        rPlayer.GetComponent<ResultPlayerState>().SetStyle(Managers.Player.GetSkinMaterial(i), Managers.Player.GetFaceMaterial(i));
+                        rPlayer.GetComponent<ResultPlayerState>().SetMaterial(Managers.Player.GetSkinMaterial(i), Managers.Player.GetFaceMaterial(i));
                         rPlayer.transform.position = winnerOffset;
                         winnerOffset.x += winnerXInterval;
                         rPlayer.GetComponent<ResultAnimationController>().SetWinAnimation();
@@ -45,7 +45,7 @@ public class ResultPlayerController : MonoBehaviour
                     else
                     {
                         // 스킨 적용
-                        rPlayer.GetComponent<ResultPlayerState>().SetStyle(Managers.Player.GetSkinMaterial(i), Managers.Player.GetFaceMaterial(i));
+                        rPlayer.GetComponent<ResultPlayerState>().SetMaterial(Managers.Player.GetSkinMaterial(i), Managers.Player.GetFaceMaterial(i));
                         rPlayer.transform.position = loserOffset;
                         loserOffset.x += loserXInterval;
                         rPlayer.GetComponent<ResultAnimationController>().SetLoseAnimation();
@@ -74,7 +74,7 @@ public class ResultPlayerController : MonoBehaviour
                     if (winningTeam == teamNumber)
                     {
                         // 스킨 적용
-                        rPlayer.GetComponent<ResultPlayerState>().SetStyle(Managers.Player.GetSkinMaterial(i), Managers.Player.GetFaceMaterial(i));
+                        rPlayer.GetComponent<ResultPlayerState>().SetMaterial(Managers.Player.GetSkinMaterial(i), Managers.Player.GetFaceMaterial(i));
                         rPlayer.transform.position = winnerOffset;
                         rPlayer.GetComponent<ResultAnimationController>().SetWinAnimation();
                     }
@@ -82,7 +82,7 @@ public class ResultPlayerController : MonoBehaviour
                     else
                     {
                         // 스킨 적용
-                        rPlayer.GetComponent<ResultPlayerState>().SetStyle(Managers.Player.GetSkinMaterial(i), Managers.Player.GetFaceMaterial(i));
+                        rPlayer.GetComponent<ResultPlayerState>().SetMaterial(Managers.Player.GetSkinMaterial(i), Managers.Player.GetFaceMaterial(i));
                         rPlayer.transform.position = loserOffset;
                         loserOffset.x += loserXInterval;
                         rPlayer.GetComponent<ResultAnimationController>().SetLoseAnimation();
