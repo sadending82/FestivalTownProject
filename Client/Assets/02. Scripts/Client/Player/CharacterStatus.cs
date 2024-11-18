@@ -562,7 +562,6 @@ public class CharacterStatus : MonoBehaviour
     public void ChangeCustomizing(int itemCode)
     {
         ItemEntity tItem = Managers.Data.GetItemData(itemCode);
-        Debug.Log("¼·");
         switch(tItem.Item_Type)
         {
             //Skin
@@ -579,8 +578,15 @@ public class CharacterStatus : MonoBehaviour
                     {
                         headItem.SetActive(false);
                     }
-                    headItem = Head_Equipments.transform.Find(tItem.File_Name).gameObject;
-                    headItem.SetActive(true);
+                    for (int i = 0; i < Head_Equipments.transform.childCount; ++i)
+                    {
+                        if (Head_Equipments.transform.GetChild(i).name == tItem.File_Name)
+                        {
+                            headItem = Head_Equipments.transform.GetChild(i).gameObject;
+                            headItem.SetActive(true);
+                            break;
+                        }
+                    }
                 }
                 break;
             //Face Item
@@ -590,8 +596,15 @@ public class CharacterStatus : MonoBehaviour
                     {
                         faceItem.SetActive(false);
                     }
-                    faceItem = Face_Equipments.transform.Find(tItem.File_Name).gameObject;
-                    faceItem.SetActive(true);
+                    for (int i = 0; i < Face_Equipments.transform.childCount; ++i)
+                    {
+                        if (Face_Equipments.transform.GetChild(i).name == tItem.File_Name)
+                        {
+                            faceItem = Face_Equipments.transform.GetChild(i).gameObject;
+                            faceItem.SetActive(true);
+                            break;
+                        }
+                    }
                 }
                 break;
             //Back Item
@@ -601,8 +614,15 @@ public class CharacterStatus : MonoBehaviour
                     {
                         backItem.SetActive(false);
                     }
-                    backItem = Back_Equipments.transform.Find(tItem.File_Name).gameObject;
-                    backItem.SetActive(true);
+                    for (int i = 0; i < Back_Equipments.transform.childCount; ++i)
+                    {
+                        if (Back_Equipments.transform.GetChild(i).name == tItem.File_Name)
+                        {
+                            backItem = Back_Equipments.transform.GetChild(i).gameObject;
+                            backItem.SetActive(true);
+                            break;
+                        }
+                    }
                 }
                 break;
             //Face

@@ -1433,9 +1433,9 @@ MonoBehaviour:
   playerMesh: {fileID: 8491244148625121900}
   weaponInven: {fileID: 6241508891433731045}
   RunEffect: {fileID: 213488576075811781}
-  Head_Equipments: {fileID: 0}
-  Face_Equipments: {fileID: 0}
-  Back_Equipments: {fileID: 0}
+  Head_Equipments: {fileID: 1584313136025502526}
+  Face_Equipments: {fileID: 5783418619616881098}
+  Back_Equipments: {fileID: 2494826194896390755}
 --- !u!114 &2266266892710373593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5638,6 +5638,11 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.06
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1584313136025502526 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8952412208904830685, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}
+  m_PrefabInstance: {fileID: 7620590984462433763}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1669907530377206017 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9146092942837900514, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}
