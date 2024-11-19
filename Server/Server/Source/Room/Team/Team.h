@@ -22,5 +22,6 @@ private:
 
 	std::atomic<int> mLife;
 
+	// ÆÀ ¸â¹öµéÀÇ InGameID
 	std::unordered_set<int> mMembers;
 };

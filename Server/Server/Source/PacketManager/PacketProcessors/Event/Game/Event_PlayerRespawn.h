@@ -36,6 +36,7 @@ public:
 			}
 
 			if (room->GetTeams().at(player->GetTeam()).GetLife() <= 0) {
+				//COUT << player->GetTeam() << "팀 끝나서 부활 안됨\n";
 				return;
 			}
 
@@ -54,6 +55,7 @@ public:
 			player->GetBombLock().unlock();
 
 			pPacketSender->SendPlayerRespawn(playerid, roomID);
+			//COUT << player->GetInGameID() << " 부활함\n";
 		}
 		catch (const std::exception& e) {
 			std::cerr << "[Event_PlayerRespawn ERROR] : " << e.what() << std::endl;

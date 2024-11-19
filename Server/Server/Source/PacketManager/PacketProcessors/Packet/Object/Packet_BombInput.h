@@ -36,7 +36,6 @@ public:
 				if (player == nullptr) {
 					return;
 				}
-
 				GameMode gameMode = room->GetGameMode();
 				GameManager* gameManager = pServer->GetGameManagers()[gameMode];
 				sPlayerGameRecord& playerGameRecord = room->GetPlayerRecordList().at(playerid);
@@ -66,7 +65,8 @@ public:
 					// life가 0인데 게임이 안끝나면 바로 죽이고 관전상태로
 					if (gameManager->CheckGameEnd(roomID) == false) {
 						for (int member : teamInfo.GetMembers()) {
-							dynamic_cast<Player*>(pServer->GetSessions()[member])->ChangeToDeadState(pServer, 0);
+							int sessionID = room->GetPlayerList()[member].load();
+							dynamic_cast<Player*>(pServer->GetSessions()[sessionID])->ChangeToDeadState(pServer, 0);
 						}
 					}
 				}

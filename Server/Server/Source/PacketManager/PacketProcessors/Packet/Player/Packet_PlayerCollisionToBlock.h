@@ -14,12 +14,9 @@ public:
 			if (verifier.VerifyBuffer<PlayerCollisionToBlock>(nullptr)) {
 				const PlayerCollisionToBlock* read = flatbuffers::GetRoot<PlayerCollisionToBlock>(data);
 
-				int playerid = read->id();
-				Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
-				if (player == nullptr && player->GetInGameID() != read->id()) {
-					return;
-				}
-				int roomID = player->GetRoomID();
+				int targetID = read->id();
+				Player* host = dynamic_cast<Player*>(pServer->GetSessions()[key]);
+				int roomID = host->GetRoomID();
 				if (roomID == INVALIDKEY) {
 					return;
 				}
@@ -30,28 +27,37 @@ public:
 					return;
 				}
 				room->GetStateLock().unlock_shared();
+
+				Player* target = dynamic_cast<Player*>(pServer->GetSessions()[room->GetPlayerList()[targetID]]);
+
+				if (target == nullptr && target->GetInGameID() != targetID) {
+					return;
+				}
+
 				long long roomCode = room->GetRoomCode();
 
-				player->GetPlayerStateLock().lock_shared();
-				ePlayerState playerState = player->GetPlayerState();
-				player->GetPlayerStateLock().unlock_shared();
+				target->GetPlayerStateLock().lock_shared();
+				ePlayerState playerState = target->GetPlayerState();
+				target->GetPlayerStateLock().unlock_shared();
 
-				sPlayerGameRecord& playerGameRecord = room->GetPlayerRecordList().at(playerid);
+				sPlayerGameRecord& playerGameRecord = room->GetPlayerRecordList().at(targetID);
 
 				if (playerState == ePlayerState::PS_ALIVE) {
 					// 그로기 상태로 만듬
-					player->ChangeToGroggyState(pServer);
-					playerGameRecord.gameRecord.Groggy_Count.fetch_add(1);
-					PushEventGroggyRecovery(pServer->GetTimer(), playerid, roomID, roomCode, room->GetGameModeData().Ch_Groggy);
+					if (target->ChangeToGroggyState(pServer)) {
+						playerGameRecord.gameRecord.Groggy_Count.fetch_add(1);
+						PushEventGroggyRecovery(pServer->GetTimer(), targetID, roomID, roomCode, room->GetGameModeData().Ch_Groggy);
+						//COUT << targetID << " 블록맞고 그로기\n";
+					}
 				}
 				else if (playerState == ePlayerState::PS_GROGGY) {
 					int spawnTime = room->GetGameModeData().Player_Spawn_Time;
 					// 죽임
-					player->ChangeToDeadState(pServer, spawnTime);
-
-					// record update
-					playerGameRecord.gameRecord.DeathCount.fetch_add(1);
-					PushEventPlayerRespawn(pServer->GetTimer(), playerid, roomID, roomCode, spawnTime);
+					if (target->ChangeToDeadState(pServer, spawnTime)) {
+						playerGameRecord.gameRecord.DeathCount.fetch_add(1);
+						PushEventPlayerRespawn(pServer->GetTimer(), targetID, roomID, roomCode, spawnTime);
+						//COUT << targetID << " 블록맞고 사망\n";
+					}
 				}
 			}
 		}
