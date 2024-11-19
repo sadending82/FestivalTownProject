@@ -41,16 +41,18 @@ public:
 
 				switch (room->GetIsTestRoom()) {
 				case true: {
-					pPacketSender->SendAllPlayerReady(roomID);
 					room->ChangeAllPlayerInGame();
+					pPacketSender->SendAllPlayerReady(roomID);
 					PushEventGameStart(pServer->GetTimer(), roomID, pServer->GetRooms()[roomID]->GetRoomCode());
 				}break;
 
 				default : {
 					if (room->GetReadyCnt() == room->GetPlayerCnt()) {
+						COUT << "다 준비됨?\n";
 						if (room->SetAllPlayerReady(true) == true) {
-							pPacketSender->SendAllPlayerReady(roomID);
+							COUT << "시작함\n";
 							room->ChangeAllPlayerInGame();
+							pPacketSender->SendAllPlayerReady(roomID);
 							PushEventGameStart(pServer->GetTimer(), roomID, room->GetRoomCode());
 						}
 					}
