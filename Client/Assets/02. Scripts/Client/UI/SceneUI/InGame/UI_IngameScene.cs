@@ -71,12 +71,14 @@ public class UI_IngameScene: UI_Scene
                 Get<GameObject>((int)GameObjects.PointPanelTeam1).GetComponent<UI_PointPanel>().SetTeam(0);
                 teamPanelIndex.Add((int)GameObjects.PointPanelTeam2);
                 Get<GameObject>((int)GameObjects.PointPanelTeam2).GetComponent<UI_PointPanel>().SetTeam(1);
+                Get<GameObject>((int)GameObjects.PointPanelTeam3).SetActive(false);
                 break;
             case 1: // 1 0
                 teamPanelIndex.Add((int)GameObjects.PointPanelTeam2);
                 Get<GameObject>((int)GameObjects.PointPanelTeam2).GetComponent<UI_PointPanel>().SetTeam(0);
                 teamPanelIndex.Add((int)GameObjects.PointPanelTeam1);
                 Get<GameObject>((int)GameObjects.PointPanelTeam1).GetComponent<UI_PointPanel>().SetTeam(1);
+                Get<GameObject>((int)GameObjects.PointPanelTeam3).SetActive(false);
                 break;
             default:
                 break;
