@@ -47,7 +47,7 @@ public:
 				}break;
 
 				default : {
-					if (room->GetReadyCnt() == room->GetPlayerCnt()) {
+					if (room->GetReadyCnt() >= room->GetPlayerCnt()) {
 						COUT << "다 준비됨?\n";
 						if (room->SetAllPlayerReady(true) == true) {
 							COUT << "시작함\n";
