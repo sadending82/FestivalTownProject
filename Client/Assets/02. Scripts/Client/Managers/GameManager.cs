@@ -80,6 +80,10 @@ public class GameManager : MonoBehaviour
     public void ClearCharacterCustomizing()
     {
         playersCustomizingData.Clear();
+        for (int i = 0; i < 6; ++i)
+        {
+            playersCustomizingData.Add(new List<int>());
+        }
     }
 
     public void Init()
@@ -171,6 +175,7 @@ public class GameManager : MonoBehaviour
         isGameEnd = false;
         PlayerResultData.Clear();
         winningTeam = -1;
+        ClearCharacterCustomizing();
     }
 
     public void LoadGameMap()

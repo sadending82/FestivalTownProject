@@ -89,6 +89,13 @@ public class CharacterStatus : MonoBehaviour
         amIPlayer = false;
         myCamera.enabled = false;
         isGameEnd = false;
+
+        if(skinMaterial == null || faceMaterial == null)
+        {
+            Material[] mat = playerMesh.GetComponent<SkinnedMeshRenderer>().materials;
+            skinMaterial = mat[0];
+            faceMaterial = mat[1];
+        }
     }
 
     private void Start()
