@@ -3921,11 +3921,11 @@ PrefabInstance:
     - target: {fileID: 4903856608800329965, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: de5e80ccd5720c140bc2399aa7da9cca, type: 2}
+      objectReference: {fileID: 2100000, guid: 4fce7560d1ba79f4388390eaf60921c4, type: 2}
     - target: {fileID: 4903856608800329965, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: 918230774d151254199d6518eeaca063, type: 2}
+      objectReference: {fileID: 2100000, guid: 8aa25a496d76fa44ea04a7de41768d49, type: 2}
     - target: {fileID: 4969011155897806710, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
