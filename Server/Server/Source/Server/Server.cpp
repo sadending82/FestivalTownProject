@@ -355,6 +355,7 @@ void Server::SendAllPlayerInRoomBySessionID(void* packet, int size, int sessionI
         if (session_id == INVALIDKEY) continue;
         Player* player = dynamic_cast<Player*>(mSessions[session_id]);
         if (player->GetIsBot()) continue;
+        if (player->GetRoomID() != roomID) continue;
         player->DoSend(packet, size);
     }
 }
@@ -366,7 +367,7 @@ void Server::SendAllPlayerInRoom(void* packet, int size, int roomID)
         if (session_id == INVALIDKEY) continue;
         Player* player = dynamic_cast<Player*>(mSessions[session_id]);
         if (player->GetIsBot()) continue;
-        if (player->GetRoomID() == roomID) continue;
+        if (player->GetRoomID() != roomID) continue;
         player->DoSend(packet, size);
     }
 }
@@ -387,7 +388,7 @@ void Server::SendAllPlayerInRoomExceptSender(void* packet, int size, int session
         if (session_id == sessionID) continue;
         Player* player = dynamic_cast<Player*>(mSessions[session_id]);
         if (player->GetIsBot()) continue;
-        if (player->GetRoomID() == roomID) continue;
+        if (player->GetRoomID() != roomID) continue;
         player->DoSend(packet, size);
     }
 }
