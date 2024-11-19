@@ -34,7 +34,6 @@ public:
 				}
 				player->GetSessionStateLock().unlock();
 
-				room->AddReadyCnt();
 
 				SERVER_MODE serverMode = pServer->GetMode();
 				
@@ -47,8 +46,10 @@ public:
 				}break;
 
 				default : {
-					if (room->GetReadyCnt() >= room->GetPlayerCnt()) {
-						COUT << "´Ù ÁØºñµÊ?\n";
+					COUT << "´Ù ÁØºñµÊ?????????????\n";
+					room->SetIsPlayerReady(player->GetInGameID(), true);
+					if (room->CheckAllPlayerReady() == true) {
+						COUT << "´Ù ÁØºñµÊ\n";
 						if (room->SetAllPlayerReady(true) == true) {
 							COUT << "½ÃÀÛÇÔ\n";
 							room->ChangeAllPlayerInGame();

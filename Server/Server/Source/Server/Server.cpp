@@ -153,18 +153,17 @@ bool Server::Disconnect(int key)
             room->GetPlayerList()[inGameID].store(INVALIDKEY);
             if (room->GetPlayerCnt() > 0) {
                 room->SubPlayerCnt();
-                room->SubReadyCnt();
+                room->SetIsPlayerReady(inGameID, false);
             }
 
             mPacketSender->SendPlayerDelete(roomID, inGameID);
 
             switch (mMode) {
             case SERVER_MODE::LIVE: {
-                if (room->GetReadyCnt() == room->GetPlayerCnt()) {
+                if (room->CheckAllPlayerReady() == true) {
                     if (room->SetAllPlayerReady(true) == true) {
-                        COUT << "로딩 중에 누구 끊겨서 그냥 시작함\n";
-                        mPacketSender->SendAllPlayerReady(roomID);
                         room->ChangeAllPlayerInGame();
+                        mPacketSender->SendAllPlayerReady(roomID);
                         PushEventGameStart(mTimer, roomID, room->GetRoomCode());
                     }
                 }
@@ -196,6 +195,7 @@ bool Server::Disconnect(int key)
                 int newHostSessionID = room->ChangeHost();
                 mPacketSender->SendGameHostChange(newHostSessionID);
             }
+
         }
 
     }

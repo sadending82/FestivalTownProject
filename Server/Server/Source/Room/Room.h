@@ -41,7 +41,6 @@ public:
 	Bomb* GetBomb(int id);
 
 	int GetPlayerCnt() { return mPlayerCnt.load(); }
-	int GetReadyCnt() { return mReadyCnt.load(); }
 	GameMode GetGameMode() { return mGameMode; }
 	Map* GetMap() { return mMap; }
 	TIMEPOINT GetStartTime() { return mStartTime; }
@@ -59,8 +58,7 @@ public:
 	void AddPlayerCnt() { mPlayerCnt.fetch_add(1); }
 	void SubPlayerCnt() { mPlayerCnt.fetch_sub(1); }
 	void SetPlayerCnt(int count) { mPlayerCnt.store(count); }
-	void AddReadyCnt() { mReadyCnt.fetch_add(1); }
-	void SubReadyCnt() { mReadyCnt.fetch_sub(1); }
+	void SetIsPlayerReady(int playerID, bool value);
 	void SetGameMode(GameMode GameMode) { mGameMode = GameMode; }
 	void SetStartTime(TIMEPOINT time) { mStartTime = time; }
 	void SetState(eRoomState state) { mState = state; }
@@ -73,6 +71,8 @@ public:
 
 	int ChangeHost();
 
+	bool CheckAllPlayerReady();
+
 private:
 	eRoomState mState;
 	GameMode mGameMode;
@@ -82,7 +82,10 @@ private:
 
 	std::shared_mutex mStateLock;
 
+	std::mutex mIsReadyListLock;
+
 	std::array<SESSION_ID, MAXPLAYER> mPlayerList;
+	std::array<std::atomic<bool>, MAXPLAYER> mIsReadyList;
 
 	ObjectPool mObjectPool;
 
@@ -91,7 +94,6 @@ private:
 
 	int mRoomID; // room array index
 	std::atomic<int> mPlayerCnt = 0;
-	std::atomic<int> mReadyCnt = 0;
 	int mHostID = INVALIDKEY;
 	TIMEPOINT mStartTime;
 	long long mRoomCode = 0; // Room 고유 식별 번호

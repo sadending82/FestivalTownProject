@@ -12,13 +12,13 @@ void Room::Reset()
 {
 	mRoomID = 0; 
 	mPlayerCnt = 0;
-	mReadyCnt = 0;
 	mHostID = INVALIDKEY;
 	mRoomCode = 0;
 
 	mObjectPool.AllObjectDeactive();
 
 	std::fill(mPlayerList.begin(), mPlayerList.end(), INVALIDKEY);
+	std::fill(mIsReadyList.begin(), mIsReadyList.end(), false);
 
 	mPlayerRecordList.clear();
 	mTeams.clear();
@@ -181,6 +181,13 @@ Bomb* Room::GetBomb(int id)
 	return dynamic_cast<Bomb*>(mObjectPool.GetObjectByID(id));
 }
 
+void Room::SetIsPlayerReady(int playerID, bool value)
+{
+	mIsReadyListLock.lock();
+	mIsReadyList[playerID].store(value);
+	mIsReadyListLock.unlock();
+}
+
 bool Room::SetIsRun(bool desired)
 {
 	bool expected = !desired;
@@ -216,4 +223,21 @@ int Room::ChangeHost()
 		break;
 	}
 	return session_id;
+}
+
+bool Room::CheckAllPlayerReady()
+{
+	mIsReadyListLock.lock();
+	for (int i = 0; i < MAXPLAYER; ++i) {
+		if (mPlayerList[i].load() == INVALIDKEY) {
+			continue;
+		}
+		bool isReady = mIsReadyList[i].load();
+		if (isReady == false) {
+			mIsReadyListLock.unlock();
+			return false;
+		}
+	}
+	mIsReadyListLock.unlock();
+	return true;
 }
