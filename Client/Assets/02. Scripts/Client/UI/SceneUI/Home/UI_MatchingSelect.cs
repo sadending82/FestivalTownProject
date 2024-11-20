@@ -29,7 +29,7 @@ public class UI_MatchingSelect: UI_PopUp
 
 
         // 치트가 활성화 되어 있지 않을 때에는 없애주기
-        if (false == Managers.Cheat.isEnable) Get<GameObject>((int)GameObjects.TestMatchingButton).SetActive(false);
+        if (false == Managers.Cheat.IsEnable()) Get<GameObject>((int)GameObjects.TestMatchingButton).SetActive(false);
 
         Get<GameObject>((int)GameObjects.IndivisualButton).BindEvent((PointerEventData) =>
         {

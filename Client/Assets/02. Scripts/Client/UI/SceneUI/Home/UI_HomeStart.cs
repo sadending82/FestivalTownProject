@@ -27,7 +27,7 @@ public class UI_HomeStart : UI_Scene
         PassButton,
         AchieveButton,
         InventoryButton,
-
+        AccountInitializeButton,
     }
 
     bool isInitialized = false;
@@ -103,6 +103,16 @@ public class UI_HomeStart : UI_Scene
             StartCoroutine(WaitRecvItemDataAndShowUI());
 
         });
+
+        Get<GameObject>((int)GameObjects.AccountInitializeButton).BindEvent((PointerEventData) =>
+        {
+            // 계정 초기화 버튼에서 해야할 일 해주시면 됩니다.
+        });
+
+        if (false == Managers.Cheat.IsEnable())
+        {
+            Get<GameObject>((int)GameObjects.AccountInitializeButton).SetActive(false);
+        }
 
         this.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
         this.GetComponent<Canvas>().worldCamera = Camera.main;

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CheatManager
 {
-    public bool isEnable = false;
+    bool isEnable = false;
 
     public void Init()
     {
@@ -17,5 +17,10 @@ public class CheatManager
             isEnable = true;
         }
 
+    }
+
+    public bool IsEnable()
+    {
+        return isEnable; 
     }
 }
