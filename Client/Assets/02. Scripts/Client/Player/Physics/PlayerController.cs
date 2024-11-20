@@ -691,7 +691,8 @@ public class PlayerController : MonoBehaviour
             // 날라차기
             if(isLeftShiftKeyDown == true && isGrounded == false)
             {
-                if (playerStatus.GetStamina() >= flyingKickStaminaConsume && moveDirection != Vector3.zero)
+                if (playerStatus.GetStamina() >= flyingKickStaminaConsume && moveDirection != Vector3.zero
+                    && flyingKickChecker == false)
                 {
                     if (pelvis != null)
                     {

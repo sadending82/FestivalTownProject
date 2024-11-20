@@ -23,7 +23,5 @@ namespace Network.PacketProcessor
                 Managers.Scene.CurrentScene.GetComponent<GameScene>().GameSceneStart();
             }
         }
-
-        
     }
 }
