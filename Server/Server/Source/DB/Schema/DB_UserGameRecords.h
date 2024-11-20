@@ -1,4 +1,6 @@
 #pragma once
+#include <atomic>
+
 #pragma pack (push, 1)
 
 enum class UserGameRecords_Field {

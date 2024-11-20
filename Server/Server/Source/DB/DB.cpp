@@ -202,6 +202,10 @@ int DB::InsertNewUser(const char* id, const char* nickname)
 
 bool DB::InsertUserGameRecords(const int uid)
 {
+	if (uid == INVALIDKEY) {
+		return false;
+	}
+
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
@@ -232,6 +236,10 @@ bool DB::InsertUserGameRecords(const int uid)
 
 bool DB::InsertUserItem(const int owner_uid, const int itemCode, const int itemCount, const int itemType)
 {
+	if (owner_uid == INVALIDKEY) {
+		return false;
+	}
+
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
@@ -333,6 +341,9 @@ std::pair<bool, UserInfo> DB::SelectUserInfoForLogin(const char* id)
 
 std::pair<bool, UserInfo> DB::SelectUserInfo(const int uid)
 {
+	if (uid == INVALIDKEY) {
+		return { false, UserInfo()};
+	}
 	UserInfo userInfo;
 
 	SQLHSTMT hStmt = NULL;
@@ -392,6 +403,10 @@ std::pair<bool, UserInfo> DB::SelectUserInfo(const int uid)
 
 bool DB::SelectUserAllCurrency(const int uid, std::vector<int>& currency_types_output, std::vector<int>& currency_amounts_output)
 {
+	if (uid == INVALIDKEY) {
+		return false;
+	}
+
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
@@ -435,6 +450,9 @@ bool DB::SelectUserAllCurrency(const int uid, std::vector<int>& currency_types_o
 
 std::unordered_map<int, UserItem> DB::SelectUserAllItems(const int uid)
 {
+	if (uid == INVALIDKEY) {
+		return std::unordered_map<int, UserItem>();;
+	}
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 	int zero = 0;
@@ -479,6 +497,10 @@ std::unordered_map<int, UserItem> DB::SelectUserAllItems(const int uid)
 
 sCharacterCustomizing DB::SelectCharacterCustomizing(const int uid)
 {
+	if (uid == INVALIDKEY) {
+		return sCharacterCustomizing();
+	}
+
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
@@ -528,6 +550,10 @@ sCharacterCustomizing DB::SelectCharacterCustomizing(const int uid)
 
 int DB::SelectUserItemCount(const int uid, const int item_index)
 {
+	if (uid == INVALIDKEY) {
+		return 0;
+	}
+
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
@@ -567,6 +593,10 @@ int DB::SelectUserItemCount(const int uid, const int item_index)
 
 bool DB::UpdateUserConnectionState(const int uid, const int state)
 {
+	if (uid == INVALIDKEY) {
+		return false;
+	}
+
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
@@ -598,6 +628,10 @@ bool DB::UpdateUserConnectionState(const int uid, const int state)
 
 bool DB::UpsertUserItemCount(const int uid, const int item_Code, const int valueOfChange)
 {
+	if (uid == INVALIDKEY) {
+		return false;
+	}
+
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
@@ -637,6 +671,10 @@ bool DB::UpsertUserItemCount(const int uid, const int item_Code, const int value
 
 bool DB::UpdateUserPoint(const int uid, const int valueOfChange)
 {
+	if (uid == INVALIDKEY) {
+		return false;
+	}
+
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
@@ -669,6 +707,10 @@ bool DB::UpdateUserPoint(const int uid, const int valueOfChange)
 
 bool DB::UpdateBattleRecords(const int uid, const UserGameRecords& gameRecords)
 {
+	if (uid == INVALIDKEY) {
+		return false;
+	}
+
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
@@ -716,6 +758,10 @@ bool DB::UpdateBattleRecords(const int uid, const UserGameRecords& gameRecords)
 
 bool DB::UpdateUserItemCount(const int uid, const int item_index, const int valueOfChange)
 {
+	if (uid == INVALIDKEY) {
+		return false;
+	}
+
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
@@ -750,6 +796,10 @@ bool DB::UpdateUserItemCount(const int uid, const int item_index, const int valu
 
 bool DB::UpdateCharacterCustomizing(const int uid, const sCharacterCustomizing& characterCustomizing)
 {
+	if (uid == INVALIDKEY) {
+		return false;
+	}
+
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
@@ -785,6 +835,10 @@ bool DB::UpdateCharacterCustomizing(const int uid, const sCharacterCustomizing& 
 
 bool DB::UpdateCharacterCustomizing(const int uid, const std::vector<uint8_t> characterCustomizing)
 {
+	if (uid == INVALIDKEY) {
+		return false;
+	}
+
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
@@ -850,6 +904,10 @@ bool DB::DeleteAcccount(const char* id)
 
 bool DB::DeleteUserInfo(const int uid)
 {
+	if (uid == INVALIDKEY) {
+		return false;
+	}
+
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
@@ -880,6 +938,10 @@ bool DB::DeleteUserInfo(const int uid)
 
 bool DB::DeleteUserItem(const int owner_uid, const int itemCode)
 {
+	if (owner_uid == INVALIDKEY) {
+		return false;
+	}
+
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 

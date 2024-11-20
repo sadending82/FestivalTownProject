@@ -1,9 +1,10 @@
 #pragma once
+#include "protocol.h"
+#include "DB/Schema/Schemas.h"
+
 #include <iostream>
 #include <chrono>
 #include <vector>
-#include "protocol.h"
-#include "DB/Schema/Schemas.h"
 #include <unordered_map>
 
 #define TIMEPOINT std::chrono::system_clock::time_point

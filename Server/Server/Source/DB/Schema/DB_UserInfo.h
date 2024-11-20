@@ -33,22 +33,22 @@ struct sCharacterCustomizing {
 };
 
 struct UserInfo {
-	int UID;
+	int UID = -1;
 	std::string AccountID = std::string(50, '\0');
-	std::wstring NickName = std::wstring(50, '\0');
-	int UserLevel;
-	int PassLevel;
-	int UserTitle;
-	int ProfileSkin;
-	int Point;
+	std::wstring NickName = L"Default";
+	int UserLevel = 0;
+	int PassLevel = 0;
+	int UserTitle = 0;
+	int ProfileSkin = 0;
+	int Point = 0;
 	std::tm date;
-	int AttendanceDay;
+	int AttendanceDay = 0;
 	sCharacterCustomizing characterCustomizing;
 	int State;
 
-	int Gold;
-	int Dia;
-	int Mileage;
+	int Gold = 0;
+	int Dia = 0;
+	int Mileage = 0;
 };
 
 
