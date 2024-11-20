@@ -160,13 +160,7 @@ bool Server::Disconnect(int key)
 
             switch (mMode) {
             case SERVER_MODE::LIVE: {
-                if (room->CheckAllPlayerReady() == true) {
-                    if (room->SetAllPlayerReady(true) == true) {
-                        room->ChangeAllPlayerInGame();
-                        mPacketSender->SendAllPlayerReady(roomID);
-                        PushEventGameStart(mTimer, roomID, room->GetRoomCode());
-                    }
-                }
+                mLobbyManager->CheckReadyToGamePlay(room, roomID);
             }break;
 
             }

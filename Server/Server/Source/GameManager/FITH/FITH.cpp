@@ -18,6 +18,11 @@ FITH::FITH(class Server* server, GameMode gameMode)
     mGameMode = gameMode;
 }
 
+void FITH::PrepareForStartGame(Room* room, int roomID)
+{
+    PushEventGameStart(pServer->GetTimer(), roomID, room->GetRoomCode());
+}
+
 void FITH::StartGame(int roomID)
 {
     Room* room = pServer->GetRooms()[roomID];

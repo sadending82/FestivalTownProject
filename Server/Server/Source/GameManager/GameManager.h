@@ -12,6 +12,7 @@ public:
 
 	~GameManager() {}
 
+	virtual void PrepareForStartGame(class Room* room, int roomID) {};
 	virtual void StartGame(int roomID) {}
 	virtual bool CheckGameEnd(int roomID) { return false; }
 	virtual bool TimeoverGameEnd(int roomID) { return false; }

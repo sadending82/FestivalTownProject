@@ -9,8 +9,8 @@ public:
 
 	~FITH() {}
 
+	virtual void PrepareForStartGame(class Room* room, int roomID) override;
 	virtual void StartGame(int roomID) override;
-
 	virtual bool CheckGameEnd(int roomID) override;
 	virtual bool TimeoverGameEnd(int roomID) override;
 	virtual int CalculatePoint(sPlayerGameRecord& record, BattleResult result) override;

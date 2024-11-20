@@ -46,17 +46,8 @@ public:
 				}break;
 
 				default : {
-					COUT << "다 준비됨?????????????\n";
 					room->SetIsPlayerReady(player->GetInGameID(), true);
-					if (room->CheckAllPlayerReady() == true) {
-						COUT << "다 준비됨\n";
-						if (room->SetAllPlayerReady(true) == true) {
-							COUT << "시작함\n";
-							room->ChangeAllPlayerInGame();
-							pPacketSender->SendAllPlayerReady(roomID);
-							PushEventGameStart(pServer->GetTimer(), roomID, room->GetRoomCode());
-						}
-					}
+					pServer->GetLobbyManager()->CheckReadyToGamePlay(room, roomID);
 				}break;
 				}
 			}

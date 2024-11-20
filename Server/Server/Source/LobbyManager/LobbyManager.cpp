@@ -15,6 +15,17 @@ LobbyManager::~LobbyManager()
 
 }
 
+void LobbyManager::CheckReadyToGamePlay(Room* room, int roomID)
+{
+	if (room->CheckAllPlayerReady() == true) {
+		if (room->SetAllPlayerReady(true) == true) {
+			room->ChangeAllPlayerInGame();
+			pServer->GetPacketSender()->SendAllPlayerReady(roomID);
+			pServer->GetGameManagers()[room->GetGameMode()]->PrepareForStartGame(room, roomID);
+		}
+	}
+}
+
 GachaItem LobbyManager::RollGacha(std::unordered_map<int, GachaItem>& gachaItemList)
 {
 	int totalWeight = 0;
