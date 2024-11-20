@@ -28,6 +28,8 @@ public class UI_HomeStart : UI_Scene
         AchieveButton,
         InventoryButton,
         AccountInitializeButton,
+        GetMoneyButton,
+        GetDiamondButton,
     }
 
     bool isInitialized = false;
@@ -106,12 +108,27 @@ public class UI_HomeStart : UI_Scene
 
         Get<GameObject>((int)GameObjects.AccountInitializeButton).BindEvent((PointerEventData) =>
         {
-            // 계정 초기화 버튼에서 해야할 일 해주시면 됩니다.
+            // 계정 초기화 버튼에서 해야할 일
+            // 패킷 보내기 정도 인듯?
+        });
+
+        Get<GameObject>((int)GameObjects.GetMoneyButton).BindEvent((PointerEventData) =>
+        {
+            // 골드 획득 버튼에서 해야할 일
+            // 패킷 보내기 정도 인듯?
+        });
+
+        Get<GameObject>((int)GameObjects.GetDiamondButton).BindEvent((PointerEventData) =>
+        {
+            // 다이아 획득 버튼에서 해야할 일
+            // 패킷 보내기 정도 인듯?
         });
 
         if (false == Managers.Cheat.IsEnable())
         {
             Get<GameObject>((int)GameObjects.AccountInitializeButton).SetActive(false);
+            Get<GameObject>((int)GameObjects.GetMoneyButton).SetActive(false);
+            Get<GameObject>((int)GameObjects.GetDiamondButton).SetActive(false);
         }
 
         this.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
