@@ -916,7 +916,7 @@ GameObject:
   - component: {fileID: 3371543418105107862}
   - component: {fileID: 7302206788071542691}
   m_Layer: 0
-  m_Name: ResultScenePlayer
+  m_Name: NonRagdollPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

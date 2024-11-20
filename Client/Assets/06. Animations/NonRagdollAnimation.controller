@@ -277,7 +277,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ResultAnimation
+  m_Name: NonRagdollAnimation
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: Win1

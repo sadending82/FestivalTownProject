@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ResultPlayerState : MonoBehaviour
+public class NonRagdollPlayerState : MonoBehaviour
 {
     public GameObject playerMesh;
     public GameObject Head_Equipments;

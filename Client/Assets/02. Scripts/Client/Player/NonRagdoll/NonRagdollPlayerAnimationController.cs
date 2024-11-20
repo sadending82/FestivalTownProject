@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TMPro.Examples;
 using UnityEngine;
 
-public class ResultAnimationController : MonoBehaviour
+public class NonRagdollPlayerAnimationController : MonoBehaviour
 {
     public Animator animator;
 
