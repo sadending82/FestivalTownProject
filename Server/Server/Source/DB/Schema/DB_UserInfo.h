@@ -33,7 +33,7 @@ struct sCharacterCustomizing {
 };
 
 struct UserInfo {
-	int UID = -1;
+	int UID = 0;
 	std::string AccountID = std::string(50, '\0');
 	std::wstring NickName = L"Default";
 	int UserLevel = 0;

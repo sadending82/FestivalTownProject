@@ -27,7 +27,7 @@ enum class UserGameRecords_Field {
 
 
 struct UserGameRecords {
-	int UID = -1;
+	int UID = 0;
 	std::atomic<int> KillCount = 0;
 	std::atomic<int> DeathCount = 0;
 	std::atomic<int> Point = 0;

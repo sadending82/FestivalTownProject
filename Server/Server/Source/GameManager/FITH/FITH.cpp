@@ -497,7 +497,6 @@ bool FITH::PlayerDieInstant(int roomID, Room* room, int targetID, Player* target
         // record update
         targetGameRecord.gameRecord.DeathCount.fetch_add(1);
         PushEventPlayerRespawn(pServer->GetTimer(), targetID, roomID, room->GetRoomCode(), spawnTime);
-        COUT << targetID << " Áï»çÇÔ\n";
         return true;
     }
 
