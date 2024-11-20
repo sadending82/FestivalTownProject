@@ -33,8 +33,8 @@ void Player::IngameInfoInit()
 
 void Player::Disconnect()
 {
-	Init();
 	__super::Disconnect();
+	Init();
 }
 
 void Player::DoRecv()
