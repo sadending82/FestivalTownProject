@@ -223,13 +223,13 @@ public class GameScene : BaseScene
         {
             resultScene.transform.GetChild(i).gameObject.SetActive(true);
         }
-        ResultPlayerController resultPlayerController = resultScene.transform.GetChild(0).GetComponent<ResultPlayerController>();
+        NonRagdollPlayerController resultPlayerController = resultScene.transform.GetChild(0).GetComponent<NonRagdollPlayerController>();
         resultPlayerController.SetPlayer();
     }
     private void ResultObjectOff()
     {
         GameObject resultScene = GameObject.Find("ResultScene");
-        ResultPlayerController resultPlayerController = resultScene.transform.GetChild(0).GetComponent<ResultPlayerController>();
+        NonRagdollPlayerController resultPlayerController = resultScene.transform.GetChild(0).GetComponent<NonRagdollPlayerController>();
         resultPlayerController.ResetPlayer();
         for (int i = 0; i < resultScene.transform.childCount; ++i)
         {

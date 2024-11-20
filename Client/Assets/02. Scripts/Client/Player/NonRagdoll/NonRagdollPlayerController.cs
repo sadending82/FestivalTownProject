@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using NetworkProtocol;
 
-public class ResultPlayerController : MonoBehaviour
+public class NonRagdollPlayerController : MonoBehaviour
 {
     // TODO: 추가 - 착용아이템 - 착용 아이템 세팅 할 수 있도록 수정
 
@@ -39,12 +39,12 @@ public class ResultPlayerController : MonoBehaviour
                         List<int> itemList = Managers.Game.GetCharacterCustomizingById(i);
                         foreach (int itemCode in itemList)
                         {
-                            rPlayer.GetComponent<ResultPlayerState>().ChangeCustomizing(itemCode);
+                            rPlayer.GetComponent<NonRagdollPlayerState>().ChangeCustomizing(itemCode);
                         }
 
                         rPlayer.transform.position = winnerOffset;
                         winnerOffset.x += winnerXInterval;
-                        rPlayer.GetComponent<ResultAnimationController>().SetWinAnimation();
+                        rPlayer.GetComponent<NonRagdollPlayerAnimationController>().SetWinAnimation();
                     }
                     // 진 팀 플레이어면
                     else
@@ -53,12 +53,12 @@ public class ResultPlayerController : MonoBehaviour
                         List<int> itemList = Managers.Game.GetCharacterCustomizingById(i);
                         foreach (int itemCode in itemList)
                         {
-                            rPlayer.GetComponent<ResultPlayerState>().ChangeCustomizing(itemCode);
+                            rPlayer.GetComponent<NonRagdollPlayerState>().ChangeCustomizing(itemCode);
                         }
 
                         rPlayer.transform.position = loserOffset;
                         loserOffset.x += loserXInterval;
-                        rPlayer.GetComponent<ResultAnimationController>().SetLoseAnimation();
+                        rPlayer.GetComponent<NonRagdollPlayerAnimationController>().SetLoseAnimation();
                     }
                     playerCount++;
                 }
@@ -87,11 +87,11 @@ public class ResultPlayerController : MonoBehaviour
                         List<int> itemList = Managers.Game.GetCharacterCustomizingById(i);
                         foreach (int itemCode in itemList)
                         {
-                            rPlayer.GetComponent<ResultPlayerState>().ChangeCustomizing(itemCode);
+                            rPlayer.GetComponent<NonRagdollPlayerState>().ChangeCustomizing(itemCode);
                         }
 
                         rPlayer.transform.position = winnerOffset;
-                        rPlayer.GetComponent<ResultAnimationController>().SetWinAnimation();
+                        rPlayer.GetComponent<NonRagdollPlayerAnimationController>().SetWinAnimation();
                     }
                     // 진 팀 플레이어면
                     else
@@ -100,12 +100,12 @@ public class ResultPlayerController : MonoBehaviour
                         List<int> itemList = Managers.Game.GetCharacterCustomizingById(i);
                         foreach (int itemCode in itemList)
                         {
-                            rPlayer.GetComponent<ResultPlayerState>().ChangeCustomizing(itemCode);
+                            rPlayer.GetComponent<NonRagdollPlayerState>().ChangeCustomizing(itemCode);
                         }
 
                         rPlayer.transform.position = loserOffset;
                         loserOffset.x += loserXInterval;
-                        rPlayer.GetComponent<ResultAnimationController>().SetLoseAnimation();
+                        rPlayer.GetComponent<NonRagdollPlayerAnimationController>().SetLoseAnimation();
                     }
                     playerCount++;
                 }
@@ -117,7 +117,7 @@ public class ResultPlayerController : MonoBehaviour
         for (int i = 0; i < maxPlayerNum; ++i)
         {
             GameObject tPlayer = this.transform.GetChild(i).gameObject;
-            tPlayer.GetComponent<ResultAnimationController>().ResetAnimation();
+            tPlayer.GetComponent<NonRagdollPlayerAnimationController>().ResetAnimation();
             tPlayer.SetActive(false);
         }
     }
