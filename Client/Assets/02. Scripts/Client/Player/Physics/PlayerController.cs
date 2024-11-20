@@ -68,6 +68,7 @@ public class PlayerController : MonoBehaviour
 
     private bool isLeftShiftKeyDown;
     private bool beforeIsLeftShiftKeyDown;
+    private bool spectatorCameraMode;
 
     //------ Pick Up -------
     public Transform bombInvenTransform;
@@ -197,6 +198,7 @@ public class PlayerController : MonoBehaviour
         beforeAxisRawV = 0;
         SetIsMove(false);
         targetItem = null;
+        spectatorCameraMode = false;
     }
 
     private void FixedUpdate()
@@ -349,7 +351,7 @@ public class PlayerController : MonoBehaviour
                     }
                 }
             }
-            else if (amIPlayer == true)
+            else if (amIPlayer == true && spectatorCameraMode == true)
             {
                 SpectatorCameraControl();
             }
@@ -857,6 +859,14 @@ public class PlayerController : MonoBehaviour
         {
             Managers.SpectatorCamera.SwitchNextCamera();
         }
+    }
+    public void SpectatorCameraModeOn()
+    {
+        spectatorCameraMode = true;
+    }
+    public void SpectatorCameraModeOff()
+    {
+        spectatorCameraMode = false;
     }
     public void s_PickUpBomb(int playerId, int bombId)
     {

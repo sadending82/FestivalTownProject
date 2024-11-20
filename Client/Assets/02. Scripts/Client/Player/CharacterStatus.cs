@@ -304,6 +304,7 @@ public class CharacterStatus : MonoBehaviour
             // 包傈 包访
             if (amIPlayer == true)
             {
+                playerController.SpectatorCameraModeOn();
                 Managers.SpectatorCamera.SwitchNextCamera();
                 Managers.PostProcess.SetScreenGray();
             }
@@ -324,6 +325,7 @@ public class CharacterStatus : MonoBehaviour
             // 包傈 包访
             if (amIPlayer == true)
             {
+                playerController.SpectatorCameraModeOff();
                 Managers.SpectatorCamera.SwitchMyCamera();
                 Managers.PostProcess.SetScreenNormal();
             }
