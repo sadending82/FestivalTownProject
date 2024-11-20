@@ -192,7 +192,7 @@ public class AnimationController : MonoBehaviour
             }
             else if (upperBodyAnimationState == UpperBodyAnimationState.WEAPONATTACK)
             {
-                if (attackTimer < (weaponAttackSpeed / 2))
+                if (attackTimer < (weaponAttackSpeed / 3 * 2))
                 {
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
@@ -207,16 +207,11 @@ public class AnimationController : MonoBehaviour
                     if (oneTimeSendChecker == true)
                     {
                         oneTimeSendChecker = false;
+                        Vector3 dir = targetPoint.position - rightAttackChecker.transform.position;
+                        dir = dir.normalized;
+                        rightHand.GetComponent<Rigidbody>().AddForce(dir * punchMotionPower, ForceMode.Impulse);
                         myWeapon.GetComponent<Weapon>().SetIsAttackState(true);
                     }
-
-                    animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
-                    animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
-                    animator.SetIKHintPositionWeight(AvatarIKHint.RightElbow, 1f);
-
-                    animator.SetIKPosition(AvatarIKGoal.RightHand, targetRightHand.position);
-                    animator.SetIKRotation(AvatarIKGoal.RightHand, targetRightHand.rotation);
-                    animator.SetIKHintPosition(AvatarIKHint.LeftElbow, targetRightHint.position);
                 }
             }
         }

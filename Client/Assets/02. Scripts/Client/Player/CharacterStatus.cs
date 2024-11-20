@@ -299,6 +299,7 @@ public class CharacterStatus : MonoBehaviour
             playerMesh.SetActive(false);
             HideItem();
             playerUIController.gameObject.SetActive(false);
+            playerController.SetPosition(new Vector3(-1, -1, -1));
             Managers.Sound.Play("Sfx_Ch_Die");
             // 관전 관련
             if (amIPlayer == true)

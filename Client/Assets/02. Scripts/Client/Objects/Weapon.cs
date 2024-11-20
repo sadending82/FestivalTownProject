@@ -65,14 +65,18 @@ public class Weapon : MonoBehaviour
     {
         if(amIPlayer == true)
         {
-            if(collision.gameObject.tag == "HitBox" && isAttackState == true)
+            if (collision.gameObject.tag == "HitBox" && isAttackState == true)
             {
-                isAttackState = false;
+                if (collision.gameObject.transform.parent.GetComponent<CharacterStatus>().GetTeamNumber() != playerState.GetTeamNumber())
+                {
+                    Managers.Effect.PlayEffect("Attacked", transform.position);
+                    isAttackState = false;
 
-                Vector3 attackedDirection = playerState.GetAttackedDirection(collision.transform.position);
-                int targetId = collision.transform.GetComponentInParent<CharacterStatus>().GetId();
+                    Vector3 attackedDirection = playerState.GetAttackedDirection(collision.transform.position);
+                    int targetId = collision.transform.GetComponentInParent<CharacterStatus>().GetId();
 
-                packetManager.SendPlayerDamageReceivePacket(playerState.GetId(), targetId, weaponType, eDamageType.AT_ATTACK, attackedDirection);
+                    packetManager.SendPlayerDamageReceivePacket(playerState.GetId(), targetId, weaponType, eDamageType.AT_ATTACK, attackedDirection);
+                }
             }
         }
     }
