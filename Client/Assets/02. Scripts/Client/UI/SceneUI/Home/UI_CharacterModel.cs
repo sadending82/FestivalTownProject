@@ -13,16 +13,17 @@ public class UI_CharacterModel : UI_Base
 
     bool isInitialized = false;
 
-     void Start()
+    void Start()
     {
         if (!isInitialized) Init();
+        SetCustomizing();
     }
 
     public override void Init()
     {
         Bind<GameObject>(typeof(GameObjects));
 
-        SetCustomizing();
+
 
         isInitialized = true;
     }
@@ -39,8 +40,13 @@ public class UI_CharacterModel : UI_Base
 
         animationState.SetLobbyAnimation();
 
-        Get<GameObject>((int)GameObjects.NonRagdollPlayer).transform.rotation = Quaternion.identity;
-        
+        Get<GameObject>((int)GameObjects.NonRagdollPlayer).transform.localRotation = Quaternion.identity;
+
+        transform.LookAt(Camera.main.transform.GetChild(0).position);
+    }
+
+    void Update()
+    {
         transform.LookAt(Camera.main.transform.GetChild(0).position);
     }
 
