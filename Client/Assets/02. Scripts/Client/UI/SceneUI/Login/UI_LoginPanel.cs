@@ -22,9 +22,6 @@ public class UI_LoginPanel: UI_Base
         LoginButton,
     }
 
-    bool isSelected = false;
-    Selectable currentSelected;
-
     void Start()
     {
         Init();

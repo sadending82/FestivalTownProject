@@ -16,11 +16,6 @@ public class UI_LobbyPatterns : UI_Base
 
     bool isInitialized = false;
 
-    /// <summary>
-    /// 현재 몇번째 인덱스의 패턴이 가장 위에 있나요?
-    /// </summary>
-    int _currentTop = 0;
-
     const float _startOpacity = 0.3f;
     float _currentOpacity = 0.3f;
     

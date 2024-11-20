@@ -50,11 +50,16 @@ public class DataManager
     public Dictionary<int, MissionTypeEntity> MissionTypeDataDict = new();
     public Dictionary<int, MissionListEntity> MissionListDataDict = new();
 
-    // 플레이어 관련 데이터
+    /// <summary>
+    /// 플레이어 관련 데이터
+    /// 페어 타입 -> 아이템 인덱스, 보유량 
+    /// </summary>
     public Dictionary<int, int> PlayerDataDict = new();
     public List<Define.ItemData> InventoryDataList = new();
 
-    //페어 타입 -> 아이템 타입, 아이템 인덱스
+    /// <summary>
+    /// 페어 타입 -> 아이템 타입, 아이템 데이터
+    /// </summary>
     public Dictionary<int, Define.ItemData> PlayerCustomizingData = new();
     string NickName = "DefaultNick";
 

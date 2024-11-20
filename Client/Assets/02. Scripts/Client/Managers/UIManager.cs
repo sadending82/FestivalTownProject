@@ -98,7 +98,10 @@ public class UIManager
         return pop;
     }
 
-    
+    public UI_Scene GetCurrentSceneUI()
+    {
+        return _sceneUI;
+    }
 
     public void ClosePopUpUI(UI_PopUp popUp)
     {

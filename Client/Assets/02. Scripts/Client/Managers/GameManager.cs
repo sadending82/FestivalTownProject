@@ -132,8 +132,8 @@ public class GameManager : MonoBehaviour
     
     public void SetLifeCount(int team, int life)
     {
-        if (!isInGame) return; 
-
+        if (!isInGame) return;
+        Debug.Log($"{team} 팀, 라이프를 {life}로");
         TeamLife[team] = life;
 
     }

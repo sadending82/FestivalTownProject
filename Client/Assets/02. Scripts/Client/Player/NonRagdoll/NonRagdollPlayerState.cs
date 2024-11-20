@@ -1,4 +1,5 @@
 using ExcelDataStructure;
+using Google.FlatBuffers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,7 +32,11 @@ public class NonRagdollPlayerState : MonoBehaviour
     }
     public void ChangeCustomizing(int itemCode)
     {
+        
         ItemEntity tItem = Managers.Data.GetItemData(itemCode);
+
+        if (tItem == null) return;
+
         switch (tItem.Item_Type)
         {
             //Skin

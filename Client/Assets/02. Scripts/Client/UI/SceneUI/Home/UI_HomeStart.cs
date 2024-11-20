@@ -19,7 +19,7 @@ public class UI_HomeStart : UI_Scene
         GalleryButton,
         SettingButton,
         ExitButton,
-        CharacterImage,
+        UI_CharacterModel,
         PlayerDataPanel,
         PlayerImage,
         NickName,
@@ -33,8 +33,6 @@ public class UI_HomeStart : UI_Scene
     bool isInitialized = false;
 
     bool isShopOpen = false;
-    bool isPassOpen = false;
-    bool isAchieveOpen = false;
 
     void Start()
     {
@@ -106,12 +104,22 @@ public class UI_HomeStart : UI_Scene
 
         });
 
+        this.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
+        this.GetComponent<Canvas>().worldCamera = Camera.main;
+        this.GetComponent<Canvas>().planeDistance = Camera.main.nearClipPlane + 0.001f;
+
+
         isInitialized = true;
     }
 
     public void SetNickName(string nickName)
     {
         Get<GameObject>((int)GameObjects.NickName).GetComponent<TMP_Text>().text = nickName;
+    }
+
+    public void SetCustomizing()
+    {
+        Get<GameObject>((int)GameObjects.UI_CharacterModel).GetComponent<UI_CharacterModel>().SetCustomizing();
     }
 
     IEnumerator WaitRecvItemDataAndShowUI()

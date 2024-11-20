@@ -51,7 +51,13 @@ public class UI_Inventory : UI_PopUp
 
         Get<GameObject>((int)GameObjects.ExitButton).BindEvent((PointerEventData) =>
         {
+            var sceneUi = Managers.UI.GetCurrentSceneUI();
+            if (sceneUi != null && sceneUi.GetComponent<UI_HomeStart>() != null)
+            {
+                sceneUi.GetComponent<UI_HomeStart>().SetCustomizing();
+            }
             Managers.UI.ClosePopUpUI();
+            
         });
 
         Get<GameObject>((int)GameObjects.SetCustomizingButton).BindEvent((PointerEventData) =>
