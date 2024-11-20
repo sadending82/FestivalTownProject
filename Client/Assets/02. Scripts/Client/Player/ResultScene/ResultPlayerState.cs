@@ -14,6 +14,16 @@ public class ResultPlayerState : MonoBehaviour
     private GameObject headItem;
     private GameObject faceItem;
     private GameObject backItem;
+
+    private void Awake()
+    {
+        if (skinMaterial == null || faceMaterial == null)
+        {
+            Material[] mat = playerMesh.GetComponent<SkinnedMeshRenderer>().materials;
+            skinMaterial = mat[0];
+            faceMaterial = mat[1];
+        }
+    }
     public void SetMaterial(Material skinMaterial, Material faceMaterial)
     {
         Material[] mat = new Material[] { skinMaterial, faceMaterial };

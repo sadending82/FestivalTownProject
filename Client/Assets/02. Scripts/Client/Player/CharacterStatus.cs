@@ -297,6 +297,7 @@ public class CharacterStatus : MonoBehaviour
         {
             hp = 0;
             playerMesh.SetActive(false);
+            HideItem();
             playerUIController.gameObject.SetActive(false);
             Managers.Sound.Play("Sfx_Ch_Die");
             // 관전 관련
@@ -315,6 +316,7 @@ public class CharacterStatus : MonoBehaviour
         {
             ResetCharacterState();
             playerMesh.SetActive(true);
+            ShowItem();
             playerUIController.gameObject.SetActive(true);
             Managers.SpectatorCamera.SetCameraInPlayerUIControllers();
 

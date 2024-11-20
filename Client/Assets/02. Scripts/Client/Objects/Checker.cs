@@ -47,13 +47,13 @@ public class Checker : MonoBehaviour
                     float pushPower;
                     if (Mathf.Abs(xInterval) < Mathf.Abs(yInterval))
                     {
-                        pushPower = (1.5f - Mathf.Abs(yInterval)) * 150.0f; 
+                        pushPower = (1.5f - Mathf.Abs(yInterval)) * 100.0f; 
                         if (yInterval > 0) mapPosZOffset = -1;
                         else mapPosZOffset = 1;
                     }
                     else
                     {
-                        pushPower = (1.5f - Mathf.Abs(xInterval)) * 150.0f;
+                        pushPower = (1.5f - Mathf.Abs(xInterval)) * 100.0f;
                         if (xInterval > 0) mapPosXOffset = -1;
                         else mapPosXOffset = 1;
                     }
@@ -66,6 +66,7 @@ public class Checker : MonoBehaviour
                     else
                     {
                         packetManager.SendPlayerCollisionToBlockPacket(tPlayerState.GetId());
+                        tPlayerController.SetPosition(new Vector3(transform.position.x + mapPosXOffset, tPlayerPos.y, transform.position.z + mapPosZOffset));
                         Vector3 pushDirection = new Vector3(mapPosXOffset, 0.0f, mapPosZOffset);
                         tPlayerController.Pushed(pushDirection, pushPower);
                     }

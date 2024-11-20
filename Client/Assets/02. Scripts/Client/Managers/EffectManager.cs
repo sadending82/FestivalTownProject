@@ -59,6 +59,12 @@ public class EffectManager : MonoBehaviour
                     tEffect.transform.position = position;
                 }
                 break;
+            case "Attacked":
+                {
+                    tEffect = Managers.Resource.Instantiate("Effect_Attacked").GetComponent<ParticleSystem>();
+                    tEffect.transform.position = position;
+                }
+                break;
             default:
                 {
                     Debug.Log("ERROR!!! PlayEffect(): Wrong Name!!!");

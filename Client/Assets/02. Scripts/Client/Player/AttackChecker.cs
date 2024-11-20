@@ -4,6 +4,7 @@ using UnityEngine;
 using NetworkProtocol;
 using Unity.VisualScripting;
 using static UnityEngine.GraphicsBuffer;
+using UnityEngine.UIElements;
 
 public class AttackChecker : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class AttackChecker : MonoBehaviour
 
     public CharacterStatus playerState;
     public PlayerController playerController;
+    public Transform effectPoint;
 
     //------ Server -------
     private NetworkManager network;
@@ -34,15 +36,19 @@ public class AttackChecker : MonoBehaviour
             // 때리는 상태인지와 때리는 중인지
             if (other.gameObject.tag == "HitBox" && isAttackState == true && other.gameObject.layer != this.gameObject.layer)
             {
-                Debug.Log("Attack!!");
-                isAttackState = false;
+                if (other.gameObject.transform.parent.GetComponent<CharacterStatus>().GetTeamNumber() != playerState.GetTeamNumber())
+                {
+                    Managers.Effect.PlayEffect("Attacked", effectPoint.position);
 
-                // 피격 방향 구하기
-                Vector3 attackedDirection = playerState.GetAttackedDirection(other.transform.position);
+                    isAttackState = false;
 
-                int targetId = other.transform.GetComponentInParent<CharacterStatus>().GetId();
+                    // 피격 방향 구하기
+                    Vector3 attackedDirection = playerState.GetAttackedDirection(other.transform.position);
 
-                packetManager.SendPlayerDamageReceivePacket(playerState.GetId(), targetId, (int)eWeaponType.WT_HAND, eDamageType.AT_ATTACK, attackedDirection);
+                    int targetId = other.transform.GetComponentInParent<CharacterStatus>().GetId();
+
+                    packetManager.SendPlayerDamageReceivePacket(playerState.GetId(), targetId, (int)eWeaponType.WT_HAND, eDamageType.AT_ATTACK, attackedDirection);
+                }
             }
             if(other.gameObject.tag == "Head" && isGrapState == true && other.gameObject.layer != this.gameObject.layer)
             {

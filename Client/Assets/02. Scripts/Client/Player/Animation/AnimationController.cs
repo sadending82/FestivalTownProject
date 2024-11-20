@@ -21,14 +21,14 @@ public class AnimationController : MonoBehaviour
     public Transform targetRightHand;
     public Transform targetLeftHint;
     public Transform targetRightHint;
+    public Transform targetPoint;
     // 일반 공격 관련
     public Transform attackLeftHand;
     public Transform attackRightHand;
     public Transform attackLeftHint;
     public Transform attackRightHint;
-    public GameObject leftClavicle;
-    public GameObject rightClavicle;
-    public GameObject stabillizer;
+    public GameObject leftHand;
+    public GameObject rightHand;
     private float punchMotionPower = 20.0f;
     // 무기 공격 관련
     public Transform WeaponAttackRightHand;
@@ -37,7 +37,7 @@ public class AnimationController : MonoBehaviour
     public CharacterStatus playerStatus;
 
     private float attackSpeed;
-    private float attackTime = 0.2f;
+    private float attackTime = 0.5f;
     private float weaponAttackSpeed;
     private float attackTimer;
     private bool isLeftAttack;
@@ -73,6 +73,10 @@ public class AnimationController : MonoBehaviour
         data = Managers.Data.GetData(10001);
         cse = (CharacterAttackEntity)data;
         attackSpeed = cse.Attack_Speed;
+        if(attackSpeed <= attackTime)
+        {
+            attackSpeed = attackTime + 0.1f;
+        }
 
         // Index값 수정해야함
         // WeaponAttack
@@ -153,20 +157,12 @@ public class AnimationController : MonoBehaviour
                     {
                         if (oneTimeSendChecker == true)
                         {
-                            Vector3 dir = stabillizer.transform.forward;
-                            dir.y = 0; dir = dir.normalized;
-                            leftClavicle.GetComponent<Rigidbody>().AddForce(dir * punchMotionPower, ForceMode.Impulse);
+                            Vector3 dir = targetPoint.position - leftAttackChecker.transform.position;
+                            dir = dir.normalized;
+                            leftHand.GetComponent<Rigidbody>().AddForce(dir * punchMotionPower, ForceMode.Impulse);
                             oneTimeSendChecker = false;
                             leftAttackChecker.SetIsAttackState(true);
                         }
-
-                        animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1f);
-                        animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1f);
-                        //animator.SetIKHintPositionWeight(AvatarIKHint.LeftElbow, 1f);
-
-                        animator.SetIKPosition(AvatarIKGoal.LeftHand, targetLeftHand.position);
-                        animator.SetIKRotation(AvatarIKGoal.LeftHand, targetLeftHand.rotation);
-                        //animator.SetIKHintPosition(AvatarIKHint.LeftElbow, targetLeftHint.position);
                     }
                 }
                 else
@@ -185,20 +181,12 @@ public class AnimationController : MonoBehaviour
                     {
                         if (oneTimeSendChecker == true)
                         {
-                            Vector3 dir = stabillizer.transform.forward;
-                            dir.y = 0; dir = dir.normalized;
-                            rightClavicle.GetComponent<Rigidbody>().AddForce(dir * punchMotionPower, ForceMode.Impulse);
+                            Vector3 dir = targetPoint.position - rightAttackChecker.transform.position;
+                            dir = dir.normalized;
+                            rightHand.GetComponent<Rigidbody>().AddForce(dir * punchMotionPower, ForceMode.Impulse);
                             oneTimeSendChecker = false;
                             rightAttackChecker.SetIsAttackState(true);
                         }
-
-                        animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
-                        animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
-                        //animator.SetIKHintPositionWeight(AvatarIKHint.RightElbow, 1f);
-
-                        animator.SetIKPosition(AvatarIKGoal.RightHand, targetRightHand.position);
-                        animator.SetIKRotation(AvatarIKGoal.RightHand, targetRightHand.rotation);
-                        //animator.SetIKHintPosition(AvatarIKHint.LeftElbow, targetRightHint.position);
                     }
                 }
             }
