@@ -90,7 +90,9 @@ public class UI_IngameScene: UI_Scene
         switch (_currentClientTeam)
         {
             case 0:
-                // 0 1 2
+                // 자기 자신의 팀이 빨강.
+                // panel1 -> 0, panel2 -> 1, panel3 -> 2
+                // 패널 넣는 순서는 1, 2, 3 이어야 함.
                 teamPanelIndex.Add((int)GameObjects.PointPanelTeam1);
                 Get<GameObject>((int)GameObjects.PointPanelTeam1).GetComponent<UI_PointPanel>().SetTeam(0);
 
@@ -101,22 +103,28 @@ public class UI_IngameScene: UI_Scene
                 Get<GameObject>((int)GameObjects.PointPanelTeam3).GetComponent<UI_PointPanel>().SetTeam(2);
                 break;
             case 1:
-                // 1 0 2
+                // 자기 자신의 팀이 파랑
+                // panel1 -> 1, panel2 -> 0, panel3 -> 2
+                // 패널 인덱스는, 2, 1, 3의 순서여야 함.
                 teamPanelIndex.Add((int)GameObjects.PointPanelTeam2);
                 Get<GameObject>((int)GameObjects.PointPanelTeam2).GetComponent<UI_PointPanel>().SetTeam(0);
+
                 teamPanelIndex.Add((int)GameObjects.PointPanelTeam1);
                 Get<GameObject>((int)GameObjects.PointPanelTeam1).GetComponent<UI_PointPanel>().SetTeam(1);
+
                 teamPanelIndex.Add((int)GameObjects.PointPanelTeam3);
                 Get<GameObject>((int)GameObjects.PointPanelTeam3).GetComponent<UI_PointPanel>().SetTeam(2);
                 break;
             case 2:
-                // 2 0 1
-                teamPanelIndex.Add((int)GameObjects.PointPanelTeam3);
-                Get<GameObject>((int)GameObjects.PointPanelTeam3).GetComponent<UI_PointPanel>().SetTeam(0);
-                teamPanelIndex.Add((int)GameObjects.PointPanelTeam1);
-                Get<GameObject>((int)GameObjects.PointPanelTeam1).GetComponent<UI_PointPanel>().SetTeam(1);
+                // 자기 자신의 팀이 초록
+                // panel1 -> 2, panel2 -> 0, panel3 -> 1
+                // 패널 인덱스는 2, 3, 1의 순서여야 함.
                 teamPanelIndex.Add((int)GameObjects.PointPanelTeam2);
-                Get<GameObject>((int)GameObjects.PointPanelTeam2).GetComponent<UI_PointPanel>().SetTeam(2);
+                Get<GameObject>((int)GameObjects.PointPanelTeam2).GetComponent<UI_PointPanel>().SetTeam(0);
+                teamPanelIndex.Add((int)GameObjects.PointPanelTeam3);
+                Get<GameObject>((int)GameObjects.PointPanelTeam3).GetComponent<UI_PointPanel>().SetTeam(1);
+                teamPanelIndex.Add((int)GameObjects.PointPanelTeam1);
+                Get<GameObject>((int)GameObjects.PointPanelTeam1).GetComponent<UI_PointPanel>().SetTeam(2);
                 break;
             default:
                 break;
@@ -125,7 +133,8 @@ public class UI_IngameScene: UI_Scene
 
     public void SetPoint(int team, int point)
     {
-        // 만약 0번 팀이 왔다면, 0번 팀에 해당하는 빨간 팀의 포인트 패널의 위치를 찾아서 해당 패널의 점수를 세팅.
+        // 만약 0번 팀이 왔다면,
+        // 0번 팀에 해당하는 빨간 팀의 포인트 패널의 위치를 찾아서 해당 패널의 점수를 세팅.
         Get<GameObject>(teamPanelIndex[team]).GetComponent<UI_PointPanel>().SetPoint(point);
     }
 
@@ -151,7 +160,7 @@ public class UI_IngameScene: UI_Scene
             // UI는 어디까지나 관찰하는 입장으로 데이터가 바뀌었는지 주기적으로 확인하는 방식.
             // 실제 데이터는 GameManager가 관리한다.
 
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < Managers.Game.TeamLife.Count; i++)
             {
                 if (Managers.Game.TeamLife.TryGetValue(i, out int life)) // 값이 없으면 null이라 문제가 되니까 묶지 말고 따로 해야함
                 {
