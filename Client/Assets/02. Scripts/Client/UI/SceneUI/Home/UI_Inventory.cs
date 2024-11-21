@@ -31,6 +31,9 @@ public class UI_Inventory : UI_PopUp
 
         Bind<GameObject>(typeof(GameObjects));
 
+        Camera.main.transform.GetChild(0).gameObject.SetActive(false); // Home용 카메라
+        Camera.main.transform.GetChild(1).gameObject.SetActive(true); // Inventory용 카메라
+
         GameObject gridPanel = Get<GameObject>((int)GameObjects.GridPanel);
         foreach (Transform child in gridPanel.transform)
         {
@@ -55,6 +58,8 @@ public class UI_Inventory : UI_PopUp
             if (sceneUi != null && sceneUi.GetComponent<UI_HomeStart>() != null)
             {
                 sceneUi.GetComponent<UI_HomeStart>().SetCustomizing();
+                Camera.main.transform.GetChild(0).gameObject.SetActive(true); // Home용 카메라
+                Camera.main.transform.GetChild(1).gameObject.SetActive(false); // Inventory용 카메라
             }
             Managers.UI.ClosePopUpUI();
             
@@ -92,6 +97,10 @@ public class UI_Inventory : UI_PopUp
 
             Managers.Network.GetPacketManager().SendChangeCharacterCustomizingPacket(customizing);
         });
+
+        this.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
+        this.GetComponent<Canvas>().worldCamera = Camera.main;
+        this.GetComponent<Canvas>().planeDistance = Camera.main.nearClipPlane + 0.001f;
 
         isInitialized = true;
     }
