@@ -149,6 +149,14 @@ public class UI_HomeStart : UI_Scene
         Get<GameObject>((int)GameObjects.UI_CharacterModel).GetComponent<UI_CharacterModel>().SetCustomizing();
     }
 
+    /// <summary>
+    /// 인벤토리에서 아직 확정되지 않은 커스터마이징을 표시하기 위한 함수
+    /// </summary>
+    public void SetInventoryLocalCustomizing()
+    {
+        Get<GameObject>((int)GameObjects.UI_CharacterModel).GetComponent<UI_CharacterModel>().SetInventoryLocalCustomizing();
+    }
+
     IEnumerator WaitRecvItemDataAndShowUI()
     {
         yield return null;
