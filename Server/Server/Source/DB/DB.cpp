@@ -338,7 +338,7 @@ std::pair<bool, UserInfo> DB::SelectUserInfoForLogin(const char* id)
 		TIMESTAMP_STRUCT date{};
 		SQLINTEGER t = 0;
 		SQLLEN bufLen = 0;
-		userInfo.NickName.clear();
+		userInfo.NickName = std::wstring(20, '\0');
 		while (SQLFetch(hStmt) == SQL_SUCCESS) {
 			
 			SQLGetData(hStmt, (int)UserInfo_Field::UID, SQL_C_LONG, &userInfo.UID, sizeof(userInfo.UID), &col1);

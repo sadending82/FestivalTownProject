@@ -29,7 +29,6 @@ public:
 					Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
 					player->SetUserInfoFromDB(userInfo);
 				}
-
 				pServer->GetLobbyManager()->CheckAttendance(userInfo.UID);
 			}
 		}
