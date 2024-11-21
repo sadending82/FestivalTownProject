@@ -216,6 +216,7 @@ if exist "$(ProjectDir)\Config" xcopy /Y /d /e /i "$(ProjectDir)\Config" "$(OutD
     <ClInclude Include="Source\Object\Weapon\Weapon.h" />
     <ClInclude Include="Source\PacketManager\flatbuffer\block_generated.h" />
     <ClInclude Include="Source\PacketManager\flatbuffer\Bomb_generated.h" />
+    <ClInclude Include="Source\PacketManager\flatbuffer\Cheat_generated.h" />
     <ClInclude Include="Source\PacketManager\flatbuffer\FlatBufferManager.h" />
     <ClInclude Include="Source\PacketManager\flatbuffer\Game_generated.h" />
     <ClInclude Include="Source\PacketManager\flatbuffer\Lobby_generated.h" />

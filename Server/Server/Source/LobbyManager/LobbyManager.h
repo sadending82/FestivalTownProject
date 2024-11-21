@@ -10,8 +10,9 @@ public:
 	LobbyManager(class Server* server);
 	~LobbyManager();
 
-	void CheckReadyToGamePlay(class Room* room, int roomID);
+	void CheckAttendance(int uid);
 
+	void CheckReadyToGamePlay(class Room* room, int roomID);
 
 	struct GachaItem RollGacha(std::unordered_map<int, struct GachaItem>& gachaItemList);
 	bool GiveGachaItemToUser(int uid, int payItem, int price, struct GachaItem& gachaItem);

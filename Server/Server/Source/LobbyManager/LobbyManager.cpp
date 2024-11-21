@@ -15,6 +15,14 @@ LobbyManager::~LobbyManager()
 
 }
 
+void LobbyManager::CheckAttendance(int uid)
+{
+	if (pDB->SelectUserAttendanceToday(uid) == 0) {
+		// 나중에 이벤트 넣을꺼임
+		pDB->InsertUserAttendance(uid, 0);
+	}
+}
+
 void LobbyManager::CheckReadyToGamePlay(Room* room, int roomID)
 {
 	if (room->CheckAllPlayerReady() == true) {

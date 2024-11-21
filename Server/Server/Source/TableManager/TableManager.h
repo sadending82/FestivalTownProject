@@ -63,7 +63,7 @@ public:
 	std::unordered_map<eMatchingType, std::vector<Matching_Table>>& GetMatchingDatas();
 
 	std::unordered_map<INDEX, Event_Main>& GetEventList();
-	// <Event_Index, <Day, AttendenceEventData>>
+	// <Event_Index, <Day, AttendanceEventData>>
 	std::unordered_map<INDEX, std::unordered_map<int, Event_List>>& GetEventRewordList();
 
 private:
@@ -95,7 +95,7 @@ private:
 	std::unordered_map<eMatchingType, std::vector<Matching_Table>> MatchingDatas;
 
 	std::unordered_map<INDEX, Event_Main> EventList;
-	// <Event_Index, <Day, AttendenceEventData>>
+	// <Event_Index, <Day, AttendanceEventData>>
 	std::unordered_map<INDEX, std::unordered_map<int, Event_List>> EventRewordList;
 
 	std::atomic_flag mLockFlag = ATOMIC_FLAG_INIT;

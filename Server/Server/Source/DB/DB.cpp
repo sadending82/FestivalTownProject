@@ -244,7 +244,7 @@ bool DB::InsertUserItem(const int owner_uid, const int itemCode, const int itemC
 	SQLRETURN retcode;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
-		DEBUGMSGNOPARAM("hStmt Error : (InsertRanking) \n");
+		DEBUGMSGNOPARAM("hStmt Error : (InsertUserItem) \n");
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 		return false;
 	}
@@ -267,6 +267,41 @@ bool DB::InsertUserItem(const int owner_uid, const int itemCode, const int itemC
 	}
 
 	DEBUGMSGNOPARAM("Execute Query Error : (InsertUserItem)\n");
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	return false;
+}
+
+bool DB::InsertUserAttendance(const int uid, const int EventIndex)
+{
+	if (uid == 0) {
+		return false;
+	}
+
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGNOPARAM("hStmt Error : (InsertUserAttendance) \n");
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return false;
+	}
+
+	UseGameDB(hStmt);
+
+	SQLPrepare(hStmt, (SQLWCHAR*)InsertUserAttendance_Query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&EventIndex), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return true;
+	}
+
+	DEBUGMSGNOPARAM("Execute Query Error : (InsertUserAttendance)\n");
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	return false;
 }
@@ -303,7 +338,7 @@ std::pair<bool, UserInfo> DB::SelectUserInfoForLogin(const char* id)
 		TIMESTAMP_STRUCT date{};
 		SQLINTEGER t = 0;
 		SQLLEN bufLen = 0;
-
+		userInfo.NickName.clear();
 		while (SQLFetch(hStmt) == SQL_SUCCESS) {
 			
 			SQLGetData(hStmt, (int)UserInfo_Field::UID, SQL_C_LONG, &userInfo.UID, sizeof(userInfo.UID), &col1);
@@ -560,7 +595,7 @@ int DB::SelectUserItemCount(const int uid, const int item_index)
 	int count = 0;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
-		DEBUGMSGNOPARAM("hStmt Error : (InsertRanking) \n");
+		DEBUGMSGNOPARAM("hStmt Error : (SelectUserItemCount) \n");
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 		return 0;
 	}
@@ -586,7 +621,49 @@ int DB::SelectUserItemCount(const int uid, const int item_index)
 		return count;
 	}
 
-	DEBUGMSGNOPARAM("Execute Query Error : (SelectItemCount)\n");
+	DEBUGMSGNOPARAM("Execute Query Error : (SelectUserItemCount)\n");
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	return 0;
+}
+
+int DB::SelectUserAttendanceToday(const int uid)
+{
+	if (uid == 0) {
+		return 0;
+	}
+
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	int count = 0;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGNOPARAM("hStmt Error : (SelectUserAttendanceToday) \n");
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return 0;
+	}
+
+	UseGameDB(hStmt);
+
+	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserAttendanceToday_Query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		SQLLEN col1;
+
+		while (SQLFetch(hStmt) == SQL_SUCCESS) {
+			SQLGetData(hStmt, 1, SQL_C_LONG, &count, sizeof(count), &col1);
+		}
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return count;
+	}
+
+	DEBUGMSGNOPARAM("Execute Query Error : (SelectUserAttendanceToday)\n");
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	return 0;
 }

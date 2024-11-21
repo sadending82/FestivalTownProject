@@ -35,6 +35,7 @@ public:
     int InsertNewUser(const char* id, const char* nickname); // return UID
     bool InsertUserGameRecords(const int uid);
     bool InsertUserItem(const int owner_uid, const int itemCode, const int itemCount, const int itemType);
+    bool InsertUserAttendance(const int uid, const int EventIndex);
 
     // SELECT
     std::pair<bool, UserInfo> SelectUserInfoForLogin(const char* id);
@@ -45,6 +46,7 @@ public:
     struct sCharacterCustomizing SelectCharacterCustomizing(const int uid);
     
     int SelectUserItemCount(const int uid, const int item_index);
+    int SelectUserAttendanceToday(const int uid);
 
     // UPDATE
     bool UpdateUserConnectionState(const int uid, const int state);

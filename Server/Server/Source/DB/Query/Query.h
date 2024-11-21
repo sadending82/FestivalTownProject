@@ -8,6 +8,8 @@ const wchar_t* InsertUserGameRecords_Query = L"INSERT INTO UserGameRecords (UID)
 
 const wchar_t* InsertUserItem_Query = L"INSERT INTO UserItem (owner_uid, itemCode, count, itemType) VALUES (?, ?, ?, ?)";
 
+const wchar_t* InsertUserAttendance_Query = L"INSERT INTO UserAttendance (user_UID, event_index, attendance_date) VALUES(?, ?, CAST(GETDATE() AS DATE))";
+
 const wchar_t* SelectUserInfoForLogin_Query = L"UPDATE UserInfo \
 							SET ConnectionState = ? \
 							OUTPUT deleted.* \
@@ -22,6 +24,8 @@ const wchar_t* SelectUserAllItems_Query = L"SELECT * FROM UserItem WHERE owner_U
 const wchar_t* SelectCharacterCustomizing_Query = L"SELECT DATALENGTH(CharacterCustomizing), CharacterCustomizing FROM UserInfo WHERE UID = ?";
 
 const wchar_t* SelectUserItemCount_Query = L"SELECT count FROM UserItem WHERE owner_UID = ? AND ItemCode = ?";
+
+const wchar_t* SelectUserAttendanceToday_Query = L"SELECT COUNT(*) FROM UserAttendance WHERE user_UID = ? AND attendance_date = CAST(GETDATE() AS DATE)";
 
 const wchar_t* UpdateUserConnectionState_Query = L"UPDATE UserInfo SET ConnectionState = ? WHERE UID = ?";
 
