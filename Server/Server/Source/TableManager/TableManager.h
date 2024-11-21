@@ -34,6 +34,8 @@ public:
 
 	void ReadMatchingTable();
 
+	void ReadEventTable();
+
 	void Lock();
 	void UnLock();
 
@@ -59,6 +61,10 @@ public:
 	std::unordered_map<GameMode, std::vector<MapCode>>& getMapListByMode();
 
 	std::unordered_map<eMatchingType, std::vector<Matching_Table>>& GetMatchingDatas();
+
+	std::unordered_map<INDEX, Event_Main>& GetEventList();
+	// <Event_Index, <Day, AttendenceEventData>>
+	std::unordered_map<INDEX, std::unordered_map<int, Event_List>>& GetEventRewordList();
 
 private:
 	xlnt::workbook mWorkbook;
@@ -87,6 +93,10 @@ private:
 	std::unordered_map<GameMode, std::vector<MapCode>> MapListByMode;
 
 	std::unordered_map<eMatchingType, std::vector<Matching_Table>> MatchingDatas;
+
+	std::unordered_map<INDEX, Event_Main> EventList;
+	// <Event_Index, <Day, AttendenceEventData>>
+	std::unordered_map<INDEX, std::unordered_map<int, Event_List>> EventRewordList;
 
 	std::atomic_flag mLockFlag = ATOMIC_FLAG_INIT;
 	std::atomic<bool> mIsLoading;

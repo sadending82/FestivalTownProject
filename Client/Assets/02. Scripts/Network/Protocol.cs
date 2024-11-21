@@ -92,6 +92,9 @@ namespace NetworkProtocol
         S2C_LIFE_REDUCE,
         S2C_REMAIN_TIME_SYNC,
 
+        S2C_ACCOUNT_RESET,
+        S2C_GET_CURRENCY,
+
         // Client -> Server
         C2S_VERSION_CHECK_REQUEST,
         C2S_LOGIN_REQUEST,
@@ -126,7 +129,10 @@ namespace NetworkProtocol
 
         C2S_MATCHING_REQUEST,
         C2S_MATCHING_CANCEL,
-        C2S_GAME_READY
+        C2S_GAME_READY,
+
+        C2S_ACCOUNT_RESET,
+        C2S_GET_CURRENCY
     };
 
     public enum ERROR_CODE

@@ -69,6 +69,7 @@ void TableManager::ReadAllDataTable()
     ReadGameReward();
 
     ReadMatchingTable();
+    ReadEventTable();
 
     mIsLoading = false;
 }
@@ -807,6 +808,83 @@ void TableManager::ReadMatchingTable()
     }
 }
 
+void TableManager::ReadEventTable()
+{
+    try {
+
+        mWorkbook.load("GameData/Event.xlsx");
+        int idx = 0;
+        mWorksheet = mWorkbook.sheet_by_index(Evnet_Main_Sheet);
+
+        for (auto row : mWorksheet.rows(false)) {
+            if (idx == variableNameIdx) {
+                idx++;
+                continue;
+            }
+
+            if (!row.empty()) {
+
+                int index = row[(int)(Event_Main_Field::Event_ID)].value<int>();
+
+                std::tm openDate = {}, closeDate = {};
+                std::istringstream ssOpenDate(row[(int)(Event_Main_Field::Open_Date)].to_string());
+                std::istringstream ssCloseDate(row[(int)(Event_Main_Field::Close_Date)].to_string());
+                ssOpenDate >> std::get_time(&openDate, "%Y-%m-%d");
+                ssCloseDate >> std::get_time(&closeDate, "%Y-%m-%d");
+
+                EventList[index] =
+                    Event_Main{
+                        index,
+                        (std::string)row[(int)(Event_Main_Field::Name)].to_string(),
+                        row[(int)(Event_Main_Field::Type)].value<int>(),
+                        openDate,
+                        closeDate,
+                };
+            }
+
+            idx++;
+        }
+
+        idx = 0;
+        mWorksheet = mWorkbook.sheet_by_index(Evnet_List_Sheet);
+
+        for (auto row : mWorksheet.rows(false)) {
+            if (idx == variableNameIdx) {
+                idx++;
+                continue;
+            }
+
+            if (!row.empty()) {
+
+                int index = row[(int)(Event_List_Field::Index)].value<int>();
+                int day = row[(int)(Event_List_Field::Day)].value<int>();
+
+                std::tm openDate = {}, closeDate = {};
+                std::istringstream ssOpenDate(row[(int)(Event_List_Field::Open_Date)].to_string());
+                std::istringstream ssCloseDate(row[(int)(Event_List_Field::Close_Date)].to_string());
+                ssOpenDate >> std::get_time(&openDate, "%Y-%m-%d");
+                ssCloseDate >> std::get_time(&closeDate, "%Y-%m-%d");
+
+                EventRewordList[index][day] =
+                    Event_List{
+                        index,
+                        row[(int)(Event_List_Field::Event_List)].value<int>(),
+                        day,
+                        row[(int)(Event_List_Field::Reward_Item_Index)].value<int>(),
+                        row[(int)(Event_List_Field::Reward_Item_Value)].value<int>(),
+                        openDate,
+                        closeDate,
+                };
+            }
+
+            idx++;
+        }
+    }
+    catch (const xlnt::exception& e) {
+        std::cerr << "ReadEventTable Excel File Load Fail: " << e.what() << std::endl;
+    }
+}
+
 void TableManager::Lock()
 {
     while (mLockFlag.test_and_set(std::memory_order_acquire)) {
@@ -922,4 +1000,22 @@ std::unordered_map<eMatchingType, std::vector<Matching_Table>>& TableManager::Ge
     }
 
     return MatchingDatas;
+}
+
+std::unordered_map<INDEX, Event_Main>& TableManager::GetEventList()
+{
+    while (mIsLoading == true) {
+
+    }
+
+    return EventList;
+}
+
+std::unordered_map<INDEX, std::unordered_map<int, Event_List>>& TableManager::GetEventRewordList()
+{
+    while (mIsLoading == true) {
+
+    }
+
+    return EventRewordList;
 }

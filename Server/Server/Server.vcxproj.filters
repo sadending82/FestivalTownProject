@@ -137,6 +137,7 @@
     <ClInclude Include="Source\DB\Schema\DB_UserGameRecords.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_ChangeCharacterCustomizing.h" />
     <ClInclude Include="Source\DB\Query\Query.h" />
+    <ClInclude Include="Source\TableManager\Tables\Event.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />
