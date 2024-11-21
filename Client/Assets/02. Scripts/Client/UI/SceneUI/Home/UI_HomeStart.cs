@@ -152,12 +152,22 @@ public class UI_HomeStart : UI_Scene
     IEnumerator WaitRecvItemDataAndShowUI()
     {
         yield return null;
+
+        float timeOut = 5.0f;
+
         while(!Managers.Data.IsInventoryDataRecved())
         {
+            if (timeOut < 0f)
+            {
+                break;
+            }
+
             if(Managers.Scene.CurrentScene.GetComponent<HomeScene>() == null)
             {
                 break;
             }
+
+            timeOut -= Time.deltaTime;
             yield return null;
         }
 
@@ -165,6 +175,14 @@ public class UI_HomeStart : UI_Scene
         {
             var ui = Managers.UI.ShowPopUpUI<UI_Inventory>();
             ui.Init();
+        }
+
+        if(timeOut < 0f)
+        {
+            var ui = Managers.UI.ShowPopUpUI<UI_Notice>();
+            ui.Init();
+            ui.NoticeTextChange("인벤토리에 접속할 수 없습니다.");
+            ui.BindPopupCloseEvent();
         }
     }
 }
