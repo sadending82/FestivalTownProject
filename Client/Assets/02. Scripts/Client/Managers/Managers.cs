@@ -25,6 +25,7 @@ public class Managers : MonoBehaviour
     SpectatorCameraManager _spectatorCamera = new SpectatorCameraManager();
     PostProcessManager _postProcess = new PostProcessManager();
     EffectManager _effect = new EffectManager();
+    MapManager _map = new MapManager();
 
     //------------
 
@@ -48,6 +49,7 @@ public class Managers : MonoBehaviour
     public static SpectatorCameraManager SpectatorCamera { get { return Instance._spectatorCamera; } }
     public static PostProcessManager PostProcess { get { return Instance._postProcess; } }
     public static EffectManager Effect { get { return Instance._effect; } }
+    public static MapManager Map { get { return Instance._map; } }
 
     //-----------
 
@@ -62,6 +64,7 @@ public class Managers : MonoBehaviour
         _player = gameObject.AddComponent<PlayerManager>();
         _spectatorCamera = gameObject.AddComponent<SpectatorCameraManager>();
         _effect = gameObject.AddComponent<EffectManager>();
+        _map = gameObject.AddComponent<MapManager>();
 
         Init();
         _game.Init();
