@@ -21,8 +21,6 @@ namespace Network.PacketProcessor
 
             Managers.Data.InventoryDataList.Clear();
 
-            Debug.Log($"UserItemData Result {Data.Result}");
-
             if (Data.Result == 1)
             {
                 for (int i = 0; i < Data.ItemsLength; ++i)
@@ -42,7 +40,10 @@ namespace Network.PacketProcessor
             }
             else
             {
-                
+                var ui = Managers.UI.ShowPopUpUI<UI_Notice>();
+                ui.Init();
+                ui.NoticeTextChange("아이템 데이터를 받아올 수 없습니다.");
+                ui.BindPopupCloseEvent();
             }
         }
 

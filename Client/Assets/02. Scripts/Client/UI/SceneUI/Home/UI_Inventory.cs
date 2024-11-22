@@ -1,4 +1,5 @@
 using NetworkProtocol;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -31,12 +32,14 @@ public class UI_Inventory : UI_PopUp
 
         Bind<GameObject>(typeof(GameObjects));
 
+        // 혹시 모르니까 인벤토리 내부의 요소 다 지워두기
         GameObject gridPanel = Get<GameObject>((int)GameObjects.GridPanel);
         foreach (Transform child in gridPanel.transform)
         {
             Managers.Resource.Destroy(child.gameObject);
         }
 
+        // 인벤토리 아이템 생성
         foreach (Define.ItemData item in Managers.Data.InventoryDataList)
         {
             if (Managers.Data.GetItemData(item.ItemCode).Item_Type == (int)Define.ItemType.Resource) continue;
@@ -49,17 +52,26 @@ public class UI_Inventory : UI_PopUp
             ItemSlotDict.TryAdd(item.ItemCode, ui);
         }
 
+        // 뒤로가기 버튼
         Get<GameObject>((int)GameObjects.ExitButton).BindEvent((PointerEventData) =>
         {
+            foreach(var itemPair in Managers.Data.ClientLocalCustomizingDataDict)
+            {
+                Managers.Data.PlayerCustomizingData[itemPair.Key] = itemPair.Value;
+            }
+
             var sceneUi = Managers.UI.GetCurrentSceneUI();
             if (sceneUi != null && sceneUi.GetComponent<UI_HomeStart>() != null)
             {
                 sceneUi.GetComponent<UI_HomeStart>().SetCustomizing();
+                Camera.main.transform.GetChild(0).gameObject.SetActive(true); // Home용 카메라
+                Camera.main.transform.GetChild(1).gameObject.SetActive(false); // Inventory용 카메라
             }
             Managers.UI.ClosePopUpUI();
             
         });
 
+        //커스터마이징 버튼
         Get<GameObject>((int)GameObjects.SetCustomizingButton).BindEvent((PointerEventData) =>
         {
             sCharacterCustomizing customizing = new sCharacterCustomizing();
@@ -93,19 +105,39 @@ public class UI_Inventory : UI_PopUp
             Managers.Network.GetPacketManager().SendChangeCharacterCustomizingPacket(customizing);
         });
 
+        // 모델 데이터 초기화 후 복사해오기
+        Managers.Data.ClientLocalCustomizingDataDict.Clear();
+
+        foreach (var itemPair in Managers.Data.PlayerCustomizingData)
+        {
+            // 전부다 한 번에 카피하는게 빠를거 같긴 하지만, 로직 상으론 문제 없을 테니 일단 이렇게
+            Managers.Data.ClientLocalCustomizingDataDict.Add(itemPair.Key, itemPair.Value);
+        }
+
+        // 모델 렌더용 카메라 설정
+        Camera.main.transform.GetChild(0).gameObject.SetActive(false); // Home용 카메라
+        Camera.main.transform.GetChild(1).gameObject.SetActive(true); // Inventory용 카메라
+
+        // 캐릭터 모델 렌더를 위해 캔버스 설정
+        this.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
+        this.GetComponent<Canvas>().worldCamera = Camera.main;
+        this.GetComponent<Canvas>().planeDistance = Camera.main.nearClipPlane + 0.001f;
+
         isInitialized = true;
     }
 
     public void SetAccessory(int itemIndex)
     {
-        // 그딴거 없으면 넘기기
+        // 인덱스 찾아봤는데 그딴거 없으면 넘기기
         if (Managers.Data.GetItemData(itemIndex) == null) return;
 
         // 타입 확인.
         int itemType = Managers.Data.GetItemData(itemIndex).Item_Type;
 
         // 해당 타입의 커마 데이터 가져오기
-        Managers.Data.PlayerCustomizingData.TryGetValue(itemType, out var curItem);
+        bool result = Managers.Data.ClientLocalCustomizingDataDict.TryGetValue(itemType, out var curItem);
+
+        if (false == result) return;
 
         // 현재 설정된 커마가 있다면
         if (curItem.ItemCode != -1)
@@ -118,7 +150,7 @@ public class UI_Inventory : UI_PopUp
             newData.Type = itemType;
             newData.ItemCode = -1;
             newData.ItemUid = -1;
-            Managers.Data.PlayerCustomizingData[itemType] = newData;
+            Managers.Data.ClientLocalCustomizingDataDict[itemType] = newData;
         }
 
         // 지금 버튼 누른게 같은 거 한번 더 누른게 아니라면
@@ -131,7 +163,13 @@ public class UI_Inventory : UI_PopUp
             newData.Type = itemType;
             newData.ItemCode = itemIndex;
             newData.ItemUid = ItemSlotDict[itemIndex].GetItemUid();
-            Managers.Data.PlayerCustomizingData[itemType] = newData;
+            Managers.Data.ClientLocalCustomizingDataDict[itemType] = newData;
+        }
+
+        var sceneUi = Managers.UI.GetCurrentSceneUI();
+        if (sceneUi != null && sceneUi.GetComponent<UI_HomeStart>() != null)
+        {
+            sceneUi.GetComponent<UI_HomeStart>().SetInventoryLocalCustomizing();
         }
     }
 

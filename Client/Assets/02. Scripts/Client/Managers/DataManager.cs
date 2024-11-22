@@ -11,6 +11,7 @@ using static UnityEngine.EventSystems.EventTrigger;
 /// <summary>
 /// 스크립터블 오브젝트 등으로 저장된 데이터를 쉽게 가져오기 위해
 /// 런타임시 항상 데이터를 항상 들고 있도록 설정하는 매니저.
+/// 나중에 public으로 설정되어 있는 녀석들은 전부 getter, setter 설정을 해줘야 한다. (보안 문제)
 /// </summary>
 public class DataManager
 {
@@ -61,6 +62,14 @@ public class DataManager
     /// 페어 타입 -> 아이템 타입, 아이템 데이터
     /// </summary>
     public Dictionary<int, Define.ItemData> PlayerCustomizingData = new();
+
+    /// <summary>
+    /// 인벤토리에서 모델 띄울 때 로컬로 사용할 딕셔너리.
+    /// 선택하면 뭐가 바뀌는 지 알아야 하니까.
+    /// 아이템 타입, 아이템 인덱스
+    /// </summary>
+    public Dictionary<int, Define.ItemData> ClientLocalCustomizingDataDict = new();
+
     string NickName = "DefaultNick";
 
     public void Init()

@@ -149,15 +149,33 @@ public class UI_HomeStart : UI_Scene
         Get<GameObject>((int)GameObjects.UI_CharacterModel).GetComponent<UI_CharacterModel>().SetCustomizing();
     }
 
+    /// <summary>
+    /// 인벤토리에서 아직 확정되지 않은 커스터마이징을 표시하기 위한 함수
+    /// </summary>
+    public void SetInventoryLocalCustomizing()
+    {
+        Get<GameObject>((int)GameObjects.UI_CharacterModel).GetComponent<UI_CharacterModel>().SetInventoryLocalCustomizing();
+    }
+
     IEnumerator WaitRecvItemDataAndShowUI()
     {
         yield return null;
+
+        float timeOut = 5.0f;
+
         while(!Managers.Data.IsInventoryDataRecved())
         {
+            if (timeOut < 0f)
+            {
+                break;
+            }
+
             if(Managers.Scene.CurrentScene.GetComponent<HomeScene>() == null)
             {
                 break;
             }
+
+            timeOut -= Time.deltaTime;
             yield return null;
         }
 
@@ -165,6 +183,14 @@ public class UI_HomeStart : UI_Scene
         {
             var ui = Managers.UI.ShowPopUpUI<UI_Inventory>();
             ui.Init();
+        }
+
+        if(timeOut < 0f)
+        {
+            var ui = Managers.UI.ShowPopUpUI<UI_Notice>();
+            ui.Init();
+            ui.NoticeTextChange("인벤토리에 접속할 수 없습니다.");
+            ui.BindPopupCloseEvent();
         }
     }
 }
