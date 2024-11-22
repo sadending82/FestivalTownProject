@@ -14,8 +14,6 @@ using PacketTable.ObjectTable;
 using PacketTable.LobbyTable;
 using System.Diagnostics;
 using PacketTable.LoginTable;
-using static UnityEditor.ObjectChangeEventStream;
-using static UnityEditor.Progress;
 
 public class PacketMaker
 {
