@@ -124,3 +124,5 @@ std::string wstringToString(const std::wstring& input);
 
 sCharacterCustomizing DeserializationCharacterCustomizing(const std::vector<uint8_t>& buffer);
 std::vector<uint8_t> SerializationCharacterCustomizing(sCharacterCustomizing characterCustomizing);
+
+bool CheckDateToday(const std::tm& date);

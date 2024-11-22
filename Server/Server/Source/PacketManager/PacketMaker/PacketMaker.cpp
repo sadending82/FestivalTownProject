@@ -10,24 +10,41 @@ std::vector<uint8_t> PacketMaker::MakeVersionCheckResponsePacket(int result)
 	return MakeBuffer(ePacketType::S2C_VERSION_CHECK_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakeLoginResponsePacket(int result, UserInfo userInfo)
+std::vector<uint8_t> PacketMaker::MakeLoginResponsePacket(int result, UserInfo userInfo, std::unordered_map<int, std::vector<sDayAttendanceInfo>>& attendanceInfoList)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 
+	// 캐릭터 커마
 	std::vector<flatbuffers::Offset<PacketTable::UtilitiesTable::CustomizingItem>> itemVector;
-
 	for (auto pair : userInfo.characterCustomizing.customizingItems) {
 		auto item = pair.second;
 		itemVector.push_back(PacketTable::UtilitiesTable::CreateCustomizingItem(Builder, item.itemType, item.item_UID, item.itemCode));
 	}
-
 	auto characterCustomizing = PacketTable::UtilitiesTable::CreateCharacterCustomizing(Builder, Builder.CreateVector(itemVector));
+
+	// 출석 이벤트
+	std::vector<flatbuffers::Offset<PacketTable::UtilitiesTable::AttendanceStatus>> attendanceStatusVector;
+	for (auto& pair : attendanceInfoList) {
+		int eventCode = pair.first;
+		auto& dayAttendanceList = pair.second;
+		bool has_attendanceToday = false;
+		std::vector<flatbuffers::Offset<PacketTable::UtilitiesTable::DayAttendanceInfo>> dayAttendanceVector;
+		for (int i = 0; i < dayAttendanceList.size(); ++i) {
+			std::tm tDate = dayAttendanceList[i].attendance_date;
+
+			has_attendanceToday = CheckDateToday(tDate);
+
+			auto date = PacketTable::UtilitiesTable::CreateDate(Builder,tDate.tm_year, tDate.tm_mon, tDate.tm_mday);
+			dayAttendanceVector.push_back(PacketTable::UtilitiesTable::CreateDayAttendanceInfo(Builder, dayAttendanceList[i].day_number, date, dayAttendanceList[i].is_rewarded));
+		}
+		attendanceStatusVector.push_back(PacketTable::UtilitiesTable::CreateAttendanceStatus(Builder, eventCode, has_attendanceToday, Builder.CreateVector(dayAttendanceVector)));
+	}
 
 	auto db_userInfo = PacketTable::UtilitiesTable::CreateDB_UserInfo(Builder, userInfo.UID, Builder.CreateString(wstringToString(userInfo.NickName)), userInfo.UserLevel, userInfo.PassLevel
 		, userInfo.UserTitle, userInfo.ProfileSkin, userInfo.Point, userInfo.AttendanceDay, characterCustomizing);
 
 	Builder.Finish(PacketTable::LoginTable::CreateLoginResponse(Builder, result, db_userInfo
-		, userInfo.Gold, userInfo.Dia, userInfo.Mileage));
+		, userInfo.Gold, userInfo.Dia, userInfo.Mileage, false, Builder.CreateVector(attendanceStatusVector)));
 	return MakeBuffer(ePacketType::S2C_LOGIN_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 

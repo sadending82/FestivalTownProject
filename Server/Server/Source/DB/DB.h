@@ -46,6 +46,8 @@ public:
     struct sCharacterCustomizing SelectCharacterCustomizing(const int uid);
     
     int SelectUserItemCount(const int uid, const int item_index);
+    std::vector<sDayAttendanceInfo> SelectUserAttendanceEvent(const int uid, const int eventCode);
+    sDayAttendanceInfo SelectUserAttendanceEventLatest(const int uid, const int eventCode);
     int SelectUserAttendanceToday(const int uid);
 
     // UPDATE

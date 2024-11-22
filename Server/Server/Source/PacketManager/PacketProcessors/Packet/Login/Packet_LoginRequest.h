@@ -23,13 +23,16 @@ public:
 
 				UserInfo userInfo = result.second;
 
-				pPacketSender->SendLoginResponse(key, result.first, userInfo);
+				std::unordered_map<int, std::vector<sDayAttendanceInfo>> attendanceInfoList;
+
+				pServer->GetLobbyManager()->CheckAttendanceEvent(userInfo.UID, attendanceInfoList);
+
+				pPacketSender->SendLoginResponse(key, result.first, userInfo, attendanceInfoList);
 
 				if (result.first == true) {
 					Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
 					player->SetUserInfoFromDB(userInfo);
 				}
-				pServer->GetLobbyManager()->CheckAttendance(userInfo.UID);
 			}
 		}
 		catch (const std::exception& e) {

@@ -6,7 +6,6 @@
 #define Evnet_Main_Sheet 0
 #define Evnet_List_Sheet 1
 
-
 enum class Event_Main_Field {
 	Event_ID,
 	Name,
@@ -42,6 +41,5 @@ struct Event_List {
 	std::tm Open_Date;
 	std::tm Close_Date;
 };
-
 
 #pragma pack(pop) 

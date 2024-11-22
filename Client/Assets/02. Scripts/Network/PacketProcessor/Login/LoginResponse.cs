@@ -24,6 +24,7 @@ namespace Network.PacketProcessor
             {
                 var userInfo = Data.UserInfo.Value;
 
+                // 캐릭터 커마
                 var characterCustomizing = userInfo.CharacterCustomizing.Value;
                 for (int i = 0; i < characterCustomizing.CustomizingItemsLength; i++)
                 {
@@ -51,6 +52,31 @@ namespace Network.PacketProcessor
                 Managers.Data.SetNickName(userInfo.Nickname);
                 Managers.Scene.LoadScene(Define.Scene.Home);
 
+                // 출석 이벤트
+                for (int i = 0; i < Data.AttendanceEventLength; ++i)
+                {
+                    var attendanceEventStatus = Data.AttendanceEvent(i).Value;
+                    int eventCode = attendanceEventStatus.EventCode;
+                    bool has_attendance_today = attendanceEventStatus.HasAttendanceToday;
+                    for (int j = 0; j < attendanceEventStatus.DaysInfoLength; ++j)
+                    {
+                        var dayInfo = attendanceEventStatus.DaysInfo(j).Value;
+                        // 몇번째 출석
+                        int dayCount = dayInfo.DayNumber;
+
+                        // 출석 날짜
+                        int date_year = dayInfo.AttendanceDate.Value.Year;
+                        int date_month = dayInfo.AttendanceDate.Value.Month;
+                        int date_day = dayInfo.AttendanceDate.Value.Day;
+
+                        // 보상 수령 여부
+                        bool is_rewarded = dayInfo.IsRewarded;
+
+                        //Debug.Log($"Event : {eventCode}, day_count : {dayCount}, date: {date_year}-{date_month}-{date_day}");
+                    }
+
+                    //Debug.Log($"Event : {eventCode}, has_attendance_today : {has_attendance_today}");
+                }
 
             }
             else

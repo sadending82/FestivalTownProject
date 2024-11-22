@@ -15,11 +15,23 @@ LobbyManager::~LobbyManager()
 
 }
 
-void LobbyManager::CheckAttendance(int uid)
+void LobbyManager::CheckAttendanceEvent(int uid, std::unordered_map<int, std::vector<sDayAttendanceInfo>>& attendanceInfoList)
 {
-	if (pDB->SelectUserAttendanceToday(uid) == 0) {
-		// 나중에 이벤트 넣을꺼임
-		pDB->InsertUserAttendance(uid, 0);
+	std::time_t NowTime = std::time(nullptr);
+	for (auto& eventInfo : pTableManager->GetEventList()) {
+
+		int eventCode = eventInfo.first;
+
+		std::time_t openTime = std::mktime(const_cast<std::tm*>(&eventInfo.second.Open_Date));
+		std::time_t closeTime = std::mktime(const_cast<std::tm*>(&eventInfo.second.Close_Date));
+
+		if (NowTime < openTime || closeTime < NowTime) {
+			continue;
+		}
+
+		if (eventInfo.second.Type == 2) {
+			attendanceInfoList[eventCode] = pDB->SelectUserAttendanceEvent(uid, eventCode);
+		}
 	}
 }
 

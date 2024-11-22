@@ -4,6 +4,8 @@
 #include "PacketManager/flatbuffer/FlatBufferManager.h"
 #include <vector>
 #include <cmath>
+#include <ctime>
+
 
 std::vector<uint8_t> MakeBuffer(const int type, const uint8_t* data, const int size)
 {
@@ -91,4 +93,16 @@ std::vector<uint8_t> SerializationCharacterCustomizing(sCharacterCustomizing cha
 	memcpy(result.data(), Builder.GetBufferPointer(), Builder.GetSize());
 
 	return result;
+}
+
+bool CheckDateToday(const std::tm& date)
+{
+	std::time_t now = std::time(nullptr);
+
+	std::tm today = {};
+	localtime_s(&today, &now);
+
+	return (today.tm_year == date.tm_year &&
+		today.tm_mon == date.tm_mon &&
+		today.tm_mday == date.tm_mday);
 }

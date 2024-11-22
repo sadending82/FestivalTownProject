@@ -20,20 +20,24 @@ public struct DayAttendanceInfo : IFlatbufferObject
   public DayAttendanceInfo __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public int DayNumber { get { int o = __p.__offset(4); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public bool IsRewarded { get { int o = __p.__offset(6); return o != 0 ? 0!=__p.bb.Get(o + __p.bb_pos) : (bool)false; } }
+  public PacketTable.UtilitiesTable.Date? AttendanceDate { get { int o = __p.__offset(6); return o != 0 ? (PacketTable.UtilitiesTable.Date?)(new PacketTable.UtilitiesTable.Date()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
+  public bool IsRewarded { get { int o = __p.__offset(8); return o != 0 ? 0!=__p.bb.Get(o + __p.bb_pos) : (bool)false; } }
 
   public static Offset<PacketTable.UtilitiesTable.DayAttendanceInfo> CreateDayAttendanceInfo(FlatBufferBuilder builder,
       int day_number = 0,
+      Offset<PacketTable.UtilitiesTable.Date> attendance_dateOffset = default(Offset<PacketTable.UtilitiesTable.Date>),
       bool is_rewarded = false) {
-    builder.StartTable(2);
+    builder.StartTable(3);
+    DayAttendanceInfo.AddAttendanceDate(builder, attendance_dateOffset);
     DayAttendanceInfo.AddDayNumber(builder, day_number);
     DayAttendanceInfo.AddIsRewarded(builder, is_rewarded);
     return DayAttendanceInfo.EndDayAttendanceInfo(builder);
   }
 
-  public static void StartDayAttendanceInfo(FlatBufferBuilder builder) { builder.StartTable(2); }
+  public static void StartDayAttendanceInfo(FlatBufferBuilder builder) { builder.StartTable(3); }
   public static void AddDayNumber(FlatBufferBuilder builder, int dayNumber) { builder.AddInt(0, dayNumber, 0); }
-  public static void AddIsRewarded(FlatBufferBuilder builder, bool isRewarded) { builder.AddBool(1, isRewarded, false); }
+  public static void AddAttendanceDate(FlatBufferBuilder builder, Offset<PacketTable.UtilitiesTable.Date> attendanceDateOffset) { builder.AddOffset(1, attendanceDateOffset.Value, 0); }
+  public static void AddIsRewarded(FlatBufferBuilder builder, bool isRewarded) { builder.AddBool(2, isRewarded, false); }
   public static Offset<PacketTable.UtilitiesTable.DayAttendanceInfo> EndDayAttendanceInfo(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<PacketTable.UtilitiesTable.DayAttendanceInfo>(o);
@@ -47,7 +51,8 @@ static public class DayAttendanceInfoVerify
   {
     return verifier.VerifyTableStart(tablePos)
       && verifier.VerifyField(tablePos, 4 /*DayNumber*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 6 /*IsRewarded*/, 1 /*bool*/, 1, false)
+      && verifier.VerifyTable(tablePos, 6 /*AttendanceDate*/, PacketTable.UtilitiesTable.DateVerify.Verify, false)
+      && verifier.VerifyField(tablePos, 8 /*IsRewarded*/, 1 /*bool*/, 1, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }

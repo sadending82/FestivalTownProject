@@ -1,6 +1,7 @@
 #pragma once
 #include "../protocol.h"
 #include "../utility.h"
+#include "../DB/Schema/Schemas.h"
 #include <unordered_map>
 
 class LobbyManager
@@ -10,7 +11,7 @@ public:
 	LobbyManager(class Server* server);
 	~LobbyManager();
 
-	void CheckAttendance(int uid);
+	void CheckAttendanceEvent(int uid, std::unordered_map<int, std::vector<sDayAttendanceInfo>>& attendanceInfoList);
 
 	void CheckReadyToGamePlay(class Room* room, int roomID);
 

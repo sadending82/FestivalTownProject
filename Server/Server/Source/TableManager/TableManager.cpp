@@ -2,6 +2,7 @@
 #include <sstream>
 #include <iomanip>
 #include <chrono>
+#include <ctime>
 #include "TableManager.h"
 
 TableManager::TableManager()
@@ -92,11 +93,13 @@ void TableManager::ReadItemTable()
             if (!row.empty()) {
                 int index = (int)row[0].value<int>();
 
+                std::time_t openTime = static_cast<std::time_t>((row[(int)(Event_Main_Field::Open_Date)].value<double>() - 25569) * 86400);
+                std::time_t closeTime = static_cast<std::time_t>((row[(int)(Event_Main_Field::Close_Date)].value<double>() - 25569) * 86400);
+
                 std::tm openDate = {}, closeDate = {};
-                std::istringstream ssOpenDate(row[(int)(ItemTable_Field::Item_Type)].to_string());
-                std::istringstream ssCloseDate(row[(int)(ItemTable_Field::Close_Date)].to_string());
-                ssOpenDate >> std::get_time(&openDate, "%Y-%m-%d");
-                ssCloseDate >> std::get_time(&closeDate, "%Y-%m-%d");
+
+                localtime_s(&openDate, &openTime);
+                localtime_s(&closeDate, &closeTime);
 
                 ItemInfos[index] = ItemTable{
                     index,
@@ -260,11 +263,13 @@ void TableManager::ReadGameModeTable()
             }
 
             if (!row.empty()) {
+                std::time_t openTime = static_cast<std::time_t>((row[(int)(Event_Main_Field::Open_Date)].value<double>() - 25569) * 86400);
+                std::time_t closeTime = static_cast<std::time_t>((row[(int)(Event_Main_Field::Close_Date)].value<double>() - 25569) * 86400);
+
                 std::tm openDate = {}, closeDate = {};
-                std::istringstream ssOpenDate(row[(int)(GameModeOut_Field::Open_Date)].to_string());
-                std::istringstream ssCloseDate(row[(int)(GameModeOut_Field::Close_Date)].to_string());
-                ssOpenDate >> std::get_time(&openDate, "%Y-%m-%d");
-                ssCloseDate >> std::get_time(&closeDate, "%Y-%m-%d");
+
+                localtime_s(&openDate, &openTime);
+                localtime_s(&closeDate, &closeTime);
 
                 int index = row[0].value<int>();
                 int teamCount = row[(int)(GameModeOut_Field::Team_Count)].value<int>();
@@ -698,11 +703,13 @@ void TableManager::ReadGachaTable()
             }
 
             if (!row.empty()) {
+                std::time_t openTime = static_cast<std::time_t>((row[(int)(Event_Main_Field::Open_Date)].value<double>() - 25569) * 86400);
+                std::time_t closeTime = static_cast<std::time_t>((row[(int)(Event_Main_Field::Close_Date)].value<double>() - 25569) * 86400);
+
                 std::tm openDate = {}, closeDate = {};
-                std::istringstream ssOpenDate(row[(int)(RandomBox_Field::Open_Date)].to_string());
-                std::istringstream ssCloseDate(row[(int)(RandomBox_Field::Close_Date)].to_string());
-                ssOpenDate >> std::get_time(&openDate, "%Y-%m-%d");
-                ssCloseDate >> std::get_time(&closeDate, "%Y-%m-%d");
+
+                localtime_s(&openDate, &openTime);
+                localtime_s(&closeDate, &closeTime);
 
                 int index = row[(int)(RandomBox_Field::index)].value<int>();
                 RandomBoxList[index]
@@ -826,11 +833,13 @@ void TableManager::ReadEventTable()
 
                 int index = row[(int)(Event_Main_Field::Event_ID)].value<int>();
 
+                std::time_t openTime = static_cast<std::time_t>((row[(int)(Event_Main_Field::Open_Date)].value<double>()- 25569) * 86400);
+                std::time_t closeTime = static_cast<std::time_t>((row[(int)(Event_Main_Field::Close_Date)].value<double>() - 25569) * 86400);
+
                 std::tm openDate = {}, closeDate = {};
-                std::istringstream ssOpenDate(row[(int)(Event_Main_Field::Open_Date)].to_string());
-                std::istringstream ssCloseDate(row[(int)(Event_Main_Field::Close_Date)].to_string());
-                ssOpenDate >> std::get_time(&openDate, "%Y-%m-%d");
-                ssCloseDate >> std::get_time(&closeDate, "%Y-%m-%d");
+
+                localtime_s(&openDate, &openTime);
+                localtime_s(&closeDate, &closeTime);
 
                 EventList[index] =
                     Event_Main{
@@ -859,11 +868,13 @@ void TableManager::ReadEventTable()
                 int index = row[(int)(Event_List_Field::Index)].value<int>();
                 int day = row[(int)(Event_List_Field::Day)].value<int>();
 
+                std::time_t openTime = static_cast<std::time_t>((row[(int)(Event_Main_Field::Open_Date)].value<double>() - 25569) * 86400);
+                std::time_t closeTime = static_cast<std::time_t>((row[(int)(Event_Main_Field::Close_Date)].value<double>() - 25569) * 86400);
+
                 std::tm openDate = {}, closeDate = {};
-                std::istringstream ssOpenDate(row[(int)(Event_List_Field::Open_Date)].to_string());
-                std::istringstream ssCloseDate(row[(int)(Event_List_Field::Close_Date)].to_string());
-                ssOpenDate >> std::get_time(&openDate, "%Y-%m-%d");
-                ssCloseDate >> std::get_time(&closeDate, "%Y-%m-%d");
+
+                localtime_s(&openDate, &openTime);
+                localtime_s(&closeDate, &closeTime);
 
                 EventRewordList[index][day] =
                     Event_List{

@@ -52,6 +52,9 @@ struct Vec2iBuilder;
 struct Vec3f;
 struct Vec3fBuilder;
 
+struct Date;
+struct DateBuilder;
+
 struct Utilities FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef UtilitiesBuilder Builder;
   bool Verify(::flatbuffers::Verifier &verifier) const {
@@ -503,10 +506,14 @@ struct DayAttendanceInfo FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table 
   typedef DayAttendanceInfoBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_DAY_NUMBER = 4,
-    VT_IS_REWARDED = 6
+    VT_ATTENDANCE_DATE = 6,
+    VT_IS_REWARDED = 8
   };
   int32_t day_number() const {
     return GetField<int32_t>(VT_DAY_NUMBER, 0);
+  }
+  const PacketTable::UtilitiesTable::Date *attendance_date() const {
+    return GetPointer<const PacketTable::UtilitiesTable::Date *>(VT_ATTENDANCE_DATE);
   }
   bool is_rewarded() const {
     return GetField<uint8_t>(VT_IS_REWARDED, 0) != 0;
@@ -514,6 +521,8 @@ struct DayAttendanceInfo FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table 
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_DAY_NUMBER, 4) &&
+           VerifyOffset(verifier, VT_ATTENDANCE_DATE) &&
+           verifier.VerifyTable(attendance_date()) &&
            VerifyField<uint8_t>(verifier, VT_IS_REWARDED, 1) &&
            verifier.EndTable();
   }
@@ -525,6 +534,9 @@ struct DayAttendanceInfoBuilder {
   ::flatbuffers::uoffset_t start_;
   void add_day_number(int32_t day_number) {
     fbb_.AddElement<int32_t>(DayAttendanceInfo::VT_DAY_NUMBER, day_number, 0);
+  }
+  void add_attendance_date(::flatbuffers::Offset<PacketTable::UtilitiesTable::Date> attendance_date) {
+    fbb_.AddOffset(DayAttendanceInfo::VT_ATTENDANCE_DATE, attendance_date);
   }
   void add_is_rewarded(bool is_rewarded) {
     fbb_.AddElement<uint8_t>(DayAttendanceInfo::VT_IS_REWARDED, static_cast<uint8_t>(is_rewarded), 0);
@@ -543,8 +555,10 @@ struct DayAttendanceInfoBuilder {
 inline ::flatbuffers::Offset<DayAttendanceInfo> CreateDayAttendanceInfo(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t day_number = 0,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::Date> attendance_date = 0,
     bool is_rewarded = false) {
   DayAttendanceInfoBuilder builder_(_fbb);
+  builder_.add_attendance_date(attendance_date);
   builder_.add_day_number(day_number);
   builder_.add_is_rewarded(is_rewarded);
   return builder_.Finish();
@@ -882,6 +896,67 @@ inline ::flatbuffers::Offset<Vec3f> CreateVec3f(
   builder_.add_z(z);
   builder_.add_y(y);
   builder_.add_x(x);
+  return builder_.Finish();
+}
+
+struct Date FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef DateBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_YEAR = 4,
+    VT_MONTH = 6,
+    VT_DAY = 8
+  };
+  int32_t year() const {
+    return GetField<int32_t>(VT_YEAR, 0);
+  }
+  int32_t month() const {
+    return GetField<int32_t>(VT_MONTH, 0);
+  }
+  int32_t day() const {
+    return GetField<int32_t>(VT_DAY, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_YEAR, 4) &&
+           VerifyField<int32_t>(verifier, VT_MONTH, 4) &&
+           VerifyField<int32_t>(verifier, VT_DAY, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct DateBuilder {
+  typedef Date Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_year(int32_t year) {
+    fbb_.AddElement<int32_t>(Date::VT_YEAR, year, 0);
+  }
+  void add_month(int32_t month) {
+    fbb_.AddElement<int32_t>(Date::VT_MONTH, month, 0);
+  }
+  void add_day(int32_t day) {
+    fbb_.AddElement<int32_t>(Date::VT_DAY, day, 0);
+  }
+  explicit DateBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<Date> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<Date>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<Date> CreateDate(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t year = 0,
+    int32_t month = 0,
+    int32_t day = 0) {
+  DateBuilder builder_(_fbb);
+  builder_.add_day(day);
+  builder_.add_month(month);
+  builder_.add_year(year);
   return builder_.Finish();
 }
 

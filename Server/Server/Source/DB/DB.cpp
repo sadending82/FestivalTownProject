@@ -4,6 +4,9 @@
 #include "Query/Query.h"
 #include "../TableManager/TableManager.h"
 #include "../utility.h"
+#include <sstream>
+#include <iomanip>
+#include <chrono>
 
 DB::~DB()
 {
@@ -625,6 +628,121 @@ int DB::SelectUserItemCount(const int uid, const int item_index)
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	return 0;
 }
+
+std::vector<sDayAttendanceInfo> DB::SelectUserAttendanceEvent(const int uid, const int eventCode)
+{
+	if (uid == 0) {
+		return std::vector<sDayAttendanceInfo>();
+	}
+
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	std::vector<sDayAttendanceInfo> dayAttendanceInfoList;
+
+	int count = 0;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGNOPARAM("hStmt Error : (SelectUserAttendanceEvent) \n");
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return std::vector<sDayAttendanceInfo>();
+	}
+
+	UseGameDB(hStmt);
+
+	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserAttendanceEvent_Query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&eventCode), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+		while (SQLFetch(hStmt) == SQL_SUCCESS) {
+			SQLLEN col1, col2, col3;
+			sDayAttendanceInfo dayAttendanceInfo{};
+			char date[11] = { 0 };
+			std::tm tDate = {};
+			int day_number = 0;
+			int is_rewarded = 0;
+
+			SQLGetData(hStmt, 1, SQL_C_CHAR, date, sizeof(date), &col1);
+			SQLGetData(hStmt, 2, SQL_C_LONG, &day_number, sizeof(day_number),&col2);
+			SQLGetData(hStmt, 3, SQL_C_LONG, &is_rewarded, sizeof(is_rewarded), &col3);
+			std::istringstream ssDate(date);
+			ssDate >> std::get_time(&tDate, "%Y-%m-%d");
+			dayAttendanceInfo.attendance_date = tDate;
+			dayAttendanceInfo.day_number = day_number;
+			dayAttendanceInfo.is_rewarded = is_rewarded;
+
+			dayAttendanceInfoList.push_back(dayAttendanceInfo);
+		}
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return dayAttendanceInfoList;
+	}
+
+	DEBUGMSGNOPARAM("Execute Query Error : (SelectUserAttendanceEvent)\n");
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	return std::vector<sDayAttendanceInfo>();
+}
+
+sDayAttendanceInfo DB::SelectUserAttendanceEventLatest(const int uid, const int eventCode)
+{
+	if (uid == 0) {
+		return sDayAttendanceInfo();
+	}
+
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	int count = 0;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGNOPARAM("hStmt Error : (SelectUserAttendanceEventLatest) \n");
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return sDayAttendanceInfo();
+	}
+
+	UseGameDB(hStmt);
+
+	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserAttendanceEventLatest_Query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&eventCode), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	sDayAttendanceInfo dayAttendanceInfo;
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+		while (SQLFetch(hStmt) == SQL_SUCCESS) {
+			SQLLEN col1, col2, col3;
+			char date[11] = { 0 };
+			std::tm tDate = {};
+			int day_number = 0;
+			int is_rewarded = 0;
+
+			SQLGetData(hStmt, 1, SQL_C_CHAR, date, sizeof(date), &col1);
+			SQLGetData(hStmt, 2, SQL_C_LONG, &day_number, sizeof(day_number), &col2);
+			SQLGetData(hStmt, 3, SQL_C_LONG, &is_rewarded, sizeof(is_rewarded), &col3);
+
+			std::istringstream ssDate(date);
+			ssDate >> std::get_time(&tDate, "%Y-%m-%d");
+			dayAttendanceInfo.attendance_date = tDate;
+			dayAttendanceInfo.day_number = day_number;
+			dayAttendanceInfo.is_rewarded = is_rewarded;
+		}
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return dayAttendanceInfo;
+	}
+
+	DEBUGMSGNOPARAM("Execute Query Error : (SelectUserAttendanceEventLatest)\n");
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	return sDayAttendanceInfo();
+}
+
 
 int DB::SelectUserAttendanceToday(const int uid)
 {
