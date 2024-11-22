@@ -321,8 +321,8 @@ struct LoginResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_GOLD = 8,
     VT_DIA = 10,
     VT_MILEAGE = 12,
-    VT_HAS_UNCLAIMED_REWARD = 14,
-    VT_IS_NEW_UPDATE = 16
+    VT_IS_NEW_UPDATE = 14,
+    VT_ATTENDANCE_EVENT = 16
   };
   int32_t result_code() const {
     return GetField<int32_t>(VT_RESULT_CODE, 0);
@@ -339,11 +339,11 @@ struct LoginResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   int32_t mileage() const {
     return GetField<int32_t>(VT_MILEAGE, 0);
   }
-  bool has_unclaimed_reward() const {
-    return GetField<uint8_t>(VT_HAS_UNCLAIMED_REWARD, 0) != 0;
-  }
   bool is_new_update() const {
     return GetField<uint8_t>(VT_IS_NEW_UPDATE, 0) != 0;
+  }
+  const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::AttendanceStatus>> *attendance_event() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::AttendanceStatus>> *>(VT_ATTENDANCE_EVENT);
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -353,8 +353,10 @@ struct LoginResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            VerifyField<int32_t>(verifier, VT_GOLD, 4) &&
            VerifyField<int32_t>(verifier, VT_DIA, 4) &&
            VerifyField<int32_t>(verifier, VT_MILEAGE, 4) &&
-           VerifyField<uint8_t>(verifier, VT_HAS_UNCLAIMED_REWARD, 1) &&
            VerifyField<uint8_t>(verifier, VT_IS_NEW_UPDATE, 1) &&
+           VerifyOffset(verifier, VT_ATTENDANCE_EVENT) &&
+           verifier.VerifyVector(attendance_event()) &&
+           verifier.VerifyVectorOfTables(attendance_event()) &&
            verifier.EndTable();
   }
 };
@@ -378,11 +380,11 @@ struct LoginResponseBuilder {
   void add_mileage(int32_t mileage) {
     fbb_.AddElement<int32_t>(LoginResponse::VT_MILEAGE, mileage, 0);
   }
-  void add_has_unclaimed_reward(bool has_unclaimed_reward) {
-    fbb_.AddElement<uint8_t>(LoginResponse::VT_HAS_UNCLAIMED_REWARD, static_cast<uint8_t>(has_unclaimed_reward), 0);
-  }
   void add_is_new_update(bool is_new_update) {
     fbb_.AddElement<uint8_t>(LoginResponse::VT_IS_NEW_UPDATE, static_cast<uint8_t>(is_new_update), 0);
+  }
+  void add_attendance_event(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::AttendanceStatus>>> attendance_event) {
+    fbb_.AddOffset(LoginResponse::VT_ATTENDANCE_EVENT, attendance_event);
   }
   explicit LoginResponseBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -402,17 +404,38 @@ inline ::flatbuffers::Offset<LoginResponse> CreateLoginResponse(
     int32_t gold = 0,
     int32_t dia = 0,
     int32_t mileage = 0,
-    bool has_unclaimed_reward = false,
-    bool is_new_update = false) {
+    bool is_new_update = false,
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::AttendanceStatus>>> attendance_event = 0) {
   LoginResponseBuilder builder_(_fbb);
+  builder_.add_attendance_event(attendance_event);
   builder_.add_mileage(mileage);
   builder_.add_dia(dia);
   builder_.add_gold(gold);
   builder_.add_user_info(user_info);
   builder_.add_result_code(result_code);
   builder_.add_is_new_update(is_new_update);
-  builder_.add_has_unclaimed_reward(has_unclaimed_reward);
   return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<LoginResponse> CreateLoginResponseDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t result_code = 0,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::DB_UserInfo> user_info = 0,
+    int32_t gold = 0,
+    int32_t dia = 0,
+    int32_t mileage = 0,
+    bool is_new_update = false,
+    const std::vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::AttendanceStatus>> *attendance_event = nullptr) {
+  auto attendance_event__ = attendance_event ? _fbb.CreateVector<::flatbuffers::Offset<PacketTable::UtilitiesTable::AttendanceStatus>>(*attendance_event) : 0;
+  return PacketTable::LoginTable::CreateLoginResponse(
+      _fbb,
+      result_code,
+      user_info,
+      gold,
+      dia,
+      mileage,
+      is_new_update,
+      attendance_event__);
 }
 
 }  // namespace LoginTable

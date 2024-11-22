@@ -37,6 +37,12 @@ struct ItemInfoBuilder;
 struct DB_UserInfo;
 struct DB_UserInfoBuilder;
 
+struct DayAttendanceInfo;
+struct DayAttendanceInfoBuilder;
+
+struct AttendanceStatus;
+struct AttendanceStatusBuilder;
+
 struct PlayerGameRecord;
 struct PlayerGameRecordBuilder;
 
@@ -491,6 +497,133 @@ inline ::flatbuffers::Offset<DB_UserInfo> CreateDB_UserInfoDirect(
       point,
       attendance_day,
       character_customizing);
+}
+
+struct DayAttendanceInfo FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef DayAttendanceInfoBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_DAY_NUMBER = 4,
+    VT_IS_REWARDED = 6
+  };
+  int32_t day_number() const {
+    return GetField<int32_t>(VT_DAY_NUMBER, 0);
+  }
+  bool is_rewarded() const {
+    return GetField<uint8_t>(VT_IS_REWARDED, 0) != 0;
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_DAY_NUMBER, 4) &&
+           VerifyField<uint8_t>(verifier, VT_IS_REWARDED, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct DayAttendanceInfoBuilder {
+  typedef DayAttendanceInfo Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_day_number(int32_t day_number) {
+    fbb_.AddElement<int32_t>(DayAttendanceInfo::VT_DAY_NUMBER, day_number, 0);
+  }
+  void add_is_rewarded(bool is_rewarded) {
+    fbb_.AddElement<uint8_t>(DayAttendanceInfo::VT_IS_REWARDED, static_cast<uint8_t>(is_rewarded), 0);
+  }
+  explicit DayAttendanceInfoBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<DayAttendanceInfo> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<DayAttendanceInfo>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<DayAttendanceInfo> CreateDayAttendanceInfo(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t day_number = 0,
+    bool is_rewarded = false) {
+  DayAttendanceInfoBuilder builder_(_fbb);
+  builder_.add_day_number(day_number);
+  builder_.add_is_rewarded(is_rewarded);
+  return builder_.Finish();
+}
+
+struct AttendanceStatus FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef AttendanceStatusBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_EVENT_CODE = 4,
+    VT_HAS_ATTENDANCE_TODAY = 6,
+    VT_DAYS_INFO = 8
+  };
+  int32_t event_code() const {
+    return GetField<int32_t>(VT_EVENT_CODE, 0);
+  }
+  bool has_attendance_today() const {
+    return GetField<uint8_t>(VT_HAS_ATTENDANCE_TODAY, 0) != 0;
+  }
+  const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::DayAttendanceInfo>> *days_info() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::DayAttendanceInfo>> *>(VT_DAYS_INFO);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_EVENT_CODE, 4) &&
+           VerifyField<uint8_t>(verifier, VT_HAS_ATTENDANCE_TODAY, 1) &&
+           VerifyOffset(verifier, VT_DAYS_INFO) &&
+           verifier.VerifyVector(days_info()) &&
+           verifier.VerifyVectorOfTables(days_info()) &&
+           verifier.EndTable();
+  }
+};
+
+struct AttendanceStatusBuilder {
+  typedef AttendanceStatus Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_event_code(int32_t event_code) {
+    fbb_.AddElement<int32_t>(AttendanceStatus::VT_EVENT_CODE, event_code, 0);
+  }
+  void add_has_attendance_today(bool has_attendance_today) {
+    fbb_.AddElement<uint8_t>(AttendanceStatus::VT_HAS_ATTENDANCE_TODAY, static_cast<uint8_t>(has_attendance_today), 0);
+  }
+  void add_days_info(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::DayAttendanceInfo>>> days_info) {
+    fbb_.AddOffset(AttendanceStatus::VT_DAYS_INFO, days_info);
+  }
+  explicit AttendanceStatusBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<AttendanceStatus> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<AttendanceStatus>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<AttendanceStatus> CreateAttendanceStatus(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t event_code = 0,
+    bool has_attendance_today = false,
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::DayAttendanceInfo>>> days_info = 0) {
+  AttendanceStatusBuilder builder_(_fbb);
+  builder_.add_days_info(days_info);
+  builder_.add_event_code(event_code);
+  builder_.add_has_attendance_today(has_attendance_today);
+  return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<AttendanceStatus> CreateAttendanceStatusDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t event_code = 0,
+    bool has_attendance_today = false,
+    const std::vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::DayAttendanceInfo>> *days_info = nullptr) {
+  auto days_info__ = days_info ? _fbb.CreateVector<::flatbuffers::Offset<PacketTable::UtilitiesTable::DayAttendanceInfo>>(*days_info) : 0;
+  return PacketTable::UtilitiesTable::CreateAttendanceStatus(
+      _fbb,
+      event_code,
+      has_attendance_today,
+      days_info__);
 }
 
 struct PlayerGameRecord FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {

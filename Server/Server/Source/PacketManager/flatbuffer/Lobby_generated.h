@@ -48,6 +48,12 @@ struct UserItemsResponseBuilder;
 struct ChangeCharacterCustomizing;
 struct ChangeCharacterCustomizingBuilder;
 
+struct AttendanceEventRequest;
+struct AttendanceEventRequestBuilder;
+
+struct AttendanceEventResponse;
+struct AttendanceEventResponseBuilder;
+
 struct GameMatchingRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef GameMatchingRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -664,6 +670,98 @@ inline ::flatbuffers::Offset<ChangeCharacterCustomizing> CreateChangeCharacterCu
   return PacketTable::LobbyTable::CreateChangeCharacterCustomizing(
       _fbb,
       customizing_items__);
+}
+
+struct AttendanceEventRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef AttendanceEventRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_EVENT_CODE = 4
+  };
+  int32_t event_code() const {
+    return GetField<int32_t>(VT_EVENT_CODE, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_EVENT_CODE, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct AttendanceEventRequestBuilder {
+  typedef AttendanceEventRequest Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_event_code(int32_t event_code) {
+    fbb_.AddElement<int32_t>(AttendanceEventRequest::VT_EVENT_CODE, event_code, 0);
+  }
+  explicit AttendanceEventRequestBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<AttendanceEventRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<AttendanceEventRequest>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<AttendanceEventRequest> CreateAttendanceEventRequest(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t event_code = 0) {
+  AttendanceEventRequestBuilder builder_(_fbb);
+  builder_.add_event_code(event_code);
+  return builder_.Finish();
+}
+
+struct AttendanceEventResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef AttendanceEventResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_EVENT_CODE = 4,
+    VT_RESULT = 6
+  };
+  int32_t event_code() const {
+    return GetField<int32_t>(VT_EVENT_CODE, 0);
+  }
+  int32_t result() const {
+    return GetField<int32_t>(VT_RESULT, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_EVENT_CODE, 4) &&
+           VerifyField<int32_t>(verifier, VT_RESULT, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct AttendanceEventResponseBuilder {
+  typedef AttendanceEventResponse Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_event_code(int32_t event_code) {
+    fbb_.AddElement<int32_t>(AttendanceEventResponse::VT_EVENT_CODE, event_code, 0);
+  }
+  void add_result(int32_t result) {
+    fbb_.AddElement<int32_t>(AttendanceEventResponse::VT_RESULT, result, 0);
+  }
+  explicit AttendanceEventResponseBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<AttendanceEventResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<AttendanceEventResponse>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<AttendanceEventResponse> CreateAttendanceEventResponse(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t event_code = 0,
+    int32_t result = 0) {
+  AttendanceEventResponseBuilder builder_(_fbb);
+  builder_.add_result(result);
+  builder_.add_event_code(event_code);
+  return builder_.Finish();
 }
 
 }  // namespace LobbyTable
