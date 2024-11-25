@@ -53,6 +53,7 @@ public class PacketManager : MonoBehaviour
             { ePacketType.S2C_CURRENCY_AMOUNT_RESPONSE, new CurrencyAmountResponseProcessor() },
             { ePacketType.S2C_USER_ITEMS_RESPONSE, new UserItemsResponseProcessor() },
             { ePacketType.S2C_CHANGE_CHARACTER_CUSTOMIZING, new ChangeCharacterCustomizingProcessor() },
+            { ePacketType.S2C_ATTENDANCE_EVENT_RESPONSE, new AttendanceEventResponseProcessor() },
 
             { ePacketType.S2C_HEART_BEAT, new HeartBeatProcessor() },
 
@@ -211,6 +212,12 @@ public class PacketManager : MonoBehaviour
         SendPacket(packet);
     }
 
+    public void SendAttendanceEventRequestPacket(int eventCode)
+    {
+        byte[] packet = _packetMaker.MakeAttendanceEventRequestPacket(eventCode);
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
 
     // ------------------ Player ------------------
     public void SendPlayerSyncPacket(Vector3 position, Vector3 direction, int stamina, int id)

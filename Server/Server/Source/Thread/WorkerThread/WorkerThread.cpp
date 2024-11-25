@@ -1,6 +1,7 @@
 #include "WorkerThread.h"
 #include "../../Server/Server.h"
 #include "../../PacketManager/PacketManager.h"
+#include <mstcpip.h>
 
 WorkerThread::~WorkerThread()
 {
@@ -30,6 +31,19 @@ void WorkerThread::RunWorker()
                 Session* newSession = pServer->GetSessions()[newKey];
                 SOCKET cSocket = reinterpret_cast<SOCKET>(exOver->mWsaBuf.buf);
                 newSession->SessionInit(cSocket, newKey);
+
+                //// Keep-Alive 활성화
+                //BOOL keepAlive = TRUE;
+                //setsockopt(cSocket, SOL_SOCKET, SO_KEEPALIVE, (char*)&keepAlive, sizeof(keepAlive));
+
+                //// 상세 Keep-Alive 설정
+                //tcp_keepalive kaSettings;
+                //kaSettings.onoff = 1;
+                //kaSettings.keepalivetime = 10000;
+                //kaSettings.keepaliveinterval = 10000;
+
+                //DWORD bytesReturned;
+                //WSAIoctl(cSocket, SIO_KEEPALIVE_VALS, &kaSettings, sizeof(kaSettings), NULL, 0, &bytesReturned, NULL, NULL);
 
                 CreateIoCompletionPort((HANDLE)newSession->GetSocket(), pServer->GetHcp(), newKey, 0);
                 DEBUGMSGONEPARAM("Lobby Accept: %d\n", newKey);
