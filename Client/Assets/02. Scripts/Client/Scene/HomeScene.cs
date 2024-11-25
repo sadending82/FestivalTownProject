@@ -25,7 +25,7 @@ public class HomeScene : BaseScene
         homeSceneUI.SetGold(Managers.Data.GetGold());
         homeStartUI.SetNickName(Managers.Data.GetNickName());
 
-        Managers.UI.ShowPopUpUI<UI_DailySignInCheck>();
+        StartCoroutine(WaitAttendanceEventData());
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -36,6 +36,18 @@ public class HomeScene : BaseScene
         homeSceneUI.SetDiamond(Managers.Data.GetDiamond());
         homeSceneUI.SetGold(Managers.Data.GetGold());
         homeStartUI.SetNickName(Managers.Data.GetNickName());
+    }
+
+    IEnumerator WaitAttendanceEventData()
+    {
+        yield return null;
+        
+        while(!Managers.Data.HasAttendanceDataRecved())
+        {
+            yield return null;
+        }
+
+        Managers.UI.ShowPopUpUI<UI_DailySignInCheck>();
     }
 
     public override void Clear()

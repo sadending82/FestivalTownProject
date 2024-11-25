@@ -75,8 +75,10 @@ public class DataManager
     /// </summary>
     public Dictionary<int, Define.AttendanceEventData> AttendanceEventDataDict = new();
     bool hasAttendanceToday = false;
+    bool hasAttendanceDataRecved = false;
 
     string NickName = "DefaultNick";
+
 
     public void Init()
     {
@@ -372,5 +374,15 @@ public class DataManager
     public void SetAttendanceToday(bool value)
     {
         hasAttendanceToday = value;
+    }
+
+    public bool HasAttendanceDataRecved()
+    {
+        return hasAttendanceDataRecved;
+    }
+
+    public void SetAttendanceDataRecved(bool value)
+    {
+        hasAttendanceDataRecved = value;
     }
 }

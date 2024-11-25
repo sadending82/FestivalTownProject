@@ -25,7 +25,7 @@ public class UI_DailyCheckItem : UI_Base
         Bind<GameObject>(typeof(GameObjects));
 
         transform.localScale = Vector3.one;
-
+        SetItemRewarded(false);
         isInitialized = true;
     }
 
