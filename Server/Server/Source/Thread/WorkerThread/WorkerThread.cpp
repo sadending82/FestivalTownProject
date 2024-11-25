@@ -39,8 +39,8 @@ void WorkerThread::RunWorker()
                 //// 상세 Keep-Alive 설정
                 //tcp_keepalive kaSettings;
                 //kaSettings.onoff = 1;
-                //kaSettings.keepalivetime = 10000;
-                //kaSettings.keepaliveinterval = 10000;
+                //kaSettings.keepalivetime = 5000;
+                //kaSettings.keepaliveinterval = 5000;
 
                 //DWORD bytesReturned;
                 //WSAIoctl(cSocket, SIO_KEEPALIVE_VALS, &kaSettings, sizeof(kaSettings), NULL, 0, &bytesReturned, NULL, NULL);
