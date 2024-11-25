@@ -1,0 +1,17 @@
+11 3
+0 -2.2 0 6 1
+1 46.2 0 6 3
+-1 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+MapStructure
+x x x x x n x n x n n n n x n x n x n x x x x x
+n n n 0 n x n x n o o o o n x n x n 1 n n n
+n a a 0 n n x n x o o o o x n x n n 1 b b n
+n a a 0 n n x n x o o o o x n x n n 1 b b n
+n n n 0 n x n x n o o o o n x n x n 1 n n n
+x x x x x n x n x n n n n x n x n x n x x x x x

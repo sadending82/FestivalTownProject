@@ -29,7 +29,7 @@ public class MapManager : MonoBehaviour
 
     public void LoadGameMap(int mapIndex, int mapThema = 1, MapCode mapCode = MapCode.Map_FITH_1vs1)
     {
-        StreamReader reader = new StreamReader(Application.dataPath + $"/11. GameData/Map/{mapIndex}.txt");
+        StreamReader reader = new StreamReader(Application.streamingAssetsPath + $"/Map/{mapIndex}.txt");
         string readLine;
 
         //∏  ªÁ¿Ã¡Ó
@@ -49,12 +49,13 @@ public class MapManager : MonoBehaviour
             Vector3 position;
             int directionNum;
             int.TryParse(sStatue[0], out teamNumber);
+            float.TryParse(sStatue[1], out position.x);
+            float.TryParse(sStatue[2], out position.y);
+            float.TryParse(sStatue[3], out position.z);
+            int.TryParse(sStatue[4], out directionNum);
+
             if (teamNumber != -1)
             {
-                float.TryParse(sStatue[1], out position.x);
-                float.TryParse(sStatue[2], out position.y);
-                float.TryParse(sStatue[3], out position.z);
-                int.TryParse(sStatue[4], out directionNum);
                 Vector3 direction = new Vector3(0.0f, directionNum * 90.0f, 0.0f);
                 spawnDirection[teamNumber] = direction;
                 LoadStatue(teamNumber, position, direction);

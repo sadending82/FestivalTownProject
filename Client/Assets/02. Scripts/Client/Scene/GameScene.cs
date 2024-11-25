@@ -19,8 +19,6 @@ public class GameScene : BaseScene
 
         Managers.Player.Init();
 
-        LoadStatue();
-
         LoadCubes();
 
         LoadBombs();
@@ -31,50 +29,6 @@ public class GameScene : BaseScene
 
         // TODO: 여기서 씬이 생성될 때에 미리 해줘야 할 작업 들을 해주어야 합니다.
         // 일단은 지금은 모드가 하나니까, 이것만 관리하도록 설정해주면 될듯?
-    }
-
-    public void LoadStatue()
-    {
-        switch (Managers.Game.mapCode)
-        {
-            case MapCode.Map_FITH_1vs1:
-                {
-                    GameObject Statue1 = Managers.Resource.Instantiate("Statue");
-                    Statue1.transform.position = new Vector3(-3.0f, 0.0f, 10.0f);
-                    Statue1.transform.rotation = Quaternion.Euler(0.0f, 90.0f, 0.0f);
-                    Statue1.GetComponent<Statue>().SetTeam(0);
-
-                    GameObject Statue2 = Managers.Resource.Instantiate("Statue");
-                    Statue2.transform.position = new Vector3(43.0f, 0.0f, 10.0f);
-                    Statue2.transform.rotation = Quaternion.Euler(0.0f, -90.0f, 0.0f);
-                    Statue2.GetComponent<Statue>().SetTeam(1);
-                }
-                break;
-
-            case MapCode.Map_FITH_1vs1vs1:
-                {
-                    GameObject Statue1 = Managers.Resource.Instantiate("Statue");
-                    Statue1.transform.position = new Vector3(22.0f, 0.0f, 31.0f);
-                    Statue1.transform.rotation = Quaternion.Euler(0.0f, 180.0f, 0.0f);
-                    Statue1.GetComponent<Statue>().SetTeam(0);
-
-                    GameObject Statue2 = Managers.Resource.Instantiate("Statue");
-                    Statue2.transform.position = new Vector3(-3.0f, 0.0f, 6.0f);
-                    Statue2.transform.rotation = Quaternion.Euler(0.0f, 90.0f, 0.0f);
-                    Statue2.GetComponent<Statue>().SetTeam(1);
-
-                    GameObject Statue3 = Managers.Resource.Instantiate("Statue");
-                    Statue3.transform.position = new Vector3(47.0f, 0.0f, 6.0f);
-                    Statue3.transform.rotation = Quaternion.Euler(0.0f, -90.0f, 0.0f);
-                    Statue3.GetComponent<Statue>().SetTeam(2);
-                }
-                break;
-            default:
-                {
-                    Debug.Log("ERROR!!! LoadStatue(): Wrong MapCode!!!");
-                }
-                break;
-        }
     }
 
     public void LoadCubes()
