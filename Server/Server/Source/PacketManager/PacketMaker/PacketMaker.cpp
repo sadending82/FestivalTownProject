@@ -90,6 +90,14 @@ std::vector<uint8_t> PacketMaker::MakeUserItemsResponsePacket(int result, std::u
 	return MakeBuffer(ePacketType::S2C_USER_ITEMS_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
+std::vector<uint8_t> PacketMaker::MakeAttendanceEventResponsePacket(int result, int eventCode)
+{
+	flatbuffers::FlatBufferBuilder Builder;
+
+	Builder.Finish(PacketTable::LobbyTable::CreateAttendanceEventResponse(Builder, result, eventCode));
+	return MakeBuffer(ePacketType::S2C_ATTENDANCE_EVENT_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
+}
+
 std::vector<uint8_t> PacketMaker::MakePlayerAddPacket(std::vector<class Player*>& players)
 {
 	flatbuffers::FlatBufferBuilder Builder;

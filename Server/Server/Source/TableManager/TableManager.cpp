@@ -876,7 +876,7 @@ void TableManager::ReadEventTable()
                 localtime_s(&openDate, &openTime);
                 localtime_s(&closeDate, &closeTime);
 
-                EventRewordList[index][day] =
+                EventRewardList[index][day] =
                     Event_List{
                         index,
                         row[(int)(Event_List_Field::Event_List)].value<int>(),
@@ -1022,11 +1022,11 @@ std::unordered_map<INDEX, Event_Main>& TableManager::GetEventList()
     return EventList;
 }
 
-std::unordered_map<INDEX, std::unordered_map<int, Event_List>>& TableManager::GetEventRewordList()
+std::unordered_map<INDEX, std::unordered_map<int, Event_List>>& TableManager::GetEventRewardList()
 {
     while (mIsLoading == true) {
 
     }
 
-    return EventRewordList;
+    return EventRewardList;
 }
