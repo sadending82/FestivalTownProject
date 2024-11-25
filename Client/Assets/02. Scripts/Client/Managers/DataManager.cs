@@ -76,6 +76,7 @@ public class DataManager
     public Dictionary<int, Define.AttendanceEventData> AttendanceEventDataDict = new();
     bool hasAttendanceToday = false;
     bool hasAttendanceDataRecved = false;
+    bool hasAttendanceUIPopUp = false;
 
     string NickName = "DefaultNick";
 
@@ -384,5 +385,15 @@ public class DataManager
     public void SetAttendanceDataRecved(bool value)
     {
         hasAttendanceDataRecved = value;
+    }
+
+    public bool HasAttendanceUIPopUp()
+    {
+        return hasAttendanceUIPopUp;
+    }
+
+    public void SetAttendanceUIPopUp(bool value)
+    {
+        hasAttendanceUIPopUp = value;
     }
 }

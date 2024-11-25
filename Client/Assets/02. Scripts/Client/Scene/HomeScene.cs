@@ -25,7 +25,11 @@ public class HomeScene : BaseScene
         homeSceneUI.SetGold(Managers.Data.GetGold());
         homeStartUI.SetNickName(Managers.Data.GetNickName());
 
-        StartCoroutine(WaitAttendanceEventData());
+        if (!Managers.Data.HasAttendanceUIPopUp())
+        {
+            Managers.Data.SetAttendanceUIPopUp(true);
+            StartCoroutine(WaitAttendanceEventData());
+        }
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;

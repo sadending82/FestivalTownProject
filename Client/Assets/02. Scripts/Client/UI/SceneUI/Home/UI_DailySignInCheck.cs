@@ -27,7 +27,6 @@ public class UI_DailySignInCheck : UI_PopUp
 
         Get<GameObject>((int)GameObjects.ExitButton).BindEvent((PointerEventData) =>
         {
-            Managers.UI.ClosePopUpUI();
             foreach (var eventData in Managers.Data.EventMainDataDict)
             {
                 if (eventData.Value.Type == 2)
@@ -35,6 +34,7 @@ public class UI_DailySignInCheck : UI_PopUp
                     Managers.Network.GetPacketManager().SendAttendanceEventRequestPacket(eventData.Value.Event_Id);
                 }
             }
+            Managers.UI.ClosePopUpUI();
         });
 
         GameObject itemGrid = Get<GameObject>((int)GameObjects.ItemGrid);
