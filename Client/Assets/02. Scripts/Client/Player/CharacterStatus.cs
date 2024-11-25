@@ -300,6 +300,7 @@ public class CharacterStatus : MonoBehaviour
             HideItem();
             playerUIController.gameObject.SetActive(false);
             playerController.SetPosition(new Vector3(-1, -1, -1));
+            ResetCharacterState();
             Managers.Sound.Play("Sfx_Ch_Die");
             // 관전 관련
             if (amIPlayer == true)
@@ -316,7 +317,6 @@ public class CharacterStatus : MonoBehaviour
         }
         else
         {
-            ResetCharacterState();
             playerMesh.SetActive(true);
             ShowItem();
             playerUIController.gameObject.SetActive(true);

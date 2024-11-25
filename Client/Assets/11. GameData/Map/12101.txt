@@ -1,0 +1,21 @@
+13 8
+0 -2 0 4 1
+1 -2 0 13 3
+-1 0 0 0 0
+0 0 0 0 1 2 3 4 4 4 4 4 4
+0 0 0 0 1 2 3 4 4 4 4 4 4
+0 0 0 0 1 2 3 4 4 4 4 4 4
+0 0 0 0 1 2 3 4 4 4 4 4 4
+0 0 0 0 1 2 3 4 4 4 4 4 4
+0 0 0 0 1 2 3 4 4 4 4 4 4
+0 0 0 0 1 2 3 4 4 4 4 4 4
+0 0 0 0 1 2 3 4 4 4 4 4 4
+MapStructure
+n n n n n n n n n n n n n
+n a a 0 n n n n n n n n n 
+n a a 0 n n n n o o o o n
+n n n n n n n n o o o o n
+n n n n n n n n o o o o n
+n b b 1 n n n n o o o o n
+n b b 1 n n n n n n n n n
+n n n n n n n n n n n n n

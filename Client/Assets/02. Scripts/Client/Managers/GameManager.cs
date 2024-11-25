@@ -29,46 +29,6 @@ public class GameManager : MonoBehaviour
 
     private List<List<int>> playersCustomizingData = new List<List<int>>();
 
-    public void MakeTestCustomizings()
-    {
-        ClearCharacterCustomizing();
-
-        //테스트용 데이터 입력
-        playersCustomizingData.Add(new List<int>());
-        playersCustomizingData[0].Add(313001);
-        playersCustomizingData[0].Add(201008);
-        playersCustomizingData[0].Add(322001);
-        playersCustomizingData[0].Add(332001);
-        playersCustomizingData[0].Add(341004);
-        
-        playersCustomizingData.Add(new List<int>());
-        playersCustomizingData[1].Add(201010);
-        playersCustomizingData[1].Add(341013);
-        playersCustomizingData[1].Add(332003);
-
-        playersCustomizingData.Add(new List<int>());
-        playersCustomizingData[2].Add(341015);
-        playersCustomizingData[2].Add(322001);
-        playersCustomizingData[2].Add(201003);
-        
-        playersCustomizingData.Add(new List<int>());
-        playersCustomizingData[3].Add(313001);
-        playersCustomizingData[3].Add(201009);
-        playersCustomizingData[3].Add(331003);
-        playersCustomizingData[3].Add(341007);
-
-        playersCustomizingData.Add(new List<int>());
-        playersCustomizingData[4].Add(341024);
-        playersCustomizingData[4].Add(201007);
-        playersCustomizingData[4].Add(331002);
-
-        playersCustomizingData.Add(new List<int>());
-        playersCustomizingData[5].Add(333001);
-        playersCustomizingData[5].Add(341009);
-        playersCustomizingData[5].Add(332002);
-        playersCustomizingData[5].Add(201010);
-    }
-
     public List<int> GetCharacterCustomizingById(int id)
     {
         return playersCustomizingData[id];
@@ -180,18 +140,17 @@ public class GameManager : MonoBehaviour
 
     public void LoadGameMap()
     {
-        GameObject maps = GameObject.Find("Maps");
         switch(mapCode)
         {
             case MapCode.Map_FITH_1vs1vs1:
                 {
-                    maps.transform.GetChild(0).gameObject.SetActive(true);
+                    Managers.Map.LoadGameMap(11201, 1, mapCode);
                     SetDefaultGameData(Define.GameMode.FireInTheHoleIndivisual3);
                 }
                 break;
             case MapCode.Map_FITH_1vs1:
                 {
-                    maps.transform.GetChild(1).gameObject.SetActive(true);
+                    Managers.Map.LoadGameMap(12201, 1, mapCode);
                     SetDefaultGameData(Define.GameMode.FireInTheHoleTeam1);
                 }
                 break;

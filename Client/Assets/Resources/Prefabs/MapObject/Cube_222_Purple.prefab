@@ -51,10 +51,14 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: dbbdd533d7d3e334da0ce8835fd58113, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 4229ff3b406055f49982b658dcbd09b6, type: 2}
+      objectReference: {fileID: 2100000, guid: 32e4ff84419f4bb4ab853f81eb3653bb, type: 2}
     - target: {fileID: 919132149155446097, guid: dbbdd533d7d3e334da0ce8835fd58113, type: 3}
       propertyPath: m_Name
-      value: Cube_222
+      value: Cube_222_Purple
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: dbbdd533d7d3e334da0ce8835fd58113, type: 3}
+      propertyPath: m_TagString
+      value: Ground
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -91,7 +95,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2, y: 2.0000005, z: 2.0000007}
+  m_Size: {x: 2, y: 2.0000005, z: 2}
   m_Center: {x: 0, y: 0, z: 1.0000001}
 --- !u!54 &4824430736749472851
 Rigidbody:
@@ -116,7 +120,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0

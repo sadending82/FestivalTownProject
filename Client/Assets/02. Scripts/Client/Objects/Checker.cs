@@ -58,7 +58,7 @@ public class Checker : MonoBehaviour
                         else mapPosXOffset = 1;
                     }
 
-                    float tPosMapHeight = Managers.CubeObject.GetMapHeight(mapPosX + mapPosXOffset, mapPosZ + mapPosZOffset);
+                    float tPosMapHeight = Managers.Map.GetMapHeight(mapPosX + mapPosXOffset, mapPosZ + mapPosZOffset);
                     if (tPosMapHeight > tPlayerPos.y)
                     {
                         packetManager.SendPlayerDamageReceivePacket(tPlayerState.GetId(), tPlayerState.GetId(), -1, eDamageType.AT_FALLDOWN, Vector3.zero);

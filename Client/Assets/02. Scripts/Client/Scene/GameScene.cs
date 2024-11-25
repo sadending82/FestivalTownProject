@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using NetworkProtocol;
+using System.Reflection.Emit;
 
 public class GameScene : BaseScene
 {
@@ -12,8 +13,7 @@ public class GameScene : BaseScene
 
         SceneType = Define.Scene.Game;
 
-        //Managers.Map.Init();
-        //Managers.Map.LoadGameMap();
+        Managers.Map.Init();
 
         Managers.Game.LoadGameMap();
 

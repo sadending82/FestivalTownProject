@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
     private int myId;
     private bool amIPlayer;
     private CharacterStatus playerStatus;
-    private float createHeight = 1;
+    private float createHeightOffSet = 1f;
 
     private bool isGrounded;
     private bool isJump;
@@ -935,8 +935,9 @@ public class PlayerController : MonoBehaviour
     {
         SetDirectionByTeam();
 
-        Vector3 targetPos = new Vector3(x, createHeight, z);
+        Vector3 targetPos = new Vector3(x, Managers.Map.GetMapHeight((int)x / 2, (int)z / 2) + createHeightOffSet, z);
 
+        pelvisRigidbody.velocity = Vector3.zero;
         SetPosition(targetPos);
 
         Managers.Sound.Play("Sfx_Ch_Respawn");
@@ -947,8 +948,9 @@ public class PlayerController : MonoBehaviour
 
         SetDirectionByTeam();
 
-        Vector3 targetPos = new Vector3(x, createHeight, z);
+        Vector3 targetPos = new Vector3(x, Managers.Map.GetMapHeight((int)x / 2, (int)z / 2) + createHeightOffSet, z);
 
+        pelvisRigidbody.velocity = Vector3.zero;
         SetPosition(targetPos);
 
         targetPos = new Vector3(x, 0.01f, z);
@@ -1045,45 +1047,7 @@ public class PlayerController : MonoBehaviour
     public void SetDirectionByTeam()
     {
         int teamNumber = playerStatus.GetTeamNumber();
-
-        switch (teamNumber)
-        {
-            case 0:
-                {
-                    if (Managers.Game.mapCode == MapCode.Map_FITH_1vs1)
-                    {
-                        stabilizer.transform.eulerAngles = new Vector3(0.0f, 90f, 0.0f);
-                    }
-                    else
-                    {
-                        stabilizer.transform.eulerAngles = new Vector3(0.0f, 180.0f, 0.0f);
-                    }
-
-                }
-                break;
-            case 1:
-                {
-                    if (Managers.Game.mapCode == MapCode.Map_FITH_1vs1)
-                    {
-                        stabilizer.transform.eulerAngles = new Vector3(0.0f, 270f, 0.0f);
-                    }
-                    else
-                    {
-                        stabilizer.transform.eulerAngles = new Vector3(0.0f, 90f, 0.0f);
-                    }
-                }
-                break;
-            case 2:
-                {
-                    stabilizer.transform.eulerAngles = new Vector3(0.0f, 270f, 0.0f);
-                }
-                break;
-            default:
-                {
-                    Debug.Log("ERORR!!! SetDirectionByTeam, Wrong Team Number !!!");
-                }
-                break;
-        }
+        stabilizer.transform.rotation = Quaternion.Euler(Managers.Map.GetSpawnDirectionByTeam(teamNumber));
     }
     public void SetHeadPosition(Vector3 headPos)
     {

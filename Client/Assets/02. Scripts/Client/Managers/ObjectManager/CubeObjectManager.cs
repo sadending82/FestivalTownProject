@@ -11,8 +11,6 @@ public class CubeObjectManager : MonoBehaviour
     public int initialCubes = 10;
     public int cubeTypes = 2;
 
-    private float[,] aMapHeight = new float[30, 30];
-
     [SerializeField]
     private GameObject cubes;
 
@@ -29,22 +27,22 @@ public class CubeObjectManager : MonoBehaviour
     {
     }
 
-    public void SpawnCube(int x, int y, eBlockType type)
+    public void SpawnCube(int x, int z, eBlockType type)
     {
         // 맵의 칸 별로의 높이를 저장
-        float targetHeight = aMapHeight[x, y];
+        float targetHeight = Managers.Map.GetMapHeight(x, z);
         int iType = 0;
         switch(type)
         {
             case eBlockType.BT_BLOCK_2_2_1:
                 {
-                    aMapHeight[x, y] += 1f;
+                    Managers.Map.AddMapHeight(x, z, 1.0f);
                     iType = 0;
                 }
                 break;
             case eBlockType.BT_BLOCK_2_2_2:
                 {
-                    aMapHeight[x, y] += 2f;
+                    Managers.Map.AddMapHeight(x, z, 2.0f);
                     iType = 1;
                 }
                 break;
@@ -57,7 +55,7 @@ public class CubeObjectManager : MonoBehaviour
         GameObject reusedCube = null;
         // 단위 맞춰주기
         x *= 2;
-        y *= 2;
+        z *= 2;
 
         try
         {
@@ -74,7 +72,7 @@ public class CubeObjectManager : MonoBehaviour
         // 타입에 해당하는 큐브 활성화, 포지션 설정
         reusedCube.gameObject.transform.GetChild(iType).gameObject.SetActive(true);
         reusedCube.gameObject.transform.GetChild(iType).gameObject.GetComponent<Cube>().SetTargetHeight(targetHeight);
-        reusedCube.gameObject.transform.GetChild(iType).gameObject.transform.position = new Vector3(x + 1, createHeight, y + 1);
+        reusedCube.gameObject.transform.GetChild(iType).gameObject.transform.position = new Vector3(x + 1, createHeight, z + 1);
         int rand = UnityEngine.Random.Range(0, 3);
         reusedCube.gameObject.transform.GetChild(iType).gameObject.transform.rotation = Quaternion.Euler(0, rand * 90.0f, 0);
 
@@ -83,23 +81,6 @@ public class CubeObjectManager : MonoBehaviour
 
     public void Clear()
     {
-        for (int i = 0; i < 30; ++i)
-        {
-            for (int j = 0; j < 30; ++j)
-            {
-                aMapHeight[i, j] = 0f;
-            }
-        }
-
         cubes.SetActive(false);
-    }
-
-    public float GetMapHeight(int x, int z)
-    {
-        if (x < 0 || z < 0)
-        {
-            return -1.0f;
-        }
-        return aMapHeight[x, z];
     }
 }

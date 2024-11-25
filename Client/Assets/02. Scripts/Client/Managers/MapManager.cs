@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using NetworkProtocol;
 using System.IO;
+using TMPro;
 
 public class MapManager : MonoBehaviour
 {
@@ -11,6 +12,11 @@ public class MapManager : MonoBehaviour
     [SerializeField] private int mapThema;
     [SerializeField] private MapCode mapCode;
     private float[,] mapHeight;
+    private const float OFFSET_X = 1.0f;
+    private const float OFFSET_Y = -2.0f;
+    private const float OFFSET_Z = 1.0f;
+    private const float GOALPOST_OFFSET_Y = OFFSET_Y - 1.0f;
+    private Vector3[] spawnDirection = new Vector3[3];
 
     public void Init()
     {
@@ -21,7 +27,7 @@ public class MapManager : MonoBehaviour
         }
     }
 
-    public void LoadGameMap(int mapIndex = 11201, int mapThema = 1, MapCode mapCode = MapCode.Map_FITH_1vs1)
+    public void LoadGameMap(int mapIndex, int mapThema = 1, MapCode mapCode = MapCode.Map_FITH_1vs1)
     {
         StreamReader reader = new StreamReader(Application.dataPath + $"/11. GameData/Map/{mapIndex}.txt");
         string readLine;
@@ -43,12 +49,16 @@ public class MapManager : MonoBehaviour
             Vector3 position;
             int directionNum;
             int.TryParse(sStatue[0], out teamNumber);
-            float.TryParse(sStatue[1], out position.x);
-            float.TryParse(sStatue[2], out position.y);
-            float.TryParse(sStatue[3], out position.z);
-            int.TryParse(sStatue[4], out directionNum);
-            Vector3 direction = new Vector3(0.0f, directionNum * 90.0f, 0.0f);
-            LoadStatue(teamNumber, position, direction);
+            if (teamNumber != -1)
+            {
+                float.TryParse(sStatue[1], out position.x);
+                float.TryParse(sStatue[2], out position.y);
+                float.TryParse(sStatue[3], out position.z);
+                int.TryParse(sStatue[4], out directionNum);
+                Vector3 direction = new Vector3(0.0f, directionNum * 90.0f, 0.0f);
+                spawnDirection[teamNumber] = direction;
+                LoadStatue(teamNumber, position, direction);
+            }
         }
 
         //맵 높이 정보
@@ -77,43 +87,133 @@ public class MapManager : MonoBehaviour
             string[] sCubeData = readLine.Split(" ");
             for (int j = 0; j < mapSizeX; ++j)
             {
-                switch(sCubeData[j])
+                float height = mapHeight[j, i];
+                float tPosX = j * 2 + OFFSET_X;
+                float tPosZ = i * 2 + OFFSET_Z;
+                switch (sCubeData[j])
                 {
                     //골대
                     case "a":
                         {
+                            GameObject goalPost = Managers.Resource.Instantiate("MapObject/GoalPost");
+                            goalPost.GetComponent<GoalPost>().SetTeamNumber(0);
+                            goalPost.transform.position = new Vector3(tPosX, height + GOALPOST_OFFSET_Y, tPosZ);
+                            goalPost.transform.parent = map.transform;
                         }
                         break;
                     case "b":
                         {
+                            GameObject goalPost = Managers.Resource.Instantiate("MapObject/GoalPost");
+                            goalPost.GetComponent<GoalPost>().SetTeamNumber(1);
+                            goalPost.transform.position = new Vector3(tPosX, height + GOALPOST_OFFSET_Y, tPosZ);
+                            goalPost.transform.parent = map.transform;
                         }
                         break;
                     case "c":
                         {
+                            GameObject goalPost = Managers.Resource.Instantiate("MapObject/GoalPost");
+                            goalPost.GetComponent<GoalPost>().SetTeamNumber(2);
+                            goalPost.transform.position = new Vector3(tPosX, height + GOALPOST_OFFSET_Y, tPosZ);
+                            goalPost.transform.parent = map.transform;
                         }
                         break;
 
                     //스폰지역
                     case "0":
                         {
+                            if (height > 0) FillCubeByHeight(j, i, height);
+                            GameObject cube;
+                            if ((int)height % 2 == 0)
+                            {
+                                cube = Managers.Resource.Instantiate("MapObject/Cube_222_Red");
+                            }
+                            else
+                            {
+                                cube = Managers.Resource.Instantiate("MapObject/Cube_221_Red");
+                                height += 1;
+                            }
+                            int rand = UnityEngine.Random.Range(0, 3);
+                            cube.transform.rotation = Quaternion.Euler(-90.0f, rand * 90.0f, 0);
+                            cube.transform.position = new Vector3(tPosX, height + OFFSET_Y, tPosZ);
+                            cube.transform.parent = map.transform;
                         }
                         break;
                     case "1":
                         {
+                            if (height > 0) FillCubeByHeight(j, i, height);
+                            GameObject cube;
+                            if ((int)height % 2 == 0)
+                            {
+                                cube = Managers.Resource.Instantiate("MapObject/Cube_222_Blue");
+                            }
+                            else
+                            {
+                                cube = Managers.Resource.Instantiate("MapObject/Cube_221_Blue");
+                                height += 1;
+                            }
+                            int rand = UnityEngine.Random.Range(0, 3);
+                            cube.transform.rotation = Quaternion.Euler(-90.0f, rand * 90.0f, 0);
+                            cube.transform.position = new Vector3(tPosX, height + OFFSET_Y, tPosZ);
+                            cube.transform.parent = map.transform;
                         }
                         break;
                     case "2":
                         {
+                            if (height > 0) FillCubeByHeight(j, i, height);
+                            GameObject cube;
+                            if ((int)height % 2 == 0)
+                            {
+                                cube = Managers.Resource.Instantiate("MapObject/Cube_222_Green");
+                            }
+                            else
+                            {
+                                cube = Managers.Resource.Instantiate("MapObject/Cube_221_Green");
+                                height += 1;
+                            }
+                            int rand = UnityEngine.Random.Range(0, 3);
+                            cube.transform.rotation = Quaternion.Euler(-90.0f, rand * 90.0f, 0);
+                            cube.transform.position = new Vector3(tPosX, height + OFFSET_Y, tPosZ);
+                            cube.transform.parent = map.transform;
                         }
                         break;
 
                     //큐브
                     case "n":
                         {
+                            if (height > 0) FillCubeByHeight(j, i, height);
+                            GameObject cube;
+                            if ((int)height % 2 == 0)
+                            {
+                                cube = Managers.Resource.Instantiate("MapObject/Cube_222_Basic");
+                            }
+                            else
+                            {
+                                cube = Managers.Resource.Instantiate("MapObject/Cube_221_Basic");
+                                height += 1;
+                            }
+                            int rand = UnityEngine.Random.Range(0, 3);
+                            cube.transform.rotation = Quaternion.Euler(-90.0f, rand * 90.0f, 0);
+                            cube.transform.position = new Vector3(tPosX, height + OFFSET_Y, tPosZ);
+                            cube.transform.parent = map.transform;
                         }
                         break;
                     case "o":
                         {
+                            if (height > 0) FillCubeByHeight(j, i, height);
+                            GameObject cube;
+                            if ((int)height % 2 == 0)
+                            {
+                                cube = Managers.Resource.Instantiate("MapObject/Cube_222_Purple");
+                            }
+                            else
+                            {
+                                cube = Managers.Resource.Instantiate("MapObject/Cube_221_Purple");
+                                height += 1;
+                            }
+                            int rand = UnityEngine.Random.Range(0, 3);
+                            cube.transform.rotation = Quaternion.Euler(-90.0f, rand * 90.0f, 0);
+                            cube.transform.position = new Vector3(tPosX, height + OFFSET_Y, tPosZ);
+                            cube.transform.parent = map.transform;
                         }
                         break;
                     case "x":
@@ -146,9 +246,34 @@ public class MapManager : MonoBehaviour
         }
         return mapHeight[x, z];
     }
+    public void AddMapHeight(int x, int z, float extraHeight)
+    {
+        mapHeight[x, z] += extraHeight;
+    }
 
     public void Clear()
     {
         mapHeight = null;
+    }
+
+    /// <summary>
+    /// 높이 만큼 아래에 큐브를 채워주는 함수
+    /// </summary>
+    private void FillCubeByHeight(int x, int z, float height)
+    {
+        float fillPosX = x * 2 + OFFSET_X;
+        float fillPosZ = z * 2 + OFFSET_Z;
+        for (int i = 0; i <= (int)(height - 1) / 2; ++i)
+        {
+            GameObject cube = Managers.Resource.Instantiate("MapObject/Cube_222_Basic");
+            int rand = UnityEngine.Random.Range(0, 3);
+            cube.transform.rotation = Quaternion.Euler(-90.0f, rand * 90.0f, 0);
+            cube.transform.position = new Vector3(fillPosX, (i * 2) + OFFSET_Y, fillPosZ);
+            cube.transform.parent = map.transform;
+        }
+    }
+    public Vector3 GetSpawnDirectionByTeam(int teamNumber)
+    {
+        return spawnDirection[teamNumber];
     }
 }

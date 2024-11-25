@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GoalPost : MonoBehaviour
-{
-    public int teamNumber;
+{ 
+    [SerializeField] private int teamNumber;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -19,5 +19,9 @@ public class GoalPost : MonoBehaviour
             }
             targetBomb.Boom();
         }
+    }
+    public void SetTeamNumber(int teamNumber)
+    {
+        this.teamNumber = teamNumber;
     }
 }
