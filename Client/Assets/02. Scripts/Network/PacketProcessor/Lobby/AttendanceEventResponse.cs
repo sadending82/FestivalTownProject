@@ -21,6 +21,8 @@ namespace Network.PacketProcessor
 
             int eventCode = Data.EventCode;
             int result = Data.Result;
+
+            Debug.Log("받앗숴요!");
         }
 
 
