@@ -28,6 +28,10 @@ public:
 
 				MATCHING_QUEUE& matchingQueue = MatchMakingManager->GetMatchingQueue(matchingType);
 
+				if (matchingQueue.empty() == true) {
+					return;
+				}
+
 				int top_ID = matchingQueue.begin()->first;
 				long long top_requestTime = matchingQueue.begin()->second;
 

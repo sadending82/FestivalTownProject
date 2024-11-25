@@ -358,9 +358,9 @@ bool FITH::DeletePlayer(int playerID, int roomID)
         room->SubPlayerCnt();
     }
 
-    if (room->GetPlayerCnt() <= 0) {
+    /*if (room->GetPlayerCnt() <= 0) {
         room->Reset();
-    }
+    }*/
 
     return true;
 }
