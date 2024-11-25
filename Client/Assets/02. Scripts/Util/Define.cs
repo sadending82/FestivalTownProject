@@ -110,4 +110,11 @@ public class Define
         public int Count;
         public int Type;
     }
+
+    public struct AttendanceEventData
+    {
+        public int EventCode;
+        public int DayCount;
+        public bool isRewarded;
+    }
 }

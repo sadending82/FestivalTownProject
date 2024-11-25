@@ -23,6 +23,7 @@ namespace Network.PacketProcessor
                 Debug.Log($"Version Check Result Code : {result}");
 
                 var ui = Managers.UI.ShowPopUpUI<UI_Notice>();
+                ui.Init();
                 ui.NoticeTextChange("버전이 다릅니다.\n 최신 버전으로 업데이트 해주세요.");
 
                 ui.BindGameEndEvent();

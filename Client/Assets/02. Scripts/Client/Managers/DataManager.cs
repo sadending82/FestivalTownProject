@@ -70,6 +70,12 @@ public class DataManager
     /// </summary>
     public Dictionary<int, Define.ItemData> ClientLocalCustomizingDataDict = new();
 
+    /// <summary>
+    /// 출석 이벤트 데이터 저장용
+    /// </summary>
+    public Dictionary<int, Define.AttendanceEventData> AttendanceEventDataDict = new();
+    bool hasAttendanceToday = false;
+
     string NickName = "DefaultNick";
 
     public void Init()
@@ -356,5 +362,15 @@ public class DataManager
     public void SetInventoryDataRecved(bool value)
     {
         isInventoryDataRecved = value;
+    }
+
+    public bool HasAttendanceToday()
+    {
+        return hasAttendanceToday;
+    }
+
+    public void SetAttendanceToday(bool value)
+    {
+        hasAttendanceToday = value;
     }
 }

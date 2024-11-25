@@ -72,10 +72,18 @@ namespace Network.PacketProcessor
                         // 보상 수령 여부
                         bool is_rewarded = dayInfo.IsRewarded;
 
+                        Define.AttendanceEventData aed = new Define.AttendanceEventData();
+                        aed.EventCode = eventCode;
+                        aed.DayCount = dayCount;
+                        aed.isRewarded = is_rewarded;
+
+                        Managers.Data.AttendanceEventDataDict.TryAdd(dayCount, aed);
                         //Debug.Log($"Event : {eventCode}, day_count : {dayCount}, date: {date_year}-{date_month}-{date_day}");
                     }
 
                     //Debug.Log($"Event : {eventCode}, has_attendance_today : {has_attendance_today}");
+
+                    
                 }
 
             }
