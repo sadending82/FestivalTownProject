@@ -8,10 +8,15 @@ public class UI_CharacterModel : UI_Base
 
     enum GameObjects
     {
-        NonRagdollPlayer
+        NonRagdollPlayer,
+        RaycastCatcher,
     }
 
     bool isInitialized = false;
+    float _clickTime = 0.0f;
+    float _shortClickLimit = 0.4f;
+    bool _isClicked = false;
+    bool _isShortClick = true;
 
     void Start()
     {
@@ -24,7 +29,6 @@ public class UI_CharacterModel : UI_Base
     public override void Init()
     {
         Bind<GameObject>(typeof(GameObjects));
-
 
 
         isInitialized = true;
@@ -68,7 +72,52 @@ public class UI_CharacterModel : UI_Base
 
     void Update()
     {
-        transform.LookAt(Camera.main.transform.GetChild(0).position);
+        
+        if (Input.GetMouseButtonDown(0)) // 마우스 왼쪽 클릭
+        {
+            GameObject cam = Camera.main.transform.GetChild(0).gameObject.activeInHierarchy ?
+                Camera.main.transform.GetChild(0).gameObject : cam = Camera.main.transform.GetChild(1).gameObject;
+
+            Debug.Log($"{cam.name}");
+
+            Ray ray = cam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {
+                Debug.Log($"{hit.collider.gameObject.name}");
+
+                if (!_isClicked)
+                {
+                    _isClicked = true;
+                    _isShortClick = true;
+                    _clickTime = 0.0f;
+                }
+            }
+
+            
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            _isClicked = false;
+        }
+
+        
+
+        if(_isClicked)
+        {
+            _clickTime += Time.deltaTime;
+            if (_clickTime > _shortClickLimit)
+            {
+                _isShortClick = false;
+            }
+
+            Get<GameObject>((int)GameObjects.NonRagdollPlayer).transform.Rotate(Vector3.up, Input.GetAxis("Mouse X") * -5.0f);
+
+        }
+
+
+        
     }
 
 
