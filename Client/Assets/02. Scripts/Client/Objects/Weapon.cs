@@ -63,13 +63,14 @@ public class Weapon : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(amIPlayer == true)
+        if (collision.gameObject.tag == "HitBox" && isAttackState == true)
         {
-            if (collision.gameObject.tag == "HitBox" && isAttackState == true)
+            if (collision.gameObject.transform.parent.GetComponent<CharacterStatus>().GetTeamNumber() != playerState.GetTeamNumber())
             {
-                if (collision.gameObject.transform.parent.GetComponent<CharacterStatus>().GetTeamNumber() != playerState.GetTeamNumber())
+                Managers.Effect.PlayEffect("Attacked", transform.position);
+
+                if (amIPlayer == true)
                 {
-                    Managers.Effect.PlayEffect("Attacked", transform.position);
                     isAttackState = false;
 
                     Vector3 attackedDirection = playerState.GetAttackedDirection(collision.transform.position);

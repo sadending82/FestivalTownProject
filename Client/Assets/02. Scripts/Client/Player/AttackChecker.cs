@@ -31,15 +31,15 @@ public class AttackChecker : MonoBehaviour
     }
     private void OnCollisionEnter(Collision other)
     {
-        if (playerState.GetAmIPlayer() == true)
+        // 때리는 상태인지와 때리는 중인지
+        if (other.gameObject.tag == "HitBox" && isAttackState == true && other.gameObject.layer != this.gameObject.layer)
         {
-            // 때리는 상태인지와 때리는 중인지
-            if (other.gameObject.tag == "HitBox" && isAttackState == true && other.gameObject.layer != this.gameObject.layer)
+            if (other.gameObject.transform.parent.GetComponent<CharacterStatus>().GetTeamNumber() != playerState.GetTeamNumber())
             {
-                if (other.gameObject.transform.parent.GetComponent<CharacterStatus>().GetTeamNumber() != playerState.GetTeamNumber())
-                {
-                    Managers.Effect.PlayEffect("Attacked", effectPoint.position);
+                Managers.Effect.PlayEffect("Attacked", effectPoint.position);
 
+                if (playerState.GetAmIPlayer() == true)
+                {
                     isAttackState = false;
 
                     // 피격 방향 구하기
@@ -50,7 +50,10 @@ public class AttackChecker : MonoBehaviour
                     packetManager.SendPlayerDamageReceivePacket(playerState.GetId(), targetId, (int)eWeaponType.WT_HAND, eDamageType.AT_ATTACK, attackedDirection);
                 }
             }
-            if(other.gameObject.tag == "Head" && isGrapState == true && other.gameObject.layer != this.gameObject.layer)
+        }
+        if (playerState.GetAmIPlayer() == true)
+        {
+            if (other.gameObject.tag == "Head" && isGrapState == true && other.gameObject.layer != this.gameObject.layer)
             {
                 CharacterStatus targetPlayerState = other.transform.GetComponent<LinkRootGameObject>().GetRootGameObject().GetComponent<CharacterStatus>();
                 if (targetPlayerState.GetIsGroggy() == true)
