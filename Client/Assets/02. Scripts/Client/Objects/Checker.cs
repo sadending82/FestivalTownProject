@@ -66,7 +66,7 @@ public class Checker : MonoBehaviour
                     else
                     {
                         packetManager.SendPlayerCollisionToBlockPacket(tPlayerState.GetId());
-                        tPlayerController.SetPosition(new Vector3(transform.position.x + mapPosXOffset, tPlayerPos.y, transform.position.z + mapPosZOffset));
+                        tPlayerController.SetPosition(new Vector3(transform.position.x + mapPosXOffset * 1.5f, tPlayerPos.y, transform.position.z + mapPosZOffset * 1.5f));
                         Vector3 pushDirection = new Vector3(mapPosXOffset, 0.0f, mapPosZOffset);
                         tPlayerController.Pushed(pushDirection, pushPower);
                     }

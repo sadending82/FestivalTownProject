@@ -6,7 +6,7 @@ using System;
 
 public class CubeObjectManager : MonoBehaviour
 {
-    private float createHeight = 8;
+    private const float CREATE_HEIGHT = 10;
 
     public int initialCubes = 10;
     public int cubeTypes = 2;
@@ -72,7 +72,7 @@ public class CubeObjectManager : MonoBehaviour
         // 타입에 해당하는 큐브 활성화, 포지션 설정
         reusedCube.gameObject.transform.GetChild(iType).gameObject.SetActive(true);
         reusedCube.gameObject.transform.GetChild(iType).gameObject.GetComponent<Cube>().SetTargetHeight(targetHeight);
-        reusedCube.gameObject.transform.GetChild(iType).gameObject.transform.position = new Vector3(x + 1, createHeight, z + 1);
+        reusedCube.gameObject.transform.GetChild(iType).gameObject.transform.position = new Vector3(x + 1, targetHeight + CREATE_HEIGHT, z + 1);
         int rand = UnityEngine.Random.Range(0, 3);
         reusedCube.gameObject.transform.GetChild(iType).gameObject.transform.rotation = Quaternion.Euler(0, rand * 90.0f, 0);
 

@@ -76,7 +76,8 @@ public class PlayerCameraController : MonoBehaviour
     }
     private void Move()
     {
-        cameraArm.position = new Vector3(pelvis.position.x, 0, pelvis.position.z);
+        //cameraArm.position = new Vector3(pelvis.position.x, 0, pelvis.position.z);
+        cameraArm.position = pelvis.position;
     }
     private void LookAround()
     {
