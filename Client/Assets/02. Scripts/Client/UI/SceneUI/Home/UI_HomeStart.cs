@@ -11,21 +11,12 @@ public class UI_HomeStart : UI_Scene
 
     enum GameObjects
     {
-        BGBase,
-        BGPattern,
-        Title,
         GameStartButton,
         PresentButton,
         GalleryButton,
         SettingButton,
-        ExitButton,
         UI_CharacterModel,
-        PlayerDataPanel,
-        PlayerImage,
-        NickName,
-        ShopButton,
-        PassButton,
-        AchieveButton,
+        ExitButton,
         InventoryButton,
         AccountInitializeButton,
         GetMoneyButton,
@@ -33,8 +24,6 @@ public class UI_HomeStart : UI_Scene
     }
 
     bool isInitialized = false;
-
-    bool isShopOpen = false;
 
     void Start()
     {
@@ -49,6 +38,8 @@ public class UI_HomeStart : UI_Scene
         base.Init();
 
         Bind<GameObject>(typeof(GameObjects));
+
+        Get<GameObject>((int)GameObjects.UI_CharacterModel).GetComponent<UI_CharacterModel>().Init();
 
         Get<GameObject>((int)GameObjects.GameStartButton).BindEvent((PointerEventData) => { 
             if (Managers.Scene.CurrentScene.GetComponent<HomeScene>() == null) return;
@@ -71,31 +62,6 @@ public class UI_HomeStart : UI_Scene
 #else
         Application.Quit();
 #endif
-        });
-
-
-        Get<GameObject>((int)GameObjects.ShopButton).BindEvent((PointerEventData) =>
-        {
-            if (isShopOpen)
-            {
-                Managers.UI.ClosePopUpUI();
-            }
-            else
-            {
-                Managers.UI.ShowPopUpUI<UI_Shop>();
-            }
-
-            isShopOpen = !isShopOpen;
-        });
-
-        Get<GameObject>((int)GameObjects.PassButton).BindEvent((PointerEventData) =>
-        {
-
-        });
-
-        Get<GameObject>((int)GameObjects.AchieveButton).BindEvent((PointerEventData) =>
-        {
-
         });
 
         Get<GameObject>((int)GameObjects.InventoryButton).BindEvent((PointerEventData) =>
@@ -135,13 +101,7 @@ public class UI_HomeStart : UI_Scene
         this.GetComponent<Canvas>().worldCamera = Camera.main;
         this.GetComponent<Canvas>().planeDistance = Camera.main.nearClipPlane + 0.001f;
 
-
         isInitialized = true;
-    }
-
-    public void SetNickName(string nickName)
-    {
-        Get<GameObject>((int)GameObjects.NickName).GetComponent<TMP_Text>().text = nickName;
     }
 
     public void SetCustomizing()
@@ -181,7 +141,8 @@ public class UI_HomeStart : UI_Scene
 
         if(Managers.Data.IsInventoryDataRecved())
         {
-            var ui = Managers.UI.ShowPopUpUI<UI_Inventory>();
+            Managers.UI.CloseSceneUI();
+            var ui = Managers.UI.ShowSceneUI<UI_Customize>();
             ui.Init();
         }
 

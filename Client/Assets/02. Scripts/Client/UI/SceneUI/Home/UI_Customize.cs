@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class UI_Inventory : UI_PopUp
+public class UI_Customize : UI_Scene
 {
     enum GameObjects
     {
@@ -13,13 +13,14 @@ public class UI_Inventory : UI_PopUp
         GridPanel,
         ExitButton,
         SetCustomizingButton,
+        UI_CharacterModel,
     }
 
     bool isInitialized = false;
     /// <summary>
     /// 아이템 인덱스, 인벤 슬롯
     /// </summary>
-    Dictionary<int, UI_Inventory_Item> ItemSlotDict = new();
+    Dictionary<int, UI_Customize_Item> ItemSlotDict = new();
 
     void Start()
     {
@@ -44,7 +45,7 @@ public class UI_Inventory : UI_PopUp
         {
             if (Managers.Data.GetItemData(item.ItemCode).Item_Type == (int)Define.ItemType.Resource) continue;
 
-            var ui = Managers.UI.MakeSubItem<UI_Inventory_Item>(gridPanel.transform);
+            var ui = Managers.UI.MakeSubItem<UI_Customize_Item>(gridPanel.transform);
             ui.Init();
             ui.SetItem(item.ItemUid, item.ItemCode);
             ui.SetParentUI(this);
@@ -60,15 +61,15 @@ public class UI_Inventory : UI_PopUp
                 Managers.Data.PlayerCustomizingData[itemPair.Key] = itemPair.Value;
             }
 
-            var sceneUi = Managers.UI.GetCurrentSceneUI();
-            if (sceneUi != null && sceneUi.GetComponent<UI_HomeStart>() != null)
-            {
-                sceneUi.GetComponent<UI_HomeStart>().SetCustomizing();
-                Camera.main.transform.GetChild(0).gameObject.SetActive(true); // Home용 카메라
-                Camera.main.transform.GetChild(1).gameObject.SetActive(false); // Inventory용 카메라
-            }
-            Managers.UI.ClosePopUpUI();
-            
+            Managers.UI.CloseSceneUI();
+
+            Camera.main.transform.GetChild(0).gameObject.SetActive(true); // Home용 카메라
+            Camera.main.transform.GetChild(1).gameObject.SetActive(false); // Inventory용 카메라
+
+            var ui = Managers.UI.ShowSceneUI<UI_HomeStart>();
+            ui.Init();
+            ui.SetCustomizing();
+
         });
 
         //커스터마이징 버튼
@@ -166,11 +167,7 @@ public class UI_Inventory : UI_PopUp
             Managers.Data.ClientLocalCustomizingDataDict[itemType] = newData;
         }
 
-        var sceneUi = Managers.UI.GetCurrentSceneUI();
-        if (sceneUi != null && sceneUi.GetComponent<UI_HomeStart>() != null)
-        {
-            sceneUi.GetComponent<UI_HomeStart>().SetInventoryLocalCustomizing();
-        }
+        Get<GameObject>((int)GameObjects.UI_CharacterModel).GetComponent<UI_CharacterModel>().SetInventoryLocalCustomizing();
     }
 
 }

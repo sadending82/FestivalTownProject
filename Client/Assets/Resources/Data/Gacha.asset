@@ -19,8 +19,8 @@ MonoBehaviour:
     Gacha_Group: 1001
     Pay_Item1_Index: 100001
     Pay_Item1_Value: 1000
-    Pay_Item2_Index: 100004
-    Pay_Item2_Value: 1
+    Pay_Item2_Index: 0
+    Pay_Item2_Value: 0
     Open_Date: 45292
     Close_Date: 73050
   - Index: 100012
@@ -29,8 +29,18 @@ MonoBehaviour:
     Gacha_Group: 1002
     Pay_Item1_Index: 100002
     Pay_Item1_Value: 100
-    Pay_Item2_Index: 100005
-    Pay_Item2_Value: 1
+    Pay_Item2_Index: 0
+    Pay_Item2_Value: 0
+    Open_Date: 45292
+    Close_Date: 73050
+  - Index: 100013
+    Name: "\uC6B8\uD2B8\uB77C\uCDA9\uBB34\uACF5\uB808\uC804\uB354\uB9AC \uB0E5\uB0E5\uAC00\uCC60"
+    ClassType: 0
+    Gacha_Group: 1003
+    Pay_Item1_Index: 100001
+    Pay_Item1_Value: 10
+    Pay_Item2_Index: 0
+    Pay_Item2_Value: 0
     Open_Date: 45292
     Close_Date: 73050
   GachaGroup_Item:
@@ -222,4 +232,137 @@ MonoBehaviour:
     Gacha_Group: 1002
     Gacha_Weight: 3000
     Reward_Item_Index: 333001
+    Reward_Item_Value: 1
+  - Index: 1003001
+    Name: "\uD558\uC580\uC0C9 \uC2A4\uD0A8"
+    ClassType: 0
+    Gacha_Group: 1003
+    Gacha_Weight: 100
+    Reward_Item_Index: 201001
+    Reward_Item_Value: 1
+  - Index: 1003002
+    Name: "\uBAA8\uB798\uC0C9 \uC2A4\uD0A8"
+    ClassType: 0
+    Gacha_Group: 1003
+    Gacha_Weight: 100
+    Reward_Item_Index: 201002
+    Reward_Item_Value: 1
+  - Index: 1003003
+    Name: "\uB9C8\uBA40\uB808\uC774\uB4DC\uC0C9 \uC2A4\uD0A8"
+    ClassType: 0
+    Gacha_Group: 1003
+    Gacha_Weight: 100
+    Reward_Item_Index: 201003
+    Reward_Item_Value: 1
+  - Index: 1003004
+    Name: "\uBE0C\uB77C\uC6B4\uC0C9 \uC2A4\uD0A8"
+    ClassType: 0
+    Gacha_Group: 1003
+    Gacha_Weight: 100
+    Reward_Item_Index: 201004
+    Reward_Item_Value: 1
+  - Index: 1003005
+    Name: "\uD06C\uB9BC\uC0C9 \uC2A4\uD0A8"
+    ClassType: 0
+    Gacha_Group: 1003
+    Gacha_Weight: 100
+    Reward_Item_Index: 201005
+    Reward_Item_Value: 1
+  - Index: 1003006
+    Name: "\uCD08\uCF5C\uB81B\uC0C9 \uC2A4\uD0A8"
+    ClassType: 0
+    Gacha_Group: 1003
+    Gacha_Weight: 100
+    Reward_Item_Index: 201006
+    Reward_Item_Value: 1
+  - Index: 1003007
+    Name: "\uCE98\uB9AC\uCF54\uC0C9 \uC2A4\uD0A8"
+    ClassType: 0
+    Gacha_Group: 1003
+    Gacha_Weight: 100
+    Reward_Item_Index: 201007
+    Reward_Item_Value: 1
+  - Index: 1003008
+    Name: "\uAC80\uC815\uC0C9 \uC2A4\uD0A8"
+    ClassType: 0
+    Gacha_Group: 1003
+    Gacha_Weight: 100
+    Reward_Item_Index: 201008
+    Reward_Item_Value: 1
+  - Index: 1003009
+    Name: "\uD131\uC2DC\uB3C4 \uC2A4\uD0A8"
+    ClassType: 0
+    Gacha_Group: 1003
+    Gacha_Weight: 100
+    Reward_Item_Index: 201009
+    Reward_Item_Value: 1
+  - Index: 1003010
+    Name: "\uD68C\uC0C9 \uC2A4\uD0A8"
+    ClassType: 0
+    Gacha_Group: 1003
+    Gacha_Weight: 100
+    Reward_Item_Index: 201010
+    Reward_Item_Value: 1
+  - Index: 1003011
+    Name: "\uD558\uC774\uD0B9 \uBAA8\uC790"
+    ClassType: 0
+    Gacha_Group: 1003
+    Gacha_Weight: 100
+    Reward_Item_Index: 313001
+    Reward_Item_Value: 1
+  - Index: 1003012
+    Name: "\uBE68\uAC04\uC548\uACBD"
+    ClassType: 0
+    Gacha_Group: 1003
+    Gacha_Weight: 100
+    Reward_Item_Index: 322001
+    Reward_Item_Value: 1
+  - Index: 1003013
+    Name: "\uBE75\uAC00\uBC29"
+    ClassType: 0
+    Gacha_Group: 1003
+    Gacha_Weight: 100
+    Reward_Item_Index: 333001
+    Reward_Item_Value: 1
+  - Index: 1003014
+    Name: "\uD6C4\uB77C\uC774\uD32C"
+    ClassType: 0
+    Gacha_Group: 1003
+    Gacha_Weight: 100
+    Reward_Item_Index: 332001
+    Reward_Item_Value: 1
+  - Index: 1003015
+    Name: "\uB098\uBB47\uAC00\uC9C0"
+    ClassType: 0
+    Gacha_Group: 1003
+    Gacha_Weight: 100
+    Reward_Item_Index: 332002
+    Reward_Item_Value: 1
+  - Index: 1003016
+    Name: "\uBC14\uB78C\uAC1C\uBE44"
+    ClassType: 0
+    Gacha_Group: 1003
+    Gacha_Weight: 100
+    Reward_Item_Index: 332003
+    Reward_Item_Value: 1
+  - Index: 1003017
+    Name: "\uD3EC\uD06C"
+    ClassType: 0
+    Gacha_Group: 1003
+    Gacha_Weight: 100
+    Reward_Item_Index: 331001
+    Reward_Item_Value: 1
+  - Index: 1003018
+    Name: "\uC8FD\uC740 \uBB3C\uACE0\uAE30"
+    ClassType: 0
+    Gacha_Group: 1003
+    Gacha_Weight: 100
+    Reward_Item_Index: 331002
+    Reward_Item_Value: 1
+  - Index: 1003019
+    Name: "\uACE0\uAE30"
+    ClassType: 0
+    Gacha_Group: 1003
+    Gacha_Weight: 100
+    Reward_Item_Index: 331003
     Reward_Item_Value: 1

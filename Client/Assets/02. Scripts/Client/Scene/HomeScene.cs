@@ -23,7 +23,6 @@ public class HomeScene : BaseScene
 
         homeSceneUI.SetDiamond(Managers.Data.GetDiamond());
         homeSceneUI.SetGold(Managers.Data.GetGold());
-        homeStartUI.SetNickName(Managers.Data.GetNickName());
 
         if (!Managers.Data.HasAttendanceUIPopUp())
         {
@@ -39,7 +38,6 @@ public class HomeScene : BaseScene
     {
         homeSceneUI.SetDiamond(Managers.Data.GetDiamond());
         homeSceneUI.SetGold(Managers.Data.GetGold());
-        homeStartUI.SetNickName(Managers.Data.GetNickName());
     }
 
     IEnumerator WaitAttendanceEventData()

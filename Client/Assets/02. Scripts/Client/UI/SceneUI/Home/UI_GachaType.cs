@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using static Autodesk.Fbx.FbxAnimCurveDef;
 
 public class UI_GachaType : UI_Base
 {
@@ -51,17 +52,30 @@ public class UI_GachaType : UI_Base
             return;
         }
 
-        RequireResource1Index = dataIndex1;
-        RequireResource2Index = dataIndex2;
+        if (Managers.Data.GetItemData(dataIndex2) == null)
+        {
+            RequireResource1Index = dataIndex1;
+            string resourceName1 = Managers.Data.GetItemData(dataIndex1).Name;
+            int requireAmount1 = Managers.Data.GetGachaGroupData(GachaTypeNum).Pay_Item1_Value;
+            RequireResource1Amount = requireAmount1;
 
-        string resourceName1 = Managers.Data.GetItemData(dataIndex1).Name;
-        int requireAmount1 = Managers.Data.GetGachaGroupData(GachaTypeNum).Pay_Item1_Value;
-        RequireResource1Amount = requireAmount1;
-        string resourceName2 = Managers.Data.GetItemData(dataIndex2).Name;
-        int requireAmount2 = Managers.Data.GetGachaGroupData(GachaTypeNum).Pay_Item2_Value;
-        RequireResource2Amount = requireAmount2;
-        Get<GameObject>((int)GameObjects.GachaButton).GetComponentInChildren<TMP_Text>().text = $"1회 뽑기\n{requireAmount2} {resourceName2} or\n" +
-            $"{requireAmount1} {resourceName1}";
+            Get<GameObject>((int)GameObjects.GachaButton).GetComponentInChildren<TMP_Text>().text = $"1회 뽑기\n" +
+    $"{requireAmount1} {resourceName1}";
+        }
+        else
+        {
+            RequireResource1Index = dataIndex1;
+            RequireResource2Index = dataIndex2;
+
+            string resourceName1 = Managers.Data.GetItemData(dataIndex1).Name;
+            int requireAmount1 = Managers.Data.GetGachaGroupData(GachaTypeNum).Pay_Item1_Value;
+            RequireResource1Amount = requireAmount1;
+            string resourceName2 = Managers.Data.GetItemData(dataIndex2).Name;
+            int requireAmount2 = Managers.Data.GetGachaGroupData(GachaTypeNum).Pay_Item2_Value;
+            RequireResource2Amount = requireAmount2;
+            Get<GameObject>((int)GameObjects.GachaButton).GetComponentInChildren<TMP_Text>().text = $"1회 뽑기\n{requireAmount2} {resourceName2} or\n" +
+                $"{requireAmount1} {resourceName1}";
+        }
     }
 
     public override void Init()
@@ -70,15 +84,19 @@ public class UI_GachaType : UI_Base
 
         Get<GameObject>((int)GameObjects.GachaButton).BindEvent((PointerEventData) =>
         {
-            var r2 = Managers.Data.GetPlayerData(RequireResource2Index);
-            if (r2 >= RequireResource2Amount)
-            {
-                var popup = Managers.UI.ShowPopUpUI<UI_GachaPopup>();
-                popup.Init();
-                popup.SetGachaType(GachaTypeNum);
-                ItemEntity ie = Managers.Data.GetItemData(RequireResource2Index);
-                popup.SetText($"{RequireResource2Amount} {ie.Name}을 사용해 뽑기를 진행하시겠습니까?");
-                return;
+            if(Managers.Data.GetItemData(RequireResource2Index) != null)
+            { 
+                var r2 = Managers.Data.GetPlayerData(RequireResource2Index);
+            
+                if (r2 >= RequireResource2Amount)
+                {
+                    var popup = Managers.UI.ShowPopUpUI<UI_GachaPopup>();
+                    popup.Init();
+                    popup.SetGachaType(GachaTypeNum);
+                    ItemEntity ie = Managers.Data.GetItemData(RequireResource2Index);
+                    popup.SetText($"{RequireResource2Amount} {ie.Name}을 사용해 뽑기를 진행하시겠습니까?");
+                    return;
+                }
             }
 
             var r1 = Managers.Data.GetPlayerData(RequireResource1Index);

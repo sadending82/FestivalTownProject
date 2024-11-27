@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class UI_Inventory_Item : UI_Base
+public class UI_Customize_Item : UI_Base
 {
     enum GameObjects
     {
@@ -19,7 +19,7 @@ public class UI_Inventory_Item : UI_Base
 
     int ItemIndex = -1;
     int ItemUid = -1;
-    UI_Inventory parentUI;
+    UI_Customize parentUI;
 
     private void Start()
     {
@@ -28,7 +28,7 @@ public class UI_Inventory_Item : UI_Base
 
     }
 
-    public void SetParentUI(UI_Inventory parentUi)
+    public void SetParentUI(UI_Customize parentUi)
     {
         parentUI = parentUi;
     }
