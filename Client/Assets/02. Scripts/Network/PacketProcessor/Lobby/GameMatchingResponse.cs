@@ -26,6 +26,7 @@ namespace Network.PacketProcessor
             int team = Data.Team;
             int mapIndex = Data.MapIndex;
             int mapTheme = Data.MapTheme;
+            int gameMode = Data.Gamemode;
 
             
 
@@ -35,9 +36,11 @@ namespace Network.PacketProcessor
             Managers.Game.RoomID = roomID;
             Managers.Game.inGameID = id;
             Managers.Game.isHost = isHost;
-            //Managers.Game.mapCode = mapCode;
             Managers.Game.currentTeamID = team;
             Managers.Game.GameRemainTime = gameTime;
+            Managers.Game.mapIndex = mapIndex;
+            Managers.Game.mapTheme = mapTheme;
+            Managers.Game.gameMode = gameMode;
         }
     }
 }

@@ -14,7 +14,7 @@ public class NonRagdollPlayerController : MonoBehaviour
         int winningTeam = Managers.Game.GetWinningTeam();
 
         // TODO: 추가 - 모드 - 모드별 플레이어 위치 수정
-        if (Managers.Game.mapCode == MapCode.Map_FITH_1vs1)
+        if (Managers.Game.gameMode == 122)
         {
             Vector3 winnerOffset = new Vector3(-2, 75.3f, 13);
             float winnerXInterval = 2f;
@@ -64,7 +64,7 @@ public class NonRagdollPlayerController : MonoBehaviour
                 }
             }
         }
-        else if(Managers.Game.mapCode == MapCode.Map_FITH_1vs1vs1)
+        else if(Managers.Game.gameMode == 112)
         {
             Vector3 winnerOffset = new Vector3(0, 75.3f, 13);
             Vector3 loserOffset = new Vector3(-1, 73.3f, 11);

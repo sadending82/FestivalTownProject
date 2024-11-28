@@ -10,7 +10,6 @@ public class MapManager : MonoBehaviour
     [SerializeField] private GameObject map;
     [SerializeField] private int mapIndex;
     [SerializeField] private int mapThema;
-    [SerializeField] private MapCode mapCode;
     private float[,] mapHeight;
     private const float OFFSET_X = 1.0f;
     private const float OFFSET_Y = -2.0f;
@@ -27,7 +26,7 @@ public class MapManager : MonoBehaviour
         }
     }
 
-    public void LoadGameMap(int mapIndex, int mapThema = 1, MapCode mapCode = MapCode.Map_FITH_1vs1)
+    public void LoadGameMap(int mapIndex, int mapThema = 1)
     {
         StreamReader reader = new StreamReader(Application.streamingAssetsPath + $"/Map/{mapIndex}.txt");
         string readLine;

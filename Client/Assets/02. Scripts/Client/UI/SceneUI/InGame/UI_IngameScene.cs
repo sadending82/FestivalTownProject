@@ -49,12 +49,12 @@ public class UI_IngameScene: UI_Scene
     /// </summary>
     public void PointPanelPositionSet()
     {
-        switch(Managers.Game.mapCode)
+        switch(Managers.Game.gameMode)
         {
-            case NetworkProtocol.MapCode.Map_FITH_1vs1 :
+            case 122 :
                 SetPanelPositionToTeamGame();
                 break;
-            case NetworkProtocol.MapCode.Map_FITH_1vs1vs1:
+            case 112:
                 SetPanelPositionToIndivisualGame();
                 break;
             default:
