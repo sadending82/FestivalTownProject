@@ -16,13 +16,10 @@ public class HomeScene : BaseScene
         Managers.Sound.Play("Sfx_BGM_Lobby", Define.Sound.Bgm);
 
         homeStartUI = Managers.UI.ShowSceneUI<UI_HomeStart>();
-        homeSceneUI = Managers.UI.ShowAOTUI<UI_HomeScene>();
+        homeSceneUI = Managers.UI.ShowPopUpUI<UI_HomeScene>();
 
         homeStartUI.Init();
         homeSceneUI.Init();
-
-        homeSceneUI.SetDiamond(Managers.Data.GetDiamond());
-        homeSceneUI.SetGold(Managers.Data.GetGold());
 
         if (!Managers.Data.HasAttendanceUIPopUp())
         {
@@ -32,12 +29,6 @@ public class HomeScene : BaseScene
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-    }
-
-    private void Update()
-    {
-        homeSceneUI.SetDiamond(Managers.Data.GetDiamond());
-        homeSceneUI.SetGold(Managers.Data.GetGold());
     }
 
     IEnumerator WaitAttendanceEventData()

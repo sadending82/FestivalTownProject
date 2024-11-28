@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class UI_HomeScene : UI_AlwaysOnTop
+public class UI_HomeScene : UI_PopUp
 {
     enum GameObjects
     {
@@ -11,6 +11,8 @@ public class UI_HomeScene : UI_AlwaysOnTop
         GoldText,
         DiamondPanel,
         DiamondText,
+        TopPanel,
+        PlayerDataPanel,
     }
 
     bool isInitialized = false;
@@ -29,6 +31,10 @@ public class UI_HomeScene : UI_AlwaysOnTop
 
         Bind<GameObject>(typeof(GameObjects));
 
+        SetNickName(Managers.Data.GetNickName());
+        SetGold(Managers.Data.GetGold());
+        SetDiamond(Managers.Data.GetDiamond());
+
         isInitialized = true;
     }
 
@@ -42,8 +48,14 @@ public class UI_HomeScene : UI_AlwaysOnTop
         Get<GameObject>((int)GameObjects.GoldText).GetComponent<TMP_Text>().text = value.ToString();
     }
 
+    public void SetNickName(string value)
+    {
+        Get<GameObject>((int)GameObjects.PlayerDataPanel).transform.GetChild(0).GetComponent<TMP_Text>().text = value;
+    }
+
     private void Update()
     {
-        
+        SetGold(Managers.Data.GetGold());
+        SetDiamond(Managers.Data.GetDiamond());
     }
 }
