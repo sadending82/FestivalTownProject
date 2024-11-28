@@ -60,10 +60,10 @@ public class UI_Result : UI_Scene
     {
         if (Managers.Game.PlayerResultData.Count > 0 && !isResultChecked)
         {
-            foreach (KeyValuePair<int, Define.PlayerResult> data in Managers.Game.PlayerResultData)
+            foreach (var data in Managers.Game.PlayerResultData)
             {
-                SetPlayerResult(data.Value.Name, data.Key, data.Value.kill, data.Value.death,
-                    data.Value.bombInsert, data.Value.gold, data.Value.isMvp);
+                SetPlayerResult(data.Name, data.Id, data.kill, data.death,
+                    data.bombInsert, data.gold, data.isMvp);
             }
 
             isResultChecked = true;

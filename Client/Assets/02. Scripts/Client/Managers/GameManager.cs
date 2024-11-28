@@ -25,7 +25,8 @@ public class GameManager : MonoBehaviour
     public int mapTheme = -1;
     public eGameMode gameMode;
     public bool isAnounnced15s = false;
-    public Dictionary<int, Define.PlayerResult> PlayerResultData = new();
+    public List<Define.PlayerResult> PlayerResultData = new();
+    public Dictionary<int, int> PlayerTeamData = new();
     private int winningTeam = -1;
     public int currentTeamID = -1;
 
@@ -136,6 +137,7 @@ public class GameManager : MonoBehaviour
         isAnounnced15s = false;
         isGameEnd = false;
         PlayerResultData.Clear();
+        PlayerTeamData.Clear();
         winningTeam = -1;
         ClearCharacterCustomizing();
     }

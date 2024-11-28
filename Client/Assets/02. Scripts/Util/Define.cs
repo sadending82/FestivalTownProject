@@ -95,6 +95,7 @@ public class Define
 
     public struct PlayerResult
     {
+        public int Id;
         public string Name;
         public int kill;
         public int death;

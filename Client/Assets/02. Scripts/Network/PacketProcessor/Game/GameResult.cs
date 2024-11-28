@@ -32,6 +32,7 @@ namespace Network.PacketProcessor
                     $",  Gold = {playerRecord.EarnGold}, Point = {playerRecord.Point} Is MVP = {playerRecord.IsMvp}");
 
                 Define.PlayerResult result;
+                result.Id = playerRecord.Id;
                 result.Name = playerRecord.Name;
                 result.kill = playerRecord.KillCount;
                 result.death = playerRecord.DeathCount;
@@ -39,7 +40,7 @@ namespace Network.PacketProcessor
                 result.gold = playerRecord.EarnGold;
                 result.isMvp = playerRecord.IsMvp;
 
-                Managers.Game.PlayerResultData.Add(playerRecord.Id, result);
+                Managers.Game.PlayerResultData.Add(result);
             }
 
             

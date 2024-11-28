@@ -52,7 +52,14 @@ public class UI_IngameScene: UI_Scene
     {
         switch(Managers.Game.gameMode)
         {
+            
+            case eGameMode.FITH_Team_Battle_4:
+                SetPanelPositionToTeamGame();
+                break;
             case eGameMode.FITH_Team_Battle_6:
+                SetPanelPositionToTeamGame();
+                break;
+            case eGameMode.FITH_Indiv_Battle_2:
                 SetPanelPositionToTeamGame();
                 break;
             case eGameMode.FITH_Indiv_Battle_3:

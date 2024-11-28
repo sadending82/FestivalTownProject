@@ -45,6 +45,8 @@ namespace Network.PacketProcessor
 
                 Vector3 pos = new Vector3(position.X, position.Y, position.Z);
                 Managers.Player.GetComponent<PlayerManager>().AddPlayer(id, pos, team);
+                Managers.Game.PlayerTeamData.Add(id, team);
+
             }
         }
     }

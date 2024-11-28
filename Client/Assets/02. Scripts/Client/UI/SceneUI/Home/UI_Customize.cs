@@ -9,7 +9,6 @@ public class UI_Customize : UI_Scene
 {
     enum GameObjects
     {
-        Panel,
         GridPanel,
         SetCustomizingButton,
         UI_CharacterModel,
@@ -40,16 +39,16 @@ public class UI_Customize : UI_Scene
         }
 
         // 인벤토리 아이템 생성
-        foreach (Define.ItemData item in Managers.Data.InventoryDataList)
+        foreach (var item in Managers.Data.InventoryDataList)
         {
-            if (Managers.Data.GetItemData(item.ItemCode).Item_Type == (int)Define.ItemType.Resource) continue;
+            if (Managers.Data.GetItemData(item.Value.ItemCode).Item_Type == (int)Define.ItemType.Resource) continue;
 
             var ui = Managers.UI.MakeSubItem<UI_Customize_Item>(gridPanel.transform);
             ui.Init();
-            ui.SetItem(item.ItemUid, item.ItemCode);
+            ui.SetItem(item.Value.ItemUid, item.Value.ItemCode);
             ui.SetParentUI(this);
 
-            ItemSlotDict.TryAdd(item.ItemCode, ui);
+            ItemSlotDict.TryAdd(item.Value.ItemCode, ui);
         }
 
         //커스터마이징 버튼
@@ -57,8 +56,13 @@ public class UI_Customize : UI_Scene
         {
             sCharacterCustomizing customizing = new sCharacterCustomizing();
             customizing.Init();
-            
-            foreach(var itemPair in Managers.Data.PlayerCustomizingData)
+
+            foreach(var itemPair in Managers.Data.ClientLocalCustomizingDataDict)
+            {
+                Managers.Data.PlayerCustomizingData[itemPair.Key] = itemPair.Value;
+            }
+
+            foreach (var itemPair in Managers.Data.PlayerCustomizingData)
             {
                 // 데이터 없으면 다음거
                 if (itemPair.Value.ItemCode == -1) continue;
@@ -93,6 +97,12 @@ public class UI_Customize : UI_Scene
         {
             // 전부다 한 번에 카피하는게 빠를거 같긴 하지만, 로직 상으론 문제 없을 테니 일단 이렇게
             Managers.Data.ClientLocalCustomizingDataDict.Add(itemPair.Key, itemPair.Value);
+
+            if(ItemSlotDict.TryGetValue(itemPair.Value.ItemCode, out var itemSlotUi))
+            {
+                itemSlotUi.SetEquip(true);
+            }
+
         }
 
         // 모델 렌더용 카메라 설정
@@ -120,6 +130,8 @@ public class UI_Customize : UI_Scene
 
         if (false == result) return;
 
+        Debug.Log($"cur : {curItem.ItemCode}, change : {itemIndex}");
+
         // 현재 설정된 커마가 있다면
         if (curItem.ItemCode != -1)
         {
@@ -132,6 +144,7 @@ public class UI_Customize : UI_Scene
             newData.ItemCode = -1;
             newData.ItemUid = -1;
             Managers.Data.ClientLocalCustomizingDataDict[itemType] = newData;
+            Debug.Log($"delete");
         }
 
         // 지금 버튼 누른게 같은 거 한번 더 누른게 아니라면
@@ -145,6 +158,7 @@ public class UI_Customize : UI_Scene
             newData.ItemCode = itemIndex;
             newData.ItemUid = ItemSlotDict[itemIndex].GetItemUid();
             Managers.Data.ClientLocalCustomizingDataDict[itemType] = newData;
+            Debug.Log($"Set New");
         }
 
         Get<GameObject>((int)GameObjects.UI_CharacterModel).GetComponent<UI_CharacterModel>().SetInventoryLocalCustomizing();

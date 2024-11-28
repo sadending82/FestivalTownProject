@@ -16,6 +16,10 @@ public class NonRagdollPlayerState : MonoBehaviour
     private GameObject faceItem;
     private GameObject backItem;
 
+    private Material defaultSkin;
+    private Material defaultFace;
+
+
     private void Awake()
     {
         if (skinMaterial == null || faceMaterial == null)
@@ -23,16 +27,20 @@ public class NonRagdollPlayerState : MonoBehaviour
             Material[] mat = playerMesh.GetComponent<SkinnedMeshRenderer>().materials;
             skinMaterial = mat[0];
             faceMaterial = mat[1];
+
+            defaultSkin = mat[0];
+            defaultFace = mat[1];
         }
     }
+
     public void SetMaterial(Material skinMaterial, Material faceMaterial)
     {
         Material[] mat = new Material[] { skinMaterial, faceMaterial };
         playerMesh.GetComponent<SkinnedMeshRenderer>().materials = mat;
     }
+
     public void ChangeCustomizing(int itemCode)
-    {
-        
+    {   
         ItemEntity tItem = Managers.Data.GetItemData(itemCode);
 
         if (tItem == null) return;
@@ -112,6 +120,29 @@ public class NonRagdollPlayerState : MonoBehaviour
                     Debug.Log("ERROR!!! ChangeCustomizing(): Wrong Item Type!!!");
                 }
                 break;
+        }
+    }
+
+    public void CustomizingInitialize()
+    {
+        SetMaterial(defaultSkin, defaultFace);
+
+        if (faceItem != null)
+        {
+            faceItem.SetActive(false);
+            faceItem = null;
+        }
+
+        if (backItem != null)
+        {
+            backItem.SetActive(false);
+            backItem = null;
+        }
+
+        if (headItem != null)
+        {
+            headItem.SetActive(false);
+            headItem = null;
         }
     }
 }

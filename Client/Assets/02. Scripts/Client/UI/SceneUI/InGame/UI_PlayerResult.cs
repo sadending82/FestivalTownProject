@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class UI_PlayerResult : UI_Base
@@ -14,6 +15,8 @@ public class UI_PlayerResult : UI_Base
         BombInsertText,
         GoldText,
         MVPImage,
+        TeamFlag,
+        PlayerImage,
     }
 
     bool isInitialzed = false;
@@ -27,10 +30,12 @@ public class UI_PlayerResult : UI_Base
     {
         Bind<GameObject>(typeof(GameObjects));
 
+        Get<GameObject>((int)GameObjects.TeamFlag).GetComponent<UI_TeamFlag>().Init();
+
         isInitialzed = true;
     }
 
-    public void SetPlayerResult(string nickname, int kill, int death, int bombInsert, int gold, bool isMvp)
+    public void SetPlayerResult(int id, string nickname, int kill, int death, int bombInsert, int gold, bool isMvp)
     {
         Get<GameObject>((int)GameObjects.NickNameText).GetComponent<TMP_Text>().text = nickname;
         if (Get<GameObject>((int)GameObjects.KillText) == null) Debug.Log("text null");
@@ -48,5 +53,10 @@ public class UI_PlayerResult : UI_Base
             Get<GameObject>((int)GameObjects.MVPEmphasis).SetActive(false);
             Get<GameObject>((int)GameObjects.MVPImage).SetActive(false);
         }
+
+        int playerTeam = Managers.Game.PlayerTeamData[id];
+        
+
+        Get<GameObject>((int)GameObjects.TeamFlag).GetComponent<UI_TeamFlag>().SetFlag(playerTeam, playerTeam == Managers.Game.GetWinningTeam());
     }
 }

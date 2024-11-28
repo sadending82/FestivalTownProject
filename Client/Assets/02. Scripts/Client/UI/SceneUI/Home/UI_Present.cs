@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class UI_Present : UI_PopUp
@@ -8,15 +9,21 @@ public class UI_Present : UI_PopUp
     enum GameObjects
     {
         Panel,
+        GoldPanel,
+        GoldText,
+        DiamondPanel,
+        DiamondText,
         TitleText,
         CharacterImage,
         BackButton,
         GachaSelectPanel,
     }
 
+    bool isInitialized = false;
+
     void Start()
     {    
-        Init();
+        if(!isInitialized) Init();
     }
 
     public override void Init()
@@ -29,6 +36,14 @@ public class UI_Present : UI_PopUp
         {
             Managers.UI.ClosePopUpUI(GetComponent<UI_Present>());
         });
+
+        isInitialized = true;
         
+    }
+
+    private void Update()
+    {
+        Get<GameObject>((int)GameObjects.GoldText).GetComponent<TMP_Text>().text = Managers.Data.GetGold().ToString();
+        Get<GameObject>((int)GameObjects.DiamondText).GetComponent<TMP_Text>().text = Managers.Data.GetDiamond().ToString();
     }
 }

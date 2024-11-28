@@ -56,7 +56,7 @@ public class DataManager
     /// 페어 타입 -> 아이템 인덱스, 보유량 
     /// </summary>
     public Dictionary<int, int> PlayerDataDict = new();
-    public List<Define.ItemData> InventoryDataList = new();
+    public SortedDictionary<int, Define.ItemData> InventoryDataList = new();
 
     /// <summary>
     /// 페어 타입 -> 아이템 타입, 아이템 데이터

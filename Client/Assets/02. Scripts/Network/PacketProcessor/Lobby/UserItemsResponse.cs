@@ -33,7 +33,7 @@ namespace Network.PacketProcessor
                     item.Count = item_info.Count;
                     item.Type = item_info.ItemType;
 
-                    Managers.Data.InventoryDataList.Add(item);
+                    Managers.Data.InventoryDataList.Add(item.ItemCode, item);
                 }
 
                 Managers.Data.SetInventoryDataRecved(true);

@@ -17,6 +17,8 @@ public class UI_ResultPanel : UI_Base
 
     bool isInitialized = false;
 
+    int currentActivePanel = 0;
+
     void Start()
     {
         if(!isInitialized) Init();
@@ -38,16 +40,15 @@ public class UI_ResultPanel : UI_Base
 
     public void SetPlayerResult(string nickname, int playerId, int kill, int death, int bombInsert, int gold, bool isMvp)
     {
-        GetPlayerResultObj(playerId).SetActive(true);
-        GetPlayerResultObj(playerId).GetComponent<UI_PlayerResult>().SetPlayerResult(nickname, kill, death, bombInsert, gold, isMvp);
+        GetPlayerResultObj(currentActivePanel).SetActive(true);
+        GetPlayerResultObj(currentActivePanel).GetComponent<UI_PlayerResult>().SetPlayerResult(playerId, nickname, kill, death, bombInsert, gold, isMvp);
+        currentActivePanel++;
     }
 
-    GameObject GetPlayerResultObj(int id)
+    GameObject GetPlayerResultObj(int index)
     {
-        if (id < 0) return null;
-        //나중에 MaxPlayer도 참조해서 그것도 예외처리 해줘야할듯
+        if (index < 0) return null;
 
-        // 일단은 PlayerResult 위에 Label 밖에 없으므로 임시 방편.
-        return Get<GameObject>(id + 1);
+        return Get<GameObject>(index + 1);
     }
 }

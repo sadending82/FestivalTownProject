@@ -37,7 +37,7 @@ public class UI_CharacterModel : UI_Base
     public void SetCustomizing()
     {
         var customizeState = Get<GameObject>((int)GameObjects.NonRagdollPlayer).GetComponent<NonRagdollPlayerState>();
-        var animationState = Get<GameObject>((int)GameObjects.NonRagdollPlayer).GetComponent<NonRagdollPlayerAnimationController>();
+        var animationState = Get<GameObject>((int)GameObjects.NonRagdollPlayer).GetComponent<NonRagdollPlayerAnimationController>();   
 
         foreach (var customizeData in Managers.Data.PlayerCustomizingData)
         {
@@ -56,6 +56,8 @@ public class UI_CharacterModel : UI_Base
     {
         var customizeState = Get<GameObject>((int)GameObjects.NonRagdollPlayer).GetComponent<NonRagdollPlayerState>();
         var animationState = Get<GameObject>((int)GameObjects.NonRagdollPlayer).GetComponent<NonRagdollPlayerAnimationController>();
+
+        customizeState.CustomizingInitialize();
 
         foreach (var customizeData in Managers.Data.ClientLocalCustomizingDataDict)
         {
@@ -78,13 +80,10 @@ public class UI_CharacterModel : UI_Base
             GameObject cam = Camera.main.transform.GetChild(0).gameObject.activeInHierarchy ?
                 Camera.main.transform.GetChild(0).gameObject : cam = Camera.main.transform.GetChild(1).gameObject;
 
-            Debug.Log($"{cam.name}");
-
             Ray ray = cam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
             {
-                Debug.Log($"{hit.collider.gameObject.name}");
 
                 if (!_isClicked)
                 {
