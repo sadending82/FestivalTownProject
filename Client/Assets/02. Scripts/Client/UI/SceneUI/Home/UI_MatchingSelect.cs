@@ -13,6 +13,7 @@ public class UI_MatchingSelect: UI_PopUp
         WhatButton,
         TutorialButton,
         TestMatchingButton,
+        ExitButton,
     }
 
     // Start is called before the first frame update
@@ -49,6 +50,11 @@ public class UI_MatchingSelect: UI_PopUp
         {
             Managers.Network.GetPacketManager().SendGameMatchingRequest(NetworkProtocol.eMatchingType.FITH_TEST);
             Managers.UI.ShowPopUpUI<UI_MatchingProgress>();
+        });
+
+        Get<GameObject>((int)GameObjects.ExitButton).BindEvent((PointerEventData) =>
+        {
+            ClosePopUpUI();
         });
     }
 }

@@ -17,7 +17,6 @@ public class UI_HomeStart : UI_Scene
         SettingButton,
         UI_CharacterModel,
         ExitButton,
-        InventoryButton,
         AccountInitializeButton,
         GetMoneyButton,
         GetDiamondButton,
@@ -62,14 +61,6 @@ public class UI_HomeStart : UI_Scene
 #else
         Application.Quit();
 #endif
-        });
-
-        Get<GameObject>((int)GameObjects.InventoryButton).BindEvent((PointerEventData) =>
-        {
-            Managers.Data.SetInventoryDataRecved(false);
-            Managers.Network.GetPacketManager().SendUserItemsRequestPacket();
-            StartCoroutine(WaitRecvItemDataAndShowUI());
-
         });
 
         Get<GameObject>((int)GameObjects.AccountInitializeButton).BindEvent((PointerEventData) =>
@@ -117,41 +108,5 @@ public class UI_HomeStart : UI_Scene
         Get<GameObject>((int)GameObjects.UI_CharacterModel).GetComponent<UI_CharacterModel>().SetInventoryLocalCustomizing();
     }
 
-    IEnumerator WaitRecvItemDataAndShowUI()
-    {
-        yield return null;
 
-        float timeOut = 5.0f;
-
-        while(!Managers.Data.IsInventoryDataRecved())
-        {
-            if (timeOut < 0f)
-            {
-                break;
-            }
-
-            if(Managers.Scene.CurrentScene.GetComponent<HomeScene>() == null)
-            {
-                break;
-            }
-
-            timeOut -= Time.deltaTime;
-            yield return null;
-        }
-
-        if(Managers.Data.IsInventoryDataRecved())
-        {
-            Managers.UI.CloseSceneUI();
-            var ui = Managers.UI.ShowSceneUI<UI_Customize>();
-            ui.Init();
-        }
-
-        if(timeOut < 0f)
-        {
-            var ui = Managers.UI.ShowPopUpUI<UI_Notice>();
-            ui.Init();
-            ui.NoticeTextChange("인벤토리에 접속할 수 없습니다.");
-            ui.BindPopupCloseEvent();
-        }
-    }
 }

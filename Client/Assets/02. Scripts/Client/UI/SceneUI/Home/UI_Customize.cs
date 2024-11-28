@@ -11,7 +11,6 @@ public class UI_Customize : UI_Scene
     {
         Panel,
         GridPanel,
-        ExitButton,
         SetCustomizingButton,
         UI_CharacterModel,
     }
@@ -52,25 +51,6 @@ public class UI_Customize : UI_Scene
 
             ItemSlotDict.TryAdd(item.ItemCode, ui);
         }
-
-        // 뒤로가기 버튼
-        Get<GameObject>((int)GameObjects.ExitButton).BindEvent((PointerEventData) =>
-        {
-            foreach(var itemPair in Managers.Data.ClientLocalCustomizingDataDict)
-            {
-                Managers.Data.PlayerCustomizingData[itemPair.Key] = itemPair.Value;
-            }
-
-            Managers.UI.CloseSceneUI();
-
-            Camera.main.transform.GetChild(0).gameObject.SetActive(true); // Home용 카메라
-            Camera.main.transform.GetChild(1).gameObject.SetActive(false); // Inventory용 카메라
-
-            var ui = Managers.UI.ShowSceneUI<UI_HomeStart>();
-            ui.Init();
-            ui.SetCustomizing();
-
-        });
 
         //커스터마이징 버튼
         Get<GameObject>((int)GameObjects.SetCustomizingButton).BindEvent((PointerEventData) =>
