@@ -1,57 +1,57 @@
 #pragma once
 
-//INSERT INTO ACCOUNT VALUES (?, ?, ?)
-const wchar_t* InsertAccount_Query = L"INSERT INTO ACCOUNT VALUES (?, ?, ?)";
+//INSERT INTO AccountDB.dbo.ACCOUNT VALUES (?, ?, ?)
+const wchar_t* InsertAccount_Query = L"INSERT INTO AccountDB.dbo.ACCOUNT VALUES (?, ?, ?)";
 
-//INSERT INTO UserInfo (AccountID, NickName) OUTPUT INSERTED.uid as uid VALUES (?, ?)
-const wchar_t* InsertNewUser_Query = L"INSERT INTO UserInfo (AccountID, NickName) OUTPUT INSERTED.uid as uid VALUES (?, ?)";
+//INSERT INTO GameDB.dbo.UserInfo (AccountID, NickName) OUTPUT INSERTED.uid as uid VALUES (?, ?)
+const wchar_t* InsertNewUser_Query = L"INSERT INTO GameDB.dbo.UserInfo (AccountID, NickName) OUTPUT INSERTED.uid as uid VALUES (?, ?)";
 
-//INSERT INTO UserGameRecords (UID) VALUES (?)
-const wchar_t* InsertUserGameRecords_Query = L"INSERT INTO UserGameRecords (UID) VALUES (?)";
+//INSERT INTO GameDB.dbo.UserGameRecords (UID) VALUES (?)
+const wchar_t* InsertUserGameRecords_Query = L"INSERT INTO GameDB.dbo.UserGameRecords (UID) VALUES (?)";
 
-//INSERT INTO UserItem (owner_uid, itemCode, count, itemType) VALUES (?, ?, ?, ?)
-const wchar_t* InsertUserItem_Query = L"INSERT INTO UserItem (owner_uid, itemCode, count, itemType) VALUES (?, ?, ?, ?)";
+//INSERT INTO GameDB.dbo.UserItem (owner_uid, itemCode, count, itemType) VALUES (?, ?, ?, ?)
+const wchar_t* InsertUserItem_Query = L"INSERT INTO GameDB.dbo.UserItem (owner_uid, itemCode, count, itemType) VALUES (?, ?, ?, ?)";
 
-//INSERT INTO UserAttendance (user_UID, event_index, attendance_date) VALUES(?, ?, CAST(GETDATE() AS DATE))
-const wchar_t* InsertUserAttendance_Query = L"INSERT INTO UserAttendance (user_UID, event_index, attendance_date) VALUES(?, ?, CAST(GETDATE() AS DATE))";
+//INSERT INTO GameDB.dbo.UserAttendance (user_UID, event_index, attendance_date) VALUES(?, ?, CAST(GETDATE() AS DATE))
+const wchar_t* InsertUserAttendance_Query = L"INSERT INTO GameDB.dbo.UserAttendance (user_UID, event_index, attendance_date) VALUES(?, ?, CAST(GETDATE() AS DATE))";
 
-// UPDATE UserInfo SET ConnectionState = ? OUTPUT deleted.* WHERE AccountID = ?
-const wchar_t* SelectUserInfoForLogin_Query = L"UPDATE UserInfo \
+// UPDATE GameDB.dbo.UserInfo SET ConnectionState = ? OUTPUT deleted.* WHERE AccountID = ?
+const wchar_t* SelectUserInfoForLogin_Query = L"UPDATE GameDB.dbo.UserInfo \
 							SET ConnectionState = ? \
 							OUTPUT deleted.* \
 							WHERE AccountID = ?";
 
-//SELECT * FROM UserInfo WHERE UID = ?
-const wchar_t* SelectUserInfo_Query = L"SELECT * FROM UserInfo WHERE UID = ?";
+//SELECT * FROM GameDB.dbo.UserInfo WHERE UID = ?
+const wchar_t* SelectUserInfo_Query = L"SELECT * FROM GameDB.dbo.UserInfo WHERE UID = ?";
 
-//SELECT count, itemCode FROM UserItem WHERE owner_UID = ? AND itemType = ?
-const wchar_t* SelectUserAllCurrency_Query = L"SELECT count, itemCode FROM UserItem WHERE owner_UID = ? AND itemType = ?";
+//SELECT count, itemCode FROM GameDB.dbo.UserItem WHERE owner_UID = ? AND itemType = ?
+const wchar_t* SelectUserAllCurrency_Query = L"SELECT count, itemCode FROM GameDB.dbo.UserItem WHERE owner_UID = ? AND itemType = ?";
 
-//SELECT * FROM UserItem WHERE owner_UID = ? AND NOT count = ?
-const wchar_t* SelectUserAllItems_Query = L"SELECT * FROM UserItem WHERE owner_UID = ? AND NOT count = ?";
+//SELECT * FROM GameDB.dbo.UserItem WHERE owner_UID = ? AND NOT count = ?
+const wchar_t* SelectUserAllItems_Query = L"SELECT * FROM GameDB.dbo.UserItem WHERE owner_UID = ? AND NOT count = ?";
 
-//SELECT DATALENGTH(CharacterCustomizing), CharacterCustomizing FROM UserInfo WHERE UID = ?
-const wchar_t* SelectCharacterCustomizing_Query = L"SELECT DATALENGTH(CharacterCustomizing), CharacterCustomizing FROM UserInfo WHERE UID = ?";
+//SELECT DATALENGTH(CharacterCustomizing), CharacterCustomizing FROM GameDB.dbo.UserInfo WHERE UID = ?
+const wchar_t* SelectCharacterCustomizing_Query = L"SELECT DATALENGTH(CharacterCustomizing), CharacterCustomizing FROM GameDB.dbo.UserInfo WHERE UID = ?";
 
-//SELECT count FROM UserItem WHERE owner_UID = ? AND ItemCode = ?
-const wchar_t* SelectUserItemCount_Query = L"SELECT count FROM UserItem WHERE owner_UID = ? AND ItemCode = ?";
+//SELECT count FROM GameDB.dbo.UserItem WHERE owner_UID = ? AND ItemCode = ?
+const wchar_t* SelectUserItemCount_Query = L"SELECT count FROM GameDB.dbo.UserItem WHERE owner_UID = ? AND ItemCode = ?";
 
-//SELECT attendance_date, day_count, is_rewarded FROM UserAttendance WHERE user_UID = ? AND event_code = ? ORDER BY day_count ASC
-const wchar_t* SelectUserAttendanceEvent_Query = L"SELECT attendance_date, day_count, is_rewarded FROM UserAttendance WHERE user_UID = ? AND event_code = ? ORDER BY day_count ASC";
+//SELECT attendance_date, day_count, is_rewarded FROM GameDB.dbo.UserAttendance WHERE user_UID = ? AND event_code = ? ORDER BY day_count ASC
+const wchar_t* SelectUserAttendanceEvent_Query = L"SELECT attendance_date, day_count, is_rewarded FROM GameDB.dbo.UserAttendance WHERE user_UID = ? AND event_code = ? ORDER BY day_count ASC";
 
-const wchar_t* SelectUserAttendanceEventLatest_Query = L"SELECT attendance_date, day_count, is_rewarded FROM UserAttendance WHERE day_count = (\
-SELECT MAX(attendance_date) FROM UserAttendance WHERE user_UID = ? AND event_code = ?";
+const wchar_t* SelectUserAttendanceEventLatest_Query = L"SELECT attendance_date, day_count, is_rewarded FROM GameDB.dbo.UserAttendance WHERE day_count = (\
+SELECT MAX(attendance_date) FROM GameDB.dbo.UserAttendance WHERE user_UID = ? AND event_code = ?";
 
-//SELECT COUNT(*) FROM UserAttendance WHERE user_UID = ? AND attendance_date = CAST(GETDATE() AS DATE)
-const wchar_t* SelectUserAttendanceToday_Query = L"SELECT COUNT(*) FROM UserAttendance WHERE user_UID = ? AND attendance_date = CAST(GETDATE() AS DATE)";
+//SELECT COUNT(*) FROM GameDB.dbo.UserAttendance WHERE user_UID = ? AND attendance_date = CAST(GETDATE() AS DATE)
+const wchar_t* SelectUserAttendanceToday_Query = L"SELECT COUNT(*) FROM GameDB.dbo.UserAttendance WHERE user_UID = ? AND attendance_date = CAST(GETDATE() AS DATE)";
 
-//UPDATE UserInfo SET ConnectionState = ? WHERE UID = ?
-const wchar_t* UpdateUserConnectionState_Query = L"UPDATE UserInfo SET ConnectionState = ? WHERE UID = ?";
+//UPDATE GameDB.dbo.UserInfo SET ConnectionState = ? WHERE UID = ?
+const wchar_t* UpdateUserConnectionState_Query = L"UPDATE GameDB.dbo.UserInfo SET ConnectionState = ? WHERE UID = ?";
 
-//UPDATE UserInfo SET Point = Point + ? WHERE UID = ?
-const wchar_t* UpdateUserPoint_Query = L"UPDATE UserInfo SET Point = Point + ? WHERE UID = ?";
+//UPDATE GameDB.dbo.UserInfo SET Point = Point + ? WHERE UID = ?
+const wchar_t* UpdateUserPoint_Query = L"UPDATE GameDB.dbo.UserInfo SET Point = Point + ? WHERE UID = ?";
 
-const wchar_t* UpdateBattleRecords_Query = L"UPDATE UserGameRecords SET "
+const wchar_t* UpdateBattleRecords_Query = L"UPDATE GameDB.dbo.UserGameRecords SET "
 											L" Kill_Count = Kill_Count + ? "
 											L", Death_Count = Death_Count + ? "
 											L", Point = Point + ? "
@@ -67,13 +67,13 @@ const wchar_t* UpdateBattleRecords_Query = L"UPDATE UserGameRecords SET "
 											L", Victory_Count = Victory_Count + ? "
 											L" WHERE UID = ?";
 
-//UPDATE UserItem SET count = count + ? WHERE owner_UID = ? AND itemCode = ?
-const wchar_t* UpdateUserItemCount_Query = L"UPDATE UserItem SET count = count + ? WHERE owner_UID = ? AND itemCode = ?";
+//UPDATE GameDB.dbo.UserItem SET count = count + ? WHERE owner_UID = ? AND itemCode = ?
+const wchar_t* UpdateUserItemCount_Query = L"UPDATE GameDB.dbo.UserItem SET count = count + ? WHERE owner_UID = ? AND itemCode = ?";
 
-//UPDATE UserInfo SET CharacterCustomizing = ? WHERE UID = ?
-const wchar_t* UpdateCharacterCustomizing_Query = L"UPDATE UserInfo SET CharacterCustomizing = ? WHERE UID = ?";
+//UPDATE GameDB.dbo.UserInfo SET CharacterCustomizing = ? WHERE UID = ?
+const wchar_t* UpdateCharacterCustomizing_Query = L"UPDATE GameDB.dbo.UserInfo SET CharacterCustomizing = ? WHERE UID = ?";
 
-const wchar_t* UpsertUserItemCount_Query = L"MERGE INTO UserItem AS a "
+const wchar_t* UpsertUserItemCount_Query = L"MERGE INTO GameDB.dbo.UserItem AS a "
 											L"USING (SELECT 1 AS match) AS b "
 											L"ON a.itemCode = ? AND a.owner_UID = ? "
 											L"WHEN MATCHED THEN "
@@ -81,14 +81,14 @@ const wchar_t* UpsertUserItemCount_Query = L"MERGE INTO UserItem AS a "
 											L"WHEN NOT MATCHED THEN "
 											L"INSERT (owner_UID, itemCode, count, itemType) VALUES (?, ?, ?, ?);";
 
-//DELETE FROM Account WHERE ID = ?
-const wchar_t* DeleteAcccount_Query = L"DELETE FROM Account WHERE ID = ?";
+//DELETE FROM AccountDB.dbo.Account WHERE ID = ?
+const wchar_t* DeleteAcccount_Query = L"DELETE FROM AccountDB.dbo.Account WHERE ID = ?";
 
-//DELETE FROM UserInfo WHERE UID = ?
-const wchar_t* DeleteUserInfo_Query = L"DELETE FROM UserInfo WHERE UID = ?";
+//DELETE FROM GameDB.dbo.UserInfo WHERE UID = ?
+const wchar_t* DeleteUserInfo_Query = L"DELETE FROM GameDB.dbo.UserInfo WHERE UID = ?";
 
-//DELETE FROM UserItem WHERE Item_UID = (SELECT TOP 1 Item_UID FROM UserItem WHERE owner_UID = ? and ItemCode = ? ORDER BY Item_UID ASC)
-const wchar_t* DeleteUserItem_Query = L"DELETE FROM UserItem WHERE Item_UID = (SELECT TOP 1 Item_UID FROM UserItem WHERE owner_UID = ? and ItemCode = ? ORDER BY Item_UID ASC)";
+//DELETE FROM GameDB.dbo.UserItem WHERE Item_UID = (SELECT TOP 1 Item_UID FROM GameDB.dbo.UserItem WHERE owner_UID = ? and ItemCode = ? ORDER BY Item_UID ASC)
+const wchar_t* DeleteUserItem_Query = L"DELETE FROM GameDB.dbo.UserItem WHERE Item_UID = (SELECT TOP 1 Item_UID FROM GameDB.dbo.UserItem WHERE owner_UID = ? and ItemCode = ? ORDER BY Item_UID ASC)";
 
-//SELECT hashedPassword, salt FROM ACCOUNT WHERE ID = ?
-const wchar_t* CheckValidateLogin_Query = L"SELECT hashedPassword, salt FROM ACCOUNT WHERE ID = ?";
+//SELECT hashedPassword, salt FROM AccountDB.dbo.Account WHERE ID = ?
+const wchar_t* CheckValidateLogin_Query = L"SELECT hashedPassword, salt FROM AccountDB.dbo.Account WHERE ID = ?";

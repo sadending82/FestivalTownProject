@@ -30,6 +30,8 @@ inline constexpr int BLOCKSIZE = 2; // meter
 inline constexpr float offsetX = 20;
 inline constexpr float offsetZ = 10;
 
+inline constexpr int NONE_ITEM_INDEX = 0;
+
 #ifdef _DEBUG
 #define DEBUGMSGNOPARAM(args) (printf("file: %s, line:%d ",__FILE__,__LINE__), printf(args))
 #define DEBUGMSGONEPARAM(args,k) (printf("file: %s, line:%d ",__FILE__,__LINE__), printf(args,k))

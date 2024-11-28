@@ -86,30 +86,6 @@ void DB::ErrorDisplay(SQLHSTMT& hStmt, RETCODE retCode)
 	}
 }
 
-bool DB::UseAccountDB(SQLHSTMT& hStmt)
-{
-	SQLRETURN retcode;
-
-	if ((retcode = SQLExecDirect(hStmt, (SQLWCHAR*)L"USE AccountDB", SQL_NTS)) == SQL_ERROR) {
-		DEBUGMSGNOPARAM("hStmt Error : Can't Use AccountDB \n");
-		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-		return false;
-	}
-	return true;
-}
-
-bool DB::UseGameDB(SQLHSTMT& hStmt)
-{
-	SQLRETURN retcode;
-
-	if ((retcode = SQLExecDirect(hStmt, (SQLWCHAR*)L"USE GameDB", SQL_NTS)) == SQL_ERROR) {
-		DEBUGMSGNOPARAM("hStmt Error : Can't Use GameDB \n");
-		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-		return false;
-	}
-	return true;
-}
-
 bool DB::InsertNewAcccount(const char* id, const char* password)
 {
 	SQLHSTMT hStmt = NULL;
@@ -131,7 +107,7 @@ bool DB::InsertNewAcccount(const char* id, const char* password)
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 		return false;
 	}
-	UseAccountDB(hStmt);
+	
 
 	SQLPrepare(hStmt, (SQLWCHAR*)InsertAccount_Query, SQL_NTS);
 
@@ -168,8 +144,7 @@ int DB::InsertNewUser(const char* id, const char* nickname)
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 		return INVALIDKEY;
 	}
-
-	UseGameDB(hStmt);
+	
 
 	SQLPrepare(hStmt, (SQLWCHAR*)InsertNewUser_Query, SQL_NTS);
 
@@ -218,7 +193,7 @@ bool DB::InsertUserGameRecords(const int uid)
 		return false;
 	}
 
-	UseGameDB(hStmt);
+	
 
 	SQLPrepare(hStmt, (SQLWCHAR*)InsertUserGameRecords_Query, SQL_NTS);
 
@@ -252,7 +227,7 @@ bool DB::InsertUserItem(const int owner_uid, const int itemCode, const int itemC
 		return false;
 	}
 
-	UseGameDB(hStmt);
+	
 
 	SQLPrepare(hStmt, (SQLWCHAR*)InsertUserItem_Query, SQL_NTS);
 
@@ -289,7 +264,7 @@ bool DB::InsertUserAttendance(const int uid, const int EventIndex)
 		return false;
 	}
 
-	UseGameDB(hStmt);
+	
 
 	SQLPrepare(hStmt, (SQLWCHAR*)InsertUserAttendance_Query, SQL_NTS);
 
@@ -322,7 +297,7 @@ std::pair<bool, UserInfo> DB::SelectUserInfoForLogin(const char* id)
 		return { false,UserInfo() };
 	}
 
-	UseGameDB(hStmt);
+	
 	int state = true;
 
 	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserInfoForLogin_Query, SQL_NTS);
@@ -393,7 +368,7 @@ std::pair<bool, UserInfo> DB::SelectUserInfo(const int uid)
 		return { false,UserInfo() };
 	}
 
-	UseGameDB(hStmt);
+	
 
 	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserInfo_Query, SQL_NTS);
 
@@ -456,7 +431,7 @@ bool DB::SelectUserAllCurrency(const int uid, std::vector<int>& currency_types_o
 		return 0;
 	}
 
-	UseGameDB(hStmt);
+	
 
 	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserAllCurrency_Query, SQL_NTS);
 
@@ -502,7 +477,7 @@ std::unordered_map<int, UserItem> DB::SelectUserAllItems(const int uid)
 		return std::unordered_map<int, UserItem>();
 	}
 
-	UseGameDB(hStmt);
+	
 
 	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserAllItems_Query, SQL_NTS);
 
@@ -548,7 +523,7 @@ sCharacterCustomizing DB::SelectCharacterCustomizing(const int uid)
 		return sCharacterCustomizing();
 	}
 
-	UseGameDB(hStmt);
+	
 
 	SQLPrepare(hStmt, (SQLWCHAR*)SelectCharacterCustomizing_Query, SQL_NTS);
 
@@ -603,7 +578,7 @@ int DB::SelectUserItemCount(const int uid, const int item_index)
 		return 0;
 	}
 
-	UseGameDB(hStmt);
+	
 
 	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserItemCount_Query, SQL_NTS);
 
@@ -648,7 +623,7 @@ std::vector<sDayAttendanceInfo> DB::SelectUserAttendanceEvent(const int uid, con
 		return std::vector<sDayAttendanceInfo>();
 	}
 
-	UseGameDB(hStmt);
+	
 
 	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserAttendanceEvent_Query, SQL_NTS);
 
@@ -704,7 +679,7 @@ sDayAttendanceInfo DB::SelectUserAttendanceEventLatest(const int uid, const int 
 		return sDayAttendanceInfo();
 	}
 
-	UseGameDB(hStmt);
+	
 
 	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserAttendanceEventLatest_Query, SQL_NTS);
 
@@ -761,7 +736,7 @@ int DB::SelectUserAttendanceToday(const int uid)
 		return 0;
 	}
 
-	UseGameDB(hStmt);
+	
 
 	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserAttendanceToday_Query, SQL_NTS);
 
@@ -801,7 +776,7 @@ bool DB::UpdateUserConnectionState(const int uid, const int state)
 		return false;
 	}
 
-	UseGameDB(hStmt);
+	
 
 	SQLPrepare(hStmt, (SQLWCHAR*)UpdateUserConnectionState_Query, SQL_NTS);
 
@@ -838,7 +813,7 @@ bool DB::UpsertUserItemCount(const int uid, const int item_Code, const int value
 		return false;
 	}
 
-	UseGameDB(hStmt);
+	
 
 	SQLPrepare(hStmt, (SQLWCHAR*)UpsertUserItemCount_Query, SQL_NTS);
 
@@ -879,7 +854,7 @@ bool DB::UpdateUserPoint(const int uid, const int valueOfChange)
 		return false;
 	}
 
-	UseGameDB(hStmt);
+	
 
 	SQLPrepare(hStmt, (SQLWCHAR*)UpdateUserPoint_Query, SQL_NTS);
 
@@ -915,7 +890,7 @@ bool DB::UpdateBattleRecords(const int uid, const UserGameRecords& gameRecords)
 		return false;
 	}
 
-	UseGameDB(hStmt);
+	
 
 	SQLPrepare(hStmt, (SQLWCHAR*)UpdateBattleRecords_Query, SQL_NTS);
 
@@ -968,8 +943,6 @@ bool DB::UpdateUserItemCount(const int uid, const int item_index, const int valu
 		return false;
 	}
 
-	UseGameDB(hStmt);
-
 	SQLPrepare(hStmt, (SQLWCHAR*)UpdateUserItemCount_Query, SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&valueOfChange), 0, NULL);
@@ -1008,7 +981,7 @@ bool DB::UpdateCharacterCustomizing(const int uid, const sCharacterCustomizing& 
 		return false;
 	}
 
-	UseGameDB(hStmt);
+	
 
 	SQLPrepare(hStmt, (SQLWCHAR*)UpdateCharacterCustomizing_Query, SQL_NTS);
 	SQLLEN dataLen = serializationData.size();
@@ -1045,7 +1018,7 @@ bool DB::UpdateCharacterCustomizing(const int uid, const std::vector<uint8_t> ch
 		return false;
 	}
 
-	UseGameDB(hStmt);
+	
 
 	const WCHAR* query = L"UPDATE UserInfo SET CharacterCustomizing = ? WHERE UID = ?";
 
@@ -1078,7 +1051,7 @@ bool DB::DeleteAcccount(const char* id)
 		return false;
 	}
 
-	UseAccountDB(hStmt);
+	
 
 	SQLPrepare(hStmt, (SQLWCHAR*)DeleteAcccount_Query, SQL_NTS);
 
@@ -1112,7 +1085,7 @@ bool DB::DeleteUserInfo(const int uid)
 		return false;
 	}
 
-	UseGameDB(hStmt);
+	
 
 	SQLPrepare(hStmt, (SQLWCHAR*)DeleteUserInfo_Query, SQL_NTS);
 
@@ -1146,7 +1119,7 @@ bool DB::DeleteUserItem(const int owner_uid, const int itemCode)
 		return false;
 	}
 
-	UseGameDB(hStmt);
+	
 
 	SQLPrepare(hStmt, (SQLWCHAR*)DeleteUserItem_Query, SQL_NTS);
 
@@ -1179,7 +1152,7 @@ bool DB::CheckValidateLogin(const char* id, const char* password)
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 		return false;
 	}
-	UseAccountDB(hStmt);
+	
 
 	SQLPrepare(hStmt, (SQLWCHAR*)CheckValidateLogin_Query, SQL_NTS);
 
