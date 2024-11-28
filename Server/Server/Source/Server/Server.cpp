@@ -411,11 +411,16 @@ std::pair<bool, UserInfo> Server::UserLogin(const char* accountID, const char* a
 
 int Server::CreateNewRoom(GameMode gameMode, int mapIndex, int mapTheme)
 {
+    if (mTableManager->GetGameModeData()[mapIndex].find(gameMode) == mTableManager->GetGameModeData()[mapIndex].end()) {
+        std::cout << "Fali Create New Room\n";
+        return  INVALIDKEY;
+    }
     int roomID = SetroomID();
     if (roomID == INVALIDKEY) {
         std::cout << "Fali Create New Room\n";
         return INVALIDKEY;
     }
+
     Room* room = GetRooms()[roomID];
     room->Init(roomID, gameMode, mTableManager->GetGameModeOutData()[gameMode], mTableManager->GetGameModeData()[mapIndex][gameMode]);
     room->InitMap(&GetTableManager()->GetMapData()[mapIndex], mapTheme);
