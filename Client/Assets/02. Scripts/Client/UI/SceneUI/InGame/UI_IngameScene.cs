@@ -1,3 +1,4 @@
+using NetworkProtocol;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -51,10 +52,10 @@ public class UI_IngameScene: UI_Scene
     {
         switch(Managers.Game.gameMode)
         {
-            case 122 :
+            case eGameMode.FITH_Team_Battle_6:
                 SetPanelPositionToTeamGame();
                 break;
-            case 112:
+            case eGameMode.FITH_Indiv_Battle_3:
                 SetPanelPositionToIndivisualGame();
                 break;
             default:

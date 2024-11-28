@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     public int RoomID = -1;
     public int mapIndex = -1;
     public int mapTheme = -1;
-    public int gameMode = -1;
+    public eGameMode gameMode;
     public bool isAnounnced15s = false;
     public Dictionary<int, Define.PlayerResult> PlayerResultData = new();
     private int winningTeam = -1;
@@ -146,20 +146,22 @@ public class GameManager : MonoBehaviour
         Managers.Map.LoadGameMap(mapIndex, mapTheme);
         switch (gameMode)
         {
-            case 111:
+            case eGameMode.FITH_Indiv_Battle_2:
                 {
+                    SetDefaultGameData(Define.GameMode.FireInTheHoleTeam1);
                 }
                 break;
-            case 112:
+            case eGameMode.FITH_Indiv_Battle_3:
                 {
                     SetDefaultGameData(Define.GameMode.FireInTheHoleIndivisual3);
                 }
                 break;
-            case 121:
+            case eGameMode.FITH_Team_Battle_4:
                 {
+                    SetDefaultGameData(Define.GameMode.FireInTheHoleTeam1);
                 }
                 break;
-            case 122:
+            case eGameMode.FITH_Team_Battle_6:
                 {
                     SetDefaultGameData(Define.GameMode.FireInTheHoleTeam1);
                 }

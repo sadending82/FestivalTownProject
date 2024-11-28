@@ -207,6 +207,14 @@ namespace NetworkProtocol
         CI_BACK = 23,
         CI_EMO = 24,
     };
+
+    public enum eGameMode
+    {
+        FITH_Indiv_Battle_2 = 111,
+        FITH_Indiv_Battle_3 = 112,
+        FITH_Team_Battle_4 = 121,
+        FITH_Team_Battle_6 = 122,
+    };
 }
 
 namespace ClientProtocol

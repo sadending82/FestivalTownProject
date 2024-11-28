@@ -403,6 +403,8 @@ void FITH::BombSpawn(Room* room, int roomID)
 
     std::set<Vector3f> spawnPoses = this->SetObjectSpawnPos(roomID, spawnCount);
 
+    if (spawnPoses.empty()) return;
+
     float posOffset = (static_cast<float>(BLOCKSIZE) / 3);
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -434,6 +436,8 @@ void FITH::BombSpawn(Room* room, int roomID)
 void FITH::WeaponSpawn(Room* room, int roomID, eWeaponType weaponType, int spawnCount)
 {
     std::set<Vector3f> spawnPoses = this->SetObjectSpawnPos(roomID, spawnCount);
+
+    if (spawnPoses.empty()) return;
 
     std::vector<Vector3f> poses;
     std::vector<int> weaponIDs;
