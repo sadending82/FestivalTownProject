@@ -14,6 +14,8 @@ enum class GameModeOut_Field {
 };
 
 enum class GameModeData_Field {
+	Map_Index,
+	Mode_Index,
 	Play_Time = 3,
 	Player_Spawn_Time,
 	Life_Count,
@@ -37,14 +39,17 @@ enum class GameModeData_Field {
 };
 
 #pragma pack (push, 1)
-struct GameModeData {
+
+struct GameModeOutData {
 	int Player_Count;
 	int Team_Count;
 	int	Team_Color;
 	int	Play_Map;
 	std::tm Open_Date;
 	std::tm Close_Date;
+};
 
+struct GameModeData {
 	int Play_Time;
 	int Player_Spawn_Time;
 	int Life_Count;

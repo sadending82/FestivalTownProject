@@ -31,7 +31,7 @@ public:
 	std::vector<uint8_t> MakePlayerGroggyRecoveryPacket(int id, int recoveredStamina);
 	std::vector<uint8_t> MakePlayerThrowOtherPlayerPacket(int playerID, Vector3f myPosition, Vector3f myDirection, int targetID, Vector3f targetPosition, Vector3f targetDirection);
 
-	std::vector<uint8_t> MakeGameMatchingResponsePacket(int inGameID, int roomID, int team, int gameMode, MapCode mapCode, int gameTime, int totalPlayerCount, bool isHost = false);
+	std::vector<uint8_t> MakeGameMatchingResponsePacket(int inGameID, int roomID, int team, int gameMode, int mapIndex, int mapTheme, int gameTime, int totalPlayerCount, bool isHost = false);
 	std::vector<uint8_t> MakeAllPlayerReadyPacket();
 	std::vector<uint8_t> MakeGameStartPacket(int roomID, long time = 0);
 

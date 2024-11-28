@@ -28,10 +28,11 @@ void Room::Reset()
 	mIsRun = false;
 }
 
-void Room::Init(int id, GameMode gameMode, GameModeData& GameModeData)
+void Room::Init(int id, GameMode gameMode, GameModeOutData& GameModeOutData, GameModeData& GameModeData)
 {
 	mRoomID = id;
 	mGameMode = gameMode;
+	mGameModeOutData = GameModeOutData;
 	mGameModeData = GameModeData;
 	mHostID = INVALIDKEY;
 	InitRoomCode();
@@ -40,7 +41,7 @@ void Room::Init(int id, GameMode gameMode, GameModeData& GameModeData)
 	std::fill(mPlayerList.begin(), mPlayerList.end(), INVALIDKEY);
 
 
-	int teamCount = mGameModeData.Team_Count;
+	int teamCount = mGameModeOutData.Team_Count;
 
 	for (int i = 0; i < teamCount; ++i) {
 		mTeams[i].Init(mGameModeData.Life_Count);
@@ -48,10 +49,11 @@ void Room::Init(int id, GameMode gameMode, GameModeData& GameModeData)
 }
 
 
-void Room::InitMap(Map* map)
+void Room::InitMap(Map* map, int mapTheme)
 {
 	delete mMap;
 	mMap = new Map(*map);
+	mMapTheme = mapTheme;
 }
 
 void Room::InitRoomCode()

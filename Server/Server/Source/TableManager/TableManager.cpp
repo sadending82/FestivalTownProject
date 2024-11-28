@@ -32,6 +32,16 @@ void TableManager::ClearAllTable()
     // map
     MapData.clear();
 
+    for (auto& outer_pair : MapListByMode) {
+        outer_pair.second.clear();
+    }
+    MapListByMode.clear();
+
+    for (auto& outer_pair : MapThemeList) {
+        outer_pair.second.clear();
+    }
+    MapThemeList.clear();
+
     // point constant
     PointConstantList.clear();
 
@@ -211,6 +221,57 @@ void TableManager::ReadCharacterStat()
 
 }
 
+void TableManager::ReadMapData()
+{
+    try {
+
+        mWorkbook.load("GameData/Map.xlsx");
+
+        int idx = 0;
+
+        mWorksheet = mWorkbook.sheet_by_index(MapTheme_Sheet);
+
+        for (auto row : mWorksheet.rows(false)) {
+            if (idx == variableNameIdx) {
+                idx++;
+                continue;
+            }
+
+            if (!row.empty()) {
+                int Map_Index = row[(int)(MapTheme_Field::Map_Index)].value<int>();
+                int theme = row[(int)(MapTheme_Field::Map_Theme)].value<int>();
+
+                MapThemeList[Map_Index].push_back(theme);
+            }
+            idx++;
+        }
+
+       idx = 0;
+
+        mWorksheet = mWorkbook.sheet_by_index(MapData_Sheet);
+
+        for (auto row : mWorksheet.rows(false)) {
+            if (idx == variableNameIdx) {
+                idx++;
+                continue;
+            }
+
+            if (!row.empty()) {
+                int Map_Index = row[(int)(MapData_Field::Map_Index)].value<int>();
+                int Mode_Index = row[(int)(MapData_Field::Mode_Index)].value<int>();
+
+                ReadMapStructure(Map_Index);
+                MapListByMode[(GameMode)Mode_Index].push_back(Map_Index);
+
+            }
+            idx++;
+        }
+    }
+    catch (const xlnt::exception& e) {
+        std::cerr << "ReadMapData Excel File Load Fail: " << e.what() << std::endl;
+    }
+}
+
 void TableManager::ReadWeaponStat()
 {
     try {
@@ -263,8 +324,8 @@ void TableManager::ReadGameModeTable()
             }
 
             if (!row.empty()) {
-                std::time_t openTime = static_cast<std::time_t>((row[(int)(Event_Main_Field::Open_Date)].value<double>() - 25569) * 86400);
-                std::time_t closeTime = static_cast<std::time_t>((row[(int)(Event_Main_Field::Close_Date)].value<double>() - 25569) * 86400);
+                std::time_t openTime = static_cast<std::time_t>((row[(int)(GameModeOut_Field::Open_Date)].value<double>() - 25569) * 86400);
+                std::time_t closeTime = static_cast<std::time_t>((row[(int)(GameModeOut_Field::Close_Date)].value<double>() - 25569) * 86400);
 
                 std::tm openDate = {}, closeDate = {};
 
@@ -274,8 +335,8 @@ void TableManager::ReadGameModeTable()
                 int index = row[0].value<int>();
                 int teamCount = row[(int)(GameModeOut_Field::Team_Count)].value<int>();
 
-               GameModeDatas[(GameMode)index]
-                    =  GameModeData{
+               GameModeOutDatas[(GameMode)index]
+                    =  GameModeOutData{
                     row[(int)(GameModeOut_Field::Player_Count)].value<int>(),
                     teamCount,
                     row[(int)(GameModeOut_Field::Team_Color)].value<int>(),
@@ -283,14 +344,6 @@ void TableManager::ReadGameModeTable()
                     openDate,
                     closeDate
                 };
-
-
-               if (teamCount == 2) {
-                   MapListByMode[(GameMode)index].push_back(MapCode::Map_FITH_1vs1);
-               }
-               else if (teamCount == 3) {
-                   MapListByMode[(GameMode)index].push_back(MapCode::Map_FITH_1vs1vs1);
-               }
             }
 
             idx++;
@@ -306,31 +359,30 @@ void TableManager::ReadGameModeTable()
             }
 
             if (!row.empty()) {
-                int index = row[0].value<int>();
+                int mapIndex = row[(int)(GameModeData_Field::Map_Index)].value<int>();
+                GameMode modeIndex = (GameMode)row[(int)(GameModeData_Field::Mode_Index)].value<int>();
 
-                if (GameModeDatas.find((GameMode)index) == GameModeDatas.end()) {
-                    continue;
-                }
-                GameModeDatas[(GameMode)index].Play_Time = row[(int)(GameModeData_Field::Play_Time)].value<int>();
-                GameModeDatas[(GameMode)index].Player_Spawn_Time = row[(int)(GameModeData_Field::Player_Spawn_Time)].value<int>();
-                GameModeDatas[(GameMode)index].Life_Count = row[(int)(GameModeData_Field::Life_Count)].value<int>();
-                GameModeDatas[(GameMode)index].Bomb_Damage = row[(int)(GameModeData_Field::Bomb_Damage)].value<int>();
-                GameModeDatas[(GameMode)index].Bomb_Spawn_Count = row[(int)(GameModeData_Field::Bomb_Spawn_Count)].value<int>();
-                GameModeDatas[(GameMode)index].Bomb_Spawn_Time = row[(int)(GameModeData_Field::Bomb_Spawn_Time)].value<int>();
-                GameModeDatas[(GameMode)index].Bomb_Delay_Time = row[(int)(GameModeData_Field::Bomb_Delay_Time)].value<int>();
-                GameModeDatas[(GameMode)index].Weapon1_Spawn_Index = row[(int)(GameModeData_Field::Weapon1_Spawn_Index)].value<int>();
-                GameModeDatas[(GameMode)index].Weapon1_Spawn_Count = row[(int)(GameModeData_Field::Weapon1_Spawn_Count)].value<int>();
-                GameModeDatas[(GameMode)index].Weapon1_Spawn_Time = row[(int)(GameModeData_Field::Weapon1_Spawn_Time)].value<int>();
-                GameModeDatas[(GameMode)index].Weapon2_Spawn_Index = row[(int)(GameModeData_Field::Weapon2_Spawn_Index)].value<int>();
-                GameModeDatas[(GameMode)index].Weapon2_Spawn_Count = row[(int)(GameModeData_Field::Weapon2_Spawn_Count)].value<int>();
-                GameModeDatas[(GameMode)index].Weapon2_Spawn_Time = row[(int)(GameModeData_Field::Weapon2_Spawn_Time)].value<int>();
-                GameModeDatas[(GameMode)index].Block1_Spawn_Index = row[(int)(GameModeData_Field::Block1_Spawn_Index)].value<int>();
-                GameModeDatas[(GameMode)index].Block1_Spawn_Count = row[(int)(GameModeData_Field::Block1_Spawn_Count)].value<int>();
-                GameModeDatas[(GameMode)index].Block1_Spawn_Time = row[(int)(GameModeData_Field::Block1_Spawn_Time)].value<int>();
-                GameModeDatas[(GameMode)index].Block2_Spawn_Index = row[(int)(GameModeData_Field::Block2_Spawn_Index)].value<int>();
-                GameModeDatas[(GameMode)index].Block2_Spawn_Count = row[(int)(GameModeData_Field::Block2_Spawn_Count)].value<int>();
-                GameModeDatas[(GameMode)index].Block2_Spawn_Time = row[(int)(GameModeData_Field::Block2_Spawn_Time)].value<int>();
-                GameModeDatas[(GameMode)index].Ch_Groggy = row[(int)(GameModeData_Field::Ch_Groggy)].value<int>();
+                GameModeDatas[mapIndex][modeIndex] = GameModeData{
+                    row[(int)(GameModeData_Field::Play_Time)].value<int>(),
+                row[(int)(GameModeData_Field::Player_Spawn_Time)].value<int>(),
+                row[(int)(GameModeData_Field::Life_Count)].value<int>(),
+                row[(int)(GameModeData_Field::Bomb_Damage)].value<int>(),
+                row[(int)(GameModeData_Field::Bomb_Spawn_Count)].value<int>(),
+                row[(int)(GameModeData_Field::Bomb_Spawn_Time)].value<int>(),
+                row[(int)(GameModeData_Field::Bomb_Delay_Time)].value<int>(),
+                row[(int)(GameModeData_Field::Weapon1_Spawn_Index)].value<int>(),
+                row[(int)(GameModeData_Field::Weapon1_Spawn_Count)].value<int>(),
+                row[(int)(GameModeData_Field::Weapon1_Spawn_Time)].value<int>(),
+                row[(int)(GameModeData_Field::Weapon2_Spawn_Index)].value<int>(),
+                row[(int)(GameModeData_Field::Weapon2_Spawn_Count)].value<int>(),
+                row[(int)(GameModeData_Field::Weapon2_Spawn_Time)].value<int>(),
+                row[(int)(GameModeData_Field::Block1_Spawn_Index)].value<int>(),
+                row[(int)(GameModeData_Field::Block1_Spawn_Count)].value<int>(),
+                row[(int)(GameModeData_Field::Block1_Spawn_Time)].value<int>(),
+                row[(int)(GameModeData_Field::Block2_Spawn_Index)].value<int>(),
+                row[(int)(GameModeData_Field::Block2_Spawn_Count)].value<int>(),
+                row[(int)(GameModeData_Field::Block2_Spawn_Time)].value<int>(),
+                row[(int)(GameModeData_Field::Ch_Groggy)].value<int>() };
             }
 
             idx++;
@@ -341,52 +393,61 @@ void TableManager::ReadGameModeTable()
     }
 }
 
-void TableManager::ReadMapData()
+void TableManager::ReadMapStructure(int mapIndex)
 {
-    // ÆÀÀü ¸Ê
-    std::ifstream map1_inputFile("GameData/Map/Map1.txt");
+    std::string filePath = "GameData/Map/" + std::to_string(mapIndex) + ".txt";
+
+    std::ifstream map1_inputFile(filePath);
 
     if (!map1_inputFile.is_open()) {
         std::cerr << "File Not Exist" << std::endl;
         return;
     }
 
-    MapData[MapCode::Map_FITH_1vs1].SetMapCode(MapCode::Map_FITH_1vs1);
+    MapData[mapIndex].SetMapIndex(mapIndex);
     std::string line;
+    bool canReadStructure = false;
     while (std::getline(map1_inputFile, line)) {
         std::vector<char> row;
         char character;
         std::istringstream iss(line);
 
-        while (iss >> character) {
-            row.push_back(character);
+        if (line == "MapStructure") {
+            canReadStructure = true;
+            continue;
         }
 
-        MapData[MapCode::Map_FITH_1vs1].GetStructure().push_back(row);
-    }
-    std::reverse(MapData[MapCode::Map_FITH_1vs1].GetStructure().begin(), MapData[MapCode::Map_FITH_1vs1].GetStructure().end());
+        if (canReadStructure == true) {
+            while (iss >> character) {
+                row.push_back(character);
+            }
 
-    int size = MapData[MapCode::Map_FITH_1vs1].GetStructure().size();
+            MapData[mapIndex].GetStructure().push_back(row);
+        }
+    }
+    std::reverse(MapData[mapIndex].GetStructure().begin(), MapData[mapIndex].GetStructure().end());
+
+    int size = MapData[mapIndex].GetStructure().size();
     for (int lineCnt = 0; lineCnt < size; ++lineCnt) {
-        std::vector<char>& row = MapData[MapCode::Map_FITH_1vs1].GetStructure()[lineCnt];
+        std::vector<char>& row = MapData[mapIndex].GetStructure()[lineCnt];
 
         for (int colCnt = 0; colCnt < row.size(); ++colCnt) {
             char block = row[colCnt];
             switch ((int)block) {
             case FITH_MapBlock::FM_Normal: {
-                MapData[MapCode::Map_FITH_1vs1].GetBlockDropIndexes().push_back({ colCnt, lineCnt });
+                MapData[mapIndex].GetBlockDropIndexes().push_back({ colCnt, lineCnt });
             }break;
             case FITH_MapBlock::FM_ObjectSpwan: {
-                MapData[MapCode::Map_FITH_1vs1].GetObjectSpawnIndexes().push_back({ colCnt, lineCnt });
+                MapData[mapIndex].GetObjectSpawnIndexes().push_back({ colCnt, lineCnt });
             }break;
             case FITH_MapBlock::FM_TeamRedSpawn: {
-                MapData[MapCode::Map_FITH_1vs1].GetPlayerSpawnIndexes(TeamCode::Team_RED).push_back({ colCnt, lineCnt });
+                MapData[mapIndex].GetPlayerSpawnIndexes(TeamCode::Team_RED).push_back({ colCnt, lineCnt });
             }break;
             case FITH_MapBlock::FM_TeamBlueSpawn: {
-                MapData[MapCode::Map_FITH_1vs1].GetPlayerSpawnIndexes(TeamCode::Team_BLUE).push_back({ colCnt, lineCnt });
+                MapData[mapIndex].GetPlayerSpawnIndexes(TeamCode::Team_BLUE).push_back({ colCnt, lineCnt });
             }break;
             case FITH_MapBlock::FM_TeamGreenSpawn: {
-                MapData[MapCode::Map_FITH_1vs1].GetPlayerSpawnIndexes(TeamCode::Team_GREEN).push_back({ colCnt, lineCnt });
+                MapData[mapIndex].GetPlayerSpawnIndexes(TeamCode::Team_GREEN).push_back({ colCnt, lineCnt });
             }break;
             default: {
 
@@ -395,63 +456,6 @@ void TableManager::ReadMapData()
         }
     }
     map1_inputFile.close();
-
-
-    // °³ÀÎÀü ¸Ê
-    std::ifstream map2_inputFile("GameData/Map/Map2.txt");
-
-    if (!map2_inputFile.is_open()) {
-        std::cerr << "File Not Exist" << std::endl;
-        return;
-    }
-
-    MapData[MapCode::Map_FITH_1vs1vs1].SetMapCode(MapCode::Map_FITH_1vs1vs1);
-
-    while (std::getline(map2_inputFile, line)) {
-        std::vector<char> row;
-        char character;
-        std::istringstream iss(line);
-
-        while (iss >> character) {
-            row.push_back(character);
-        }
-
-        MapData[MapCode::Map_FITH_1vs1vs1].GetStructure().push_back(row);
-    }
-
-    std::reverse(MapData[MapCode::Map_FITH_1vs1vs1].GetStructure().begin(), MapData[MapCode::Map_FITH_1vs1vs1].GetStructure().end());
-
-    size = MapData[MapCode::Map_FITH_1vs1vs1].GetStructure().size();
-    for (int lineCnt = 0; lineCnt < size; ++lineCnt) {
-        std::vector<char>& row = MapData[MapCode::Map_FITH_1vs1vs1].GetStructure()[lineCnt];
-
-        for (int colCnt = 0; colCnt < row.size(); ++colCnt) {
-   
-            char block = row[colCnt];
-
-            switch ((int)block) {
-            case FITH_MapBlock::FM_Normal: {
-                MapData[MapCode::Map_FITH_1vs1vs1].GetBlockDropIndexes().push_back({ colCnt, lineCnt });
-            }break;
-            case FITH_MapBlock::FM_ObjectSpwan: {
-                MapData[MapCode::Map_FITH_1vs1vs1].GetObjectSpawnIndexes().push_back({ colCnt, lineCnt });
-            }break;
-            case FITH_MapBlock::FM_TeamRedSpawn: {
-                MapData[MapCode::Map_FITH_1vs1vs1].GetPlayerSpawnIndexes(TeamCode::Team_RED).push_back({ colCnt, lineCnt });
-            }break;
-            case FITH_MapBlock::FM_TeamBlueSpawn: {
-                MapData[MapCode::Map_FITH_1vs1vs1].GetPlayerSpawnIndexes(TeamCode::Team_BLUE).push_back({ colCnt, lineCnt });
-            }break;
-            case FITH_MapBlock::FM_TeamGreenSpawn: {
-                MapData[MapCode::Map_FITH_1vs1vs1].GetPlayerSpawnIndexes(TeamCode::Team_GREEN).push_back({ colCnt, lineCnt });
-            }break;
-            default: {
-
-            }break;
-            }
-        }
-    }
-    map2_inputFile.close();
 }
 
 void TableManager::ReadPointConstantTable()
@@ -932,7 +936,15 @@ std::unordered_map<INDEX, WeaponStat>& TableManager::GetWeaponStats()
     return WeaponStats;
 }
 
-std::unordered_map<GameMode, GameModeData>& TableManager::GetGameModeData()
+std::unordered_map<GameMode, GameModeOutData>& TableManager::GetGameModeOutData()
+{
+    while (mIsLoading == true) {
+
+    }
+    return GameModeOutDatas;
+}
+
+std::unordered_map<int, std::unordered_map<GameMode, GameModeData>>& TableManager::GetGameModeData()
 {
     while (mIsLoading == true) {
 
@@ -940,7 +952,7 @@ std::unordered_map<GameMode, GameModeData>& TableManager::GetGameModeData()
     return GameModeDatas;
 }
 
-std::unordered_map<MapCode, Map>& TableManager::GetMapData()
+std::unordered_map<int, Map>& TableManager::GetMapData()
 {
     while (mIsLoading == true) {
 
@@ -996,12 +1008,20 @@ std::unordered_map<int, int>& TableManager::GetGachaAcquiredMileages()
     return GachaAcquiredMileages;
 }
 
-std::unordered_map<GameMode, std::vector<MapCode>>& TableManager::getMapListByMode()
+std::unordered_map<GameMode, std::vector<int>>& TableManager::getMapListByMode()
 {
     while (mIsLoading == true) {
 
     }
     return MapListByMode;
+}
+
+std::unordered_map<int, std::vector<int>>& TableManager::GetMapThemeList()
+{
+    while (mIsLoading == true) {
+
+    }
+    return MapThemeList;
 }
 
 std::unordered_map<eMatchingType, std::vector<Matching_Table>>& TableManager::GetMatchingDatas()

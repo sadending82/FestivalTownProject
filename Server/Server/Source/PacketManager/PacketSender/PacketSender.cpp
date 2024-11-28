@@ -94,15 +94,16 @@ void PacketSender::SendGameMatchingResponse(int sessionID)
     int team = player->GetTeam();
     Room* room = mServer->GetRooms()[roomID];
     GameMode GameMode = room->GetGameMode();
-    MapCode mapCode = room->GetMap()->GetMapCode();
+    int mapIndex = room->GetMap()->GetMapIndex();
+    int mapTheme = room->GetMapTheme();
 
-    int playTime = mServer->GetTableManager()->GetGameModeData()[GameMode].Play_Time;
+    int playTime = mServer->GetTableManager()->GetGameModeData()[mapIndex][GameMode].Play_Time;
     std::vector<uint8_t> send_buffer;
     if (inGameID == room->GetHostID()) {
-        send_buffer = mPacketMaker->MakeGameMatchingResponsePacket(inGameID, roomID, team, room->GetGameMode(), mapCode, playTime, room->GetGameModeData().Player_Count, true);
+        send_buffer = mPacketMaker->MakeGameMatchingResponsePacket(inGameID, roomID, team, room->GetGameMode(), mapIndex, mapTheme, playTime, room->GetGameModeOutData().Player_Count, true);
     }
     else {
-        send_buffer = mPacketMaker->MakeGameMatchingResponsePacket(inGameID, roomID, team, room->GetGameMode(), mapCode, playTime, room->GetGameModeData().Player_Count);
+        send_buffer = mPacketMaker->MakeGameMatchingResponsePacket(inGameID, roomID, team, room->GetGameMode(), mapIndex, mapTheme,  playTime, room->GetGameModeOutData().Player_Count);
     }
 
     mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
@@ -183,9 +184,11 @@ void PacketSender::SendLifeReducePacket(int team, int lifeCount, int roomID) {
 
 void PacketSender::SendRemainTimeSync(int roomID)
 {
-    TIMEPOINT startTime = mServer->GetRooms()[roomID]->GetStartTime();
-    GameMode GameMode = mServer->GetRooms()[roomID]->GetGameMode();
-    int playTime = mServer->GetTableManager()-> GetGameModeData()[GameMode].Play_Time;
+    Room* room = mServer->GetRooms()[roomID];
+    TIMEPOINT startTime = room->GetStartTime();
+    GameMode GameMode = room->GetGameMode();
+    int mapIndex = room->GetmapIndex();
+    int playTime = mServer->GetTableManager()->GetGameModeData()[mapIndex][GameMode].Play_Time;
     std::vector<uint8_t> send_buffer = mPacketMaker->MakeRemainTimeSyncPacket(roomID, startTime, playTime);
     mServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }

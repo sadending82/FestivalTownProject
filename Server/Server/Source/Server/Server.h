@@ -49,8 +49,6 @@ public:
 
 	void						TableReLoad();
 
-	void						MakeTestRoom();
-
 	void						SendAllPlayerInRoomBySessionID(void* packet, int size, int sessionID);
 	void						SendAllPlayerInRoom(void* packet, int size, int roomID);
 	void						SendAllPlayerInRoomExceptSender(void* packet, int size, int sessionID);
@@ -59,7 +57,7 @@ public:
 
 	std::pair<bool, UserInfo>	UserLogin(const char* accountID, const char* accountPassword, const int sessionID);
 
-	int							CreateNewRoom(GameMode gameMode);
+	int							CreateNewRoom(GameMode gameMode, int mapIndex, int mapTheme);
 
 	SERVER_MODE					GetMode() { return mMode; }
 	HANDLE						GetHcp() { return mHcp; }

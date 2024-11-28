@@ -293,6 +293,7 @@ if exist "$(ProjectDir)\Config" xcopy /Y /d /e /i "$(ProjectDir)\Config" "$(OutD
     <ClInclude Include="Source\TableManager\Tables\CharacterStat.h" />
     <ClInclude Include="Source\TableManager\Tables\Event.h" />
     <ClInclude Include="Source\TableManager\Tables\GameReward.h" />
+    <ClInclude Include="Source\TableManager\Tables\Map.h" />
     <ClInclude Include="Source\TableManager\Tables\MatchMaking.h" />
     <ClInclude Include="Source\TableManager\Tables\RandomBox.h" />
     <ClInclude Include="Source\TableManager\Tables\GachaItem.h" />

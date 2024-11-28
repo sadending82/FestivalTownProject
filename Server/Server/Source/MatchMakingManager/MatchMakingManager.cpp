@@ -2,6 +2,7 @@
 #include "MatchMakingManager.h"
 #include "../Server/Server.h"
 #include "../Event/Event.h"
+#include <random>
 
 MatchMakingManager::MatchMakingManager(Server* server)
 {
@@ -46,9 +47,11 @@ bool MatchMakingManager::CheckMatchMaking(eMatchingType matchingType)
         }
 
         GameMode gameMode = (GameMode)(mode);
-        int matchedPlayerCount = tableManager->GetGameModeData()[gameMode].Player_Count;
+        int matchedPlayerCount = tableManager->GetGameModeOutData()[gameMode].Player_Count;
 
-        int roomID = pServer->CreateNewRoom(gameMode);
+        MapProperties mapProperties = SelectRandomMap(gameMode);
+
+        int roomID = pServer->CreateNewRoom(gameMode, mapProperties.Map_Index, mapProperties.Map_Theme);
         if (roomID == INVALIDKEY) {
             std::cout << "Fali Create New Room\n";
             break;
@@ -64,6 +67,7 @@ bool MatchMakingManager::CheckMatchMaking(eMatchingType matchingType)
             sessionList.push_back(topPlayer);
             matchingQueue.erase(matchingQueue.begin());
         }
+
         MatchingComplete(roomID, sessionList);
         std::cout << "Start Game room - " << roomID << "| GameMode - " << gameMode << std::endl;
     }
@@ -218,6 +222,28 @@ void MatchMakingManager::UpdateMatchingSequence(eMatchingType matchingType)
         return;
     }
 
+}
+
+MapProperties MatchMakingManager::SelectRandomMap(GameMode gameMode)
+{
+    MapProperties result;
+
+    TableManager* tableManager = pServer->GetTableManager();
+
+    std::vector<int>& mapList = tableManager->getMapListByMode()[gameMode];
+    std::unordered_map<int, std::vector<int>> themeList = tableManager->GetMapThemeList();
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<>map_distrib(0, mapList.size() - 1);
+
+    result.Map_Index = mapList[map_distrib(gen)];
+
+    std::uniform_int_distribution<>theme_distrib(0, themeList[result.Map_Index].size() - 1);
+
+    result.Map_Theme = themeList[result.Map_Index][theme_distrib(gen)];
+
+    return result;
 }
 
 bool MatchingCompare::operator()(const std::pair<int, long long>& a, const std::pair<int, long long>& b) const {

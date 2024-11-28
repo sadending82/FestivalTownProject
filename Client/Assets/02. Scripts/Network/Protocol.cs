@@ -167,12 +167,6 @@ namespace NetworkProtocol
         Team_GREEN = 2
     };
 
-    public enum MapCode
-    {
-        Map_FITH_1vs1,
-        Map_FITH_1vs1vs1,
-    };
-
     public enum ePlayerMoveState
     {
         PS_WALK,

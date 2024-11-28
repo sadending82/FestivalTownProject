@@ -27,7 +27,7 @@ public:
 			}
 
 			GameMode gameMode = room->GetGameMode();
-			GameModeData& modeInfo = pServer->GetTableManager()->GetGameModeData()[gameMode];
+			GameModeData& modeInfo = room->GetGameModeData();
 			int weaponType = event->weaponType;
 			int nextEventTime = 0;
 			int spawnCnt = 0;

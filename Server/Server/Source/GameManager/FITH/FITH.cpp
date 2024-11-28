@@ -58,7 +58,7 @@ void FITH::StartGame(int roomID)
 bool FITH::CheckGameEnd(int roomID)
 {
     Room* room = pServer->GetRooms()[roomID];
-    int teamCnt = pTableManager->GetGameModeData().at(mGameMode).Team_Count; // ÆÀ ¼ö
+    int teamCnt = pTableManager->GetGameModeOutData().at(mGameMode).Team_Count; // ÆÀ ¼ö
     int loseTeamCnt = 0;
     std::set<int> winningTeams;
     for (auto iter = room->GetTeams().begin(); iter != room->GetTeams().end(); ++iter) {

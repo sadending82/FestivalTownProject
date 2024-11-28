@@ -24,7 +24,10 @@ namespace Network.PacketProcessor
             bool isHost = Data.IsHost;
             int gameTime = Data.GameTime; // Seconds
             int team = Data.Team;
-            MapCode mapCode = (MapCode)Data.MapCode;
+            int mapIndex = Data.MapIndex;
+            int mapTheme = Data.MapTheme;
+
+            
 
             Debug.Log("Game Maching Complete");
             Managers.Game.Init();
@@ -32,7 +35,7 @@ namespace Network.PacketProcessor
             Managers.Game.RoomID = roomID;
             Managers.Game.inGameID = id;
             Managers.Game.isHost = isHost;
-            Managers.Game.mapCode = mapCode;
+            //Managers.Game.mapCode = mapCode;
             Managers.Game.currentTeamID = team;
             Managers.Game.GameRemainTime = gameTime;
         }

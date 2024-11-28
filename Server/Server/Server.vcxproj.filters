@@ -141,6 +141,7 @@
     <ClInclude Include="Source\PacketManager\flatbuffer\Cheat_generated.h" />
     <ClInclude Include="Source\DB\Schema\DB_UserAttendance.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_AttendanceEventRequest.h" />
+    <ClInclude Include="Source\TableManager\Tables\Map.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

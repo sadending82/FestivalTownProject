@@ -20,6 +20,11 @@ struct MatchingCompare {
 	bool operator()(const std::pair<int, long long>& a, const std::pair<int, long long>& b) const;
 };
 
+struct MapProperties {
+	int Map_Index;
+	int Map_Theme;
+};
+
 class MatchMakingManager
 {
 public:
@@ -39,6 +44,8 @@ public:
 	void MatchingComplete(int roomID, std::vector<int>& sessionIDs);
 
 	void UpdateMatchingSequence(eMatchingType matchingType);
+
+	MapProperties SelectRandomMap(GameMode gameMode);
 
 private:
 	class Server* pServer;

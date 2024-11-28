@@ -318,29 +318,6 @@ void Server::TableReLoad()
     mTableManager->UnLock();
 }
 
-void Server::MakeTestRoom()
-{
-    GameMode gameMode = GameMode::FITH_Team_Battle_6;
-    GameModeData& modeInfo = mTableManager->GetGameModeData()[gameMode];
-    Room* room = mRooms[TESTROOM];
-    room->Init(TESTROOM, gameMode, modeInfo);
-    room->InitMap(&mTableManager->GetMapData()[MapCode::Map_FITH_1vs1]);
-    room->SetState(eRoomState::RS_INGAME);
-
-    // Push Event
-    long long roomCode = room->GetRoomCode();
-
-    PushEventBlockDrop(mTimer, TESTROOM, roomCode, modeInfo.Block1_Spawn_Index, modeInfo.Block1_Spawn_Time);
-    PushEventBlockDrop(mTimer, TESTROOM, roomCode, modeInfo.Block2_Spawn_Index, modeInfo.Block2_Spawn_Time);
-
-    PushEventBombSpawn(mTimer, TESTROOM, roomCode, modeInfo.Bomb_Spawn_Time);
-
-    PushEventWeaponSpawn(mTimer, TESTROOM, roomCode, modeInfo.Weapon1_Spawn_Index, modeInfo.Weapon1_Spawn_Time);
-    PushEventWeaponSpawn(mTimer, TESTROOM, roomCode, modeInfo.Weapon2_Spawn_Index, modeInfo.Weapon2_Spawn_Time);
-
-    GetRooms()[TESTROOM]->SetStartTime(std::chrono::system_clock::now());
-}
-
 void Server::SendAllPlayerInRoomBySessionID(void* packet, int size, int sessionID)
 {
     int roomID = dynamic_cast<Player*>(GetSessions()[sessionID])->GetRoomID();
@@ -432,7 +409,7 @@ std::pair<bool, UserInfo> Server::UserLogin(const char* accountID, const char* a
     return { true, userInfo };
 }
 
-int Server::CreateNewRoom(GameMode gameMode)
+int Server::CreateNewRoom(GameMode gameMode, int mapIndex, int mapTheme)
 {
     int roomID = SetroomID();
     if (roomID == INVALIDKEY) {
@@ -440,9 +417,8 @@ int Server::CreateNewRoom(GameMode gameMode)
         return INVALIDKEY;
     }
     Room* room = GetRooms()[roomID];
-    room->Init(roomID, gameMode, mTableManager->GetGameModeData()[gameMode]);
-    MapCode mapCode = mTableManager->getMapListByMode()[gameMode][0];
-    room->InitMap(&GetTableManager()->GetMapData()[mapCode]);
+    room->Init(roomID, gameMode, mTableManager->GetGameModeOutData()[gameMode], mTableManager->GetGameModeData()[mapIndex][gameMode]);
+    room->InitMap(&GetTableManager()->GetMapData()[mapIndex], mapTheme);
 
     return roomID;
 }

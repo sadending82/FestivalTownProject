@@ -23,24 +23,27 @@ public struct GameMatchingResponse : IFlatbufferObject
   public int Roomid { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
   public int Team { get { int o = __p.__offset(8); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
   public int Gamemode { get { int o = __p.__offset(10); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public int MapCode { get { int o = __p.__offset(12); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public int GameTime { get { int o = __p.__offset(14); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public bool IsHost { get { int o = __p.__offset(16); return o != 0 ? 0!=__p.bb.Get(o + __p.bb_pos) : (bool)false; } }
-  public int TotalPlayerCount { get { int o = __p.__offset(18); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int MapIndex { get { int o = __p.__offset(12); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int MapTheme { get { int o = __p.__offset(14); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int GameTime { get { int o = __p.__offset(16); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public bool IsHost { get { int o = __p.__offset(18); return o != 0 ? 0!=__p.bb.Get(o + __p.bb_pos) : (bool)false; } }
+  public int TotalPlayerCount { get { int o = __p.__offset(20); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
 
   public static Offset<PacketTable.LobbyTable.GameMatchingResponse> CreateGameMatchingResponse(FlatBufferBuilder builder,
       int ingameid = 0,
       int roomid = 0,
       int team = 0,
       int gamemode = 0,
-      int map_code = 0,
+      int map_index = 0,
+      int map_theme = 0,
       int game_time = 0,
       bool is_host = false,
       int total_player_count = 0) {
-    builder.StartTable(8);
+    builder.StartTable(9);
     GameMatchingResponse.AddTotalPlayerCount(builder, total_player_count);
     GameMatchingResponse.AddGameTime(builder, game_time);
-    GameMatchingResponse.AddMapCode(builder, map_code);
+    GameMatchingResponse.AddMapTheme(builder, map_theme);
+    GameMatchingResponse.AddMapIndex(builder, map_index);
     GameMatchingResponse.AddGamemode(builder, gamemode);
     GameMatchingResponse.AddTeam(builder, team);
     GameMatchingResponse.AddRoomid(builder, roomid);
@@ -49,15 +52,16 @@ public struct GameMatchingResponse : IFlatbufferObject
     return GameMatchingResponse.EndGameMatchingResponse(builder);
   }
 
-  public static void StartGameMatchingResponse(FlatBufferBuilder builder) { builder.StartTable(8); }
+  public static void StartGameMatchingResponse(FlatBufferBuilder builder) { builder.StartTable(9); }
   public static void AddIngameid(FlatBufferBuilder builder, int ingameid) { builder.AddInt(0, ingameid, 0); }
   public static void AddRoomid(FlatBufferBuilder builder, int roomid) { builder.AddInt(1, roomid, 0); }
   public static void AddTeam(FlatBufferBuilder builder, int team) { builder.AddInt(2, team, 0); }
   public static void AddGamemode(FlatBufferBuilder builder, int gamemode) { builder.AddInt(3, gamemode, 0); }
-  public static void AddMapCode(FlatBufferBuilder builder, int mapCode) { builder.AddInt(4, mapCode, 0); }
-  public static void AddGameTime(FlatBufferBuilder builder, int gameTime) { builder.AddInt(5, gameTime, 0); }
-  public static void AddIsHost(FlatBufferBuilder builder, bool isHost) { builder.AddBool(6, isHost, false); }
-  public static void AddTotalPlayerCount(FlatBufferBuilder builder, int totalPlayerCount) { builder.AddInt(7, totalPlayerCount, 0); }
+  public static void AddMapIndex(FlatBufferBuilder builder, int mapIndex) { builder.AddInt(4, mapIndex, 0); }
+  public static void AddMapTheme(FlatBufferBuilder builder, int mapTheme) { builder.AddInt(5, mapTheme, 0); }
+  public static void AddGameTime(FlatBufferBuilder builder, int gameTime) { builder.AddInt(6, gameTime, 0); }
+  public static void AddIsHost(FlatBufferBuilder builder, bool isHost) { builder.AddBool(7, isHost, false); }
+  public static void AddTotalPlayerCount(FlatBufferBuilder builder, int totalPlayerCount) { builder.AddInt(8, totalPlayerCount, 0); }
   public static Offset<PacketTable.LobbyTable.GameMatchingResponse> EndGameMatchingResponse(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<PacketTable.LobbyTable.GameMatchingResponse>(o);
@@ -74,10 +78,11 @@ static public class GameMatchingResponseVerify
       && verifier.VerifyField(tablePos, 6 /*Roomid*/, 4 /*int*/, 4, false)
       && verifier.VerifyField(tablePos, 8 /*Team*/, 4 /*int*/, 4, false)
       && verifier.VerifyField(tablePos, 10 /*Gamemode*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 12 /*MapCode*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 14 /*GameTime*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 16 /*IsHost*/, 1 /*bool*/, 1, false)
-      && verifier.VerifyField(tablePos, 18 /*TotalPlayerCount*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 12 /*MapIndex*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 14 /*MapTheme*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 16 /*GameTime*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 18 /*IsHost*/, 1 /*bool*/, 1, false)
+      && verifier.VerifyField(tablePos, 20 /*TotalPlayerCount*/, 4 /*int*/, 4, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }

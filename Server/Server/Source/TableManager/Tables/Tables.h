@@ -9,3 +9,4 @@
 #include "GameReward.h"
 #include "MatchMaking.h"
 #include "Event.h"
+#include "Map.h"

@@ -18,9 +18,9 @@ public:
 	~Room();
 
 	void Reset();
-	void Init(int id, GameMode gameMode, GameModeData& GameModeData);
+	void Init(int id, GameMode gameMode, GameModeOutData& GameModeOutData, GameModeData& GameModeData);
 
-	void InitMap(Map* map);
+	void InitMap(Map* map, int mapTheme);
 	void InitRoomCode();
 
 	bool AddPlayer(Player* player);
@@ -51,7 +51,10 @@ public:
 	long long GetRoomCode() { return mRoomCode; }
 	bool GetAllPlayerReady() { return mAllPlayerReady.load(); }
 	bool GetIsRun() { return mIsRun.load(); }
+	GameModeOutData& GetGameModeOutData() { return mGameModeOutData; }
 	GameModeData& GetGameModeData() { return mGameModeData; }
+	int GetmapIndex() { return mMap->GetMapIndex(); }
+	int GetMapTheme() { return mMapTheme; }
 	bool GetIsTestRoom() { return mIsTestRoom; }
 	
 
@@ -77,6 +80,7 @@ private:
 	eRoomState mState;
 	GameMode mGameMode;
 	Map* mMap = nullptr;
+	int mMapTheme = 0;
 
 	class Server* pServer = nullptr;
 
@@ -102,6 +106,7 @@ private:
 	std::atomic<bool> mIsRun = false;
 	bool	mIsTestRoom = false;
 
+	GameModeOutData mGameModeOutData;
 	GameModeData mGameModeData;
 };
 

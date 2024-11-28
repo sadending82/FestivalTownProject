@@ -2,10 +2,12 @@
 #include <vector>
 
 enum FITH_MapBlock {
-	FM_Empty = 'X',
 	FM_Normal = 'n',
-	FM_BombHole = 'h',
 	FM_ObjectSpwan = 'o',
+	FM_Empty = 'x',
+	FM_TeamRedHole = 'a',
+	FM_TeamBlueHole = 'b',
+	FM_TeamGreenHole = 'c',
 	FM_TeamRedSpawn = '0',
 	FM_TeamBlueSpawn = '1',
 	FM_TeamGreenSpawn = '2'
@@ -16,7 +18,7 @@ class Map {
 public:
 	Map() {}
 	Map(const Map& other) {
-		this->mMapCode = other.mMapCode;
+		this->mMapIndex = other.mMapIndex;
 		this->Structure = other.Structure;
 		this->ObjectSpawnIndexes = other.ObjectSpawnIndexes;
 		this->BlockDropIndexes = other.BlockDropIndexes;
@@ -24,9 +26,9 @@ public:
 	}
 	~Map() {}
 
-	void SetMapCode(MapCode code) { mMapCode = code; }
+	void SetMapIndex(int code) { mMapIndex = code; }
 
-	MapCode GetMapCode() { return mMapCode; }
+	int GetMapIndex() { return mMapIndex; }
 
 	std::vector<std::vector<char>>& GetStructure() { return Structure; }
 	std::vector<std::pair<int, int>>& GetObjectSpawnIndexes() { return ObjectSpawnIndexes; }
@@ -34,7 +36,7 @@ public:
 	std::vector<std::pair<int, int>>& GetPlayerSpawnIndexes(int team) { return PlayerSpawnIndexes[team]; }
 
 private:
-	MapCode mMapCode;
+	int mMapIndex;
 
 	std::vector<std::vector<char>> Structure;
 

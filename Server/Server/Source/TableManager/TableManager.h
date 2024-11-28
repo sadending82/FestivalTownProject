@@ -24,6 +24,7 @@ public:
 	void ReadItemTable();
 	void ReadCharacterStat();
 	void ReadGameModeTable();
+	void ReadMapStructure(int mapIndex);
 	void ReadMapData();
 	void ReadWeaponStat();
 	void ReadPointConstantTable();
@@ -44,8 +45,9 @@ public:
 	std::unordered_map<INDEX, CharacterStat>& GetCharacterStats();
 
 	std::unordered_map<INDEX, WeaponStat>& GetWeaponStats();
-	std::unordered_map<GameMode, GameModeData>& GetGameModeData();
-	std::unordered_map<MapCode, Map>& GetMapData();
+
+	std::unordered_map<GameMode, GameModeOutData>& GetGameModeOutData();
+	std::unordered_map<int, std::unordered_map<GameMode, GameModeData>>& GetGameModeData();
 
 	std::unordered_map<GameMode, PointConstants>& GetPointConstantList();
 
@@ -57,8 +59,9 @@ public:
 	std::unordered_map<GACHA_GROUP, std::unordered_map<INDEX, GachaItem>>& GetGachaItemList();
 	std::unordered_map<int, int>& GetGachaAcquiredMileages();
 
-
-	std::unordered_map<GameMode, std::vector<MapCode>>& getMapListByMode();
+	std::unordered_map<int, Map>& GetMapData();
+	std::unordered_map<GameMode, std::vector<int>>& getMapListByMode();
+	std::unordered_map<int, std::vector<int>>& GetMapThemeList();
 
 	std::unordered_map<eMatchingType, std::vector<Matching_Table>>& GetMatchingDatas();
 
@@ -77,8 +80,10 @@ private:
 	std::unordered_map<INDEX, MoveStat> MoveStats;
 
 	std::unordered_map<INDEX, WeaponStat> WeaponStats;
-	std::unordered_map<GameMode, GameModeData> GameModeDatas;
-	std::unordered_map<MapCode, Map> MapData;
+
+	std::unordered_map<GameMode, GameModeOutData> GameModeOutDatas;
+	//<Map_Index, <GameMode, GameModeData>>
+	std::unordered_map<int, std::unordered_map<GameMode, GameModeData>> GameModeDatas;
 	std::unordered_map<GameMode, PointConstants> PointConstantList;
 	
 
@@ -90,7 +95,9 @@ private:
 	std::unordered_map<GACHA_GROUP, std::unordered_map<INDEX, GachaItem>> GachaItemList;
 	std::unordered_map<int, int> GachaAcquiredMileages;
 
-	std::unordered_map<GameMode, std::vector<MapCode>> MapListByMode;
+	std::unordered_map<INDEX, Map> MapData;
+	std::unordered_map<GameMode, std::vector<int>> MapListByMode;
+	std::unordered_map<int, std::vector<int>> MapThemeList;
 
 	std::unordered_map<eMatchingType, std::vector<Matching_Table>> MatchingDatas;
 
