@@ -47,6 +47,11 @@ public:
 				int usedItemRemaining = 0;
 
 				for (int i = 1; i >= 0; i--) {
+
+					if (pay_item[i] == NONE_ITEM_INDEX) {
+						continue;
+					}
+
 					int currPayItemAmount = db->SelectUserItemCount(uid, pay_item[i]);
 
 					if (pay_Price[i] <= currPayItemAmount) {

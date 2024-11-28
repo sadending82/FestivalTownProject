@@ -703,8 +703,8 @@ void TableManager::ReadGachaTable()
             }
 
             if (!row.empty()) {
-                std::time_t openTime = static_cast<std::time_t>((row[(int)(Event_Main_Field::Open_Date)].value<double>() - 25569) * 86400);
-                std::time_t closeTime = static_cast<std::time_t>((row[(int)(Event_Main_Field::Close_Date)].value<double>() - 25569) * 86400);
+                std::time_t openTime = static_cast<std::time_t>((row[(int)(RandomBox_Field::Open_Date)].value<double>() - 25569) * 86400);
+                std::time_t closeTime = static_cast<std::time_t>((row[(int)(RandomBox_Field::Close_Date)].value<double>() - 25569) * 86400);
 
                 std::tm openDate = {}, closeDate = {};
 

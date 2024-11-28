@@ -26,10 +26,6 @@ public:
     bool Connect(std::wstring odbc, std::wstring id, std::wstring password);
     void ErrorDisplay(SQLHSTMT& hStmt, RETCODE retCode);
 
-    bool UseAccountDB(SQLHSTMT& hStmt);
-    bool UseGameDB(SQLHSTMT& hStmt);
-
-
     // INSERT
     bool InsertNewAcccount(const char* id, const char* password);
     int InsertNewUser(const char* id, const char* nickname); // return UID
