@@ -40,10 +40,11 @@ public:
 					if (serverMode != SERVER_MODE::TEST) {
 						break;
 					}
-					int testMap = 11101;
 					int modeIndex = 111;
 
-					int roomID = pServer->CreateNewRoom((GameMode)modeIndex, testMap, 1);
+					MapProperties testMapProperties = MatchMakingManager->SelectRandomMap(GameMode(modeIndex));
+
+					int roomID = pServer->CreateNewRoom((GameMode)modeIndex, testMapProperties.Map_Index, testMapProperties.Map_Theme);
 
 					if (roomID == INVALIDKEY) {
 						break;
@@ -54,7 +55,7 @@ public:
 
 
 					// ¸Ê Å×½ºÆ® ¶«¿¡ Ãß°¡
-					room->InitMap(&pServer->GetTableManager()->GetMapData()[testMap], 1);
+					room->InitMap(&pServer->GetTableManager()->GetMapData()[testMapProperties.Map_Index], testMapProperties.Map_Theme);
 
 					int botID = pServer->SetSessionID();
 
