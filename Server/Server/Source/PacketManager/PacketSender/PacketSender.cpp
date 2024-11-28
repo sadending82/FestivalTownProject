@@ -66,8 +66,13 @@ void PacketSender::SendPlayerAdd(int roomID)
         int team = player->GetTeam();
 
         std::vector<std::pair<int, int>>& spawnPoses = room->GetMap()->GetPlayerSpawnIndexes(player->GetTeam());
-
-        Vector3f pos = ConvertVec2iToVec3f(spawnPoses[teamPlayerCnt[team]].first, spawnPoses[teamPlayerCnt[team]++].second);
+        Vector3f pos;
+        if (spawnPoses.size() == 0) {
+            pos = Vector3f();
+        }
+        else {
+            pos = ConvertVec2iToVec3f(spawnPoses[teamPlayerCnt[team]].first, spawnPoses[teamPlayerCnt[team]++].second);
+        }
 
         player->SetPosition(pos);
 
