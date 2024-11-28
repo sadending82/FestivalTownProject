@@ -235,6 +235,7 @@ MapProperties MatchMakingManager::SelectRandomMap(GameMode gameMode)
 
     std::random_device rd;
     std::mt19937 gen(rd());
+    COUT << mapList.size() << ENDL;
     std::uniform_int_distribution<>map_distrib(0, mapList.size() - 1);
 
     result.Map_Index = mapList[map_distrib(gen)];
