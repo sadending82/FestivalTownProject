@@ -71,7 +71,8 @@ void PacketSender::SendPlayerAdd(int roomID)
             pos = Vector3f();
         }
         else {
-            pos = ConvertVec2iToVec3f(spawnPoses[teamPlayerCnt[team]].first, spawnPoses[teamPlayerCnt[team]++].second);
+            pos = ConvertVec2iToVec3f(spawnPoses[teamPlayerCnt[team]].first, spawnPoses[teamPlayerCnt[team]].second);
+            teamPlayerCnt[team]++;
         }
 
         player->SetPosition(pos);
