@@ -27,6 +27,9 @@ public:
 				db->DeleteUserInfo(uid);
 
 				db->InsertNewUser(player->GetAccountID().c_str(), player->GetNickName().c_str());
+				db->DeleteUserItemAll(uid);
+				db->DeleteUserAttendanceAll(uid);
+
 
 				pServer->Disconnect(key);
 			}

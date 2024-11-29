@@ -90,5 +90,11 @@ const wchar_t* DeleteUserInfo_Query = L"DELETE FROM GameDB.dbo.UserInfo WHERE UI
 //DELETE FROM GameDB.dbo.UserItem WHERE Item_UID = (SELECT TOP 1 Item_UID FROM GameDB.dbo.UserItem WHERE owner_UID = ? and ItemCode = ? ORDER BY Item_UID ASC)
 const wchar_t* DeleteUserItem_Query = L"DELETE FROM GameDB.dbo.UserItem WHERE Item_UID = (SELECT TOP 1 Item_UID FROM GameDB.dbo.UserItem WHERE owner_UID = ? and ItemCode = ? ORDER BY Item_UID ASC)";
 
+//DELETE FROM GameDB.dbo.UserItem WHERE owner_UID = ?
+const wchar_t* DeleteUserItemAll_Query = L"DELETE FROM GameDB.dbo.UserItem WHERE owner_UID = ?";
+
+//DELETE FROM GameDB.dbo.UserAttendence WHERE user_UID = ?
+const wchar_t* DeleteUserAttendanceAll_Query = L"DELETE FROM GameDB.dbo.UserAttendence WHERE user_UID = ?";
+
 //SELECT hashedPassword, salt FROM AccountDB.dbo.Account WHERE ID = ?
 const wchar_t* CheckValidateLogin_Query = L"SELECT hashedPassword, salt FROM AccountDB.dbo.Account WHERE ID = ?";

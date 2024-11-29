@@ -62,6 +62,8 @@ public:
     bool DeleteAcccount(const char* id);
     bool DeleteUserInfo(const int uid);
     bool DeleteUserItem(const int owner_uid, const int itemCode);
+    bool DeleteUserItemAll(const int owner_uid);
+    bool DeleteUserAttendanceAll(const int user_uid);
 
     bool CheckValidateLogin(const char* id, const char* password);
 
