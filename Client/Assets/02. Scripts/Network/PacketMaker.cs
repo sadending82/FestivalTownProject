@@ -754,4 +754,23 @@ public class PacketMaker
 
         return result;
     }
+    public byte[] MakeGetDiaCheatPacket()
+    {
+        var builder = new FlatBufferBuilder(1);
+        GetCurrency.StartGetCurrency(builder);
+        GetCurrency.AddItemCode(builder, 100002);
+        GetCurrency.AddCount(builder, 10000);
+        var offset = GetCurrency.EndGetCurrency(builder);
+        builder.Finish(offset.Value);
+
+        byte[] data = builder.SizedByteArray();
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_GET_CURRENCY, flatBufferSize = (ushort)data.Length };
+        byte[] headerdata = Serialize<HEADER>(header);
+        byte[] result = new byte[data.Length + headerdata.Length];
+
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
+
+        return result;
+    }
 }

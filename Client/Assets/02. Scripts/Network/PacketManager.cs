@@ -341,4 +341,10 @@ public class PacketManager : MonoBehaviour
         if (packet == null) { return; }
         SendPacketWhenPlayingGame(packet);
     }
+    public void SendGetDiaCheatPacket()
+    {
+        byte[] packet = _packetMaker.MakeGetDiaCheatPacket();
+        if (packet == null) { return; }
+        SendPacketWhenPlayingGame(packet);
+    }
 }

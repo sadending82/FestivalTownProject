@@ -86,6 +86,7 @@ public class UI_HomeStart : UI_Scene
         {
             // 다이아 획득 버튼에서 해야할 일
             // 패킷 보내기 정도 인듯?
+            Managers.Network.GetPacketManager().SendGetDiaCheatPacket();
         });
 
         if (false == Managers.Cheat.IsEnable())
