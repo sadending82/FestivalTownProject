@@ -1191,7 +1191,7 @@ bool DB::DeleteUserItemAll(const int owner_uid)
 	SQLRETURN retcode;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
-		DEBUGMSGNOPARAM("hStmt Error : (DeleteUserInfo) \n");
+		DEBUGMSGNOPARAM("hStmt Error : (DeleteUserItemAll) \n");
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 		return false;
 	}
@@ -1208,7 +1208,7 @@ bool DB::DeleteUserItemAll(const int owner_uid)
 		return true;
 	}
 
-	DEBUGMSGNOPARAM("Execute Query Error : (DeleteUserInfo)\n");
+	DEBUGMSGNOPARAM("Execute Query Error : (DeleteUserItemAll()\n");
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	return false;
 }
@@ -1223,7 +1223,7 @@ bool DB::DeleteUserAttendanceAll(const int user_uid)
 	SQLRETURN retcode;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
-		DEBUGMSGNOPARAM("hStmt Error : (DeleteUserInfo) \n");
+		DEBUGMSGNOPARAM("hStmt Error : (DeleteUserAttendanceAll) \n");
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 		return false;
 	}
@@ -1240,7 +1240,7 @@ bool DB::DeleteUserAttendanceAll(const int user_uid)
 		return true;
 	}
 
-	DEBUGMSGNOPARAM("Execute Query Error : (DeleteUserInfo)\n");
+	DEBUGMSGNOPARAM("Execute Query Error : (DeleteUserAttendanceAll)\n");
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	return false;
 }
