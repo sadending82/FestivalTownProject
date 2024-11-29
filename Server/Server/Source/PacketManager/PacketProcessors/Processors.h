@@ -36,6 +36,8 @@
 #include "Packet/Lobby/Packet_GameMatchingRequest.h"
 #include "Packet/Lobby/Packet_GameMatchingCancel.h"
 
+#include "Packet/Cheat/Packet_AccountReset.h"
+#include "Packet/Cheat/Packet_GetCurrency.h"
 
 // Event
 #include "Event/Utilities/Event_HeartBeat.h"

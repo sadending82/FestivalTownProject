@@ -67,12 +67,19 @@ public class UI_HomeStart : UI_Scene
         {
             // 계정 초기화 버튼에서 해야할 일
             // 패킷 보내기 정도 인듯?
+            Managers.Network.GetPacketManager().SendAccountResetPacket();
+            var ui = Managers.UI.ShowPopUpUI<UI_Notice>();
+            ui.Init();
+            ui.NoticeTextChange("계정 초기화 완료. 다시 로그인 해주십시오.");
+            ui.BindGameEndEvent();
+
         });
 
         Get<GameObject>((int)GameObjects.GetMoneyButton).BindEvent((PointerEventData) =>
         {
             // 골드 획득 버튼에서 해야할 일
             // 패킷 보내기 정도 인듯?
+            Managers.Network.GetPacketManager().SendGetGoldCheatPacket();
         });
 
         Get<GameObject>((int)GameObjects.GetDiamondButton).BindEvent((PointerEventData) =>

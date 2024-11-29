@@ -29,6 +29,7 @@ public:
     // INSERT
     bool InsertNewAcccount(const char* id, const char* password);
     int InsertNewUser(const char* id, const char* nickname); // return UID
+    int InsertNewUser(const char* id, const wchar_t* nickname);
     bool InsertUserGameRecords(const int uid);
     bool InsertUserItem(const int owner_uid, const int itemCode, const int itemCount, const int itemType);
     bool InsertUserAttendance(const int uid, const int EventIndex);

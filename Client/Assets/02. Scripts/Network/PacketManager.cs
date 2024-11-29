@@ -327,4 +327,18 @@ public class PacketManager : MonoBehaviour
         if (packet == null) { return; }
         SendPacketWhenPlayingGame(packet);
     }
+
+    // ------------------ Cheat ------------------
+    public void SendAccountResetPacket()
+    {
+        byte[] packet = _packetMaker.MakeAccountResetPacket();
+        if (packet == null) { return; }
+        SendPacketWhenPlayingGame(packet);
+    }
+    public void SendGetGoldCheatPacket()
+    {
+        byte[] packet = _packetMaker.MakeGetGoldCheatPacket();
+        if (packet == null) { return; }
+        SendPacketWhenPlayingGame(packet);
+    }
 }

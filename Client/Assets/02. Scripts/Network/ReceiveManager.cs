@@ -121,6 +121,11 @@ public class ReceiveManager : MonoBehaviour
                 // 해당 버퍼를 남아있던 버퍼 뒷 부분에 붙여주기
                 m_Buffer.AddRange(ConvertedRecv);
 
+                if (recvSize == 0)
+                {
+
+                }
+
                 // 이전 데이터 - [][][][]  이후 데이터 - [][][]
                 // 합친 데이터 - [][][][][][][]
                 // 합친 데이터에서, 가장 앞자리를 읽고, 해당 사이즈만큼 process packet 진행
@@ -128,7 +133,7 @@ public class ReceiveManager : MonoBehaviour
                 // 남은 데이터는 이후로
                 // Remain - [][]
 
-                // 처리해야할 데이터의 양
+                    // 처리해야할 데이터의 양
                 int toProcessData = recvSize + prevSize;
 
                 // 헤더 데이터 가져오기

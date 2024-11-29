@@ -47,6 +47,9 @@ PacketManager::PacketManager(Server* server, PacketSender* packetSender)
         PacketProcessorMap[ePacketType::C2S_BOMB_POS_SYNC] = std::make_unique<Packet_BombPositionSync>(pServer, pPacketSender);
         PacketProcessorMap[ePacketType::C2S_BOMB_EXPLOSION] = std::make_unique<Packet_BombExplosion>(pServer, pPacketSender);
         PacketProcessorMap[ePacketType::C2S_WEAPON_DELETE] = std::make_unique<Packet_WeaponDelete>(pServer, pPacketSender);
+
+        PacketProcessorMap[ePacketType::C2S_ACCOUNT_RESET] = std::make_unique<Packet_AccountReset>(pServer, pPacketSender);
+        PacketProcessorMap[ePacketType::C2S_GET_CURRENCY] = std::make_unique<Packet_GetCurrency>(pServer, pPacketSender);
     }
 
 

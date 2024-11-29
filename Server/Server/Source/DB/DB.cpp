@@ -133,7 +133,7 @@ int DB::InsertNewUser(const char* id, const char* nickname)
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
-	int uid;
+	int uid = 0;
 
 	int wNicknameLen = MultiByteToWideChar(CP_UTF8, 0, nickname, -1, NULL, 0);
 	wchar_t* wNickname = new wchar_t[wNicknameLen];
@@ -175,6 +175,48 @@ int DB::InsertNewUser(const char* id, const char* nickname)
 	DEBUGMSGNOPARAM("Execute Query Error : (InsertNewUser)\n");
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	delete[] wNickname;
+	return INVALIDKEY;
+}
+
+int DB::InsertNewUser(const char* id, const wchar_t* nickname)
+{
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	int uid = 0;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGNOPARAM("hStmt Error : (InsertNewUser) \n");
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return INVALIDKEY;
+	}
+
+	SQLPrepare(hStmt, (SQLWCHAR*)InsertNewUser_Query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, strlen(id), 0, (SQLCHAR*)id, 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_WCHAR, SQL_WVARCHAR, wcslen(nickname), 0, (SQLWCHAR*)nickname, 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		SQLLEN col1;
+
+		while (SQLFetch(hStmt) == SQL_SUCCESS) {
+			SQLGetData(hStmt, 1, SQL_C_LONG, &uid, sizeof(uid), &col1);
+		}
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+
+		//// Gold / Dia
+		//InsertUserItem(uid, 100001, 0, 0);
+		//InsertUserItem(uid, 100002, 0, 0);
+
+		return uid;
+	}
+
+	DEBUGMSGNOPARAM("Execute Query Error : (InsertNewUser)\n");
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	return INVALIDKEY;
 }
 
@@ -1055,7 +1097,7 @@ bool DB::DeleteAcccount(const char* id)
 
 	SQLPrepare(hStmt, (SQLWCHAR*)DeleteAcccount_Query, SQL_NTS);
 
-	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(id), 0, NULL);
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, strlen(id), 0, (SQLCHAR*)id, 0, NULL);
 
 	retcode = SQLExecute(hStmt);
 
@@ -1089,7 +1131,7 @@ bool DB::DeleteUserInfo(const int uid)
 
 	SQLPrepare(hStmt, (SQLWCHAR*)DeleteUserInfo_Query, SQL_NTS);
 
-	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(uid), 0, NULL);
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
 
 	retcode = SQLExecute(hStmt);
 
@@ -1123,8 +1165,8 @@ bool DB::DeleteUserItem(const int owner_uid, const int itemCode)
 
 	SQLPrepare(hStmt, (SQLWCHAR*)DeleteUserItem_Query, SQL_NTS);
 
-	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(owner_uid), 0, NULL);
-	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(itemCode), 0, NULL);
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&owner_uid), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&itemCode), 0, NULL);
 
 	retcode = SQLExecute(hStmt);
 

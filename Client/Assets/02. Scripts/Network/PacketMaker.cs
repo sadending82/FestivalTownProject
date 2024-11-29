@@ -14,6 +14,7 @@ using PacketTable.ObjectTable;
 using PacketTable.LobbyTable;
 using System.Diagnostics;
 using PacketTable.LoginTable;
+using PacketTable.CheatTable;
 
 public class PacketMaker
 {
@@ -712,6 +713,45 @@ public class PacketMaker
         byte[] result = new byte[data.Length + headerdata.Length];
         Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
         Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
+        return result;
+    }
+
+    // ------------------ Cheat ------------------
+    public byte[] MakeAccountResetPacket()
+    {
+        var builder = new FlatBufferBuilder(1);
+        AccountReset.StartAccountReset(builder);
+        var offset = AccountReset.EndAccountReset(builder);
+        builder.Finish(offset.Value);
+
+        byte[] data = builder.SizedByteArray();
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_ACCOUNT_RESET, flatBufferSize = (ushort)data.Length };
+        byte[] headerdata = Serialize<HEADER>(header);
+        byte[] result = new byte[data.Length + headerdata.Length];
+
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
+
+        return result;
+    }
+
+    public byte[] MakeGetGoldCheatPacket()
+    {
+        var builder = new FlatBufferBuilder(1);
+        GetCurrency.StartGetCurrency(builder);
+        GetCurrency.AddItemCode(builder, 100001);
+        GetCurrency.AddCount(builder, 10000);
+        var offset = GetCurrency.EndGetCurrency(builder);
+        builder.Finish(offset.Value);
+
+        byte[] data = builder.SizedByteArray();
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_GET_CURRENCY, flatBufferSize = (ushort)data.Length };
+        byte[] headerdata = Serialize<HEADER>(header);
+        byte[] result = new byte[data.Length + headerdata.Length];
+
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
+
         return result;
     }
 }
