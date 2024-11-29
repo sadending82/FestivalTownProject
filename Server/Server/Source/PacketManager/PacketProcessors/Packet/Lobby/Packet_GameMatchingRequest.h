@@ -40,7 +40,13 @@ public:
 					if (serverMode != SERVER_MODE::TEST) {
 						break;
 					}
-					int modeIndex = 111;
+					std::vector<int> modeList = { 111, 112, 121, 122 };
+
+					std::random_device rd;
+					std::mt19937 gen(rd());
+					std::uniform_int_distribution<>map_distrib(0, modeList.size() - 1);
+
+					GameMode modeIndex = (GameMode)modeList[map_distrib(rd)];
 
 					MapProperties testMapProperties = MatchMakingManager->SelectRandomMap(GameMode(modeIndex));
 

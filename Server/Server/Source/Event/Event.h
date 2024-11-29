@@ -9,6 +9,8 @@ inline constexpr int TIMEOVERCHECKINTERVAL = 5000;
 inline constexpr int GAMESTARTINTERVAL = 4000;
 inline constexpr int GAMEMATCHINGINTERVAL = 60000;
 
+inline constexpr float SECONDBLOCKSPAWNADDINTERVAL = 0.333f;
+
 class Timer;
 
 #pragma pack (push, 1)
@@ -115,7 +117,7 @@ bool PushEventGameMatching(Timer* pTimer, int requesterID, eMatchingType matchin
 
 // InGameEvent
 bool PushEventGameStart(Timer* pTimer, int roomID, long long roomCode);
-bool PushEventBlockDrop(Timer* pTimer, int roomID, long long roomCode, int blockType, int intervalSecond);
+bool PushEventBlockDrop(Timer* pTimer, int roomID, long long roomCode, int blockType, float intervalSecond);
 bool PushEventBombSpawn(Timer* pTimer, int roomID, long long roomCode, int intervalSecond);
 bool PushEventWeaponSpawn(Timer* pTimer, int roomID, long long roomCode, int weaponType, int intervalSecond);
 bool PushEventRemainTimeSync(Timer* pTimer, int roomID, long long roomCode);

@@ -40,7 +40,7 @@ void FITH::StartGame(int roomID)
         GameModeData& modeInfo = room->GetGameModeData();
 
         PushEventBlockDrop(pTimer, roomID, roomCode, modeInfo.Block1_Spawn_Index, modeInfo.Block1_Spawn_Time);
-        PushEventBlockDrop(pTimer, roomID, roomCode, modeInfo.Block2_Spawn_Index, modeInfo.Block2_Spawn_Time + 1);
+        PushEventBlockDrop(pTimer, roomID, roomCode, modeInfo.Block2_Spawn_Index, (float)modeInfo.Block2_Spawn_Time + SECONDBLOCKSPAWNADDINTERVAL);
 
         PushEventBombSpawn(pTimer, roomID, roomCode, modeInfo.Bomb_Spawn_Time);
 

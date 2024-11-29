@@ -195,9 +195,8 @@ bool Server::Disconnect(int key)
     }
     break;
     }
-
-    player->GetSessionStateLock().unlock();
     player->Disconnect();
+    player->GetSessionStateLock().unlock();
 
     return true;
 }
@@ -398,7 +397,7 @@ std::pair<bool, UserInfo> Server::UserLogin(const char* accountID, const char* a
             Player* player = dynamic_cast<Player*>(session);
 
             if (player->GetUID() == userInfo.UID) {
-                player->Disconnect();
+                Disconnect(session->GetSessionID());
                 break;
             }
         }

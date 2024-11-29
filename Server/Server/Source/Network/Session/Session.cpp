@@ -2,10 +2,10 @@
 
 void Session::Disconnect()
 {
-	mSessionStateLock.lock();
+	//mSessionStateLock.lock();
 	closesocket(mSocket);
 	SetSessionState(eSessionState::ST_FREE);
-	mSessionStateLock.unlock();
+	//mSessionStateLock.unlock();
 	DEBUGMSGONEPARAM("Disconnect: %d\n", GetSessionID());
 }
 

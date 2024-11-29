@@ -53,7 +53,7 @@ bool PushEventGameStart(Timer* pTimer, int roomID, long long roomCode)
 	return true;
 }
 
-bool PushEventBlockDrop(Timer* pTimer, int roomID, long long roomCode, int blockType, int intervalSecond) {
+bool PushEventBlockDrop(Timer* pTimer, int roomID, long long roomCode, int blockType, float intervalSecond) {
 	EV_OBJECT_DROP e;
 	e.size = sizeof(EV_OBJECT_DROP);
 	e.type = eEventType::BLOCKDROP;
@@ -61,8 +61,10 @@ bool PushEventBlockDrop(Timer* pTimer, int roomID, long long roomCode, int block
 	e.roomCode = roomCode;
 	e.objectType = blockType;
 
+	int intervalMilliseconds = intervalSecond * 1000;
+
 	EVENT_HEADER header;
-	header.start_time = std::chrono::system_clock::now() + std::chrono::seconds(intervalSecond);
+	header.start_time = std::chrono::system_clock::now() + std::chrono::milliseconds(intervalMilliseconds);
 	memcpy(header.message, reinterpret_cast<char*>(&e), sizeof(EV_OBJECT_DROP));
 
 	pTimer->PushEvent(header);
