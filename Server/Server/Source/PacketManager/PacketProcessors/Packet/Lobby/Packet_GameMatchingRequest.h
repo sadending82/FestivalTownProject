@@ -77,6 +77,8 @@ public:
 
 					std::vector<int> sessions = { key, Bot->GetSessionID() };
 					pServer->GetMatchMakingManager()->MatchingComplete(roomID, sessions);
+
+					//COUT << "MAP: " << testMapProperties.Map_Index << " THEME: "<< testMapProperties.Map_Theme << ENDL;
 				}break;
 				default:{
 

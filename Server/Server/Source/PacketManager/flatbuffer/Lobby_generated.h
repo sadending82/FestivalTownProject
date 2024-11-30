@@ -727,7 +727,9 @@ struct AttendanceEventResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::
   typedef AttendanceEventResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_EVENT_CODE = 4,
-    VT_RESULT = 6
+    VT_RESULT = 6,
+    VT_REWARD_CODE = 8,
+    VT_REWARD_AMOUNT = 10
   };
   int32_t event_code() const {
     return GetField<int32_t>(VT_EVENT_CODE, 0);
@@ -735,10 +737,18 @@ struct AttendanceEventResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::
   int32_t result() const {
     return GetField<int32_t>(VT_RESULT, 0);
   }
+  int32_t reward_code() const {
+    return GetField<int32_t>(VT_REWARD_CODE, 0);
+  }
+  int32_t reward_amount() const {
+    return GetField<int32_t>(VT_REWARD_AMOUNT, 0);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_EVENT_CODE, 4) &&
            VerifyField<int32_t>(verifier, VT_RESULT, 4) &&
+           VerifyField<int32_t>(verifier, VT_REWARD_CODE, 4) &&
+           VerifyField<int32_t>(verifier, VT_REWARD_AMOUNT, 4) &&
            verifier.EndTable();
   }
 };
@@ -752,6 +762,12 @@ struct AttendanceEventResponseBuilder {
   }
   void add_result(int32_t result) {
     fbb_.AddElement<int32_t>(AttendanceEventResponse::VT_RESULT, result, 0);
+  }
+  void add_reward_code(int32_t reward_code) {
+    fbb_.AddElement<int32_t>(AttendanceEventResponse::VT_REWARD_CODE, reward_code, 0);
+  }
+  void add_reward_amount(int32_t reward_amount) {
+    fbb_.AddElement<int32_t>(AttendanceEventResponse::VT_REWARD_AMOUNT, reward_amount, 0);
   }
   explicit AttendanceEventResponseBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -767,8 +783,12 @@ struct AttendanceEventResponseBuilder {
 inline ::flatbuffers::Offset<AttendanceEventResponse> CreateAttendanceEventResponse(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t event_code = 0,
-    int32_t result = 0) {
+    int32_t result = 0,
+    int32_t reward_code = 0,
+    int32_t reward_amount = 0) {
   AttendanceEventResponseBuilder builder_(_fbb);
+  builder_.add_reward_amount(reward_amount);
+  builder_.add_reward_code(reward_code);
   builder_.add_result(result);
   builder_.add_event_code(event_code);
   return builder_.Finish();

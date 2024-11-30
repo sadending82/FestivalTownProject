@@ -14,7 +14,7 @@ public:
 			flatbuffers::Verifier verifier(data, size);
 			if (verifier.VerifyBuffer<AttendanceEventRequest>(nullptr)) {
 
-				const AttendanceEventRequest* read = flatbuffers::GetRoot<AttendanceEventRequest>(data);
+				//const AttendanceEventRequest* read = flatbuffers::GetRoot<AttendanceEventRequest>(data);
 
 				//int eventCode = read->event_code();
 
@@ -28,25 +28,27 @@ public:
 
 				//int next_day = dayAttendanceInfo.day_number + 1;
 				//bool result = false;
+				//int reward_code = 0;
+				//int reward_amount = 0;
 
 				//if (tableManager->GetEventRewardList()[eventCode].find(next_day) != tableManager->GetEventRewardList()[eventCode].end()) {
 				//	result = true;
-				//	int reward_code = tableManager->GetEventRewardList()[eventCode][next_day].Reward_Item_Index;
-				//	int reward_count = tableManager->GetEventRewardList()[eventCode][next_day].Reward_Item_Value;
+				//	reward_code = tableManager->GetEventRewardList()[eventCode][next_day].Reward_Item_Index;
+				//	reward_amount = tableManager->GetEventRewardList()[eventCode][next_day].Reward_Item_Value;
 				//	// 출석 보상있으면 지급
 				//	if (reward_code != 0) {
 				//		ItemType itemType = tableManager->GetItemInfos()[reward_code].Item_Type;
 
 				//		if (itemType == ItemType::Money) {
-				//			result = db->UpsertUserItemCount(uid, reward_code, reward_count);
+				//			result = db->UpsertUserItemCount(uid, reward_code, reward_amount);
 				//		}
 				//		else {
-				//			result = db->InsertUserItem(uid, reward_code, reward_count, (int)itemType);
+				//			result = db->InsertUserItem(uid, reward_code, reward_amount, (int)itemType);
 				//		}
 				//	}
 				//}
 
-				//pPacketSender->SendAttendanceEventResponsePacket(key, result, eventCode);
+				//pPacketSender->SendAttendanceEventResponsePacket(key, result, eventCode, reward_code, reward_amount);
 			}
 		}
 		catch (const std::exception& e) {
