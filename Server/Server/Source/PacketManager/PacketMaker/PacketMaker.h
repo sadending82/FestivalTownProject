@@ -3,6 +3,7 @@
 #include "../../protocol.h"
 #include "../flatbuffer/FlatBufferManager.h"
 #include "../../DB/Schema/Schemas.h"
+#include "../../TableManager/Tables/Tables.h"
 
 #include <unordered_map>
 #include <array>
@@ -17,7 +18,7 @@ public:
 	std::vector<uint8_t> MakeLoginResponsePacket(int result, UserInfo userInfo, std::unordered_map<int, std::vector<sDayAttendanceInfo>>& attendanceInfoList);
 	std::vector<uint8_t> MakeSignUpResponsePacket(int result);
 
-	std::vector<uint8_t> MakeGachaResponsePacket(int result, int acquired_item_type, int acquired_item_amount, int spent_resource_type, int spent_resource_amount, int remaining_resource_amount);
+	std::vector<uint8_t> MakeGachaResponsePacket(int result, GachaItem& result_item, GachaItem& acquired_item, int spent_resource_type, int spent_resource_amount, int remaining_resource_amount);
 	std::vector<uint8_t> MakeCurrencyAmountResponsePacket(int result, std::vector<int>& currency_types, std::vector<int>& currency_amounts);
 	std::vector<uint8_t> MakeUserItemsResponsePacket(int result, std::unordered_map<int, UserItem>& user_items);
 	std::vector<uint8_t> MakeAttendanceEventResponsePacket(int result, int eventCode, int rewardCode, int rewardAmount);

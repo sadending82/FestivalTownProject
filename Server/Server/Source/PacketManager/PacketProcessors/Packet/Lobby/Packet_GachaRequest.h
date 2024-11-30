@@ -39,7 +39,7 @@ public:
 				
 				int gacha_result = false;
 				
-				GachaItem rewardItem;
+				GachaItem resultItem, acquiredItem;
 
 				// 구매 이후 사용된 재화 정보
 				int usedItemCode = 0;
@@ -55,9 +55,9 @@ public:
 					int currPayItemAmount = db->SelectUserItemCount(uid, pay_item[i]);
 
 					if (pay_Price[i] <= currPayItemAmount) {
-						rewardItem = lobbyManager->RollGacha(items);
+						resultItem = acquiredItem = lobbyManager->RollGacha(items);
 						
-						gacha_result = lobbyManager->GiveGachaItemToUser(uid, pay_item[i], pay_Price[i], rewardItem);
+						gacha_result = lobbyManager->GiveGachaItemToUser(uid, pay_item[i], pay_Price[i], acquiredItem);
 
 						usedItemCode = pay_item[i];
 						usedItemAmount = pay_Price[i];
@@ -66,7 +66,7 @@ public:
 					}
 				}
 
-				pPacketSender->SendGachaResponsePacket(key, gacha_result, rewardItem.Reward_Item_Index, rewardItem.Reward_Item_Value, usedItemCode, usedItemAmount, usedItemRemaining);
+				pPacketSender->SendGachaResponsePacket(key, gacha_result, resultItem, acquiredItem, usedItemCode, usedItemAmount, usedItemRemaining);
 			}
 		}
 		catch (const std::exception& e) {

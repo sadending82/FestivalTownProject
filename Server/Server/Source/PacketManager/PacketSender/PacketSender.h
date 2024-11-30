@@ -11,7 +11,7 @@ public:
 	void SendLoginResponse(int sessionID, int result, UserInfo userInfo, std::unordered_map<int, std::vector<sDayAttendanceInfo>>& attendanceInfoList);
 	void SendSignUpResponse(int sessionID, int result);
 
-	void SendGachaResponsePacket(int sessionID, int result, int acquired_item_type, int acquired_item_amount, int spent_resource_type, int spent_resource_amount, int remaining_resource_amount);
+	void SendGachaResponsePacket(int sessionID, int result, GachaItem& result_item, GachaItem& acquired_item, int spent_resource_type, int spent_resource_amount, int remaining_resource_amount);
 	void SendCurrencyAmountResponsePacket(int sessionID, int result, std::vector<int>& currency_types, std::vector<int>& currency_amounts);
 	void SendUserItemsResponsePacket(int sessionID, int result, std::unordered_map<int, UserItem>& user_items);
 	void SendAttendanceEventResponsePacket(int sessionID, int result, int eventCode, int rewardCode, int rewardAmount);

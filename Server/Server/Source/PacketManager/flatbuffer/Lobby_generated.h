@@ -332,23 +332,31 @@ struct GachaResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef GachaResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_RESULT = 4,
-    VT_ACQUIRED_ITEM_TYPE = 6,
-    VT_ACQUIRED_ITEM_AMOUNT = 8,
-    VT_SPENT_RESOURCE_TYPE = 10,
-    VT_SPENT_RESOURCE_AMOUNT = 12,
-    VT_REMAINING_RESOURCE_AMOUNT = 14
+    VT_RESULT_ITEM_CODE = 6,
+    VT_RESULT_ITEM_AMOUNT = 8,
+    VT_ACQUIRED_ITEM_CODE = 10,
+    VT_ACQUIRED_ITEM_AMOUNT = 12,
+    VT_SPENT_RESOURCE_CODE = 14,
+    VT_SPENT_RESOURCE_AMOUNT = 16,
+    VT_REMAINING_RESOURCE_AMOUNT = 18
   };
   int32_t result() const {
     return GetField<int32_t>(VT_RESULT, 0);
   }
-  int32_t acquired_item_type() const {
-    return GetField<int32_t>(VT_ACQUIRED_ITEM_TYPE, 0);
+  int32_t result_item_code() const {
+    return GetField<int32_t>(VT_RESULT_ITEM_CODE, 0);
+  }
+  int32_t result_item_amount() const {
+    return GetField<int32_t>(VT_RESULT_ITEM_AMOUNT, 0);
+  }
+  int32_t acquired_item_code() const {
+    return GetField<int32_t>(VT_ACQUIRED_ITEM_CODE, 0);
   }
   int32_t acquired_item_amount() const {
     return GetField<int32_t>(VT_ACQUIRED_ITEM_AMOUNT, 0);
   }
-  int32_t spent_resource_type() const {
-    return GetField<int32_t>(VT_SPENT_RESOURCE_TYPE, 0);
+  int32_t spent_resource_code() const {
+    return GetField<int32_t>(VT_SPENT_RESOURCE_CODE, 0);
   }
   int32_t spent_resource_amount() const {
     return GetField<int32_t>(VT_SPENT_RESOURCE_AMOUNT, 0);
@@ -359,9 +367,11 @@ struct GachaResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_RESULT, 4) &&
-           VerifyField<int32_t>(verifier, VT_ACQUIRED_ITEM_TYPE, 4) &&
+           VerifyField<int32_t>(verifier, VT_RESULT_ITEM_CODE, 4) &&
+           VerifyField<int32_t>(verifier, VT_RESULT_ITEM_AMOUNT, 4) &&
+           VerifyField<int32_t>(verifier, VT_ACQUIRED_ITEM_CODE, 4) &&
            VerifyField<int32_t>(verifier, VT_ACQUIRED_ITEM_AMOUNT, 4) &&
-           VerifyField<int32_t>(verifier, VT_SPENT_RESOURCE_TYPE, 4) &&
+           VerifyField<int32_t>(verifier, VT_SPENT_RESOURCE_CODE, 4) &&
            VerifyField<int32_t>(verifier, VT_SPENT_RESOURCE_AMOUNT, 4) &&
            VerifyField<int32_t>(verifier, VT_REMAINING_RESOURCE_AMOUNT, 4) &&
            verifier.EndTable();
@@ -375,14 +385,20 @@ struct GachaResponseBuilder {
   void add_result(int32_t result) {
     fbb_.AddElement<int32_t>(GachaResponse::VT_RESULT, result, 0);
   }
-  void add_acquired_item_type(int32_t acquired_item_type) {
-    fbb_.AddElement<int32_t>(GachaResponse::VT_ACQUIRED_ITEM_TYPE, acquired_item_type, 0);
+  void add_result_item_code(int32_t result_item_code) {
+    fbb_.AddElement<int32_t>(GachaResponse::VT_RESULT_ITEM_CODE, result_item_code, 0);
+  }
+  void add_result_item_amount(int32_t result_item_amount) {
+    fbb_.AddElement<int32_t>(GachaResponse::VT_RESULT_ITEM_AMOUNT, result_item_amount, 0);
+  }
+  void add_acquired_item_code(int32_t acquired_item_code) {
+    fbb_.AddElement<int32_t>(GachaResponse::VT_ACQUIRED_ITEM_CODE, acquired_item_code, 0);
   }
   void add_acquired_item_amount(int32_t acquired_item_amount) {
     fbb_.AddElement<int32_t>(GachaResponse::VT_ACQUIRED_ITEM_AMOUNT, acquired_item_amount, 0);
   }
-  void add_spent_resource_type(int32_t spent_resource_type) {
-    fbb_.AddElement<int32_t>(GachaResponse::VT_SPENT_RESOURCE_TYPE, spent_resource_type, 0);
+  void add_spent_resource_code(int32_t spent_resource_code) {
+    fbb_.AddElement<int32_t>(GachaResponse::VT_SPENT_RESOURCE_CODE, spent_resource_code, 0);
   }
   void add_spent_resource_amount(int32_t spent_resource_amount) {
     fbb_.AddElement<int32_t>(GachaResponse::VT_SPENT_RESOURCE_AMOUNT, spent_resource_amount, 0);
@@ -404,17 +420,21 @@ struct GachaResponseBuilder {
 inline ::flatbuffers::Offset<GachaResponse> CreateGachaResponse(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t result = 0,
-    int32_t acquired_item_type = 0,
+    int32_t result_item_code = 0,
+    int32_t result_item_amount = 0,
+    int32_t acquired_item_code = 0,
     int32_t acquired_item_amount = 0,
-    int32_t spent_resource_type = 0,
+    int32_t spent_resource_code = 0,
     int32_t spent_resource_amount = 0,
     int32_t remaining_resource_amount = 0) {
   GachaResponseBuilder builder_(_fbb);
   builder_.add_remaining_resource_amount(remaining_resource_amount);
   builder_.add_spent_resource_amount(spent_resource_amount);
-  builder_.add_spent_resource_type(spent_resource_type);
+  builder_.add_spent_resource_code(spent_resource_code);
   builder_.add_acquired_item_amount(acquired_item_amount);
-  builder_.add_acquired_item_type(acquired_item_type);
+  builder_.add_acquired_item_code(acquired_item_code);
+  builder_.add_result_item_amount(result_item_amount);
+  builder_.add_result_item_code(result_item_code);
   builder_.add_result(result);
   return builder_.Finish();
 }

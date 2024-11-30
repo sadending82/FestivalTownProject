@@ -23,20 +23,31 @@ namespace Network.PacketProcessor
 
             if (Data.Result == 1)
             {
-                var itemData = Managers.Data.GetItemData(Data.AcquiredItemType);
+                // 가챠 결과 아이템
+                var resultItemData = Managers.Data.GetItemData(Data.ResultItemCode);
+                // 실제 지급 아이템
+                var acquiredItemData = Managers.Data.GetItemData(Data.AcquiredItemCode);
 
-                Debug.Log($"Gacha ItemType : {Data.AcquiredItemType}, Amount : {Data.AcquiredItemAmount}, SpentType : {Data.SpentResourceType}," +
+                Debug.Log($"Gacha ItemType : {Data.ResultItemAmount}, Amount : {Data.ResultItemAmount}, SpentType : {Data.SpentResourceCode}," +
                     $"SpentAmount : {Data.SpentResourceAmount}");
 
-                if (itemData == null) { return; }
+                if (resultItemData == null) { return; }
 
-                ItemEntity ie = (ItemEntity)itemData;
+                ItemEntity ie = (ItemEntity)resultItemData;
 
-                popup.NoticeTextChange($"나온 아이템은 {itemData.Name}, {Data.AcquiredItemAmount}개 입니다.");
+                if (Data.ResultItemCode == Data.AcquiredItemCode)
+                {
+                    popup.NoticeTextChange($"나온 아이템은 {resultItemData.Name}, {Data.AcquiredItemAmount}개 입니다.");
+                }
+                else
+                {
+                    popup.NoticeTextChange($"나온 아이템은 {resultItemData.Name}, {Data.ResultItemAmount}개 입니다.\n"
+                        + $"이미 소유하신 아이템이므로 {acquiredItemData.Name}, {Data.AcquiredItemAmount}개로 전환되었습니다.");
+                }
 
                 popup.BindPopupCloseEvent();
 
-                switch (Managers.Data.GetResourceIndexType(Data.AcquiredItemType))
+                switch (Managers.Data.GetResourceIndexType(Data.AcquiredItemCode))
                 {
                     case DataManager.ResourceIndexType.Gold:
                         int gold = Managers.Data.GetGold();
@@ -67,7 +78,7 @@ namespace Network.PacketProcessor
                         break;
                 }
 
-                switch (Managers.Data.GetResourceIndexType(Data.SpentResourceType))
+                switch (Managers.Data.GetResourceIndexType(Data.SpentResourceCode))
                 {
                     case DataManager.ResourceIndexType.Gold:
                         int gold = Managers.Data.GetGold();

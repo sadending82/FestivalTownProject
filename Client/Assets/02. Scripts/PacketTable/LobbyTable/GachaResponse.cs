@@ -20,36 +20,44 @@ public struct GachaResponse : IFlatbufferObject
   public GachaResponse __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public int Result { get { int o = __p.__offset(4); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public int AcquiredItemType { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public int AcquiredItemAmount { get { int o = __p.__offset(8); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public int SpentResourceType { get { int o = __p.__offset(10); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public int SpentResourceAmount { get { int o = __p.__offset(12); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public int RemainingResourceAmount { get { int o = __p.__offset(14); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int ResultItemCode { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int ResultItemAmount { get { int o = __p.__offset(8); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int AcquiredItemCode { get { int o = __p.__offset(10); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int AcquiredItemAmount { get { int o = __p.__offset(12); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int SpentResourceCode { get { int o = __p.__offset(14); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int SpentResourceAmount { get { int o = __p.__offset(16); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int RemainingResourceAmount { get { int o = __p.__offset(18); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
 
   public static Offset<PacketTable.LobbyTable.GachaResponse> CreateGachaResponse(FlatBufferBuilder builder,
       int result = 0,
-      int acquired_item_type = 0,
+      int result_item_code = 0,
+      int result_item_amount = 0,
+      int acquired_item_code = 0,
       int acquired_item_amount = 0,
-      int spent_resource_type = 0,
+      int spent_resource_code = 0,
       int spent_resource_amount = 0,
       int remaining_resource_amount = 0) {
-    builder.StartTable(6);
+    builder.StartTable(8);
     GachaResponse.AddRemainingResourceAmount(builder, remaining_resource_amount);
     GachaResponse.AddSpentResourceAmount(builder, spent_resource_amount);
-    GachaResponse.AddSpentResourceType(builder, spent_resource_type);
+    GachaResponse.AddSpentResourceCode(builder, spent_resource_code);
     GachaResponse.AddAcquiredItemAmount(builder, acquired_item_amount);
-    GachaResponse.AddAcquiredItemType(builder, acquired_item_type);
+    GachaResponse.AddAcquiredItemCode(builder, acquired_item_code);
+    GachaResponse.AddResultItemAmount(builder, result_item_amount);
+    GachaResponse.AddResultItemCode(builder, result_item_code);
     GachaResponse.AddResult(builder, result);
     return GachaResponse.EndGachaResponse(builder);
   }
 
-  public static void StartGachaResponse(FlatBufferBuilder builder) { builder.StartTable(6); }
+  public static void StartGachaResponse(FlatBufferBuilder builder) { builder.StartTable(8); }
   public static void AddResult(FlatBufferBuilder builder, int result) { builder.AddInt(0, result, 0); }
-  public static void AddAcquiredItemType(FlatBufferBuilder builder, int acquiredItemType) { builder.AddInt(1, acquiredItemType, 0); }
-  public static void AddAcquiredItemAmount(FlatBufferBuilder builder, int acquiredItemAmount) { builder.AddInt(2, acquiredItemAmount, 0); }
-  public static void AddSpentResourceType(FlatBufferBuilder builder, int spentResourceType) { builder.AddInt(3, spentResourceType, 0); }
-  public static void AddSpentResourceAmount(FlatBufferBuilder builder, int spentResourceAmount) { builder.AddInt(4, spentResourceAmount, 0); }
-  public static void AddRemainingResourceAmount(FlatBufferBuilder builder, int remainingResourceAmount) { builder.AddInt(5, remainingResourceAmount, 0); }
+  public static void AddResultItemCode(FlatBufferBuilder builder, int resultItemCode) { builder.AddInt(1, resultItemCode, 0); }
+  public static void AddResultItemAmount(FlatBufferBuilder builder, int resultItemAmount) { builder.AddInt(2, resultItemAmount, 0); }
+  public static void AddAcquiredItemCode(FlatBufferBuilder builder, int acquiredItemCode) { builder.AddInt(3, acquiredItemCode, 0); }
+  public static void AddAcquiredItemAmount(FlatBufferBuilder builder, int acquiredItemAmount) { builder.AddInt(4, acquiredItemAmount, 0); }
+  public static void AddSpentResourceCode(FlatBufferBuilder builder, int spentResourceCode) { builder.AddInt(5, spentResourceCode, 0); }
+  public static void AddSpentResourceAmount(FlatBufferBuilder builder, int spentResourceAmount) { builder.AddInt(6, spentResourceAmount, 0); }
+  public static void AddRemainingResourceAmount(FlatBufferBuilder builder, int remainingResourceAmount) { builder.AddInt(7, remainingResourceAmount, 0); }
   public static Offset<PacketTable.LobbyTable.GachaResponse> EndGachaResponse(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<PacketTable.LobbyTable.GachaResponse>(o);
@@ -63,11 +71,13 @@ static public class GachaResponseVerify
   {
     return verifier.VerifyTableStart(tablePos)
       && verifier.VerifyField(tablePos, 4 /*Result*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 6 /*AcquiredItemType*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 8 /*AcquiredItemAmount*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 10 /*SpentResourceType*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 12 /*SpentResourceAmount*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 14 /*RemainingResourceAmount*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 6 /*ResultItemCode*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 8 /*ResultItemAmount*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 10 /*AcquiredItemCode*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 12 /*AcquiredItemAmount*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 14 /*SpentResourceCode*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 16 /*SpentResourceAmount*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 18 /*RemainingResourceAmount*/, 4 /*int*/, 4, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }
