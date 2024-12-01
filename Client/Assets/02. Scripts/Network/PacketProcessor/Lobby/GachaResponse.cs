@@ -42,7 +42,7 @@ namespace Network.PacketProcessor
                 else
                 {
                     popup.NoticeTextChange($"나온 아이템은 {resultItemData.Name}, {Data.ResultItemAmount}개 입니다.\n"
-                        + $"이미 소유하신 아이템이므로 {acquiredItemData.Name}, {Data.AcquiredItemAmount}개로 전환되었습니다.");
+                        + $"이미 소유한 아이템이므로 {acquiredItemData.Name}, {Data.AcquiredItemAmount}개로 전환되었습니다.");
                 }
 
                 popup.BindPopupCloseEvent();

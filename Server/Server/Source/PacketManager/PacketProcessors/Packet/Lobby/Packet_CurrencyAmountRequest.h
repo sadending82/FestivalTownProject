@@ -22,12 +22,14 @@ public:
 				TableManager* tableManager = pServer->GetTableManager();
 				DB* db = pServer->GetDB();
 
-				std::vector<int> currencyTypes;
-				std::vector<int> currencyAmounts;
+				bool result = false;
+				std::vector<UserItem> currencyList = db->SelectUserAllCurrency(uid);
 
-				bool result = db->SelectUserAllCurrency(uid, currencyTypes, currencyAmounts);
+				if (currencyList.empty() == false) {
+					result = true;
+				}
 
-				pPacketSender->SendCurrencyAmountResponsePacket(key, result, currencyTypes, currencyAmounts);
+				pPacketSender->SendCurrencyAmountResponsePacket(key, result, currencyList);
 			}
 		}
 		catch (const std::exception& e) {

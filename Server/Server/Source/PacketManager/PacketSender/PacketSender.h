@@ -12,7 +12,7 @@ public:
 	void SendSignUpResponse(int sessionID, int result);
 
 	void SendGachaResponsePacket(int sessionID, int result, GachaItem& result_item, GachaItem& acquired_item, int spent_resource_type, int spent_resource_amount, int remaining_resource_amount);
-	void SendCurrencyAmountResponsePacket(int sessionID, int result, std::vector<int>& currency_types, std::vector<int>& currency_amounts);
+	void SendCurrencyAmountResponsePacket(int sessionID, int result, std::vector<UserItem>& currency_list);
 	void SendUserItemsResponsePacket(int sessionID, int result, std::unordered_map<int, UserItem>& user_items);
 	void SendAttendanceEventResponsePacket(int sessionID, int result, int eventCode, int rewardCode, int rewardAmount);
 

@@ -26,12 +26,14 @@ public:
 
 				db->UpsertUserItemCount(uid, read->item_code(), read->count());
 
-				std::vector<int> currencyTypes;
-				std::vector<int> currencyAmounts;
+				bool result = false;
+				std::vector<UserItem> currencyList = db->SelectUserAllCurrency(uid);
+				
+				if (currencyList.empty() == false) {
+					result = true;
+				}
 
-				bool result = db->SelectUserAllCurrency(uid, currencyTypes, currencyAmounts);
-
-				pPacketSender->SendCurrencyAmountResponsePacket(key, result, currencyTypes, currencyAmounts);
+				pPacketSender->SendCurrencyAmountResponsePacket(key, result, currencyList);
 			}
 		}
 		catch (const std::exception& e) {

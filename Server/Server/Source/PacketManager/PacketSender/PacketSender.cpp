@@ -35,9 +35,9 @@ void PacketSender::SendGachaResponsePacket(int sessionID, int result, GachaItem&
     mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
 }
 
-void PacketSender::SendCurrencyAmountResponsePacket(int sessionID, int result, std::vector<int>& currency_types, std::vector<int>& currency_amounts)
+void PacketSender::SendCurrencyAmountResponsePacket(int sessionID, int result, std::vector<UserItem>& currency_list)
 {
-    std::vector<uint8_t> send_buffer = mPacketMaker->MakeCurrencyAmountResponsePacket(result, currency_types, currency_amounts);
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakeCurrencyAmountResponsePacket(result, currency_list);
     mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
 }
 

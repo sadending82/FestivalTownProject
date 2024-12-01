@@ -13,6 +13,7 @@
 #include <sqlext.h>
 #include <sqltypes.h>
 #include <fstream>
+#include <unordered_set>
 
 #define SQLBindAtomic_int(stmt, index, value) int bindValue##index = value.load(); SQLBindParameter(hStmt, index, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (&bindValue##index), 0, NULL);
 
@@ -37,7 +38,7 @@ public:
     // SELECT
     std::pair<bool, UserInfo> SelectUserInfoForLogin(const char* id);
     std::pair<bool, UserInfo> SelectUserInfo(const int uid);
-    bool SelectUserAllCurrency(const int uid, std::vector<int>& currency_types_output, std::vector<int>& currency_amounts_output);
+    std::vector<UserItem> SelectUserAllCurrency(const int uid);
     // unordered_map<item_UID, UserItem>
     std::unordered_map<int, UserItem> SelectUserAllItems(const int uid);
     struct sCharacterCustomizing SelectCharacterCustomizing(const int uid);

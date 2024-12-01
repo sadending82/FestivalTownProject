@@ -65,12 +65,21 @@ std::vector<uint8_t> PacketMaker::MakeGachaResponsePacket(int result, GachaItem&
 	return MakeBuffer(ePacketType::S2C_GACHA_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakeCurrencyAmountResponsePacket(int result, std::vector<int>& currency_types, std::vector<int>& currency_amounts)
+std::vector<uint8_t> PacketMaker::MakeCurrencyAmountResponsePacket(int result, std::vector<UserItem>& currency_list)
 {
 	flatbuffers::FlatBufferBuilder Builder;
-	auto types = Builder.CreateVector(currency_types);
+
+	std::vector<int> currency_codes;
+	std::vector<int> currency_amounts;
+
+	for (int i = 0; i < currency_list.size(); ++i) {
+		currency_codes.push_back(currency_list[i].itemCode);
+		currency_amounts.push_back(currency_list[i].count);
+	}
+
+	auto codes = Builder.CreateVector(currency_codes);
 	auto amounts = Builder.CreateVector(currency_amounts);
-	Builder.Finish(PacketTable::LobbyTable::CreateCurrencyAmountResponse(Builder, result, types, amounts));
+	Builder.Finish(PacketTable::LobbyTable::CreateCurrencyAmountResponse(Builder, result, codes, amounts));
 	return MakeBuffer(ePacketType::S2C_CURRENCY_AMOUNT_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 

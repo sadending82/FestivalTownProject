@@ -456,24 +456,26 @@ std::pair<bool, UserInfo> DB::SelectUserInfo(const int uid)
 	return { false,UserInfo() };
 }
 
-bool DB::SelectUserAllCurrency(const int uid, std::vector<int>& currency_types_output, std::vector<int>& currency_amounts_output)
+std::vector<UserItem> DB::SelectUserAllCurrency(const int uid)
 {
 	if (uid == 0) {
-		return false;
+		return std::vector<UserItem>();
 	}
 
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
+
+	std::vector<UserItem> itemList;
 
 	int itemType = 1;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGNOPARAM("hStmt Error : (InsertRanking) \n");
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-		return 0;
+		return std::vector<UserItem>();
 	}
 
-	
+
 
 	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserAllCurrency_Query, SQL_NTS);
 
@@ -488,19 +490,24 @@ bool DB::SelectUserAllCurrency(const int uid, std::vector<int>& currency_types_o
 		int itemCode = 0;
 		int amount = 0;
 		while (SQLFetch(hStmt) == SQL_SUCCESS) {
+			UserItem item;
+
 			SQLGetData(hStmt, 1, SQL_C_LONG, &amount, sizeof(amount), &col1);
 			SQLGetData(hStmt, 2, SQL_C_LONG, &itemCode, sizeof(itemCode), &col2);
-			currency_types_output.push_back(itemCode);
-			currency_amounts_output.push_back(amount);
+			item.itemCode = itemCode;
+			item.count = amount;
+			item.itemType = itemType;
+
+			itemList.push_back(item);
 		}
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-		return true;
+		return std::move(itemList);
 	}
 
 	DEBUGMSGNOPARAM("Execute Query Error : (SelectItemCount)\n");
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-	return false;
+	return std::vector<UserItem>();
 }
 
 std::unordered_map<int, UserItem> DB::SelectUserAllItems(const int uid)
