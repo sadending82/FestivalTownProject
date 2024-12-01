@@ -93,8 +93,11 @@ const wchar_t* DeleteUserItem_Query = L"DELETE FROM GameDB.dbo.UserItem WHERE It
 //DELETE FROM GameDB.dbo.UserItem WHERE owner_UID = ?
 const wchar_t* DeleteUserItemAll_Query = L"DELETE FROM GameDB.dbo.UserItem WHERE owner_UID = ?";
 
-//DELETE FROM GameDB.dbo.UserAttendence WHERE user_UID = ?
-const wchar_t* DeleteUserAttendanceAll_Query = L"DELETE FROM GameDB.dbo.UserAttendence WHERE user_UID = ?";
+//DELETE FROM GameDB.dbo.UserAttendance WHERE user_UID = ?
+const wchar_t* DeleteUserAttendanceAll_Query = L"DELETE FROM GameDB.dbo.UserAttend¤±nce WHERE user_UID = ?";
+
+//DELETE FROM GameDB.dbo.UserAttendance WHERE attendance_date  < DATEADD(DAY, ?, GETDATE())
+const wchar_t* DeleteUserAttendanceOutDated_Query = L"DELETE FROM GameDB.dbo.UserAttendance WHERE attendance_date  < DATEADD(DAY, ?, GETDATE())";
 
 //SELECT hashedPassword, salt FROM AccountDB.dbo.Account WHERE ID = ?
 const wchar_t* CheckValidateLogin_Query = L"SELECT hashedPassword, salt FROM AccountDB.dbo.Account WHERE ID = ?";

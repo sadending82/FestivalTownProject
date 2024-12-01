@@ -208,6 +208,10 @@ void Server::Run()
     mTableManager->ReadAllDataTable();
     mDB = new DB(mTableManager);
     mDB->Connect(mOdbc, mDB_ID, mDB_Password);
+
+    // 오래된 데이터 삭제
+    mDB->DeleteUserAttendanceOutdated(AttendanceData_DaysToKeep);
+
     mLobbyManager = new LobbyManager(this);
 
     WSADATA wsa;

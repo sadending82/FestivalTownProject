@@ -17,6 +17,7 @@
 
 #define SQLBindAtomic_int(stmt, index, value) int bindValue##index = value.load(); SQLBindParameter(hStmt, index, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (&bindValue##index), 0, NULL);
 
+inline constexpr int AttendanceData_DaysToKeep = 60;
 
 class DB {
 public:
@@ -65,6 +66,7 @@ public:
     bool DeleteUserItem(const int owner_uid, const int itemCode);
     bool DeleteUserItemAll(const int owner_uid);
     bool DeleteUserAttendanceAll(const int user_uid);
+    bool DeleteUserAttendanceOutdated(const int day);
 
     bool CheckValidateLogin(const char* id, const char* password);
 
