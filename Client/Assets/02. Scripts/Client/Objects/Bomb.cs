@@ -1,3 +1,4 @@
+using ExcelDataStructure;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,15 @@ public class Bomb : MonoBehaviour
     private Vector3 throwDirection;
     private Rigidbody rig;
 
+    private float bombReadyCount1;
+    private int bombReadyTime1;
+    private float bombReadyCount2;
+    private float elapsedTime;
+
+    public Material bombMaterial1;
+    public Material bombMaterial2;
+    private Material[] bombMaterials;
+
     // ------ Server -------
     [SerializeField]
     private int Id;
@@ -23,6 +33,12 @@ public class Bomb : MonoBehaviour
         pickUpPlayerId = -1;
         lastPickUpPlayerId = -1;
         rig = this.GetComponent<Rigidbody>();
+
+        bombMaterials = GetComponent<MeshRenderer>().materials;
+        bombMaterials[0] = bombMaterial1;
+        GetComponent<MeshRenderer>().materials = bombMaterials;
+
+        StartCoroutine("Blink");
     }
     private void Start()
     {
@@ -30,16 +46,31 @@ public class Bomb : MonoBehaviour
     }
     private void OnEnable()
     {
+        bombMaterials = GetComponent<MeshRenderer>().materials;
+        bombMaterials[0] = bombMaterial1;
+        GetComponent<MeshRenderer>().materials = bombMaterials;
+
         isPickUp = false;
         pickUpPlayerId = -1;
         lastPickUpPlayerId = -1;
+        elapsedTime = 0.0f;
+
+        var data = Managers.Data.GetModeData(Managers.Game.mapIndex);
+        FITHModeEntity fme = (FITHModeEntity)data;
+        bombReadyCount1 = 1.0f / fme.Bomb_Ready_Count1;
+        bombReadyTime1 = fme.Bomb_Ready_Time1;
+        bombReadyCount2 = 1.0f / fme.Bomb_Ready_Count2;
+
+        StartCoroutine("Blink");
     }
     private void OnDisable()
     {
         SetRigidBodyBasic();
+        StopCoroutine("Blink");
     }
     private void FixedUpdate()
     {
+        elapsedTime += Time.deltaTime;
         if (isPickUp == true)
         {
             transform.position = targetTransform.position;
@@ -154,5 +185,26 @@ public class Bomb : MonoBehaviour
     public int GetLastPickUpPlayerId()
     {
         return lastPickUpPlayerId;
-    }    
+    }
+    private IEnumerator Blink()
+    {
+        while (true)
+        {
+            if (elapsedTime < bombReadyTime1)
+            {
+                yield return new WaitForSeconds(bombReadyCount1);
+            }
+            else
+            {
+                yield return new WaitForSeconds(bombReadyCount2);
+            }
+
+            bombMaterials[0] = bombMaterial2;
+            GetComponent<MeshRenderer>().materials = bombMaterials;
+            yield return new WaitForSeconds(0.2f);
+
+            bombMaterials[0] = bombMaterial1;
+            GetComponent<MeshRenderer>().materials = bombMaterials;
+        }
+    }
 }

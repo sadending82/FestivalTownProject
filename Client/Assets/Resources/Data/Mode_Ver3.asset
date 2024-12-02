@@ -54,7 +54,7 @@ MonoBehaviour:
     Open_Date: 0
     Close_Date: 0
   FITH_Mode:
-  - Index: 0
+  - Index: 11101
     Name: 
     ClassType: 0
     Name_Info: 
@@ -64,6 +64,10 @@ MonoBehaviour:
     Bomb_Spawn_Count: 1
     Bomb_Spawn_Time: 15
     Bomb_Delay_Time: 20
+    Bomb_Ready_Count1: 1
+    Bomb_Ready_Time1: 15
+    Bomb_Ready_Count2: 3
+    Bomb_Ready_Time2: 5
     Weapon1_Spawn_Index: 2001
     Weapon1_Spawn_Count: 1
     Weapon1_Spawn_Time: 10
@@ -76,7 +80,7 @@ MonoBehaviour:
     Block2_Spawn_Index: 3002
     Block2_Spawn_Count: 2
     Block2_Spawn_Time: 5
-  - Index: 0
+  - Index: 11102
     Name: 
     ClassType: 0
     Name_Info: 
@@ -86,6 +90,10 @@ MonoBehaviour:
     Bomb_Spawn_Count: 1
     Bomb_Spawn_Time: 15
     Bomb_Delay_Time: 20
+    Bomb_Ready_Count1: 1
+    Bomb_Ready_Time1: 15
+    Bomb_Ready_Count2: 3
+    Bomb_Ready_Time2: 5
     Weapon1_Spawn_Index: 2001
     Weapon1_Spawn_Count: 1
     Weapon1_Spawn_Time: 10
@@ -98,7 +106,7 @@ MonoBehaviour:
     Block2_Spawn_Index: 3002
     Block2_Spawn_Count: 2
     Block2_Spawn_Time: 5
-  - Index: 0
+  - Index: 11103
     Name: 
     ClassType: 0
     Name_Info: 
@@ -108,6 +116,10 @@ MonoBehaviour:
     Bomb_Spawn_Count: 1
     Bomb_Spawn_Time: 15
     Bomb_Delay_Time: 20
+    Bomb_Ready_Count1: 1
+    Bomb_Ready_Time1: 15
+    Bomb_Ready_Count2: 3
+    Bomb_Ready_Time2: 5
     Weapon1_Spawn_Index: 2001
     Weapon1_Spawn_Count: 1
     Weapon1_Spawn_Time: 10
@@ -120,7 +132,7 @@ MonoBehaviour:
     Block2_Spawn_Index: 3002
     Block2_Spawn_Count: 2
     Block2_Spawn_Time: 5
-  - Index: 0
+  - Index: 11201
     Name: 
     ClassType: 0
     Name_Info: 
@@ -130,6 +142,10 @@ MonoBehaviour:
     Bomb_Spawn_Count: 2
     Bomb_Spawn_Time: 15
     Bomb_Delay_Time: 20
+    Bomb_Ready_Count1: 1
+    Bomb_Ready_Time1: 15
+    Bomb_Ready_Count2: 3
+    Bomb_Ready_Time2: 5
     Weapon1_Spawn_Index: 2001
     Weapon1_Spawn_Count: 1
     Weapon1_Spawn_Time: 20
@@ -142,7 +158,7 @@ MonoBehaviour:
     Block2_Spawn_Index: 3002
     Block2_Spawn_Count: 3
     Block2_Spawn_Time: 5
-  - Index: 0
+  - Index: 12101
     Name: 
     ClassType: 0
     Name_Info: 
@@ -152,6 +168,10 @@ MonoBehaviour:
     Bomb_Spawn_Count: 2
     Bomb_Spawn_Time: 15
     Bomb_Delay_Time: 20
+    Bomb_Ready_Count1: 1
+    Bomb_Ready_Time1: 15
+    Bomb_Ready_Count2: 3
+    Bomb_Ready_Time2: 5
     Weapon1_Spawn_Index: 2001
     Weapon1_Spawn_Count: 1
     Weapon1_Spawn_Time: 20
@@ -164,7 +184,7 @@ MonoBehaviour:
     Block2_Spawn_Index: 3002
     Block2_Spawn_Count: 5
     Block2_Spawn_Time: 5
-  - Index: 0
+  - Index: 12102
     Name: 
     ClassType: 0
     Name_Info: 
@@ -174,6 +194,10 @@ MonoBehaviour:
     Bomb_Spawn_Count: 2
     Bomb_Spawn_Time: 15
     Bomb_Delay_Time: 20
+    Bomb_Ready_Count1: 1
+    Bomb_Ready_Time1: 15
+    Bomb_Ready_Count2: 3
+    Bomb_Ready_Time2: 5
     Weapon1_Spawn_Index: 2001
     Weapon1_Spawn_Count: 1
     Weapon1_Spawn_Time: 20
@@ -186,7 +210,7 @@ MonoBehaviour:
     Block2_Spawn_Index: 3002
     Block2_Spawn_Count: 5
     Block2_Spawn_Time: 5
-  - Index: 0
+  - Index: 12201
     Name: 
     ClassType: 0
     Name_Info: 
@@ -196,6 +220,10 @@ MonoBehaviour:
     Bomb_Spawn_Count: 2
     Bomb_Spawn_Time: 15
     Bomb_Delay_Time: 20
+    Bomb_Ready_Count1: 1
+    Bomb_Ready_Time1: 15
+    Bomb_Ready_Count2: 3
+    Bomb_Ready_Time2: 5
     Weapon1_Spawn_Index: 2001
     Weapon1_Spawn_Count: 1
     Weapon1_Spawn_Time: 20
@@ -208,7 +236,7 @@ MonoBehaviour:
     Block2_Spawn_Index: 3002
     Block2_Spawn_Count: 5
     Block2_Spawn_Time: 5
-  - Index: 0
+  - Index: 12202
     Name: 
     ClassType: 0
     Name_Info: 
@@ -218,6 +246,10 @@ MonoBehaviour:
     Bomb_Spawn_Count: 2
     Bomb_Spawn_Time: 15
     Bomb_Delay_Time: 20
+    Bomb_Ready_Count1: 1
+    Bomb_Ready_Time1: 15
+    Bomb_Ready_Count2: 3
+    Bomb_Ready_Time2: 5
     Weapon1_Spawn_Index: 2001
     Weapon1_Spawn_Count: 1
     Weapon1_Spawn_Time: 20
