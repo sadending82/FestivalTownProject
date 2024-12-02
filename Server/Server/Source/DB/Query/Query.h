@@ -12,8 +12,8 @@ const wchar_t* InsertUserGameRecords_Query = L"INSERT INTO GameDB.dbo.UserGameRe
 //INSERT INTO GameDB.dbo.UserItem (owner_uid, itemCode, count, itemType) VALUES (?, ?, ?, ?)
 const wchar_t* InsertUserItem_Query = L"INSERT INTO GameDB.dbo.UserItem (owner_uid, itemCode, count, itemType) VALUES (?, ?, ?, ?)";
 
-//INSERT INTO GameDB.dbo.UserAttendance (user_UID, event_index, attendance_date, day_count) VALUES(?, ?, CAST(GETDATE() AS DATE), ?)
-const wchar_t* InsertUserAttendance_Query = L"INSERT INTO GameDB.dbo.UserAttendance (user_UID, event_index, attendance_date, day_count) VALUES(?, ?, CAST(GETDATE() AS DATE), ?)";
+//INSERT INTO GameDB.dbo.UserAttendance (user_UID, event_code, attendance_date, day_count) VALUES(?, ?, CAST(GETDATE() AS DATE), ?)
+const wchar_t* InsertUserAttendance_Query = L"INSERT INTO GameDB.dbo.UserAttendance (user_UID, event_code, attendance_date, day_count) VALUES(?, ?, CAST(GETDATE() AS DATE), ?)";
 
 // UPDATE GameDB.dbo.UserInfo SET ConnectionState = ? OUTPUT deleted.* WHERE AccountID = ?
 const wchar_t* SelectUserInfoForLogin_Query = L"UPDATE GameDB.dbo.UserInfo \

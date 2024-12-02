@@ -103,7 +103,7 @@ std::vector<uint8_t> PacketMaker::MakeAttendanceEventResponsePacket(int result, 
 {
 	flatbuffers::FlatBufferBuilder Builder;
 
-	Builder.Finish(PacketTable::LobbyTable::CreateAttendanceEventResponse(Builder, result, eventCode, rewardCode, rewardAmount));
+	Builder.Finish(PacketTable::LobbyTable::CreateAttendanceEventResponse(Builder, eventCode, result, rewardCode, rewardAmount));
 	return MakeBuffer(ePacketType::S2C_ATTENDANCE_EVENT_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 

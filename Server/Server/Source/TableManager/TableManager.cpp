@@ -868,7 +868,7 @@ void TableManager::ReadEventTable()
 
             if (!row.empty()) {
 
-                int index = row[(int)(Event_List_Field::Index)].value<int>();
+                int index = row[(int)(Event_List_Field::Event_List)].value<int>();
                 int day = row[(int)(Event_List_Field::Day)].value<int>();
 
                 std::time_t openTime = static_cast<std::time_t>((row[(int)(Event_Main_Field::Open_Date)].value<double>() - 25569) * 86400);

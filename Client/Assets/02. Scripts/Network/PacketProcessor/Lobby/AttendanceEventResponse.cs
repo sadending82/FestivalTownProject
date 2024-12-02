@@ -22,7 +22,7 @@ namespace Network.PacketProcessor
             int eventCode = Data.EventCode;
             int result = Data.Result;
 
-            Debug.Log("받앗숴요!");
+            Debug.Log(eventCode + " 이벤트 출석 결과 " + result);
         }
 
 

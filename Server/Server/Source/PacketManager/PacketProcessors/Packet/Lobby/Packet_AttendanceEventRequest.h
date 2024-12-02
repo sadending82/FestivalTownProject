@@ -28,14 +28,16 @@ public:
 
 				int next_day = dayAttendanceInfo.day_number + 1;
 
-				bool result = false;
+				ERROR_CODE result = ERROR_CODE::ER_DB_NO_DATA;
 				int reward_code = 0;
 				int reward_amount = 0;
 
-				if (tableManager->GetEventRewardList()[eventCode].find(next_day) != tableManager->GetEventRewardList()[eventCode].end()) {
-					ERROR_CODE result = db->InsertUserAttendance(uid, eventCode, next_day);
+				if (tableManager->GetEventRewardList()[eventCode].count(next_day) != 0) {
+					result = db->InsertUserAttendance(uid, eventCode, next_day);
 
-					if (result == true) {
+					COUT << result << ENDL;
+
+					if (result == ERROR_CODE::ER_NONE) {
 						reward_code = tableManager->GetEventRewardList()[eventCode][next_day].Reward_Item_Index;
 						reward_amount = tableManager->GetEventRewardList()[eventCode][next_day].Reward_Item_Value;
 						// 출석 보상있으면 지급

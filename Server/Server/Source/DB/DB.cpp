@@ -312,7 +312,7 @@ ERROR_CODE DB::InsertUserAttendance(const int uid, const int EventIndex, const i
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&EventIndex), 0, NULL);
-	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&day_count), 0, NULL);
+	SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&day_count), 0, NULL);
 
 	retcode = SQLExecute(hStmt);
 
@@ -570,8 +570,12 @@ std::pair<ERROR_CODE, std::unordered_map<int, UserItem>> DB::SelectUserAllItems(
 		return{ ERROR_CODE::ER_NONE, itemList };
 	}
 
-	DEBUGMSGONEPARAM("Execute Query Error %d : (SelectUserAllItems)\n", retcode);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	if (retcode == SQL_NO_DATA) {
+		return { ERROR_CODE::ER_DB_NO_DATA, std::unordered_map<int, UserItem>() };
+	}
+
+	DEBUGMSGONEPARAM("Execute Query Error %d : (SelectUserAllItems)\n", retcode);
 	return { ERROR_CODE::ER_DB_ERROR, std::unordered_map<int, UserItem>() };
 }
 

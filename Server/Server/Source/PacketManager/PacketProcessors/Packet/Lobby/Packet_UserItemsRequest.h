@@ -21,8 +21,6 @@ public:
 
 				TableManager* tableManager = pServer->GetTableManager();
 				DB* db = pServer->GetDB();
-
-
 				std::pair<ERROR_CODE, std::unordered_map<int, UserItem>> result = db->SelectUserAllItems(uid);
 				
 				pPacketSender->SendUserItemsResponsePacket(key, result.first, result.second);

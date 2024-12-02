@@ -139,7 +139,7 @@ namespace NetworkProtocol
 
     public enum ERROR_CODE
     {
-        ER_NONE = 0,
+        ER_NONE = 1,
 
         ER_VERSION_MISMATCH = 101,
 
