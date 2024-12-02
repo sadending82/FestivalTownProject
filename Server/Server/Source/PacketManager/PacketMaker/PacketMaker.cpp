@@ -10,7 +10,7 @@ std::vector<uint8_t> PacketMaker::MakeVersionCheckResponsePacket(int result)
 	return MakeBuffer(ePacketType::S2C_VERSION_CHECK_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakeLoginResponsePacket(int result, UserInfo userInfo, std::unordered_map<int, std::vector<sDayAttendanceInfo>>& attendanceInfoList)
+std::vector<uint8_t> PacketMaker::MakeLoginResponsePacket(int result, UserInfo userInfo, std::unordered_map<int, std::vector<sDayAttendanceInfo>>& attendanceInfoList, bool isNewEvent)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 
@@ -44,7 +44,7 @@ std::vector<uint8_t> PacketMaker::MakeLoginResponsePacket(int result, UserInfo u
 		, userInfo.UserTitle, userInfo.ProfileSkin, userInfo.Point, userInfo.AttendanceDay, characterCustomizing);
 
 	Builder.Finish(PacketTable::LoginTable::CreateLoginResponse(Builder, result, db_userInfo
-		, userInfo.Gold, userInfo.Dia, userInfo.Mileage, false, Builder.CreateVector(attendanceStatusVector)));
+		, userInfo.Gold, userInfo.Dia, userInfo.Mileage, isNewEvent, Builder.CreateVector(attendanceStatusVector)));
 	return MakeBuffer(ePacketType::S2C_LOGIN_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 

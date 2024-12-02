@@ -46,6 +46,28 @@ void LobbyManager::CheckReadyToGamePlay(Room* room, int roomID)
 	}
 }
 
+bool LobbyManager::CheckIsNewEvent(std::tm beforeLoginTime)
+{
+	std::time_t NowTime = std::time(nullptr);
+	std::time_t lastLogintime = std::mktime(const_cast<std::tm*>(&beforeLoginTime));
+
+	for (auto& eventInfo : pTableManager->GetEventList()) {
+
+		int eventCode = eventInfo.first;
+
+		std::time_t openTime = std::mktime(const_cast<std::tm*>(&eventInfo.second.Open_Date));
+		std::time_t closeTime = std::mktime(const_cast<std::tm*>(&eventInfo.second.Close_Date));
+
+		if (NowTime < openTime || closeTime < NowTime) {
+			continue;
+		}
+		if (lastLogintime < openTime) {
+			return true;
+		}
+	}
+	return false;
+}
+
 GachaItem LobbyManager::RollGacha(std::unordered_map<int, GachaItem>& gachaItemList)
 {
 	int totalWeight = 0;

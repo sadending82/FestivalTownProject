@@ -17,9 +17,9 @@ void PacketSender::SendVersionCheckResponsePacket(int sessionID, int result)
     mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
 }
 
-void PacketSender::SendLoginResponse(int sessionID, int result, UserInfo userInfo, std::unordered_map<int, std::vector<sDayAttendanceInfo>>& attendanceInfoList)
+void PacketSender::SendLoginResponse(int sessionID, int result, UserInfo userInfo, std::unordered_map<int, std::vector<sDayAttendanceInfo>>& attendanceInfoList, bool isNewEvent)
 {
-    std::vector<uint8_t> send_buffer = mPacketMaker->MakeLoginResponsePacket(result, userInfo, attendanceInfoList);
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakeLoginResponsePacket(result, userInfo, attendanceInfoList, isNewEvent);
     mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
 }
 

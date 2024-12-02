@@ -355,7 +355,8 @@ std::pair<bool, UserInfo> DB::SelectUserInfoForLogin(const char* id)
 	{
 
 		SQLLEN col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11;
-		TIMESTAMP_STRUCT date{};
+		char date[11] = { 0 };
+		std::tm tDate = {};
 		SQLINTEGER t = 0;
 		SQLLEN bufLen = 0;
 		userInfo.NickName = std::wstring(20, '\0');
@@ -369,13 +370,14 @@ std::pair<bool, UserInfo> DB::SelectUserInfoForLogin(const char* id)
 			SQLGetData(hStmt, (int)UserInfo_Field::UserTitle, SQL_C_LONG, &userInfo.UserTitle, sizeof(userInfo.UserTitle), &col6);
 			SQLGetData(hStmt, (int)UserInfo_Field::ProfileSkin, SQL_C_LONG, &userInfo.ProfileSkin, sizeof(userInfo.ProfileSkin), &col7);
 			SQLGetData(hStmt, (int)UserInfo_Field::Point, SQL_C_LONG, &userInfo.Point, sizeof(userInfo.Point), &col8);
-			SQLGetData(hStmt, (int)UserInfo_Field::LastLoginTime, SQL_C_TYPE_TIMESTAMP, &date, sizeof(date), &col9);
+			SQLGetData(hStmt, (int)UserInfo_Field::LastLoginTime, SQL_C_CHAR, date, sizeof(date), &col9);
 			SQLGetData(hStmt, (int)UserInfo_Field::AttendanceDay, SQL_C_LONG, &userInfo.AttendanceDay, sizeof(userInfo.AttendanceDay), &col10);
 			SQLGetData(hStmt, (int)UserInfo_Field::State, SQL_C_LONG, &t, sizeof(t), &col11);
 
-			userInfo.date.tm_year = date.year;
-			userInfo.date.tm_mon = date.month;
-			userInfo.date.tm_mday = date.day;
+			std::istringstream ssDate(date);
+			ssDate >> std::get_time(&tDate, "%Y-%m-%d");
+
+			userInfo.date = tDate;
 			userInfo.characterCustomizing = SelectCharacterCustomizing(userInfo.UID);
 			userInfo.State = t;
 			userInfo.Gold = SelectUserItemCount(userInfo.UID, 100001);

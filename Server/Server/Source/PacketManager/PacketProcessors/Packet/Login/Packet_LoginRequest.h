@@ -27,7 +27,11 @@ public:
 
 				pServer->GetLobbyManager()->CheckAttendanceEvent(userInfo.UID, attendanceInfoList);
 
-				pPacketSender->SendLoginResponse(key, result.first, userInfo, attendanceInfoList);
+				bool isNewEvent = pServer->GetLobbyManager()->CheckIsNewEvent(userInfo.date);
+
+
+				COUT << isNewEvent << ENDL;
+				pPacketSender->SendLoginResponse(key, result.first, userInfo, attendanceInfoList, isNewEvent);
 
 				if (result.first == true) {
 					Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);

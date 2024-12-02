@@ -17,7 +17,7 @@ const wchar_t* InsertUserAttendance_Query = L"INSERT INTO GameDB.dbo.UserAttenda
 
 // UPDATE GameDB.dbo.UserInfo SET ConnectionState = ? OUTPUT deleted.* WHERE AccountID = ?
 const wchar_t* SelectUserInfoForLogin_Query = L"UPDATE GameDB.dbo.UserInfo \
-							SET ConnectionState = ? \
+							SET LastLoginTime = CAST(GETDATE() AS DATE), ConnectionState = ? \
 							OUTPUT deleted.* \
 							WHERE AccountID = ?";
 

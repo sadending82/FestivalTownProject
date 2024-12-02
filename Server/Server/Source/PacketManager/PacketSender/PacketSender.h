@@ -8,7 +8,7 @@ public:
 	~PacketSender();
 
 	void SendVersionCheckResponsePacket(int sessionID, int result);
-	void SendLoginResponse(int sessionID, int result, UserInfo userInfo, std::unordered_map<int, std::vector<sDayAttendanceInfo>>& attendanceInfoList);
+	void SendLoginResponse(int sessionID, int result, UserInfo userInfo, std::unordered_map<int, std::vector<sDayAttendanceInfo>>& attendanceInfoList, bool isNewEvent);
 	void SendSignUpResponse(int sessionID, int result);
 
 	void SendGachaResponsePacket(int sessionID, int result, GachaItem& result_item, GachaItem& acquired_item, int spent_resource_type, int spent_resource_amount, int remaining_resource_amount);

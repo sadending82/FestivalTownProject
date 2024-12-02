@@ -15,6 +15,8 @@ public:
 
 	void CheckReadyToGamePlay(class Room* room, int roomID);
 
+	bool CheckIsNewEvent(std::tm beforeLoginTime);
+
 	struct GachaItem RollGacha(std::unordered_map<int, struct GachaItem>& gachaItemList);
 	bool GiveGachaItemToUser(int uid, int payItem, int price, struct GachaItem& gachaItem);
 
