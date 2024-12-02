@@ -101,6 +101,10 @@ namespace ExcelDataStructure
         public int Bomb_Spawn_Count;
         public int Bomb_Spawn_Time;
         public int Bomb_Delay_Time;
+        public int Bomb_Ready_Count1;
+        public int Bomb_Ready_Time1;
+        public int Bomb_Ready_Count2;
+        public int Bomb_Ready_Time2;
         public int Weapon1_Spawn_Index;
         public int Weapon1_Spawn_Count;
         public int Weapon1_Spawn_Time;

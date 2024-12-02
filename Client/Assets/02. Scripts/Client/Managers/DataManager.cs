@@ -129,6 +129,16 @@ public class DataManager
 
         return data;
     }
+    
+    public FITHModeEntity GetModeData(int dataIndex)
+    {
+        FITHModeDataDict.TryGetValue(dataIndex, out FITHModeEntity data);
+        if(data == null)
+        {
+            return null;
+        }
+        return data;
+    }
 
     public GachaGroupItemEntity GetGachaGroupItemData(int dataIndex)
     {

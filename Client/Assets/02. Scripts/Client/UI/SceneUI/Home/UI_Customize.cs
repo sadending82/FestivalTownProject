@@ -4,14 +4,15 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static Define;
 
 public class UI_Customize : UI_Scene
 {
     enum GameObjects
     {
-        GridPanel,
         SetCustomizingButton,
         UI_CharacterModel,
+        CustomizeItemList,
     }
 
     bool isInitialized = false;
@@ -31,25 +32,30 @@ public class UI_Customize : UI_Scene
 
         Bind<GameObject>(typeof(GameObjects));
 
-        // 혹시 모르니까 인벤토리 내부의 요소 다 지워두기
-        GameObject gridPanel = Get<GameObject>((int)GameObjects.GridPanel);
-        foreach (Transform child in gridPanel.transform)
-        {
-            Managers.Resource.Destroy(child.gameObject);
-        }
+        GameObject scrVObj = Get<GameObject>((int)GameObjects.CustomizeItemList).GetComponent<UI_CustomizeItemList>().GetScrollView();
+        scrVObj = Get<GameObject>((int)GameObjects.CustomizeItemList).GetComponent<UI_CustomizeItemList>().GetScrollView();
+        UI_Customize_ScrollView scrV = scrVObj.GetComponent<UI_Customize_ScrollView>();
 
         // 인벤토리 아이템 생성
         foreach (var item in Managers.Data.InventoryDataList)
         {
-            if (Managers.Data.GetItemData(item.Value.ItemCode).Item_Type == (int)Define.ItemType.Resource) continue;
+            int itemType = Managers.Data.GetItemData(item.Value.ItemCode).Item_Type;
+            if (itemType == (int)Define.ItemType.Resource) continue;
 
-            var ui = Managers.UI.MakeSubItem<UI_Customize_Item>(gridPanel.transform);
+            var ui = Managers.UI.MakeSubItem<UI_Customize_Item>();
             ui.Init();
             ui.SetItem(item.Value.ItemUid, item.Value.ItemCode);
             ui.SetParentUI(this);
 
+            scrV.SetItem(ref ui, (Define.ItemType)itemType);
+
             ItemSlotDict.TryAdd(item.Value.ItemCode, ui);
         }
+
+        GameObject contentObj = scrV.GetContent();
+        UI_Customize_ScrViewContent content = contentObj.GetComponent<UI_Customize_ScrViewContent>();
+
+        content.SetHeightByContents();
 
         //커스터마이징 버튼
         Get<GameObject>((int)GameObjects.SetCustomizingButton).BindEvent((PointerEventData) =>
