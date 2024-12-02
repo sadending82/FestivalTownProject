@@ -24,8 +24,9 @@ public:
 
 				auto customizingInfo = read->customizing_items();
 
-				std::unordered_map<int, UserItem> itemList = db->SelectUserAllItems(uid);
+				std::pair<ERROR_CODE, std::unordered_map<int, UserItem>> result = db->SelectUserAllItems(uid);
 
+				std::unordered_map<int, UserItem>& itemList = result.second;
 				sCharacterCustomizing characterCustomizing;
 
 				for (const auto& item : *customizingInfo) {
@@ -45,7 +46,7 @@ public:
 					characterCustomizing.SetItem((CustomizingItemType)item->type(), itemInfo);
 				}
 
-				if (db->UpdateCharacterCustomizing(uid, characterCustomizing) == true) {
+				if (db->UpdateCharacterCustomizing(uid, characterCustomizing) == ERROR_CODE::ER_NONE) {
 					player->SetCharacterCustomizing(characterCustomizing);
 				}
 				else {

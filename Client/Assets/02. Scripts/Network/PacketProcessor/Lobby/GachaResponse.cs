@@ -1,5 +1,6 @@
 ﻿using ExcelDataStructure;
 using Google.FlatBuffers;
+using NetworkProtocol;
 using PacketTable.LobbyTable;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace Network.PacketProcessor
             var popup = Managers.UI.ShowPopUpUI<UI_Notice>();
             popup.Init();
 
-            if (Data.Result == 1)
+            if (Data.Result == (int)ERROR_CODE.ER_NONE)
             {
                 // 가챠 결과 아이템
                 var resultItemData = Managers.Data.GetItemData(Data.ResultItemCode);

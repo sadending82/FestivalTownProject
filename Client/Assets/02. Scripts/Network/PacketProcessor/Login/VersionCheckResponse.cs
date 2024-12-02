@@ -18,7 +18,7 @@ namespace Network.PacketProcessor
 
             int result = Data.Result;
 
-            if (result != (int)ERROR_CODE.ER_NONE)
+            if (result == (int)ERROR_CODE.ER_VERSION_MISMATCH)
             {
                 Debug.Log($"Version Check Result Code : {result}");
 

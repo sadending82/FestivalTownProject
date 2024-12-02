@@ -55,7 +55,7 @@ public:
 
 	void						StartHeartBeat(int sessionID);
 
-	std::pair<bool, UserInfo>	UserLogin(const char* accountID, const char* accountPassword, const int sessionID);
+	std::pair<ERROR_CODE, UserInfo>	UserLogin(const char* accountID, const char* accountPassword, const int sessionID);
 
 	int							CreateNewRoom(GameMode gameMode, int mapIndex, int mapTheme);
 

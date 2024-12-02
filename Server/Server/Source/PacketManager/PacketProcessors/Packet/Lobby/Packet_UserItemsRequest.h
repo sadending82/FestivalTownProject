@@ -22,14 +22,10 @@ public:
 				TableManager* tableManager = pServer->GetTableManager();
 				DB* db = pServer->GetDB();
 
-				std::unordered_map<int, UserItem> itemList = db->SelectUserAllItems(uid);
-				
-				bool result = true;
-				if (itemList.empty() == true) {
-					result = false;
-				}
 
-				pPacketSender->SendUserItemsResponsePacket(key, result, itemList);
+				std::pair<ERROR_CODE, std::unordered_map<int, UserItem>> result = db->SelectUserAllItems(uid);
+				
+				pPacketSender->SendUserItemsResponsePacket(key, result.first, result.second);
 			}
 		}
 		catch (const std::exception& e) {

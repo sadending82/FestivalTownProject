@@ -29,19 +29,19 @@ public:
     void ErrorDisplay(SQLHSTMT& hStmt, RETCODE retCode);
 
     // INSERT
-    bool InsertNewAcccount(const char* id, const char* password);
+    ERROR_CODE InsertNewAcccount(const char* id, const char* password);
     int InsertNewUser(const char* id, const char* nickname); // return UID
     int InsertNewUser(const char* id, const wchar_t* nickname);
-    bool InsertUserGameRecords(const int uid);
-    bool InsertUserItem(const int owner_uid, const int itemCode, const int itemCount, const int itemType);
-    bool InsertUserAttendance(const int uid, const int EventIndex);
+    ERROR_CODE InsertUserGameRecords(const int uid);
+    ERROR_CODE InsertUserItem(const int owner_uid, const int itemCode, const int itemCount, const int itemType);
+    ERROR_CODE InsertUserAttendance(const int uid, const int EventIndex, const int day_count);
 
     // SELECT
-    std::pair<bool, UserInfo> SelectUserInfoForLogin(const char* id);
-    std::pair<bool, UserInfo> SelectUserInfo(const int uid);
-    std::vector<UserItem> SelectUserAllCurrency(const int uid);
+    std::pair<ERROR_CODE, UserInfo> SelectUserInfoForLogin(const char* id);
+    std::pair<ERROR_CODE, UserInfo> SelectUserInfo(const int uid);
+    std::pair<ERROR_CODE, std::vector<UserItem>> SelectUserAllCurrency(const int uid);
     // unordered_map<item_UID, UserItem>
-    std::unordered_map<int, UserItem> SelectUserAllItems(const int uid);
+    std::pair<ERROR_CODE, std::unordered_map<int, UserItem>> SelectUserAllItems(const int uid);
     struct sCharacterCustomizing SelectCharacterCustomizing(const int uid);
     
     int SelectUserItemCount(const int uid, const int item_index);
@@ -50,25 +50,25 @@ public:
     int SelectUserAttendanceToday(const int uid);
 
     // UPDATE
-    bool UpdateUserConnectionState(const int uid, const int state);
-    bool UpdateUserPoint(const int uid, const int valueOfChange);
-    bool UpdateBattleRecords(const int uid, const UserGameRecords& gameRecords);
-    bool UpdateUserItemCount(const int uid, const int item_index, const int valueOfChange);
-    bool UpdateCharacterCustomizing(const int uid, const struct sCharacterCustomizing& characterCustomizing);
-    bool UpdateCharacterCustomizing(const int uid, const std::vector<uint8_t> characterCustomizing);
+    ERROR_CODE UpdateUserConnectionState(const int uid, const int state);
+    ERROR_CODE UpdateUserPoint(const int uid, const int valueOfChange);
+    ERROR_CODE UpdateBattleRecords(const int uid, const UserGameRecords& gameRecords);
+    ERROR_CODE UpdateUserItemCount(const int uid, const int item_index, const int valueOfChange);
+    ERROR_CODE UpdateCharacterCustomizing(const int uid, const struct sCharacterCustomizing& characterCustomizing);
+    ERROR_CODE UpdateCharacterCustomizing(const int uid, const std::vector<uint8_t> characterCustomizing);
 
     // UPSERT
-    bool UpsertUserItemCount(const int uid, const int item_index, const int valueOfChange);
+    ERROR_CODE UpsertUserItemCount(const int uid, const int item_index, const int valueOfChange);
 
     // DELETE
-    bool DeleteAcccount(const char* id);
-    bool DeleteUserInfo(const int uid);
-    bool DeleteUserItem(const int owner_uid, const int itemCode);
-    bool DeleteUserItemAll(const int owner_uid);
-    bool DeleteUserAttendanceAll(const int user_uid);
-    bool DeleteUserAttendanceOutdated(const int day);
+    ERROR_CODE DeleteAcccount(const char* id);
+    ERROR_CODE DeleteUserInfo(const int uid);
+    ERROR_CODE DeleteUserItem(const int owner_uid, const int itemCode);
+    ERROR_CODE DeleteUserItemAll(const int owner_uid);
+    ERROR_CODE DeleteUserAttendanceAll(const int user_uid);
+    ERROR_CODE DeleteUserAttendanceOutdated(const int day);
 
-    bool CheckValidateLogin(const char* id, const char* password);
+    ERROR_CODE CheckValidateLogin(const char* id, const char* password);
 
 private:
     SQLHENV hEnv = NULL;

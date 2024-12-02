@@ -141,7 +141,10 @@ namespace NetworkProtocol
     {
         ER_NONE = 0,
 
-        ER_VERSION_MISMATCH = 101
+        ER_VERSION_MISMATCH = 101,
+
+        ER_DB_NO_DATA = 201,
+        ER_DB_ERROR = 202
     };
 
     public enum GameMode

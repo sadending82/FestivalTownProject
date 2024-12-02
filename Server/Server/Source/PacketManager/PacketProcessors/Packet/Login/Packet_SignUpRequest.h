@@ -21,19 +21,19 @@ public:
 				const char* pw = read->account_password()->c_str();
 				const char* nickName = read->nickname()->c_str();
 
-				bool result = pDB->InsertNewAcccount(id, pw);
+				ERROR_CODE result = pDB->InsertNewAcccount(id, pw);
 
-				if (result == true) {
+				if (result == ERROR_CODE::ER_NONE) {
 					int uid = pDB->InsertNewUser(id, nickName);
 					if (uid == INVALIDKEY) {
 						pDB->DeleteAcccount(id);
-						result = false;
+						result = ERROR_CODE::ER_DB_ERROR;
 					}
 
-					if (pDB->InsertUserGameRecords(uid) == false) {
+					if (pDB->InsertUserGameRecords(uid) == ERROR_CODE::ER_DB_ERROR) {
 						pDB->DeleteAcccount(id);
 						pDB->DeleteUserInfo(uid);
-						result = false;
+						result = ERROR_CODE::ER_DB_ERROR;
 					}
 				}
 

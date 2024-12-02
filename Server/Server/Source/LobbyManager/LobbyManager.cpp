@@ -98,16 +98,16 @@ bool LobbyManager::GiveGachaItemToUser(int uid, int payItem, int price, GachaIte
 	int itemType = (int)pTableManager->GetItemInfos()[gachaItem.Reward_Item_Index].Item_Type;
 	int mileageIndex = 100003;
 
-	int payResult = pDB->UpdateUserItemCount(uid, payItem, -price);
+	ERROR_CODE payResult = pDB->UpdateUserItemCount(uid, payItem, -price);
 
-	if (payResult == false) {
+	if (payResult == ERROR_CODE::ER_DB_ERROR || payResult == ERROR_CODE::ER_DB_NO_DATA) {
 		return false;
 	}
 
 	// 재화나 티켓인 경우
 	if (itemType == (int)ItemType::Money) {
-		bool result = pDB->UpsertUserItemCount(uid, gachaItem.Reward_Item_Index, gachaItem.Reward_Item_Value);
-		if (result == false) {
+		ERROR_CODE result = pDB->UpsertUserItemCount(uid, gachaItem.Reward_Item_Index, gachaItem.Reward_Item_Value);
+		if (result == ERROR_CODE::ER_DB_ERROR) {
 			// 실패 시 재화 다시 돌려주고 실패 반환
 			pDB->UpdateUserItemCount(uid, payItem, price);
 			return false;
@@ -117,8 +117,8 @@ bool LobbyManager::GiveGachaItemToUser(int uid, int payItem, int price, GachaIte
 		int currItemCount = pDB->SelectUserItemCount(uid, gachaItem.Reward_Item_Index);
 		// 새로 얻은 경우
 		if (currItemCount == 0) {
-			bool result = pDB->InsertUserItem(uid, gachaItem.Reward_Item_Index, gachaItem.Reward_Item_Value, itemType);
-			if (result == false) {
+			ERROR_CODE result = pDB->InsertUserItem(uid, gachaItem.Reward_Item_Index, gachaItem.Reward_Item_Value, itemType);
+			if (result == ERROR_CODE::ER_DB_ERROR) {
 				// 실패 시 재화 다시 돌려주고 실패 반환
 				pDB->UpdateUserItemCount(uid, payItem, price);
 				return false;
@@ -129,8 +129,8 @@ bool LobbyManager::GiveGachaItemToUser(int uid, int payItem, int price, GachaIte
 			// 마일리지 지급
 			int itemGrade = (int)pTableManager->GetItemInfos()[gachaItem.Reward_Item_Index].Item_Grade;
 			int mileage = pTableManager->GetGachaAcquiredMileages()[itemGrade];
-			bool result = pDB->UpsertUserItemCount(uid, mileageIndex, mileage);
-			if (result == false) {
+			ERROR_CODE result = pDB->UpsertUserItemCount(uid, mileageIndex, mileage);
+			if (result == ERROR_CODE::ER_DB_ERROR) {
 				// 실패 시 재화 다시 돌려주고 실패 반환
 				pDB->UpdateUserItemCount(uid, payItem, price);
 				return false;

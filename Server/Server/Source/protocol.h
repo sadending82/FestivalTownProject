@@ -100,9 +100,12 @@ enum ePacketType
 };
 
 enum ERROR_CODE {
-    ER_NONE = 0,
+    ER_NONE = 1,
 
-    ER_VERSION_MISMATCH = 101
+    ER_VERSION_MISMATCH = 101,
+
+    ER_DB_NO_DATA = 201,
+    ER_DB_ERROR = 202
 };
 
 enum GameMode {

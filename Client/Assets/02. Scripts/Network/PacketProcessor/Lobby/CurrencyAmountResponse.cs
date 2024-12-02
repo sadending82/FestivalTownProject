@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
+using NetworkProtocol;
 
 namespace Network.PacketProcessor
 {
@@ -19,7 +20,7 @@ namespace Network.PacketProcessor
 
             var Data = CurrencyAmountResponse.GetRootAsCurrencyAmountResponse(bb);
 
-            if (Data.Result == 1)
+            if (Data.Result == (int)ERROR_CODE.ER_NONE)
             {
                 for (int i = 0; i < Data.CurrencyAmountLength; ++i)
                 {
@@ -49,7 +50,7 @@ namespace Network.PacketProcessor
                     }
                 }
             }
-            else
+            else if (Data.Result == (int)ERROR_CODE.ER_DB_ERROR)
             {
                 var popup = Managers.UI.ShowPopUpUI<UI_Notice>();
                 popup.Init();

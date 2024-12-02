@@ -28,9 +28,6 @@ public:
 				pServer->GetLobbyManager()->CheckAttendanceEvent(userInfo.UID, attendanceInfoList);
 
 				bool isNewEvent = pServer->GetLobbyManager()->CheckIsNewEvent(userInfo.date);
-
-
-				COUT << isNewEvent << ENDL;
 				pPacketSender->SendLoginResponse(key, result.first, userInfo, attendanceInfoList, isNewEvent);
 
 				if (result.first == true) {

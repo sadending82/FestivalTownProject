@@ -1,5 +1,6 @@
 ﻿using ExcelDataStructure;
 using Google.FlatBuffers;
+using NetworkProtocol;
 using PacketTable.LobbyTable;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace Network.PacketProcessor
 
             Managers.Data.InventoryDataList.Clear();
 
-            if (Data.Result == 1)
+            if (Data.Result == (int)ERROR_CODE.ER_NONE || Data.Result == (int)ERROR_CODE.ER_DB_NO_DATA)
             {
                 for (int i = 0; i < Data.ItemsLength; ++i)
                 {
@@ -38,7 +39,7 @@ namespace Network.PacketProcessor
 
                 Managers.Data.SetInventoryDataRecved(true);
             }
-            else
+            else if(Data.Result == (int)ERROR_CODE.ER_DB_ERROR)
             {
                 var ui = Managers.UI.ShowPopUpUI<UI_Notice>();
                 ui.Init();

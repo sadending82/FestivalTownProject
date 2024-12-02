@@ -374,13 +374,13 @@ void Server::StartHeartBeat(int sessionID)
     PushEventHeartBeat(mTimer, sessionID);
 }
 
-std::pair<bool, UserInfo> Server::UserLogin(const char* accountID, const char* accountPassword, const int sessionID)
+std::pair<ERROR_CODE, UserInfo> Server::UserLogin(const char* accountID, const char* accountPassword, const int sessionID)
 {
-    if (mDB->CheckValidateLogin(accountID, accountPassword) == false) {
-        return { false, UserInfo() };
+    if (mDB->CheckValidateLogin(accountID, accountPassword) == ERROR_CODE::ER_DB_ERROR) {
+        return { ERROR_CODE::ER_DB_ERROR, UserInfo() };
     }
 
-    std::pair<bool, UserInfo> result = mDB->SelectUserInfoForLogin(accountID);
+    std::pair<ERROR_CODE, UserInfo> result = mDB->SelectUserInfoForLogin(accountID);
 
     UserInfo& userInfo = result.second;
 
@@ -388,7 +388,7 @@ std::pair<bool, UserInfo> Server::UserLogin(const char* accountID, const char* a
     userInfo.Dia = mDB->SelectUserItemCount(userInfo.UID, 100002);
     userInfo.Mileage = mDB->SelectUserItemCount(userInfo.UID, 100003);
 
-    if (result.first == false) {
+    if (result.first == ERROR_CODE::ER_DB_ERROR) {
         return result;
     }
 
@@ -409,7 +409,7 @@ std::pair<bool, UserInfo> Server::UserLogin(const char* accountID, const char* a
     Player* player = dynamic_cast<Player*>(GetSessions()[sessionID]);
     player->SetUserInfoFromDB(userInfo);
 
-    return { true, userInfo };
+    return { ERROR_CODE::ER_NONE, userInfo };
 }
 
 int Server::CreateNewRoom(GameMode gameMode, int mapIndex, int mapTheme)
