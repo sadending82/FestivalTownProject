@@ -35,8 +35,6 @@ public:
 				if (tableManager->GetEventRewardList()[eventCode].count(next_day) != 0) {
 					result = db->InsertUserAttendance(uid, eventCode, next_day);
 
-					COUT << result << ENDL;
-
 					if (result == ERROR_CODE::ER_NONE) {
 						reward_code = tableManager->GetEventRewardList()[eventCode][next_day].Reward_Item_Index;
 						reward_amount = tableManager->GetEventRewardList()[eventCode][next_day].Reward_Item_Value;

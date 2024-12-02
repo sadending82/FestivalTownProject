@@ -19,7 +19,7 @@ public:
 				const char* id = read->account_id()->c_str();
 				const char* pw = read->account_password()->c_str();
 
-				std::pair<bool, UserInfo> result = pServer->UserLogin(id, pw, key);
+				std::pair<ERROR_CODE, UserInfo> result = pServer->UserLogin(id, pw, key);
 
 				UserInfo userInfo = result.second;
 
@@ -30,7 +30,7 @@ public:
 				bool isNewEvent = pServer->GetLobbyManager()->CheckIsNewEvent(userInfo.date);
 				pPacketSender->SendLoginResponse(key, result.first, userInfo, attendanceInfoList, isNewEvent);
 
-				if (result.first == true) {
+				if (result.first == ERROR_CODE::ER_NONE) {
 					Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
 					player->SetUserInfoFromDB(userInfo);
 				}
