@@ -442,6 +442,7 @@ public class CharacterStatus : MonoBehaviour
             SetLowerBodyAnimationState(LowerBodyAnimationState.IDLE);
             isGroggy = true;
             Managers.Effect.PlayEffect("Ch_Groggy", playerUIController.gameObject.transform.position);
+            playerUIController.gameObject.transform.GetChild(4).gameObject.SetActive(true);
             animationMoudule.GroggyOn();
         }
     }
@@ -457,6 +458,7 @@ public class CharacterStatus : MonoBehaviour
 
             isGroggy = false;
             SetStamina(maxStamina);
+            playerUIController.gameObject.transform.GetChild(4).gameObject.SetActive(false);
             animationMoudule.GroggyOff();
         }
     }
