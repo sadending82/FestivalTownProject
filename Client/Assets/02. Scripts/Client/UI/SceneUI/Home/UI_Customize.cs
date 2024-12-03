@@ -35,6 +35,7 @@ public class UI_Customize : UI_Scene
         GameObject scrVObj = Get<GameObject>((int)GameObjects.CustomizeItemList).GetComponent<UI_CustomizeItemList>().GetScrollView();
         scrVObj = Get<GameObject>((int)GameObjects.CustomizeItemList).GetComponent<UI_CustomizeItemList>().GetScrollView();
         UI_Customize_ScrollView scrV = scrVObj.GetComponent<UI_Customize_ScrollView>();
+        scrV.Init();
 
         // 인벤토리 아이템 생성
         foreach (var item in Managers.Data.InventoryDataList)
@@ -53,9 +54,11 @@ public class UI_Customize : UI_Scene
         }
 
         GameObject contentObj = scrV.GetContent();
-        UI_Customize_ScrViewContent content = contentObj.GetComponent<UI_Customize_ScrViewContent>();
-
-        content.SetHeightByContents();
+        if (contentObj != null)
+        {
+            UI_Customize_ScrViewContent content = contentObj.GetComponent<UI_Customize_ScrViewContent>();
+            content.SetHeightByContents();
+        }
 
         //커스터마이징 버튼
         Get<GameObject>((int)GameObjects.SetCustomizingButton).BindEvent((PointerEventData) =>

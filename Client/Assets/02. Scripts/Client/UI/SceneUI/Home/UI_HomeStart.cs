@@ -20,6 +20,7 @@ public class UI_HomeStart : UI_Scene
         AccountInitializeButton,
         GetMoneyButton,
         GetDiamondButton,
+        EventButton,
     }
 
     bool isInitialized = false;
@@ -87,6 +88,11 @@ public class UI_HomeStart : UI_Scene
             // 다이아 획득 버튼에서 해야할 일
             // 패킷 보내기 정도 인듯?
             Managers.Network.GetPacketManager().SendGetDiaCheatPacket();
+        });
+
+        Get<GameObject>((int)GameObjects.EventButton).BindEvent((ButtonEventData) =>
+        {
+            Managers.UI.ShowPopUpUI<UI_Event>();
         });
 
         if (false == Managers.Cheat.IsEnable())

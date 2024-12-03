@@ -24,6 +24,15 @@ public class UI_CharacterModel : UI_Base
         // 커스터마이징 설정
         // transform도 만지기 때문에, Start에서 해주는 것이 맞는 것으로 보임. 
         SetCustomizing();
+
+        if(Camera.main.transform.GetChild(0).gameObject.activeInHierarchy) // 로비 카메라
+        {
+            transform.LookAt(Camera.main.transform.GetChild(0));
+        }
+        else // 커스터마이징 카메라
+        {
+            transform.LookAt(Camera.main.transform.GetChild(1));
+        }
     }
 
     public override void Init()

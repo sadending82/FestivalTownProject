@@ -93,6 +93,12 @@ public class Define
         Emo = 24,
     }
 
+    public enum SelectedEventToggle
+    {
+        Announcement = 0,
+        Event = 1,
+    }
+
     public struct PlayerResult
     {
         public int Id;
