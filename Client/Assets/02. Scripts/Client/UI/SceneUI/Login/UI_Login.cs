@@ -25,5 +25,10 @@ public class UI_Login : UI_Scene
         GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
     }
 
+    public void Login()
+    {
+        Get<GameObject>((int)GameObjects.LoginPanel).GetComponent<UI_LoginPanel>().Login();
+    }
+
 
 }

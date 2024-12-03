@@ -23,6 +23,43 @@ public class LoginScene : BaseScene
 
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (Managers.UI.GetTopOfPopUPUI() != null && Managers.UI.GetTopOfPopUPUI().GetComponent<UI_CreateAccount>() != null)
+            {
+                Camera.main.gameObject.GetComponent<SuperBlur.SuperBlur>().enabled = false;
+                Managers.UI.ClosePopUpUI();
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            if (Managers.UI.GetTopOfPopUPUI() != null
+                && Managers.UI.GetTopOfPopUPUI().GetComponent<UI_SignInSuccess>() != null)
+            {
+                // 현재 가장 위에 있는 UI : 회원가입 성공 UI
+                if (Camera.main.gameObject.GetComponent<SuperBlur.SuperBlur>() != null)
+                {
+                    Camera.main.gameObject.GetComponent<SuperBlur.SuperBlur>().enabled = false;
+                }
+                Managers.UI.ClosePopUpUI();
+                Managers.UI.ClosePopUpUI();
+            }
+            else if (Managers.UI.GetTopOfPopUPUI() != null &&
+                Managers.UI.GetTopOfPopUPUI().GetComponent<UI_CreateAccount>() != null)
+            {
+                // 현재 가장 위에 있는 UI : 회원가입 UI
+                Managers.UI.GetTopOfPopUPUI().GetComponent<UI_CreateAccount>().CreateAccount();
+            }
+            else
+            {
+                Managers.UI.GetCurrentSceneUI().GetComponent<UI_Login>().Login();
+            }
+        }
+    }
+
     public override void Clear()
     {
 

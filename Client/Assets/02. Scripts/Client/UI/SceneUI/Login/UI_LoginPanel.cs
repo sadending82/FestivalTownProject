@@ -61,18 +61,6 @@ public class UI_LoginPanel: UI_Base
                 }
             }
         }
-
-        if(Input.GetKeyDown(KeyCode.Return))
-        {
-            if (Managers.UI.GetTopOfPopUPUI() != null && Managers.UI.GetTopOfPopUPUI().GetComponent<UI_SignInSuccess>() != null)
-            {
-                Managers.UI.ClosePopUpUI();
-            }
-            else
-            {
-                Login();
-            }
-        }
     }
 
     public void Login()

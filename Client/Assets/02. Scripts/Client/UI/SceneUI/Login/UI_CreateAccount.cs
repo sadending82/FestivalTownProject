@@ -27,20 +27,7 @@ public class UI_CreateAccount : UI_PopUp
         {
             Debug.Log("회원가입 버튼 클릭");
 
-            var panel = Get<GameObject>((int)GameObjects.CreateAccountPanel).GetComponent<UI_CreateAccountPanel>();
-            if (panel.IsCompatible())
-            {
-                Debug.Log($"ID : {panel.GetEmailText()}");
-                Debug.Log($"PW : {panel.GetPassword()}");
-                Debug.Log($"NAME : {panel.GetNickName()}");
-
-                Managers.Network.GetPacketManager().SendSignUpRequestPacket(
-                    panel.GetEmailText(), panel.GetPassword(), panel.GetNickName());
-            }
-            else
-            {
-                Debug.Log("회원가입 실패");
-            }
+            CreateAccount();
         });
 
         Get<GameObject>((int)GameObjects.QuitButton).BindEvent((PointerEventData) =>
@@ -58,6 +45,25 @@ public class UI_CreateAccount : UI_PopUp
         if (Input.GetKeyDown(KeyCode.Escape)) {
             Camera.main.gameObject.GetComponent<SuperBlur.SuperBlur>().enabled = false;
             ClosePopUpUI();
+        }
+
+    }
+
+    public void CreateAccount()
+    {
+        var panel = Get<GameObject>((int)GameObjects.CreateAccountPanel).GetComponent<UI_CreateAccountPanel>();
+        if (panel.IsCompatible())
+        {
+            Debug.Log($"ID : {panel.GetEmailText()}");
+            Debug.Log($"PW : {panel.GetPassword()}");
+            Debug.Log($"NAME : {panel.GetNickName()}");
+
+            Managers.Network.GetPacketManager().SendSignUpRequestPacket(
+                panel.GetEmailText(), panel.GetPassword(), panel.GetNickName());
+        }
+        else
+        {
+            Debug.Log("회원가입 실패");
         }
     }
 
