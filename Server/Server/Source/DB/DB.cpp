@@ -91,10 +91,6 @@ ERROR_CODE DB::InsertNewAcccount(const char* id, const char* password)
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
-	/*if (mSecurity->VerifyString(password) == false) {
-		return ERROR_CODE::ER_DB_ERROR;
-	}*/
-
 	if (mSecurity->VerifyEmail(id) == false) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
@@ -773,17 +769,14 @@ sDayAttendanceInfo DB::SelectUserAttendanceEventLatest(const int uid, const int 
 			char date[11] = { 0 };
 			std::tm tDate = {};
 			int day_number = 0;
-			int is_rewarded = 0;
 
 			SQLGetData(hStmt, 1, SQL_C_CHAR, date, sizeof(date), &col1);
 			SQLGetData(hStmt, 2, SQL_C_LONG, &day_number, sizeof(day_number), &col2);
-			SQLGetData(hStmt, 3, SQL_C_LONG, &is_rewarded, sizeof(is_rewarded), &col3);
 
 			std::istringstream ssDate(date);
 			ssDate >> std::get_time(&tDate, "%Y-%m-%d");
 			dayAttendanceInfo.attendance_date = tDate;
 			dayAttendanceInfo.day_number = day_number;
-			dayAttendanceInfo.is_rewarded = is_rewarded;
 		}
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);

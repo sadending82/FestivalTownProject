@@ -39,8 +39,10 @@ const wchar_t* SelectUserItemCount_Query = L"SELECT count FROM GameDB.dbo.UserIt
 //SELECT attendance_date, day_count, is_rewarded FROM GameDB.dbo.UserAttendance WHERE user_UID = ? AND event_code = ? ORDER BY day_count ASC
 const wchar_t* SelectUserAttendanceEvent_Query = L"SELECT attendance_date, day_count, is_rewarded FROM GameDB.dbo.UserAttendance WHERE user_UID = ? AND event_code = ? ORDER BY day_count ASC";
 
-const wchar_t* SelectUserAttendanceEventLatest_Query = L"SELECT attendance_date, day_count, is_rewarded FROM GameDB.dbo.UserAttendance WHERE day_count = (\
-SELECT MAX(attendance_date) FROM GameDB.dbo.UserAttendance WHERE user_UID = ? AND event_code = ?";
+const wchar_t* SelectUserAttendanceEventLatest_Query = L"SELECT TOP 1 attendance_date, day_count "
+														L"FROM GameDB.dbo.UserAttendance "
+														L"WHERE user_UID = ? AND event_code = ? "
+														L"ORDER BY attendance_date DESC ";
 
 //SELECT COUNT(*) FROM GameDB.dbo.UserAttendance WHERE user_UID = ? AND attendance_date = CAST(GETDATE() AS DATE)
 const wchar_t* SelectUserAttendanceToday_Query = L"SELECT COUNT(*) FROM GameDB.dbo.UserAttendance WHERE user_UID = ? AND attendance_date = CAST(GETDATE() AS DATE)";

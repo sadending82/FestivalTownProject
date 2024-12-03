@@ -28,6 +28,22 @@ public:
 
 				int next_day = dayAttendanceInfo.day_number + 1;
 
+				std::time_t nowTime = std::time(nullptr);
+				std::tm tNowTime = {};
+				localtime_s(&tNowTime, &nowTime);
+
+				if (tNowTime.tm_year == dayAttendanceInfo.attendance_date.tm_year
+					&& tNowTime.tm_mon == dayAttendanceInfo.attendance_date.tm_mon
+					&& tNowTime.tm_mday == dayAttendanceInfo.attendance_date.tm_mday) {
+					return;
+				}
+
+				COUT << eventCode << "  " << uid << "   " << dayAttendanceInfo.day_number << ENDL;
+
+				COUT << tNowTime.tm_year << "  " << dayAttendanceInfo.attendance_date.tm_year << ENDL;
+				COUT << tNowTime.tm_mon << "  " << dayAttendanceInfo.attendance_date.tm_mon << ENDL;
+				COUT << tNowTime.tm_mday << "  " << dayAttendanceInfo.attendance_date.tm_mday << ENDL;
+
 				ERROR_CODE result = ERROR_CODE::ER_DB_NO_DATA;
 				int reward_code = 0;
 				int reward_amount = 0;
