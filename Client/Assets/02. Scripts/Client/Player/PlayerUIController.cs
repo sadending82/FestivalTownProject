@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PlayerUIController : MonoBehaviour
@@ -31,5 +32,21 @@ public class PlayerUIController : MonoBehaviour
     public void SetCamera(Camera targetCamera)
     {
         cam = targetCamera.gameObject;
+    }
+    public void SetNickName(string nickName)
+    {
+        switch(playerState.GetTeamNumber())
+        {
+            // 굉장히 맘에 안들지만 임시적으로 일단 이렇게 해두기.
+            case 0:
+                transform.GetChild(1).GetChild(0).GetChild(1).GetChild(0).GetComponent<TMP_Text>().text = nickName;
+                break;
+            case 1:
+                transform.GetChild(2).GetChild(0).GetChild(1).GetChild(0).GetComponent<TMP_Text>().text = nickName;
+                break;
+            case 2:
+                transform.GetChild(3).GetChild(0).GetChild(1).GetChild(0).GetComponent<TMP_Text>().text = nickName;
+                break;
+        }
     }
 }

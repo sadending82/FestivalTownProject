@@ -19,6 +19,7 @@ public class CharacterStatus : MonoBehaviour
 
     // Ω∫≈»
     [Header("--- Status ---")]
+    [SerializeField] private string nickName; 
     [SerializeField] private int id;
     [SerializeField] private int teamNumber;
     [Space(10f)]
@@ -114,6 +115,7 @@ public class CharacterStatus : MonoBehaviour
         RunEffect.Stop();
         SetUITeam();
         SetUIMe();
+        SetUINickName();
         ResetCharacterState();
         myCamera.gameObject.GetComponent<PlayerCameraController>().GameStart();
     }
@@ -130,6 +132,7 @@ public class CharacterStatus : MonoBehaviour
     {
         var data = Managers.Data.GetData(1000);
         CharacterStatEntity cse = (CharacterStatEntity)data;
+        SetNickName("default");
         SetMaxHp(cse.Ch_Hp);
         SetHp(cse.Ch_Hp);
         SetMaxStamina(cse.Ch_Stamina);
@@ -148,6 +151,14 @@ public class CharacterStatus : MonoBehaviour
             Managers.SpectatorCamera.SetCameraInPlayerUIControllers();
         }
         playerController.ResetPlayerControllerSetting();
+    }
+    public void SetNickName(string value)
+    {
+        nickName = value;
+    }
+    public string GetNickName()
+    {
+        return nickName;
     }
     public void SetId(int id)
     {
@@ -681,5 +692,10 @@ public class CharacterStatus : MonoBehaviour
         {
             playerUIController.gameObject.transform.GetChild(0).gameObject.SetActive(true);
         }
+    }
+
+    public void SetUINickName()
+    {
+        playerUIController.SetNickName(nickName);
     }
 }

@@ -44,7 +44,7 @@ namespace Network.PacketProcessor
                 Debug.Log($"AddPlayer info ID : {id}, TEAM : {team}, POS: ({position.X}, {position.Y}, {position.Z}), NICKNAME : {nickname}");
 
                 Vector3 pos = new Vector3(position.X, position.Y, position.Z);
-                Managers.Player.GetComponent<PlayerManager>().AddPlayer(id, pos, team);
+                Managers.Player.GetComponent<PlayerManager>().AddPlayer(id, pos, team, nickname);
                 Managers.Game.PlayerTeamData.Add(id, team);
 
             }
