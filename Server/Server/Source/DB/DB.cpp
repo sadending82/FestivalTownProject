@@ -96,7 +96,6 @@ ERROR_CODE DB::InsertNewAcccount(const char* id, const char* password)
 	}*/
 
 	if (mSecurity->VerifyEmail(id) == false) {
-		COUT << "TLQKF\n";
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
