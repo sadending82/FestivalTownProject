@@ -38,12 +38,6 @@ public:
 					return;
 				}
 
-				COUT << eventCode << "  " << uid << "   " << dayAttendanceInfo.day_number << ENDL;
-
-				COUT << tNowTime.tm_year << "  " << dayAttendanceInfo.attendance_date.tm_year << ENDL;
-				COUT << tNowTime.tm_mon << "  " << dayAttendanceInfo.attendance_date.tm_mon << ENDL;
-				COUT << tNowTime.tm_mday << "  " << dayAttendanceInfo.attendance_date.tm_mday << ENDL;
-
 				ERROR_CODE result = ERROR_CODE::ER_DB_NO_DATA;
 				int reward_code = 0;
 				int reward_amount = 0;
@@ -54,17 +48,17 @@ public:
 					if (result == ERROR_CODE::ER_NONE) {
 						reward_code = tableManager->GetEventRewardList()[eventCode][next_day].Reward_Item_Index;
 						reward_amount = tableManager->GetEventRewardList()[eventCode][next_day].Reward_Item_Value;
-						// 출석 보상있으면 지급
-						if (reward_code != 0) {
-							ItemType itemType = tableManager->GetItemInfos()[reward_code].Item_Type;
+						//// 출석 보상있으면 지급
+						//if (reward_code != 0) {
+						//	ItemType itemType = tableManager->GetItemInfos()[reward_code].Item_Type;
 
-							if (itemType == ItemType::Money) {
-								result = db->UpsertUserItemCount(uid, reward_code, reward_amount);
-							}
-							else {
-								result = db->InsertUserItem(uid, reward_code, reward_amount, (int)itemType);
-							}
-						}
+						//	if (itemType == ItemType::Money) {
+						//		result = db->UpsertUserItemCount(uid, reward_code, reward_amount);
+						//	}
+						//	else {
+						//		result = db->InsertUserItem(uid, reward_code, reward_amount, (int)itemType);
+						//	}
+						//}
 					}
 				}
 
