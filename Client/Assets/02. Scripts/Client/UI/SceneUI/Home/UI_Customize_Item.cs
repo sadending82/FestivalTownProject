@@ -54,7 +54,7 @@ public class UI_Customize_Item : UI_Base
 
         Get<GameObject>((int)GameObjects.ItemIcon).BindEvent((PointerEventData) => {
             parentUI.SetAccessory(ItemIndex);
-        });
+        }, Define.UIEvent.PointerDown);
     }
 
     public int GetItemUid()
