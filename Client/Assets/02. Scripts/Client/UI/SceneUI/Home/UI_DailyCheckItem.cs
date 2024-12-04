@@ -1,16 +1,13 @@
-using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class UI_DailyCheckItem : UI_Base
 {
     enum GameObjects
     {
-        Day,
-        ItemImage,
-        Name,
+        VerticalLayout,
+        AquireableMark,
     }
 
     bool isInitialized = false;
@@ -24,34 +21,39 @@ public class UI_DailyCheckItem : UI_Base
     {
         Bind<GameObject>(typeof(GameObjects));
 
+        Get<GameObject>((int)GameObjects.VerticalLayout).GetComponent<UI_DailyCheckItemVertLayout>().Init();
+
         transform.localScale = Vector3.one;
+
         SetItemRewarded(false);
+        SetAquireable(false);
+
         isInitialized = true;
     }
 
     public void SetDay(int day)
     {
-        Get<GameObject>((int)GameObjects.Day).GetComponent<TMP_Text>().text = $"Day {day}";
+        Get<GameObject>((int)GameObjects.VerticalLayout).GetComponent<UI_DailyCheckItemVertLayout>().SetDay(day);
     }
 
     public void SetName(string name)
     {
-        Get<GameObject>((int)GameObjects.Name).GetComponent<TMP_Text>().text = $"{name}";
+        Get<GameObject>((int)GameObjects.VerticalLayout).GetComponent<UI_DailyCheckItemVertLayout>().SetName(name);
     }
 
     public void SetItemRewarded(bool rewarded)
     {
-        if(rewarded)
-        {
-            // 0번 => 아이템 이미지
-            // 1번 => 받았는 지 체크용 이미지
-            Get<GameObject>((int)GameObjects.ItemImage).transform.GetChild(1).gameObject.SetActive(true);
-        }
-        else
-        {
-            // 0번 => 아이템 이미지
-            // 1번 => 받았는 지 체크용 이미지
-            Get<GameObject>((int)GameObjects.ItemImage).transform.GetChild(1).gameObject.SetActive(false);
-        }
+        Get<GameObject>((int)GameObjects.VerticalLayout).GetComponent<UI_DailyCheckItemVertLayout>().SetItemRewarded(rewarded);
     }
+
+    public void SetAquireable(bool value)
+    {
+        Get<GameObject>((int)GameObjects.AquireableMark).SetActive(value);
+    }
+
+    public void BindEvent(int dataIndex)
+    {
+        Get<GameObject>((int)GameObjects.VerticalLayout).GetComponent<UI_DailyCheckItemVertLayout>().BindEvent(dataIndex);
+    }
+
 }
