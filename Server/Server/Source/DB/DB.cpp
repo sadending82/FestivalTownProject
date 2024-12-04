@@ -832,6 +832,50 @@ int DB::SelectUserAttendanceToday(const int uid)
 	return 0;
 }
 
+bool DB::SelectUserAttendanceIsRewarded(const int uid, const int eventCode, const int dayCount)
+{
+	if (uid == 0) {
+		return true;
+	}
+
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	int isRewarded = 1;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGONEPARAM("hStmt Error %d : (SelectUserAttendanceIsRewarded) \n", retcode);
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return true;
+	}
+
+
+
+	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserAttendanceIsRewarded_Query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&eventCode), 0, NULL);
+	SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&dayCount), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		SQLLEN col1;
+
+		while (SQLFetch(hStmt) == SQL_SUCCESS) {
+			SQLGetData(hStmt, 1, SQL_C_LONG, &isRewarded, sizeof(isRewarded), &col1);
+		}
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return isRewarded;
+	}
+
+	DEBUGMSGONEPARAM("Execute Query Error %d : (SelectUserAttendanceIsRewarded)\n", retcode);
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	return true;
+}
+
 ERROR_CODE DB::UpdateUserConnectionState(const int uid, const int state)
 {
 	if (uid == 0) {
@@ -1109,6 +1153,51 @@ ERROR_CODE DB::UpdateCharacterCustomizing(const int uid, const std::vector<uint8
 	DEBUGMSGONEPARAM("Execute Query Error %d : (UpdateCharacterCustomizing)\n", retcode);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	return ERROR_CODE::ER_DB_ERROR;
+}
+
+bool DB::UpdateUserAttendanceIsRewarded(const int uid, const int eventCode, const int dayCount, const int updateValue)
+{
+	if (uid == 0) {
+		return true;
+	}
+
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	unsigned char update_value = updateValue;
+	unsigned char before_isRewarded = 1;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGONEPARAM("hStmt Error %d : (UpdateUserAttendanceIsRewarded) \n", retcode);
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return true;
+	}
+
+	SQLPrepare(hStmt, (SQLWCHAR*)UpdateUserAttendanceIsRewarded_Query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_UTINYINT, SQL_TINYINT, sizeof(unsigned char), 0, (void*)(&update_value), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+	SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&eventCode), 0, NULL);
+	SQLBindParameter(hStmt, 4, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&dayCount), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		while (SQLFetch(hStmt) == SQL_SUCCESS) {
+			SQLLEN col1;
+
+			SQLGetData(hStmt, 1, SQL_C_UTINYINT, &before_isRewarded, sizeof(before_isRewarded), &col1);
+
+			SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+
+			return static_cast<bool>(before_isRewarded);
+		}
+	}
+
+	DEBUGMSGONEPARAM("Execute Query Error %d : (UpdateUserAttendanceIsRewarded)\n", retcode);
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	return true;
 }
 
 ERROR_CODE DB::DeleteAcccount(const char* id)

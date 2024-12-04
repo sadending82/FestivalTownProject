@@ -99,12 +99,20 @@ std::vector<uint8_t> PacketMaker::MakeUserItemsResponsePacket(int result, std::u
 	return MakeBuffer(ePacketType::S2C_USER_ITEMS_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakeAttendanceEventResponsePacket(int result, int eventCode, int rewardCode, int rewardAmount)
+std::vector<uint8_t> PacketMaker::MakeAttendanceEventResponsePacket(int eventCode, int result)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 
-	Builder.Finish(PacketTable::LobbyTable::CreateAttendanceEventResponse(Builder, eventCode, result, rewardCode, rewardAmount));
+	Builder.Finish(PacketTable::LobbyTable::CreateAttendanceEventResponse(Builder, eventCode, result));
 	return MakeBuffer(ePacketType::S2C_ATTENDANCE_EVENT_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
+}
+
+std::vector<uint8_t> PacketMaker::MakeAttendanceRewardResponsePacket(int eventCode, int day_count, int result, int reward_item, int reward_item_count)
+{
+	flatbuffers::FlatBufferBuilder Builder;
+
+	Builder.Finish(PacketTable::LobbyTable::CreateAttendanceRewardResponse(Builder, eventCode, day_count, result, reward_item, reward_item_count));
+	return MakeBuffer(ePacketType::S2C_ATTENDANCE_REWARD_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
 std::vector<uint8_t> PacketMaker::MakePlayerAddPacket(std::vector<class Player*>& players)

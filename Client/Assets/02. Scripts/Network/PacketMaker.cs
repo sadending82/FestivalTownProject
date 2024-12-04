@@ -587,6 +587,28 @@ public class PacketMaker
 
         return result;
     }
+    public byte[] MakeAttendanceRewardRequestPacket(int eventCode, int dayCount)
+    {
+        var builder = new FlatBufferBuilder(1);
+
+        AttendanceRewardRequest.StartAttendanceRewardRequest(builder);
+        AttendanceRewardRequest.AddEventCode(builder, eventCode);
+        AttendanceRewardRequest.AddDayCount(builder, dayCount); 
+        var offset = AttendanceRewardRequest.EndAttendanceRewardRequest(builder);
+
+        builder.Finish(offset.Value);
+
+        byte[] data = builder.SizedByteArray();
+        HEADER header = new HEADER { type = (ushort)ePacketType.c2s_a, flatBufferSize = (ushort)data.Length };
+        byte[] headerdata = Serialize<HEADER>(header);
+        byte[] result = new byte[data.Length + headerdata.Length];
+
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
+
+        return result;
+    }
+
 
     public byte[] MakePlayerGrabWeaponPacket(Vector3 position, Vector3 direction, int playerID, int weaponID)
     {

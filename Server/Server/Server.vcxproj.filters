@@ -144,6 +144,7 @@
     <ClInclude Include="Source\TableManager\Tables\Map.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Cheat\Packet_AccountReset.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Cheat\Packet_GetCurrency.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_AttendanceRewardRequest.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

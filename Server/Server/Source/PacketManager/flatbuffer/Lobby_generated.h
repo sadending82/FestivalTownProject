@@ -54,6 +54,12 @@ struct AttendanceEventRequestBuilder;
 struct AttendanceEventResponse;
 struct AttendanceEventResponseBuilder;
 
+struct AttendanceRewardRequest;
+struct AttendanceRewardRequestBuilder;
+
+struct AttendanceRewardResponse;
+struct AttendanceRewardResponseBuilder;
+
 struct GameMatchingRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef GameMatchingRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -747,9 +753,7 @@ struct AttendanceEventResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::
   typedef AttendanceEventResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_EVENT_CODE = 4,
-    VT_RESULT = 6,
-    VT_REWARD_CODE = 8,
-    VT_REWARD_AMOUNT = 10
+    VT_RESULT = 6
   };
   int32_t event_code() const {
     return GetField<int32_t>(VT_EVENT_CODE, 0);
@@ -757,18 +761,10 @@ struct AttendanceEventResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::
   int32_t result() const {
     return GetField<int32_t>(VT_RESULT, 0);
   }
-  int32_t reward_code() const {
-    return GetField<int32_t>(VT_REWARD_CODE, 0);
-  }
-  int32_t reward_amount() const {
-    return GetField<int32_t>(VT_REWARD_AMOUNT, 0);
-  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_EVENT_CODE, 4) &&
            VerifyField<int32_t>(verifier, VT_RESULT, 4) &&
-           VerifyField<int32_t>(verifier, VT_REWARD_CODE, 4) &&
-           VerifyField<int32_t>(verifier, VT_REWARD_AMOUNT, 4) &&
            verifier.EndTable();
   }
 };
@@ -782,12 +778,6 @@ struct AttendanceEventResponseBuilder {
   }
   void add_result(int32_t result) {
     fbb_.AddElement<int32_t>(AttendanceEventResponse::VT_RESULT, result, 0);
-  }
-  void add_reward_code(int32_t reward_code) {
-    fbb_.AddElement<int32_t>(AttendanceEventResponse::VT_REWARD_CODE, reward_code, 0);
-  }
-  void add_reward_amount(int32_t reward_amount) {
-    fbb_.AddElement<int32_t>(AttendanceEventResponse::VT_REWARD_AMOUNT, reward_amount, 0);
   }
   explicit AttendanceEventResponseBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -803,13 +793,141 @@ struct AttendanceEventResponseBuilder {
 inline ::flatbuffers::Offset<AttendanceEventResponse> CreateAttendanceEventResponse(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t event_code = 0,
-    int32_t result = 0,
-    int32_t reward_code = 0,
-    int32_t reward_amount = 0) {
+    int32_t result = 0) {
   AttendanceEventResponseBuilder builder_(_fbb);
-  builder_.add_reward_amount(reward_amount);
-  builder_.add_reward_code(reward_code);
   builder_.add_result(result);
+  builder_.add_event_code(event_code);
+  return builder_.Finish();
+}
+
+struct AttendanceRewardRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef AttendanceRewardRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_EVENT_CODE = 4,
+    VT_DAY_COUNT = 6
+  };
+  int32_t event_code() const {
+    return GetField<int32_t>(VT_EVENT_CODE, 0);
+  }
+  int32_t day_count() const {
+    return GetField<int32_t>(VT_DAY_COUNT, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_EVENT_CODE, 4) &&
+           VerifyField<int32_t>(verifier, VT_DAY_COUNT, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct AttendanceRewardRequestBuilder {
+  typedef AttendanceRewardRequest Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_event_code(int32_t event_code) {
+    fbb_.AddElement<int32_t>(AttendanceRewardRequest::VT_EVENT_CODE, event_code, 0);
+  }
+  void add_day_count(int32_t day_count) {
+    fbb_.AddElement<int32_t>(AttendanceRewardRequest::VT_DAY_COUNT, day_count, 0);
+  }
+  explicit AttendanceRewardRequestBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<AttendanceRewardRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<AttendanceRewardRequest>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<AttendanceRewardRequest> CreateAttendanceRewardRequest(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t event_code = 0,
+    int32_t day_count = 0) {
+  AttendanceRewardRequestBuilder builder_(_fbb);
+  builder_.add_day_count(day_count);
+  builder_.add_event_code(event_code);
+  return builder_.Finish();
+}
+
+struct AttendanceRewardResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef AttendanceRewardResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_EVENT_CODE = 4,
+    VT_DAY_COUNT = 6,
+    VT_RESULT = 8,
+    VT_REWARD_ITEM = 10,
+    VT_REWARD_ITEM_COUNT = 12
+  };
+  int32_t event_code() const {
+    return GetField<int32_t>(VT_EVENT_CODE, 0);
+  }
+  int32_t day_count() const {
+    return GetField<int32_t>(VT_DAY_COUNT, 0);
+  }
+  int32_t result() const {
+    return GetField<int32_t>(VT_RESULT, 0);
+  }
+  int32_t reward_item() const {
+    return GetField<int32_t>(VT_REWARD_ITEM, 0);
+  }
+  int32_t reward_item_count() const {
+    return GetField<int32_t>(VT_REWARD_ITEM_COUNT, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_EVENT_CODE, 4) &&
+           VerifyField<int32_t>(verifier, VT_DAY_COUNT, 4) &&
+           VerifyField<int32_t>(verifier, VT_RESULT, 4) &&
+           VerifyField<int32_t>(verifier, VT_REWARD_ITEM, 4) &&
+           VerifyField<int32_t>(verifier, VT_REWARD_ITEM_COUNT, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct AttendanceRewardResponseBuilder {
+  typedef AttendanceRewardResponse Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_event_code(int32_t event_code) {
+    fbb_.AddElement<int32_t>(AttendanceRewardResponse::VT_EVENT_CODE, event_code, 0);
+  }
+  void add_day_count(int32_t day_count) {
+    fbb_.AddElement<int32_t>(AttendanceRewardResponse::VT_DAY_COUNT, day_count, 0);
+  }
+  void add_result(int32_t result) {
+    fbb_.AddElement<int32_t>(AttendanceRewardResponse::VT_RESULT, result, 0);
+  }
+  void add_reward_item(int32_t reward_item) {
+    fbb_.AddElement<int32_t>(AttendanceRewardResponse::VT_REWARD_ITEM, reward_item, 0);
+  }
+  void add_reward_item_count(int32_t reward_item_count) {
+    fbb_.AddElement<int32_t>(AttendanceRewardResponse::VT_REWARD_ITEM_COUNT, reward_item_count, 0);
+  }
+  explicit AttendanceRewardResponseBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<AttendanceRewardResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<AttendanceRewardResponse>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<AttendanceRewardResponse> CreateAttendanceRewardResponse(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t event_code = 0,
+    int32_t day_count = 0,
+    int32_t result = 0,
+    int32_t reward_item = 0,
+    int32_t reward_item_count = 0) {
+  AttendanceRewardResponseBuilder builder_(_fbb);
+  builder_.add_reward_item_count(reward_item_count);
+  builder_.add_reward_item(reward_item);
+  builder_.add_result(result);
+  builder_.add_day_count(day_count);
   builder_.add_event_code(event_code);
   return builder_.Finish();
 }

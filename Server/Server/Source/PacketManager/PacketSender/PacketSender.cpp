@@ -47,9 +47,15 @@ void PacketSender::SendUserItemsResponsePacket(int sessionID, int result, std::u
     mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
 }
 
-void PacketSender::SendAttendanceEventResponsePacket(int sessionID, int result, int eventCode, int rewardCode, int rewardAmount)
+void PacketSender::SendAttendanceEventResponsePacket(int sessionID, int eventCode, int result)
 {
-    std::vector<uint8_t> send_buffer = mPacketMaker->MakeAttendanceEventResponsePacket(result, eventCode, rewardCode, rewardAmount);
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakeAttendanceEventResponsePacket(result, eventCode);
+    mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
+}
+
+void PacketSender::SendAttendanceRewardResponsePacket(int sessionID, int eventCode, int day_count, int result, int reward_item, int reward_item_count)
+{
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakeAttendanceRewardResponsePacket(eventCode, day_count, result, reward_item, reward_item_count);
     mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
 }
 

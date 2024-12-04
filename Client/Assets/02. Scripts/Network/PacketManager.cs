@@ -54,6 +54,7 @@ public class PacketManager : MonoBehaviour
             { ePacketType.S2C_USER_ITEMS_RESPONSE, new UserItemsResponseProcessor() },
             { ePacketType.S2C_CHANGE_CHARACTER_CUSTOMIZING, new ChangeCharacterCustomizingProcessor() },
             { ePacketType.S2C_ATTENDANCE_EVENT_RESPONSE, new AttendanceEventResponseProcessor() },
+            { ePacketType.S2C_ATTENDANCE_REWARD_RESPONSE, new AttendanceRewardResponseProcessor() },
 
             { ePacketType.S2C_HEART_BEAT, new HeartBeatProcessor() },
 
@@ -215,6 +216,12 @@ public class PacketManager : MonoBehaviour
     public void SendAttendanceEventRequestPacket(int eventCode)
     {
         byte[] packet = _packetMaker.MakeAttendanceEventRequestPacket(eventCode);
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+    public void SendAttendanceRewardRequestPacket(int eventCode, int dayCount)
+    {
+        byte[] packet = _packetMaker.MakeAttendanceRewardRequestPacket(eventCode, dayCount);
         if (packet == null) { return; }
         SendPacket(packet);
     }

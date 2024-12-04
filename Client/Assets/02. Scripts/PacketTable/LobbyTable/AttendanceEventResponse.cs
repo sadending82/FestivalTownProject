@@ -21,27 +21,19 @@ public struct AttendanceEventResponse : IFlatbufferObject
 
   public int EventCode { get { int o = __p.__offset(4); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
   public int Result { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public int RewardCode { get { int o = __p.__offset(8); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public int RewardAmount { get { int o = __p.__offset(10); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
 
   public static Offset<PacketTable.LobbyTable.AttendanceEventResponse> CreateAttendanceEventResponse(FlatBufferBuilder builder,
       int event_code = 0,
-      int result = 0,
-      int reward_code = 0,
-      int reward_amount = 0) {
-    builder.StartTable(4);
-    AttendanceEventResponse.AddRewardAmount(builder, reward_amount);
-    AttendanceEventResponse.AddRewardCode(builder, reward_code);
+      int result = 0) {
+    builder.StartTable(2);
     AttendanceEventResponse.AddResult(builder, result);
     AttendanceEventResponse.AddEventCode(builder, event_code);
     return AttendanceEventResponse.EndAttendanceEventResponse(builder);
   }
 
-  public static void StartAttendanceEventResponse(FlatBufferBuilder builder) { builder.StartTable(4); }
+  public static void StartAttendanceEventResponse(FlatBufferBuilder builder) { builder.StartTable(2); }
   public static void AddEventCode(FlatBufferBuilder builder, int eventCode) { builder.AddInt(0, eventCode, 0); }
   public static void AddResult(FlatBufferBuilder builder, int result) { builder.AddInt(1, result, 0); }
-  public static void AddRewardCode(FlatBufferBuilder builder, int rewardCode) { builder.AddInt(2, rewardCode, 0); }
-  public static void AddRewardAmount(FlatBufferBuilder builder, int rewardAmount) { builder.AddInt(3, rewardAmount, 0); }
   public static Offset<PacketTable.LobbyTable.AttendanceEventResponse> EndAttendanceEventResponse(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<PacketTable.LobbyTable.AttendanceEventResponse>(o);
@@ -56,8 +48,6 @@ static public class AttendanceEventResponseVerify
     return verifier.VerifyTableStart(tablePos)
       && verifier.VerifyField(tablePos, 4 /*EventCode*/, 4 /*int*/, 4, false)
       && verifier.VerifyField(tablePos, 6 /*Result*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 8 /*RewardCode*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 10 /*RewardAmount*/, 4 /*int*/, 4, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }

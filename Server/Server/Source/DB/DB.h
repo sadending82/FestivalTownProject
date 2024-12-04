@@ -48,6 +48,7 @@ public:
     std::vector<sDayAttendanceInfo> SelectUserAttendanceEvent(const int uid, const int eventCode);
     sDayAttendanceInfo SelectUserAttendanceEventLatest(const int uid, const int eventCode);
     int SelectUserAttendanceToday(const int uid);
+    bool SelectUserAttendanceIsRewarded(const int uid, const int eventCode, const int dayCount);
 
     // UPDATE
     ERROR_CODE UpdateUserConnectionState(const int uid, const int state);
@@ -56,6 +57,8 @@ public:
     ERROR_CODE UpdateUserItemCount(const int uid, const int item_index, const int valueOfChange);
     ERROR_CODE UpdateCharacterCustomizing(const int uid, const struct sCharacterCustomizing& characterCustomizing);
     ERROR_CODE UpdateCharacterCustomizing(const int uid, const std::vector<uint8_t> characterCustomizing);
+
+    bool       UpdateUserAttendanceIsRewarded(const int uid, const int eventCode, const int dayCount, const int updateValue);
 
     // UPSERT
     ERROR_CODE UpsertUserItemCount(const int uid, const int item_index, const int valueOfChange);

@@ -47,6 +47,9 @@ const wchar_t* SelectUserAttendanceEventLatest_Query = L"SELECT TOP 1 attendance
 //SELECT COUNT(*) FROM GameDB.dbo.UserAttendance WHERE user_UID = ? AND attendance_date = CAST(GETDATE() AS DATE)
 const wchar_t* SelectUserAttendanceToday_Query = L"SELECT COUNT(*) FROM GameDB.dbo.UserAttendance WHERE user_UID = ? AND attendance_date = CAST(GETDATE() AS DATE)";
 
+//SELECT is_rewarded FROM GameDB.dbo.UserAttendance WHERE user_UID = ? AND event_code = ? AND day_count = ?
+const wchar_t* SelectUserAttendanceIsRewarded_Query = L"SELECT is_rewarded FROM GameDB.dbo.UserAttendance WHERE user_UID = ? AND event_code = ? AND day_count = ?";
+
 //UPDATE GameDB.dbo.UserInfo SET ConnectionState = ? WHERE UID = ?
 const wchar_t* UpdateUserConnectionState_Query = L"UPDATE GameDB.dbo.UserInfo SET ConnectionState = ? WHERE UID = ?";
 
@@ -82,6 +85,9 @@ const wchar_t* UpsertUserItemCount_Query = L"MERGE INTO GameDB.dbo.UserItem AS a
 											L"UPDATE SET count = count + ? "
 											L"WHEN NOT MATCHED THEN "
 											L"INSERT (owner_UID, itemCode, count, itemType) VALUES (?, ?, ?, ?);";
+
+//UPDATE GameDB.dbo.UserAttendance SET is_rewarded = ? OUTPUT deleted.is_rewarded WHERE user_UID = ? AND event_code = ? AND day_count = ? 
+const wchar_t* UpdateUserAttendanceIsRewarded_Query = L"UPDATE GameDB.dbo.UserAttendance SET is_rewarded = ? OUTPUT deleted.is_rewarded WHERE user_UID = ? AND event_code = ? AND day_count = ? ";
 
 //DELETE FROM AccountDB.dbo.Account WHERE ID = ?
 const wchar_t* DeleteAcccount_Query = L"DELETE FROM AccountDB.dbo.Account WHERE ID = ?";
