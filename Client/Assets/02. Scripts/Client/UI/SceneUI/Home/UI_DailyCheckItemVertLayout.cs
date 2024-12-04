@@ -12,6 +12,7 @@ public class UI_DailyCheckItemVertLayout : UI_Base
     }
 
     bool isInitialized = false;
+    UI_DailyCheckItem parentUI = null;
 
     void Start()
     {
@@ -51,14 +52,19 @@ public class UI_DailyCheckItemVertLayout : UI_Base
         }
     }
 
+    public void SetParentUI(UI_DailyCheckItem ui)
+    {
+        parentUI = ui;
+    }
+
     public void BindEvent(int dataIndex)
     {
         Get<GameObject>((int)GameObjects.ItemImage).transform.GetChild(0).gameObject.BindEvent((PointerEventData) =>
         {
-            Debug.Log($"selecte {dataIndex}");
-            // 여기서 선택한 아이템에 대한 데이터를 보내주어야 할 듯.
-            // 데이터 보내주고 나서 패킷 처리 단계에서 받아와야 한다.
-            // Managers.Network.GetPacketManager().SendAttendanceEventRequestPacket();
+            if(parentUI.IsAquireable())
+            {
+                Managers.Network.GetPacketManager().SendAttendanceRewardRequestPacket(parentUI.GetEventCode(), parentUI.GetDay());
+            }
         });
     }
 }

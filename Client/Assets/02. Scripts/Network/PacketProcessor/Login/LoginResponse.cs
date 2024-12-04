@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
+using System.Diagnostics.Tracing;
 
 
 namespace Network.PacketProcessor
@@ -82,11 +83,13 @@ namespace Network.PacketProcessor
                     }
 
                     Debug.Log($"Event : {eventCode}, has_attendance_today : {has_attendance_today}");
+                    //Managers.Network.GetPacketManager().SendAttendanceEventRequestPacket(eventCode);
 
-                    
                 }
 
                 Managers.Data.SetAttendanceDataRecved(true);
+
+                
             }
             else
             {

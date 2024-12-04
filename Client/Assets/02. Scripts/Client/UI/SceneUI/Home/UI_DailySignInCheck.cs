@@ -44,10 +44,19 @@ public class UI_DailySignInCheck : UI_PopUp
                     var ui = Managers.UI.MakeSubItem<UI_DailyCheckItem>(itemGrid.transform);
                     ui.Init();
                     ui.SetDay(data.Day);
+                    ui.SetItemIndex(data.Reward_Item_Index);
                     ui.SetName(Managers.Data.ItemDict[data.Reward_Item_Index].Name);
+                    ui.SetEventCode(eventData.Key);
                     
                     bool result = Managers.Data.AttendanceEventDataDict.TryGetValue(data.Day, out var attendanceEventData);     
-                    ui.SetItemRewarded(result);
+                    if (result)
+                    {
+                        ui.SetItemRewarded(attendanceEventData.isRewarded);
+                        if(!attendanceEventData.isRewarded)
+                        {
+                            ui.SetAquireable(true);
+                        }
+                    }
                     ui.BindEvent(dataIndex);
                     ++dataIndex;
                 }
@@ -55,5 +64,46 @@ public class UI_DailySignInCheck : UI_PopUp
         }
 
         isInitialized = true;
+    }
+
+    public void UpdateItemCheck()
+    {
+        GameObject itemGrid = Get<GameObject>((int)GameObjects.ItemGrid);
+
+        foreach(Transform child in itemGrid.transform)
+        {
+            Managers.Resource.Destroy(child.gameObject);
+        }
+
+        foreach (var eventData in Managers.Data.EventMainDataDict)
+        {
+            if (eventData.Value.Type == 2)
+            {
+                int dataIndex = eventData.Key + 100000;
+                while (Managers.Data.EventListDataDict.ContainsKey(dataIndex))
+                {
+                    Managers.Data.EventListDataDict.TryGetValue(dataIndex, out var data);
+
+                    var ui = Managers.UI.MakeSubItem<UI_DailyCheckItem>(itemGrid.transform);
+                    ui.Init();
+                    ui.SetDay(data.Day);
+                    ui.SetItemIndex(data.Reward_Item_Index);
+                    ui.SetName(Managers.Data.ItemDict[data.Reward_Item_Index].Name);
+                    ui.SetEventCode(eventData.Key);
+
+                    bool result = Managers.Data.AttendanceEventDataDict.TryGetValue(data.Day, out var attendanceEventData);
+                    if (result)
+                    {
+                        ui.SetItemRewarded(attendanceEventData.isRewarded);
+                        if (!attendanceEventData.isRewarded)
+                        {
+                            ui.SetAquireable(true);
+                        }
+                    }
+                    ui.BindEvent(dataIndex);
+                    ++dataIndex;
+                }
+            }
+        }
     }
 }

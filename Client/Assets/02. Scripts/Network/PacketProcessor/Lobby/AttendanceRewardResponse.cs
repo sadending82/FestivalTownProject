@@ -25,6 +25,17 @@ namespace Network.PacketProcessor
             int reward_item = Data.RewardItem;
             int reward_item_count = Data.RewardItemCount;
 
+            if (Managers.Data.AttendanceEventDataDict.TryGetValue(daycount, out var attendanceData))
+            {
+                Debug.Log($"{daycount}일차 아이템 받앗숴요.");
+                attendanceData.isRewarded = true;
+                Managers.Data.AttendanceEventDataDict[daycount] = attendanceData;
+                var ui = Managers.UI.GetTopOfPopUPUI().GetComponent<UI_DailySignInCheck>();
+                Managers.Network.GetPacketManager().SendCurrencyAmountRequestPacket();
+                Managers.Network.GetPacketManager().SendUserItemsRequestPacket();
+                ui.UpdateItemCheck();
+                
+            }
         }
 
 
