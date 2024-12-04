@@ -159,7 +159,8 @@ enum eDamageType
 {
     AT_FALLDOWN,
     AT_BOMB_ATTACK,
-    AT_ATTACK = 10001
+    AT_ATTACK = 10001,
+    AT_JUMP_ATTACK = 10002
 };
 
 enum UpperBodyAnimationState

@@ -473,17 +473,12 @@ bool FITH::PlayerDamageReceive(int roomID, Room* room, int attackerID, Player* a
     case eDamageType::AT_FALLDOWN: {
         return PlayerDieInstant(roomID, room, targetID, target);
     }break;
-
-    case eDamageType::AT_ATTACK: {
-        return PlayerDamagedFromOther(roomID, room, attackerID, attacker, targetID, target, knockback_direction);
-    }break;
-
     case eDamageType::AT_BOMB_ATTACK: {
         return PlayerDamagedFromBomb(roomID, room, targetID, target, knockback_direction);
     }break;
 
     default: {
-        return false;
+        return PlayerDamagedFromOther(roomID, room, attackerID, attacker, targetID, target, knockback_direction, damageType);
     }break;
     }
     return false;
@@ -508,8 +503,10 @@ bool FITH::PlayerDieInstant(int roomID, Room* room, int targetID, Player* target
 }
 
 bool FITH::PlayerDamagedFromOther(int roomID, Room* room, int attackerID, Player* attacker
-    , int targetID, Player* target, Vector3f knockback_direction)
+    , int targetID, Player* target, Vector3f knockback_direction, eDamageType damageType)
 {
+    COUT << damageType << ENDL;
+
     sPlayerGameRecord& attackerGameRecord = room->GetPlayerRecordList().at(attackerID);
     sPlayerGameRecord& targetGameRecord = room->GetPlayerRecordList().at(targetID);
 
@@ -543,12 +540,12 @@ bool FITH::PlayerDamagedFromOther(int roomID, Room* room, int attackerID, Player
     }
 
     // 데미지 계산
-    damageAmount += attackerStat.strength * attackerStat.attackStats[eDamageType::AT_ATTACK].Value;
+    damageAmount += attackerStat.strength * attackerStat.attackStats.at(damageType).Value;
     attacker->GetWeaponLock().lock_shared();
     if (attacker->GetWeapon() != nullptr) {
         damageAmount = attackerStat.strength + attacker->GetWeapon()->GetStat().Weapon_Power;
     }
-    TargetStaminaLoss += attackerStat.attackStats[eDamageType::AT_ATTACK].Vanish_Stamina;
+    TargetStaminaLoss += attackerStat.attackStats.at(damageType).Vanish_Stamina;
 
     // 데미지 적용
     target->ReduceHP(damageAmount);

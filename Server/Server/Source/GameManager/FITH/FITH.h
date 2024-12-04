@@ -27,7 +27,7 @@ public:
 	virtual bool PlayerDamageReceive(int roomID, class Room* room, int attackerID, class Player* attacker, int targetID, class Player* target
 		, Vector3f knockback_direction, eDamageType damageType) override;
 	bool PlayerDieInstant(int roomID, Room* room, int targetID, Player* target);
-	bool PlayerDamagedFromOther(int roomID, Room* room, int attackerID, Player* attacker, int targetID, Player* target, Vector3f knockback_direction);
+	bool PlayerDamagedFromOther(int roomID, Room* room, int attackerID, Player* attacker, int targetID, Player* target, Vector3f knockback_direction, eDamageType damageType);
 	bool PlayerDamagedFromBomb(int roomID, Room* room, int targetID, Player* target, Vector3f knockback_direction);
 
 

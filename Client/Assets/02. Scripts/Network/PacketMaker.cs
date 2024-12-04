@@ -599,7 +599,7 @@ public class PacketMaker
         builder.Finish(offset.Value);
 
         byte[] data = builder.SizedByteArray();
-        HEADER header = new HEADER { type = (ushort)ePacketType.c2s_a, flatBufferSize = (ushort)data.Length };
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_ATTENDANCE_REWARD_REQUEST, flatBufferSize = (ushort)data.Length };
         byte[] headerdata = Serialize<HEADER>(header);
         byte[] result = new byte[data.Length + headerdata.Length];
 
