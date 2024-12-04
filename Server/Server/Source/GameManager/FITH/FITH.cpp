@@ -505,8 +505,6 @@ bool FITH::PlayerDieInstant(int roomID, Room* room, int targetID, Player* target
 bool FITH::PlayerDamagedFromOther(int roomID, Room* room, int attackerID, Player* attacker
     , int targetID, Player* target, Vector3f knockback_direction, eDamageType damageType)
 {
-    COUT << damageType << ENDL;
-
     sPlayerGameRecord& attackerGameRecord = room->GetPlayerRecordList().at(attackerID);
     sPlayerGameRecord& targetGameRecord = room->GetPlayerRecordList().at(targetID);
 
