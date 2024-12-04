@@ -21,8 +21,6 @@ namespace Network.PacketProcessor
 
             int eventCode = Data.EventCode;
             int result = Data.Result;
-            int resultAmount = Data.RewardAmount;
-            int rewardCode = Data.RewardCode;
 
             Debug.Log(eventCode + " 이벤트 출석 결과 " + result);
         }
