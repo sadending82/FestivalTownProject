@@ -184,7 +184,7 @@ namespace NetworkProtocol
 
     public enum eWeaponType
     {
-        WT_HAND,
+        WT_NOTHING,
         WT_FRYING_PAN = 2001,
         WT_BAT = 2002
     };

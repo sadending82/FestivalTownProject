@@ -47,7 +47,7 @@ public class AttackChecker : MonoBehaviour
 
                     int targetId = other.transform.GetComponentInParent<CharacterStatus>().GetId();
 
-                    packetManager.SendPlayerDamageReceivePacket(playerState.GetId(), targetId, (int)eWeaponType.WT_HAND, eDamageType.AT_ATTACK, attackedDirection);
+                    packetManager.SendPlayerDamageReceivePacket(playerState.GetId(), targetId, (int)eWeaponType.WT_NOTHING, eDamageType.AT_ATTACK, attackedDirection);
                 }
             }
         }

@@ -41,7 +41,7 @@ public class FlyingKickChecker : MonoBehaviour
 
                     int targetId = other.transform.GetComponentInParent<CharacterStatus>().GetId();
 
-                    packetManager.SendPlayerDamageReceivePacket(playerState.GetId(), targetId, (int)eWeaponType.WT_HAND, eDamageType.AT_JUMP_ATTACK, attackedDirection);
+                    packetManager.SendPlayerDamageReceivePacket(playerState.GetId(), targetId, (int)eWeaponType.WT_NOTHING, eDamageType.AT_JUMP_ATTACK, attackedDirection);
                 }
             }
         }
