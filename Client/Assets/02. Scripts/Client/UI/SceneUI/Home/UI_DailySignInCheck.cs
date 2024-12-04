@@ -27,13 +27,6 @@ public class UI_DailySignInCheck : UI_PopUp
 
         Get<GameObject>((int)GameObjects.ExitButton).BindEvent((PointerEventData) =>
         {
-            foreach (var eventData in Managers.Data.EventMainDataDict)
-            {
-                if (eventData.Value.Type == 2)
-                {
-                    Managers.Network.GetPacketManager().SendAttendanceEventRequestPacket(eventData.Value.Event_Id);
-                }
-            }
             Managers.UI.ClosePopUpUI();
         });
 
@@ -55,6 +48,7 @@ public class UI_DailySignInCheck : UI_PopUp
                     
                     bool result = Managers.Data.AttendanceEventDataDict.TryGetValue(data.Day, out var attendanceEventData);     
                     ui.SetItemRewarded(result);
+                    ui.BindEvent(dataIndex);
                     ++dataIndex;
                 }
             }

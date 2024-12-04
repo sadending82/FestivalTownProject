@@ -21,26 +21,8 @@ public class HomeScene : BaseScene
         homeStartUI.Init();
         homeSceneUI.Init();
 
-        if (!Managers.Data.HasAttendanceUIPopUp())
-        {
-            Managers.Data.SetAttendanceUIPopUp(true);
-            StartCoroutine(WaitAttendanceEventData());
-        }
-
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-    }
-
-    IEnumerator WaitAttendanceEventData()
-    {
-        yield return null;
-        
-        while(!Managers.Data.HasAttendanceDataRecved())
-        {
-            yield return null;
-        }
-
-        Managers.UI.ShowPopUpUI<UI_DailySignInCheck>();
     }
 
     public override void Clear()

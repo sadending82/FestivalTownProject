@@ -2342,6 +2342,7 @@ MonoBehaviour:
   handR: {fileID: 7439394265932431664}
   leftFootRigidbody: {fileID: 6490085632441195103}
   rightFootRigidbody: {fileID: 5402061227843248073}
+  jumpAttackChecker: {fileID: 3678311882547796188}
   JumpForce: 150
   FloorDetectionDistance: 0.03
   RotateSpeed: 5
@@ -5605,6 +5606,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6077005152321739110, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1737165005423944035}
+    - targetCorrespondingSourceObject: {fileID: 6077005152321739110, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3678311882547796188}
     - targetCorrespondingSourceObject: {fileID: 5148041454339456427, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1980343290169495108}
@@ -8097,10 +8101,24 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.17
+  m_Radius: 0.23
   m_Height: 0.62
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3678311882547796188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4437203293968950405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 698ee224a496d224cbf2d847abd85729, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerState: {fileID: 11744454538213894}
+  playerController: {fileID: 2266266892710373593}
 --- !u!4 &4678008677194921651 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2966296574592322384, guid: ca7723b78d9cb3f4591d1de36bfaa445, type: 3}

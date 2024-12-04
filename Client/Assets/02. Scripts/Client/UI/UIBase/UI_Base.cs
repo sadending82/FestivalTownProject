@@ -90,6 +90,15 @@ public abstract class UI_Base : MonoBehaviour
                 eventHandler.OnDragHandler -= action;
                 eventHandler.OnDragHandler += action;
                 break;
+            case Define.UIEvent.PointerDown:
+               eventHandler.OnPointerDownHandler -= action;
+               eventHandler.OnPointerDownHandler += action;
+                break;
+            case Define.UIEvent.PointerUp:
+                eventHandler.OnPointerUpHandler -= action;
+                eventHandler.OnPointerUpHandler += action;
+                break;
+
         }
     }
 

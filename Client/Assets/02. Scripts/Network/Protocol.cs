@@ -186,7 +186,7 @@ namespace NetworkProtocol
 
     public enum eWeaponType
     {
-        WT_HAND,
+        WT_NOTHING,
         WT_FRYING_PAN = 2001,
         WT_BAT = 2002
     };
@@ -202,7 +202,8 @@ namespace NetworkProtocol
     {
         AT_FALLDOWN,
         AT_BOMB_ATTACK,
-        AT_ATTACK = 10001
+        AT_ATTACK = 10001,
+        AT_JUMP_ATTACK = 10002
     };
 
     public enum CustomizingItemType

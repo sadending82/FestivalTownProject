@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour
     public GameObject handR;
     public Rigidbody leftFootRigidbody;
     public Rigidbody rightFootRigidbody;
+    public FlyingKickChecker jumpAttackChecker;
 
     [Header("--- State ---")]
     public float JumpForce;
@@ -540,6 +541,7 @@ public class PlayerController : MonoBehaviour
         doubleJumpChecker = true;
         pelvisRigidbody.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
         flyingKickChecker = false;
+        jumpAttackChecker.SetIsAttackState(flyingKickChecker);
         StartCoroutine(WaitIsGroundCheck());
     }
     /// <summary>
@@ -577,6 +579,7 @@ public class PlayerController : MonoBehaviour
         flyingKickChecker = true;
         head.GetComponent<Rigidbody>().AddForce(-direction * flyingKickForce * 5, ForceMode.Impulse);
         pelvisRigidbody.AddForce(direction * flyingKickForce * 10, ForceMode.Impulse);
+        jumpAttackChecker.SetIsAttackState(flyingKickChecker);
     }
     public void SetWalkState()
     {
