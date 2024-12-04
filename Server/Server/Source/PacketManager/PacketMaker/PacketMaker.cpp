@@ -10,7 +10,7 @@ std::vector<uint8_t> PacketMaker::MakeVersionCheckResponsePacket(int result)
 	return MakeBuffer(ePacketType::S2C_VERSION_CHECK_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakeLoginResponsePacket(int result, UserInfo userInfo, std::unordered_map<int, std::vector<sDayAttendanceInfo>>& attendanceInfoList, bool isNewEvent)
+std::vector<uint8_t> PacketMaker::MakeLoginResponsePacket(int result, UserInfo userInfo, std::unordered_map<int, std::set<sDayAttendanceInfo>>& attendanceInfoList, bool isNewEvent)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 
@@ -29,13 +29,13 @@ std::vector<uint8_t> PacketMaker::MakeLoginResponsePacket(int result, UserInfo u
 		auto& dayAttendanceList = pair.second;
 		bool has_attendanceToday = false;
 		std::vector<flatbuffers::Offset<PacketTable::UtilitiesTable::DayAttendanceInfo>> dayAttendanceVector;
-		for (int i = 0; i < dayAttendanceList.size(); ++i) {
-			std::tm tDate = dayAttendanceList[i].attendance_date;
+		for (auto& attendanceInfo : dayAttendanceList) {
+			std::tm tDate = attendanceInfo.attendance_date;
 
 			has_attendanceToday = CheckDateToday(tDate);
 
 			auto date = PacketTable::UtilitiesTable::CreateDate(Builder,tDate.tm_year, tDate.tm_mon, tDate.tm_mday);
-			dayAttendanceVector.push_back(PacketTable::UtilitiesTable::CreateDayAttendanceInfo(Builder, dayAttendanceList[i].day_number, date, dayAttendanceList[i].is_rewarded));
+			dayAttendanceVector.push_back(PacketTable::UtilitiesTable::CreateDayAttendanceInfo(Builder, attendanceInfo.day_number, date, attendanceInfo.is_rewarded));
 		}
 		attendanceStatusVector.push_back(PacketTable::UtilitiesTable::CreateAttendanceStatus(Builder, eventCode, has_attendanceToday, Builder.CreateVector(dayAttendanceVector)));
 	}
@@ -99,7 +99,7 @@ std::vector<uint8_t> PacketMaker::MakeUserItemsResponsePacket(int result, std::u
 	return MakeBuffer(ePacketType::S2C_USER_ITEMS_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakeAttendanceEventResponsePacket(int eventCode, int result)
+std::vector<uint8_t> PacketMaker::MakeAttendanceEventResponsePacket(int eventCode, int dayCount, int result)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 

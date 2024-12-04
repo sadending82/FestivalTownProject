@@ -3,6 +3,7 @@
 #include "../utility.h"
 #include "../DB/Schema/Schemas.h"
 #include <unordered_map>
+#include <set>
 
 class LobbyManager
 {
@@ -11,7 +12,7 @@ public:
 	LobbyManager(class Server* server);
 	~LobbyManager();
 
-	void CheckAttendanceEvent(int uid, std::unordered_map<int, std::vector<sDayAttendanceInfo>>& attendanceInfoList);
+	void CheckAndLoadUserAttendanceEvent(int uid, std::unordered_map<int, std::set<sDayAttendanceInfo>>& attendanceInfoList);
 
 	void CheckReadyToGamePlay(class Room* room, int roomID);
 

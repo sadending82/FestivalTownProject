@@ -17,7 +17,7 @@ void PacketSender::SendVersionCheckResponsePacket(int sessionID, int result)
     mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
 }
 
-void PacketSender::SendLoginResponse(int sessionID, int result, UserInfo userInfo, std::unordered_map<int, std::vector<sDayAttendanceInfo>>& attendanceInfoList, bool isNewEvent)
+void PacketSender::SendLoginResponse(int sessionID, int result, UserInfo userInfo, std::unordered_map<int, std::set<sDayAttendanceInfo>>& attendanceInfoList, bool isNewEvent)
 {
     std::vector<uint8_t> send_buffer = mPacketMaker->MakeLoginResponsePacket(result, userInfo, attendanceInfoList, isNewEvent);
     mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
@@ -47,9 +47,9 @@ void PacketSender::SendUserItemsResponsePacket(int sessionID, int result, std::u
     mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
 }
 
-void PacketSender::SendAttendanceEventResponsePacket(int sessionID, int eventCode, int result)
+void PacketSender::SendAttendanceEventResponsePacket(int sessionID, int eventCode, int dayCount, int result)
 {
-    std::vector<uint8_t> send_buffer = mPacketMaker->MakeAttendanceEventResponsePacket(result, eventCode);
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakeAttendanceEventResponsePacket(result, dayCount, eventCode);
     mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
 }
 

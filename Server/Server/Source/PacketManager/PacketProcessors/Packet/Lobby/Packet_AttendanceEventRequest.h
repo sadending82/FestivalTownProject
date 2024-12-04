@@ -14,55 +14,55 @@ public:
 			flatbuffers::Verifier verifier(data, size);
 			if (verifier.VerifyBuffer<AttendanceEventRequest>(nullptr)) {
 
-				const AttendanceEventRequest* read = flatbuffers::GetRoot<AttendanceEventRequest>(data);
+				//const AttendanceEventRequest* read = flatbuffers::GetRoot<AttendanceEventRequest>(data);
 
-				int eventCode = read->event_code();
+				//int eventCode = read->event_code();
 
-				Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
-				int uid = player->GetUID();
+				//Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
+				//int uid = player->GetUID();
 
-				TableManager* tableManager = pServer->GetTableManager();
-				DB* db = pServer->GetDB();
+				//TableManager* tableManager = pServer->GetTableManager();
+				//DB* db = pServer->GetDB();
 
-				sDayAttendanceInfo dayAttendanceInfo = db->SelectUserAttendanceEventLatest(uid, eventCode);
+				//sDayAttendanceInfo dayAttendanceInfo = db->SelectUserAttendanceEventLatest(uid, eventCode);
 
-				int next_day = dayAttendanceInfo.day_number + 1;
+				//int next_day = dayAttendanceInfo.day_number + 1;
 
-				std::time_t nowTime = std::time(nullptr);
-				std::tm tNowTime = {};
-				localtime_s(&tNowTime, &nowTime);
+				//std::time_t nowTime = std::time(nullptr);
+				//std::tm tNowTime = {};
+				//localtime_s(&tNowTime, &nowTime);
 
-				if (tNowTime.tm_year == dayAttendanceInfo.attendance_date.tm_year
-					&& tNowTime.tm_mon == dayAttendanceInfo.attendance_date.tm_mon
-					&& tNowTime.tm_mday == dayAttendanceInfo.attendance_date.tm_mday) {
-					return;
-				}
+				//if (tNowTime.tm_year == dayAttendanceInfo.attendance_date.tm_year
+				//	&& tNowTime.tm_mon == dayAttendanceInfo.attendance_date.tm_mon
+				//	&& tNowTime.tm_mday == dayAttendanceInfo.attendance_date.tm_mday) {
+				//	return;
+				//}
 
-				ERROR_CODE result = ERROR_CODE::ER_DB_NO_DATA;
-				/*int reward_code = 0;
-				int reward_amount = 0;*/
+				//ERROR_CODE result = ERROR_CODE::ER_DB_NO_DATA;
+				///*int reward_code = 0;
+				//int reward_amount = 0;*/
 
-				if (tableManager->GetEventRewardList()[eventCode].count(next_day) != 0) {
-					result = db->InsertUserAttendance(uid, eventCode, next_day);
+				//if (tableManager->GetEventRewardList()[eventCode].count(next_day) != 0) {
+				//	result = db->InsertUserAttendance(uid, eventCode, next_day);
 
-					//if (result == ERROR_CODE::ER_NONE) {
-					//	reward_code = tableManager->GetEventRewardList()[eventCode][next_day].Reward_Item_Index;
-					//	reward_amount = tableManager->GetEventRewardList()[eventCode][next_day].Reward_Item_Value;
-					//	// 출석 보상있으면 지급
-					//	if (reward_code != 0) {
-					//		ItemType itemType = tableManager->GetItemInfos()[reward_code].Item_Type;
+				//	//if (result == ERROR_CODE::ER_NONE) {
+				//	//	reward_code = tableManager->GetEventRewardList()[eventCode][next_day].Reward_Item_Index;
+				//	//	reward_amount = tableManager->GetEventRewardList()[eventCode][next_day].Reward_Item_Value;
+				//	//	// 출석 보상있으면 지급
+				//	//	if (reward_code != 0) {
+				//	//		ItemType itemType = tableManager->GetItemInfos()[reward_code].Item_Type;
 
-					//		if (itemType == ItemType::Money) {
-					//			result = db->UpsertUserItemCount(uid, reward_code, reward_amount);
-					//		}
-					//		else {
-					//			result = db->InsertUserItem(uid, reward_code, reward_amount, (int)itemType);
-					//		}
-					//	}
-					//}
-				}
+				//	//		if (itemType == ItemType::Money) {
+				//	//			result = db->UpsertUserItemCount(uid, reward_code, reward_amount);
+				//	//		}
+				//	//		else {
+				//	//			result = db->InsertUserItem(uid, reward_code, reward_amount, (int)itemType);
+				//	//		}
+				//	//	}
+				//	//}
+				//}
 
-				pPacketSender->SendAttendanceEventResponsePacket(key, result, eventCode);
+				//pPacketSender->SendAttendanceEventResponsePacket(key, result, eventCode);
 			}
 		}
 		catch (const std::exception& e) {

@@ -753,10 +753,14 @@ struct AttendanceEventResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::
   typedef AttendanceEventResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_EVENT_CODE = 4,
-    VT_RESULT = 6
+    VT_DAY_COUNT = 6,
+    VT_RESULT = 8
   };
   int32_t event_code() const {
     return GetField<int32_t>(VT_EVENT_CODE, 0);
+  }
+  int32_t day_count() const {
+    return GetField<int32_t>(VT_DAY_COUNT, 0);
   }
   int32_t result() const {
     return GetField<int32_t>(VT_RESULT, 0);
@@ -764,6 +768,7 @@ struct AttendanceEventResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_EVENT_CODE, 4) &&
+           VerifyField<int32_t>(verifier, VT_DAY_COUNT, 4) &&
            VerifyField<int32_t>(verifier, VT_RESULT, 4) &&
            verifier.EndTable();
   }
@@ -775,6 +780,9 @@ struct AttendanceEventResponseBuilder {
   ::flatbuffers::uoffset_t start_;
   void add_event_code(int32_t event_code) {
     fbb_.AddElement<int32_t>(AttendanceEventResponse::VT_EVENT_CODE, event_code, 0);
+  }
+  void add_day_count(int32_t day_count) {
+    fbb_.AddElement<int32_t>(AttendanceEventResponse::VT_DAY_COUNT, day_count, 0);
   }
   void add_result(int32_t result) {
     fbb_.AddElement<int32_t>(AttendanceEventResponse::VT_RESULT, result, 0);
@@ -793,9 +801,11 @@ struct AttendanceEventResponseBuilder {
 inline ::flatbuffers::Offset<AttendanceEventResponse> CreateAttendanceEventResponse(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t event_code = 0,
+    int32_t day_count = 0,
     int32_t result = 0) {
   AttendanceEventResponseBuilder builder_(_fbb);
   builder_.add_result(result);
+  builder_.add_day_count(day_count);
   builder_.add_event_code(event_code);
   return builder_.Finish();
 }

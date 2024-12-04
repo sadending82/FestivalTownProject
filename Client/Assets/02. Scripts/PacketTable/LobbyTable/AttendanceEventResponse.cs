@@ -20,20 +20,24 @@ public struct AttendanceEventResponse : IFlatbufferObject
   public AttendanceEventResponse __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public int EventCode { get { int o = __p.__offset(4); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public int Result { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int DayCount { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int Result { get { int o = __p.__offset(8); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
 
   public static Offset<PacketTable.LobbyTable.AttendanceEventResponse> CreateAttendanceEventResponse(FlatBufferBuilder builder,
       int event_code = 0,
+      int day_count = 0,
       int result = 0) {
-    builder.StartTable(2);
+    builder.StartTable(3);
     AttendanceEventResponse.AddResult(builder, result);
+    AttendanceEventResponse.AddDayCount(builder, day_count);
     AttendanceEventResponse.AddEventCode(builder, event_code);
     return AttendanceEventResponse.EndAttendanceEventResponse(builder);
   }
 
-  public static void StartAttendanceEventResponse(FlatBufferBuilder builder) { builder.StartTable(2); }
+  public static void StartAttendanceEventResponse(FlatBufferBuilder builder) { builder.StartTable(3); }
   public static void AddEventCode(FlatBufferBuilder builder, int eventCode) { builder.AddInt(0, eventCode, 0); }
-  public static void AddResult(FlatBufferBuilder builder, int result) { builder.AddInt(1, result, 0); }
+  public static void AddDayCount(FlatBufferBuilder builder, int dayCount) { builder.AddInt(1, dayCount, 0); }
+  public static void AddResult(FlatBufferBuilder builder, int result) { builder.AddInt(2, result, 0); }
   public static Offset<PacketTable.LobbyTable.AttendanceEventResponse> EndAttendanceEventResponse(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<PacketTable.LobbyTable.AttendanceEventResponse>(o);
@@ -47,7 +51,8 @@ static public class AttendanceEventResponseVerify
   {
     return verifier.VerifyTableStart(tablePos)
       && verifier.VerifyField(tablePos, 4 /*EventCode*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 6 /*Result*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 6 /*DayCount*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 8 /*Result*/, 4 /*int*/, 4, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }

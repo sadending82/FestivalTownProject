@@ -677,23 +677,23 @@ int DB::SelectUserItemCount(const int uid, const int item_index)
 	return 0;
 }
 
-std::vector<sDayAttendanceInfo> DB::SelectUserAttendanceEvent(const int uid, const int eventCode)
+std::set<sDayAttendanceInfo> DB::SelectUserAttendanceEvent(const int uid, const int eventCode)
 {
 	if (uid == 0) {
-		return std::vector<sDayAttendanceInfo>();
+		return std::set<sDayAttendanceInfo>();
 	}
 
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
-	std::vector<sDayAttendanceInfo> dayAttendanceInfoList;
+	std::set<sDayAttendanceInfo> dayAttendanceInfoList;
 
 	int count = 0;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (SelectUserAttendanceEvent) \n", retcode);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-		return std::vector<sDayAttendanceInfo>();
+		return std::set<sDayAttendanceInfo>();
 	}
 
 	
@@ -723,7 +723,7 @@ std::vector<sDayAttendanceInfo> DB::SelectUserAttendanceEvent(const int uid, con
 			dayAttendanceInfo.day_number = day_number;
 			dayAttendanceInfo.is_rewarded = is_rewarded;
 
-			dayAttendanceInfoList.push_back(dayAttendanceInfo);
+			dayAttendanceInfoList.insert(dayAttendanceInfo);
 		}
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
@@ -732,7 +732,7 @@ std::vector<sDayAttendanceInfo> DB::SelectUserAttendanceEvent(const int uid, con
 
 	DEBUGMSGONEPARAM("Execute Query Error %d : (SelectUserAttendanceEvent)\n", retcode);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-	return std::vector<sDayAttendanceInfo>();
+	return std::set<sDayAttendanceInfo>();
 }
 
 sDayAttendanceInfo DB::SelectUserAttendanceEventLatest(const int uid, const int eventCode)

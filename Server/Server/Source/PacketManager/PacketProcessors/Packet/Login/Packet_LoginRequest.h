@@ -23,9 +23,9 @@ public:
 
 				UserInfo userInfo = result.second;
 
-				std::unordered_map<int, std::vector<sDayAttendanceInfo>> attendanceInfoList;
+				std::unordered_map<int, std::set<sDayAttendanceInfo>> attendanceInfoList;
 
-				pServer->GetLobbyManager()->CheckAttendanceEvent(userInfo.UID, attendanceInfoList);
+				pServer->GetLobbyManager()->CheckAndLoadUserAttendanceEvent(userInfo.UID, attendanceInfoList);
 
 				bool isNewEvent = pServer->GetLobbyManager()->CheckIsNewEvent(userInfo.date);
 				pPacketSender->SendLoginResponse(key, result.first, userInfo, attendanceInfoList, isNewEvent);

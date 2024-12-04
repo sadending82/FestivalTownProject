@@ -14,6 +14,7 @@
 #include <sqltypes.h>
 #include <fstream>
 #include <unordered_set>
+#include <set>
 
 #define SQLBindAtomic_int(stmt, index, value) int bindValue##index = value.load(); SQLBindParameter(hStmt, index, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (&bindValue##index), 0, NULL);
 
@@ -45,7 +46,7 @@ public:
     struct sCharacterCustomizing SelectCharacterCustomizing(const int uid);
     
     int SelectUserItemCount(const int uid, const int item_index);
-    std::vector<sDayAttendanceInfo> SelectUserAttendanceEvent(const int uid, const int eventCode);
+    std::set<sDayAttendanceInfo> SelectUserAttendanceEvent(const int uid, const int eventCode);
     sDayAttendanceInfo SelectUserAttendanceEventLatest(const int uid, const int eventCode);
     int SelectUserAttendanceToday(const int uid);
     bool SelectUserAttendanceIsRewarded(const int uid, const int eventCode, const int dayCount);

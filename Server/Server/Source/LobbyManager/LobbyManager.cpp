@@ -15,9 +15,13 @@ LobbyManager::~LobbyManager()
 
 }
 
-void LobbyManager::CheckAttendanceEvent(int uid, std::unordered_map<int, std::vector<sDayAttendanceInfo>>& attendanceInfoList)
+void LobbyManager::CheckAndLoadUserAttendanceEvent(int uid, std::unordered_map<int, std::set<sDayAttendanceInfo>>& attendanceInfoList)
 {
-	std::time_t NowTime = std::time(nullptr);
+	std::time_t nowTime = std::time(nullptr);
+	std::tm tNowTime = {};
+
+	localtime_s(&tNowTime, &nowTime);
+
 	for (auto& eventInfo : pTableManager->GetEventList()) {
 
 		int eventCode = eventInfo.first;
@@ -25,12 +29,34 @@ void LobbyManager::CheckAttendanceEvent(int uid, std::unordered_map<int, std::ve
 		std::time_t openTime = std::mktime(const_cast<std::tm*>(&eventInfo.second.Open_Date));
 		std::time_t closeTime = std::mktime(const_cast<std::tm*>(&eventInfo.second.Close_Date));
 
-		if (NowTime < openTime || closeTime < NowTime) {
+		if (nowTime < openTime || closeTime < nowTime) {
 			continue;
 		}
 
 		if (eventInfo.second.Type == 2) {
 			attendanceInfoList[eventCode] = pDB->SelectUserAttendanceEvent(uid, eventCode);
+
+			int nextDayCount = 0;
+			sDayAttendanceInfo latelyAttendance;
+			if (attendanceInfoList[eventCode].empty() == false) {
+				latelyAttendance = *std::prev(attendanceInfoList[eventCode].end());
+				nextDayCount = latelyAttendance.day_number + 1;
+			}
+			
+			// 오늘 출석 안했으면 출석 처리
+			if (tNowTime.tm_year != latelyAttendance.attendance_date.tm_year
+				|| tNowTime.tm_mon != latelyAttendance.attendance_date.tm_mon
+				|| tNowTime.tm_mday != latelyAttendance.attendance_date.tm_mday) {
+				sDayAttendanceInfo nextAttendance;
+				localtime_s(&nextAttendance.attendance_date, &nowTime);
+				nextAttendance.day_number = nextDayCount;
+				nextAttendance.is_rewarded = false;
+
+				if (pDB->InsertUserAttendance(uid, eventCode, nextDayCount) == ERROR_CODE::ER_NONE) {
+					attendanceInfoList[eventCode].insert(nextAttendance);
+				}
+			}
+
 		}
 	}
 }
