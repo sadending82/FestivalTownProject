@@ -42,18 +42,21 @@ void LobbyManager::CheckAndLoadUserAttendanceEvent(int uid, std::unordered_map<i
 				latelyAttendance = *std::prev(attendanceInfoList[eventCode].end());
 				nextDayCount = latelyAttendance.day_number + 1;
 			}
-			
-			// 오늘 출석 안했으면 출석 처리
-			if (tNowTime.tm_year != latelyAttendance.attendance_date.tm_year
-				|| tNowTime.tm_mon != latelyAttendance.attendance_date.tm_mon
-				|| tNowTime.tm_mday != latelyAttendance.attendance_date.tm_mday) {
-				sDayAttendanceInfo nextAttendance;
-				localtime_s(&nextAttendance.attendance_date, &nowTime);
-				nextAttendance.day_number = nextDayCount;
-				nextAttendance.is_rewarded = false;
 
-				if (pDB->InsertUserAttendance(uid, eventCode, nextDayCount) == ERROR_CODE::ER_NONE) {
-					attendanceInfoList[eventCode].insert(nextAttendance);
+			if (pTableManager->GetEventRewardList()[eventCode].count(nextDayCount) != 0) {
+
+				// 오늘 출석 안했으면 출석 처리
+				if (tNowTime.tm_year != latelyAttendance.attendance_date.tm_year
+					|| tNowTime.tm_mon != latelyAttendance.attendance_date.tm_mon
+					|| tNowTime.tm_mday != latelyAttendance.attendance_date.tm_mday) {
+					sDayAttendanceInfo nextAttendance;
+					localtime_s(&nextAttendance.attendance_date, &nowTime);
+					nextAttendance.day_number = nextDayCount;
+					nextAttendance.is_rewarded = false;
+
+					if (pDB->InsertUserAttendance(uid, eventCode, nextDayCount) == ERROR_CODE::ER_NONE) {
+						attendanceInfoList[eventCode].insert(nextAttendance);
+					}
 				}
 			}
 
