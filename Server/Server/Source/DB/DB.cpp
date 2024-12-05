@@ -1264,6 +1264,38 @@ ERROR_CODE DB::DeleteUserInfo(const int uid)
 	return ERROR_CODE::ER_DB_ERROR;
 }
 
+ERROR_CODE DB::DeleteUserGameRecords(const int uid)
+{
+	if (uid == 0) {
+		return ERROR_CODE::ER_DB_ERROR;
+	}
+
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGONEPARAM("hStmt Error %d : (DeleteUserGameRecords) \n", retcode);
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return ERROR_CODE::ER_DB_ERROR;
+	}
+
+	SQLPrepare(hStmt, (SQLWCHAR*)DeleteUserGameRecords_Query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return ERROR_CODE::ER_NONE;
+	}
+
+	DEBUGMSGONEPARAM("Execute Query Error %d : (DeleteUserGameRecords)\n", retcode);
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	return ERROR_CODE::ER_DB_ERROR;
+}
+
 ERROR_CODE DB::DeleteUserItem(const int owner_uid, const int itemCode)
 {
 	if (owner_uid == 0) {

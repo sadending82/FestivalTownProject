@@ -67,6 +67,7 @@ public:
     // DELETE
     ERROR_CODE DeleteAcccount(const char* id);
     ERROR_CODE DeleteUserInfo(const int uid);
+    ERROR_CODE DeleteUserGameRecords(const int uid);
     ERROR_CODE DeleteUserItem(const int owner_uid, const int itemCode);
     ERROR_CODE DeleteUserItemAll(const int owner_uid);
     ERROR_CODE DeleteUserAttendanceAll(const int user_uid);

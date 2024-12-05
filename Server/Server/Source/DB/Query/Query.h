@@ -95,6 +95,9 @@ const wchar_t* DeleteAcccount_Query = L"DELETE FROM AccountDB.dbo.Account WHERE 
 //DELETE FROM GameDB.dbo.UserInfo WHERE UID = ?
 const wchar_t* DeleteUserInfo_Query = L"DELETE FROM GameDB.dbo.UserInfo WHERE UID = ?";
 
+//DELETE FROM GameDB.dbo.UserGameRecords WHERE UID = ?
+const wchar_t* DeleteUserGameRecords_Query = L"DELETE FROM GameDB.dbo.UserGameRecords WHERE UID = ?";
+
 //DELETE FROM GameDB.dbo.UserItem WHERE Item_UID = (SELECT TOP 1 Item_UID FROM GameDB.dbo.UserItem WHERE owner_UID = ? and ItemCode = ? ORDER BY Item_UID ASC)
 const wchar_t* DeleteUserItem_Query = L"DELETE FROM GameDB.dbo.UserItem WHERE Item_UID = (SELECT TOP 1 Item_UID FROM GameDB.dbo.UserItem WHERE owner_UID = ? and ItemCode = ? ORDER BY Item_UID ASC)";
 
@@ -102,7 +105,7 @@ const wchar_t* DeleteUserItem_Query = L"DELETE FROM GameDB.dbo.UserItem WHERE It
 const wchar_t* DeleteUserItemAll_Query = L"DELETE FROM GameDB.dbo.UserItem WHERE owner_UID = ?";
 
 //DELETE FROM GameDB.dbo.UserAttendance WHERE user_UID = ?
-const wchar_t* DeleteUserAttendanceAll_Query = L"DELETE FROM GameDB.dbo.UserAttend¤±nce WHERE user_UID = ?";
+const wchar_t* DeleteUserAttendanceAll_Query = L"DELETE FROM GameDB.dbo.UserAttendance WHERE user_UID = ?";
 
 //DELETE FROM GameDB.dbo.UserAttendance WHERE attendance_date  < DATEADD(DAY, ?, GETDATE())
 const wchar_t* DeleteUserAttendanceOutDated_Query = L"DELETE FROM GameDB.dbo.UserAttendance WHERE attendance_date  < DATEADD(DAY, ?, GETDATE())";

@@ -25,8 +25,11 @@ public:
 				DB* db = pServer->GetDB();
 
 				db->DeleteUserInfo(uid);
+				int new_uid = db->InsertNewUser(player->GetAccountID().c_str(), player->GetNickName().c_str());
 
-				db->InsertNewUser(player->GetAccountID().c_str(), player->GetNickName().c_str());
+				db->DeleteUserGameRecords(uid);
+				db->InsertUserGameRecords(new_uid);
+
 				db->DeleteUserItemAll(uid);
 				db->DeleteUserAttendanceAll(uid);
 
