@@ -41,6 +41,11 @@ public:
 				sPlayerGameRecord& playerGameRecord = room->GetPlayerRecordList().at(playerid);
 
 				room->DeleteBomb(bombid);
+				Team& teamInfo = room->GetTeams()[team];
+
+				if (teamInfo.GetLife() <= 0) {
+					return;
+				}
 
 				// 자기 팀에 넣으면 바로 사망
 				if (player->GetTeam() == team) {
@@ -53,7 +58,6 @@ public:
 					PushEventPlayerRespawn(pServer->GetTimer(), playerid, roomID, room->GetRoomCode(), spawnTime);
 					return;
 				}
-				Team& teamInfo = room->GetTeams()[team];
 				teamInfo.ReduceLife();
 				int lifeCount = teamInfo.GetLife();
 				pPacketSender->SendLifeReducePacket(team, lifeCount, roomID);
