@@ -14,11 +14,18 @@ public:
 			flatbuffers::Verifier verifier(data, size);
 			if (verifier.VerifyBuffer<AttendanceEventRequest>(nullptr)) {
 
+				Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
+				if (pServer->GetMode() == SERVER_MODE::LIVE) {
+					if (player->GetIsAuthenticated() == false) {
+						pServer->Disconnect(key);
+						return;
+					}
+				}
+
 				//const AttendanceEventRequest* read = flatbuffers::GetRoot<AttendanceEventRequest>(data);
 
 				//int eventCode = read->event_code();
 
-				//Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
 				//int uid = player->GetUID();
 
 				//TableManager* tableManager = pServer->GetTableManager();

@@ -15,7 +15,7 @@ Server::Server()
 
 Server::~Server()
 {
-    for (int i = 0; i < MAXSESSION; ++i) {
+    for (int i = 0; i < MAXUSER; ++i) {
         delete mSessions[i];
     }
     for (int i = 0; i < MAXROOM; ++i) {
@@ -71,7 +71,7 @@ bool Server::ReadConfig()
 
 int Server::SetSessionID()
 {
-    for (int i = STARTKEY; i < MAXSESSION; ++i) {
+    for (int i = STARTKEY; i < MAXUSER; ++i) {
         auto session = GetSessions()[i];
         if (session == nullptr) continue;
         session->GetSessionStateLock().lock();
@@ -84,6 +84,24 @@ int Server::SetSessionID()
         session->GetSessionStateLock().unlock();
     }
     DEBUGMSGNOPARAM("Set Session ID Error\n");
+    return INVALIDKEY;
+}
+
+int Server::SetBotID()
+{
+    for (int i = STARTBOTKEY; i < MAXSESSION; ++i) {
+        auto session = GetSessions()[i];
+        if (session == nullptr) continue;
+        session->GetSessionStateLock().lock();
+        if (eSessionState::ST_FREE == session->GetSessionState()) {
+            session->SetSessionID(i);
+            session->SetSessionState(eSessionState::ST_ACCEPTED);
+            session->GetSessionStateLock().unlock();
+            return i;
+        }
+        session->GetSessionStateLock().unlock();
+    }
+    DEBUGMSGNOPARAM("Set Bot ID Error\n");
     return INVALIDKEY;
 }
 

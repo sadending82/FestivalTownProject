@@ -33,6 +33,7 @@ public:
 				if (result.first == ERROR_CODE::ER_NONE) {
 					Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
 					player->SetUserInfoFromDB(userInfo);
+					player->SetIsAuthenticated(true);
 				}
 			}
 		}

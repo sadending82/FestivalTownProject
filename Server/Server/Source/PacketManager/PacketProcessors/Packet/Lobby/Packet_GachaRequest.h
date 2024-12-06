@@ -14,9 +14,16 @@ public:
 			flatbuffers::Verifier verifier(data, size);
 			if (verifier.VerifyBuffer<GachaRequest>(nullptr)) {
 
+				Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
+				if (pServer->GetMode() == SERVER_MODE::LIVE) {
+					if (player->GetIsAuthenticated() == false) {
+						pServer->Disconnect(key);
+						return;
+					}
+				}
+
 				const GachaRequest* read = flatbuffers::GetRoot<GachaRequest>(data);
 
-				Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
 				int uid = player->GetUID();
 
 				int randomBox = read->random_box_index();

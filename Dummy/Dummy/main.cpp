@@ -235,7 +235,7 @@ void Adjust_Number_Of_Client()
 	DWORD recv_flag = 0;
 	CreateIoCompletionPort(reinterpret_cast<HANDLE>(g_clients[num_connections].clientSocket), g_hiocp, num_connections, 0);
 
-	std::string idstr;
+	/*std::string idstr;
 	std::string pwstr;
 	idstr.append("test");
 	char numstr[20];
@@ -244,6 +244,24 @@ void Adjust_Number_Of_Client()
 	idstr.append(numstr);
 	pwstr.append("1234");
 	auto packet = pm.MakeLoginRequestPacket(idstr, pwstr);
+	g_clients[num_connections].DoSend(packet.data(), packet.size());*/
+
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<> matchingType_distrib(0, 1);
+
+	g_clients[num_connections].connected = true;
+	std::cout << num_connections << " 접속 완료" << std::endl;
+	std::cout << num_connections << " 매칭 요청" << std::endl;
+	eMatchingType mtype;
+	if (matchingType_distrib(gen) == 0) {
+		mtype = eMatchingType::FITH_SOLO;
+	}
+	else {
+		mtype = eMatchingType::FITH_TEAM;
+	}
+	mtype = eMatchingType::FITH_SOLO;
+	auto packet = pm.MakeMatchingRequestPacket(num_connections, mtype);
 	g_clients[num_connections].DoSend(packet.data(), packet.size());
 
 	int ret = WSARecv(g_clients[num_connections].clientSocket, &g_clients[num_connections].recvOver.wsabuf, 1,
@@ -308,19 +326,7 @@ void ProcessPacket(unsigned char* data, const int ci)
 	{
 	case ePacketType::S2C_LOGIN_RESPONSE:
 	{
-		g_clients[ci].connected = true;
-		std::cout << ci << "가 로그인을 시도했습니다." << std::endl;
-		std::cout << ci << "가 매칭을 시도해요!" << std::endl;
-		eMatchingType mtype;
-		/*if (matchingType_distrib(gen) == 0) {
-			mtype = eMatchingType::FITH_SOLO;
-		}
-		else {
-			mtype = eMatchingType::FITH_TEAM;
-		}*/
-		mtype = eMatchingType::FITH_SOLO;
-		auto packet = pm.MakeMatchingRequestPacket(ci, mtype);
-		g_clients[ci].DoSend(packet.data(), packet.size());
+		
 	}	
 		break;
 	case ePacketType::S2C_SIGNUP_RESPONSE:
@@ -357,7 +363,7 @@ void ProcessPacket(unsigned char* data, const int ci)
 
 	case ePacketType::S2C_MATCHING_RESPONSE:
 	{
-		std::cout << ci << "플레이어가 매칭이 된 것을 확인했어요!" << std::endl;
+		std::cout << ci << " 플레이어가 매칭완료" << std::endl;
 
 		uint8_t* d = data + headerSize;
 		size_t s = header->flatBufferSize;

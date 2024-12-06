@@ -17,6 +17,13 @@ public:
 				//const UserItemsRequest* read = flatbuffers::GetRoot<UserItemsRequest>(data);
 
 				Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
+				if (pServer->GetMode() == SERVER_MODE::LIVE) {
+					if (player->GetIsAuthenticated() == false) {
+						pServer->Disconnect(key);
+						return;
+					}
+				}
+
 				int uid = player->GetUID();
 
 				TableManager* tableManager = pServer->GetTableManager();

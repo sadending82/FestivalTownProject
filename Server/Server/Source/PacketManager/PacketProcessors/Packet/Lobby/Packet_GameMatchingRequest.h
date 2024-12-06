@@ -12,10 +12,15 @@ public:
 		try {
 			flatbuffers::Verifier verifier(data, size);
 			if (verifier.VerifyBuffer<GameMatchingRequest>(nullptr)) {
+				Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
+				if (pServer->GetMode() == SERVER_MODE::LIVE) {
+					if (player->GetIsAuthenticated() == false) {
+						pServer->Disconnect(key);
+						return;
+					}
+				}
 
 				const GameMatchingRequest* read = flatbuffers::GetRoot<GameMatchingRequest>(data);
-
-				Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
 
 				SERVER_MODE serverMode = pServer->GetMode();
 

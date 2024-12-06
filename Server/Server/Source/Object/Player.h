@@ -23,6 +23,7 @@ public:
 
 	int					GetUID() { return mUserInfo.UID; }
 	std::string			GetAccountID() { return mUserInfo.AccountID; }
+	bool				GetIsAuthenticated() { return mIsAuthenticated; }
 	int					GetRoomID() { return mRoomID; }
 	int					GetInGameID() { return mInGameID; }
 	int					GetTeam() { return mTeam; }
@@ -47,6 +48,7 @@ public:
 
 	void				SetUID(int uid) { mUserInfo.UID = uid; }
 	void				SetAccountID(std::string accountID) { mUserInfo.AccountID = accountID; }
+	void				SetIsAuthenticated(bool value) { mIsAuthenticated = value; }
 	void				SetroomID(int id) { mRoomID = id; }
 	void				SetInGameID(int id) { mInGameID = id; }
 	void				SetTeam(int team) { mTeam = team; }
@@ -100,6 +102,8 @@ protected:
 	UserInfo			mUserInfo = UserInfo();
 
 	bool				mIsBot = false;
+
+	bool				mIsAuthenticated = false;
 
 	// InGame Info
 	int					mRoomID;

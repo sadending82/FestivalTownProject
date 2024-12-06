@@ -13,18 +13,24 @@ public:
 			flatbuffers::Verifier verifier(data, size);
 			if (verifier.VerifyBuffer<GameMatchingCancel>(nullptr)) {
 
-				const GameMatchingCancel* read = flatbuffers::GetRoot<GameMatchingCancel>(data);
+				Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
+				if (pServer->GetMode() == SERVER_MODE::LIVE) {
+					if (player->GetIsAuthenticated() == false) {
+						pServer->Disconnect(key);
+						return;
+					}
+				}
 
-				Session* session = pServer->GetSessions()[key];
+				const GameMatchingCancel* read = flatbuffers::GetRoot<GameMatchingCancel>(data);
 
 				MatchMakingManager* MatchMakingManager = pServer->GetMatchMakingManager();
 
-				session->GetSessionStateLock().lock();
-				session->SetSessionState(eSessionState::ST_ACCEPTED);
+				player->GetSessionStateLock().lock();
+				player->SetSessionState(eSessionState::ST_ACCEPTED);
 
 				MatchMakingManager->GetMatchingLock().lock();
 
-				eMatchingType matchingType = session->GetMatchingRequestType();
+				eMatchingType matchingType = player->GetMatchingRequestType();
 
 				MATCHING_QUEUE& matchingQueue = MatchMakingManager->GetMatchingQueue(matchingType);
 
@@ -35,22 +41,22 @@ public:
 				int top_ID = matchingQueue.begin()->first;
 				long long top_requestTime = matchingQueue.begin()->second;
 
-				matchingQueue.erase({key, session->GetMatchingRequestTime()});
+				matchingQueue.erase({key, player->GetMatchingRequestTime()});
 
 				// 최장 대기 유저가 매칭 취소 시 그 다음 최장 대기 유저 기준으로 매칭 시퀀스 갱신
-				if (top_ID == key && session->GetMatchingRequestTime() == top_requestTime) {
+				if (top_ID == key && player->GetMatchingRequestTime() == top_requestTime) {
 					MatchMakingManager->SetMatchingSequence(matchingType, eMatchingSequence::MS_None);
 					MatchMakingManager->UpdateMatchingSequence(matchingType);
 				}
 
-				session->SetMatchingRequestTime(0);
+				player->SetMatchingRequestTime(0);
 
 				MatchMakingManager->GetMatchingLock().unlock();
 
-				session->GetSessionStateLock().unlock();
+				player->GetSessionStateLock().unlock();
 
 				std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_MATCHING_CANCEL, data, size);
-				session->DoSend(send_buffer.data(), send_buffer.size());
+				player->DoSend(send_buffer.data(), send_buffer.size());
 			}
 		}
 		catch (const std::exception& e) {
