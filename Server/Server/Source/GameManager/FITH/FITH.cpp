@@ -97,7 +97,7 @@ bool FITH::CheckGameEnd(int roomID)
             }
             room->Reset();
 
-            std::cout << "Game End - " << roomID << std::endl;
+            //std::cout << "Game End - " << roomID << std::endl;
             return true;
         }
     }
@@ -430,7 +430,7 @@ void FITH::BombSpawn(Room* room, int roomID)
     for (const int id : bombIDs) {
         Bomb* bomb = room->GetBomb(id);
         if (bomb == nullptr) {
-            COUT << "ERROR!: " << "GetBomb FAIL\n";
+            COUT << "ERROR!: " << "GetBomb FAIL. Bomb ID: " << id << ENDL;
             continue;
         }
         long long uniqueCode = bomb->GetUniqueCode();

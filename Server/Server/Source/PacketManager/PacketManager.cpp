@@ -13,6 +13,8 @@ PacketManager::PacketManager(Server* server, PacketSender* packetSender)
 
     // packet
     {
+        PacketProcessorMap[ePacketType::PING_CHECK] = std::make_unique<Packet_PingCheck>(pServer, pPacketSender);
+
         PacketProcessorMap[ePacketType::C2S_LOGIN_REQUEST] = std::make_unique<Packet_LoginRequest>(pServer, pPacketSender);
         PacketProcessorMap[ePacketType::C2S_SIGNUP_REQUEST] = std::make_unique<Packet_SignUpRequest>(pServer, pPacketSender);
         PacketProcessorMap[ePacketType::C2S_VERSION_CHECK_REQUEST] = std::make_unique<Packet_VersionCheckRequest>(pServer, pPacketSender);

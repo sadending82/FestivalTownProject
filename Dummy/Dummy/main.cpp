@@ -13,8 +13,8 @@ HANDLE g_hiocp;
 #define IPADDRESS "127.0.0.1"
 //
 
-inline constexpr int MAX_TEST = 987;
-inline constexpr int MAX_CLIENTS = 987;
+inline constexpr int MAX_TEST = 2987;
+inline constexpr int MAX_CLIENTS = 2987;
 
 std::array<int, MAX_CLIENTS> client_map;
 std::array<DummyClient, MAX_CLIENTS> g_clients;
@@ -251,8 +251,8 @@ void Adjust_Number_Of_Client()
 	std::uniform_int_distribution<> matchingType_distrib(0, 10);
 
 	g_clients[num_connections].connected = true;
-	std::cout << num_connections << " 접속 완료" << std::endl;
-	std::cout << num_connections << " 매칭 요청" << std::endl;
+	/*std::cout << num_connections << " 접속 완료" << std::endl;
+	std::cout << num_connections << " 매칭 요청" << std::endl;*/
 	eMatchingType mtype;
 	if (matchingType_distrib(gen) % 2 == 0) {
 		mtype = eMatchingType::FITH_SOLO;
@@ -335,7 +335,7 @@ void ProcessPacket(unsigned char* data, const int ci)
 		break;
 	case ePacketType::S2C_GAME_START:
 	{
-		std::cout << ci << "플레이어가 게임 시작과 동시에 댄스를 시작합니다!" << std::endl;
+		//std::cout << ci << "플레이어가 게임 시작과 동시에 댄스를 시작합니다!" << std::endl;
 		g_clients[ci].isInGame = true;
 	}
 		break;
@@ -362,7 +362,7 @@ void ProcessPacket(unsigned char* data, const int ci)
 
 	case ePacketType::S2C_MATCHING_RESPONSE:
 	{
-		std::cout << ci << " 플레이어가 매칭완료" << std::endl;
+		//std::cout << ci << " 플레이어가 매칭완료" << std::endl;
 
 		uint8_t* d = data + headerSize;
 		size_t s = header->flatBufferSize;
@@ -380,15 +380,15 @@ void ProcessPacket(unsigned char* data, const int ci)
 		break;
 	case ePacketType::S2C_GAME_END:
 	{
-		std::cout << ci << "가 게임이 끝났다고 알립니다." << std::endl;
+		//std::cout << ci << "가 게임이 끝났다고 알립니다." << std::endl;
 		g_clients[ci].isInGame = false;
 		g_clients[ci].direction.z = 0;
 	}
 		break;
 	case ePacketType::S2C_GAME_RESULT:
 	{
-		std::cout << ci << "가 결과를 전송 받았어요." << std::endl;
-		std::cout << ci << "가 바로 다시 매칭을 신청해요" << std::endl;
+		//std::cout << ci << "가 결과를 전송 받았어요." << std::endl;
+		//std::cout << ci << "가 바로 다시 매칭을 신청해요" << std::endl;
 
 		eMatchingType mtype;
 		if (matchingType_distrib(gen) == 0) {

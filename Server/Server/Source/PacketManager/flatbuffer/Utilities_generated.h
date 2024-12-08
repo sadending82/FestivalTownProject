@@ -19,6 +19,9 @@ namespace UtilitiesTable {
 struct Utilities;
 struct UtilitiesBuilder;
 
+struct PingCheck;
+struct PingCheckBuilder;
+
 struct HeartBeat;
 struct HeartBeatBuilder;
 
@@ -81,6 +84,47 @@ struct UtilitiesBuilder {
 inline ::flatbuffers::Offset<Utilities> CreateUtilities(
     ::flatbuffers::FlatBufferBuilder &_fbb) {
   UtilitiesBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct PingCheck FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef PingCheckBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TIME = 4
+  };
+  int64_t time() const {
+    return GetField<int64_t>(VT_TIME, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int64_t>(verifier, VT_TIME, 8) &&
+           verifier.EndTable();
+  }
+};
+
+struct PingCheckBuilder {
+  typedef PingCheck Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_time(int64_t time) {
+    fbb_.AddElement<int64_t>(PingCheck::VT_TIME, time, 0);
+  }
+  explicit PingCheckBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<PingCheck> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<PingCheck>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<PingCheck> CreatePingCheck(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int64_t time = 0) {
+  PingCheckBuilder builder_(_fbb);
+  builder_.add_time(time);
   return builder_.Finish();
 }
 

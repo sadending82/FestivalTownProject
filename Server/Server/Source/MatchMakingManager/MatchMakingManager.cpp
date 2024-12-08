@@ -69,7 +69,7 @@ bool MatchMakingManager::CheckMatchMaking(eMatchingType matchingType)
         }
 
         MatchingComplete(roomID, sessionList);
-        std::cout << "Start Game room - " << roomID << "| GameMode - " << gameMode << std::endl;
+        //std::cout << "Start Game room - " << roomID << "| GameMode - " << gameMode << std::endl;
     }
 
     return true;
@@ -124,7 +124,7 @@ void MatchMakingManager::MatchingComplete(int roomID, std::vector<int>& sessionI
                 }
                 else {
                     player->SetMatchingRequestTime(0);
-                    COUT << "Matched - " << sessionID << ENDL;
+                    //COUT << "Matched - " << sessionID << ENDL;
                 }
                 addCompletePlayerCnt++;
             }

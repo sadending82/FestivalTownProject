@@ -14,18 +14,17 @@
 
 inline constexpr int SERVERKEY = 0;
 inline constexpr int STARTKEY = 1;
-inline constexpr int STARTBOTKEY = 1001;
+inline constexpr int STARTBOTKEY = 4001;
 inline constexpr int INVALIDKEY = -1;
 inline constexpr int TESTROOM = 0;
 
 inline constexpr int BUFSIZE = 1000;
 
-inline constexpr int MAXSESSION = 1000 * 2;
-inline constexpr int MAXUSER = 1000;
-inline constexpr int MAXROOM = 500;
+inline constexpr int MAXSESSION = 5000;
+inline constexpr int MAXUSER = 4000;
+inline constexpr int MAXROOM = 2000;
 inline constexpr int MAXPLAYER = 6;
 inline constexpr int MINPLAYER = 2;
-inline constexpr int MAXOBJECT = 100;
 
 inline constexpr int BLOCKSIZE = 2; // meter
 

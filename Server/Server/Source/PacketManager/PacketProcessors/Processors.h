@@ -12,6 +12,7 @@
 #include "Packet/Lobby/Packet_AttendanceRewardRequest.h"
 
 #include "Packet/Utilities/Packet_HeartBeat.h"
+#include "Packet/Utilities/Packet_PingCheck.h"
 
 #include "Packet/Player/Packet_PlayerMove.h"
 #include "Packet/Player/Packet_PlayerStop.h"
