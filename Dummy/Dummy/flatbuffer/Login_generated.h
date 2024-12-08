@@ -13,8 +13,16 @@ static_assert(FLATBUFFERS_VERSION_MAJOR == 24 &&
               FLATBUFFERS_VERSION_REVISION == 25,
              "Non-compatible flatbuffers version included");
 
+#include "Utilities_generated.h"
+
 namespace PacketTable {
 namespace LoginTable {
+
+struct VersionCheckRequest;
+struct VersionCheckRequestBuilder;
+
+struct VersionCheckResponse;
+struct VersionCheckResponseBuilder;
 
 struct SignUpRequest;
 struct SignUpRequestBuilder;
@@ -27,6 +35,98 @@ struct LoginRequestBuilder;
 
 struct LoginResponse;
 struct LoginResponseBuilder;
+
+struct VersionCheckRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef VersionCheckRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_VERSION = 4
+  };
+  const ::flatbuffers::String *version() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_VERSION);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_VERSION) &&
+           verifier.VerifyString(version()) &&
+           verifier.EndTable();
+  }
+};
+
+struct VersionCheckRequestBuilder {
+  typedef VersionCheckRequest Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_version(::flatbuffers::Offset<::flatbuffers::String> version) {
+    fbb_.AddOffset(VersionCheckRequest::VT_VERSION, version);
+  }
+  explicit VersionCheckRequestBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<VersionCheckRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<VersionCheckRequest>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<VersionCheckRequest> CreateVersionCheckRequest(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::String> version = 0) {
+  VersionCheckRequestBuilder builder_(_fbb);
+  builder_.add_version(version);
+  return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<VersionCheckRequest> CreateVersionCheckRequestDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    const char *version = nullptr) {
+  auto version__ = version ? _fbb.CreateString(version) : 0;
+  return PacketTable::LoginTable::CreateVersionCheckRequest(
+      _fbb,
+      version__);
+}
+
+struct VersionCheckResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef VersionCheckResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_RESULT = 4
+  };
+  int32_t result() const {
+    return GetField<int32_t>(VT_RESULT, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_RESULT, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct VersionCheckResponseBuilder {
+  typedef VersionCheckResponse Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_result(int32_t result) {
+    fbb_.AddElement<int32_t>(VersionCheckResponse::VT_RESULT, result, 0);
+  }
+  explicit VersionCheckResponseBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<VersionCheckResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<VersionCheckResponse>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<VersionCheckResponse> CreateVersionCheckResponse(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t result = 0) {
+  VersionCheckResponseBuilder builder_(_fbb);
+  builder_.add_result(result);
+  return builder_.Finish();
+}
 
 struct SignUpRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef SignUpRequestBuilder Builder;
@@ -217,39 +317,46 @@ struct LoginResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef LoginResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_RESULT_CODE = 4,
-    VT_UID = 6,
-    VT_NICKNAME = 8,
-    VT_POINT = 10,
-    VT_GOLD = 12,
-    VT_ATTENDANCE_DAY = 14
+    VT_USER_INFO = 6,
+    VT_GOLD = 8,
+    VT_DIA = 10,
+    VT_MILEAGE = 12,
+    VT_IS_NEW_UPDATE = 14,
+    VT_ATTENDANCE_EVENT = 16
   };
   int32_t result_code() const {
     return GetField<int32_t>(VT_RESULT_CODE, 0);
   }
-  int32_t uid() const {
-    return GetField<int32_t>(VT_UID, 0);
-  }
-  const ::flatbuffers::String *nickname() const {
-    return GetPointer<const ::flatbuffers::String *>(VT_NICKNAME);
-  }
-  int32_t point() const {
-    return GetField<int32_t>(VT_POINT, 0);
+  const PacketTable::UtilitiesTable::DB_UserInfo *user_info() const {
+    return GetPointer<const PacketTable::UtilitiesTable::DB_UserInfo *>(VT_USER_INFO);
   }
   int32_t gold() const {
     return GetField<int32_t>(VT_GOLD, 0);
   }
-  int32_t attendance_day() const {
-    return GetField<int32_t>(VT_ATTENDANCE_DAY, 0);
+  int32_t dia() const {
+    return GetField<int32_t>(VT_DIA, 0);
+  }
+  int32_t mileage() const {
+    return GetField<int32_t>(VT_MILEAGE, 0);
+  }
+  bool is_new_update() const {
+    return GetField<uint8_t>(VT_IS_NEW_UPDATE, 0) != 0;
+  }
+  const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::AttendanceStatus>> *attendance_event() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::AttendanceStatus>> *>(VT_ATTENDANCE_EVENT);
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_RESULT_CODE, 4) &&
-           VerifyField<int32_t>(verifier, VT_UID, 4) &&
-           VerifyOffset(verifier, VT_NICKNAME) &&
-           verifier.VerifyString(nickname()) &&
-           VerifyField<int32_t>(verifier, VT_POINT, 4) &&
+           VerifyOffset(verifier, VT_USER_INFO) &&
+           verifier.VerifyTable(user_info()) &&
            VerifyField<int32_t>(verifier, VT_GOLD, 4) &&
-           VerifyField<int32_t>(verifier, VT_ATTENDANCE_DAY, 4) &&
+           VerifyField<int32_t>(verifier, VT_DIA, 4) &&
+           VerifyField<int32_t>(verifier, VT_MILEAGE, 4) &&
+           VerifyField<uint8_t>(verifier, VT_IS_NEW_UPDATE, 1) &&
+           VerifyOffset(verifier, VT_ATTENDANCE_EVENT) &&
+           verifier.VerifyVector(attendance_event()) &&
+           verifier.VerifyVectorOfTables(attendance_event()) &&
            verifier.EndTable();
   }
 };
@@ -261,20 +368,23 @@ struct LoginResponseBuilder {
   void add_result_code(int32_t result_code) {
     fbb_.AddElement<int32_t>(LoginResponse::VT_RESULT_CODE, result_code, 0);
   }
-  void add_uid(int32_t uid) {
-    fbb_.AddElement<int32_t>(LoginResponse::VT_UID, uid, 0);
-  }
-  void add_nickname(::flatbuffers::Offset<::flatbuffers::String> nickname) {
-    fbb_.AddOffset(LoginResponse::VT_NICKNAME, nickname);
-  }
-  void add_point(int32_t point) {
-    fbb_.AddElement<int32_t>(LoginResponse::VT_POINT, point, 0);
+  void add_user_info(::flatbuffers::Offset<PacketTable::UtilitiesTable::DB_UserInfo> user_info) {
+    fbb_.AddOffset(LoginResponse::VT_USER_INFO, user_info);
   }
   void add_gold(int32_t gold) {
     fbb_.AddElement<int32_t>(LoginResponse::VT_GOLD, gold, 0);
   }
-  void add_attendance_day(int32_t attendance_day) {
-    fbb_.AddElement<int32_t>(LoginResponse::VT_ATTENDANCE_DAY, attendance_day, 0);
+  void add_dia(int32_t dia) {
+    fbb_.AddElement<int32_t>(LoginResponse::VT_DIA, dia, 0);
+  }
+  void add_mileage(int32_t mileage) {
+    fbb_.AddElement<int32_t>(LoginResponse::VT_MILEAGE, mileage, 0);
+  }
+  void add_is_new_update(bool is_new_update) {
+    fbb_.AddElement<uint8_t>(LoginResponse::VT_IS_NEW_UPDATE, static_cast<uint8_t>(is_new_update), 0);
+  }
+  void add_attendance_event(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::AttendanceStatus>>> attendance_event) {
+    fbb_.AddOffset(LoginResponse::VT_ATTENDANCE_EVENT, attendance_event);
   }
   explicit LoginResponseBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -290,38 +400,42 @@ struct LoginResponseBuilder {
 inline ::flatbuffers::Offset<LoginResponse> CreateLoginResponse(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t result_code = 0,
-    int32_t uid = 0,
-    ::flatbuffers::Offset<::flatbuffers::String> nickname = 0,
-    int32_t point = 0,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::DB_UserInfo> user_info = 0,
     int32_t gold = 0,
-    int32_t attendance_day = 0) {
+    int32_t dia = 0,
+    int32_t mileage = 0,
+    bool is_new_update = false,
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::AttendanceStatus>>> attendance_event = 0) {
   LoginResponseBuilder builder_(_fbb);
-  builder_.add_attendance_day(attendance_day);
+  builder_.add_attendance_event(attendance_event);
+  builder_.add_mileage(mileage);
+  builder_.add_dia(dia);
   builder_.add_gold(gold);
-  builder_.add_point(point);
-  builder_.add_nickname(nickname);
-  builder_.add_uid(uid);
+  builder_.add_user_info(user_info);
   builder_.add_result_code(result_code);
+  builder_.add_is_new_update(is_new_update);
   return builder_.Finish();
 }
 
 inline ::flatbuffers::Offset<LoginResponse> CreateLoginResponseDirect(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t result_code = 0,
-    int32_t uid = 0,
-    const char *nickname = nullptr,
-    int32_t point = 0,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::DB_UserInfo> user_info = 0,
     int32_t gold = 0,
-    int32_t attendance_day = 0) {
-  auto nickname__ = nickname ? _fbb.CreateString(nickname) : 0;
+    int32_t dia = 0,
+    int32_t mileage = 0,
+    bool is_new_update = false,
+    const std::vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::AttendanceStatus>> *attendance_event = nullptr) {
+  auto attendance_event__ = attendance_event ? _fbb.CreateVector<::flatbuffers::Offset<PacketTable::UtilitiesTable::AttendanceStatus>>(*attendance_event) : 0;
   return PacketTable::LoginTable::CreateLoginResponse(
       _fbb,
       result_code,
-      uid,
-      nickname__,
-      point,
+      user_info,
       gold,
-      attendance_day);
+      dia,
+      mileage,
+      is_new_update,
+      attendance_event__);
 }
 
 }  // namespace LoginTable

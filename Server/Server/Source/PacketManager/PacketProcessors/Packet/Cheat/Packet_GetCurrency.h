@@ -20,6 +20,7 @@ public:
 				if (player == nullptr) {
 					return;
 				}
+				
 
 				int uid = player->GetUID();
 				DB* db = pServer->GetDB();

@@ -13,6 +13,8 @@ static_assert(FLATBUFFERS_VERSION_MAJOR == 24 &&
               FLATBUFFERS_VERSION_REVISION == 25,
              "Non-compatible flatbuffers version included");
 
+#include "Utilities_generated.h"
+
 namespace PacketTable {
 namespace LobbyTable {
 
@@ -30,6 +32,33 @@ struct GachaRequestBuilder;
 
 struct GachaResponse;
 struct GachaResponseBuilder;
+
+struct CurrencyAmountRequest;
+struct CurrencyAmountRequestBuilder;
+
+struct CurrencyAmountResponse;
+struct CurrencyAmountResponseBuilder;
+
+struct UserItemsRequest;
+struct UserItemsRequestBuilder;
+
+struct UserItemsResponse;
+struct UserItemsResponseBuilder;
+
+struct ChangeCharacterCustomizing;
+struct ChangeCharacterCustomizingBuilder;
+
+struct AttendanceEventRequest;
+struct AttendanceEventRequestBuilder;
+
+struct AttendanceEventResponse;
+struct AttendanceEventResponseBuilder;
+
+struct AttendanceRewardRequest;
+struct AttendanceRewardRequestBuilder;
+
+struct AttendanceRewardResponse;
+struct AttendanceRewardResponseBuilder;
 
 struct GameMatchingRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef GameMatchingRequestBuilder Builder;
@@ -89,9 +118,11 @@ struct GameMatchingResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Tab
     VT_ROOMID = 6,
     VT_TEAM = 8,
     VT_GAMEMODE = 10,
-    VT_GAME_TIME = 12,
-    VT_IS_HOST = 14,
-    VT_TOTAL_PLAYER_COUNT = 16
+    VT_MAP_INDEX = 12,
+    VT_MAP_THEME = 14,
+    VT_GAME_TIME = 16,
+    VT_IS_HOST = 18,
+    VT_TOTAL_PLAYER_COUNT = 20
   };
   int32_t ingameid() const {
     return GetField<int32_t>(VT_INGAMEID, 0);
@@ -104,6 +135,12 @@ struct GameMatchingResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Tab
   }
   int32_t gamemode() const {
     return GetField<int32_t>(VT_GAMEMODE, 0);
+  }
+  int32_t map_index() const {
+    return GetField<int32_t>(VT_MAP_INDEX, 0);
+  }
+  int32_t map_theme() const {
+    return GetField<int32_t>(VT_MAP_THEME, 0);
   }
   int32_t game_time() const {
     return GetField<int32_t>(VT_GAME_TIME, 0);
@@ -120,6 +157,8 @@ struct GameMatchingResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Tab
            VerifyField<int32_t>(verifier, VT_ROOMID, 4) &&
            VerifyField<int32_t>(verifier, VT_TEAM, 4) &&
            VerifyField<int32_t>(verifier, VT_GAMEMODE, 4) &&
+           VerifyField<int32_t>(verifier, VT_MAP_INDEX, 4) &&
+           VerifyField<int32_t>(verifier, VT_MAP_THEME, 4) &&
            VerifyField<int32_t>(verifier, VT_GAME_TIME, 4) &&
            VerifyField<uint8_t>(verifier, VT_IS_HOST, 1) &&
            VerifyField<int32_t>(verifier, VT_TOTAL_PLAYER_COUNT, 4) &&
@@ -142,6 +181,12 @@ struct GameMatchingResponseBuilder {
   }
   void add_gamemode(int32_t gamemode) {
     fbb_.AddElement<int32_t>(GameMatchingResponse::VT_GAMEMODE, gamemode, 0);
+  }
+  void add_map_index(int32_t map_index) {
+    fbb_.AddElement<int32_t>(GameMatchingResponse::VT_MAP_INDEX, map_index, 0);
+  }
+  void add_map_theme(int32_t map_theme) {
+    fbb_.AddElement<int32_t>(GameMatchingResponse::VT_MAP_THEME, map_theme, 0);
   }
   void add_game_time(int32_t game_time) {
     fbb_.AddElement<int32_t>(GameMatchingResponse::VT_GAME_TIME, game_time, 0);
@@ -169,12 +214,16 @@ inline ::flatbuffers::Offset<GameMatchingResponse> CreateGameMatchingResponse(
     int32_t roomid = 0,
     int32_t team = 0,
     int32_t gamemode = 0,
+    int32_t map_index = 0,
+    int32_t map_theme = 0,
     int32_t game_time = 0,
     bool is_host = false,
     int32_t total_player_count = 0) {
   GameMatchingResponseBuilder builder_(_fbb);
   builder_.add_total_player_count(total_player_count);
   builder_.add_game_time(game_time);
+  builder_.add_map_theme(map_theme);
+  builder_.add_map_index(map_index);
   builder_.add_gamemode(gamemode);
   builder_.add_team(team);
   builder_.add_roomid(roomid);
@@ -237,14 +286,19 @@ inline ::flatbuffers::Offset<GameMatchingCancel> CreateGameMatchingCancel(
 struct GachaRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef GachaRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_RANDOM_BOX_INDEX = 4
+    VT_RANDOM_BOX_INDEX = 4,
+    VT_PAY_ITEM = 6
   };
   int32_t random_box_index() const {
     return GetField<int32_t>(VT_RANDOM_BOX_INDEX, 0);
   }
+  int32_t pay_item() const {
+    return GetField<int32_t>(VT_PAY_ITEM, 0);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_RANDOM_BOX_INDEX, 4) &&
+           VerifyField<int32_t>(verifier, VT_PAY_ITEM, 4) &&
            verifier.EndTable();
   }
 };
@@ -255,6 +309,9 @@ struct GachaRequestBuilder {
   ::flatbuffers::uoffset_t start_;
   void add_random_box_index(int32_t random_box_index) {
     fbb_.AddElement<int32_t>(GachaRequest::VT_RANDOM_BOX_INDEX, random_box_index, 0);
+  }
+  void add_pay_item(int32_t pay_item) {
+    fbb_.AddElement<int32_t>(GachaRequest::VT_PAY_ITEM, pay_item, 0);
   }
   explicit GachaRequestBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -269,8 +326,10 @@ struct GachaRequestBuilder {
 
 inline ::flatbuffers::Offset<GachaRequest> CreateGachaRequest(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    int32_t random_box_index = 0) {
+    int32_t random_box_index = 0,
+    int32_t pay_item = 0) {
   GachaRequestBuilder builder_(_fbb);
+  builder_.add_pay_item(pay_item);
   builder_.add_random_box_index(random_box_index);
   return builder_.Finish();
 }
@@ -278,14 +337,49 @@ inline ::flatbuffers::Offset<GachaRequest> CreateGachaRequest(
 struct GachaResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef GachaResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_ITEM = 4
+    VT_RESULT = 4,
+    VT_RESULT_ITEM_CODE = 6,
+    VT_RESULT_ITEM_AMOUNT = 8,
+    VT_ACQUIRED_ITEM_CODE = 10,
+    VT_ACQUIRED_ITEM_AMOUNT = 12,
+    VT_SPENT_RESOURCE_CODE = 14,
+    VT_SPENT_RESOURCE_AMOUNT = 16,
+    VT_REMAINING_RESOURCE_AMOUNT = 18
   };
-  int32_t item() const {
-    return GetField<int32_t>(VT_ITEM, 0);
+  int32_t result() const {
+    return GetField<int32_t>(VT_RESULT, 0);
+  }
+  int32_t result_item_code() const {
+    return GetField<int32_t>(VT_RESULT_ITEM_CODE, 0);
+  }
+  int32_t result_item_amount() const {
+    return GetField<int32_t>(VT_RESULT_ITEM_AMOUNT, 0);
+  }
+  int32_t acquired_item_code() const {
+    return GetField<int32_t>(VT_ACQUIRED_ITEM_CODE, 0);
+  }
+  int32_t acquired_item_amount() const {
+    return GetField<int32_t>(VT_ACQUIRED_ITEM_AMOUNT, 0);
+  }
+  int32_t spent_resource_code() const {
+    return GetField<int32_t>(VT_SPENT_RESOURCE_CODE, 0);
+  }
+  int32_t spent_resource_amount() const {
+    return GetField<int32_t>(VT_SPENT_RESOURCE_AMOUNT, 0);
+  }
+  int32_t remaining_resource_amount() const {
+    return GetField<int32_t>(VT_REMAINING_RESOURCE_AMOUNT, 0);
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<int32_t>(verifier, VT_ITEM, 4) &&
+           VerifyField<int32_t>(verifier, VT_RESULT, 4) &&
+           VerifyField<int32_t>(verifier, VT_RESULT_ITEM_CODE, 4) &&
+           VerifyField<int32_t>(verifier, VT_RESULT_ITEM_AMOUNT, 4) &&
+           VerifyField<int32_t>(verifier, VT_ACQUIRED_ITEM_CODE, 4) &&
+           VerifyField<int32_t>(verifier, VT_ACQUIRED_ITEM_AMOUNT, 4) &&
+           VerifyField<int32_t>(verifier, VT_SPENT_RESOURCE_CODE, 4) &&
+           VerifyField<int32_t>(verifier, VT_SPENT_RESOURCE_AMOUNT, 4) &&
+           VerifyField<int32_t>(verifier, VT_REMAINING_RESOURCE_AMOUNT, 4) &&
            verifier.EndTable();
   }
 };
@@ -294,8 +388,29 @@ struct GachaResponseBuilder {
   typedef GachaResponse Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_item(int32_t item) {
-    fbb_.AddElement<int32_t>(GachaResponse::VT_ITEM, item, 0);
+  void add_result(int32_t result) {
+    fbb_.AddElement<int32_t>(GachaResponse::VT_RESULT, result, 0);
+  }
+  void add_result_item_code(int32_t result_item_code) {
+    fbb_.AddElement<int32_t>(GachaResponse::VT_RESULT_ITEM_CODE, result_item_code, 0);
+  }
+  void add_result_item_amount(int32_t result_item_amount) {
+    fbb_.AddElement<int32_t>(GachaResponse::VT_RESULT_ITEM_AMOUNT, result_item_amount, 0);
+  }
+  void add_acquired_item_code(int32_t acquired_item_code) {
+    fbb_.AddElement<int32_t>(GachaResponse::VT_ACQUIRED_ITEM_CODE, acquired_item_code, 0);
+  }
+  void add_acquired_item_amount(int32_t acquired_item_amount) {
+    fbb_.AddElement<int32_t>(GachaResponse::VT_ACQUIRED_ITEM_AMOUNT, acquired_item_amount, 0);
+  }
+  void add_spent_resource_code(int32_t spent_resource_code) {
+    fbb_.AddElement<int32_t>(GachaResponse::VT_SPENT_RESOURCE_CODE, spent_resource_code, 0);
+  }
+  void add_spent_resource_amount(int32_t spent_resource_amount) {
+    fbb_.AddElement<int32_t>(GachaResponse::VT_SPENT_RESOURCE_AMOUNT, spent_resource_amount, 0);
+  }
+  void add_remaining_resource_amount(int32_t remaining_resource_amount) {
+    fbb_.AddElement<int32_t>(GachaResponse::VT_REMAINING_RESOURCE_AMOUNT, remaining_resource_amount, 0);
   }
   explicit GachaResponseBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -310,9 +425,520 @@ struct GachaResponseBuilder {
 
 inline ::flatbuffers::Offset<GachaResponse> CreateGachaResponse(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    int32_t item = 0) {
+    int32_t result = 0,
+    int32_t result_item_code = 0,
+    int32_t result_item_amount = 0,
+    int32_t acquired_item_code = 0,
+    int32_t acquired_item_amount = 0,
+    int32_t spent_resource_code = 0,
+    int32_t spent_resource_amount = 0,
+    int32_t remaining_resource_amount = 0) {
   GachaResponseBuilder builder_(_fbb);
-  builder_.add_item(item);
+  builder_.add_remaining_resource_amount(remaining_resource_amount);
+  builder_.add_spent_resource_amount(spent_resource_amount);
+  builder_.add_spent_resource_code(spent_resource_code);
+  builder_.add_acquired_item_amount(acquired_item_amount);
+  builder_.add_acquired_item_code(acquired_item_code);
+  builder_.add_result_item_amount(result_item_amount);
+  builder_.add_result_item_code(result_item_code);
+  builder_.add_result(result);
+  return builder_.Finish();
+}
+
+struct CurrencyAmountRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef CurrencyAmountRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_UID = 4
+  };
+  int32_t uid() const {
+    return GetField<int32_t>(VT_UID, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_UID, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct CurrencyAmountRequestBuilder {
+  typedef CurrencyAmountRequest Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_uid(int32_t uid) {
+    fbb_.AddElement<int32_t>(CurrencyAmountRequest::VT_UID, uid, 0);
+  }
+  explicit CurrencyAmountRequestBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<CurrencyAmountRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<CurrencyAmountRequest>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<CurrencyAmountRequest> CreateCurrencyAmountRequest(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t uid = 0) {
+  CurrencyAmountRequestBuilder builder_(_fbb);
+  builder_.add_uid(uid);
+  return builder_.Finish();
+}
+
+struct CurrencyAmountResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef CurrencyAmountResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_RESULT = 4,
+    VT_CURRENCY_CODE = 6,
+    VT_CURRENCY_AMOUNT = 8
+  };
+  int32_t result() const {
+    return GetField<int32_t>(VT_RESULT, 0);
+  }
+  const ::flatbuffers::Vector<int32_t> *currency_code() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_CURRENCY_CODE);
+  }
+  const ::flatbuffers::Vector<int32_t> *currency_amount() const {
+    return GetPointer<const ::flatbuffers::Vector<int32_t> *>(VT_CURRENCY_AMOUNT);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_RESULT, 4) &&
+           VerifyOffset(verifier, VT_CURRENCY_CODE) &&
+           verifier.VerifyVector(currency_code()) &&
+           VerifyOffset(verifier, VT_CURRENCY_AMOUNT) &&
+           verifier.VerifyVector(currency_amount()) &&
+           verifier.EndTable();
+  }
+};
+
+struct CurrencyAmountResponseBuilder {
+  typedef CurrencyAmountResponse Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_result(int32_t result) {
+    fbb_.AddElement<int32_t>(CurrencyAmountResponse::VT_RESULT, result, 0);
+  }
+  void add_currency_code(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> currency_code) {
+    fbb_.AddOffset(CurrencyAmountResponse::VT_CURRENCY_CODE, currency_code);
+  }
+  void add_currency_amount(::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> currency_amount) {
+    fbb_.AddOffset(CurrencyAmountResponse::VT_CURRENCY_AMOUNT, currency_amount);
+  }
+  explicit CurrencyAmountResponseBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<CurrencyAmountResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<CurrencyAmountResponse>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<CurrencyAmountResponse> CreateCurrencyAmountResponse(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t result = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> currency_code = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<int32_t>> currency_amount = 0) {
+  CurrencyAmountResponseBuilder builder_(_fbb);
+  builder_.add_currency_amount(currency_amount);
+  builder_.add_currency_code(currency_code);
+  builder_.add_result(result);
+  return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<CurrencyAmountResponse> CreateCurrencyAmountResponseDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t result = 0,
+    const std::vector<int32_t> *currency_code = nullptr,
+    const std::vector<int32_t> *currency_amount = nullptr) {
+  auto currency_code__ = currency_code ? _fbb.CreateVector<int32_t>(*currency_code) : 0;
+  auto currency_amount__ = currency_amount ? _fbb.CreateVector<int32_t>(*currency_amount) : 0;
+  return PacketTable::LobbyTable::CreateCurrencyAmountResponse(
+      _fbb,
+      result,
+      currency_code__,
+      currency_amount__);
+}
+
+struct UserItemsRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef UserItemsRequestBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct UserItemsRequestBuilder {
+  typedef UserItemsRequest Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit UserItemsRequestBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<UserItemsRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<UserItemsRequest>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<UserItemsRequest> CreateUserItemsRequest(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  UserItemsRequestBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct UserItemsResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef UserItemsResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_RESULT = 4,
+    VT_ITEMS = 6
+  };
+  int32_t result() const {
+    return GetField<int32_t>(VT_RESULT, 0);
+  }
+  const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::ItemInfo>> *items() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::ItemInfo>> *>(VT_ITEMS);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_RESULT, 4) &&
+           VerifyOffset(verifier, VT_ITEMS) &&
+           verifier.VerifyVector(items()) &&
+           verifier.VerifyVectorOfTables(items()) &&
+           verifier.EndTable();
+  }
+};
+
+struct UserItemsResponseBuilder {
+  typedef UserItemsResponse Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_result(int32_t result) {
+    fbb_.AddElement<int32_t>(UserItemsResponse::VT_RESULT, result, 0);
+  }
+  void add_items(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::ItemInfo>>> items) {
+    fbb_.AddOffset(UserItemsResponse::VT_ITEMS, items);
+  }
+  explicit UserItemsResponseBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<UserItemsResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<UserItemsResponse>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<UserItemsResponse> CreateUserItemsResponse(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t result = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::ItemInfo>>> items = 0) {
+  UserItemsResponseBuilder builder_(_fbb);
+  builder_.add_items(items);
+  builder_.add_result(result);
+  return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<UserItemsResponse> CreateUserItemsResponseDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t result = 0,
+    const std::vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::ItemInfo>> *items = nullptr) {
+  auto items__ = items ? _fbb.CreateVector<::flatbuffers::Offset<PacketTable::UtilitiesTable::ItemInfo>>(*items) : 0;
+  return PacketTable::LobbyTable::CreateUserItemsResponse(
+      _fbb,
+      result,
+      items__);
+}
+
+struct ChangeCharacterCustomizing FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef ChangeCharacterCustomizingBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_CUSTOMIZING_ITEMS = 4
+  };
+  const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::CustomizingItem>> *customizing_items() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::CustomizingItem>> *>(VT_CUSTOMIZING_ITEMS);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_CUSTOMIZING_ITEMS) &&
+           verifier.VerifyVector(customizing_items()) &&
+           verifier.VerifyVectorOfTables(customizing_items()) &&
+           verifier.EndTable();
+  }
+};
+
+struct ChangeCharacterCustomizingBuilder {
+  typedef ChangeCharacterCustomizing Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_customizing_items(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::CustomizingItem>>> customizing_items) {
+    fbb_.AddOffset(ChangeCharacterCustomizing::VT_CUSTOMIZING_ITEMS, customizing_items);
+  }
+  explicit ChangeCharacterCustomizingBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<ChangeCharacterCustomizing> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<ChangeCharacterCustomizing>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<ChangeCharacterCustomizing> CreateChangeCharacterCustomizing(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::CustomizingItem>>> customizing_items = 0) {
+  ChangeCharacterCustomizingBuilder builder_(_fbb);
+  builder_.add_customizing_items(customizing_items);
+  return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<ChangeCharacterCustomizing> CreateChangeCharacterCustomizingDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    std::vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::CustomizingItem>> *customizing_items = nullptr) {
+  auto customizing_items__ = customizing_items ? _fbb.CreateVectorOfSortedTables<PacketTable::UtilitiesTable::CustomizingItem>(customizing_items) : 0;
+  return PacketTable::LobbyTable::CreateChangeCharacterCustomizing(
+      _fbb,
+      customizing_items__);
+}
+
+struct AttendanceEventRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef AttendanceEventRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_EVENT_CODE = 4
+  };
+  int32_t event_code() const {
+    return GetField<int32_t>(VT_EVENT_CODE, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_EVENT_CODE, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct AttendanceEventRequestBuilder {
+  typedef AttendanceEventRequest Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_event_code(int32_t event_code) {
+    fbb_.AddElement<int32_t>(AttendanceEventRequest::VT_EVENT_CODE, event_code, 0);
+  }
+  explicit AttendanceEventRequestBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<AttendanceEventRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<AttendanceEventRequest>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<AttendanceEventRequest> CreateAttendanceEventRequest(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t event_code = 0) {
+  AttendanceEventRequestBuilder builder_(_fbb);
+  builder_.add_event_code(event_code);
+  return builder_.Finish();
+}
+
+struct AttendanceEventResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef AttendanceEventResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_EVENT_CODE = 4,
+    VT_DAY_COUNT = 6,
+    VT_RESULT = 8
+  };
+  int32_t event_code() const {
+    return GetField<int32_t>(VT_EVENT_CODE, 0);
+  }
+  int32_t day_count() const {
+    return GetField<int32_t>(VT_DAY_COUNT, 0);
+  }
+  int32_t result() const {
+    return GetField<int32_t>(VT_RESULT, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_EVENT_CODE, 4) &&
+           VerifyField<int32_t>(verifier, VT_DAY_COUNT, 4) &&
+           VerifyField<int32_t>(verifier, VT_RESULT, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct AttendanceEventResponseBuilder {
+  typedef AttendanceEventResponse Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_event_code(int32_t event_code) {
+    fbb_.AddElement<int32_t>(AttendanceEventResponse::VT_EVENT_CODE, event_code, 0);
+  }
+  void add_day_count(int32_t day_count) {
+    fbb_.AddElement<int32_t>(AttendanceEventResponse::VT_DAY_COUNT, day_count, 0);
+  }
+  void add_result(int32_t result) {
+    fbb_.AddElement<int32_t>(AttendanceEventResponse::VT_RESULT, result, 0);
+  }
+  explicit AttendanceEventResponseBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<AttendanceEventResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<AttendanceEventResponse>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<AttendanceEventResponse> CreateAttendanceEventResponse(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t event_code = 0,
+    int32_t day_count = 0,
+    int32_t result = 0) {
+  AttendanceEventResponseBuilder builder_(_fbb);
+  builder_.add_result(result);
+  builder_.add_day_count(day_count);
+  builder_.add_event_code(event_code);
+  return builder_.Finish();
+}
+
+struct AttendanceRewardRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef AttendanceRewardRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_EVENT_CODE = 4,
+    VT_DAY_COUNT = 6
+  };
+  int32_t event_code() const {
+    return GetField<int32_t>(VT_EVENT_CODE, 0);
+  }
+  int32_t day_count() const {
+    return GetField<int32_t>(VT_DAY_COUNT, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_EVENT_CODE, 4) &&
+           VerifyField<int32_t>(verifier, VT_DAY_COUNT, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct AttendanceRewardRequestBuilder {
+  typedef AttendanceRewardRequest Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_event_code(int32_t event_code) {
+    fbb_.AddElement<int32_t>(AttendanceRewardRequest::VT_EVENT_CODE, event_code, 0);
+  }
+  void add_day_count(int32_t day_count) {
+    fbb_.AddElement<int32_t>(AttendanceRewardRequest::VT_DAY_COUNT, day_count, 0);
+  }
+  explicit AttendanceRewardRequestBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<AttendanceRewardRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<AttendanceRewardRequest>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<AttendanceRewardRequest> CreateAttendanceRewardRequest(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t event_code = 0,
+    int32_t day_count = 0) {
+  AttendanceRewardRequestBuilder builder_(_fbb);
+  builder_.add_day_count(day_count);
+  builder_.add_event_code(event_code);
+  return builder_.Finish();
+}
+
+struct AttendanceRewardResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef AttendanceRewardResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_EVENT_CODE = 4,
+    VT_DAY_COUNT = 6,
+    VT_RESULT = 8,
+    VT_REWARD_ITEM = 10,
+    VT_REWARD_ITEM_COUNT = 12
+  };
+  int32_t event_code() const {
+    return GetField<int32_t>(VT_EVENT_CODE, 0);
+  }
+  int32_t day_count() const {
+    return GetField<int32_t>(VT_DAY_COUNT, 0);
+  }
+  int32_t result() const {
+    return GetField<int32_t>(VT_RESULT, 0);
+  }
+  int32_t reward_item() const {
+    return GetField<int32_t>(VT_REWARD_ITEM, 0);
+  }
+  int32_t reward_item_count() const {
+    return GetField<int32_t>(VT_REWARD_ITEM_COUNT, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_EVENT_CODE, 4) &&
+           VerifyField<int32_t>(verifier, VT_DAY_COUNT, 4) &&
+           VerifyField<int32_t>(verifier, VT_RESULT, 4) &&
+           VerifyField<int32_t>(verifier, VT_REWARD_ITEM, 4) &&
+           VerifyField<int32_t>(verifier, VT_REWARD_ITEM_COUNT, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct AttendanceRewardResponseBuilder {
+  typedef AttendanceRewardResponse Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_event_code(int32_t event_code) {
+    fbb_.AddElement<int32_t>(AttendanceRewardResponse::VT_EVENT_CODE, event_code, 0);
+  }
+  void add_day_count(int32_t day_count) {
+    fbb_.AddElement<int32_t>(AttendanceRewardResponse::VT_DAY_COUNT, day_count, 0);
+  }
+  void add_result(int32_t result) {
+    fbb_.AddElement<int32_t>(AttendanceRewardResponse::VT_RESULT, result, 0);
+  }
+  void add_reward_item(int32_t reward_item) {
+    fbb_.AddElement<int32_t>(AttendanceRewardResponse::VT_REWARD_ITEM, reward_item, 0);
+  }
+  void add_reward_item_count(int32_t reward_item_count) {
+    fbb_.AddElement<int32_t>(AttendanceRewardResponse::VT_REWARD_ITEM_COUNT, reward_item_count, 0);
+  }
+  explicit AttendanceRewardResponseBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<AttendanceRewardResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<AttendanceRewardResponse>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<AttendanceRewardResponse> CreateAttendanceRewardResponse(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t event_code = 0,
+    int32_t day_count = 0,
+    int32_t result = 0,
+    int32_t reward_item = 0,
+    int32_t reward_item_count = 0) {
+  AttendanceRewardResponseBuilder builder_(_fbb);
+  builder_.add_reward_item_count(reward_item_count);
+  builder_.add_reward_item(reward_item);
+  builder_.add_result(result);
+  builder_.add_day_count(day_count);
+  builder_.add_event_code(event_code);
   return builder_.Finish();
 }
 

@@ -13,8 +13,8 @@ HANDLE g_hiocp;
 #define IPADDRESS "127.0.0.1"
 //
 
-inline constexpr int MAX_TEST = 250;
-inline constexpr int MAX_CLIENTS = 1;
+inline constexpr int MAX_TEST = 500;
+inline constexpr int MAX_CLIENTS = 500;
 
 std::array<int, MAX_CLIENTS> client_map;
 std::array<DummyClient, MAX_CLIENTS> g_clients;
@@ -248,19 +248,18 @@ void Adjust_Number_Of_Client()
 
 	std::random_device rd;
 	std::mt19937 gen(rd());
-	std::uniform_int_distribution<> matchingType_distrib(0, 1);
+	std::uniform_int_distribution<> matchingType_distrib(0, 10);
 
 	g_clients[num_connections].connected = true;
 	std::cout << num_connections << " 접속 완료" << std::endl;
 	std::cout << num_connections << " 매칭 요청" << std::endl;
 	eMatchingType mtype;
-	if (matchingType_distrib(gen) == 0) {
+	if (matchingType_distrib(gen) % 2 == 0) {
 		mtype = eMatchingType::FITH_SOLO;
 	}
 	else {
 		mtype = eMatchingType::FITH_TEAM;
 	}
-	mtype = eMatchingType::FITH_SOLO;
 	auto packet = pm.MakeMatchingRequestPacket(num_connections, mtype);
 	g_clients[num_connections].DoSend(packet.data(), packet.size());
 

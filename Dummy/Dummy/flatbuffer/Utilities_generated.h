@@ -22,6 +22,27 @@ struct UtilitiesBuilder;
 struct HeartBeat;
 struct HeartBeatBuilder;
 
+struct GameSetting;
+struct GameSettingBuilder;
+
+struct CustomizingItem;
+struct CustomizingItemBuilder;
+
+struct CharacterCustomizing;
+struct CharacterCustomizingBuilder;
+
+struct ItemInfo;
+struct ItemInfoBuilder;
+
+struct DB_UserInfo;
+struct DB_UserInfoBuilder;
+
+struct DayAttendanceInfo;
+struct DayAttendanceInfoBuilder;
+
+struct AttendanceStatus;
+struct AttendanceStatusBuilder;
+
 struct PlayerGameRecord;
 struct PlayerGameRecordBuilder;
 
@@ -30,6 +51,9 @@ struct Vec2iBuilder;
 
 struct Vec3f;
 struct Vec3fBuilder;
+
+struct Date;
+struct DateBuilder;
 
 struct Utilities FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef UtilitiesBuilder Builder;
@@ -99,6 +123,521 @@ inline ::flatbuffers::Offset<HeartBeat> CreateHeartBeat(
   HeartBeatBuilder builder_(_fbb);
   builder_.add_time(time);
   return builder_.Finish();
+}
+
+struct GameSetting FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef GameSettingBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct GameSettingBuilder {
+  typedef GameSetting Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit GameSettingBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<GameSetting> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<GameSetting>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<GameSetting> CreateGameSetting(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  GameSettingBuilder builder_(_fbb);
+  return builder_.Finish();
+}
+
+struct CustomizingItem FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef CustomizingItemBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_TYPE = 4,
+    VT_ITEM_UID = 6,
+    VT_ITEM_CODE = 8
+  };
+  int32_t type() const {
+    return GetField<int32_t>(VT_TYPE, 0);
+  }
+  bool KeyCompareLessThan(const CustomizingItem * const o) const {
+    return type() < o->type();
+  }
+  int KeyCompareWithValue(int32_t _type) const {
+    return static_cast<int>(type() > _type) - static_cast<int>(type() < _type);
+  }
+  int32_t item_uid() const {
+    return GetField<int32_t>(VT_ITEM_UID, 0);
+  }
+  int32_t item_code() const {
+    return GetField<int32_t>(VT_ITEM_CODE, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_TYPE, 4) &&
+           VerifyField<int32_t>(verifier, VT_ITEM_UID, 4) &&
+           VerifyField<int32_t>(verifier, VT_ITEM_CODE, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct CustomizingItemBuilder {
+  typedef CustomizingItem Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_type(int32_t type) {
+    fbb_.AddElement<int32_t>(CustomizingItem::VT_TYPE, type, 0);
+  }
+  void add_item_uid(int32_t item_uid) {
+    fbb_.AddElement<int32_t>(CustomizingItem::VT_ITEM_UID, item_uid, 0);
+  }
+  void add_item_code(int32_t item_code) {
+    fbb_.AddElement<int32_t>(CustomizingItem::VT_ITEM_CODE, item_code, 0);
+  }
+  explicit CustomizingItemBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<CustomizingItem> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<CustomizingItem>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<CustomizingItem> CreateCustomizingItem(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t type = 0,
+    int32_t item_uid = 0,
+    int32_t item_code = 0) {
+  CustomizingItemBuilder builder_(_fbb);
+  builder_.add_item_code(item_code);
+  builder_.add_item_uid(item_uid);
+  builder_.add_type(type);
+  return builder_.Finish();
+}
+
+struct CharacterCustomizing FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef CharacterCustomizingBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_CUSTOMIZING_ITEMS = 4
+  };
+  const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::CustomizingItem>> *customizing_items() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::CustomizingItem>> *>(VT_CUSTOMIZING_ITEMS);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_CUSTOMIZING_ITEMS) &&
+           verifier.VerifyVector(customizing_items()) &&
+           verifier.VerifyVectorOfTables(customizing_items()) &&
+           verifier.EndTable();
+  }
+};
+
+struct CharacterCustomizingBuilder {
+  typedef CharacterCustomizing Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_customizing_items(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::CustomizingItem>>> customizing_items) {
+    fbb_.AddOffset(CharacterCustomizing::VT_CUSTOMIZING_ITEMS, customizing_items);
+  }
+  explicit CharacterCustomizingBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<CharacterCustomizing> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<CharacterCustomizing>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<CharacterCustomizing> CreateCharacterCustomizing(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::CustomizingItem>>> customizing_items = 0) {
+  CharacterCustomizingBuilder builder_(_fbb);
+  builder_.add_customizing_items(customizing_items);
+  return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<CharacterCustomizing> CreateCharacterCustomizingDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    std::vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::CustomizingItem>> *customizing_items = nullptr) {
+  auto customizing_items__ = customizing_items ? _fbb.CreateVectorOfSortedTables<PacketTable::UtilitiesTable::CustomizingItem>(customizing_items) : 0;
+  return PacketTable::UtilitiesTable::CreateCharacterCustomizing(
+      _fbb,
+      customizing_items__);
+}
+
+struct ItemInfo FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef ItemInfoBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ITEM_UID = 4,
+    VT_OWNER_UID = 6,
+    VT_ITEM_CODE = 8,
+    VT_COUNT = 10,
+    VT_ITEM_TYPE = 12
+  };
+  int32_t item_uid() const {
+    return GetField<int32_t>(VT_ITEM_UID, 0);
+  }
+  int32_t owner_uid() const {
+    return GetField<int32_t>(VT_OWNER_UID, 0);
+  }
+  int32_t item_code() const {
+    return GetField<int32_t>(VT_ITEM_CODE, 0);
+  }
+  int32_t count() const {
+    return GetField<int32_t>(VT_COUNT, 0);
+  }
+  int32_t item_type() const {
+    return GetField<int32_t>(VT_ITEM_TYPE, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_ITEM_UID, 4) &&
+           VerifyField<int32_t>(verifier, VT_OWNER_UID, 4) &&
+           VerifyField<int32_t>(verifier, VT_ITEM_CODE, 4) &&
+           VerifyField<int32_t>(verifier, VT_COUNT, 4) &&
+           VerifyField<int32_t>(verifier, VT_ITEM_TYPE, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct ItemInfoBuilder {
+  typedef ItemInfo Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_item_uid(int32_t item_uid) {
+    fbb_.AddElement<int32_t>(ItemInfo::VT_ITEM_UID, item_uid, 0);
+  }
+  void add_owner_uid(int32_t owner_uid) {
+    fbb_.AddElement<int32_t>(ItemInfo::VT_OWNER_UID, owner_uid, 0);
+  }
+  void add_item_code(int32_t item_code) {
+    fbb_.AddElement<int32_t>(ItemInfo::VT_ITEM_CODE, item_code, 0);
+  }
+  void add_count(int32_t count) {
+    fbb_.AddElement<int32_t>(ItemInfo::VT_COUNT, count, 0);
+  }
+  void add_item_type(int32_t item_type) {
+    fbb_.AddElement<int32_t>(ItemInfo::VT_ITEM_TYPE, item_type, 0);
+  }
+  explicit ItemInfoBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<ItemInfo> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<ItemInfo>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<ItemInfo> CreateItemInfo(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t item_uid = 0,
+    int32_t owner_uid = 0,
+    int32_t item_code = 0,
+    int32_t count = 0,
+    int32_t item_type = 0) {
+  ItemInfoBuilder builder_(_fbb);
+  builder_.add_item_type(item_type);
+  builder_.add_count(count);
+  builder_.add_item_code(item_code);
+  builder_.add_owner_uid(owner_uid);
+  builder_.add_item_uid(item_uid);
+  return builder_.Finish();
+}
+
+struct DB_UserInfo FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef DB_UserInfoBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_UID = 4,
+    VT_NICKNAME = 6,
+    VT_USER_LEVEL = 8,
+    VT_PASS_LEVEL = 10,
+    VT_USER_TITLE = 12,
+    VT_PROFILE_SKIN = 14,
+    VT_POINT = 16,
+    VT_ATTENDANCE_DAY = 18,
+    VT_CHARACTER_CUSTOMIZING = 20
+  };
+  int32_t uid() const {
+    return GetField<int32_t>(VT_UID, 0);
+  }
+  const ::flatbuffers::String *nickname() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_NICKNAME);
+  }
+  int32_t user_level() const {
+    return GetField<int32_t>(VT_USER_LEVEL, 0);
+  }
+  int32_t pass_level() const {
+    return GetField<int32_t>(VT_PASS_LEVEL, 0);
+  }
+  int32_t user_title() const {
+    return GetField<int32_t>(VT_USER_TITLE, 0);
+  }
+  int32_t profile_skin() const {
+    return GetField<int32_t>(VT_PROFILE_SKIN, 0);
+  }
+  int32_t point() const {
+    return GetField<int32_t>(VT_POINT, 0);
+  }
+  int32_t attendance_day() const {
+    return GetField<int32_t>(VT_ATTENDANCE_DAY, 0);
+  }
+  const PacketTable::UtilitiesTable::CharacterCustomizing *character_customizing() const {
+    return GetPointer<const PacketTable::UtilitiesTable::CharacterCustomizing *>(VT_CHARACTER_CUSTOMIZING);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_UID, 4) &&
+           VerifyOffset(verifier, VT_NICKNAME) &&
+           verifier.VerifyString(nickname()) &&
+           VerifyField<int32_t>(verifier, VT_USER_LEVEL, 4) &&
+           VerifyField<int32_t>(verifier, VT_PASS_LEVEL, 4) &&
+           VerifyField<int32_t>(verifier, VT_USER_TITLE, 4) &&
+           VerifyField<int32_t>(verifier, VT_PROFILE_SKIN, 4) &&
+           VerifyField<int32_t>(verifier, VT_POINT, 4) &&
+           VerifyField<int32_t>(verifier, VT_ATTENDANCE_DAY, 4) &&
+           VerifyOffset(verifier, VT_CHARACTER_CUSTOMIZING) &&
+           verifier.VerifyTable(character_customizing()) &&
+           verifier.EndTable();
+  }
+};
+
+struct DB_UserInfoBuilder {
+  typedef DB_UserInfo Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_uid(int32_t uid) {
+    fbb_.AddElement<int32_t>(DB_UserInfo::VT_UID, uid, 0);
+  }
+  void add_nickname(::flatbuffers::Offset<::flatbuffers::String> nickname) {
+    fbb_.AddOffset(DB_UserInfo::VT_NICKNAME, nickname);
+  }
+  void add_user_level(int32_t user_level) {
+    fbb_.AddElement<int32_t>(DB_UserInfo::VT_USER_LEVEL, user_level, 0);
+  }
+  void add_pass_level(int32_t pass_level) {
+    fbb_.AddElement<int32_t>(DB_UserInfo::VT_PASS_LEVEL, pass_level, 0);
+  }
+  void add_user_title(int32_t user_title) {
+    fbb_.AddElement<int32_t>(DB_UserInfo::VT_USER_TITLE, user_title, 0);
+  }
+  void add_profile_skin(int32_t profile_skin) {
+    fbb_.AddElement<int32_t>(DB_UserInfo::VT_PROFILE_SKIN, profile_skin, 0);
+  }
+  void add_point(int32_t point) {
+    fbb_.AddElement<int32_t>(DB_UserInfo::VT_POINT, point, 0);
+  }
+  void add_attendance_day(int32_t attendance_day) {
+    fbb_.AddElement<int32_t>(DB_UserInfo::VT_ATTENDANCE_DAY, attendance_day, 0);
+  }
+  void add_character_customizing(::flatbuffers::Offset<PacketTable::UtilitiesTable::CharacterCustomizing> character_customizing) {
+    fbb_.AddOffset(DB_UserInfo::VT_CHARACTER_CUSTOMIZING, character_customizing);
+  }
+  explicit DB_UserInfoBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<DB_UserInfo> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<DB_UserInfo>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<DB_UserInfo> CreateDB_UserInfo(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t uid = 0,
+    ::flatbuffers::Offset<::flatbuffers::String> nickname = 0,
+    int32_t user_level = 0,
+    int32_t pass_level = 0,
+    int32_t user_title = 0,
+    int32_t profile_skin = 0,
+    int32_t point = 0,
+    int32_t attendance_day = 0,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::CharacterCustomizing> character_customizing = 0) {
+  DB_UserInfoBuilder builder_(_fbb);
+  builder_.add_character_customizing(character_customizing);
+  builder_.add_attendance_day(attendance_day);
+  builder_.add_point(point);
+  builder_.add_profile_skin(profile_skin);
+  builder_.add_user_title(user_title);
+  builder_.add_pass_level(pass_level);
+  builder_.add_user_level(user_level);
+  builder_.add_nickname(nickname);
+  builder_.add_uid(uid);
+  return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<DB_UserInfo> CreateDB_UserInfoDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t uid = 0,
+    const char *nickname = nullptr,
+    int32_t user_level = 0,
+    int32_t pass_level = 0,
+    int32_t user_title = 0,
+    int32_t profile_skin = 0,
+    int32_t point = 0,
+    int32_t attendance_day = 0,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::CharacterCustomizing> character_customizing = 0) {
+  auto nickname__ = nickname ? _fbb.CreateString(nickname) : 0;
+  return PacketTable::UtilitiesTable::CreateDB_UserInfo(
+      _fbb,
+      uid,
+      nickname__,
+      user_level,
+      pass_level,
+      user_title,
+      profile_skin,
+      point,
+      attendance_day,
+      character_customizing);
+}
+
+struct DayAttendanceInfo FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef DayAttendanceInfoBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_DAY_NUMBER = 4,
+    VT_ATTENDANCE_DATE = 6,
+    VT_IS_REWARDED = 8
+  };
+  int32_t day_number() const {
+    return GetField<int32_t>(VT_DAY_NUMBER, 0);
+  }
+  const PacketTable::UtilitiesTable::Date *attendance_date() const {
+    return GetPointer<const PacketTable::UtilitiesTable::Date *>(VT_ATTENDANCE_DATE);
+  }
+  bool is_rewarded() const {
+    return GetField<uint8_t>(VT_IS_REWARDED, 0) != 0;
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_DAY_NUMBER, 4) &&
+           VerifyOffset(verifier, VT_ATTENDANCE_DATE) &&
+           verifier.VerifyTable(attendance_date()) &&
+           VerifyField<uint8_t>(verifier, VT_IS_REWARDED, 1) &&
+           verifier.EndTable();
+  }
+};
+
+struct DayAttendanceInfoBuilder {
+  typedef DayAttendanceInfo Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_day_number(int32_t day_number) {
+    fbb_.AddElement<int32_t>(DayAttendanceInfo::VT_DAY_NUMBER, day_number, 0);
+  }
+  void add_attendance_date(::flatbuffers::Offset<PacketTable::UtilitiesTable::Date> attendance_date) {
+    fbb_.AddOffset(DayAttendanceInfo::VT_ATTENDANCE_DATE, attendance_date);
+  }
+  void add_is_rewarded(bool is_rewarded) {
+    fbb_.AddElement<uint8_t>(DayAttendanceInfo::VT_IS_REWARDED, static_cast<uint8_t>(is_rewarded), 0);
+  }
+  explicit DayAttendanceInfoBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<DayAttendanceInfo> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<DayAttendanceInfo>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<DayAttendanceInfo> CreateDayAttendanceInfo(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t day_number = 0,
+    ::flatbuffers::Offset<PacketTable::UtilitiesTable::Date> attendance_date = 0,
+    bool is_rewarded = false) {
+  DayAttendanceInfoBuilder builder_(_fbb);
+  builder_.add_attendance_date(attendance_date);
+  builder_.add_day_number(day_number);
+  builder_.add_is_rewarded(is_rewarded);
+  return builder_.Finish();
+}
+
+struct AttendanceStatus FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef AttendanceStatusBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_EVENT_CODE = 4,
+    VT_HAS_ATTENDANCE_TODAY = 6,
+    VT_DAYS_INFO = 8
+  };
+  int32_t event_code() const {
+    return GetField<int32_t>(VT_EVENT_CODE, 0);
+  }
+  bool has_attendance_today() const {
+    return GetField<uint8_t>(VT_HAS_ATTENDANCE_TODAY, 0) != 0;
+  }
+  const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::DayAttendanceInfo>> *days_info() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::DayAttendanceInfo>> *>(VT_DAYS_INFO);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_EVENT_CODE, 4) &&
+           VerifyField<uint8_t>(verifier, VT_HAS_ATTENDANCE_TODAY, 1) &&
+           VerifyOffset(verifier, VT_DAYS_INFO) &&
+           verifier.VerifyVector(days_info()) &&
+           verifier.VerifyVectorOfTables(days_info()) &&
+           verifier.EndTable();
+  }
+};
+
+struct AttendanceStatusBuilder {
+  typedef AttendanceStatus Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_event_code(int32_t event_code) {
+    fbb_.AddElement<int32_t>(AttendanceStatus::VT_EVENT_CODE, event_code, 0);
+  }
+  void add_has_attendance_today(bool has_attendance_today) {
+    fbb_.AddElement<uint8_t>(AttendanceStatus::VT_HAS_ATTENDANCE_TODAY, static_cast<uint8_t>(has_attendance_today), 0);
+  }
+  void add_days_info(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::DayAttendanceInfo>>> days_info) {
+    fbb_.AddOffset(AttendanceStatus::VT_DAYS_INFO, days_info);
+  }
+  explicit AttendanceStatusBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<AttendanceStatus> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<AttendanceStatus>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<AttendanceStatus> CreateAttendanceStatus(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t event_code = 0,
+    bool has_attendance_today = false,
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::DayAttendanceInfo>>> days_info = 0) {
+  AttendanceStatusBuilder builder_(_fbb);
+  builder_.add_days_info(days_info);
+  builder_.add_event_code(event_code);
+  builder_.add_has_attendance_today(has_attendance_today);
+  return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<AttendanceStatus> CreateAttendanceStatusDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t event_code = 0,
+    bool has_attendance_today = false,
+    const std::vector<::flatbuffers::Offset<PacketTable::UtilitiesTable::DayAttendanceInfo>> *days_info = nullptr) {
+  auto days_info__ = days_info ? _fbb.CreateVector<::flatbuffers::Offset<PacketTable::UtilitiesTable::DayAttendanceInfo>>(*days_info) : 0;
+  return PacketTable::UtilitiesTable::CreateAttendanceStatus(
+      _fbb,
+      event_code,
+      has_attendance_today,
+      days_info__);
 }
 
 struct PlayerGameRecord FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
@@ -357,6 +896,67 @@ inline ::flatbuffers::Offset<Vec3f> CreateVec3f(
   builder_.add_z(z);
   builder_.add_y(y);
   builder_.add_x(x);
+  return builder_.Finish();
+}
+
+struct Date FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef DateBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_YEAR = 4,
+    VT_MONTH = 6,
+    VT_DAY = 8
+  };
+  int32_t year() const {
+    return GetField<int32_t>(VT_YEAR, 0);
+  }
+  int32_t month() const {
+    return GetField<int32_t>(VT_MONTH, 0);
+  }
+  int32_t day() const {
+    return GetField<int32_t>(VT_DAY, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_YEAR, 4) &&
+           VerifyField<int32_t>(verifier, VT_MONTH, 4) &&
+           VerifyField<int32_t>(verifier, VT_DAY, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct DateBuilder {
+  typedef Date Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_year(int32_t year) {
+    fbb_.AddElement<int32_t>(Date::VT_YEAR, year, 0);
+  }
+  void add_month(int32_t month) {
+    fbb_.AddElement<int32_t>(Date::VT_MONTH, month, 0);
+  }
+  void add_day(int32_t day) {
+    fbb_.AddElement<int32_t>(Date::VT_DAY, day, 0);
+  }
+  explicit DateBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<Date> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<Date>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<Date> CreateDate(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t year = 0,
+    int32_t month = 0,
+    int32_t day = 0) {
+  DateBuilder builder_(_fbb);
+  builder_.add_day(day);
+  builder_.add_month(month);
+  builder_.add_year(year);
   return builder_.Finish();
 }
 
