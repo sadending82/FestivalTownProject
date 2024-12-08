@@ -31,8 +31,11 @@ void ObjectPool::ObjectDeactive(int id)
 
 Object* ObjectPool::GetObjectByID(int id)
 {
+	Object* object = nullptr;
 	mPoolLock.lock_shared();
-	auto object = mPool[id];
+	if (mPool.find(id) != mPool.end()) {
+		object = mPool[id];
+	}
 	mPoolLock.unlock_shared();
 
 	return object;
