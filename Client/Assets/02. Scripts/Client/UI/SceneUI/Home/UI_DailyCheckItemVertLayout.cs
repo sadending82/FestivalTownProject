@@ -64,6 +64,7 @@ public class UI_DailyCheckItemVertLayout : UI_Base
             if(parentUI.IsAquireable())
             {
                 Managers.Network.GetPacketManager().SendAttendanceRewardRequestPacket(parentUI.GetEventCode(), parentUI.GetDay());
+                Debug.Log("Send");
             }
         });
     }

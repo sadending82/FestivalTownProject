@@ -33,12 +33,23 @@ public class UI_EventPanel : UI_Base
         foreach (var eventMain in Managers.Data.EventMainDataDict)
         {
             var ui = Managers.UI.MakeSubItem<UI_EventPanelData>(scrV.GetContent().transform);
+            ui.Init();
+            ui.SetAquireable(false);
             switch (eventMain.Key)
             {
                 case 32001: // 출석 이벤트                
                     ui.BindEventofData(eventMain.Value.Name, (PointerEventData) =>
                     {
                         Managers.UI.ShowPopUpUI<UI_DailySignInCheck>();
+                        ui.SetAquireable(false);
+                        foreach (var aed in Managers.Data.AttendanceEventDataDict)
+                        {
+                            if(!aed.Value.isRewarded)
+                            {
+                                ui.SetAquireable(true);
+                                break;
+                            }
+                        }
                     });
                     break;
                 case 31001:

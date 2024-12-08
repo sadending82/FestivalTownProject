@@ -10,7 +10,8 @@ public class UI_EventPanelData : UI_Base
 {
     enum GameObjects
     {
-        Text
+        Text,
+        EventAquireableMark,
     }
 
     bool isInitialzed = false;
@@ -43,6 +44,11 @@ public class UI_EventPanelData : UI_Base
         if(!isInitialzed) Init();
 
         Get<GameObject>((int)GameObjects.Text).GetComponent<TMP_Text>().text = text;
+    }
+
+    public void SetAquireable(bool value)
+    {
+        Get<GameObject>((int)GameObjects.EventAquireableMark).SetActive(value);
     }
 
 }

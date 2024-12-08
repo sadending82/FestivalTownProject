@@ -21,6 +21,7 @@ public class UI_HomeStart : UI_Scene
         GetMoneyButton,
         GetDiamondButton,
         EventButton,
+        EventAquireableMark,
     }
 
     bool isInitialized = false;
@@ -94,6 +95,20 @@ public class UI_HomeStart : UI_Scene
         {
             Managers.UI.ShowPopUpUI<UI_Event>();
         });
+
+        Get<GameObject>((int)GameObjects.EventAquireableMark).SetActive(false);
+
+        if(Managers.Data.HasAttendanceDataRecved())
+        {
+            foreach(var aed in Managers.Data.AttendanceEventDataDict)
+            {
+                if (!aed.Value.isRewarded)
+                {
+                    Get<GameObject>((int)GameObjects.EventAquireableMark).SetActive(true);
+                    break;
+                }
+            }
+        }
 
         if (false == Managers.Cheat.IsEnable())
         {
