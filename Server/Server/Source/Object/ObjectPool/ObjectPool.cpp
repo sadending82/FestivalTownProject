@@ -25,7 +25,9 @@ void ObjectPool::AddBomb()
 void ObjectPool::ObjectDeactive(int id)
 {
 	mPoolLock.lock_shared();
-	mPool[id]->SetIsActive(false);
+	if (mPool.find(id) != mPool.end()) {
+		mPool[id]->SetIsActive(false);
+	}
 	mPoolLock.unlock_shared();
 }
 
