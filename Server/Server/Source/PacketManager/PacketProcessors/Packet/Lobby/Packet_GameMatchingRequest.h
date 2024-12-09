@@ -51,7 +51,7 @@ public:
 					GameMode modeIndex = GameMode::INVALUE_MODE;
 					MapProperties testMapProperties;
 
-					if (map_code != 0) {
+					if (map_code == 0) {
 						std::vector<int> modeList = { 111, 112, 121, 122 };
 
 						std::random_device rd;
