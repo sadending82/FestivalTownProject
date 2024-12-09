@@ -2,14 +2,18 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Water
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: _ALPHAPREMULTIPLY_ON
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - _ALPHAPREMULTIPLY_ON
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -18,6 +22,7 @@ Material:
     MotionVector: User
     RenderType: Transparent
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -65,6 +70,7 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - Vector1_171EAE5E: 0.84
     - Vector1_1C21B54D: 0.552
@@ -82,9 +88,9 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 10
     - _GlossMapScale: 1
-    - _Glossiness: 0.592
+    - _Glossiness: 0.05
     - _GlossyReflections: 1
-    - _Metallic: 0.087
+    - _Metallic: 0.6
     - _Mode: 3
     - _OcclusionStrength: 1
     - _Parallax: 0.02
@@ -96,6 +102,6 @@ Material:
     m_Colors:
     - Color_C6AFCA00: {r: 0.41963333, g: 0.7735849, b: 0.58217597, a: 1}
     - Vector4_C82F29BC: {r: 0.63, g: 2.51, b: 0, a: 0}
-    - _Color: {r: 0, g: 0.213, b: 0.19605681, a: 0.44705883}
+    - _Color: {r: 0.054901958, g: 0.23144288, b: 0.24705882, a: 0.44705883}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

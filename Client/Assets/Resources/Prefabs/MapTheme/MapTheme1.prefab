@@ -18538,7 +18538,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6374223211110491195}
   - component: {fileID: 3316039156900240258}
-  - component: {fileID: 4503903744956617920}
   m_Layer: 20
   m_Name: Terrain
   m_TagString: Untagged
@@ -18600,26 +18599,6 @@ Terrain:
   m_EnableHeightmapRayTracing: 1
   m_EnableTreesAndDetailsRayTracing: 0
   m_TreeMotionVectorModeOverride: 3
---- !u!154 &4503903744956617920
-TerrainCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8451660446389862150}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_TerrainData: {fileID: 15600000, guid: d245999b0fd7c49408eef7596664b54d, type: 2}
-  m_EnableTreeColliders: 1
 --- !u!1 &8491601593894429924
 GameObject:
   m_ObjectHideFlags: 0
@@ -37479,7 +37458,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3730748888937459907, guid: a788c9ab1ed75b048aa3e7688dc50270, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -6.4
+      value: -4.16
       objectReference: {fileID: 0}
     - target: {fileID: 3730748889001924161, guid: a788c9ab1ed75b048aa3e7688dc50270, type: 3}
       propertyPath: m_RootOrder
@@ -61067,7 +61046,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 479200424430232442, guid: 4d1fa22d899e1ca46b2276ffda0f9c19, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 47.732994
+      value: 52.6
       objectReference: {fileID: 0}
     - target: {fileID: 479200424430232442, guid: 4d1fa22d899e1ca46b2276ffda0f9c19, type: 3}
       propertyPath: m_LocalPosition.y
@@ -61075,7 +61054,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 479200424430232442, guid: 4d1fa22d899e1ca46b2276ffda0f9c19, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.8310165
+      value: -5.13
       objectReference: {fileID: 0}
     - target: {fileID: 479200424430232442, guid: 4d1fa22d899e1ca46b2276ffda0f9c19, type: 3}
       propertyPath: m_LocalRotation.w

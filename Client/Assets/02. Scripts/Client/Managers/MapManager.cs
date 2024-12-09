@@ -17,6 +17,10 @@ public class MapManager : MonoBehaviour
     private const float GOALPOST_OFFSET_Y = OFFSET_Y - 1.0f;
     private Vector3[] spawnDirection = new Vector3[3];
 
+    private const float MAP_THEME1_OFFSET_X = -81.3f;
+    private const float MAP_THEME1_OFFSET_Y = -59.0f;
+    private const float MAP_THEME1_OFFSET_Z = 40.0f;
+
     public void Init()
     {
         map = GameObject.Find("@Map");
@@ -229,8 +233,28 @@ public class MapManager : MonoBehaviour
                 }
             }
         }
+
+        LoadMapTheme(mapSizeX, mapSizeZ);
     }
 
+    private void LoadMapTheme(int mapSizeX, int mapSizeZ)
+    {
+        switch(Managers.Game.mapTheme)
+        {
+            case 1:
+                {
+                    GameObject mapTheme = Managers.Resource.Instantiate("MapTheme/MapTheme1");
+                    mapTheme.transform.position = new Vector3(MAP_THEME1_OFFSET_X + (float)mapSizeX, MAP_THEME1_OFFSET_Y, MAP_THEME1_OFFSET_Z + (float)mapSizeZ);
+                    mapTheme.transform.parent = map.transform;
+                }
+                break;
+            default:
+                {
+                    Debug.Log("ERROR!! LoadMapTheme() : Wrong Map Theme!!!");
+                }
+                break;
+        }
+    }
     public void LoadStatue(int teamNumber, Vector3 position, Vector3 direction)
     {
         GameObject Statue = Managers.Resource.Instantiate("Statue");

@@ -39,6 +39,8 @@ namespace Network.PacketProcessor
             Managers.Game.gameMode = (eGameMode)gameMode;
             Managers.Game.currentTeamID = team;
             Managers.Game.GameRemainTime = gameTime;
+
+            Debug.Log("MapIndex: " + mapIndex + " MapTheme: " + mapTheme);
         }
     }
 }
