@@ -60,16 +60,18 @@ public class UI_MatchingSelect: UI_PopUp
                 str = Get<GameObject>((int)GameObjects.MapCodeInputField).GetComponent<TMP_InputField>().text;
             }
 
+
             string fileStr = Application.streamingAssetsPath + $"/Map/{str}.txt";
+
             if (File.Exists(fileStr))
             {
                 Debug.Log("Map True");
-                Managers.Network.GetPacketManager().SendGameMatchingRequest(NetworkProtocol.eMatchingType.FITH_TEST);
+                Managers.Network.GetPacketManager().SendGameMatchingRequest(NetworkProtocol.eMatchingType.FITH_TEST, int.Parse(str));
             }
             else
             {
                 Debug.Log("Map False");
-                Managers.Network.GetPacketManager().SendGameMatchingRequest(NetworkProtocol.eMatchingType.FITH_TEST);
+                Managers.Network.GetPacketManager().SendGameMatchingRequest(NetworkProtocol.eMatchingType.FITH_TEST, 11201);
             }
             Managers.UI.ShowPopUpUI<UI_MatchingProgress>();
         });
