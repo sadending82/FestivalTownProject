@@ -64,7 +64,8 @@ struct GameMatchingRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Tabl
   typedef GameMatchingRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_ID = 4,
-    VT_MATCHING_TYPE = 6
+    VT_MATCHING_TYPE = 6,
+    VT_MAP_CODE = 8
   };
   int32_t id() const {
     return GetField<int32_t>(VT_ID, 0);
@@ -72,10 +73,14 @@ struct GameMatchingRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Tabl
   int32_t matching_type() const {
     return GetField<int32_t>(VT_MATCHING_TYPE, 0);
   }
+  int32_t map_code() const {
+    return GetField<int32_t>(VT_MAP_CODE, 0);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_ID, 4) &&
            VerifyField<int32_t>(verifier, VT_MATCHING_TYPE, 4) &&
+           VerifyField<int32_t>(verifier, VT_MAP_CODE, 4) &&
            verifier.EndTable();
   }
 };
@@ -89,6 +94,9 @@ struct GameMatchingRequestBuilder {
   }
   void add_matching_type(int32_t matching_type) {
     fbb_.AddElement<int32_t>(GameMatchingRequest::VT_MATCHING_TYPE, matching_type, 0);
+  }
+  void add_map_code(int32_t map_code) {
+    fbb_.AddElement<int32_t>(GameMatchingRequest::VT_MAP_CODE, map_code, 0);
   }
   explicit GameMatchingRequestBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -104,8 +112,10 @@ struct GameMatchingRequestBuilder {
 inline ::flatbuffers::Offset<GameMatchingRequest> CreateGameMatchingRequest(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t id = 0,
-    int32_t matching_type = 0) {
+    int32_t matching_type = 0,
+    int32_t map_code = 0) {
   GameMatchingRequestBuilder builder_(_fbb);
+  builder_.add_map_code(map_code);
   builder_.add_matching_type(matching_type);
   builder_.add_id(id);
   return builder_.Finish();

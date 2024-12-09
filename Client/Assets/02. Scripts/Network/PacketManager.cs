@@ -170,9 +170,9 @@ public class PacketManager : MonoBehaviour
         if (packet == null) { return; }
         SendPacket(packet);
     }
-    public void SendGameMatchingRequest(eMatchingType type)
+    public void SendGameMatchingRequest(eMatchingType type, int map_code = 0)
     {
-        byte[] packet = _packetMaker.MakeGameMatchingRequestPacket(type);
+        byte[] packet = _packetMaker.MakeGameMatchingRequestPacket(type, map_code);
         if (packet == null) { return; }
         SendPacket(packet);
     }

@@ -45,15 +45,38 @@ public:
 					if (serverMode != SERVER_MODE::TEST) {
 						break;
 					}
-					std::vector<int> modeList = { 111, 112, 121, 122 };
 
-					std::random_device rd;
-					std::mt19937 gen(rd());
-					std::uniform_int_distribution<>map_distrib(0, modeList.size() - 1);
+					int map_code = read->map_code();
 
-					GameMode modeIndex = (GameMode)modeList[map_distrib(rd)];
+					GameMode modeIndex = GameMode::INVALUE_MODE;
+					MapProperties testMapProperties;
 
-					MapProperties testMapProperties = MatchMakingManager->SelectRandomMap(GameMode(modeIndex));
+					if (map_code != 0) {
+						std::vector<int> modeList = { 111, 112, 121, 122 };
+
+						std::random_device rd;
+						std::mt19937 gen(rd());
+						std::uniform_int_distribution<>map_distrib(0, modeList.size() - 1);
+
+						modeIndex = (GameMode)modeList[map_distrib(rd)];
+						testMapProperties = MatchMakingManager->SelectRandomMap(GameMode(modeIndex));
+					}
+					else {
+						for (auto pair : pServer->GetTableManager()->getMapListByMode()) {
+							for (auto m : pair.second) {
+								if (m == map_code) {
+									modeIndex = pair.first;
+									break;
+								}
+							}
+							if (modeIndex != GameMode::INVALUE_MODE) {
+								break;
+							}
+						}
+
+						testMapProperties.Map_Index = map_code;
+						testMapProperties.Map_Theme = 1;
+					}
 
 					int roomID = pServer->CreateNewRoom((GameMode)modeIndex, testMapProperties.Map_Index, testMapProperties.Map_Theme);
 

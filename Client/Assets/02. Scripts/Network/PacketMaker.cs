@@ -425,11 +425,12 @@ public class PacketMaker
         return result;
     }
 
-    public byte[] MakeGameMatchingRequestPacket(eMatchingType type)
+    public byte[] MakeGameMatchingRequestPacket(eMatchingType type, int map_code = 0)
     {
         var builder = new FlatBufferBuilder(1);
         GameMatchingRequest.StartGameMatchingRequest(builder);
         GameMatchingRequest.AddMatchingType(builder, (int)type);
+        GameMatchingRequest.AddMapCode(builder, map_code);
         var offset = GameMatchingRequest.EndGameMatchingRequest(builder);
         builder.Finish(offset.Value);
 

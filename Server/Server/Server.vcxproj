@@ -282,6 +282,7 @@ if exist "$(ProjectDir)\Config" xcopy /Y /d /e /i "$(ProjectDir)\Config" "$(OutD
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Player\Packet_PlayerSync.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Player\Packet_PlayerStop.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Player\Packet_PlayerThrowBomb.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Utilities\Packet_PingCheck.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Processors.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\PacketProcessor.h" />
     <ClInclude Include="Source\PacketManager\PacketSender\PacketSender.h" />
