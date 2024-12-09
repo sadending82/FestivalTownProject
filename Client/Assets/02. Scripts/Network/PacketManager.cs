@@ -340,18 +340,18 @@ public class PacketManager : MonoBehaviour
     {
         byte[] packet = _packetMaker.MakeAccountResetPacket();
         if (packet == null) { return; }
-        SendPacketWhenPlayingGame(packet);
+        SendPacket(packet);
     }
     public void SendGetGoldCheatPacket()
     {
         byte[] packet = _packetMaker.MakeGetGoldCheatPacket();
         if (packet == null) { return; }
-        SendPacketWhenPlayingGame(packet);
+        SendPacket(packet);
     }
     public void SendGetDiaCheatPacket()
     {
         byte[] packet = _packetMaker.MakeGetDiaCheatPacket();
         if (packet == null) { return; }
-        SendPacketWhenPlayingGame(packet);
+        SendPacket(packet);
     }
 }
