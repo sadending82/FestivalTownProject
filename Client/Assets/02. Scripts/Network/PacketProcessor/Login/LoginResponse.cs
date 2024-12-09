@@ -79,7 +79,7 @@ namespace Network.PacketProcessor
                         aed.isRewarded = is_rewarded;
 
                         Managers.Data.AttendanceEventDataDict.TryAdd(dayCount, aed);
-                        Debug.Log($"Event : {eventCode}, day_count : {dayCount}, date: {date_year}-{date_month}-{date_day}");
+                        Debug.Log($"Event : {eventCode}, day_count : {dayCount}, date: {date_year}-{date_month}-{date_day}, {is_rewarded}");
                     }
 
                     Debug.Log($"Event : {eventCode}, has_attendance_today : {has_attendance_today}");
