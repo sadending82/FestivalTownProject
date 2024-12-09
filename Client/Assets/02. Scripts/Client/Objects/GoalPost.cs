@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GoalPost : MonoBehaviour
 { 
-    [SerializeField] private int teamNumber;
+    [SerializeField] private int teamNumber = 0;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -22,6 +22,8 @@ public class GoalPost : MonoBehaviour
     }
     public void SetTeamNumber(int teamNumber)
     {
+        transform.GetChild(this.teamNumber).gameObject.SetActive(false);
         this.teamNumber = teamNumber;
+        transform.GetChild(this.teamNumber).gameObject.SetActive(true);
     }
 }
