@@ -9,6 +9,7 @@ public class UI_TopPanel : UI_Base
         HomeButton,
         CustomizeButton,
         ShopButton,
+        SettingButton,
     }
 
     bool isInitialized = false;
@@ -62,6 +63,14 @@ public class UI_TopPanel : UI_Base
             if (Managers.UI.GetCurrentSceneUI().GetComponent<UI_Shop>() == null)
             {
                 Debug.Log("상점 이동");
+            }
+        });
+
+        Get<GameObject>((int)GameObjects.SettingButton).BindEvent((PointerEventData) =>
+        {
+            if (Managers.UI.GetCurrentSceneUI().GetComponent<UI_Setting>() == null)
+            {
+                Debug.Log("설정 화면 이동");
             }
         });
 
