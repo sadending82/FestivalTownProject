@@ -44,6 +44,46 @@ public class PacketMaker
         return buffer;
     }
 
+    public byte[] MakeHeartBeatPacket()
+    {
+        long currTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+
+        var builder = new FlatBufferBuilder(1);
+        HeartBeat.StartHeartBeat(builder);
+        HeartBeat.AddTime(builder, currTime);
+        var offset = HeartBeat.EndHeartBeat(builder);
+        builder.Finish(offset.Value);
+
+        byte[] data = builder.SizedByteArray();
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_HEART_BEAT, flatBufferSize = (ushort)data.Length };
+        byte[] headerdata = Serialize<HEADER>(header);
+
+        byte[] result = new byte[data.Length + headerdata.Length];
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
+        return result;
+    }
+
+    public byte[] MakePingCheckPacket()
+    {
+        long currTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+
+        var builder = new FlatBufferBuilder(1);
+        PingCheck.StartPingCheck(builder);
+        PingCheck.AddTime(builder, currTime);
+        var offset = PingCheck.EndPingCheck(builder);
+        builder.Finish(offset.Value);
+
+        byte[] data = builder.SizedByteArray();
+        HEADER header = new HEADER { type = (ushort)ePacketType.PING_CHECK, flatBufferSize = (ushort)data.Length };
+        byte[] headerdata = Serialize<HEADER>(header);
+
+        byte[] result = new byte[data.Length + headerdata.Length];
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
+        return result;
+    }
+
     public byte[] MakePlayerMovePacket(Vector3 position, Vector3 direction, int id, ePlayerMoveState state)
     {
         var builder = new FlatBufferBuilder(1);
@@ -193,36 +233,6 @@ public class PacketMaker
         Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
         Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
 
-        return result;
-    }
-
-    public byte[] MakeHeartBeatPacket()
-    {
-        long currTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-
-        var builder = new FlatBufferBuilder(1);
-        HeartBeat.StartHeartBeat(builder);
-        HeartBeat.AddTime(builder, currTime);
-        var offset = HeartBeat.EndHeartBeat(builder);
-        builder.Finish(offset.Value);
-
-        //서버에서 버퍼 이상없이 잘 읽는데 Verity가 false가 뜸...
-        var buf = builder.DataBuffer;
-        var timeCheck = HeartBeat.GetRootAsHeartBeat(buf).Time;
-        if (timeCheck != currTime)
-        {
-            UnityEngine.Debug.Log("invaild buf / CreateHeartBeatPacket");
-
-            return null;
-        }
-
-        byte[] data = builder.SizedByteArray();
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_HEART_BEAT, flatBufferSize = (ushort)data.Length };
-        byte[] headerdata = Serialize<HEADER>(header);
-
-        byte[] result = new byte[data.Length + headerdata.Length];
-        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
-        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
         return result;
     }
 

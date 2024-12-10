@@ -77,6 +77,9 @@ void WorkerThread::RunWorker()
         }
         case eOpType::OP_RECV: {
             Session* session = pServer->GetSessions()[key];
+
+            session->SetIsHeartbeatAck(true);
+
             unsigned char* packet_ptr = exOver->GetMessageBuf();
 
             // 이전 작업에서 남은 데이터와 현재 받은 데이터를 재조립한 후 데이터 크기

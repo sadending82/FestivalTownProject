@@ -21,6 +21,7 @@ public:
 			}
 
 			if (player->GetAuthenticationKey() != event->authenticationKey) {
+
 				return;
 			}
 

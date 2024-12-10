@@ -385,7 +385,7 @@ void Server::SendAllPlayerInRoomExceptSender(void* packet, int size, int session
     }
 }
 
-void Server::StartHeartBeat(int sessionID, int authenticationKey)
+void Server::StartHeartBeat(int sessionID, long long authenticationKey)
 {
     GetSessions()[sessionID]->SetIsHeartbeatAck(false);
     mPacketSender->SendHeartBeatPacket(sessionID);

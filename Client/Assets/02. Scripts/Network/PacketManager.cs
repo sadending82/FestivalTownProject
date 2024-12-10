@@ -45,6 +45,9 @@ public class PacketManager : MonoBehaviour
     {
         processorDict = new Dictionary<ePacketType, PacketProcessor>
         {
+            { ePacketType.S2C_HEART_BEAT, new HeartBeatProcessor() },
+            { ePacketType.PING_CHECK, new PingCheckProcessor() },
+
             { ePacketType.S2C_VERSION_CHECK_RESPONSE, new VersionCheckResponseProcessor() },
             { ePacketType.S2C_LOGIN_RESPONSE, new LoginResponseProcessor() },
             { ePacketType.S2C_SIGNUP_RESPONSE, new SignUpResponseProcessor() },
@@ -55,8 +58,6 @@ public class PacketManager : MonoBehaviour
             { ePacketType.S2C_CHANGE_CHARACTER_CUSTOMIZING, new ChangeCharacterCustomizingProcessor() },
             { ePacketType.S2C_ATTENDANCE_EVENT_RESPONSE, new AttendanceEventResponseProcessor() },
             { ePacketType.S2C_ATTENDANCE_REWARD_RESPONSE, new AttendanceRewardResponseProcessor() },
-
-            { ePacketType.S2C_HEART_BEAT, new HeartBeatProcessor() },
 
             { ePacketType.S2C_PLAYER_ADD, new PlayerAddProcessor() },
             { ePacketType.S2C_PLAYER_DELETE, new PlayerDeleteProcessor() },
@@ -144,13 +145,22 @@ public class PacketManager : MonoBehaviour
         return buffer;
     }
 
-    // ------------------ Game ------------------
+    // ------------------ Utility ------------------
     public void SendHeartBeatPacket()
     {
         byte[] packet = _packetMaker.MakeHeartBeatPacket();
         if (packet == null) { return; }
         SendPacket(packet);
     }
+
+    public void SendPingCheckPacket()
+    {
+        byte[] packet = _packetMaker.MakePingCheckPacket();
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+
+    // ------------------ Game ------------------
     public void SendVersionCheckRequestPacket()
     {
         byte[] packet = _packetMaker.MakeVersionCheckRequestPacket(Application.version);
