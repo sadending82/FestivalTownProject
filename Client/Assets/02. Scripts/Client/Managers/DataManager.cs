@@ -46,10 +46,13 @@ public class DataManager
     public Dictionary<int, ModePointEntity> ModePointDataDict = new();
     public Dictionary<int, ModeRewardEntity> ModeRewardDataDict = new();
     public Dictionary<int, ModeBonusRewardEntity> ModeBonusRewardDataDict = new();
+    public Dictionary<int, ModeTipEntity> ModeTipDataDict = new();
     public Dictionary<int, EventMainEntity> EventMainDataDict = new();
     public Dictionary<int, EventListEntity> EventListDataDict = new();
     public Dictionary<int, MissionTypeEntity> MissionTypeDataDict = new();
     public Dictionary<int, MissionListEntity> MissionListDataDict = new();
+    public Dictionary<int, MapThemeEntity> MapThemeDataDict = new();
+    public Dictionary<int, MapDataEntity> MapDataDict = new();
 
     /// <summary>
     /// 플레이어 관련 데이터
@@ -158,14 +161,14 @@ public class DataManager
         {
             foreach (ModeOutEntity entity in modeData.Mode_Out)
             {
-                ModeOutDataDict.TryAdd(entity.Index, entity);
-                ModeOutDataDict[entity.Index].ClassType = Define.ExcelDataClassType.ModeOut;
+                ModeOutDataDict.TryAdd(entity.Mode_Index, entity);
+                ModeOutDataDict[entity.Mode_Index].ClassType = Define.ExcelDataClassType.ModeOut;
             }
 
             foreach (FITHModeEntity entity in modeData.FITH_Mode)
             {
-                FITHModeDataDict.TryAdd(entity.Index, entity);
-                FITHModeDataDict[entity.Index].ClassType = Define.ExcelDataClassType.FITHMode;
+                FITHModeDataDict.TryAdd(entity.Map_Index, entity);
+                FITHModeDataDict[entity.Map_Index].ClassType = Define.ExcelDataClassType.FITHMode;
             }
 
             foreach (ModePointEntity entity in modeData.Mode_Point)
@@ -184,6 +187,12 @@ public class DataManager
             {
                 ModeBonusRewardDataDict.TryAdd(entity.Index, entity);
                 ModeBonusRewardDataDict[entity.Index].ClassType = Define.ExcelDataClassType.ModeBonusReward;
+            }
+
+            foreach (ModeTipEntity entity in modeData.Tip)
+            {
+                ModeTipDataDict.TryAdd(entity.Index, entity);
+                ModeTipDataDict[entity.Index].ClassType = Define.ExcelDataClassType.ModeTip;
             }
         }
     }
@@ -290,6 +299,86 @@ public class DataManager
                 MissionListDataDict[entity.Index].ClassType = Define.ExcelDataClassType.MissionList;
             }
         }
+
+        Map mapData = Managers.Resource.Load<Map>($"Data/Map");
+        if ( mapData != null )
+        {
+            foreach(MapThemeEntity entity in mapData.Theme)
+            {
+                MapThemeDataDict.TryAdd(entity.Index, entity);
+                MapThemeDataDict[entity.Index].ClassType = Define.ExcelDataClassType.MapTheme;
+            }
+
+            foreach(MapDataEntity entity in mapData.Data)
+            {
+                MapDataDict.TryAdd(entity.Index, entity);
+                MapDataDict[entity.Index].ClassType = Define.ExcelDataClassType.MapData;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 현재 모드에서 필요한 팁 타입을 받아오기 위한 함수
+    /// </summary>
+    /// <param name="mapIndex"></param>
+    /// <returns></returns>
+    public List<int> GetTipTypeIndices(int mapIndex)
+    {
+        // 1은 공통
+        List<int> indices = new() { 1 };
+
+        bool result = FITHModeDataDict.TryGetValue(mapIndex, out var modeData);
+
+        if (!result) return null;
+
+        string modeNumStr = modeData.Mode_Index.ToString();
+        switch (modeNumStr[0])
+        {
+            case '1':
+                indices.Add(2);
+                break;
+            default:
+                break;
+        }
+
+        switch(modeNumStr[1])
+        {
+            case '1':
+                indices.Add(3);
+                if (modeNumStr[2] == '2') indices.Add(5);
+                break;
+            case '2':
+                indices.Add(4);
+                break;
+            default:
+                break;
+        }
+
+        Debug.Log($"indices : {indices}");
+
+        return indices;  
+    }
+
+    /// <summary>
+    /// 팁 타입을 받아와서 표시할 수 있는 팁의 인덱스를 받아오는 함수
+    /// </summary>
+    /// <param name="TypeIndices"></param>
+    /// <returns></returns>
+    public List<int> GetTipIndices(List<int> TypeIndices)
+    {
+        List<int> TipIndices = new();
+
+        foreach(var tipData in ModeTipDataDict)
+        {
+            if(TypeIndices.Contains(tipData.Value.Tip_Type))
+            {
+                TipIndices.Add(tipData.Key);
+            }
+        }
+
+        Debug.Log($"TipIndices : {TipIndices}");
+
+        return TipIndices;
     }
 
     public int GetDiamond()

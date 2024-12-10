@@ -7,6 +7,9 @@ using System.Reflection.Emit;
 
 public class GameScene : BaseScene
 {
+    bool isLoadStart = false;
+    float LoadTime = 7.0f;
+
     protected override void Init()
     {
         base.Init();
@@ -25,9 +28,9 @@ public class GameScene : BaseScene
 
         LoadWeapons();
 
-        Managers.Network.GetPacketManager().SendGameReady();
+        // 기존에 Init 단계에서 레디 패킷 보내주던 걸, 코루틴으로 해결하고 있습니다.
+        // 이는 페이크 로딩을 넣기 위해서 입니다.
 
-        // TODO: 여기서 씬이 생성될 때에 미리 해줘야 할 작업 들을 해주어야 합니다.
     }
 
     public void LoadCubes()
@@ -167,6 +170,27 @@ public class GameScene : BaseScene
         MoveToResult();
     }
 
+    IEnumerator LoadGameScene()
+    {
+        float curtime = 0.0f;
+        var loadUi = GameObject.Find("UI_Loading").GetComponent<UI_Loading>();
+
+        yield return null;
+
+        while (curtime < LoadTime)
+        {
+            curtime += Time.deltaTime;
+            loadUi.SetProgressBarPersentage(curtime / LoadTime);
+            yield return null;
+            
+        }
+
+        Managers.Network.GetPacketManager().SendGameReady();
+        Debug.Log("Send Game Ready Packet");
+        yield break;
+        // TODO: 여기서 씬이 생성될 때에 미리 해줘야 할 작업 들을 해주어야 합니다.
+    }
+
     public override void Clear()
     {
         ResultObjectOff();
@@ -195,6 +219,12 @@ public class GameScene : BaseScene
 
     private void Update()
     {
+        if(!isLoadStart)
+        {
+            StartCoroutine(LoadGameScene());
+            isLoadStart = true;
+        }
+
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             if (Managers.Game.isTimerStart)

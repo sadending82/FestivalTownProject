@@ -80,8 +80,11 @@ namespace ExcelDataStructure
     }
 
     [System.Serializable]
-    public class ModeOutEntity : GameDataEntity
+    public class ModeOutEntity
     {
+        public int Mode_Index;
+        public string Name;
+        public Define.ExcelDataClassType ClassType;
         public string Name_Info;
         public int Player_Count;
         public int Team_Count;
@@ -92,8 +95,12 @@ namespace ExcelDataStructure
     }
 
     [System.Serializable]
-    public class FITHModeEntity : GameDataEntity
+    public class FITHModeEntity
     {
+        public int Map_Index;
+        public int Mode_Index;
+        public string Name;
+        public Define.ExcelDataClassType ClassType; 
         public string Name_Info;
         public int Play_Time;
         public int Player_Spawn_Time;
@@ -222,7 +229,7 @@ namespace ExcelDataStructure
     }
 
     [System.Serializable]
-    public class MapThemeEntity
+    public class MapThemeEntity : GameDataEntity
     {
         public int Map_Theme;
         public string Mode_Name;

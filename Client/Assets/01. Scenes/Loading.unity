@@ -243,8 +243,24 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2887825381216985852, guid: 615da88a25696ff4dabb7930dd051f5a, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2887825381216985852, guid: 615da88a25696ff4dabb7930dd051f5a, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4848840982483474616, guid: 615da88a25696ff4dabb7930dd051f5a, type: 3}
       propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6121018086052016168, guid: 615da88a25696ff4dabb7930dd051f5a, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6532504611811135627, guid: 615da88a25696ff4dabb7930dd051f5a, type: 3}
+      propertyPath: m_Value
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7317297853552579091, guid: 615da88a25696ff4dabb7930dd051f5a, type: 3}

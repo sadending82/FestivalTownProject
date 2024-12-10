@@ -2,7 +2,7 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
-  m_ObjectHideFlags: 8
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -13,56 +13,80 @@ MonoBehaviour:
   m_Name: Map
   m_EditorClassIdentifier: 
   Theme:
-  - Map_Theme: 1
+  - Index: 11101
+    Name: 
+    ClassType: 0
+    Map_Theme: 1
     Mode_Name: "Fire in the Hole(\uAC1C\uC778)"
     Mode_Description: "\uC801\uC758 \uAE30\uC9C0\uC5D0 \uD3ED\uD0C4\uC744 \uD22C\uC785\uD558\uC5EC
       \uACE0\uC591\uC774 \uB3D9\uC0C1\uC744 \uD30C\uAD34\uD558\uC138\uC694"
     Map_Name: "\uACE0\uC591\uC774 \uC0AC\uC6D0"
     Map_Image: "(\uACBD\uB85C)"
     Minimap_Image: "(\uACBD\uB85C)"
-  - Map_Theme: 1
+  - Index: 11102
+    Name: 
+    ClassType: 0
+    Map_Theme: 1
     Mode_Name: "Fire in the Hole(\uAC1C\uC778)"
     Mode_Description: "\uC801\uC758 \uAE30\uC9C0\uC5D0 \uD3ED\uD0C4\uC744 \uD22C\uC785\uD558\uC5EC
       \uACE0\uC591\uC774 \uB3D9\uC0C1\uC744 \uD30C\uAD34\uD558\uC138\uC694"
     Map_Name: "\uACE0\uC591\uC774 \uC0AC\uC6D0"
     Map_Image: "(\uACBD\uB85C)"
     Minimap_Image: "(\uACBD\uB85C)"
-  - Map_Theme: 1
+  - Index: 11103
+    Name: 
+    ClassType: 0
+    Map_Theme: 1
     Mode_Name: "Fire in the Hole(\uAC1C\uC778)"
     Mode_Description: "\uC801\uC758 \uAE30\uC9C0\uC5D0 \uD3ED\uD0C4\uC744 \uD22C\uC785\uD558\uC5EC
       \uACE0\uC591\uC774 \uB3D9\uC0C1\uC744 \uD30C\uAD34\uD558\uC138\uC694"
     Map_Name: "\uACE0\uC591\uC774 \uC0AC\uC6D0"
     Map_Image: "(\uACBD\uB85C)"
     Minimap_Image: "(\uACBD\uB85C)"
-  - Map_Theme: 1
+  - Index: 11201
+    Name: 
+    ClassType: 0
+    Map_Theme: 1
     Mode_Name: "Fire in the Hole(\uAC1C\uC778)"
     Mode_Description: "\uC801\uC758 \uAE30\uC9C0\uC5D0 \uD3ED\uD0C4\uC744 \uD22C\uC785\uD558\uC5EC
       \uACE0\uC591\uC774 \uB3D9\uC0C1\uC744 \uD30C\uAD34\uD558\uC138\uC694"
     Map_Name: "\uACE0\uC591\uC774 \uC0AC\uC6D0"
     Map_Image: "(\uACBD\uB85C)"
     Minimap_Image: "(\uACBD\uB85C)"
-  - Map_Theme: 1
+  - Index: 12101
+    Name: 
+    ClassType: 0
+    Map_Theme: 1
     Mode_Name: "Fire in the Hole(\uD300)"
     Mode_Description: "\uC801\uC758 \uAE30\uC9C0\uC5D0 \uD3ED\uD0C4\uC744 \uD22C\uC785\uD558\uC5EC
       \uACE0\uC591\uC774 \uB3D9\uC0C1\uC744 \uD30C\uAD34\uD558\uC138\uC694"
     Map_Name: "\uACE0\uC591\uC774 \uC0AC\uC6D0"
     Map_Image: "(\uACBD\uB85C)"
     Minimap_Image: "(\uACBD\uB85C)"
-  - Map_Theme: 1
+  - Index: 12102
+    Name: 
+    ClassType: 0
+    Map_Theme: 1
     Mode_Name: "Fire in the Hole(\uD300)"
     Mode_Description: "\uC801\uC758 \uAE30\uC9C0\uC5D0 \uD3ED\uD0C4\uC744 \uD22C\uC785\uD558\uC5EC
       \uACE0\uC591\uC774 \uB3D9\uC0C1\uC744 \uD30C\uAD34\uD558\uC138\uC694"
     Map_Name: "\uACE0\uC591\uC774 \uC0AC\uC6D0"
     Map_Image: "(\uACBD\uB85C)"
     Minimap_Image: "(\uACBD\uB85C)"
-  - Map_Theme: 1
+  - Index: 12201
+    Name: 
+    ClassType: 0
+    Map_Theme: 1
     Mode_Name: "Fire in the Hole(\uD300)"
     Mode_Description: "\uC801\uC758 \uAE30\uC9C0\uC5D0 \uD3ED\uD0C4\uC744 \uD22C\uC785\uD558\uC5EC
       \uACE0\uC591\uC774 \uB3D9\uC0C1\uC744 \uD30C\uAD34\uD558\uC138\uC694"
     Map_Name: "\uACE0\uC591\uC774 \uC0AC\uC6D0"
     Map_Image: "(\uACBD\uB85C)"
     Minimap_Image: "(\uACBD\uB85C)"
-  - Map_Theme: 1
+  - Index: 12202
+    Name: 
+    ClassType: 0
+    Map_Theme: 1
     Mode_Name: "Fire in the Hole(\uD300)"
     Mode_Description: "\uC801\uC758 \uAE30\uC9C0\uC5D0 \uD3ED\uD0C4\uC744 \uD22C\uC785\uD558\uC5EC
       \uACE0\uC591\uC774 \uB3D9\uC0C1\uC744 \uD30C\uAD34\uD558\uC138\uC694"
@@ -70,7 +94,7 @@ MonoBehaviour:
     Map_Image: "(\uACBD\uB85C)"
     Minimap_Image: "(\uACBD\uB85C)"
   Data:
-  - Index: 0
+  - Index: 11101
     Name: 
     ClassType: 0
     Mode_index: 111
@@ -79,10 +103,10 @@ MonoBehaviour:
     Statue_Team_Red: 1
     Statue_Team_Blue: 1
     Statue_Team_Green: 0
-    Statue_Team_Red_LocationX: 0
+    Statue_Team_Red_LocationX: -2.2
     Statue_Team_Red_LocationY: 0
     Statue_Team_Red_LocationZ: 4
-    Statue_Team_Blue_LocationX: 0
+    Statue_Team_Blue_LocationX: 40.2
     Statue_Team_Blue_LocationY: 0
     Statue_Team_Blue_LocationZ: 4
     Statue_Team_Green_LocationX: 0
@@ -91,7 +115,7 @@ MonoBehaviour:
     Statue_Team_Red_Direction: 1
     Statue_Team_Blue_Direction: 3
     Statue_Team_Green_Direction: 4
-  - Index: 0
+  - Index: 11102
     Name: 
     ClassType: 0
     Mode_index: 111
@@ -100,10 +124,10 @@ MonoBehaviour:
     Statue_Team_Red: 1
     Statue_Team_Blue: 1
     Statue_Team_Green: 0
-    Statue_Team_Red_LocationX: 0
+    Statue_Team_Red_LocationX: -2.2
     Statue_Team_Red_LocationY: 0
     Statue_Team_Red_LocationZ: 4
-    Statue_Team_Blue_LocationX: 0
+    Statue_Team_Blue_LocationX: 38.2
     Statue_Team_Blue_LocationY: 0
     Statue_Team_Blue_LocationZ: 4
     Statue_Team_Green_LocationX: 0
@@ -112,7 +136,7 @@ MonoBehaviour:
     Statue_Team_Red_Direction: 1
     Statue_Team_Blue_Direction: 3
     Statue_Team_Green_Direction: 4
-  - Index: 0
+  - Index: 11103
     Name: 
     ClassType: 0
     Mode_index: 111
@@ -121,10 +145,10 @@ MonoBehaviour:
     Statue_Team_Red: 1
     Statue_Team_Blue: 1
     Statue_Team_Green: 0
-    Statue_Team_Red_LocationX: 0
+    Statue_Team_Red_LocationX: -2.2
     Statue_Team_Red_LocationY: 0
     Statue_Team_Red_LocationZ: 3
-    Statue_Team_Blue_LocationX: 0
+    Statue_Team_Blue_LocationX: 36.2
     Statue_Team_Blue_LocationY: 0
     Statue_Team_Blue_LocationZ: 3
     Statue_Team_Green_LocationX: 0
@@ -133,7 +157,7 @@ MonoBehaviour:
     Statue_Team_Red_Direction: 1
     Statue_Team_Blue_Direction: 3
     Statue_Team_Green_Direction: 4
-  - Index: 0
+  - Index: 11201
     Name: 
     ClassType: 0
     Mode_index: 112
@@ -142,19 +166,19 @@ MonoBehaviour:
     Statue_Team_Red: 1
     Statue_Team_Blue: 1
     Statue_Team_Green: 1
-    Statue_Team_Red_LocationX: 0
+    Statue_Team_Red_LocationX: 22
     Statue_Team_Red_LocationY: 0
     Statue_Team_Red_LocationZ: 30.2
-    Statue_Team_Blue_LocationX: 0
+    Statue_Team_Blue_LocationX: -2.2
     Statue_Team_Blue_LocationY: 0
     Statue_Team_Blue_LocationZ: 6
-    Statue_Team_Green_LocationX: 0
+    Statue_Team_Green_LocationX: 46.2
     Statue_Team_Green_LocationY: 0
     Statue_Team_Green_LocationZ: 2
     Statue_Team_Red_Direction: 4
     Statue_Team_Blue_Direction: 3
     Statue_Team_Green_Direction: 1
-  - Index: 0
+  - Index: 12101
     Name: 
     ClassType: 0
     Mode_index: 121
@@ -163,10 +187,10 @@ MonoBehaviour:
     Statue_Team_Red: 1
     Statue_Team_Blue: 1
     Statue_Team_Green: 0
-    Statue_Team_Red_LocationX: 0
+    Statue_Team_Red_LocationX: -2
     Statue_Team_Red_LocationY: 0
     Statue_Team_Red_LocationZ: 4
-    Statue_Team_Blue_LocationX: 0
+    Statue_Team_Blue_LocationX: -2
     Statue_Team_Blue_LocationY: 0
     Statue_Team_Blue_LocationZ: 13
     Statue_Team_Green_LocationX: 0
@@ -175,7 +199,7 @@ MonoBehaviour:
     Statue_Team_Red_Direction: 1
     Statue_Team_Blue_Direction: 3
     Statue_Team_Green_Direction: 4
-  - Index: 0
+  - Index: 12102
     Name: 
     ClassType: 0
     Mode_index: 121
@@ -184,10 +208,10 @@ MonoBehaviour:
     Statue_Team_Red: 1
     Statue_Team_Blue: 1
     Statue_Team_Green: 0
-    Statue_Team_Red_LocationX: 0
-    Statue_Team_Red_LocationY: 0
+    Statue_Team_Red_LocationX: -2.2
+    Statue_Team_Red_LocationY: 7
     Statue_Team_Red_LocationZ: 6
-    Statue_Team_Blue_LocationX: 0
+    Statue_Team_Blue_LocationX: 42.2
     Statue_Team_Blue_LocationY: 7
     Statue_Team_Blue_LocationZ: 6
     Statue_Team_Green_LocationX: 0
@@ -196,7 +220,7 @@ MonoBehaviour:
     Statue_Team_Red_Direction: 1
     Statue_Team_Blue_Direction: 3
     Statue_Team_Green_Direction: 4
-  - Index: 0
+  - Index: 12201
     Name: 
     ClassType: 0
     Mode_index: 122
@@ -205,10 +229,10 @@ MonoBehaviour:
     Statue_Team_Red: 1
     Statue_Team_Blue: 1
     Statue_Team_Green: 0
-    Statue_Team_Red_LocationX: 0
+    Statue_Team_Red_LocationX: -2.2
     Statue_Team_Red_LocationY: 0
     Statue_Team_Red_LocationZ: 10
-    Statue_Team_Blue_LocationX: 0
+    Statue_Team_Blue_LocationX: 42.2
     Statue_Team_Blue_LocationY: 0
     Statue_Team_Blue_LocationZ: 10
     Statue_Team_Green_LocationX: 0
@@ -217,7 +241,7 @@ MonoBehaviour:
     Statue_Team_Red_Direction: 1
     Statue_Team_Blue_Direction: 3
     Statue_Team_Green_Direction: 4
-  - Index: 0
+  - Index: 12202
     Name: 
     ClassType: 0
     Mode_index: 122
@@ -226,10 +250,10 @@ MonoBehaviour:
     Statue_Team_Red: 1
     Statue_Team_Blue: 1
     Statue_Team_Green: 0
-    Statue_Team_Red_LocationX: 0
+    Statue_Team_Red_LocationX: -2.2
     Statue_Team_Red_LocationY: 0
     Statue_Team_Red_LocationZ: 6
-    Statue_Team_Blue_LocationX: 0
+    Statue_Team_Blue_LocationX: 46.2
     Statue_Team_Blue_LocationY: 0
     Statue_Team_Blue_LocationZ: 6
     Statue_Team_Green_LocationX: 0

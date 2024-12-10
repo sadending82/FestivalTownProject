@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Mode_Ver3
   m_EditorClassIdentifier: 
   Mode_Out:
-  - Index: 0
+  - Mode_Index: 111
     Name: 
     ClassType: 0
     Name_Info: 
@@ -23,7 +23,7 @@ MonoBehaviour:
     Play_Map: 1
     Open_Date: 0
     Close_Date: 0
-  - Index: 0
+  - Mode_Index: 112
     Name: 
     ClassType: 0
     Name_Info: 
@@ -33,7 +33,7 @@ MonoBehaviour:
     Play_Map: 2
     Open_Date: 0
     Close_Date: 0
-  - Index: 0
+  - Mode_Index: 121
     Name: 
     ClassType: 0
     Name_Info: 
@@ -43,7 +43,7 @@ MonoBehaviour:
     Play_Map: 1
     Open_Date: 0
     Close_Date: 0
-  - Index: 0
+  - Mode_Index: 122
     Name: 
     ClassType: 0
     Name_Info: 
@@ -54,7 +54,8 @@ MonoBehaviour:
     Open_Date: 0
     Close_Date: 0
   FITH_Mode:
-  - Index: 0
+  - Map_Index: 11101
+    Mode_Index: 111
     Name: 
     ClassType: 0
     Name_Info: 
@@ -80,7 +81,8 @@ MonoBehaviour:
     Block2_Spawn_Index: 3002
     Block2_Spawn_Count: 10
     Block2_Spawn_Time: 10
-  - Index: 0
+  - Map_Index: 11102
+    Mode_Index: 111
     Name: 
     ClassType: 0
     Name_Info: 
@@ -106,7 +108,8 @@ MonoBehaviour:
     Block2_Spawn_Index: 3002
     Block2_Spawn_Count: 10
     Block2_Spawn_Time: 10
-  - Index: 0
+  - Map_Index: 11103
+    Mode_Index: 111
     Name: 
     ClassType: 0
     Name_Info: 
@@ -132,7 +135,8 @@ MonoBehaviour:
     Block2_Spawn_Index: 3002
     Block2_Spawn_Count: 10
     Block2_Spawn_Time: 10
-  - Index: 0
+  - Map_Index: 11201
+    Mode_Index: 112
     Name: 
     ClassType: 0
     Name_Info: 
@@ -158,7 +162,8 @@ MonoBehaviour:
     Block2_Spawn_Index: 3002
     Block2_Spawn_Count: 10
     Block2_Spawn_Time: 10
-  - Index: 0
+  - Map_Index: 12101
+    Mode_Index: 121
     Name: 
     ClassType: 0
     Name_Info: 
@@ -184,7 +189,8 @@ MonoBehaviour:
     Block2_Spawn_Index: 3002
     Block2_Spawn_Count: 10
     Block2_Spawn_Time: 10
-  - Index: 0
+  - Map_Index: 12102
+    Mode_Index: 121
     Name: 
     ClassType: 0
     Name_Info: 
@@ -210,7 +216,8 @@ MonoBehaviour:
     Block2_Spawn_Index: 3002
     Block2_Spawn_Count: 10
     Block2_Spawn_Time: 10
-  - Index: 0
+  - Map_Index: 12201
+    Mode_Index: 122
     Name: 
     ClassType: 0
     Name_Info: 
@@ -236,7 +243,8 @@ MonoBehaviour:
     Block2_Spawn_Index: 3002
     Block2_Spawn_Count: 10
     Block2_Spawn_Time: 10
-  - Index: 0
+  - Map_Index: 12202
+    Mode_Index: 122
     Name: 
     ClassType: 0
     Name_Info: 

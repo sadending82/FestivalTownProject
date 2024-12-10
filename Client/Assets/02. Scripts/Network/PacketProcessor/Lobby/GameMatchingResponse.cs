@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
+
 namespace Network.PacketProcessor
 {
     public class GameMatchingResponseProcessor : PacketProcessor
@@ -30,7 +31,6 @@ namespace Network.PacketProcessor
 
             Debug.Log("Game Maching Complete");
             Managers.Game.Init();
-            Managers.Scene.LoadScene(Define.Scene.Loading);
             Managers.Game.RoomID = roomID;
             Managers.Game.inGameID = id;
             Managers.Game.isHost = isHost;
@@ -39,6 +39,23 @@ namespace Network.PacketProcessor
             Managers.Game.gameMode = (eGameMode)gameMode;
             Managers.Game.currentTeamID = team;
             Managers.Game.GameRemainTime = gameTime;
+
+            foreach (var themD in Managers.Data.MapThemeDataDict)
+            {
+                Debug.Log($"them{themD.Value.Index} : {themD.Value.Name}");
+            }
+
+            if (Managers.Data.MapThemeDataDict.TryGetValue(mapIndex, out var themeData))
+            {
+                Managers.Game.ModeTitle = themeData.Mode_Name;
+                Debug.Log($"ModeName : {themeData.Mode_Name}");
+                Managers.Game.ModeDescription = themeData.Mode_Description;
+                Debug.Log($"ModeName : {themeData.Mode_Description}");
+                List<int> TipTypeindices = Managers.Data.GetTipTypeIndices(mapIndex);
+                Managers.Game.TipIndices = Managers.Data.GetTipIndices(TipTypeindices);           
+            }
+
+            Managers.Scene.LoadScene(Define.Scene.Loading);
 
             Debug.Log("MapIndex: " + mapIndex + " MapTheme: " + mapTheme);
         }

@@ -72,11 +72,14 @@ public class Define
         ModePoint,
         ModeReward,
         ModeBonusReward,
+        ModeTip,
         WeaponStat,
         EventMain,
         EventList,
         MissionType,
         MissionList,
+        MapTheme,
+        MapData,
     }
 
     public enum CompatibilityColor

@@ -30,6 +30,11 @@ public class GameManager : MonoBehaviour
     private int winningTeam = -1;
     public int currentTeamID = -1;
 
+    public string TipDescription = "";
+    public List<int> TipIndices = new();
+    public string ModeTitle = "";
+    public string ModeDescription = "";
+
     private List<List<int>> playersCustomizingData = new List<List<int>>();
 
     public List<int> GetCharacterCustomizingById(int id)
