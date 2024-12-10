@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using System.Diagnostics.Tracing;
+using Unity.VisualScripting;
 
 
 namespace Network.PacketProcessor
@@ -64,6 +65,8 @@ namespace Network.PacketProcessor
                         var dayInfo = attendanceEventStatus.DaysInfo(j).Value;
                         // 몇번째 출석
                         int dayCount = dayInfo.DayNumber;
+                        Debug.Log($"dayCount: {dayCount}");
+                        
 
                         // 출석 날짜
                         int date_year = dayInfo.AttendanceDate.Value.Year;

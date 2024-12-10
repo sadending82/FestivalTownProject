@@ -295,18 +295,18 @@ void Server::Run()
     }
 
 #ifdef RunTest
-    mTestThreadRef = new TestThread(this, mTimer);
-    mTestThread = std::thread(&TestThread::RunWorker, mTestThreadRef);
+    //mTestThreadRef = new TestThread(this, mTimer);
+    //mTestThread = std::thread(&TestThread::RunWorker, mTestThreadRef);
 #endif
     SetGameManagers();
     DEBUGMSGNOPARAM("Thread Ready\n");
 
     switch (mMode) {
     case SERVER_MODE::LIVE: {
-
+        COUT << "START LIVE MODE \n";
     }break;
     case SERVER_MODE::TEST: {
-        DEBUGMSGNOPARAM("START TEST MODE \n");
+        COUT << "START TEST MODE \n";
         //MakeTestRoom();
     }break;
     }

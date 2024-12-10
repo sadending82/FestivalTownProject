@@ -42,6 +42,9 @@ void LobbyManager::CheckAndLoadUserAttendanceEvent(int uid, std::unordered_map<i
 				latelyAttendance = *std::prev(attendanceInfoList[eventCode].end());
 				nextDayCount = latelyAttendance.day_number + 1;
 			}
+			else {
+				nextDayCount = 1;
+			}
 
 			if (pTableManager->GetEventRewardList()[eventCode].count(nextDayCount) != 0) {
 
