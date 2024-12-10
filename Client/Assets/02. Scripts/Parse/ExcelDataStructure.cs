@@ -160,6 +160,13 @@ namespace ExcelDataStructure
     }
 
     [System.Serializable]
+    public class ModeTipEntity : GameDataEntity
+    {
+        public int Tip_Type;
+        public string Tip_Description;
+    }
+
+    [System.Serializable]
     public class WeaponStatEntity : GameDataEntity
     {
         public int Weapon_Power;
@@ -213,4 +220,40 @@ namespace ExcelDataStructure
         public int Element1_Index;
         public int Element1_Count;
     }
+
+    [System.Serializable]
+    public class MapThemeEntity
+    {
+        public int Map_Theme;
+        public string Mode_Name;
+        public string Mode_Description;
+        public string Map_Name;
+        public string Map_Image;
+        public string Minimap_Image;
+    }
+
+    [System.Serializable]
+    public class MapDataEntity : GameDataEntity
+    {
+        public int Mode_index;
+        public int Map_Size_X;
+        public int Map_Size_Y;
+        public int Statue_Team_Red;
+        public int Statue_Team_Blue;
+        public int Statue_Team_Green;
+        public float Statue_Team_Red_LocationX;
+        public float Statue_Team_Red_LocationY;
+        public float Statue_Team_Red_LocationZ;
+        public float Statue_Team_Blue_LocationX;
+        public float Statue_Team_Blue_LocationY;
+        public float Statue_Team_Blue_LocationZ;
+        public float Statue_Team_Green_LocationX;
+        public float Statue_Team_Green_LocationY;
+        public float Statue_Team_Green_LocationZ;
+        public int Statue_Team_Red_Direction;
+        public int Statue_Team_Blue_Direction;
+        public int Statue_Team_Green_Direction;
+    }
+
+
 }

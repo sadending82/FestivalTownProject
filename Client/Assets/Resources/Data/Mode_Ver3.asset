@@ -54,7 +54,7 @@ MonoBehaviour:
     Open_Date: 0
     Close_Date: 0
   FITH_Mode:
-  - Index: 11101
+  - Index: 0
     Name: 
     ClassType: 0
     Name_Info: 
@@ -70,17 +70,17 @@ MonoBehaviour:
     Bomb_Ready_Time2: 5
     Weapon1_Spawn_Index: 2001
     Weapon1_Spawn_Count: 1
-    Weapon1_Spawn_Time: 10
+    Weapon1_Spawn_Time: 30
     Weapon2_Spawn_Index: 2002
     Weapon2_Spawn_Count: 1
-    Weapon2_Spawn_Time: 10
+    Weapon2_Spawn_Time: 30
     Block1_Spawn_Index: 3001
-    Block1_Spawn_Count: 1
-    Block1_Spawn_Time: 5
+    Block1_Spawn_Count: 7
+    Block1_Spawn_Time: 10
     Block2_Spawn_Index: 3002
-    Block2_Spawn_Count: 2
-    Block2_Spawn_Time: 5
-  - Index: 11102
+    Block2_Spawn_Count: 10
+    Block2_Spawn_Time: 10
+  - Index: 0
     Name: 
     ClassType: 0
     Name_Info: 
@@ -96,17 +96,17 @@ MonoBehaviour:
     Bomb_Ready_Time2: 5
     Weapon1_Spawn_Index: 2001
     Weapon1_Spawn_Count: 1
-    Weapon1_Spawn_Time: 10
+    Weapon1_Spawn_Time: 30
     Weapon2_Spawn_Index: 2002
     Weapon2_Spawn_Count: 1
-    Weapon2_Spawn_Time: 10
+    Weapon2_Spawn_Time: 30
     Block1_Spawn_Index: 3001
-    Block1_Spawn_Count: 1
-    Block1_Spawn_Time: 5
+    Block1_Spawn_Count: 7
+    Block1_Spawn_Time: 10
     Block2_Spawn_Index: 3002
-    Block2_Spawn_Count: 2
-    Block2_Spawn_Time: 5
-  - Index: 11103
+    Block2_Spawn_Count: 10
+    Block2_Spawn_Time: 10
+  - Index: 0
     Name: 
     ClassType: 0
     Name_Info: 
@@ -122,43 +122,17 @@ MonoBehaviour:
     Bomb_Ready_Time2: 5
     Weapon1_Spawn_Index: 2001
     Weapon1_Spawn_Count: 1
-    Weapon1_Spawn_Time: 10
+    Weapon1_Spawn_Time: 30
     Weapon2_Spawn_Index: 2002
     Weapon2_Spawn_Count: 1
-    Weapon2_Spawn_Time: 10
+    Weapon2_Spawn_Time: 30
     Block1_Spawn_Index: 3001
-    Block1_Spawn_Count: 1
-    Block1_Spawn_Time: 5
-    Block2_Spawn_Index: 3002
-    Block2_Spawn_Count: 2
-    Block2_Spawn_Time: 5
-  - Index: 11201
-    Name: 
-    ClassType: 0
-    Name_Info: 
-    Play_Time: 180
-    Player_Spawn_Time: 5
-    Life_Count: 3
-    Bomb_Spawn_Count: 2
-    Bomb_Spawn_Time: 15
-    Bomb_Delay_Time: 20
-    Bomb_Ready_Count1: 1
-    Bomb_Ready_Time1: 15
-    Bomb_Ready_Count2: 3
-    Bomb_Ready_Time2: 5
-    Weapon1_Spawn_Index: 2001
-    Weapon1_Spawn_Count: 1
-    Weapon1_Spawn_Time: 20
-    Weapon2_Spawn_Index: 2002
-    Weapon2_Spawn_Count: 1
-    Weapon2_Spawn_Time: 20
-    Block1_Spawn_Index: 3001
-    Block1_Spawn_Count: 3
+    Block1_Spawn_Count: 7
     Block1_Spawn_Time: 10
     Block2_Spawn_Index: 3002
-    Block2_Spawn_Count: 3
-    Block2_Spawn_Time: 5
-  - Index: 12101
+    Block2_Spawn_Count: 10
+    Block2_Spawn_Time: 10
+  - Index: 0
     Name: 
     ClassType: 0
     Name_Info: 
@@ -179,12 +153,12 @@ MonoBehaviour:
     Weapon2_Spawn_Count: 1
     Weapon2_Spawn_Time: 25
     Block1_Spawn_Index: 3001
-    Block1_Spawn_Count: 3
+    Block1_Spawn_Count: 7
     Block1_Spawn_Time: 10
     Block2_Spawn_Index: 3002
-    Block2_Spawn_Count: 5
-    Block2_Spawn_Time: 5
-  - Index: 12102
+    Block2_Spawn_Count: 10
+    Block2_Spawn_Time: 10
+  - Index: 0
     Name: 
     ClassType: 0
     Name_Info: 
@@ -205,12 +179,12 @@ MonoBehaviour:
     Weapon2_Spawn_Count: 1
     Weapon2_Spawn_Time: 25
     Block1_Spawn_Index: 3001
-    Block1_Spawn_Count: 3
+    Block1_Spawn_Count: 7
     Block1_Spawn_Time: 10
     Block2_Spawn_Index: 3002
-    Block2_Spawn_Count: 5
-    Block2_Spawn_Time: 5
-  - Index: 12201
+    Block2_Spawn_Count: 10
+    Block2_Spawn_Time: 10
+  - Index: 0
     Name: 
     ClassType: 0
     Name_Info: 
@@ -231,12 +205,12 @@ MonoBehaviour:
     Weapon2_Spawn_Count: 1
     Weapon2_Spawn_Time: 25
     Block1_Spawn_Index: 3001
-    Block1_Spawn_Count: 4
+    Block1_Spawn_Count: 7
     Block1_Spawn_Time: 10
     Block2_Spawn_Index: 3002
-    Block2_Spawn_Count: 5
-    Block2_Spawn_Time: 5
-  - Index: 12202
+    Block2_Spawn_Count: 10
+    Block2_Spawn_Time: 10
+  - Index: 0
     Name: 
     ClassType: 0
     Name_Info: 
@@ -257,11 +231,37 @@ MonoBehaviour:
     Weapon2_Spawn_Count: 1
     Weapon2_Spawn_Time: 25
     Block1_Spawn_Index: 3001
-    Block1_Spawn_Count: 4
+    Block1_Spawn_Count: 7
     Block1_Spawn_Time: 10
     Block2_Spawn_Index: 3002
-    Block2_Spawn_Count: 5
-    Block2_Spawn_Time: 5
+    Block2_Spawn_Count: 10
+    Block2_Spawn_Time: 10
+  - Index: 0
+    Name: 
+    ClassType: 0
+    Name_Info: 
+    Play_Time: 180
+    Player_Spawn_Time: 5
+    Life_Count: 3
+    Bomb_Spawn_Count: 2
+    Bomb_Spawn_Time: 15
+    Bomb_Delay_Time: 20
+    Bomb_Ready_Count1: 1
+    Bomb_Ready_Time1: 15
+    Bomb_Ready_Count2: 3
+    Bomb_Ready_Time2: 5
+    Weapon1_Spawn_Index: 2001
+    Weapon1_Spawn_Count: 1
+    Weapon1_Spawn_Time: 20
+    Weapon2_Spawn_Index: 2002
+    Weapon2_Spawn_Count: 1
+    Weapon2_Spawn_Time: 25
+    Block1_Spawn_Index: 3001
+    Block1_Spawn_Count: 7
+    Block1_Spawn_Time: 10
+    Block2_Spawn_Index: 3002
+    Block2_Spawn_Count: 10
+    Block2_Spawn_Time: 10
   Mode_Point:
   - Index: 111101
     Name: FITH_Indiv_Battle_2_Win
@@ -3000,3 +3000,120 @@ MonoBehaviour:
     Reward2_Value: 0
     Reward3_Index: 0
     Reward3_Value: 0
+  Tip:
+  - Index: 7101
+    Name: 
+    ClassType: 0
+    Tip_Type: 1
+    Tip_Description: "\uACE0\uC591\uC774\uB294 \uB9E4\uC6B0 \uAC15\uB825\uD55C \uC0DD\uBB3C\uC785\uB2C8\uB2E4.
+      \uB0E5\uB0E5"
+  - Index: 7102
+    Name: 
+    ClassType: 0
+    Tip_Type: 1
+    Tip_Description: "\uC900\uBE44\uD55C \uACE0\uC591\uC774\uAC00 \uC0DD\uC120\uC744
+      \uC7A1\uB294\uB2E4. \uBC1C\uD1B1 \uC190\uC9C8\uC740 \uD544\uC218\uC785\uB2C8\uB2E4."
+  - Index: 7103
+    Name: 
+    ClassType: 0
+    Tip_Type: 1
+    Tip_Description: "\uB9E4\uB108\uAC00 \uACE0\uC591\uC774\uB97C \uB9CC\uB4ED\uB2C8\uB2E4."
+  - Index: 7104
+    Name: 
+    ClassType: 0
+    Tip_Type: 1
+    Tip_Description: "\uBC29\uC2EC\uC740 \uD328\uBC30\uB85C \uAC00\uB294 \uC9C0\uB984\uAE38\uC785\uB2C8\uB2E4.
+      \uACE0\uC591\uC774\uB294 \uC5B8\uC81C\uB098 \uACBD\uACC4\uD558\uACE0 \uC788\uC5B4\uC57C
+      \uD574\uC694."
+  - Index: 7201
+    Name: 
+    ClassType: 0
+    Tip_Type: 2
+    Tip_Description: "\uC0C1\uB300\uB97C \uC7A1\uC744 \uC218 \uC5C6\uB2E4\uBA74 \uBB34\uAE30\uB97C
+      \uB4E4\uC5B4 \uB0B4\uB824\uCE58\uC138\uC694!"
+  - Index: 7202
+    Name: 
+    ClassType: 0
+    Tip_Type: 2
+    Tip_Description: "\uC544\uAD70\uC758 \uAE30\uC9C0\uC5D0 \uD3ED\uD0C4\uC744 \uB123\uB354\uB77C\uB3C4
+      \uC544\uBB34 \uC77C\uB3C4 \uC77C\uC5B4\uB098\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4."
+  - Index: 7203
+    Name: 
+    ClassType: 0
+    Tip_Type: 2
+    Tip_Description: "\uAC11\uC790\uAE30 \uBA38\uB9AC \uC704\uC5D0\uC11C \uBE14\uB85D\uC774
+      \uB5A8\uC5B4\uC9C0\uB354\uB77C\uB3C4 \uB2F9\uD669\uD558\uC9C0 \uB9C8\uC138\uC694."
+  - Index: 7204
+    Name: 
+    ClassType: 0
+    Tip_Type: 2
+    Tip_Description: "\uAE38\uBAA9\uC740 \uC810\uC810 \uBCF5\uC7A1\uD574\uC9D1\uB2C8\uB2E4.
+      \uD558\uC9C0\uB9CC \uACE0\uC591\uC774\uB294 \uACF5\uAC04\uC744 \uD0D0\uD5D8\uD558\uB294
+      \uB370 \uD0C0\uACE0\uB09C \uC874\uC7AC\uC8E0."
+  - Index: 7205
+    Name: 
+    ClassType: 0
+    Tip_Type: 2
+    Tip_Description: "\uC0C1\uB300 \uC9C4\uC601\uC5D0 \uD3ED\uD0C4\uC744 \uB123\uC744
+      \uB54C\uB294 \uC18D\uB3C4\uAC00 \uC0DD\uBA85\uC785\uB2C8\uB2E4. \uB290\uB9B0
+      \uACE0\uC591\uC774\uB294 \uC0DD\uC120\uC744 \uB193\uCE69\uB2C8\uB2E4."
+  - Index: 7301
+    Name: 
+    ClassType: 0
+    Tip_Type: 3
+    Tip_Description: "\uACE0\uC591\uC774\uC758 \uAE30\uBCF8 \uADDC\uCE59: \uC790\uC2E0
+      \uC678\uC5D4 \uB204\uAD6C\uB3C4 \uBBFF\uC9C0 \uB9C8\uB77C."
+  - Index: 7302
+    Name: 
+    ClassType: 0
+    Tip_Type: 3
+    Tip_Description: "\uB2E4\uB978 \uACE0\uC591\uC774\uC758 \uC2E4\uC218\uB97C \uB178\uB9AC\uB294
+      \uAC74 \uACE0\uC591\uC774 \uC138\uACC4\uC5D0\uC11C\uB294 \uB2F9\uC5F0\uD55C
+      \uC77C\uC785\uB2C8\uB2E4."
+  - Index: 7303
+    Name: 
+    ClassType: 0
+    Tip_Type: 3
+    Tip_Description: "\uCCAB \uBC88\uC9F8 \uBAA9\uD45C\uB294 \uC0DD\uC874, \uB450
+      \uBC88\uC9F8 \uBAA9\uD45C\uB294 \uC0C1\uB300\uB97C \uB0E5\uB0E5\uD558\uAC8C
+      \uB9CC\uB4DC\uB294 \uAC83."
+  - Index: 7401
+    Name: 
+    ClassType: 0
+    Tip_Type: 4
+    Tip_Description: "\uD300\uC6D0\uC740 \uAC00\uC7A5 \uB4E0\uB4E0\uD55C \uC874\uC7AC\uC785\uB2C8\uB2E4.
+      \uD558\uC9C0\uB9CC \uC870\uC2EC\uD558\uC138\uC694. \uACE0\uC591\uC774\uB294
+      \uAC00\uB054 \uC774\uAE30\uC801\uC77C \uC218 \uC788\uC2B5\uB2C8\uB2E4."
+  - Index: 7402
+    Name: 
+    ClassType: 0
+    Tip_Type: 4
+    Tip_Description: "\uC544\uAD70\uC744 \uB3C4\uC6B8 \uC218 \uC5C6\uB2E4\uBA74 \uC801\uC5B4\uB3C4
+      \uBC29\uD574\uD558\uC9C0\uB294 \uB9D0\uC544\uC57C\uC8E0."
+  - Index: 7403
+    Name: 
+    ClassType: 0
+    Tip_Type: 4
+    Tip_Description: "\uC0C1\uB300\uC758 \uC18D\uB3C4\uB97C \uB2A6\uCD94\uAE30 \uC704\uD55C
+      \uBC29\uD574 \uACF5\uC791\uC774 \uC2B9\uB9AC\uC758 \uC5F4\uC1E0\uC785\uB2C8\uB2E4."
+  - Index: 7501
+    Name: 
+    ClassType: 0
+    Tip_Type: 5
+    Tip_Description: "3\uD30C\uC804 \uAD6C\uB3C4\uC5D0\uC11C \uAC00\uC7A5 \uC911\uC694\uD55C
+      \uB355\uBAA9\uC740 \uB208\uCE58\uC785\uB2C8\uB2E4."
+  - Index: 7502
+    Name: 
+    ClassType: 0
+    Tip_Type: 5
+    Tip_Description: "\uB450 \uD300\uC774 \uC2F8\uC6B0\uACE0 \uC788\uC744 \uB54C
+      \uD55C \uD300\uC740 \uD56D\uC0C1 \uB4A4\uC5D0\uC11C \uC6C3\uACE0 \uC788\uC2B5\uB2C8\uB2E4.
+      \uADF8\uAC8C \uB2F9\uC2E0\uC774\uC5B4\uC57C \uD569\uB2C8\uB2E4."
+  - Index: 7503
+    Name: 
+    ClassType: 0
+    Tip_Type: 5
+    Tip_Description: "\uD55C \uD300\uC774 \uC555\uB3C4\uC801\uC73C\uB85C \uC6B0\uC138\uD558\uB2E4\uBA74
+      \uB098\uBA38\uC9C0 \uB450 \uD300\uC774 \uD611\uB825\uD574\uC57C \uD569\uB2C8\uB2E4.
+      \uADF8\uB807\uC9C0 \uC54A\uC73C\uBA74 \uCC28\uB840\uB300\uB85C \uB2F9\uD560
+      \uBFD0\uC785\uB2C8\uB2E4."
