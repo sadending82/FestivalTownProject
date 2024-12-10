@@ -12,5 +12,6 @@ public class Mode_Ver3 : ScriptableObject
 	public List<ModePointEntity> Mode_Point; // Replace 'EntityType' to an actual type that is serializable.
 	public List<ModeRewardEntity> Mode_Reward; // Replace 'EntityType' to an actual type that is serializable.
 	public List<ModeBonusRewardEntity> Mode_BonusReward; // Replace 'EntityType' to an actual type that is serializable.
+	public List<ModeTipEntity> Tip;
 
 }

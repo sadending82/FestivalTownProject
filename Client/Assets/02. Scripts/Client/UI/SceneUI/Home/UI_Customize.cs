@@ -139,8 +139,6 @@ public class UI_Customize : UI_Scene
 
         if (false == result) return;
 
-        Debug.Log($"cur : {curItem.ItemCode}, change : {itemIndex}");
-
         // 현재 설정된 커마가 있다면
         if (curItem.ItemCode != -1)
         {
@@ -153,7 +151,6 @@ public class UI_Customize : UI_Scene
             newData.ItemCode = -1;
             newData.ItemUid = -1;
             Managers.Data.ClientLocalCustomizingDataDict[itemType] = newData;
-            Debug.Log($"delete");
         }
 
         // 지금 버튼 누른게 같은 거 한번 더 누른게 아니라면
@@ -167,7 +164,6 @@ public class UI_Customize : UI_Scene
             newData.ItemCode = itemIndex;
             newData.ItemUid = ItemSlotDict[itemIndex].GetItemUid();
             Managers.Data.ClientLocalCustomizingDataDict[itemType] = newData;
-            Debug.Log($"Set New");
         }
 
         Get<GameObject>((int)GameObjects.UI_CharacterModel).GetComponent<UI_CharacterModel>().SetInventoryLocalCustomizing();

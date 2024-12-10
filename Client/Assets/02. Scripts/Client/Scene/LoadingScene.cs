@@ -23,7 +23,6 @@ public class LoadingScene : BaseScene
         AsyncOperation AsyncOp = SceneManager.LoadSceneAsync(System.Enum.GetName(typeof(Define.Scene), type));
 
         Debug.Log("Stuff Start.");
-
         while (!AsyncOp.isDone)
         {
             yield return null;
