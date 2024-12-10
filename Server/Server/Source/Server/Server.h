@@ -54,7 +54,7 @@ public:
 	void						SendAllPlayerInRoom(void* packet, int size, int roomID);
 	void						SendAllPlayerInRoomExceptSender(void* packet, int size, int sessionID);
 
-	void						StartHeartBeat(int sessionID);
+	void						StartHeartBeat(int sessionID, int authenticationKey);
 
 	std::pair<ERROR_CODE, UserInfo>	UserLogin(const char* accountID, const char* accountPassword, const int sessionID);
 

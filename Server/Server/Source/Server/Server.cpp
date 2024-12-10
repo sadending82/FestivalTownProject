@@ -385,11 +385,11 @@ void Server::SendAllPlayerInRoomExceptSender(void* packet, int size, int session
     }
 }
 
-void Server::StartHeartBeat(int sessionID)
+void Server::StartHeartBeat(int sessionID, int authenticationKey)
 {
     GetSessions()[sessionID]->SetIsHeartbeatAck(false);
     mPacketSender->SendHeartBeatPacket(sessionID);
-    PushEventHeartBeat(mTimer, sessionID);
+    PushEventHeartBeat(mTimer, sessionID, authenticationKey);
 }
 
 std::pair<ERROR_CODE, UserInfo> Server::UserLogin(const char* accountID, const char* accountPassword, const int sessionID)

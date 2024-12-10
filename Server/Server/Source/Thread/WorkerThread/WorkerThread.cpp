@@ -49,7 +49,7 @@ void WorkerThread::RunWorker()
                 DEBUGMSGONEPARAM("Lobby Accept: %d\n", newKey);
 
                 // 접속하자 마자 HeartBeat 이벤트 추가
-                pServer->StartHeartBeat(newKey);
+                pServer->StartHeartBeat(newKey, newSession->GetAuthenticationKey());
 
                 newSession->DoRecv();
             }

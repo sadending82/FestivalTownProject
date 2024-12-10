@@ -20,6 +20,10 @@ public:
 				return;
 			}
 
+			if (player->GetAuthenticationKey() != event->authenticationKey) {
+				return;
+			}
+
 			if (player->GetIsHeartbeatAck() == false) {
 				// 응답이 없었다면 연결 종료
 				int uid = player->GetUID();
@@ -30,7 +34,7 @@ public:
 				}
 			}
 			else {
-				pServer->StartHeartBeat(target);
+				pServer->StartHeartBeat(target, event->authenticationKey);
 			}
 		}
 		catch (const std::exception& e) {

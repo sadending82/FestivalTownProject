@@ -30,4 +30,15 @@ void Session::SessionInit(SOCKET sock, int key)
 	mExOver.SetOpType(eOpType::OP_RECV);
 	mPrevDataSize = 0 ;
 	mSessionID = key;
+	SetAuthenticationKey();
+}
+
+void Session::SetAuthenticationKey()
+{
+	auto now = std::chrono::system_clock::now();
+	auto duration = now.time_since_epoch();
+	long long millis = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
+
+	int numDigits = log10(millis) + 1;
+	mAuthenticationKey.store((mSessionID + 1) * pow(10, numDigits) + millis);
 }

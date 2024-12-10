@@ -2,7 +2,7 @@
 #include "../utility.h"
 
 // miliseconds
-inline constexpr int HEARTBEATINTERVAL = 10000;
+inline constexpr int HEARTBEATINTERVAL = 60000;
 inline constexpr int BLOCKDROPINTERVAL = 10000;
 inline constexpr int REMAINTIMESYNCINTERVAL = 10000;
 inline constexpr int TIMEOVERCHECKINTERVAL = 5000;
@@ -61,6 +61,7 @@ struct EV_GAME_START : EVENT {
 
 struct EV_HEART_BEAT : EVENT {
 	int sessionID;
+	long long authenticationKey;
 };
 
 struct EV_OBJECT_DROP : EVENT {
@@ -112,7 +113,7 @@ struct EV_GROGGY_RECOVERY : EVENT {
 
 #pragma pack(pop)
 
-bool PushEventHeartBeat(Timer* pTimer, int sessionID);
+bool PushEventHeartBeat(Timer* pTimer, int sessionID, long long authenticationKey);
 bool PushEventGameMatching(Timer* pTimer, int requesterID, eMatchingType matchingType, long long requestTime, int intervalSecond);
 
 // InGameEvent

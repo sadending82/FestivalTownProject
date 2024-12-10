@@ -31,6 +31,7 @@ public:
 	int GetPrevDataSize() { return mPrevDataSize; }
 	bool GetIsHeartbeatAck() { return mIsHeartbeatAck; }
 
+	long long GetAuthenticationKey() { return mAuthenticationKey.load(); }
 	eMatchingType GetMatchingRequestType() { return mMatchingRequestType; }
 	long long GetMatchingRequestTime() { return mMatchingRequestTime.load(); }
 
@@ -41,6 +42,7 @@ public:
 	void SetPrevDataSize(int prevDataSize) { mPrevDataSize = prevDataSize; }
 	void SetIsHeartbeatAck(bool flag) { mIsHeartbeatAck = flag; }
 
+	void SetAuthenticationKey();
 	void SetMatchingRequestType(eMatchingType type) { mMatchingRequestType = type; }
 	void SetMatchingRequestTime(long long time) { mMatchingRequestTime.store(time); }
 
@@ -54,6 +56,7 @@ protected:
 	int							mPrevDataSize;
 	bool						mIsHeartbeatAck;
 
+	std::atomic<long long>		mAuthenticationKey;
 	eMatchingType				mMatchingRequestType;
 	std::atomic<long long>		mMatchingRequestTime;
 };
