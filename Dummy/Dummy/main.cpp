@@ -182,8 +182,14 @@ void Adjust_Number_Of_Client()
 	static int max_limit = MAXINT;
 	static bool increasing = true;
 
-	if (active_clients >= MAX_TEST) return;
-	if (num_connections >= MAX_CLIENTS) return;
+	if (active_clients >= MAX_TEST) {
+		std::cout << "³¡\n";
+		return;
+	}
+	if (num_connections >= MAX_CLIENTS) {
+		std::cout << "³¡\n";
+		return;
+	}
 
 	auto duration = std::chrono::high_resolution_clock::now() - last_connect_time;
 	if (ACCEPT_DELEY * delay_multiplier > std::chrono::duration_cast<std::chrono::milliseconds>(duration).count()) return;

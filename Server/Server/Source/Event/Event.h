@@ -2,12 +2,11 @@
 #include "../utility.h"
 
 // miliseconds
-inline constexpr int HEARTBEATINTERVAL = 10000;
+inline constexpr int HEARTBEATINTERVAL = 60000;
 inline constexpr int BLOCKDROPINTERVAL = 10000;
 inline constexpr int REMAINTIMESYNCINTERVAL = 10000;
 inline constexpr int TIMEOVERCHECKINTERVAL = 5000;
 inline constexpr int GAMESTARTINTERVAL = 4000;
-inline constexpr int GAMEMATCHINGINTERVAL = 60000;
 
 inline constexpr float SECONDBLOCKSPAWNADDINTERVAL = 0.333f;
 
