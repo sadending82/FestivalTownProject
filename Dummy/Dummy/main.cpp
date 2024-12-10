@@ -10,8 +10,8 @@
 HANDLE g_hiocp;
 
 #define PORTNUM 45872
-//#define IPADDRESS "127.0.0.1"
-#define IPADDRESS "203.239.231.148"
+#define IPADDRESS "127.0.0.1"
+//#define IPADDRESS "203.239.231.148"
 
 inline constexpr int MAX_TEST = 2000;
 inline constexpr int MAX_CLIENTS = 2000;
@@ -183,11 +183,11 @@ void Adjust_Number_Of_Client()
 	static bool increasing = true;
 
 	if (active_clients >= MAX_TEST) {
-		std::cout << "场\n";
+		//std::cout << "场\n";
 		return;
 	}
 	if (num_connections >= MAX_CLIENTS) {
-		std::cout << "场\n";
+		//std::cout << "场\n";
 		return;
 	}
 
@@ -296,7 +296,7 @@ void TestThread()
 		{
 			if (false == g_clients[i].connected) continue;
 			if (false == g_clients[i].isInGame) continue;
-			if (g_clients[i].lastSyncPacketSend + 48ms <= high_resolution_clock::now())
+			if (g_clients[i].lastSyncPacketSend + 96ms <= high_resolution_clock::now())
 			{
 				g_clients[i].lastSyncPacketSend = high_resolution_clock::now();
 				auto pack = pm.MakePlayerPosSyncPacket(g_clients[i].ingameId, g_clients[i].position, g_clients[i].direction, 100);

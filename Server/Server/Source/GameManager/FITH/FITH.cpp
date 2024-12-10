@@ -145,7 +145,7 @@ bool FITH::TimeoverGameEnd(int roomID)
         }
         room->Reset();
 
-        std::cout << "Game End - " << roomID << std::endl;
+        //std::cout << "Game End - " << roomID << std::endl;
         return true;
     }
 
