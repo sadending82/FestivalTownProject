@@ -36,11 +36,14 @@ public class UI_Loading : UI_PopUp
     {
         int randomNum = UnityEngine.Random.Range(0, Managers.Game.TipIndices.Count);
 
-        Managers.Data.ModeTipDataDict.TryGetValue(Managers.Game.TipIndices[randomNum], out var tipData);
-        if (tipData != null)
+        bool result = Managers.Data.ModeTipDataDict.TryGetValue(Managers.Game.TipIndices[randomNum], out var tipData);
+        Debug.Log($"newTipResult {result}");
+        if (result)
         {
             Managers.Game.TipDescription = tipData.Tip_Description;
         }
+
+        SetTipDescription(Managers.Game.TipDescription);
     }
 
     public void SetModeTitle(string text)
@@ -64,11 +67,14 @@ public class UI_Loading : UI_PopUp
 
         int randomNum = UnityEngine.Random.Range(0, Managers.Game.TipIndices.Count);
 
-        Managers.Data.ModeTipDataDict.TryGetValue(Managers.Game.TipIndices[randomNum], out var tipData);
-        if (tipData != null)
+        bool result = Managers.Data.ModeTipDataDict.TryGetValue(Managers.Game.TipIndices[randomNum], out var tipData);
+        Debug.Log($"newTipResult {result}");
+        if (result)
         {
             Managers.Game.TipDescription = tipData.Tip_Description;
         }
+
+        SetTipDescription(Managers.Game.TipDescription);
 
         foreach (var objs in Enum.GetValues(typeof(GameObjects)))
         {

@@ -40,17 +40,10 @@ namespace Network.PacketProcessor
             Managers.Game.currentTeamID = team;
             Managers.Game.GameRemainTime = gameTime;
 
-            foreach (var themD in Managers.Data.MapThemeDataDict)
-            {
-                Debug.Log($"them{themD.Value.Index} : {themD.Value.Name}");
-            }
-
             if (Managers.Data.MapThemeDataDict.TryGetValue(mapIndex, out var themeData))
             {
                 Managers.Game.ModeTitle = themeData.Mode_Name;
-                Debug.Log($"ModeName : {themeData.Mode_Name}");
                 Managers.Game.ModeDescription = themeData.Mode_Description;
-                Debug.Log($"ModeName : {themeData.Mode_Description}");
                 List<int> TipTypeindices = Managers.Data.GetTipTypeIndices(mapIndex);
                 Managers.Game.TipIndices = Managers.Data.GetTipIndices(TipTypeindices);           
             }

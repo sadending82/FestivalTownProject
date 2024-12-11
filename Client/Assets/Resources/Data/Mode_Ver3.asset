@@ -74,7 +74,7 @@ MonoBehaviour:
     Weapon1_Spawn_Time: 30
     Weapon2_Spawn_Index: 2002
     Weapon2_Spawn_Count: 1
-    Weapon2_Spawn_Time: 30
+    Weapon2_Spawn_Time: 60
     Block1_Spawn_Index: 3001
     Block1_Spawn_Count: 7
     Block1_Spawn_Time: 10
@@ -101,7 +101,7 @@ MonoBehaviour:
     Weapon1_Spawn_Time: 30
     Weapon2_Spawn_Index: 2002
     Weapon2_Spawn_Count: 1
-    Weapon2_Spawn_Time: 30
+    Weapon2_Spawn_Time: 60
     Block1_Spawn_Index: 3001
     Block1_Spawn_Count: 7
     Block1_Spawn_Time: 10
@@ -128,7 +128,7 @@ MonoBehaviour:
     Weapon1_Spawn_Time: 30
     Weapon2_Spawn_Index: 2002
     Weapon2_Spawn_Count: 1
-    Weapon2_Spawn_Time: 30
+    Weapon2_Spawn_Time: 60
     Block1_Spawn_Index: 3001
     Block1_Spawn_Count: 7
     Block1_Spawn_Time: 10
@@ -152,10 +152,10 @@ MonoBehaviour:
     Bomb_Ready_Time2: 5
     Weapon1_Spawn_Index: 2001
     Weapon1_Spawn_Count: 1
-    Weapon1_Spawn_Time: 20
+    Weapon1_Spawn_Time: 30
     Weapon2_Spawn_Index: 2002
     Weapon2_Spawn_Count: 1
-    Weapon2_Spawn_Time: 25
+    Weapon2_Spawn_Time: 60
     Block1_Spawn_Index: 3001
     Block1_Spawn_Count: 7
     Block1_Spawn_Time: 10
@@ -179,10 +179,10 @@ MonoBehaviour:
     Bomb_Ready_Time2: 5
     Weapon1_Spawn_Index: 2001
     Weapon1_Spawn_Count: 1
-    Weapon1_Spawn_Time: 20
+    Weapon1_Spawn_Time: 30
     Weapon2_Spawn_Index: 2002
     Weapon2_Spawn_Count: 1
-    Weapon2_Spawn_Time: 25
+    Weapon2_Spawn_Time: 60
     Block1_Spawn_Index: 3001
     Block1_Spawn_Count: 7
     Block1_Spawn_Time: 10
@@ -206,10 +206,10 @@ MonoBehaviour:
     Bomb_Ready_Time2: 5
     Weapon1_Spawn_Index: 2001
     Weapon1_Spawn_Count: 1
-    Weapon1_Spawn_Time: 20
+    Weapon1_Spawn_Time: 30
     Weapon2_Spawn_Index: 2002
     Weapon2_Spawn_Count: 1
-    Weapon2_Spawn_Time: 25
+    Weapon2_Spawn_Time: 60
     Block1_Spawn_Index: 3001
     Block1_Spawn_Count: 7
     Block1_Spawn_Time: 10
@@ -233,10 +233,10 @@ MonoBehaviour:
     Bomb_Ready_Time2: 5
     Weapon1_Spawn_Index: 2001
     Weapon1_Spawn_Count: 1
-    Weapon1_Spawn_Time: 20
+    Weapon1_Spawn_Time: 30
     Weapon2_Spawn_Index: 2002
     Weapon2_Spawn_Count: 1
-    Weapon2_Spawn_Time: 25
+    Weapon2_Spawn_Time: 60
     Block1_Spawn_Index: 3001
     Block1_Spawn_Count: 7
     Block1_Spawn_Time: 10
@@ -260,10 +260,10 @@ MonoBehaviour:
     Bomb_Ready_Time2: 5
     Weapon1_Spawn_Index: 2001
     Weapon1_Spawn_Count: 1
-    Weapon1_Spawn_Time: 20
+    Weapon1_Spawn_Time: 30
     Weapon2_Spawn_Index: 2002
     Weapon2_Spawn_Count: 1
-    Weapon2_Spawn_Time: 25
+    Weapon2_Spawn_Time: 60
     Block1_Spawn_Index: 3001
     Block1_Spawn_Count: 7
     Block1_Spawn_Time: 10

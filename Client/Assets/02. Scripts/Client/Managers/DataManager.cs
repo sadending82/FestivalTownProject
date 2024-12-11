@@ -354,7 +354,13 @@ public class DataManager
                 break;
         }
 
-        Debug.Log($"indices : {indices}");
+        string debugStr = "";
+        foreach (int ind in indices)
+        {
+            debugStr += ind.ToString() + " ";
+        }
+
+        Debug.Log($"indices : {debugStr}");
 
         return indices;  
     }
@@ -376,7 +382,13 @@ public class DataManager
             }
         }
 
-        Debug.Log($"TipIndices : {TipIndices}");
+        string debugStr = "";
+        foreach (int ind in TipIndices)
+        {
+            debugStr += ind.ToString() + " ";
+        }
+
+        Debug.Log($"TipIndices : {debugStr}");
 
         return TipIndices;
     }
