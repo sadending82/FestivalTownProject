@@ -318,6 +318,7 @@ void Server::ThreadJoin()
         th.join();
     }
     mTimerThread.join();
+    mMatchingThread.join();
 #ifdef RunTest
     mTestThread.join();
 #endif
