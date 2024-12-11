@@ -3,6 +3,9 @@
 #include "../Server/Server.h"
 #include "../Event/Event.h"
 #include <random>
+#include <thread>
+
+using namespace std::chrono;
 
 MatchMakingManager::MatchMakingManager(Server* server)
 {
@@ -15,6 +18,30 @@ MatchMakingManager::MatchMakingManager(Server* server)
 MatchMakingManager::~MatchMakingManager()
 {
 
+}
+
+void MatchMakingManager::RunMatchingThreadWorker() {
+
+    while (1) {
+        mMatchingLock.lock();
+        for (auto pair : mMatchingSequence) {
+
+            eMatchingType type = pair.first;
+
+            eMatchingSequence matchingSequence = pair.second;
+
+            if (matchingSequence == eMatchingSequence::MS_None) {
+
+            }
+            else {
+                CheckMatchMaking(type);
+            }
+            UpdateMatchingSequence(type);
+
+        }
+        mMatchingLock.unlock();
+        std::this_thread::sleep_for(100ms);
+    }
 }
 
 bool MatchMakingManager::CheckMatchMaking(eMatchingType matchingType)
@@ -69,7 +96,7 @@ bool MatchMakingManager::CheckMatchMaking(eMatchingType matchingType)
         }
 
         MatchingComplete(roomID, sessionList);
-        //std::cout << "Start Game room - " << roomID << "| GameMode - " << gameMode << std::endl;
+        std::cout << "Start Game room - " << roomID << "| GameMode - " << gameMode << std::endl;
     }
 
     return true;

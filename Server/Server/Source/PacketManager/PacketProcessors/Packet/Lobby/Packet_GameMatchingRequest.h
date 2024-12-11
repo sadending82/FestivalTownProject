@@ -28,8 +28,6 @@ public:
 
 				MatchMakingManager* MatchMakingManager = pServer->GetMatchMakingManager();
 
-				MatchMakingManager->GetMatchingLock().lock();
-
 				long long requestTime = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
 
 				player->SetMatchingRequestType(matchingType);
@@ -38,6 +36,8 @@ public:
 				player->GetSessionStateLock().lock();
 				player->SetSessionState(eSessionState::ST_MATCHWAITING);
 				player->GetSessionStateLock().unlock();
+
+				MatchMakingManager->GetMatchingLock().lock();
 
 				switch (matchingType) {
 				case eMatchingType::FITH_TEST: {
@@ -89,7 +89,7 @@ public:
 
 
 					// ¸Ê Å×½ºÆ® ¶«¿¡ Ãß°¡
-					room->InitMap(&pServer->GetTableManager()->GetMapData()[testMapProperties.Map_Index], testMapProperties.Map_Theme);
+					room->InitMap(pServer->GetTableManager()->GetMapData()[testMapProperties.Map_Index], testMapProperties.Map_Theme);
 
 					int botID = pServer->SetSessionID();
 
@@ -110,17 +110,7 @@ public:
 				}break;
 				default:{
 
-					int matchingSequence = MatchMakingManager->GetMatchingSequence(matchingType);
-
 					MatchMakingManager->GetMatchingQueue(matchingType).insert({key, requestTime});
-
-					if (matchingSequence == eMatchingSequence::MS_None) {
-						
-					}
-					else {
-						MatchMakingManager->CheckMatchMaking(matchingType);
-					}
-					MatchMakingManager->UpdateMatchingSequence(matchingType);
 
 				}break;
 				}
