@@ -14,6 +14,8 @@ public class UI_Customize_ScrViewContent : UI_Base
         FaceItems,
         BackClassifier,
         BackItems,
+        EmoClassifier,
+        EmoItems,
     }
 
     bool isInitialized = false;
@@ -50,6 +52,8 @@ public class UI_Customize_ScrViewContent : UI_Base
                 return Get<GameObject>((int)GameObjects.FaceItems).transform;
             case Define.ItemType.Accessory_Back:
                 return Get<GameObject>((int)GameObjects.BackItems).transform;
+            case Define.ItemType.Emo:
+                return Get<GameObject>((int)GameObjects.EmoItems).transform;
             default:
                 break;
         }
@@ -61,12 +65,13 @@ public class UI_Customize_ScrViewContent : UI_Base
     {
         if (!isInitialized) Init();
 
-        int myHeight = 400; 
+        int myHeight = 500; 
 
         myHeight += Get<GameObject>((int)GameObjects.SkinItems).GetComponent<UI_Customize_ItemGrid>().GetHeight();
         myHeight += Get<GameObject>((int)GameObjects.HeadItems).GetComponent<UI_Customize_ItemGrid>().GetHeight();
         myHeight += Get<GameObject>((int)GameObjects.FaceItems).GetComponent<UI_Customize_ItemGrid>().GetHeight();
         myHeight += Get<GameObject>((int)GameObjects.BackItems).GetComponent<UI_Customize_ItemGrid>().GetHeight();
+        myHeight += Get<GameObject>((int)GameObjects.EmoItems).GetComponent<UI_Customize_ItemGrid>().GetHeight();
 
         GetComponent<RectTransform>().sizeDelta = new Vector2(GetComponent<RectTransform>().sizeDelta.x, myHeight);
     }
