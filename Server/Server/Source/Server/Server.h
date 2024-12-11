@@ -97,6 +97,7 @@ private:
 
 	std::vector<std::thread>			mWorkerThreads;
 	std::thread							mTimerThread;
+	std::thread							mMatchingThread;
 	std::thread							mTestThread;
 
 	std::wstring						mOdbc = L"";

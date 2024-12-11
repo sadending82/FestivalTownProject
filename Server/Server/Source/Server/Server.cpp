@@ -285,7 +285,7 @@ void Server::Run()
     // Thread Create
 
     mTimerThread = std::thread(&Timer::Main, mTimer);
-
+    mMatchingThread = std::thread(&MatchMakingManager::RunMatchingThreadWorker, mMatchMakingManager);
     SYSTEM_INFO si;
     GetSystemInfo(&si);
     for (int i = 0; i < (int)si.dwNumberOfProcessors * 2; ++i) {
@@ -444,7 +444,7 @@ int Server::CreateNewRoom(GameMode gameMode, int mapIndex, int mapTheme)
 
     Room* room = GetRooms()[roomID];
     room->Init(roomID, gameMode, mTableManager->GetGameModeOutData()[gameMode], mTableManager->GetGameModeData()[mapIndex][gameMode]);
-    room->InitMap(&GetTableManager()->GetMapData()[mapIndex], mapTheme);
+    room->InitMap(GetTableManager()->GetMapData()[mapIndex], mapTheme);
 
     return roomID;
 }

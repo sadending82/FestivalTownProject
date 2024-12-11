@@ -93,8 +93,8 @@ public class PlayerController : MonoBehaviour
     private bool gameStart = false;
 
     //------ timer for send ------
-    private float curTime= 0.0f;
-    private float sendInterval = 0.01666666666f * 6;
+    private float curTime = 0.0f;
+    private float sendInterval = 0.01666666666f * 9;
 
 
     private void Awake()

@@ -369,7 +369,7 @@ std::set<Vector3f> FITH::SetObjectSpawnPos(int roomID, int spawnCount)
 {
     Room* room = pServer->GetRooms()[roomID];
 
-    std::vector<std::pair<int, int>>& spawnPoses = room->GetMap()->GetObjectSpawnIndexes();
+    std::vector<std::pair<int, int>>& spawnPoses = room->GetMap().GetObjectSpawnIndexes();
 
     std::random_device rd;
     std::mt19937 gen(rd());

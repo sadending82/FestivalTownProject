@@ -5,7 +5,7 @@
 
 Room::~Room()
 {
-	delete mMap;
+	
 }
 
 void Room::Reset()
@@ -49,10 +49,9 @@ void Room::Init(int id, GameMode gameMode, GameModeOutData& GameModeOutData, Gam
 }
 
 
-void Room::InitMap(Map* map, int mapTheme)
+void Room::InitMap(Map& map, int mapTheme)
 {
-	delete mMap;
-	mMap = new Map(*map);
+	mMap = map;
 	mMapTheme = mapTheme;
 }
 

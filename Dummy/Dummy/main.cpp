@@ -10,8 +10,8 @@
 HANDLE g_hiocp;
 
 #define PORTNUM 45872
-#define IPADDRESS "127.0.0.1"
-//#define IPADDRESS "203.239.231.148"
+//#define IPADDRESS "127.0.0.1"
+#define IPADDRESS "203.239.231.148"
 
 inline constexpr int MAX_TEST = 2000;
 inline constexpr int MAX_CLIENTS = 2000;
@@ -83,7 +83,7 @@ int main()
 
 	g_hiocp = CreateIoCompletionPort(INVALID_HANDLE_VALUE, 0, NULL, 0);
 
-	for (int i = 0; i < 6; ++i)
+	for (int i = 0; i < 12; ++i)
 		workerThreads.push_back(new std::thread{WorkerThread});
 
 	testThreads = std::thread{ TestThread };
@@ -174,7 +174,7 @@ void WorkerThread()
 
 constexpr int DELAY_LIMIT = 100;
 constexpr int DELAY_LIMIT2 = 150;
-constexpr int ACCEPT_DELEY = 50;
+constexpr int ACCEPT_DELEY = 100;
 
 void Adjust_Number_Of_Client()
 {
@@ -296,7 +296,7 @@ void TestThread()
 		{
 			if (false == g_clients[i].connected) continue;
 			if (false == g_clients[i].isInGame) continue;
-			if (g_clients[i].lastSyncPacketSend + 96ms <= high_resolution_clock::now())
+			if (g_clients[i].lastSyncPacketSend + (16ms*9) <= high_resolution_clock::now())
 			{
 				g_clients[i].lastSyncPacketSend = high_resolution_clock::now();
 				auto pack = pm.MakePlayerPosSyncPacket(g_clients[i].ingameId, g_clients[i].position, g_clients[i].direction, 100);

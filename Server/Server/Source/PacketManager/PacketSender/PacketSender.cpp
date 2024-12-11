@@ -71,7 +71,7 @@ void PacketSender::SendPlayerAdd(int roomID)
         Player* player = dynamic_cast<Player*>(mServer->GetSessions()[session_id]);
         int team = player->GetTeam();
 
-        std::vector<std::pair<int, int>>& spawnPoses = room->GetMap()->GetPlayerSpawnIndexes(player->GetTeam());
+        std::vector<std::pair<int, int>>& spawnPoses = room->GetMap().GetPlayerSpawnIndexes(player->GetTeam());
         Vector3f pos;
         if (spawnPoses.size() == 0) {
             pos = Vector3f();
@@ -106,7 +106,7 @@ void PacketSender::SendGameMatchingResponse(int sessionID)
     int team = player->GetTeam();
     Room* room = mServer->GetRooms()[roomID];
     GameMode GameMode = room->GetGameMode();
-    int mapIndex = room->GetMap()->GetMapIndex();
+    int mapIndex = room->GetMap().GetMapIndex();
     int mapTheme = room->GetMapTheme();
 
     int playTime = mServer->GetTableManager()->GetGameModeData()[mapIndex][GameMode].Play_Time;
@@ -146,7 +146,7 @@ void PacketSender::SendBlockDropPacket(int roomID, int spawnCount, int blockType
         return;
     }
 
-    std::vector<std::pair<int, int>>& spawnPoses = mServer->GetRooms()[roomID]->GetMap()->GetBlockDropIndexes();
+    std::vector<std::pair<int, int>>& spawnPoses = mServer->GetRooms()[roomID]->GetMap().GetBlockDropIndexes();
     GameMode gameMode = mServer->GetRooms()[roomID]->GetGameMode();
 
     std::random_device rd;
@@ -273,7 +273,7 @@ void PacketSender::SendPlayerRespawn(int inGameID, int roomID)
         return;
     }
     int team = player->GetTeam();
-    std::vector<std::pair<int, int>>& spawnPoses = mServer->GetRooms()[roomID]->GetMap()->GetPlayerSpawnIndexes(team);
+    std::vector<std::pair<int, int>>& spawnPoses = mServer->GetRooms()[roomID]->GetMap().GetPlayerSpawnIndexes(team);
 
     std::random_device rd;
     std::mt19937 gen(rd());

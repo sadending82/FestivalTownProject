@@ -32,6 +32,8 @@ public:
 
 	~MatchMakingManager();
 
+	void RunMatchingThreadWorker();
+
 	std::mutex& GetMatchingLock() { return mMatchingLock; }
 	MATCHING_QUEUE& GetMatchingQueue(eMatchingType type) { return mMatchingQueue[type]; }
 

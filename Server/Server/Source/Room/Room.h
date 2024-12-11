@@ -20,7 +20,7 @@ public:
 	void Reset();
 	void Init(int id, GameMode gameMode, GameModeOutData& GameModeOutData, GameModeData& GameModeData);
 
-	void InitMap(Map* map, int mapTheme);
+	void InitMap(Map& map, int mapTheme);
 	void InitRoomCode();
 
 	bool AddPlayer(Player* player);
@@ -42,7 +42,7 @@ public:
 
 	int GetPlayerCnt() { return mPlayerCnt.load(); }
 	GameMode GetGameMode() { return mGameMode; }
-	Map* GetMap() { return mMap; }
+	Map& GetMap() { return mMap; }
 	TIMEPOINT GetStartTime() { return mStartTime; }
 	eRoomState GetState() { return mState; }
 	std::shared_mutex& GetStateLock() { return mStateLock; }
@@ -53,7 +53,7 @@ public:
 	bool GetIsRun() { return mIsRun.load(); }
 	GameModeOutData& GetGameModeOutData() { return mGameModeOutData; }
 	GameModeData& GetGameModeData() { return mGameModeData; }
-	int GetmapIndex() { return mMap->GetMapIndex(); }
+	int GetmapIndex() { return mMap.GetMapIndex(); }
 	int GetMapTheme() { return mMapTheme; }
 	bool GetIsTestRoom() { return mIsTestRoom; }
 	
@@ -79,7 +79,7 @@ public:
 private:
 	eRoomState mState;
 	GameMode mGameMode;
-	Map* mMap = nullptr;
+	Map mMap;
 	int mMapTheme = 0;
 
 	class Server* pServer = nullptr;
