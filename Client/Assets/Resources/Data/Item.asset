@@ -149,6 +149,14 @@ MonoBehaviour:
     Item_Grade: 1
     Open_Date: 45292
     Close_Date: 73050
+  - Index: 322002
+    Name: "\uD56B\uD56B \uC36C\uAE00\uB77C\uC2A4"
+    ClassType: 0
+    File_Name: Face_Sunglass_Black
+    Item_Type: 22
+    Item_Grade: 3
+    Open_Date: 45292
+    Close_Date: 73050
   - Index: 333001
     Name: "\uBE75\uAC00\uBC29"
     ClassType: 0
