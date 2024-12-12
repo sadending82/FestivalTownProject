@@ -95,7 +95,7 @@ void PacketSender::SendPlayerDelete(int roomID, int inGameID)
     mServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
 
-void PacketSender::SendGameMatchingResponse(int sessionID, int roomID, sMatchingInfo matchingInfo)
+void PacketSender::SendGameMatchingResponse(int sessionID, int roomID)
 {
     Player* player = dynamic_cast<Player*>(mServer->GetSessions()[sessionID]);
     if (player == nullptr) {
