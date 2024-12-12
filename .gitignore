@@ -97,7 +97,10 @@ ipch
 #config file
 Config.txt
 Client/Assets/02. Scripts/FlatBuffers/Google.FlatBuffers.csproj.meta
-Client/Assets/Fonts/Font/OTF/Maplestory OTF Bold SDF.asset
+**/Maplestory OTF Bold SDF.asset
 
 #Client_clone
 **/Client_clone*
+
+#MeshBaker
+**/MeshBaker*
