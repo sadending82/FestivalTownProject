@@ -40,7 +40,6 @@ public class GameScene : BaseScene
     {
         foreach (var pData in Managers.Game.GetPlayerDataDict())
         {
-            
             Managers.Game.PlayerTeamData.Add(pData.Value.id, pData.Value.team);
             Managers.Player.GetComponent<PlayerManager>().AddPlayer(pData.Value.id, pData.Value.pos, pData.Value.team, pData.Value.nickname);
         }
@@ -189,20 +188,23 @@ public class GameScene : BaseScene
         var loadUi = GameObject.Find("UI_Loading").GetComponent<UI_Loading>();
 
         LoadPlayers();
+        yield return null;
+        curtime += 1.0f;
+        loadUi.SetProgressBarPersentage(curtime / LoadTime);
 
         LoadCubes();
         yield return null;
-        curtime += Time.deltaTime;
+        curtime += 1.0f;
         loadUi.SetProgressBarPersentage(curtime / LoadTime);
 
         LoadBombs();
         yield return null;
-        curtime += Time.deltaTime;
+        curtime += 1.0f;
         loadUi.SetProgressBarPersentage(curtime / LoadTime);
 
         LoadWeapons();
         yield return null;
-        curtime += Time.deltaTime;
+        curtime += 1.0f;
         loadUi.SetProgressBarPersentage(curtime / LoadTime);
 
         yield return null;

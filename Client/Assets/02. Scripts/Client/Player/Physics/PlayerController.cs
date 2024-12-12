@@ -940,10 +940,10 @@ public class PlayerController : MonoBehaviour
 
         Vector3 targetPos = new Vector3(x, Managers.Map.GetMapHeight((int)x / 2, (int)z / 2) + createHeightOffSet, z);
 
-        SetPosition(targetPos);
         pelvisRigidbody.velocity = Vector3.zero;
+        SetPosition(targetPos);
 
-        Managers.Sound.Play("Sfx_Ch_Respawn");
+        //Managers.Sound.Play("Sfx_Ch_Respawn");
     }
     public void Respawn(float x, float z)
     {
@@ -955,6 +955,7 @@ public class PlayerController : MonoBehaviour
 
         pelvisRigidbody.velocity = Vector3.zero;
         SetPosition(targetPos);
+        
 
         targetPos = new Vector3(x, 0.01f, z);
         Managers.Effect.PlayEffect("Ch_Respawn", targetPos);
