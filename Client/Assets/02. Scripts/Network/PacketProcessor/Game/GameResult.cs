@@ -39,11 +39,13 @@ namespace Network.PacketProcessor
                 result.bombInsert = playerRecord.BombInsertCount;
                 result.gold = playerRecord.EarnGold;
                 result.isMvp = playerRecord.IsMvp;
+                result.point = playerRecord.Point;
 
                 Managers.Game.PlayerResultData.Add(result);
             }
 
-            
+            Managers.Game.PlayerResultData.Sort((Define.PlayerResult a, Define.PlayerResult b) => { return b.point.CompareTo(a.point); });
+
 
             if(Managers.Scene.CurrentScene.GetComponent<GameScene>() != null)
             {

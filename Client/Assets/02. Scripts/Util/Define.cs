@@ -114,6 +114,7 @@ public class Define
         public int death;
         public int bombInsert;
         public int gold;
+        public int point;
         public bool isMvp;
     }
 
