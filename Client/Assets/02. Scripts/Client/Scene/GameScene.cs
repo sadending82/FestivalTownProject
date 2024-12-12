@@ -187,7 +187,6 @@ public class GameScene : BaseScene
 
         Managers.Network.GetPacketManager().SendGameReady();
         Debug.Log("Send Game Ready Packet");
-        yield break;
         // TODO: 여기서 씬이 생성될 때에 미리 해줘야 할 작업 들을 해주어야 합니다.
     }
 
@@ -224,21 +223,26 @@ public class GameScene : BaseScene
             StartCoroutine(LoadGameScene());
             isLoadStart = true;
         }
-#if UNITY_EDITOR
-#elif UNITY_STANDALONE_WIN
-        if(Input.GetKeyDown(KeyCode.Escape))
+
+#if UNITY_STANDALONE_WIN
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (Managers.Game.isTimerStart)
             {
-                if (Managers.UI.GetTopOfPopUPUI() == null || Managers.UI.GetTopOfPopUPUI().GetComponent<UI_IngameEscapeButton>() == null)
+                var tui = Managers.UI.GetTopOfPopUPUI();
+                UI_IngameEscapeButton iebUi = null;
+                if (tui != null) { iebUi = Managers.UI.GetTopOfPopUPUI().GetComponent<UI_IngameEscapeButton>(); }
+
+                if (tui == null || iebUi == null)
                 {
                     var ui = Managers.UI.ShowPopUpUI<UI_IngameEscapeButton>();
                     ui.Init();
                     ui.NoticeTextChange("아직 뭐가 없지만 Esc 누르면 나오는거\n확인 눌러도 안 꺼짐");
-                    
+
                     Cursor.lockState = CursorLockMode.None;
                     Cursor.visible = true;
                 }
+
             }
         }
 #endif

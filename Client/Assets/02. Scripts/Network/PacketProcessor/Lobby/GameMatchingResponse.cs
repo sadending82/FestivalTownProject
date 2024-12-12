@@ -46,6 +46,7 @@ namespace Network.PacketProcessor
 
             Debug.Log("MapIndex: " + mapIndex + " MapTheme: " + mapTheme);
 
+            Debug.Log($"PlayerLength : {Data.PlayersLength}");
 
             // 플레이어 정보
             for (int i = 0; i < Data.PlayersLength; ++i)

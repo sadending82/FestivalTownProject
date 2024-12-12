@@ -74,13 +74,13 @@ public class PlayerManager : MonoBehaviour
 
     public void AddPlayer(int id, Vector3 position, int teamNumber, string name)
     {
-        if (players == null) Init();
-
-        if(Managers.Scene.CurrentScene.GetComponent<GameScene>() == null)
+        if (Managers.Scene.CurrentScene.GetComponent<GameScene>() == null)
         {
             StartCoroutine(WaitAndAddPlayer(id, position, teamNumber, name));
             return;
         }
+
+        if (players == null) Init();
 
         if (nowPlayerNum + 1 > maxPlayerNum)
         {
