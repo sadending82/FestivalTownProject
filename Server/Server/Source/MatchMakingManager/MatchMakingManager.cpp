@@ -164,9 +164,8 @@ void MatchMakingManager::MatchingComplete(int roomID, std::vector<int>& sessionI
     for (const auto& sID : room->GetPlayerList()) {
         int id = sID.load();
         if (id == INVALIDKEY) continue;
-        packetSender->SendGameMatchingResponse(sID);
+        packetSender->SendGameMatchingResponse(sID, roomID);
     }
-    pServer->GetPacketSender()->SendPlayerAdd(roomID);
 }
 
 void MatchMakingManager::UpdateMatchingSequence(eMatchingType matchingType)

@@ -218,11 +218,45 @@ std::vector<uint8_t> PacketMaker::MakePlayerThrowOtherPlayerPacket(int playerID,
 	return MakeBuffer(ePacketType::S2C_PLAYER_THROW_OTHER_PLAYER, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakeGameMatchingResponsePacket(int inGameID, int roomID, int team, int gameMode, int mapIndex, int mapTheme, int gameTime, int totalPlayerCount, bool isHost)
+std::vector<uint8_t> PacketMaker::MakeGameMatchingResponsePacket(int inGameID, sMatchingInfo matchingInfo, std::vector<class Player*> players)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 	
-	Builder.Finish(PacketTable::LobbyTable::CreateGameMatchingResponse(Builder, inGameID, roomID, team, gameMode, mapIndex, mapTheme, gameTime, isHost, totalPlayerCount));
+	std::vector<flatbuffers::Offset<PacketTable::PlayerTable::PlayerInfo>> player_vec;
+
+	for (Player* player : players) {
+		if (player == nullptr) {
+			continue;
+		}
+		Vector3f position = player->GetPosition();
+		auto pos = PacketTable::UtilitiesTable::CreateVec3f(Builder, position.x, position.y, position.z);
+		auto dir = PacketTable::UtilitiesTable::CreateVec3f(Builder, 0, 0, 0);
+
+		std::vector<flatbuffers::Offset<PacketTable::UtilitiesTable::CustomizingItem>> customizingItems;
+
+		for (auto pair : player->GetCharacterCustomizing().customizingItems) {
+			auto itemInfo = pair.second;
+			auto fItem = PacketTable::UtilitiesTable::CreateCustomizingItem(Builder, itemInfo.itemType, itemInfo.item_UID, itemInfo.itemCode);
+			customizingItems.push_back(fItem);
+		}
+
+		auto customizingInfo = PacketTable::UtilitiesTable::CreateCharacterCustomizing(Builder, Builder.CreateVector(customizingItems));
+
+		auto pInfo = PacketTable::PlayerTable::CreatePlayerInfo(Builder
+			, player->GetInGameID()
+			, pos
+			, dir
+			, player->GetTeam()
+			, player->GetCharacterType()
+			, customizingInfo
+			, Builder.CreateString(wstringToString(player->GetNickName()))
+		);
+
+		player_vec.push_back(pInfo);
+	}
+
+	Builder.Finish(PacketTable::LobbyTable::CreateGameMatchingResponse(Builder, inGameID, matchingInfo.RoomID, matchingInfo.Team, matchingInfo.GameMode, matchingInfo.MapIndex
+		, matchingInfo.MapTheme, matchingInfo.GameTime, matchingInfo.IsHost, matchingInfo.TotalPlayerCount, Builder.CreateVector(player_vec)));
 	return MakeBuffer(ePacketType::S2C_MATCHING_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 

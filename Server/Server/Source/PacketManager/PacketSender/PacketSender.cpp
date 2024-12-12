@@ -95,27 +95,55 @@ void PacketSender::SendPlayerDelete(int roomID, int inGameID)
     mServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
 
-void PacketSender::SendGameMatchingResponse(int sessionID)
+void PacketSender::SendGameMatchingResponse(int sessionID, int roomID, sMatchingInfo matchingInfo)
 {
     Player* player = dynamic_cast<Player*>(mServer->GetSessions()[sessionID]);
     if (player == nullptr) {
         return;
     }
-    int inGameID = player->GetInGameID();
-    int roomID = player->GetRoomID();
-    int team = player->GetTeam();
+
     Room* room = mServer->GetRooms()[roomID];
+    int inGameID = player->GetInGameID();
+    int team = player->GetTeam();
     GameMode GameMode = room->GetGameMode();
     int mapIndex = room->GetMap().GetMapIndex();
     int mapTheme = room->GetMapTheme();
-
     int playTime = mServer->GetTableManager()->GetGameModeData()[mapIndex][GameMode].Play_Time;
+
+    sMatchingInfo matchingInfo(roomID, inGameID, team, (int)GameMode
+        , mapIndex, mapTheme, playTime, false);
+
+    std::map<int, int> teamPlayerCnt;
+    std::vector<Player*> players;
+
+    for (const auto& sID : room->GetPlayerList()) {
+        int session_id = sID.load();
+        if (session_id == INVALIDKEY) continue;
+        Player* player = dynamic_cast<Player*>(mServer->GetSessions()[session_id]);
+        int team = player->GetTeam();
+
+        std::vector<std::pair<int, int>>& spawnPoses = room->GetMap().GetPlayerSpawnIndexes(player->GetTeam());
+        Vector3f pos;
+        if (spawnPoses.size() == 0) {
+            pos = Vector3f();
+        }
+        else {
+            pos = ConvertVec2iToVec3f(spawnPoses[teamPlayerCnt[team]].first, spawnPoses[teamPlayerCnt[team]].second);
+            teamPlayerCnt[team]++;
+        }
+
+        player->SetPosition(pos);
+
+        players.push_back(player);
+    }
+
     std::vector<uint8_t> send_buffer;
     if (inGameID == room->GetHostID()) {
-        send_buffer = mPacketMaker->MakeGameMatchingResponsePacket(inGameID, roomID, team, room->GetGameMode(), mapIndex, mapTheme, playTime, room->GetGameModeOutData().Player_Count, true);
+        matchingInfo.IsHost = true;
+        send_buffer = mPacketMaker->MakeGameMatchingResponsePacket(inGameID, matchingInfo, players);
     }
     else {
-        send_buffer = mPacketMaker->MakeGameMatchingResponsePacket(inGameID, roomID, team, room->GetGameMode(), mapIndex, mapTheme,  playTime, room->GetGameModeOutData().Player_Count);
+        send_buffer = mPacketMaker->MakeGameMatchingResponsePacket(inGameID, matchingInfo, players);
     }
 
     mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());

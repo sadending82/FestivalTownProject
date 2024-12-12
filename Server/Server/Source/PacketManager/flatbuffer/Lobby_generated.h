@@ -13,6 +13,7 @@ static_assert(FLATBUFFERS_VERSION_MAJOR == 24 &&
               FLATBUFFERS_VERSION_REVISION == 25,
              "Non-compatible flatbuffers version included");
 
+#include "Player_generated.h"
 #include "Utilities_generated.h"
 
 namespace PacketTable {
@@ -132,7 +133,8 @@ struct GameMatchingResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Tab
     VT_MAP_THEME = 14,
     VT_GAME_TIME = 16,
     VT_IS_HOST = 18,
-    VT_TOTAL_PLAYER_COUNT = 20
+    VT_TOTAL_PLAYER_COUNT = 20,
+    VT_PLAYERS = 22
   };
   int32_t ingameid() const {
     return GetField<int32_t>(VT_INGAMEID, 0);
@@ -161,6 +163,9 @@ struct GameMatchingResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Tab
   int32_t total_player_count() const {
     return GetField<int32_t>(VT_TOTAL_PLAYER_COUNT, 0);
   }
+  const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::PlayerTable::PlayerInfo>> *players() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::PlayerTable::PlayerInfo>> *>(VT_PLAYERS);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_INGAMEID, 4) &&
@@ -172,6 +177,9 @@ struct GameMatchingResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Tab
            VerifyField<int32_t>(verifier, VT_GAME_TIME, 4) &&
            VerifyField<uint8_t>(verifier, VT_IS_HOST, 1) &&
            VerifyField<int32_t>(verifier, VT_TOTAL_PLAYER_COUNT, 4) &&
+           VerifyOffset(verifier, VT_PLAYERS) &&
+           verifier.VerifyVector(players()) &&
+           verifier.VerifyVectorOfTables(players()) &&
            verifier.EndTable();
   }
 };
@@ -207,6 +215,9 @@ struct GameMatchingResponseBuilder {
   void add_total_player_count(int32_t total_player_count) {
     fbb_.AddElement<int32_t>(GameMatchingResponse::VT_TOTAL_PLAYER_COUNT, total_player_count, 0);
   }
+  void add_players(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::PlayerTable::PlayerInfo>>> players) {
+    fbb_.AddOffset(GameMatchingResponse::VT_PLAYERS, players);
+  }
   explicit GameMatchingResponseBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -228,8 +239,10 @@ inline ::flatbuffers::Offset<GameMatchingResponse> CreateGameMatchingResponse(
     int32_t map_theme = 0,
     int32_t game_time = 0,
     bool is_host = false,
-    int32_t total_player_count = 0) {
+    int32_t total_player_count = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::PlayerTable::PlayerInfo>>> players = 0) {
   GameMatchingResponseBuilder builder_(_fbb);
+  builder_.add_players(players);
   builder_.add_total_player_count(total_player_count);
   builder_.add_game_time(game_time);
   builder_.add_map_theme(map_theme);
@@ -240,6 +253,33 @@ inline ::flatbuffers::Offset<GameMatchingResponse> CreateGameMatchingResponse(
   builder_.add_ingameid(ingameid);
   builder_.add_is_host(is_host);
   return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<GameMatchingResponse> CreateGameMatchingResponseDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t ingameid = 0,
+    int32_t roomid = 0,
+    int32_t team = 0,
+    int32_t gamemode = 0,
+    int32_t map_index = 0,
+    int32_t map_theme = 0,
+    int32_t game_time = 0,
+    bool is_host = false,
+    int32_t total_player_count = 0,
+    const std::vector<::flatbuffers::Offset<PacketTable::PlayerTable::PlayerInfo>> *players = nullptr) {
+  auto players__ = players ? _fbb.CreateVector<::flatbuffers::Offset<PacketTable::PlayerTable::PlayerInfo>>(*players) : 0;
+  return PacketTable::LobbyTable::CreateGameMatchingResponse(
+      _fbb,
+      ingameid,
+      roomid,
+      team,
+      gamemode,
+      map_index,
+      map_theme,
+      game_time,
+      is_host,
+      total_player_count,
+      players__);
 }
 
 struct GameMatchingCancel FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {

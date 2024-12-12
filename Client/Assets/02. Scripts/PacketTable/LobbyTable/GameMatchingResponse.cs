@@ -28,6 +28,8 @@ public struct GameMatchingResponse : IFlatbufferObject
   public int GameTime { get { int o = __p.__offset(16); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
   public bool IsHost { get { int o = __p.__offset(18); return o != 0 ? 0!=__p.bb.Get(o + __p.bb_pos) : (bool)false; } }
   public int TotalPlayerCount { get { int o = __p.__offset(20); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public PacketTable.PlayerTable.PlayerInfo? Players(int j) { int o = __p.__offset(22); return o != 0 ? (PacketTable.PlayerTable.PlayerInfo?)(new PacketTable.PlayerTable.PlayerInfo()).__assign(__p.__indirect(__p.__vector(o) + j * 4), __p.bb) : null; }
+  public int PlayersLength { get { int o = __p.__offset(22); return o != 0 ? __p.__vector_len(o) : 0; } }
 
   public static Offset<PacketTable.LobbyTable.GameMatchingResponse> CreateGameMatchingResponse(FlatBufferBuilder builder,
       int ingameid = 0,
@@ -38,8 +40,10 @@ public struct GameMatchingResponse : IFlatbufferObject
       int map_theme = 0,
       int game_time = 0,
       bool is_host = false,
-      int total_player_count = 0) {
-    builder.StartTable(9);
+      int total_player_count = 0,
+      VectorOffset playersOffset = default(VectorOffset)) {
+    builder.StartTable(10);
+    GameMatchingResponse.AddPlayers(builder, playersOffset);
     GameMatchingResponse.AddTotalPlayerCount(builder, total_player_count);
     GameMatchingResponse.AddGameTime(builder, game_time);
     GameMatchingResponse.AddMapTheme(builder, map_theme);
@@ -52,7 +56,7 @@ public struct GameMatchingResponse : IFlatbufferObject
     return GameMatchingResponse.EndGameMatchingResponse(builder);
   }
 
-  public static void StartGameMatchingResponse(FlatBufferBuilder builder) { builder.StartTable(9); }
+  public static void StartGameMatchingResponse(FlatBufferBuilder builder) { builder.StartTable(10); }
   public static void AddIngameid(FlatBufferBuilder builder, int ingameid) { builder.AddInt(0, ingameid, 0); }
   public static void AddRoomid(FlatBufferBuilder builder, int roomid) { builder.AddInt(1, roomid, 0); }
   public static void AddTeam(FlatBufferBuilder builder, int team) { builder.AddInt(2, team, 0); }
@@ -62,6 +66,12 @@ public struct GameMatchingResponse : IFlatbufferObject
   public static void AddGameTime(FlatBufferBuilder builder, int gameTime) { builder.AddInt(6, gameTime, 0); }
   public static void AddIsHost(FlatBufferBuilder builder, bool isHost) { builder.AddBool(7, isHost, false); }
   public static void AddTotalPlayerCount(FlatBufferBuilder builder, int totalPlayerCount) { builder.AddInt(8, totalPlayerCount, 0); }
+  public static void AddPlayers(FlatBufferBuilder builder, VectorOffset playersOffset) { builder.AddOffset(9, playersOffset.Value, 0); }
+  public static VectorOffset CreatePlayersVector(FlatBufferBuilder builder, Offset<PacketTable.PlayerTable.PlayerInfo>[] data) { builder.StartVector(4, data.Length, 4); for (int i = data.Length - 1; i >= 0; i--) builder.AddOffset(data[i].Value); return builder.EndVector(); }
+  public static VectorOffset CreatePlayersVectorBlock(FlatBufferBuilder builder, Offset<PacketTable.PlayerTable.PlayerInfo>[] data) { builder.StartVector(4, data.Length, 4); builder.Add(data); return builder.EndVector(); }
+  public static VectorOffset CreatePlayersVectorBlock(FlatBufferBuilder builder, ArraySegment<Offset<PacketTable.PlayerTable.PlayerInfo>> data) { builder.StartVector(4, data.Count, 4); builder.Add(data); return builder.EndVector(); }
+  public static VectorOffset CreatePlayersVectorBlock(FlatBufferBuilder builder, IntPtr dataPtr, int sizeInBytes) { builder.StartVector(1, sizeInBytes, 1); builder.Add<Offset<PacketTable.PlayerTable.PlayerInfo>>(dataPtr, sizeInBytes); return builder.EndVector(); }
+  public static void StartPlayersVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(4, numElems, 4); }
   public static Offset<PacketTable.LobbyTable.GameMatchingResponse> EndGameMatchingResponse(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<PacketTable.LobbyTable.GameMatchingResponse>(o);
@@ -83,6 +93,7 @@ static public class GameMatchingResponseVerify
       && verifier.VerifyField(tablePos, 16 /*GameTime*/, 4 /*int*/, 4, false)
       && verifier.VerifyField(tablePos, 18 /*IsHost*/, 1 /*bool*/, 1, false)
       && verifier.VerifyField(tablePos, 20 /*TotalPlayerCount*/, 4 /*int*/, 4, false)
+      && verifier.VerifyVectorOfTables(tablePos, 22 /*Players*/, PacketTable.PlayerTable.PlayerInfoVerify.Verify, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }

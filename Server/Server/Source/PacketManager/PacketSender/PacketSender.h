@@ -19,7 +19,7 @@ public:
 
 	void SendPlayerAdd(int roomID);
 	void SendPlayerDelete(int roomID, int inGameID);
-	void SendGameMatchingResponse(int sessionID);
+	void SendGameMatchingResponse(int sessionID, int roomID, sMatchingInfo matchingInfo);
 	void SendGameStart(int roomID);
 	void SendAllPlayerReady(int roomID);
 

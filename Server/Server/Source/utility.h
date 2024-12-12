@@ -116,6 +116,21 @@ struct sPlayerGameRecord {
 	}
 };
 
+struct sMatchingInfo {
+	int RoomID = 0;
+	int Team = 0;
+	int GameMode = 0;
+	int MapIndex = 0;
+	int MapTheme = 0;
+	int GameTime = 0;
+	int TotalPlayerCount = 0;
+	bool IsHost = false;
+
+	sMatchingInfo() {};
+	sMatchingInfo(int roomid, int team, int gameMode, int mapIndex, int mapTheme, int gameTime, int totalPlayerCount, int isHost)
+		: RoomID(roomid), Team(team), GameMode(gameMode), MapIndex(mapIndex), MapTheme(mapTheme), GameTime(gameTime), TotalPlayerCount(totalPlayerCount), IsHost(isHost) {};
+};
+
 #pragma pack(pop)
 
 std::vector<uint8_t> MakeBuffer(const int type, const uint8_t* data, const int size);
