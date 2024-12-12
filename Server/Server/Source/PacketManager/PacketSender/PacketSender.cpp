@@ -110,9 +110,6 @@ void PacketSender::SendGameMatchingResponse(int sessionID, int roomID)
     int mapTheme = room->GetMapTheme();
     int playTime = mServer->GetTableManager()->GetGameModeData()[mapIndex][GameMode].Play_Time;
 
-    sMatchingInfo matchingInfo(roomID, inGameID, team, (int)GameMode
-        , mapIndex, mapTheme, playTime, false);
-
     std::map<int, int> teamPlayerCnt;
     std::vector<Player*> players;
 
@@ -136,6 +133,9 @@ void PacketSender::SendGameMatchingResponse(int sessionID, int roomID)
 
         players.push_back(player);
     }
+
+    sMatchingInfo matchingInfo(roomID, team, (int)GameMode
+        , mapIndex, mapTheme, playTime, players.size(), false);
 
     std::vector<uint8_t> send_buffer;
     if (inGameID == room->GetHostID()) {
