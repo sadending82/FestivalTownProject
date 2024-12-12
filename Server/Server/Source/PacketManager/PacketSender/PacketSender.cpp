@@ -102,6 +102,10 @@ void PacketSender::SendGameMatchingResponse(int sessionID, int roomID)
         return;
     }
 
+    if (player->GetIsBot() == true) {
+        return;
+    }
+
     Room* room = mServer->GetRooms()[roomID];
     int inGameID = player->GetInGameID();
     int team = player->GetTeam();

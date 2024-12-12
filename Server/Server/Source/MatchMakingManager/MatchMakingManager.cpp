@@ -137,7 +137,6 @@ void MatchMakingManager::MatchingComplete(int roomID, std::vector<int>& sessionI
             player->SetHP(player->GetCharacterStat().hp);
             player->SetStamina(player->GetCharacterStat().stamina);
 
-            int sessionID = player->GetSessionID();
             bool AddPlayerOk = room->AddPlayer(player);
             if (AddPlayerOk == false) {
                 std::cout << "AddPlayer fail: Already Player Max\n";
@@ -148,6 +147,7 @@ void MatchMakingManager::MatchingComplete(int roomID, std::vector<int>& sessionI
                 }
 
                 if (player->GetIsBot() == true) {
+                    room->SetIsPlayerReady(player->GetInGameID(), true);
                 }
                 else {
                     player->SetMatchingRequestTime(0);
@@ -167,7 +167,7 @@ void MatchMakingManager::MatchingComplete(int roomID, std::vector<int>& sessionI
         packetSender->SendGameMatchingResponse(sID, roomID);
     }
 
-    packetSender->SendPlayerAdd(roomID);
+    //packetSender->SendPlayerAdd(roomID);
 }
 
 void MatchMakingManager::UpdateMatchingSequence(eMatchingType matchingType)

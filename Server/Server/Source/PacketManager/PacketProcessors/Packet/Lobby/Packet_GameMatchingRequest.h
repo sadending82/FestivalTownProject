@@ -83,6 +83,7 @@ public:
 					if (roomID == INVALIDKEY) {
 						break;
 					}
+					COUT << roomID << ENDL;
 
 					Room* room = pServer->GetRooms()[roomID];
 					room->SetIsTestRoom(true);

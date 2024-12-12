@@ -38,18 +38,8 @@ public:
 				SERVER_MODE serverMode = pServer->GetMode();
 				
 
-				switch (room->GetIsTestRoom()) {
-				case true: {
-					room->ChangeAllPlayerInGame();
-					pPacketSender->SendAllPlayerReady(roomID);
-					PushEventGameStart(pServer->GetTimer(), roomID, pServer->GetRooms()[roomID]->GetRoomCode());
-				}break;
-
-				default : {
-					room->SetIsPlayerReady(player->GetInGameID(), true);
-					pServer->GetLobbyManager()->CheckReadyToGamePlay(room, roomID);
-				}break;
-				}
+				room->SetIsPlayerReady(player->GetInGameID(), true);
+				pServer->GetLobbyManager()->CheckReadyToGamePlay(room, roomID);
 			}
 		}
 		catch (const std::exception& e) {
