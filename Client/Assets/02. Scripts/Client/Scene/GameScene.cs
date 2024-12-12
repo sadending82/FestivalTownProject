@@ -223,8 +223,8 @@ public class GameScene : BaseScene
             StartCoroutine(LoadGameScene());
             isLoadStart = true;
         }
-
-#if UNITY_STANDALONE_WIN
+#if UNITY_EDITOR
+#elif UNITY_STANDALONE_WIN
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (Managers.Game.isTimerStart)
