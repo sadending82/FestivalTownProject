@@ -940,8 +940,8 @@ public class PlayerController : MonoBehaviour
 
         Vector3 targetPos = new Vector3(x, Managers.Map.GetMapHeight((int)x / 2, (int)z / 2) + createHeightOffSet, z);
 
-        pelvisRigidbody.velocity = Vector3.zero;
         SetPosition(targetPos);
+        pelvisRigidbody.velocity = Vector3.zero;
 
         Managers.Sound.Play("Sfx_Ch_Respawn");
     }

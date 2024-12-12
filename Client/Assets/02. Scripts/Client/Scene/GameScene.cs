@@ -39,9 +39,10 @@ public class GameScene : BaseScene
     public void LoadPlayers()
     {
         foreach (var pData in Managers.Game.GetPlayerDataDict())
-        {    
-            Managers.Player.GetComponent<PlayerManager>().AddPlayer(pData.Value.id, pData.Value.pos, pData.Value.team, pData.Value.nickname);
+        {
+            
             Managers.Game.PlayerTeamData.Add(pData.Value.id, pData.Value.team);
+            Managers.Player.GetComponent<PlayerManager>().AddPlayer(pData.Value.id, pData.Value.pos, pData.Value.team, pData.Value.nickname);
         }
     }
 
