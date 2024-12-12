@@ -22,15 +22,27 @@ public class GameScene : BaseScene
 
         Managers.Player.Init();
 
-        LoadCubes();
-
-        LoadBombs();
-
-        LoadWeapons();
-
         // 기존에 Init 단계에서 레디 패킷 보내주던 걸, 코루틴으로 해결하고 있습니다.
         // 이는 페이크 로딩을 넣기 위해서 입니다.
 
+    }
+
+    private void Start()
+    {
+        if (!isLoadStart)
+        {
+            StartCoroutine(LoadGameScene());
+            isLoadStart = true;
+        }
+    }
+
+    public void LoadPlayers()
+    {
+        foreach (var pData in Managers.Game.GetPlayerDataDict())
+        {    
+            Managers.Player.GetComponent<PlayerManager>().AddPlayer(pData.Value.id, pData.Value.pos, pData.Value.team, pData.Value.nickname);
+            Managers.Game.PlayerTeamData.Add(pData.Value.id, pData.Value.team);
+        }
     }
 
     public void LoadCubes()
@@ -175,6 +187,23 @@ public class GameScene : BaseScene
         float curtime = 0.0f;
         var loadUi = GameObject.Find("UI_Loading").GetComponent<UI_Loading>();
 
+        LoadPlayers();
+
+        LoadCubes();
+        yield return null;
+        curtime += Time.deltaTime;
+        loadUi.SetProgressBarPersentage(curtime / LoadTime);
+
+        LoadBombs();
+        yield return null;
+        curtime += Time.deltaTime;
+        loadUi.SetProgressBarPersentage(curtime / LoadTime);
+
+        LoadWeapons();
+        yield return null;
+        curtime += Time.deltaTime;
+        loadUi.SetProgressBarPersentage(curtime / LoadTime);
+
         yield return null;
 
         while (curtime < LoadTime)
@@ -218,11 +247,6 @@ public class GameScene : BaseScene
 
     private void Update()
     {
-        if(!isLoadStart)
-        {
-            StartCoroutine(LoadGameScene());
-            isLoadStart = true;
-        }
 #if UNITY_EDITOR
 #elif UNITY_STANDALONE_WIN
         if (Input.GetKeyDown(KeyCode.Escape))

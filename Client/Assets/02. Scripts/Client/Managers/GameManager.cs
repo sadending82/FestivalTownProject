@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
     public string ModeDescription = "";
 
     private List<List<int>> playersCustomizingData = new List<List<int>>();
+    private Dictionary<int, Define.PlayerData> playerInitialDataDict = new();
 
     public List<int> GetCharacterCustomizingById(int id)
     {
@@ -52,6 +53,26 @@ public class GameManager : MonoBehaviour
         {
             playersCustomizingData.Add(new List<int>());
         }
+    }
+
+    public Dictionary<int, Define.PlayerData> GetPlayerDataDict()
+    {
+        return playerInitialDataDict;
+    }
+
+    public void SetPlayerData(int id, Define.PlayerData data)
+    {
+        playerInitialDataDict[id] = data;
+    }
+
+    public void AddPlayerData(int id, Define.PlayerData data)
+    {
+        playerInitialDataDict.Add(id, data);
+    }
+
+    public void ClearPlayerData()
+    {
+        playerInitialDataDict.Clear();
     }
 
     public void Init()
@@ -145,6 +166,7 @@ public class GameManager : MonoBehaviour
         PlayerTeamData.Clear();
         winningTeam = -1;
         ClearCharacterCustomizing();
+        ClearPlayerData();
     }
 
     public void LoadGameMap()

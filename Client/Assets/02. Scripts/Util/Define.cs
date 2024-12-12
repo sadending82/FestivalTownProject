@@ -106,6 +106,14 @@ public class Define
         Event = 1,
     }
 
+    public struct PlayerData
+    {
+        public int id;
+        public int team;
+        public Vector3 pos;
+        public string nickname;
+    }
+
     public struct PlayerResult
     {
         public int Id;
