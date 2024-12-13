@@ -19,13 +19,13 @@ public class Managers : MonoBehaviour
     ObjectPoolManager _objPool = new ObjectPoolManager();
     GameManager _game;
     PlayerManager _player = new PlayerManager();
-    CubeObjectManager _cubeObject = new CubeObjectManager();
-    BombObjectManager _bombObject = new BombObjectManager();
-    WeaponObjectManager _weaponObject = new WeaponObjectManager();
-    SpectatorCameraManager _spectatorCamera = new SpectatorCameraManager();
+    CubeObjectManager _cubeObject;
+    BombObjectManager _bombObject;
+    WeaponObjectManager _weaponObject;
+    SpectatorCameraManager _spectatorCamera;
     PostProcessManager _postProcess = new PostProcessManager();
-    EffectManager _effect = new EffectManager();
-    MapManager _map = new MapManager();
+    EffectManager _effect;
+    MapManager _map;
 
     //------------
 
