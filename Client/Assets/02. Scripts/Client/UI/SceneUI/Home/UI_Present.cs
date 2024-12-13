@@ -35,7 +35,7 @@ public class UI_Present : UI_PopUp
         Get<GameObject>((int)GameObjects.BackButton).BindEvent((PointerEventData) =>
         {
             Managers.UI.ClosePopUpUI(GetComponent<UI_Present>());
-        });
+        }, Define.UIEvent.Click, true, true);
 
         isInitialized = true;
         

@@ -76,9 +76,12 @@ public abstract class UI_Base : MonoBehaviour
 
 
 
-    public static void BindEvent(GameObject go, Action<PointerEventData> action, Define.UIEvent type = Define.UIEvent.Click)
+    public static void BindEvent(GameObject go, Action<PointerEventData> action, Define.UIEvent type = Define.UIEvent.Click, bool isButton = true, bool isCancle = false)
     {
         UI_EventHandler eventHandler = Util.GetOrAddComponent<UI_EventHandler>(go);
+
+        eventHandler.SetIsButton(isButton);
+        eventHandler.SetIsCancle(isCancle);
 
         switch(type)
         {

@@ -939,10 +939,10 @@ public class PlayerController : MonoBehaviour
         SetDirectionByTeam();    
 
         Vector3 targetPos = new Vector3(x, Managers.Map.GetMapHeight((int)x / 2, (int)z / 2) + createHeightOffSet, z);
-        pelvisRigidbody.isKinematic = true;
+
         pelvisRigidbody.velocity = Vector3.zero;      
         SetPosition(targetPos);
-        pelvisRigidbody.isKinematic = false;
+
 
         //Managers.Sound.Play("Sfx_Ch_Respawn");
     }

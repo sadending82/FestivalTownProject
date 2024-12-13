@@ -13,8 +13,6 @@ public class UI_HomeStart : UI_Scene
     {
         GameStartButton,
         PresentButton,
-        GalleryButton,
-        SettingButton,
         UI_CharacterModel,
         ExitButton,
         AccountInitializeButton,
@@ -22,6 +20,7 @@ public class UI_HomeStart : UI_Scene
         GetDiamondButton,
         EventButton,
         EventAquireableMark,
+        PassButton,
     }
 
     bool isInitialized = false;
@@ -52,10 +51,6 @@ public class UI_HomeStart : UI_Scene
             Managers.Network.GetPacketManager().SendCurrencyAmountRequestPacket();
             Managers.UI.ShowPopUpUI<UI_Present>();
         });
-
-        Get<GameObject>((int)GameObjects.GalleryButton).BindEvent((PointerEventData) => { Debug.Log($"갤러리 버튼을 클릭했군요!"); });
-
-        Get<GameObject>((int)GameObjects.SettingButton).BindEvent((PointerEventData) => { Debug.Log($"설정 버튼을 클릭했군요!"); });
 
         Get<GameObject>((int)GameObjects.ExitButton).BindEvent((PointerEventData) => {
 #if UNITY_EDITOR

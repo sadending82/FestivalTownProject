@@ -59,8 +59,9 @@ public class UI_GachaPopup : UI_PopUp
 
         Get<GameObject>((int)GameObjects.NoButton).BindEvent((PointerEventData) =>
         {
-            Managers.UI.ClosePopUpUI(this);
-        });
+            Managers.UI.ClosePopUpUI(this); 
+        },
+        Define.UIEvent.Click, true, true);
 
         isInitialized = true;
 

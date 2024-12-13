@@ -79,7 +79,8 @@ public class UI_MatchingSelect: UI_PopUp
         Get<GameObject>((int)GameObjects.ExitButton).BindEvent((PointerEventData) =>
         {
             ClosePopUpUI();
-        });
+        },
+        Define.UIEvent.Click, true, true);
 
 
     }
