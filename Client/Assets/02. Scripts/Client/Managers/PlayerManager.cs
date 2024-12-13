@@ -101,6 +101,7 @@ public class PlayerManager : MonoBehaviour
             }
 
             playerObject.GetComponent<PlayerController>().FirstSpawn(position.x, position.z);
+            StartCoroutine(KeepSpawnWhileLoad(playerObject, position));
             nowPlayerNum++;
         }
     }
@@ -109,6 +110,17 @@ public class PlayerManager : MonoBehaviour
     {
         yield return new WaitUntil(() => Managers.Scene.CurrentScene.GetComponent<GameScene>() != null);
         AddPlayer(id, position, teamNumber, name);
+    }
+
+    IEnumerator KeepSpawnWhileLoad(GameObject playerObject, Vector3 position)
+    {
+        while (!Managers.Game.isInGame)
+        {
+            playerObject.GetComponent<PlayerController>().FirstSpawn(position.x, position.z);
+            yield return null;
+        }
+
+        yield break;
     }
 
     public void SetMyPlayerEnable()
