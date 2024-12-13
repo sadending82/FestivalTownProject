@@ -27,6 +27,8 @@ public class UI_SignInSuccess : UI_PopUp
 
         Bind<GameObject>(typeof(GameObjects));
 
+        Managers.Sound.Play("Sfx_Popup_In");
+
         Get<GameObject>((int)GameObjects.OkButton).BindEvent((PointerEventData) =>
         {
             if (Camera.main.gameObject.GetComponent<SuperBlur.SuperBlur>() != null)

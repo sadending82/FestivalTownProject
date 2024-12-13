@@ -29,6 +29,8 @@ public class UI_Notice : UI_PopUp
 
         Bind<GameObject>(typeof(GameObjects));
 
+        Managers.Sound.Play("Sfx_Popup_In");
+
         isInitialized = true;
     }
 
