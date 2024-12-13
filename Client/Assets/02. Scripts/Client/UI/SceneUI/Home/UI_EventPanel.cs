@@ -36,21 +36,24 @@ public class UI_EventPanel : UI_Base
             ui.Init();
             ui.SetAquireable(false);
             switch (eventMain.Key)
-            {
-                case 32001: // 출석 이벤트                
+            {      
+                case 32001: // 출석 이벤트
                     ui.BindEventofData(eventMain.Value.Name, (PointerEventData) =>
                     {
                         Managers.UI.ShowPopUpUI<UI_DailySignInCheck>();
-                        ui.SetAquireable(false);
-                        foreach (var aed in Managers.Data.AttendanceEventDataDict)
-                        {
-                            if(!aed.Value.isRewarded)
-                            {
-                                ui.SetAquireable(true);
-                                break;
-                            }
-                        }
                     });
+
+                    ui.SetAquireable(false);
+                    foreach (var aed in Managers.Data.AttendanceEventDataDict)
+                    {
+                        if (!aed.Value.isRewarded)
+                        {
+                            Debug.Log($"{aed.Value.DayCount}일차, 보상 받았나요? {aed.Value.isRewarded}");
+                            ui.SetAquireable(true);
+                            break;
+                        }
+                    }
+
                     break;
                 case 31001:
                     ui.BindEventofData(eventMain.Value.Name, (PointerEventData) =>
@@ -59,6 +62,7 @@ public class UI_EventPanel : UI_Base
                     });
                     break;
                 default:
+                    Debug.Log($"eventKey : {eventMain.Key}");
                     break;
             }
         }

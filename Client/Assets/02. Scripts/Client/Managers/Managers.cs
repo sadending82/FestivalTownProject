@@ -14,6 +14,7 @@ public class Managers : MonoBehaviour
     DataManager _data = new DataManager();
     SceneManagerEx _scene = new SceneManagerEx();
     SoundManager _sound = new SoundManager();
+    CursorManager _cursor;
     //------------
 
     ObjectPoolManager _objPool = new ObjectPoolManager();
@@ -39,6 +40,8 @@ public class Managers : MonoBehaviour
 
     public static SoundManager Sound { get { return Instance._sound; } }
 
+    public static CursorManager Cursor { get { return Instance._cursor; } }
+
     //------------
     public static ObjectPoolManager ObjectPool { get { return Instance._objPool; } }
     public static GameManager Game { get { return Instance._game; } }
@@ -57,6 +60,7 @@ public class Managers : MonoBehaviour
 
     private void Start()
     {
+        _cursor = gameObject.AddComponent<CursorManager>();
         _game = gameObject.AddComponent<GameManager>();
         _weaponObject = gameObject.AddComponent<WeaponObjectManager>();
         _cubeObject = gameObject.AddComponent<CubeObjectManager>();

@@ -26,6 +26,19 @@ public class ResourceManager
         return Resources.Load<T>(path);
     }
 
+    public Texture2D LoadTexture(string path)
+    {
+        Texture2D texture = Load<Texture2D>($"Textures/{path}");
+
+        if(texture == null)
+        {
+            Debug.LogWarning($"{path}에 텍스쳐가 없잖아!");
+            return null;
+        }
+
+        return texture;
+    }
+
     public GameObject Instantiate(string path, Transform parent = null)
     {
         GameObject prefab = Load<GameObject>($"Prefabs/{path}");

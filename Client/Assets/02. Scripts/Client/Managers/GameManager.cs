@@ -26,6 +26,9 @@ public class GameManager : MonoBehaviour
     public eGameMode gameMode;
     public bool isAnounnced15s = false;
     public List<Define.PlayerResult> PlayerResultData = new();
+    /// <summary>
+    /// pair -> ID, Team
+    /// </summary>
     public Dictionary<int, int> PlayerTeamData = new();
     private int winningTeam = -1;
     public int currentTeamID = -1;
