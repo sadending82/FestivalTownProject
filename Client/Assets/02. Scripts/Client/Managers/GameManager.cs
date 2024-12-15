@@ -216,16 +216,9 @@ public class GameManager : MonoBehaviour
 
     public void GameEnd()
     {
+        isGameEnd = true;
         isTimerStart = false;
         Managers.Player.GameEnd();
-        Managers.Network.GetPacketManager().GameEnd();
-        Managers.ObjectPool.Clear();
-        Managers.CubeObject.Clear();
-        Managers.BombObject.Clear();
-        Managers.WeaponObject.Clear();
-
-        isGameEnd = true;
-        isInGame = false;
     }
 
     public void SetWinningTeam(int winningTeam)

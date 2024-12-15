@@ -179,6 +179,15 @@ public class GameScene : BaseScene
     IEnumerator WaitGameEnd()
     {
         yield return new WaitUntil(() => Managers.Game.isGameEnd);
+        yield return new WaitForSeconds(5);
+
+        Managers.Network.GetPacketManager().GameEnd();
+        Managers.ObjectPool.Clear();
+        Managers.CubeObject.Clear();
+        Managers.BombObject.Clear();
+        Managers.WeaponObject.Clear();
+
+        Managers.Game.isInGame = false;
         MoveToResult();
     }
 
