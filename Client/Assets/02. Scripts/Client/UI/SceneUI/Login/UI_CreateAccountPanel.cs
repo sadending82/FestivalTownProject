@@ -56,35 +56,35 @@ public class UI_CreateAccountPanel : UI_Base
         }
         else
         {
-            char firstSpecial = '@';
-            char secondSpecial = '.';
+            //char firstSpecial = '@';
+            //char secondSpecial = '.';
 
-            bool isFirstFound = false;
-            bool isSecondFound = false;
+            //bool isFirstFound = false;
+            //bool isSecondFound = false;
 
-            foreach (var ch in emailText)
-            {
-                if (!Util.IsEnglish(ch) && !Util.IsNumeric(ch))
-                {
-                    if (!isFirstFound)
-                    {
-                        if(ch == firstSpecial)
-                        {
-                            isFirstFound = true;
-                            continue;
-                        }
-                    }
-                    else if (!isSecondFound)
-                    {
-                        if(ch == secondSpecial)
-                        {
-                            isSecondFound = true;
-                            continue;
-                        }
-                    }
-                    return 0;
-                }
-            }
+            //foreach (var ch in emailText)
+            //{
+            //    if (!Util.IsEnglish(ch) && !Util.IsNumeric(ch))
+            //    {
+            //        if (!isFirstFound)
+            //        {
+            //            if(ch == firstSpecial)
+            //            {
+            //                isFirstFound = true;
+            //                continue;
+            //            }
+            //        }
+            //        else if (!isSecondFound)
+            //        {
+            //            if(ch == secondSpecial)
+            //            {
+            //                isSecondFound = true;
+            //                continue;
+            //            }
+            //        }
+            //        return 0;
+            //    }
+            //}
 
             return 1;
         }
