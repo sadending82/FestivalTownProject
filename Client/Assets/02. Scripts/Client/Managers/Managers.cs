@@ -19,7 +19,7 @@ public class Managers : MonoBehaviour
 
     ObjectPoolManager _objPool = new ObjectPoolManager();
     GameManager _game;
-    PlayerManager _player = new PlayerManager();
+    PlayerManager _player;
     CubeObjectManager _cubeObject;
     BombObjectManager _bombObject;
     WeaponObjectManager _weaponObject;

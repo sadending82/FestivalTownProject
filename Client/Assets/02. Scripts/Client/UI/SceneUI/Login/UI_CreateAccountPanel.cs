@@ -105,35 +105,35 @@ public class UI_CreateAccountPanel : UI_Base
         }
         else
         {
-            bool isKorean = false;
+            //bool isKorean = false;
 
-            foreach (var ch in NickNameText)
-            {
-                if (Util.IsKorean(ch)) isKorean = true;
-                break;
-            }
+            //foreach (var ch in NickNameText)
+            //{
+            //    if (Util.IsKorean(ch)) isKorean = true;
+            //    break;
+            //}
 
-            if (isKorean)
-            {
-                if (NickNameText.Length < 2 || NickNameText.Length > 8) {
-                    return 0;
-                }
-            }
-            else
-            {
-                if (NickNameText.Length < 4 || NickNameText.Length > 18)
-                {
-                    return 0;
-                }
-            }
+            //if (isKorean)
+            //{
+            //    if (NickNameText.Length < 2 || NickNameText.Length > 8) {
+            //        return 0;
+            //    }
+            //}
+            //else
+            //{
+            //    if (NickNameText.Length < 4 || NickNameText.Length > 18)
+            //    {
+            //        return 0;
+            //    }
+            //}
 
-            foreach (var ch in NickNameText)
-            {
-                if (!Util.IsKorean(ch) && !Util.IsEnglish(ch) && !Util.IsNumeric(ch))
-                {
-                    return 0;
-                }
-            }
+            //foreach (var ch in NickNameText)
+            //{
+            //    if (!Util.IsKorean(ch) && !Util.IsEnglish(ch) && !Util.IsNumeric(ch))
+            //    {
+            //        return 0;
+            //    }
+            //}
 
             return 1;
         }
@@ -149,23 +149,23 @@ public class UI_CreateAccountPanel : UI_Base
         }
         else
         {
-            if (PasswordText.Length > 15 || PasswordText.Length < 8)
-            {
-                return 0;
-            }
+            //if (PasswordText.Length > 15 || PasswordText.Length < 8)
+            //{
+            //    return 0;
+            //}
 
-            bool isEnglishContain = false;
-            bool isNumericContain = false;
+            //bool isEnglishContain = false;
+            //bool isNumericContain = false;
 
-            foreach (var ch in PasswordText)
-            {
-                if (Util.IsEnglish(ch)) isEnglishContain = true;
-                if (Util.IsNumeric(ch)) isNumericContain = true;
+            //foreach (var ch in PasswordText)
+            //{
+            //    if (Util.IsEnglish(ch)) isEnglishContain = true;
+            //    if (Util.IsNumeric(ch)) isNumericContain = true;
 
-                if (isEnglishContain && isNumericContain) break;
-            }
+            //    if (isEnglishContain && isNumericContain) break;
+            //}
 
-            if (!isEnglishContain || !isNumericContain) return 0;
+            //if (!isEnglishContain || !isNumericContain) return 0;
 
             return 1;
         }
