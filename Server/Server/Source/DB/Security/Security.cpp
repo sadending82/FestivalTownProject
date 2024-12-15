@@ -47,6 +47,35 @@ bool Security::VerifyPassword(std::string password, std::string hashedPassword, 
 	return true;
 }
 
+bool Security::FilteringEmail(const std::string email)
+{
+
+	std::regex email_pattern("[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}");
+
+	return std::regex_match(email.c_str(), email_pattern);
+}
+
+bool Security::FilteringID(const std::string ID)
+{
+	std::regex id_pattern("^(?=.*[a-zA-Z0-9])[a-zA-Z0-9\-_]{5,20}$");
+
+	return std::regex_match(ID.c_str(), id_pattern);
+}
+
+bool Security::FilteringPassword(std::string password)
+{
+	std::regex password_pattern("^[^°¡-ÆR]{8,20}$");
+
+	return std::regex_match(password.c_str(), password_pattern);
+}
+
+bool Security::FilteringNickname(const wchar_t* nickname)
+{
+	std::wregex nickname_pattern(L"^(?=.*[a-zA-Z0-9°¡-ÆR])[a-zA-Z0-9°¡-ÆR\-_]{2,12}$");
+
+	return std::regex_match(nickname, nickname_pattern);
+}
+
 bool Security::VerifyString(const char* input)
 {
 	std::string str = input;
@@ -60,19 +89,4 @@ bool Security::VerifyString(const char* input)
 	}
 
 	return true;
-}
-
-bool Security::VerifyEmail(const std::string email)
-{
-
-	std::regex email_pattern("[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}");
-
-	return std::regex_match(email.c_str(), email_pattern);
-}
-
-bool Security::VerifyID(const std::string ID)
-{
-	std::regex id_pattern("^[a-zA-Z0-9\\-_]{1,20}$");
-
-	return std::regex_match(ID.c_str(), id_pattern);
 }

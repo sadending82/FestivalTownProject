@@ -15,11 +15,15 @@ public:
 
 	bool VerifyPassword(std::string password, std::string hashedPassword, std::string salt);
 
+	bool FilteringEmail(const std::string email);
+
+	bool FilteringID(const std::string ID);
+
+	bool FilteringPassword(std::string password);
+
+	bool FilteringNickname(const wchar_t* nickname);
+
 	bool VerifyString(const char* input);
-
-	bool VerifyEmail(const std::string email);
-
-	bool VerifyID(const std::string ID);
 
 private:
 };
