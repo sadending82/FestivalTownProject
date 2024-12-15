@@ -7,19 +7,19 @@ using UnityEngine;
 public class UI_CreateAccountPanel : UI_Base
 {
 
-    const int EmailMaxLength = 12;
-    const int EmailMinLength = 4;
+    const int IDMaxLength = 20;
+    const int IDMinLength = 4;
 
     enum GameObjects
     {
         Title,
         Labels,
-        EmailAddressInputField,
+        IdInputField,
         AuthorizationButton,
         NickNameInputField,
         PWInputField,
         PWDoubleCheckInputField,
-        EmailAddressCheckCircle,
+        IdCheckCircle,
         NickNameCheckCircle,
         PWCheckCircle,
         PWDoubleCheckCircle,
@@ -47,7 +47,7 @@ public class UI_CreateAccountPanel : UI_Base
         // Email 적합성 판정
 
         // 왜인지는 모르겠지만 영어+숫자 4~12글자 라고 함
-        string emailText = Get<GameObject>((int)GameObjects.EmailAddressInputField).GetComponent<TMP_InputField>().text;    
+        string emailText = Get<GameObject>((int)GameObjects.IdInputField).GetComponent<TMP_InputField>().text;    
 
         if (emailText == "")
         {
@@ -56,35 +56,31 @@ public class UI_CreateAccountPanel : UI_Base
         }
         else
         {
-            //char firstSpecial = '@';
-            //char secondSpecial = '.';
+            char firstSpecial = '_';
+            char secondSpecial = '-';
 
-            //bool isFirstFound = false;
-            //bool isSecondFound = false;
+            if (emailText.Length < 5 || emailText.Length > 20) return 0;
 
-            //foreach (var ch in emailText)
-            //{
-            //    if (!Util.IsEnglish(ch) && !Util.IsNumeric(ch))
-            //    {
-            //        if (!isFirstFound)
-            //        {
-            //            if(ch == firstSpecial)
-            //            {
-            //                isFirstFound = true;
-            //                continue;
-            //            }
-            //        }
-            //        else if (!isSecondFound)
-            //        {
-            //            if(ch == secondSpecial)
-            //            {
-            //                isSecondFound = true;
-            //                continue;
-            //            }
-            //        }
-            //        return 0;
-            //    }
-            //}
+            bool isAllSpecial = true;
+
+            foreach(var ch in emailText)
+            {
+                if(ch != firstSpecial && ch != secondSpecial)
+                {
+                    isAllSpecial = false;
+                    break;
+                }
+            }
+
+            if (isAllSpecial) return 0;
+
+            foreach (var ch in emailText)
+            {
+                if (!Util.IsEnglish(ch) && !Util.IsNumeric(ch) && ch != firstSpecial && ch != secondSpecial)
+                {
+                    return 0;
+                }
+            }
 
             return 1;
         }
@@ -93,10 +89,6 @@ public class UI_CreateAccountPanel : UI_Base
     public int NickNameCheck()
     {
         // 닉네임 적합성
-
-        // 한글의 경우 4~8, 영어,숫자의 경우 8~18이라고 함.
-        // 근데 한글 영어 숫자 다 섞이면 뭐임?
-        // 일단은 한글이 존재하는 경우는 한글로 취급하기로 하였음.
         string NickNameText = Get<GameObject>((int)GameObjects.NickNameInputField).GetComponent<TMP_InputField>().text;
 
         if (NickNameText == "")
@@ -105,35 +97,35 @@ public class UI_CreateAccountPanel : UI_Base
         }
         else
         {
-            //bool isKorean = false;
 
-            //foreach (var ch in NickNameText)
-            //{
-            //    if (Util.IsKorean(ch)) isKorean = true;
-            //    break;
-            //}
+            char firstSpecial = '_';
+            char secondSpecial = '-';
 
-            //if (isKorean)
-            //{
-            //    if (NickNameText.Length < 2 || NickNameText.Length > 8) {
-            //        return 0;
-            //    }
-            //}
-            //else
-            //{
-            //    if (NickNameText.Length < 4 || NickNameText.Length > 18)
-            //    {
-            //        return 0;
-            //    }
-            //}
+            if (NickNameText.Length < 2 || NickNameText.Length > 12)
+            {
+                return 0;
+            }
 
-            //foreach (var ch in NickNameText)
-            //{
-            //    if (!Util.IsKorean(ch) && !Util.IsEnglish(ch) && !Util.IsNumeric(ch))
-            //    {
-            //        return 0;
-            //    }
-            //}
+            bool isAllSpecial = true;
+
+            foreach (var ch in NickNameText)
+            {
+                if (ch != firstSpecial && ch != secondSpecial)
+                {
+                    isAllSpecial = false;
+                    break;
+                }
+            }
+
+            if (isAllSpecial) return 0;
+
+            foreach (var ch in NickNameText)
+            {
+                if (!Util.IsKorean(ch) && !Util.IsEnglish(ch) && !Util.IsNumeric(ch) && ch != firstSpecial && ch != secondSpecial)
+                {
+                    return 0;
+                }
+            }
 
             return 1;
         }
@@ -149,23 +141,18 @@ public class UI_CreateAccountPanel : UI_Base
         }
         else
         {
-            //if (PasswordText.Length > 15 || PasswordText.Length < 8)
-            //{
-            //    return 0;
-            //}
+            if (PasswordText.Length > 20 || PasswordText.Length < 8)
+            {
+                return 0;
+            }
 
-            //bool isEnglishContain = false;
-            //bool isNumericContain = false;
-
-            //foreach (var ch in PasswordText)
-            //{
-            //    if (Util.IsEnglish(ch)) isEnglishContain = true;
-            //    if (Util.IsNumeric(ch)) isNumericContain = true;
-
-            //    if (isEnglishContain && isNumericContain) break;
-            //}
-
-            //if (!isEnglishContain || !isNumericContain) return 0;
+            foreach (var ch in PasswordText)
+            {
+                if (!Util.IsKorean(ch))
+                {
+                    return 0;
+                }
+            }
 
             return 1;
         }
@@ -191,7 +178,7 @@ public class UI_CreateAccountPanel : UI_Base
 
     public bool IsCompatible()
     {
-        var emailCircle = Get<GameObject>((int)GameObjects.EmailAddressCheckCircle).GetComponent<UI_CompatibilityCircle>();
+        var emailCircle = Get<GameObject>((int)GameObjects.IdCheckCircle).GetComponent<UI_CompatibilityCircle>();
         var NickNameCircle = Get<GameObject>((int)GameObjects.NickNameCheckCircle).GetComponent<UI_CompatibilityCircle>();
         var PasswordCircle = Get<GameObject>((int)GameObjects.PWCheckCircle).GetComponent<UI_CompatibilityCircle>();
         var PasswordDoubleCheckCircle = Get<GameObject>((int)GameObjects.PWDoubleCheckCircle).GetComponent<UI_CompatibilityCircle>();
@@ -206,7 +193,7 @@ public class UI_CreateAccountPanel : UI_Base
 
     public string GetEmailText()
     {
-        return Get<GameObject>((int)GameObjects.EmailAddressInputField).GetComponent<TMP_InputField>().text;
+        return Get<GameObject>((int)GameObjects.IdInputField).GetComponent<TMP_InputField>().text;
     }
 
     public string GetNickName()
@@ -221,7 +208,7 @@ public class UI_CreateAccountPanel : UI_Base
 
     void Update()
     {
-        var emailCircle = Get<GameObject>((int)GameObjects.EmailAddressCheckCircle).GetComponent<UI_CompatibilityCircle>();
+        var emailCircle = Get<GameObject>((int)GameObjects.IdCheckCircle).GetComponent<UI_CompatibilityCircle>();
 
         switch (EmailCheck())
         {
