@@ -146,6 +146,14 @@ public class UI_CreateAccountPanel : UI_Base
                 return 0;
             }
 
+            foreach (var ch in PasswordText)
+            {
+                if (!Util.IsKorean(ch))
+                {
+                    return 0;
+                }
+            }
+
             return 1;
         }
     }
