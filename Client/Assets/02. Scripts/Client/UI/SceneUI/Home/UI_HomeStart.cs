@@ -93,16 +93,9 @@ public class UI_HomeStart : UI_Scene
 
         Get<GameObject>((int)GameObjects.EventAquireableMark).SetActive(false);
 
-        if(Managers.Data.HasAttendanceDataRecved())
+        if (Managers.Data.HasAttendanceDataRecved())
         {
-            foreach(var aed in Managers.Data.AttendanceEventDataDict)
-            {
-                if (!aed.Value.isRewarded)
-                {
-                    Get<GameObject>((int)GameObjects.EventAquireableMark).SetActive(true);
-                    break;
-                }
-            }
+            CheckAttendanceEventData();
         }
 
         if (false == Managers.Cheat.IsEnable())
@@ -132,5 +125,19 @@ public class UI_HomeStart : UI_Scene
         Get<GameObject>((int)GameObjects.UI_CharacterModel).GetComponent<UI_CharacterModel>().SetInventoryLocalCustomizing();
     }
 
+    public void CheckAttendanceEventData()
+    {
+        Get<GameObject>((int)GameObjects.EventAquireableMark).SetActive(false);
+
+        foreach (var aed in Managers.Data.AttendanceEventDataDict)
+        {
+            if (!aed.Value.isRewarded)
+            {
+                Get<GameObject>((int)GameObjects.EventAquireableMark).SetActive(true);
+                break;
+            }
+        }
+        
+    }
 
 }

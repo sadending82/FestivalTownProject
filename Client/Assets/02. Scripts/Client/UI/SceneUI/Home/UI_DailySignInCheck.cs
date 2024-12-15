@@ -28,6 +28,10 @@ public class UI_DailySignInCheck : UI_PopUp
         Get<GameObject>((int)GameObjects.ExitButton).BindEvent((PointerEventData) =>
         {
             Managers.UI.ClosePopUpUI();
+            if (Managers.UI.GetTopOfPopUPUI().GetComponent<UI_Event>() != null)
+            {
+                Managers.UI.GetTopOfPopUPUI().GetComponent<UI_Event>().GetEventPanel().CheckEventData();
+            }
         });
 
         GameObject itemGrid = Get<GameObject>((int)GameObjects.ItemGrid);
@@ -37,8 +41,8 @@ public class UI_DailySignInCheck : UI_PopUp
             if (eventData.Value.Type == 2)
             {
                 int dataIndex = eventData.Key + 100000;
-                while(Managers.Data.EventListDataDict.ContainsKey(dataIndex))
-                {          
+                while (Managers.Data.EventListDataDict.ContainsKey(dataIndex))
+                {
                     Managers.Data.EventListDataDict.TryGetValue(dataIndex, out var data);
 
                     var ui = Managers.UI.MakeSubItem<UI_DailyCheckItem>(itemGrid.transform);
@@ -47,12 +51,12 @@ public class UI_DailySignInCheck : UI_PopUp
                     ui.SetItemIndex(data.Reward_Item_Index);
                     ui.SetName(Managers.Data.ItemDict[data.Reward_Item_Index].Name);
                     ui.SetEventCode(eventData.Key);
-                    
-                    bool result = Managers.Data.AttendanceEventDataDict.TryGetValue(data.Day, out var attendanceEventData);     
+
+                    bool result = Managers.Data.AttendanceEventDataDict.TryGetValue(data.Day, out var attendanceEventData);
                     if (result)
                     {
                         ui.SetItemRewarded(attendanceEventData.isRewarded);
-                        if(!attendanceEventData.isRewarded)
+                        if (!attendanceEventData.isRewarded)
                         {
                             ui.SetAquireable(true);
                         }
@@ -70,7 +74,7 @@ public class UI_DailySignInCheck : UI_PopUp
     {
         GameObject itemGrid = Get<GameObject>((int)GameObjects.ItemGrid);
 
-        foreach(Transform child in itemGrid.transform)
+        foreach (Transform child in itemGrid.transform)
         {
             Managers.Resource.Destroy(child.gameObject);
         }
@@ -107,3 +111,5 @@ public class UI_DailySignInCheck : UI_PopUp
         }
     }
 }
+
+

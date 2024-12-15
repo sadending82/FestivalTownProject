@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -15,6 +16,7 @@ public class UI_EventPanelData : UI_Base
     }
 
     bool isInitialzed = false;
+    int EventCode = -1;
 
     private void Start()
     {
@@ -51,4 +53,14 @@ public class UI_EventPanelData : UI_Base
         Get<GameObject>((int)GameObjects.EventAquireableMark).SetActive(value);
     }
 
+    public void SetEventCode(int code)
+    {
+        EventCode = code;
+    }
+
+    public int GetEventCode()
+    {
+        return EventCode;
+    }
 }
+

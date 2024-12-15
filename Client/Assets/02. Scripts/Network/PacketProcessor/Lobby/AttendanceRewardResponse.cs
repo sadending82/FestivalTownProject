@@ -34,6 +34,11 @@ namespace Network.PacketProcessor
                 Managers.Network.GetPacketManager().SendCurrencyAmountRequestPacket();
                 Managers.Network.GetPacketManager().SendUserItemsRequestPacket();
                 ui.UpdateItemCheck();
+
+                if(Managers.Scene.CurrentScene.GetComponent<HomeScene>() != null)
+                {
+                    Managers.UI.GetCurrentSceneUI().GetComponent<UI_HomeStart>().CheckAttendanceEventData();
+                }
                 
             }
         }

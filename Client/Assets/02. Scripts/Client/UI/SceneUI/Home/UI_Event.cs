@@ -32,4 +32,9 @@ public class UI_Event : UI_PopUp
 
         isInitialized = true;
     }
+
+    public UI_EventPanel GetEventPanel()
+    {
+        return Get<GameObject>((int)GameObjects.EventPanel).GetComponent<UI_EventPanel>();
+    }
 }
