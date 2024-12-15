@@ -91,7 +91,11 @@ ERROR_CODE DB::InsertNewAcccount(const char* id, const char* password)
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
-	if (mSecurity->VerifyID(id) == false) {
+	if (mSecurity->FilteringID(id) == false) {
+		return ERROR_CODE::ER_DB_ERROR;
+	}
+
+	if (mSecurity->FilteringPassword(password) == false) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
@@ -134,6 +138,10 @@ int DB::InsertNewUser(const char* id, const char* nickname)
 	int wNicknameLen = MultiByteToWideChar(CP_UTF8, 0, nickname, -1, NULL, 0);
 	wchar_t* wNickname = new wchar_t[wNicknameLen];
 	MultiByteToWideChar(CP_UTF8, 0, nickname, -1, wNickname, wNicknameLen);
+
+	if (mSecurity->FilteringNickname(wNickname) == false) {
+		return ERROR_CODE::ER_DB_ERROR;
+	}
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (InsertNewUser) \n", retcode);
