@@ -91,7 +91,7 @@ ERROR_CODE DB::InsertNewAcccount(const char* id, const char* password)
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
-	if (mSecurity->VerifyEmail(id) == false) {
+	if (mSecurity->VerifyID(id) == false) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 

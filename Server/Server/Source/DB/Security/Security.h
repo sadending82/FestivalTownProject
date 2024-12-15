@@ -19,5 +19,7 @@ public:
 
 	bool VerifyEmail(const std::string email);
 
+	bool VerifyID(const std::string ID);
+
 private:
 };
