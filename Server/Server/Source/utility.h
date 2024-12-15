@@ -131,6 +131,39 @@ struct sMatchingInfo {
 		: RoomID(roomid), Team(team), GameMode(gameMode), MapIndex(mapIndex), MapTheme(mapTheme), GameTime(gameTime), TotalPlayerCount(totalPlayerCount), IsHost(isHost) {};
 };
 
+struct Trie {
+	bool finish;
+	Trie* next[26];
+
+	Trie() : finish(false) {
+		memset(next, NULL, sizeof(next));
+	}
+
+	void Insert(const char* string) {
+		if (*string == '\0') {
+			finish = true;
+		}
+		else {
+			int curr = *string - 'A';
+			if (next[curr] == NULL) {
+				next[curr] = new Trie();
+			}
+			next[curr]->Insert(string + 1);
+		}
+	}
+
+	Trie* Find(const char* string) {
+		if (*string == '\0') {
+			return this;
+		}
+		int curr = *string - 'A';
+		if (next[curr] == NULL) {
+			return NULL;
+		}
+		return next[curr]->Find(string + 1);
+	}
+};
+
 #pragma pack(pop)
 
 std::vector<uint8_t> MakeBuffer(const int type, const uint8_t* data, const int size);

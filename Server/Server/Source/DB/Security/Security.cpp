@@ -69,3 +69,10 @@ bool Security::VerifyEmail(const std::string email)
 
 	return std::regex_match(email.c_str(), email_pattern);
 }
+
+bool Security::VerifyID(const std::string ID)
+{
+	std::regex id_pattern("^[a-zA-Z0-9\\-_]{1,20}$");
+
+	return std::regex_match(ID.c_str(), id_pattern);
+}
