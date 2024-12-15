@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 public class GroggyUI : MonoBehaviour
 {
     private const float SHAKE_DEGREE = 15.0f;
-    private float shakeSpeed = 40.0f;
+    private float shakeSpeed = 60.0f;
     private float zAngle = 0.0f;
 
     private void Update()
