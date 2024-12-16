@@ -1,3 +1,9 @@
+#define _WINSOCKAPI_
+#include <windows.h>  
+// 이거 안쓰면 Flatbuffers 관련 헤더랑 충돌 일어남
+#undef max
+#undef min
+
 #include <fstream>
 #include <sstream>
 #include <iomanip>
@@ -66,7 +72,7 @@ void TableManager::ClearAllTable()
 
 void TableManager::ReadAllDataTable()
 {
-    mIsLoading = true;
+    mIsLoading.store(true);
 
     ClearAllTable();
 
@@ -82,7 +88,9 @@ void TableManager::ReadAllDataTable()
     ReadMatchingTable();
     ReadEventTable();
 
-    mIsLoading = false;
+    ReadSlangList();
+
+    mIsLoading.store(false);
 }
 
 void TableManager::ReadItemTable()
@@ -899,6 +907,31 @@ void TableManager::ReadEventTable()
     }
 }
 
+void TableManager::ReadSlangList()
+{
+    try {
+
+        mWorkbook.load("GameData/SlangList.xlsx");
+        int idx = 0;
+        mWorksheet = mWorkbook.sheet_by_index(0);
+
+        for (auto row : mWorksheet.rows(false)) {
+            if (!row.empty()) {
+                idx++;
+                std::string slang = row[0].to_string();
+
+                int wSlangLen = MultiByteToWideChar(CP_UTF8, 0, slang.c_str(), -1, NULL, 0);
+                wchar_t* wSlang = new wchar_t[wSlangLen];
+                MultiByteToWideChar(CP_UTF8, 0, slang.c_str(), -1, wSlang, wSlangLen);
+                SlangList.Insert(wSlang);
+            }
+        }
+    }
+    catch (const xlnt::exception& e) {
+        std::cerr << "ReadSlangList Excel File Load Fail: " << e.what() << std::endl;
+    }
+}
+
 void TableManager::Lock()
 {
     while (mLockFlag.test_and_set(std::memory_order_acquire)) {
@@ -913,7 +946,7 @@ void TableManager::UnLock()
 
 std::unordered_map<INDEX, ItemTable>& TableManager::GetItemInfos()
 {
-    while (mIsLoading == true) {
+    while (mIsLoading.load() == true) {
 
     }
     return ItemInfos;
@@ -921,7 +954,7 @@ std::unordered_map<INDEX, ItemTable>& TableManager::GetItemInfos()
 
 std::unordered_map<INDEX, CharacterStat>& TableManager::GetCharacterStats()
 {
-    while (mIsLoading == true) {
+    while (mIsLoading.load() == true) {
 
     }
     return CharacterStats;
@@ -929,7 +962,7 @@ std::unordered_map<INDEX, CharacterStat>& TableManager::GetCharacterStats()
 
 std::unordered_map<INDEX, WeaponStat>& TableManager::GetWeaponStats()
 {
-    while (mIsLoading == true) {
+    while (mIsLoading.load() == true) {
 
     }
     return WeaponStats;
@@ -937,7 +970,7 @@ std::unordered_map<INDEX, WeaponStat>& TableManager::GetWeaponStats()
 
 std::unordered_map<GameMode, GameModeOutData>& TableManager::GetGameModeOutData()
 {
-    while (mIsLoading == true) {
+    while (mIsLoading.load() == true) {
 
     }
     return GameModeOutDatas;
@@ -945,7 +978,7 @@ std::unordered_map<GameMode, GameModeOutData>& TableManager::GetGameModeOutData(
 
 std::unordered_map<int, std::unordered_map<GameMode, GameModeData>>& TableManager::GetGameModeData()
 {
-    while (mIsLoading == true) {
+    while (mIsLoading.load() == true) {
 
     }
     return GameModeDatas;
@@ -953,7 +986,7 @@ std::unordered_map<int, std::unordered_map<GameMode, GameModeData>>& TableManage
 
 std::unordered_map<int, Map>& TableManager::GetMapData()
 {
-    while (mIsLoading == true) {
+    while (mIsLoading.load() == true) {
 
     }
     return MapData;
@@ -961,7 +994,7 @@ std::unordered_map<int, Map>& TableManager::GetMapData()
 
 std::unordered_map<GameMode, PointConstants>& TableManager::GetPointConstantList()
 {
-    while (mIsLoading == true) {
+    while (mIsLoading.load() == true) {
 
     }
     return PointConstantList;
@@ -969,7 +1002,7 @@ std::unordered_map<GameMode, PointConstants>& TableManager::GetPointConstantList
 
 std::unordered_map<GameMode, GameReward>& TableManager::GetGameRewardList()
 {
-    while (mIsLoading == true) {
+    while (mIsLoading.load() == true) {
 
     }
     return GameRewardList;
@@ -977,7 +1010,7 @@ std::unordered_map<GameMode, GameReward>& TableManager::GetGameRewardList()
 
 std::unordered_map<GameMode, std::unordered_map<int, BonusReward>>& TableManager::GetGameBonusRewardList()
 {
-    while (mIsLoading == true) {
+    while (mIsLoading.load() == true) {
 
     }
     return GameBonusRewardList;
@@ -985,7 +1018,7 @@ std::unordered_map<GameMode, std::unordered_map<int, BonusReward>>& TableManager
 
 std::unordered_map<INDEX, RandomBox>& TableManager::GetRandomBoxList()
 {
-    while (mIsLoading == true) {
+    while (mIsLoading.load() == true) {
 
     }
     return RandomBoxList;
@@ -993,7 +1026,7 @@ std::unordered_map<INDEX, RandomBox>& TableManager::GetRandomBoxList()
 
 std::unordered_map<GACHA_GROUP, std::unordered_map<INDEX, GachaItem>>& TableManager::GetGachaItemList()
 {
-    while (mIsLoading == true) {
+    while (mIsLoading.load() == true) {
 
     }
     return GachaItemList;
@@ -1001,7 +1034,7 @@ std::unordered_map<GACHA_GROUP, std::unordered_map<INDEX, GachaItem>>& TableMana
 
 std::unordered_map<int, int>& TableManager::GetGachaAcquiredMileages()
 {
-    while (mIsLoading == true) {
+    while (mIsLoading.load() == true) {
 
     }
     return GachaAcquiredMileages;
@@ -1009,7 +1042,7 @@ std::unordered_map<int, int>& TableManager::GetGachaAcquiredMileages()
 
 std::unordered_map<GameMode, std::vector<int>>& TableManager::getMapListByMode()
 {
-    while (mIsLoading == true) {
+    while (mIsLoading.load() == true) {
 
     }
     return MapListByMode;
@@ -1017,7 +1050,7 @@ std::unordered_map<GameMode, std::vector<int>>& TableManager::getMapListByMode()
 
 std::unordered_map<int, std::vector<int>>& TableManager::GetMapThemeList()
 {
-    while (mIsLoading == true) {
+    while (mIsLoading.load() == true) {
 
     }
     return MapThemeList;
@@ -1025,7 +1058,7 @@ std::unordered_map<int, std::vector<int>>& TableManager::GetMapThemeList()
 
 std::unordered_map<eMatchingType, std::vector<Matching_Table>>& TableManager::GetMatchingDatas()
 {
-    while (mIsLoading == true) {
+    while (mIsLoading.load() == true) {
 
     }
 
@@ -1034,7 +1067,7 @@ std::unordered_map<eMatchingType, std::vector<Matching_Table>>& TableManager::Ge
 
 std::unordered_map<INDEX, Event_Main>& TableManager::GetEventList()
 {
-    while (mIsLoading == true) {
+    while (mIsLoading.load() == true) {
 
     }
 
@@ -1043,9 +1076,18 @@ std::unordered_map<INDEX, Event_Main>& TableManager::GetEventList()
 
 std::unordered_map<INDEX, std::unordered_map<int, Event_List>>& TableManager::GetEventRewardList()
 {
-    while (mIsLoading == true) {
+    while (mIsLoading.load() == true) {
 
     }
 
     return EventRewardList;
+}
+
+Trie& TableManager::GetSlangList()
+{
+    while (mIsLoading.load() == true) {
+
+    }
+
+    return SlangList;
 }

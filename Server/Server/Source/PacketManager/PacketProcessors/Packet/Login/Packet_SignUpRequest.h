@@ -21,10 +21,18 @@ public:
 				const char* pw = read->account_password()->c_str();
 				const char* nickName = read->nickname()->c_str();
 
-				ERROR_CODE result = pDB->InsertNewAcccount(id, pw);
+				int wNicknameLen = MultiByteToWideChar(CP_UTF8, 0, nickName, -1, NULL, 0);
+				wchar_t* wNickname = new wchar_t[wNicknameLen];
+				MultiByteToWideChar(CP_UTF8, 0, nickName, -1, wNickname, wNicknameLen);
+
+				ERROR_CODE result = pDB->GetSecurity()->CheckVerifyStringsForSignUp(id, pw, wNickname);
 
 				if (result == ERROR_CODE::ER_NONE) {
-					int uid = pDB->InsertNewUser(id, nickName);
+					result = pDB->InsertNewAcccount(id, pw);
+				}
+
+				if (result == ERROR_CODE::ER_NONE) {
+					int uid = pDB->InsertNewUser(id, wNickname);
 					if (uid == INVALIDKEY) {
 						pDB->DeleteAcccount(id);
 						result = ERROR_CODE::ER_DB_ERROR;

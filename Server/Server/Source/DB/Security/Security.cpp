@@ -47,6 +47,23 @@ bool Security::VerifyPassword(std::string password, std::string hashedPassword, 
 	return true;
 }
 
+ERROR_CODE Security::CheckVerifyStringsForSignUp(const std::string ID, std::string password, const wchar_t* nickname)
+{
+	if (FilteringID(ID) == false) {
+		return ERROR_CODE::ER_DB_ERROR;
+	}
+
+	if (FilteringPassword(password) == false) {
+		return ERROR_CODE::ER_DB_ERROR;
+	}
+
+	if (FilteringNickname(nickname) == false) {
+		return ERROR_CODE::ER_DB_ERROR;
+	}
+
+	return ERROR_CODE::ER_NONE;
+}
+
 bool Security::FilteringEmail(const std::string email)
 {
 
@@ -71,6 +88,10 @@ bool Security::FilteringPassword(std::string password)
 
 bool Security::FilteringNickname(const wchar_t* nickname)
 {
+	if (mSlangList.Search(nickname) == true) {
+		return false;
+	}
+
 	std::wregex nickname_pattern(L"^(?=.*[a-zA-Z0-9°¡-ÆR])[a-zA-Z0-9°¡-ÆR\-_]{2,12}$");
 
 	return std::regex_match(nickname, nickname_pattern);

@@ -8,6 +8,12 @@
 #include <iomanip>
 #include <chrono>
 
+DB::DB(TableManager* tableManager)
+{
+	pTableManager = tableManager;
+	mSecurity = new Security(tableManager->GetSlangList());
+}
+
 DB::~DB()
 {
 	SQLDisconnect(hDbc);
@@ -18,7 +24,6 @@ DB::~DB()
 
 int DB::Init()
 {
-	mSecurity = new Security;
 
 	SQLRETURN retcode;
 
@@ -91,14 +96,6 @@ ERROR_CODE DB::InsertNewAcccount(const char* id, const char* password)
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
-	if (mSecurity->FilteringID(id) == false) {
-		return ERROR_CODE::ER_DB_ERROR;
-	}
-
-	if (mSecurity->FilteringPassword(password) == false) {
-		return ERROR_CODE::ER_DB_ERROR;
-	}
-
 	std::string salt = mSecurity->GenerateSalt();
 	std::string hashedPassword = mSecurity->HashingPassword(password, salt);
 
@@ -126,60 +123,6 @@ ERROR_CODE DB::InsertNewAcccount(const char* id, const char* password)
 	DEBUGMSGONEPARAM("Execute Query Error %d : (InsertNewAcccount)\n", retcode);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	return ERROR_CODE::ER_DB_ERROR;
-}
-
-int DB::InsertNewUser(const char* id, const char* nickname)
-{
-	SQLHSTMT hStmt = NULL;
-	SQLRETURN retcode;
-
-	int uid = 0;
-
-	int wNicknameLen = MultiByteToWideChar(CP_UTF8, 0, nickname, -1, NULL, 0);
-	wchar_t* wNickname = new wchar_t[wNicknameLen];
-	MultiByteToWideChar(CP_UTF8, 0, nickname, -1, wNickname, wNicknameLen);
-
-	if (mSecurity->FilteringNickname(wNickname) == false) {
-		return ERROR_CODE::ER_DB_ERROR;
-	}
-
-	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
-		DEBUGMSGONEPARAM("hStmt Error %d : (InsertNewUser) \n", retcode);
-		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-		return INVALIDKEY;
-	}
-	
-
-	SQLPrepare(hStmt, (SQLWCHAR*)InsertNewUser_Query, SQL_NTS);
-
-	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, strlen(id), 0, (SQLCHAR*)id, 0, NULL);
-	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_WCHAR, SQL_WVARCHAR, wcslen(wNickname), 0, (SQLPOINTER)wNickname, 0, NULL);
-
-	retcode = SQLExecute(hStmt);
-
-	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
-
-		SQLLEN col1;
-
-		while (SQLFetch(hStmt) == SQL_SUCCESS) {
-			SQLGetData(hStmt, 1, SQL_C_LONG, &uid, sizeof(uid), &col1);
-		}
-
-		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-
-		//// Gold / Dia
-		//InsertUserItem(uid, 100001, 0, 0);
-		//InsertUserItem(uid, 100002, 0, 0);
-
-		delete[] wNickname;
-
-		return uid;
-	}
-
-	DEBUGMSGONEPARAM("Execute Query Error %d : (InsertNewUser)\n", retcode);
-	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-	delete[] wNickname;
-	return INVALIDKEY;
 }
 
 int DB::InsertNewUser(const char* id, const wchar_t* nickname)
@@ -1218,7 +1161,6 @@ ERROR_CODE DB::DeleteAcccount(const char* id)
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 		return ERROR_CODE::ER_DB_ERROR;
 	}
-
 	
 
 	SQLPrepare(hStmt, (SQLWCHAR*)DeleteAcccount_Query, SQL_NTS);

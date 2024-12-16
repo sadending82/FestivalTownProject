@@ -37,6 +37,8 @@ public:
 
 	void ReadEventTable();
 
+	void ReadSlangList();
+
 	void Lock();
 	void UnLock();
 
@@ -68,6 +70,8 @@ public:
 	std::unordered_map<INDEX, Event_Main>& GetEventList();
 	// <Event_Index, <Day, AttendanceEventData>>
 	std::unordered_map<INDEX, std::unordered_map<int, Event_List>>& GetEventRewardList();
+
+	Trie& GetSlangList();
 
 private:
 	xlnt::workbook mWorkbook;
@@ -104,6 +108,8 @@ private:
 	std::unordered_map<INDEX, Event_Main> EventList;
 	// <Event_Index, <Day, AttendanceEventData>>
 	std::unordered_map<INDEX, std::unordered_map<int, Event_List>> EventRewardList;
+
+	Trie SlangList;
 
 	std::atomic_flag mLockFlag = ATOMIC_FLAG_INIT;
 	std::atomic<bool> mIsLoading;

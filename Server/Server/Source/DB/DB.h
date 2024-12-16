@@ -23,15 +23,15 @@ inline constexpr int AttendanceData_DaysToKeep = -60;
 class DB {
 public:
 
-    DB(class TableManager* tableManager) :pTableManager(tableManager) {};
+    DB(class TableManager* tableManager);
     ~DB();
 	int Init();
     bool Connect(std::wstring odbc, std::wstring id, std::wstring password);
     void ErrorDisplay(SQLHSTMT& hStmt, RETCODE retCode);
+    Security* GetSecurity() { return mSecurity; }
 
     // INSERT
     ERROR_CODE InsertNewAcccount(const char* id, const char* password);
-    int InsertNewUser(const char* id, const char* nickname); // return UID
     int InsertNewUser(const char* id, const wchar_t* nickname);
     ERROR_CODE InsertUserGameRecords(const int uid);
     ERROR_CODE InsertUserItem(const int owner_uid, const int itemCode, const int itemCount, const int itemType);

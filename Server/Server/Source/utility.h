@@ -133,34 +133,61 @@ struct sMatchingInfo {
 
 struct Trie {
 	bool finish;
-	Trie* next[26];
+	std::unordered_map<wchar_t, Trie*> next;
 
 	Trie() : finish(false) {
-		memset(next, NULL, sizeof(next));
 	}
 
-	void Insert(const char* string) {
-		if (*string == '\0') {
+	~Trie() {
+		for (auto& n : next) {
+			delete n.second;
+		}
+	}
+
+	void Insert(const wchar_t* string) {
+		if (*string == L'\0') {
 			finish = true;
 		}
 		else {
-			int curr = *string - 'A';
-			if (next[curr] == NULL) {
+			wchar_t curr = *string;
+			if (next.find(curr) == next.end()) {
 				next[curr] = new Trie();
 			}
 			next[curr]->Insert(string + 1);
 		}
 	}
 
-	Trie* Find(const char* string) {
-		if (*string == '\0') {
+	Trie* Find(const wchar_t* string) {
+		if (*string == L'\0') {
 			return this;
 		}
-		int curr = *string - 'A';
-		if (next[curr] == NULL) {
+		wchar_t curr = *string;
+		if (next.find(curr) == next.end()) {
 			return NULL;
 		}
 		return next[curr]->Find(string + 1);
+	}
+
+	bool Search(const std::wstring& string) {
+		for (int i = 0; i < string.size(); ++i) {
+			Trie* node = this;
+
+			for (int j = i; j < string.size(); ++j) {
+				wchar_t c = string[j];
+
+				if (node->next.find(c) == node->next.end()) {
+					break;
+				}
+
+				node = node->next[c];
+
+				if (node->finish == true) {
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 };
 
