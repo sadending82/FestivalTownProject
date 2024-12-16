@@ -26,17 +26,27 @@ public class UI_CreateAccountPanel : UI_Base
         
     }
 
+    bool isInitialized = false;
+
     void Start()
     {
-        Init();
+        if(!isInitialized) Init();
     }
 
     public override void Init()
     {
+
         Bind<GameObject>(typeof(GameObjects));
+
+        Get<GameObject>((int)GameObjects.AuthorizationButton).BindEvent((PointerEventData) =>
+        {
+            // 중복확인용 함수
+        });
+
+        isInitialized = true;
     }
 
-    public int AuthorizeEmail()
+    public int AuthorizeId()
     {
         return 0;
     }
@@ -148,7 +158,7 @@ public class UI_CreateAccountPanel : UI_Base
 
             foreach (var ch in PasswordText)
             {
-                if (!Util.IsKorean(ch))
+                if (Util.IsKorean(ch))
                 {
                     return 0;
                 }
