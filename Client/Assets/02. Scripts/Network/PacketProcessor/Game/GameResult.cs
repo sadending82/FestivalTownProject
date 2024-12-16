@@ -50,6 +50,7 @@ namespace Network.PacketProcessor
                 }
                 else
                 {
+                    Debug.Log($"{result.Id} 플레이어 데이터. {Managers.Game.PlayerTeamData[result.Id]}");
                     if (Managers.Game.PlayerTeamData[result.Id] == 0)
                     {
                         team1List.Add(result);
@@ -80,14 +81,14 @@ namespace Network.PacketProcessor
 
                     for (int i = 0; i < team2List.Count; i++)
                     {
-                        Managers.Game.PlayerResultData.Add(team1List[i]);
+                        Managers.Game.PlayerResultData.Add(team2List[i]);
                     }
                 }
                 else
                 {
                     for (int i = 0; i < team2List.Count; i++)
                     {
-                        Managers.Game.PlayerResultData.Add(team1List[i]);
+                        Managers.Game.PlayerResultData.Add(team2List[i]);
                     }
 
                     for (int i = 0; i < team1List.Count; i++)
