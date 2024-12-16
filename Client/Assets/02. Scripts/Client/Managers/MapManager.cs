@@ -289,7 +289,8 @@ public class MapManager : MonoBehaviour
     }
     public void LoadStatue(int teamNumber, Vector3 position, Vector3 direction)
     {
-        GameObject Statue = Managers.Resource.Instantiate("Statue");
+
+        GameObject Statue = Managers.Resource.Instantiate($"Statue{teamNumber + 1}");
         Statue.transform.position = position;
         Statue.transform.rotation = Quaternion.Euler(direction);
         Statue.GetComponent<Statue>().SetTeam(teamNumber);

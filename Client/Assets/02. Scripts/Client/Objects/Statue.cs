@@ -16,6 +16,8 @@ public class Statue : MonoBehaviour
     [SerializeField]
     GameObject[] DestroyedMesh;
 
+    private Vector3 shootVector = Vector3.zero;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -46,33 +48,48 @@ public class Statue : MonoBehaviour
     {
         _state = state;
 
-        AllObjectOff();
         Vector3 tPos = transform.position;
 
         switch(state)
         {
             case Define.StatueState.Fine:
-                transform.GetChild(0).gameObject.SetActive(true);             
+                //transform.GetChild(0).gameObject.SetActive(true);             
                 break;
             case Define.StatueState.AttackedOneTime:
-                transform.GetChild(1).gameObject.SetActive(true);
+                tPos.y += 6.5f;
+                foreach (GameObject objs in AttackedOneTimeMesh)
+                {
+                    objs.AddComponent<Rigidbody>();
+                    shootVector = (tPos - objs.transform.position).normalized * 10.0f;
+                    objs.GetComponent<Rigidbody>().velocity = shootVector;
+                }
                 StartCoroutine(AfterDestroy(0));
                 Managers.Sound.Play3D("Sfx_Statue_Explosion", gameObject);
-                tPos.y += 6.5f;
+                
                 Managers.Effect.PlayEffect("StatueExplosion", tPos);
                 break;
             case Define.StatueState.AttackedTwoTime:
-                transform.GetChild(2).gameObject.SetActive(true);
-                StartCoroutine(AfterDestroy(1));
-                Managers.Sound.Play3D("Sfx_Statue_Explosion", gameObject);
                 tPos.y += 4.0f;
+                foreach (GameObject objs in AttackedTwoTimeMesh)
+                {
+                    objs.AddComponent<Rigidbody>();
+                    shootVector = (tPos - objs.transform.position).normalized * 10.0f;
+                    objs.GetComponent<Rigidbody>().velocity = shootVector;
+                }
+                StartCoroutine(AfterDestroy(1));
+                Managers.Sound.Play3D("Sfx_Statue_Explosion", gameObject);           
                 Managers.Effect.PlayEffect("StatueExplosion", tPos);
                 break;
             case Define.StatueState.Destroyed:
-                transform.GetChild(3).gameObject.SetActive(true);
-                StartCoroutine(AfterDestroy(2));
-                Managers.Sound.Play3D("Sfx_Statue_Explosion", gameObject);
                 tPos.y += 1.5f;
+                foreach (GameObject objs in DestroyedMesh)
+                {
+                    objs.AddComponent<Rigidbody>();
+                    shootVector = (tPos - objs.transform.position).normalized * 10.0f;
+                    objs.GetComponent<Rigidbody>().velocity = shootVector;
+                }
+                StartCoroutine(AfterDestroy(2));
+                Managers.Sound.Play3D("Sfx_Statue_Explosion", gameObject);           
                 Managers.Effect.PlayEffect("StatueExplosion", tPos);
                 break;
             default:
