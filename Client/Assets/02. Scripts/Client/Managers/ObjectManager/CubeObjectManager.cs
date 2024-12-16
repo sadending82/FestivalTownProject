@@ -59,7 +59,24 @@ public class CubeObjectManager : MonoBehaviour
 
         try
         {
-            reusedCube = Managers.ObjectPool.Pop(Managers.ObjectPool.GetOrigin("Cube"), cubes.transform).gameObject;
+            switch(Managers.Game.mapTheme)
+            {
+                case 1:
+                    {
+                        reusedCube = Managers.ObjectPool.Pop(Managers.ObjectPool.GetOrigin("Theme1_Cube"), cubes.transform).gameObject;
+                    }
+                    break;
+                case 2:
+                    {
+                        reusedCube = Managers.ObjectPool.Pop(Managers.ObjectPool.GetOrigin("Theme2_Cube"), cubes.transform).gameObject;
+                    }
+                    break;
+                default:
+                    {
+                        Debug.Log("ERROR!!! SpawnCube(): Wrong Map Theme !!!");
+                    }
+                    break;
+            }
         }           
         catch (NullReferenceException)
         {
