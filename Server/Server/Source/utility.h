@@ -18,7 +18,7 @@ inline constexpr int STARTBOTKEY = 4001;
 inline constexpr int INVALIDKEY = -1;
 inline constexpr int TESTROOM = 0;
 
-inline constexpr int BUFSIZE = 1000;
+inline constexpr int BUFSIZE = 4000;
 
 inline constexpr int MAXSESSION = 5000;
 inline constexpr int MAXUSER = 4000;
