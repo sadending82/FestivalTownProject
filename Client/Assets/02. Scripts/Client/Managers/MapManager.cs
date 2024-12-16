@@ -17,9 +17,13 @@ public class MapManager : MonoBehaviour
     private const float GOALPOST_OFFSET_Y = OFFSET_Y - 1.0f;
     private Vector3[] spawnDirection = new Vector3[3];
 
+    // OFFSETS
     private const float MAP_THEME1_OFFSET_X = -81.3f;
     private const float MAP_THEME1_OFFSET_Y = -59.0f;
     private const float MAP_THEME1_OFFSET_Z = 40.0f;
+    private const float MAP_THEME2_OFFSET_X = -81.3f;
+    private const float MAP_THEME2_OFFSET_Y = -59.0f;
+    private const float MAP_THEME2_OFFSET_Z = 40.0f;
 
     public void Init()
     {
@@ -85,6 +89,25 @@ public class MapManager : MonoBehaviour
             Debug.Log("ERROR!!! LoadGameMap(): Map Load ERROR!!!");
         }
 
+        string mapObjectPath = "MapObject/";
+        switch(Managers.Game.mapTheme)
+        {
+            case 1:
+                {
+                    mapObjectPath += "Theme1/";
+                }
+                break;
+            case 2:
+                {
+                    mapObjectPath += "Theme2/";
+                }
+                break;
+            default:
+                {
+                    Debug.Log("ERROR!! LoadGameMap(): Wrong Map Theme !!!");
+                }
+                break;
+        }
         for (int i = mapSizeZ - 1; i >= 0; --i)
         {
             readLine = reader.ReadLine();
@@ -99,7 +122,7 @@ public class MapManager : MonoBehaviour
                     //°ñ´ë
                     case "a":
                         {
-                            GameObject goalPost = Managers.Resource.Instantiate("MapObject/GoalPost");
+                            GameObject goalPost = Managers.Resource.Instantiate($"{mapObjectPath}GoalPost");
                             goalPost.GetComponent<GoalPost>().SetTeamNumber(0);
                             goalPost.transform.position = new Vector3(tPosX, height + GOALPOST_OFFSET_Y, tPosZ);
                             goalPost.transform.parent = map.transform;
@@ -107,7 +130,7 @@ public class MapManager : MonoBehaviour
                         break;
                     case "b":
                         {
-                            GameObject goalPost = Managers.Resource.Instantiate("MapObject/GoalPost");
+                            GameObject goalPost = Managers.Resource.Instantiate($"{mapObjectPath}GoalPost");
                             goalPost.GetComponent<GoalPost>().SetTeamNumber(1);
                             goalPost.transform.position = new Vector3(tPosX, height + GOALPOST_OFFSET_Y, tPosZ);
                             goalPost.transform.parent = map.transform;
@@ -115,7 +138,7 @@ public class MapManager : MonoBehaviour
                         break;
                     case "c":
                         {
-                            GameObject goalPost = Managers.Resource.Instantiate("MapObject/GoalPost");
+                            GameObject goalPost = Managers.Resource.Instantiate($"{mapObjectPath}GoalPost");
                             goalPost.GetComponent<GoalPost>().SetTeamNumber(2);
                             goalPost.transform.position = new Vector3(tPosX, height + GOALPOST_OFFSET_Y, tPosZ);
                             goalPost.transform.parent = map.transform;
@@ -129,11 +152,11 @@ public class MapManager : MonoBehaviour
                             GameObject cube;
                             if ((int)height % 2 == 0)
                             {
-                                cube = Managers.Resource.Instantiate("MapObject/Cube_222_Red");
+                                cube = Managers.Resource.Instantiate($"{mapObjectPath}Cube_222_Red");
                             }
                             else
                             {
-                                cube = Managers.Resource.Instantiate("MapObject/Cube_221_Red");
+                                cube = Managers.Resource.Instantiate($"{mapObjectPath}Cube_221_Red");
                                 height += 1;
                             }
                             int rand = UnityEngine.Random.Range(0, 3);
@@ -148,11 +171,11 @@ public class MapManager : MonoBehaviour
                             GameObject cube;
                             if ((int)height % 2 == 0)
                             {
-                                cube = Managers.Resource.Instantiate("MapObject/Cube_222_Blue");
+                                cube = Managers.Resource.Instantiate($"{mapObjectPath}Cube_222_Blue");
                             }
                             else
                             {
-                                cube = Managers.Resource.Instantiate("MapObject/Cube_221_Blue");
+                                cube = Managers.Resource.Instantiate($"{mapObjectPath}Cube_221_Blue");
                                 height += 1;
                             }
                             int rand = UnityEngine.Random.Range(0, 3);
@@ -167,11 +190,11 @@ public class MapManager : MonoBehaviour
                             GameObject cube;
                             if ((int)height % 2 == 0)
                             {
-                                cube = Managers.Resource.Instantiate("MapObject/Cube_222_Green");
+                                cube = Managers.Resource.Instantiate($"{mapObjectPath}Cube_222_Green");
                             }
                             else
                             {
-                                cube = Managers.Resource.Instantiate("MapObject/Cube_221_Green");
+                                cube = Managers.Resource.Instantiate($"{mapObjectPath}Cube_221_Green");
                                 height += 1;
                             }
                             int rand = UnityEngine.Random.Range(0, 3);
@@ -188,11 +211,11 @@ public class MapManager : MonoBehaviour
                             GameObject cube;
                             if ((int)height % 2 == 0)
                             {
-                                cube = Managers.Resource.Instantiate("MapObject/Cube_222_Basic");
+                                cube = Managers.Resource.Instantiate($"{mapObjectPath}Cube_222_Basic");
                             }
                             else
                             {
-                                cube = Managers.Resource.Instantiate("MapObject/Cube_221_Basic");
+                                cube = Managers.Resource.Instantiate($"{mapObjectPath}Cube_221_Basic");
                                 height += 1;
                             }
                             int rand = UnityEngine.Random.Range(0, 3);
@@ -207,11 +230,11 @@ public class MapManager : MonoBehaviour
                             GameObject cube;
                             if ((int)height % 2 == 0)
                             {
-                                cube = Managers.Resource.Instantiate("MapObject/Cube_222_Purple");
+                                cube = Managers.Resource.Instantiate($"{mapObjectPath}Cube_222_Purple");
                             }
                             else
                             {
-                                cube = Managers.Resource.Instantiate("MapObject/Cube_221_Purple");
+                                cube = Managers.Resource.Instantiate($"{mapObjectPath}Cube_221_Purple");
                                 height += 1;
                             }
                             int rand = UnityEngine.Random.Range(0, 3);
@@ -246,6 +269,15 @@ public class MapManager : MonoBehaviour
                     GameObject mapTheme = Managers.Resource.Instantiate("MapTheme/MapTheme1");
                     mapTheme.transform.position = new Vector3(MAP_THEME1_OFFSET_X + (float)mapSizeX, MAP_THEME1_OFFSET_Y, MAP_THEME1_OFFSET_Z + (float)mapSizeZ);
                     mapTheme.transform.parent = map.transform;
+                    RenderSettings.skybox = Resources.Load<Material>($"Prefabs/MapObject/Theme1/SkyBox");
+                }
+                break;
+            case 2:
+                {
+                    GameObject mapTheme = Managers.Resource.Instantiate("MapTheme/MapTheme2");
+                    mapTheme.transform.position = new Vector3(MAP_THEME2_OFFSET_X + (float)mapSizeX, MAP_THEME2_OFFSET_Y, MAP_THEME2_OFFSET_Z + (float)mapSizeZ);
+                    mapTheme.transform.parent = map.transform;
+                    RenderSettings.skybox = Resources.Load<Material>($"Prefabs/MapObject/Theme2/SkyBox");
                 }
                 break;
             default:
@@ -285,11 +317,30 @@ public class MapManager : MonoBehaviour
     /// </summary>
     private void FillCubeByHeight(int x, int z, float height)
     {
+        string mapObjectPath = "MapObject/";
+        switch (Managers.Game.mapTheme)
+        {
+            case 1:
+                {
+                    mapObjectPath += "Theme1/";
+                }
+                break;
+            case 2:
+                {
+                    mapObjectPath += "Theme2/";
+                }
+                break;
+            default:
+                {
+                    Debug.Log("ERROR!! LoadGameMap(): Wrong Map Theme !!!");
+                }
+                break;
+        }
         float fillPosX = x * 2 + OFFSET_X;
         float fillPosZ = z * 2 + OFFSET_Z;
         for (int i = 0; i <= (int)(height - 1) / 2; ++i)
         {
-            GameObject cube = Managers.Resource.Instantiate("MapObject/Cube_222_Basic");
+            GameObject cube = Managers.Resource.Instantiate($"{mapObjectPath}Cube_222_Basic");
             int rand = UnityEngine.Random.Range(0, 3);
             cube.transform.rotation = Quaternion.Euler(-90.0f, rand * 90.0f, 0);
             cube.transform.position = new Vector3(fillPosX, (i * 2) + OFFSET_Y, fillPosZ);

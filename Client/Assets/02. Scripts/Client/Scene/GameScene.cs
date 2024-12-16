@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using NetworkProtocol;
 using System.Reflection.Emit;
+using UnityEngine.ProBuilder.Shapes;
 
 public class GameScene : BaseScene
 {
@@ -51,9 +52,28 @@ public class GameScene : BaseScene
 
         List<GameObject> list = new();
 
+        string cubePrefebPath = "Theme1_Cube";
+        switch (Managers.Game.mapTheme)
+        {
+            case 1:
+                {
+                    cubePrefebPath = "Theme1_Cube";                }
+                break;
+            case 2:
+                {
+                    cubePrefebPath = "Theme2_Cube";
+                }
+                break;
+            default:
+                {
+                    Debug.Log("ERROR!!! LoadCubes(): Wrong Map Theme !!!");
+                }
+                break;
+        }
+
         for (int i = 0; i < 30; i++)
         {
-            list.Add(Managers.Resource.Instantiate("Cube"));
+            list.Add(Managers.Resource.Instantiate($"{cubePrefebPath}"));
         }
 
         foreach(GameObject obj in list)
