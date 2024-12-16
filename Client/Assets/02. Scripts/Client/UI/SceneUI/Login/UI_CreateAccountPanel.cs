@@ -40,8 +40,17 @@ public class UI_CreateAccountPanel : UI_Base
 
         Get<GameObject>((int)GameObjects.AuthorizationButton).BindEvent((PointerEventData) =>
         {
-            // 중복확인용 함수
-            Managers.Network.GetPacketManager().SendCheckID_DuplicationPacket(GetEmailText());
+            if (EmailCheck() == 1)
+            {
+                Managers.Network.GetPacketManager().SendCheckID_DuplicationPacket(GetEmailText());
+            }
+            else
+            {
+                var ui = Managers.UI.ShowPopUpUI<UI_Notice>();
+                ui.Init();
+                ui.NoticeTextChange("입력한 아이디가 유효하지 않습니다.");
+                ui.BindPopupCloseEvent();
+            }
         });
 
         isInitialized = true;
