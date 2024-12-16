@@ -3,6 +3,8 @@
 #include <string>
 #include <random>
 #include <regex>
+#include <clocale>
+#include <cwctype>
 
 std::string Security::GenerateSalt()
 {
@@ -49,6 +51,9 @@ bool Security::VerifyPassword(std::string password, std::string hashedPassword, 
 
 ERROR_CODE Security::CheckVerifyStringsForSignUp(const std::string ID, std::string password, const wchar_t* nickname)
 {
+	std::wstring wstNickName = nickname;
+	std::transform(wstNickName.begin(), wstNickName.end(), wstNickName.begin(), std::towlower);
+
 	if (FilteringID(ID) == false) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
@@ -57,7 +62,7 @@ ERROR_CODE Security::CheckVerifyStringsForSignUp(const std::string ID, std::stri
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
-	if (FilteringNickname(nickname) == false) {
+	if (FilteringNickname(wstNickName.c_str()) == false) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
