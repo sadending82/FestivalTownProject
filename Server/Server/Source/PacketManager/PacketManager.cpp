@@ -18,6 +18,7 @@ PacketManager::PacketManager(Server* server, PacketSender* packetSender)
         PacketProcessorMap[ePacketType::C2S_LOGIN_REQUEST] = std::make_unique<Packet_LoginRequest>(pServer, pPacketSender);
         PacketProcessorMap[ePacketType::C2S_SIGNUP_REQUEST] = std::make_unique<Packet_SignUpRequest>(pServer, pPacketSender);
         PacketProcessorMap[ePacketType::C2S_VERSION_CHECK_REQUEST] = std::make_unique<Packet_VersionCheckRequest>(pServer, pPacketSender);
+        PacketProcessorMap[ePacketType::C2S_CHECK_ID_DUPLICATION] = std::make_unique<Packet_CheckID_Duplication>(pServer, pPacketSender);
 
         PacketProcessorMap[ePacketType::C2S_GACHA_REQUEST] = std::make_unique<Packet_GachaRequest>(pServer, pPacketSender);
         PacketProcessorMap[ePacketType::C2S_CURRENCY_AMOUNT_REQUEST] = std::make_unique<Packet_CurrencyAmountRequest>(pServer, pPacketSender);

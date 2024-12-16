@@ -749,6 +749,25 @@ public class PacketMaker
         return result;
     }
 
+    public byte[] MakeCheckID_DuplicationPacket(string accountID)
+    {
+        var builder = new FlatBufferBuilder(1);
+        var AccountID = builder.CreateString(accountID);
+        CheckID_Duplication.StartCheckID_Duplication(builder);
+        CheckID_Duplication.AddId(builder, AccountID);
+ 
+        var offset = CheckID_Duplication.EndCheckID_Duplication(builder);
+        builder.Finish(offset.Value);
+        byte[] data = builder.SizedByteArray();
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_CHECK_ID_DUPLICATION, flatBufferSize = (ushort)data.Length };
+        byte[] headerdata = Serialize<HEADER>(header);
+        byte[] result = new byte[data.Length + headerdata.Length];
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
+        return result;
+    }
+
+
     // ------------------ Cheat ------------------
     public byte[] MakeAccountResetPacket()
     {

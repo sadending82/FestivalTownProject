@@ -51,6 +51,7 @@ public class PacketManager : MonoBehaviour
             { ePacketType.S2C_VERSION_CHECK_RESPONSE, new VersionCheckResponseProcessor() },
             { ePacketType.S2C_LOGIN_RESPONSE, new LoginResponseProcessor() },
             { ePacketType.S2C_SIGNUP_RESPONSE, new SignUpResponseProcessor() },
+            { ePacketType.S2C_CHECK_ID_DUPLICATION, new CheckID_DuplicationProcessor() },
 
             { ePacketType.S2C_GACHA_RESPONSE, new GachaResponseProcessor() },
             { ePacketType.S2C_CURRENCY_AMOUNT_RESPONSE, new CurrencyAmountResponseProcessor() },
@@ -177,6 +178,12 @@ public class PacketManager : MonoBehaviour
     public void SendSignUpRequestPacket(string accountID, string accountPassword, string nickname)
     {
         byte[] packet = _packetMaker.MakeSignUpRequestPacket(accountID, accountPassword, nickname);
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+    public void SendCheckID_DuplicationPacket(string accountID)
+    {
+        byte[] packet = _packetMaker.MakeCheckID_DuplicationPacket(accountID);
         if (packet == null) { return; }
         SendPacket(packet);
     }

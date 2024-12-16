@@ -18,6 +18,9 @@ static_assert(FLATBUFFERS_VERSION_MAJOR == 24 &&
 namespace PacketTable {
 namespace LoginTable {
 
+struct CheckID_Duplication;
+struct CheckID_DuplicationBuilder;
+
 struct VersionCheckRequest;
 struct VersionCheckRequestBuilder;
 
@@ -35,6 +38,69 @@ struct LoginRequestBuilder;
 
 struct LoginResponse;
 struct LoginResponseBuilder;
+
+struct CheckID_Duplication FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef CheckID_DuplicationBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_ID = 4,
+    VT_RESULT = 6
+  };
+  const ::flatbuffers::String *id() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_ID);
+  }
+  int32_t result() const {
+    return GetField<int32_t>(VT_RESULT, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_ID) &&
+           verifier.VerifyString(id()) &&
+           VerifyField<int32_t>(verifier, VT_RESULT, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct CheckID_DuplicationBuilder {
+  typedef CheckID_Duplication Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_id(::flatbuffers::Offset<::flatbuffers::String> id) {
+    fbb_.AddOffset(CheckID_Duplication::VT_ID, id);
+  }
+  void add_result(int32_t result) {
+    fbb_.AddElement<int32_t>(CheckID_Duplication::VT_RESULT, result, 0);
+  }
+  explicit CheckID_DuplicationBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<CheckID_Duplication> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<CheckID_Duplication>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<CheckID_Duplication> CreateCheckID_Duplication(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::String> id = 0,
+    int32_t result = 0) {
+  CheckID_DuplicationBuilder builder_(_fbb);
+  builder_.add_result(result);
+  builder_.add_id(id);
+  return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<CheckID_Duplication> CreateCheckID_DuplicationDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    const char *id = nullptr,
+    int32_t result = 0) {
+  auto id__ = id ? _fbb.CreateString(id) : 0;
+  return PacketTable::LoginTable::CreateCheckID_Duplication(
+      _fbb,
+      id__,
+      result);
+}
 
 struct VersionCheckRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef VersionCheckRequestBuilder Builder;

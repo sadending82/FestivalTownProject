@@ -41,6 +41,7 @@ public class UI_CreateAccountPanel : UI_Base
         Get<GameObject>((int)GameObjects.AuthorizationButton).BindEvent((PointerEventData) =>
         {
             // 중복확인용 함수
+            Managers.Network.GetPacketManager().SendCheckID_DuplicationPacket(GetEmailText());
         });
 
         isInitialized = true;

@@ -274,6 +274,51 @@ ERROR_CODE DB::InsertUserAttendance(const int uid, const int EventIndex, const i
 	return ERROR_CODE::ER_DB_ERROR;
 }
 
+int DB::SelectAccountCount(const char* id)
+{
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	int count = 999;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGONEPARAM("hStmt Error %d : (SelectAccountCount) \n", retcode);
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return 999;
+	}
+
+	SQLPrepare(hStmt, (SQLWCHAR*)SelectAccountCount_Query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, strlen(id), 0, (SQLCHAR*)id, 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	bool result = false;
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO)
+	{
+		SQLLEN col1;
+		while (SQLFetch(hStmt) == SQL_SUCCESS) {
+
+			SQLGetData(hStmt, 1, SQL_C_LONG, &count, sizeof(count), &col1);
+			
+		}
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+
+		return count;
+	}
+
+	ErrorDisplay(hStmt, retcode);
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	if (retcode == SQL_NO_DATA) {
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return 999;
+	}
+	DEBUGMSGONEPARAM("Execute Query Error %d : (SelectAccountCount)\n", retcode);
+	return 999;
+}
+
 std::pair<ERROR_CODE, UserInfo> DB::SelectUserInfoForLogin(const char* id)
 {
 	UserInfo userInfo;

@@ -38,6 +38,7 @@ public:
     ERROR_CODE InsertUserAttendance(const int uid, const int EventIndex, const int day_count);
 
     // SELECT
+    int SelectAccountCount(const char* id);
     std::pair<ERROR_CODE, UserInfo> SelectUserInfoForLogin(const char* id);
     std::pair<ERROR_CODE, UserInfo> SelectUserInfo(const int uid);
     std::pair<ERROR_CODE, std::vector<UserItem>> SelectUserAllCurrency(const int uid);
