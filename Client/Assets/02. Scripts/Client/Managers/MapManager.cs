@@ -16,6 +16,7 @@ public class MapManager : MonoBehaviour
     private const float OFFSET_Z = 1.0f;
     private const float GOALPOST_OFFSET_Y = OFFSET_Y - 1.0f;
     private Vector3[] spawnDirection = new Vector3[3];
+    public int mapSizeX, mapSizeZ;
 
     // OFFSETS
     private const float MAP_THEME1_OFFSET_X = -81.3f;
@@ -42,7 +43,6 @@ public class MapManager : MonoBehaviour
         //∏  ªÁ¿Ã¡Ó
         readLine = reader.ReadLine();
         string[] sMapSize = readLine.Split(' ');
-        int mapSizeX, mapSizeZ;
         int.TryParse(sMapSize[0], out mapSizeX);
         int.TryParse(sMapSize[1], out mapSizeZ);
         mapHeight = new float[mapSizeX, mapSizeZ];
@@ -257,10 +257,10 @@ public class MapManager : MonoBehaviour
             }
         }
 
-        LoadMapTheme(mapSizeX, mapSizeZ);
+        LoadMapTheme();
     }
 
-    private void LoadMapTheme(int mapSizeX, int mapSizeZ)
+    private void LoadMapTheme()
     {
         switch(Managers.Game.mapTheme)
         {

@@ -30,6 +30,10 @@ public class Checker : MonoBehaviour
                     packetManager.SendWeaponDeletePacket(other.gameObject.GetComponent<Weapon>().GetId());
                 }
             }
+            if (other.gameObject.tag == "Tombstone")
+            {
+                other.gameObject.SetActive(false);
+            }
             if (other.gameObject.tag == "HitBox")
             {
                 if (Managers.Player.GetIsHost() == true)

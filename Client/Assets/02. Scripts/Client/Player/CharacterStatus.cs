@@ -62,6 +62,7 @@ public class CharacterStatus : MonoBehaviour
     public GameObject playerMesh;
     public GameObject weaponInven;
     public ParticleSystem RunEffect;
+    public GameObject TombStone;
 
     // 커스터마이징
     [Header("--- Customizing ---")]
@@ -308,6 +309,7 @@ public class CharacterStatus : MonoBehaviour
         {
             hp = 0;
             playerMesh.SetActive(false);
+            SpawnTombStone();
             HideItem();
             playerUIController.gameObject.SetActive(false);
             playerController.SetPosition(new Vector3(-1, -1, -1));
@@ -329,6 +331,7 @@ public class CharacterStatus : MonoBehaviour
         else
         {
             playerMesh.SetActive(true);
+            TombStone.SetActive(false);
             ShowItem();
             playerUIController.gameObject.SetActive(true);
             Managers.SpectatorCamera.SetCameraInPlayerUIControllers();
@@ -351,6 +354,20 @@ public class CharacterStatus : MonoBehaviour
     public bool GetIsDie()
     {
         return isDie;
+    }
+    private void SpawnTombStone()
+    {
+        if(pelvis.transform.position.y < 0)
+        {
+            return;
+        }
+        if (pelvis.transform.position.x < 0 || pelvis.transform.position.x > Managers.Map.mapSizeX * 2 ||
+            pelvis.transform.position.z < 0 || pelvis.transform.position.z > Managers.Map.mapSizeZ * 2)
+        {
+            return;
+        }
+        TombStone.transform.position = pelvis.transform.position;
+        TombStone.SetActive(true);
     }
     public void SetAmIPlayer(bool amIPlayer)
     {
@@ -482,6 +499,7 @@ public class CharacterStatus : MonoBehaviour
         string layerName = "Player" + id;
         int layer = LayerMask.NameToLayer(layerName);
         hitbox.layer = layer;
+        TombStone.layer = layer;
 
         ChangeLayerRecursively(pelvis, layer);
     }
