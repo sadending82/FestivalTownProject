@@ -24,8 +24,13 @@ namespace Network.PacketProcessor
 
             if (Managers.Player.GetPlayers().transform.GetChild(id) != null)
             {
-                Managers.Player.GetPlayers().transform.GetChild(id).GetComponent<PlayerController>().SetDirection(dir);
-                Managers.Player.GetPlayers().transform.GetChild(id).GetComponent<PlayerController>().SetPosition(pos);
+                PlayerController pController = Managers.Player.GetPlayers().transform.GetChild(id).GetComponent<PlayerController>();
+
+                if (pController.GetIsMove() == true)
+                {
+                    pController.SetPosition(pos);
+                    pController.SetDirection(dir);
+                }
             }
         }
 

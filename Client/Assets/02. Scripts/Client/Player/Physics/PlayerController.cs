@@ -11,6 +11,7 @@ using UnityEditor;
 using ExcelDataStructure;
 using Unity.VisualScripting;
 using UnityEngine.UIElements;
+using System;
 
 public class PlayerController : MonoBehaviour
 {
@@ -1064,5 +1065,10 @@ public class PlayerController : MonoBehaviour
     public Rigidbody GetHeadRigidbody()
     {
         return head.GetComponent<Rigidbody>();
+    }
+
+    public bool GetIsMove()
+    {
+        return isMove;
     }
 }

@@ -515,6 +515,7 @@ std::pair<ERROR_CODE, std::vector<UserItem>> DB::SelectUserAllCurrency(const int
 		return { ERROR_CODE::ER_DB_NO_DATA, std::vector<UserItem>() };
 	}
 	DEBUGMSGONEPARAM("Execute Query Error %d : (SelectUserAllCurrency)\n", retcode);
+	COUT << "UID : " << uid << ENDL;
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	return { ERROR_CODE::ER_DB_ERROR, std::vector<UserItem>() };
 }
