@@ -39,6 +39,7 @@ public class UI_Result : UI_Scene
             Managers.CubeObject.Clear();
             Managers.Player.Clear();
             Managers.SpectatorCamera.Clear();
+            Managers.Network.GetPacketManager().SendCurrencyAmountRequestPacket();
         });
 
         UI_ResultPanel[] panels = Get<GameObject>((int)GameObjects.ResultPanel).transform.GetComponentsInChildren<UI_ResultPanel>();

@@ -474,7 +474,7 @@ std::pair<ERROR_CODE, std::vector<UserItem>> DB::SelectUserAllCurrency(const int
 	int itemType = 1;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
-		DEBUGMSGONEPARAM("hStmt Error %d : (InsertRanking) \n", retcode);
+		DEBUGMSGONEPARAM("hStmt Error %d : (SelectUserAllCurrency) \n", retcode);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 		return { ERROR_CODE::ER_DB_ERROR, std::vector<UserItem>() };
 	}
@@ -484,7 +484,6 @@ std::pair<ERROR_CODE, std::vector<UserItem>> DB::SelectUserAllCurrency(const int
 	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserAllCurrency_Query, SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
-	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&itemType), 0, NULL);
 
 	retcode = SQLExecute(hStmt);
 
@@ -515,7 +514,7 @@ std::pair<ERROR_CODE, std::vector<UserItem>> DB::SelectUserAllCurrency(const int
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 		return { ERROR_CODE::ER_DB_NO_DATA, std::vector<UserItem>() };
 	}
-	DEBUGMSGONEPARAM("Execute Query Error %d : (SelectItemCount)\n", retcode);
+	DEBUGMSGONEPARAM("Execute Query Error %d : (SelectUserAllCurrency)\n", retcode);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	return { ERROR_CODE::ER_DB_ERROR, std::vector<UserItem>() };
 }
@@ -668,7 +667,7 @@ int DB::SelectUserItemCount(const int uid, const int item_index)
 		return count;
 	}
 
-	DEBUGMSGONEPARAM("Execute Query Error %d : (SelectUserItemCount)\n", retcode);
+	COUT << "Execute Query Error " << retcode  << ": (SelectUserItemCount) - " << uid  << " " << item_index << ENDL;
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	return 0;
 }

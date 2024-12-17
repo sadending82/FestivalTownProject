@@ -27,7 +27,7 @@ const wchar_t* SelectUserInfoForLogin_Query = L"UPDATE GameDB.dbo.UserInfo \
 const wchar_t* SelectUserInfo_Query = L"SELECT * FROM GameDB.dbo.UserInfo WHERE UID = ?";
 
 //SELECT count, itemCode FROM GameDB.dbo.UserItem WHERE owner_UID = ? AND itemType = ?
-const wchar_t* SelectUserAllCurrency_Query = L"SELECT count, itemCode FROM GameDB.dbo.UserItem WHERE owner_UID = ? AND itemType = ?";
+const wchar_t* SelectUserAllCurrency_Query = L"SELECT count, itemCode FROM GameDB.dbo.UserItem WHERE owner_UID = ? AND itemType = 1";
 
 //SELECT * FROM GameDB.dbo.UserItem WHERE owner_UID = ? AND NOT count = ?
 const wchar_t* SelectUserAllItems_Query = L"SELECT * FROM GameDB.dbo.UserItem WHERE owner_UID = ? AND NOT count = ?";
