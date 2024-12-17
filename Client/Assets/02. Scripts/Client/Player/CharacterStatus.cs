@@ -367,6 +367,7 @@ public class CharacterStatus : MonoBehaviour
             return;
         }
         TombStone.transform.position = pelvis.transform.position;
+        TombStone.transform.rotation = Quaternion.Euler(0.0f, Random.Range(0.0f, 359.0f), 95.5f);
         TombStone.SetActive(true);
     }
     public void SetAmIPlayer(bool amIPlayer)
