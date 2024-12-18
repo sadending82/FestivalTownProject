@@ -176,17 +176,12 @@ bool Server::Disconnect(int key)
 
             mPacketSender->SendPlayerDelete(roomID, inGameID);
 
-            switch (mMode) {
-            case SERVER_MODE::LIVE: {
-                mLobbyManager->CheckReadyToGamePlay(room, roomID);
-            }break;
-
-            }
-
             if (inGameID == room->GetHostID()) {
                 int newHostSessionID = room->ChangeHost();
                 mPacketSender->SendGameHostChange(newHostSessionID);
             }
+
+            mLobbyManager->CheckReadyToGamePlay(room, roomID);
         }
     }
     break;
