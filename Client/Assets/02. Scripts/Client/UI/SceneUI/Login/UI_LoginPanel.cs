@@ -15,8 +15,6 @@ public class UI_LoginPanel: UI_Base
         PWInputField,
         PWImage,
         CreateAccountButton,
-        FindIDButton,
-        FindPWButton,
         NoticeButton,
         ButtonTextSpacer,
         LoginButton,
