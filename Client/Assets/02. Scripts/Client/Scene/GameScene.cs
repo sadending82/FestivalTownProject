@@ -197,6 +197,9 @@ public class GameScene : BaseScene
     IEnumerator WaitGameEnd()
     {
         yield return new WaitUntil(() => Managers.Game.isGameEnd);
+
+        Managers.UI.ShowPopUpUI<UI_GameOver>();
+
         yield return new WaitForSeconds(5);
 
         Managers.Network.GetPacketManager().GameEnd();
