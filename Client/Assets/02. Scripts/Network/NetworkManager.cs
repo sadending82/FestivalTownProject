@@ -21,6 +21,9 @@ public class NetworkManager : MonoBehaviour
     [SerializeField, Tooltip("IPAdrees")]
     private IPAddressData IPAddressObj;
 
+    [SerializeField, Tooltip("PortNumber")]
+    private PortNumberData PortObj;
+
     float SendBufferInterval = 2.0f;
     float CurrentTime = 0.0f;
 
@@ -51,6 +54,7 @@ public class NetworkManager : MonoBehaviour
     public void Start()
     {
         IPAddressObj = Resources.Load<IPAddressData>("ScriptableObject/IPAddress");
+        PortObj = Resources.Load<PortNumberData>("ScriptableObject/PortNumber");
 
         isNetworkConnected = ConnectToServer();
         packetManager.SetConnection(Connection);
@@ -76,7 +80,7 @@ public class NetworkManager : MonoBehaviour
 #if UNITY_EDITOR
             if (IPAddressObj.IPAddress != "")
             {
-                Connection = new TcpClient(IPAddressObj.IPAddress, 45872);
+                Connection = new TcpClient(IPAddressObj.IPAddress, int.Parse(PortObj.PortNumber));
             }
             else throw new Exception("ip 설정 안 되었어요...");
 #elif UNITY_STANDALONE_WIN

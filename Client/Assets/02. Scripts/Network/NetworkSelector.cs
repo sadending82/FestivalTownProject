@@ -7,8 +7,12 @@ public class NetworkSelect : EditorWindow
     [SerializeField]
     static private IPAddressData IPAddressObj;
 
+    [SerializeField]
+    static private PortNumberData PortNumberObj;
+
     int _networkSelected;
     string _ipAddressText;
+    string _portNumber;
 
     [MenuItem("Network/NetworkSelect %#F5")]
 
@@ -17,6 +21,8 @@ public class NetworkSelect : EditorWindow
         GetWindow<NetworkSelect>();
         
         IPAddressObj = Resources.Load<IPAddressData>("ScriptableObject/IPAddress");
+
+        PortNumberObj = Resources.Load<PortNumberData>("ScriptableObject/PortNumber");
     }
 
     private void OnGUI()
@@ -25,6 +31,11 @@ public class NetworkSelect : EditorWindow
         if (IPAddressObj == null)
         {
             IPAddressObj = Resources.Load<IPAddressData>("ScriptableObject/IPAddress");
+        }
+
+        if (PortNumberObj == null)
+        {
+            PortNumberObj = Resources.Load<PortNumberData>("ScriptableObject/PortNumber");
         }
 
         GUIStyle labelStyle = EditorStyles.boldLabel;
@@ -38,6 +49,8 @@ public class NetworkSelect : EditorWindow
             GUILayout.Space(10);
             GUILayout.Label("IP 주소");
             _ipAddressText = GUILayout.TextField(_ipAddressText);
+            GUILayout.Label("포트 넘버");
+            _portNumber = GUILayout.TextField(_portNumber);
 
         }
 
@@ -45,15 +58,19 @@ public class NetworkSelect : EditorWindow
         {
             case 0:
                 IPAddressObj.IPAddress = "127.0.0.1";
+                PortNumberObj.PortNumber = "45872";
                 break;
             case 1:
                 IPAddressObj.IPAddress = "39.120.204.67";
+                PortNumberObj.PortNumber = "45872";
                 break;
             case 2:
                 IPAddressObj.IPAddress = "203.239.231.148";
+                PortNumberObj.PortNumber = "45872";
                 break;
             case 3:
                 IPAddressObj.IPAddress = _ipAddressText;
+                PortNumberObj.PortNumber = _portNumber;
                 break;
             default:
                 break;
