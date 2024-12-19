@@ -19,7 +19,7 @@ namespace Network.PacketProcessor
 
             var Data = GachaResponse.GetRootAsGachaResponse(bb);
 
-            var popup = Managers.UI.ShowPopUpUI<UI_Notice>();
+            var popup = Managers.UI.ShowPopUpUI<UI_GachaResult>();
             popup.Init();
 
             if (Data.Result == (int)ERROR_CODE.ER_NONE)
