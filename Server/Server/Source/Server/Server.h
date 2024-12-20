@@ -15,6 +15,7 @@
 inline constexpr int SERVERPORT = 45872;
 
 inline constexpr int LIVE_MODE = 0;
+
 inline constexpr int TEST_MODE = 1;
 
 inline constexpr std::string_view GAME_VERSION = "0.1";
