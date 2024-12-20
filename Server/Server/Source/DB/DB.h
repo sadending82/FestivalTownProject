@@ -62,6 +62,8 @@ public:
 
     bool       UpdateUserAttendanceIsRewarded(const int uid, const int eventCode, const int dayCount, const int updateValue);
 
+    std::pair<ERROR_CODE, std::vector<UserItem>> UpdateGoldAndSelectUserAllCurrency(const int uid, const int updateValue);
+
     // UPSERT
     ERROR_CODE UpsertUserItemCount(const int uid, const int item_index, const int valueOfChange);
 

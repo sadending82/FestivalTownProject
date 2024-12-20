@@ -515,7 +515,6 @@ std::pair<ERROR_CODE, std::vector<UserItem>> DB::SelectUserAllCurrency(const int
 		return { ERROR_CODE::ER_DB_NO_DATA, std::vector<UserItem>() };
 	}
 	DEBUGMSGONEPARAM("Execute Query Error %d : (SelectUserAllCurrency)\n", retcode);
-	COUT << "UID : " << uid << ENDL;
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	return { ERROR_CODE::ER_DB_ERROR, std::vector<UserItem>() };
 }
@@ -1194,6 +1193,64 @@ bool DB::UpdateUserAttendanceIsRewarded(const int uid, const int eventCode, cons
 	DEBUGMSGONEPARAM("Execute Query Error %d : (UpdateUserAttendanceIsRewarded)\n", retcode);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	return true;
+}
+
+std::pair<ERROR_CODE, std::vector<UserItem>> DB::UpdateGoldAndSelectUserAllCurrency(const int uid, const int updateValue)
+{
+	/*if (uid == 0) {
+		return { ERROR_CODE::ER_DB_ERROR, std::vector<UserItem>() };
+	}
+
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	std::vector<UserItem> itemList;
+
+	int itemType = 1;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGONEPARAM("hStmt Error %d : (UpdateGoldAndSelectUserAllCurrency) \n", retcode);
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return { ERROR_CODE::ER_DB_ERROR, std::vector<UserItem>() };
+	}
+
+	SQLPrepare(hStmt, (SQLWCHAR*)UpdateGoldAndSelectUserAllCurrency_Query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		SQLLEN col1, col2;
+		int itemCode = 0;
+		int amount = 0;
+		while (SQLFetch(hStmt) == SQL_SUCCESS) {
+			UserItem item;
+
+			SQLGetData(hStmt, 1, SQL_C_LONG, &amount, sizeof(amount), &col1);
+			SQLGetData(hStmt, 2, SQL_C_LONG, &itemCode, sizeof(itemCode), &col2);
+			item.itemCode = itemCode;
+			item.count = amount;
+			item.itemType = itemType;
+
+			itemList.push_back(item);
+		}
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return { ERROR_CODE::ER_NONE, itemList };
+	}
+
+	ErrorDisplay(hStmt, retcode);
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	if (retcode == SQL_NO_DATA) {
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return { ERROR_CODE::ER_DB_NO_DATA, std::vector<UserItem>() };
+	}
+	DEBUGMSGONEPARAM("Execute Query Error %d : (SelectUserAllCurrency)\n", retcode);
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	return { ERROR_CODE::ER_DB_ERROR, std::vector<UserItem>() };*/
+	return { ERROR_CODE::ER_DB_ERROR, std::vector<UserItem>() };
 }
 
 ERROR_CODE DB::DeleteAcccount(const char* id)

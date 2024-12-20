@@ -130,8 +130,8 @@
     </Link>
     <PreBuildEvent>
       <Command>robocopy "$(ProjectDir)..\..\Client\Assets\11. GameData" "$(ProjectDir)\GameData" /E /XF *.meta
+robocopy "$(ProjectDir)\GameData" "$(OutDir)GameData" /E /XF *.meta
 xcopy /Y /d "$(ProjectDir)\xlnt\xlnt_Debug\bin\xlntd.dll" "$(OutDir)"
-xcopy /Y /d /e /i "$(ProjectDir)\GameData" "$(OutDir)GameData"
 xcopy /Y /d /e /i "$(ProjectDir)\Config" "$(OutDir)Config"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>

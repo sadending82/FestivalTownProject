@@ -91,6 +91,11 @@ const wchar_t* UpsertUserItemCount_Query = L"MERGE INTO GameDB.dbo.UserItem AS a
 //UPDATE GameDB.dbo.UserAttendance SET is_rewarded = ? OUTPUT deleted.is_rewarded WHERE user_UID = ? AND event_code = ? AND day_count = ? 
 const wchar_t* UpdateUserAttendanceIsRewarded_Query = L"UPDATE GameDB.dbo.UserAttendance SET is_rewarded = ? OUTPUT deleted.is_rewarded WHERE user_UID = ? AND event_code = ? AND day_count = ? ";
 
+const wchar_t* UpdateGoldAndSelectUserAllCurrency_Query = L"UPDATE GameDB.dbo.UserItem "
+														L"SET count = count + ? "
+														L"WHERE itemCode = ? AND onwer_UID = ? "
+														L"SELECT count, itemCode FROM GameDB.dbo.UserItem WHERE owner_UID = ? AND itemType = 1";
+
 //DELETE FROM AccountDB.dbo.Account WHERE ID = ?
 const wchar_t* DeleteAcccount_Query = L"DELETE FROM AccountDB.dbo.Account WHERE ID = ?";
 

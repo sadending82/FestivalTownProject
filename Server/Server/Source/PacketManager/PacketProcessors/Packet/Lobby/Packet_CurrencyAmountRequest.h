@@ -30,6 +30,10 @@ public:
 				DB* db = pServer->GetDB();
 
 				std::pair<ERROR_CODE, std::vector<UserItem>> result = db->SelectUserAllCurrency(uid);
+				
+				if (ERROR_CODE::ER_NONE != result.first) {
+					COUT << "SelectUserAllCurrency ERROR " << uid << ENDL;
+				}
 
 				pPacketSender->SendCurrencyAmountResponsePacket(key, result.first, result.second);
 			}
