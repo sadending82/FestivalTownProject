@@ -54,9 +54,9 @@ public class UI_GachaPopup : UI_PopUp
         {
             Debug.Log($"{GachaType} ±×·ì");
             var gachaCutScene = Managers.UI.ShowPopUpUI<UI_GachaCutScene>();
-            gachaCutScene.Init();
             gachaCutScene.SetGachaType(GachaType);
             gachaCutScene.SetResourceIndexToUse(ResourceIndexToUse);
+            gachaCutScene.Init();
         });
 
         Get<GameObject>((int)GameObjects.NoButton).BindEvent((PointerEventData) =>

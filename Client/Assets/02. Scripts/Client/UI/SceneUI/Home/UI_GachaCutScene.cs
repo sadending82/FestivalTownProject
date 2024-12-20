@@ -8,6 +8,7 @@ public class UI_GachaCutScene : UI_PopUp
     enum GameObjects
     {
         Panel,
+        UI_GachaponModel,
         SkipButton,
     }
 
@@ -24,6 +25,9 @@ public class UI_GachaCutScene : UI_PopUp
         base.Init();
 
         Bind<GameObject>(typeof(GameObjects));
+
+        Get<GameObject>((int)GameObjects.UI_GachaponModel).GetComponent<UI_GachaponModel>().Init();
+        Get<GameObject>((int)GameObjects.UI_GachaponModel).GetComponent<UI_GachaponModel>().GachaponCustomizing(GachaType);
 
         Get<GameObject>((int)GameObjects.SkipButton).BindEvent((PointerEventData) =>
         {
