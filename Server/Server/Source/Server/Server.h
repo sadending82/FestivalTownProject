@@ -12,7 +12,6 @@
 #define ROOM_ARRAY std::array<Room*, MAXROOM>
 #define GAMEMANAGER_MAP std::unordered_map<GameMode, class GameManager*>
 
-inline constexpr int SERVERPORT = 45872;
 
 inline constexpr int LIVE_MODE = 0;
 
@@ -108,5 +107,6 @@ private:
 	int									testUID = 1;
 
 	SERVER_MODE							mMode = SERVER_MODE::LIVE;
+	int									mServerPort = 45872;
 };
 

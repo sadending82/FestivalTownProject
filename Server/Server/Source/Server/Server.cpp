@@ -47,7 +47,7 @@ bool Server::ReadConfig()
     if (!file) return false;
     int line = 0;
 
-    while (line < 4 && std::getline(file, txt)) {
+    while (line < 5 && std::getline(file, txt)) {
         if (line == 0) {
             std::string tmp = txt.substr(5);
             mOdbc.assign(tmp.begin(), tmp.end());
@@ -63,6 +63,10 @@ bool Server::ReadConfig()
         if (line == 3) {
             std::string tmp = txt.substr(5);
             mMode = static_cast<SERVER_MODE>(stoi(tmp));
+        }
+        if (line == 4) {
+            std::string tmp = txt.substr(5);
+            mServerPort = stoi(tmp);
         }
         line++;
     }
@@ -238,7 +242,7 @@ void Server::Run()
     SOCKADDR_IN serverAddr;
     memset(&serverAddr, 0, sizeof(SOCKADDR_IN));
     serverAddr.sin_family = AF_INET;
-    serverAddr.sin_port = htons(SERVERPORT);
+    serverAddr.sin_port = htons(mServerPort);
     serverAddr.sin_addr.S_un.S_addr = htonl(INADDR_ANY);
     ::bind(mListenSocket, (struct sockaddr*)&serverAddr, sizeof(SOCKADDR_IN));
     listen(mListenSocket, SOMAXCONN);
