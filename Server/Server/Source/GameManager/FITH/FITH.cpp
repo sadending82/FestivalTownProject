@@ -343,8 +343,6 @@ void FITH::CalculateGameResult(int roomID, std::set<int>& winningTeams)
             if (record.rewards[i].index == 0) {
                 continue;
             }
-
-            COUT << record.rewards[i].index << ENDL;
             pDB->UpsertUserItemCount(uid, record.rewards[i].index, record.rewards[i].value);
         }
     }
