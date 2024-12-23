@@ -227,24 +227,24 @@ std::vector<sGameReward> FITH::CalculateGameReward(int point, bool isMvp, Battle
 
     case BattleResult::BR_Lose: {
         reward1.index = (rewards.Lose_Reward1_Index != 0) ? rewards.Lose_Reward1_Index : BonusRewards.Lose_Reward1_Index;
-        reward1.value += rewards.Lose_Reward1_Value + BonusRewards.Lose_Reward1_Value;
+        if (reward1.index != 0) reward1.value += rewards.Lose_Reward1_Value + BonusRewards.Lose_Reward1_Value;
         
         reward2.index = (rewards.Lose_Reward2_Index != 0) ? rewards.Lose_Reward2_Index : BonusRewards.Lose_Reward2_Index;
-        reward2.value += rewards.Lose_Reward2_Value + BonusRewards.Lose_Reward2_Value;
+        if (reward2.index != 0) reward2.value += rewards.Lose_Reward2_Value + BonusRewards.Lose_Reward2_Value;
 
         reward3.index = (rewards.Lose_Reward3_Index != 0) ? rewards.Lose_Reward3_Index : BonusRewards.Lose_Reward3_Index;
-        reward3.value += rewards.Lose_Reward3_Value + BonusRewards.Lose_Reward3_Value;
+        if (reward3.index != 0) reward3.value += rewards.Lose_Reward3_Value + BonusRewards.Lose_Reward3_Value;
     }
               break;
     case BattleResult::BR_Draw: {
         reward1.index = (rewards.Draw_Reward1_Index != 0) ? rewards.Draw_Reward1_Index : BonusRewards.Draw_Reward1_Index;
-        reward1.value += rewards.Draw_Reward1_Value + BonusRewards.Draw_Reward1_Value;
+        if (reward1.index != 0) reward1.value += rewards.Draw_Reward1_Value + BonusRewards.Draw_Reward1_Value;
 
         reward2.index = (rewards.Draw_Reward2_Index != 0) ? rewards.Draw_Reward2_Index : BonusRewards.Draw_Reward2_Index;
-        reward2.value += rewards.Draw_Reward2_Value + BonusRewards.Draw_Reward2_Value;
+        if (reward2.index != 0) reward2.value += rewards.Draw_Reward2_Value + BonusRewards.Draw_Reward2_Value;
 
         reward3.index = (rewards.Draw_Reward3_Index != 0) ? rewards.Draw_Reward3_Index : BonusRewards.Draw_Reward3_Index;
-        reward3.value += rewards.Draw_Reward3_Value + BonusRewards.Draw_Reward3_Value;
+        if (reward3.index != 0) reward3.value += rewards.Draw_Reward3_Value + BonusRewards.Draw_Reward3_Value;
     }
                               break;
     default:
