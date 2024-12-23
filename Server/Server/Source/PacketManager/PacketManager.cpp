@@ -61,8 +61,6 @@ PacketManager::PacketManager(Server* server, PacketSender* packetSender)
     {
         EventProcessorMap[eEventType::HEARTBEAT] = std::make_unique<Event_HeartBeat>(pServer, pPacketSender);
 
-        EventProcessorMap[eEventType::GAMEMATCHING] = std::make_unique<Event_GameMatching>(pServer, pPacketSender);
-
         EventProcessorMap[eEventType::BLOCKDROP] = std::make_unique<Event_BlockDrop>(pServer, pPacketSender);
         EventProcessorMap[eEventType::BOMBSPAWN] = std::make_unique<Event_BombSpawn>(pServer, pPacketSender);
         EventProcessorMap[eEventType::BOMBEXPLOSION] = std::make_unique<Event_BombExplosion>(pServer, pPacketSender);

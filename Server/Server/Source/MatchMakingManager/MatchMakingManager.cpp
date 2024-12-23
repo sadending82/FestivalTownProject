@@ -222,7 +222,7 @@ void MatchMakingManager::UpdateMatchingSequence(eMatchingType matchingType)
         }
         else if (matchingResult == false) {
             // 매칭 실패하면 다음 시퀀스 대기
-            PushEventGameMatching(pServer->GetTimer(), matchingQueue.begin()->first,  matchingType, requestTime, intervalTime);
+            //PushEventGameMatching(pServer->GetTimer(), matchingQueue.begin()->first,  matchingType, requestTime, intervalTime);
         }
 
         return;
@@ -245,7 +245,7 @@ void MatchMakingManager::UpdateMatchingSequence(eMatchingType matchingType)
         }
         else if (matchingResult == false) {
             // 매칭 실패하면 다음 시퀀스 대기
-            PushEventGameMatching(pServer->GetTimer(), matchingQueue.begin()->first, matchingType, requestTime, intervalTime);
+            //PushEventGameMatching(pServer->GetTimer(), matchingQueue.begin()->first, matchingType, requestTime, intervalTime);
         }
         return;
     }

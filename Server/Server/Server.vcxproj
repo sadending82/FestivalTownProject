@@ -231,7 +231,6 @@ if exist "$(ProjectDir)\Config" xcopy /Y /d /e /i "$(ProjectDir)\Config" "$(OutD
     <ClInclude Include="Source\Network\ExOver.h" />
     <ClInclude Include="Source\Network\Session\Session.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Event\Game\Event_GameStart.h" />
-    <ClInclude Include="Source\PacketManager\PacketProcessors\Event\Lobby\Event_GameMatching.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Event\Object\Event_BombExplosion.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Event\Object\Event_BombSpawn.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Event\Object\Event_WeaponSpawn.h" />

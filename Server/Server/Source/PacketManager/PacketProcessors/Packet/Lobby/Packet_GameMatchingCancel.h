@@ -26,7 +26,6 @@ public:
 				MatchMakingManager* MatchMakingManager = pServer->GetMatchMakingManager();
 
 				player->GetSessionStateLock().lock();
-				player->SetSessionState(eSessionState::ST_ACCEPTED);
 
 				MatchMakingManager->GetMatchingLock().lock();
 
@@ -53,6 +52,7 @@ public:
 
 				MatchMakingManager->GetMatchingLock().unlock();
 
+				player->SetSessionState(eSessionState::ST_ACCEPTED);
 				player->GetSessionStateLock().unlock();
 
 				std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_MATCHING_CANCEL, data, size);

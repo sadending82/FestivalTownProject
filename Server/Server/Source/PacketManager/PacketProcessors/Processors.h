@@ -45,8 +45,6 @@
 // Event
 #include "Event/Utilities/Event_HeartBeat.h"
 
-#include "Event/Lobby/Event_GameMatching.h"
-
 #include "Event/Object/Event_BlockDrop.h"
 #include "Event/Object/Event_BombSpawn.h"
 #include "Event/Object/Event_BombExplosion.h"

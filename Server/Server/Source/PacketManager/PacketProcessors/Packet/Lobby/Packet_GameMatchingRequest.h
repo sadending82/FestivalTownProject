@@ -37,8 +37,8 @@ public:
 				player->SetSessionState(eSessionState::ST_MATCHWAITING);
 				player->GetSessionStateLock().unlock();
 
-				MatchMakingManager->GetMatchingLock().lock();
 
+				MatchMakingManager->GetMatchingLock().lock();
 				switch (matchingType) {
 				case eMatchingType::FITH_TEST: {
 
@@ -110,7 +110,6 @@ public:
 					//COUT << "MAP: " << testMapProperties.Map_Index << " THEME: "<< testMapProperties.Map_Theme << ENDL;
 				}break;
 				default:{
-
 					MatchMakingManager->GetMatchingQueue(matchingType).insert({key, requestTime});
 
 				}break;

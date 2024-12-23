@@ -90,7 +90,6 @@
     <ClInclude Include="Source\PacketManager\flatbuffer\Player_generated.h" />
     <ClInclude Include="Source\PacketManager\flatbuffer\Utilities_generated.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Event\Game\Event_GameStart.h" />
-    <ClInclude Include="Source\PacketManager\PacketProcessors\Event\Lobby\Event_GameMatching.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Player\Packet_PlayerAnimation.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Player\Packet_PlayerDamageReceive.h" />
     <ClInclude Include="Source\DB\Security\Security.h" />
