@@ -230,11 +230,11 @@ public class MapManager : MonoBehaviour
                             GameObject cube;
                             if ((int)height % 2 == 0)
                             {
-                                cube = Managers.Resource.Instantiate($"{mapObjectPath}Cube_222_Purple");
+                                cube = Managers.Resource.Instantiate($"{mapObjectPath}Cube_222_Orange");
                             }
                             else
                             {
-                                cube = Managers.Resource.Instantiate($"{mapObjectPath}Cube_221_Purple");
+                                cube = Managers.Resource.Instantiate($"{mapObjectPath}Cube_221_Orange");
                                 height += 1;
                             }
                             int rand = UnityEngine.Random.Range(0, 3);
