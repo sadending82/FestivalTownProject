@@ -126,22 +126,6 @@ public class UIManager
         _order--;
     }
 
-    public void CloseGachaCutSceneUI(UI_PopUp popUp)
-    {
-        if (_popupStack.Count == 0) return;
-
-        if (_popupStack.Peek() != popUp)
-        {
-            Debug.LogWarning("´Ô¾Æ °¡Ã­ ÄÆ¾À ²ô´Â°Å ¸ÂÀ½?");
-            return;
-        }
-        // ³ªÁß¿¡ ¼öÁ¤ÇØ¾ß ÇÏÁö ¾ÊÀ»±î
-        while (_popupStack.Count > 2)
-        {
-            ClosePopUpUI();
-        }
-    }
-
     public void CloseAllPopUpUI()
     {
         while (_popupStack.Count > 0)

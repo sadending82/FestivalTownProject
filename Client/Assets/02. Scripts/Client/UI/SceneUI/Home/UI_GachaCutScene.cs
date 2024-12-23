@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class UI_GachaCutScene : UI_PopUp
+public class UI_GachaCutScene : UI_Scene
 {
     enum GameObjects
     {
         Panel,
-        UI_GachaponModel,
         SkipButton,
+        UI_GachaponModel,
     }
 
     bool isInitialized = false;

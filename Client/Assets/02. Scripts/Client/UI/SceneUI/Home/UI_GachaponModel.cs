@@ -10,10 +10,8 @@ public class UI_GachaponModel : UI_Base
     }
 
     bool isInitialized = false;
-    bool _isClicked = false;
 
     private Animator animator;
-    private Material[] gachaponMaterials;
     private const int MAX_GACHAPON_NUM = 5;
 
     void Start()
@@ -21,7 +19,6 @@ public class UI_GachaponModel : UI_Base
         if (!isInitialized) Init();
 
         animator = Get<GameObject>((int)GameObjects.Gachapon).GetComponent<Animator>();
-        gachaponMaterials = Get<GameObject>((int)GameObjects.Gachapon).transform.Find("GachaponA").GetComponent<SkinnedMeshRenderer>().materials;
         
         SetGachapon();
 
@@ -45,7 +42,8 @@ public class UI_GachaponModel : UI_Base
     }
     public void GachaponCustomizing(int value)
     {
-        switch(value)
+        Material[] gachaponMaterials = Get<GameObject>((int)GameObjects.Gachapon).transform.Find("GachaponA").GetComponent<SkinnedMeshRenderer>().materials;
+        switch (value)
         {
             //³É³É °¡Ã­
             case 100011:

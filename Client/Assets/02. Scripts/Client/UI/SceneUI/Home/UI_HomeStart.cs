@@ -49,7 +49,10 @@ public class UI_HomeStart : UI_Scene
 
         Get<GameObject>((int)GameObjects.PresentButton).BindEvent((PointerEventData) => {
             Managers.Network.GetPacketManager().SendCurrencyAmountRequestPacket();
-            Managers.UI.ShowPopUpUI<UI_Present>();
+            Managers.UI.CloseAllPopUpUI();
+            Managers.UI.CloseSceneUI();
+            var ui = Managers.UI.ShowSceneUI<UI_Present>();
+            ui.Init();
         });
 
         Get<GameObject>((int)GameObjects.ExitButton).BindEvent((PointerEventData) => {
