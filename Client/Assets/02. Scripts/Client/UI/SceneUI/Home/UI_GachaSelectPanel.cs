@@ -40,10 +40,10 @@ public class UI_GachaSelectPanel : UI_Base
         {
             var ui = Managers.UI.MakeSubItem<UI_GachaType>(Get<GameObject>((int)GameObjects.GachaTypes).transform);
 
+            ui.SetGachaType(group.Value.Index);
             ui.Init();
 
             ui.SetName(group.Value.Name);
-            ui.SetGachaType(group.Value.Index);
             ui.SetRequireResource(group.Value.Pay_Item1_Index, group.Value.Pay_Item2_Index);
 
             TypeCount++;

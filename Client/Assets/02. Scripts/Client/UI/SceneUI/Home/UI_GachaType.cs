@@ -11,10 +11,12 @@ public class UI_GachaType : UI_Base
         Name,
         Image,
         GachaButton,
+        ItemInfoPanel,
     }
 
     bool isInitialized = false;
     int GachaTypeNum = 0;
+    int GachaGroupIndex = 0;
 
     int RequireResource1Index = 0;
     int RequireResource1Amount = 0;
@@ -33,6 +35,12 @@ public class UI_GachaType : UI_Base
     public void SetGachaType(int value)
     {
         GachaTypeNum = value;
+        SetGachaGroupIndex(Managers.Data.GachaGroupDict[value].Gacha_Group);
+    }
+
+    public void SetGachaGroupIndex(int value)
+    {
+        GachaGroupIndex = value; 
     }
 
     public void SetName(string name)
@@ -119,6 +127,25 @@ public class UI_GachaType : UI_Base
         GetComponent<RectTransform>().localPosition = Vector3.zero;
         GetComponent<RectTransform>().localScale = Vector3.one;
 
+        var itemInfoPanel = Get<GameObject>((int)GameObjects.ItemInfoPanel).GetComponent<UI_ItemInfoPanel>();
+        
+        if (itemInfoPanel == null) return;
+
+        itemInfoPanel.Init();
+
+        int cnt = 0;
+
+        foreach (var data in Managers.Data.GachaGroupItemDict)
+        {
+            if (data.Value.Gacha_Group != GachaGroupIndex) continue;
+
+            itemInfoPanel.AddItemInfoList(data.Value.Reward_Item_Index);
+            cnt++;
+
+            if (cnt >= 12) break;
+        }
+
         isInitialized = true;
     }
+
 }
