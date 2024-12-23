@@ -14,6 +14,7 @@ public class UIManager
     UI_Scene _sceneUI = null; // 팝업으로 여는거 말고 고정되어 있는 놈이 누구임
     UI_AlwaysOnTop _AlwaysOnTopUI = null; // 항상 가장 위에 있어야 하는 놈이 누구임
 
+    public int lastGachaType = 0;
     public GameObject Root
     {
         get

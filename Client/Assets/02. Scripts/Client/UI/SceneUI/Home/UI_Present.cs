@@ -22,8 +22,8 @@ public class UI_Present : UI_Scene
     bool isInitialized = false;
 
     void Start()
-    {    
-        if(!isInitialized) Init();
+    {
+        if (!isInitialized) Init();
     }
 
     public override void Init()
@@ -43,7 +43,7 @@ public class UI_Present : UI_Scene
         }, Define.UIEvent.Click, true, true);
 
         isInitialized = true;
-        
+
     }
 
     private void Update()

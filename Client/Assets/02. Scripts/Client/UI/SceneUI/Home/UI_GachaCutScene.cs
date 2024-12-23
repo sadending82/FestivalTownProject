@@ -34,13 +34,16 @@ public class UI_GachaCutScene : UI_Scene
             SkipCutScene();
         }, Define.UIEvent.Click, true, true);
 
+        this.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
+        this.GetComponent<Canvas>().worldCamera = Camera.main;
+        this.GetComponent<Canvas>().planeDistance = Camera.main.nearClipPlane + 0.001f;
+
         isInitialized = true;
     }
     private void SkipCutScene()
     {
         SendGachaRequest();
     }
-
 
     public void SendGachaRequest()
     {

@@ -14,6 +14,7 @@ public class UI_GachaResult : UI_PopUp
     }
 
     bool isInitialized = false;
+    int GachaType;
 
     void Start()
     {
@@ -55,12 +56,9 @@ public class UI_GachaResult : UI_PopUp
         Get<GameObject>((int)GameObjects.OkButton).BindEvent((PointerEventData) =>
         {
             Managers.UI.CloseSceneUI();
-            var ui = Managers.UI.ShowSceneUI<UI_HomeStart>();
+            var ui = Managers.UI.ShowSceneUI<UI_Present>();
             ui.Init();
-            ui.SetCustomizing();
             Managers.UI.ClosePopUpUI(this);
-            var popUpUi = Managers.UI.ShowPopUpUI<UI_HomeScene>();
-            popUpUi.Init();
         });
     }
 }

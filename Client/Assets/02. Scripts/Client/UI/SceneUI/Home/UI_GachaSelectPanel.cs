@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class UI_GachaSelectPanel : UI_Base
 {
@@ -48,8 +49,7 @@ public class UI_GachaSelectPanel : UI_Base
             TypeCount++;
         }
 
-        CurrentGachaOn();
-
+        SelectLastGachaType();
     }
 
     void AllGachaOff()
@@ -69,6 +69,7 @@ public class UI_GachaSelectPanel : UI_Base
     {
         AllGachaOff();
         Get<GameObject>((int)GameObjects.GachaTypes).transform.GetChild(CurrentSelected).gameObject.SetActive(true);
+        Managers.UI.lastGachaType = CurrentSelected;
     }
 
     public void SelectNextGacha()
@@ -88,6 +89,12 @@ public class UI_GachaSelectPanel : UI_Base
         {
             CurrentSelected = TypeCount - 1;
         }
+        CurrentGachaOn();
+    }
+
+    public void SelectLastGachaType()
+    {
+        CurrentSelected = Managers.UI.lastGachaType;
         CurrentGachaOn();
     }
 }
