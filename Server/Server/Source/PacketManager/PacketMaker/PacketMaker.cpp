@@ -398,7 +398,7 @@ std::vector<uint8_t> PacketMaker::MakeGameResultPacket(std::set<int>& winningTea
 			, record.gameRecord.KillCount
 			, record.gameRecord.DeathCount
 			, record.gameRecord.Bomb_Count
-			, record.earn_gold
+			, record.rewards[0].value
 			, record.gameRecord.Point
 			, record.is_mvp);
 

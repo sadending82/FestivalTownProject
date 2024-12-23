@@ -14,7 +14,7 @@ public:
 	virtual bool CheckGameEnd(int roomID) override;
 	virtual bool TimeoverGameEnd(int roomID) override;
 	virtual int CalculatePoint(sPlayerGameRecord& record, BattleResult result) override;
-	virtual int CalculateGoldReward(int point, bool isMvp, BattleResult result) override;
+	virtual std::vector<sGameReward> CalculateGameReward(int point, bool isMvp, BattleResult result) override;
 	virtual void CalculateGameResult(int roomID, std::set<int>& winningTeams) override;
 
 	virtual bool DeletePlayer(int playerID, int roomID) override;

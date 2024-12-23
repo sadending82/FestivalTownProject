@@ -99,18 +99,24 @@ struct Vector3f {
 	}
 };
 
+struct sGameReward {
+	int index = 0;
+	int value = 0;
+};
+
 struct sPlayerGameRecord {
 	int team;
-	int earn_gold;
 	int is_mvp;
+
+	std::vector<sGameReward> rewards;
 
 	UserGameRecords gameRecord;
 
-	sPlayerGameRecord() : team(0), earn_gold(0), is_mvp(false) {};
+	sPlayerGameRecord() : team(0), is_mvp(false) {};
 
 	void Init() {
 		team = 0;
-		earn_gold = 0;
+		rewards.clear();
 		is_mvp = false;
 		gameRecord.Init();
 	}

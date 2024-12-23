@@ -17,7 +17,7 @@ public:
 	virtual bool CheckGameEnd(int roomID) { return false; }
 	virtual bool TimeoverGameEnd(int roomID) { return false; }
 	virtual int CalculatePoint(sPlayerGameRecord& record, BattleResult result) { return 0; }
-	virtual int CalculateGoldReward(int point, bool isMvp, BattleResult result) { return 0; }
+	virtual std::vector<sGameReward> CalculateGameReward(int point, bool isMvp, BattleResult result) { return std::vector<sGameReward>(); }
 	virtual void CalculateGameResult(int roomID, std::set<int>& winningTeams) {}
 
 	virtual bool DeletePlayer(int playerID, int roomID) { return false; }

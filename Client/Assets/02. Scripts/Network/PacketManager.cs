@@ -16,6 +16,8 @@ public class PacketManager : MonoBehaviour
 {
     private bool isGameEnd = false;
 
+    public long pingStartTime = 0;
+
     private Dictionary<ePacketType, PacketProcessor> processorDict { get; set; }
 
     public PacketProcessor GetProcessor(ePacketType type)
@@ -159,6 +161,7 @@ public class PacketManager : MonoBehaviour
         byte[] packet = _packetMaker.MakePingCheckPacket();
         if (packet == null) { return; }
         SendPacket(packet);
+        pingStartTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
     }
 
     // ------------------ Game ------------------

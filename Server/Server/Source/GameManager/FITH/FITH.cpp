@@ -178,7 +178,7 @@ int FITH::CalculatePoint(sPlayerGameRecord& record, BattleResult result)
     return (point < 0) ? 0 : point;
 }
 
-int FITH::CalculateGoldReward(int point, bool isMvp, BattleResult result)
+std::vector<sGameReward> FITH::CalculateGameReward(int point, bool isMvp, BattleResult result)
 {
     int pointIdx = (point > 10) ? 10 : point;
 
@@ -187,31 +187,82 @@ int FITH::CalculateGoldReward(int point, bool isMvp, BattleResult result)
 
     int gold = 0;
 
+    sGameReward reward1;
+    sGameReward reward2;
+    sGameReward reward3;
+
     switch (result) {
     case BattleResult::BR_Win: {
-        gold += rewards.Win_Reward1_Value;
-        if (isMvp) {
-            gold += BonusRewards.MVP_Reward1_Value;
+        if (rewards.Win_Reward1_Index != 0) {
+            reward1.index = rewards.Win_Reward1_Index;
+            reward1.value += rewards.Win_Reward1_Value;
+            if (isMvp) {
+                reward1.value += BonusRewards.MVP_Reward1_Value;
+            }
+            else {
+                reward1.value += BonusRewards.Win_Reward1_Value;
+            }
         }
-        else {
-            gold += BonusRewards.Win_Reward1_Value;
+
+        if (rewards.Win_Reward2_Index != 0) {
+            reward2.index = rewards.Win_Reward2_Index;
+            reward2.value += rewards.Win_Reward2_Value;
+            if (isMvp) {
+                reward2.value += BonusRewards.MVP_Reward2_Value;
+            }
+            else {
+                reward2.value += BonusRewards.Win_Reward2_Value;
+            }
+        }
+
+        if (rewards.Win_Reward3_Index != 0) {
+            reward3.index = rewards.Win_Reward3_Index;
+            reward3.value += rewards.Win_Reward3_Value;
+            if (isMvp) {
+                reward3.value += BonusRewards.MVP_Reward3_Value;
+            }
+            else {
+                reward3.value += BonusRewards.Win_Reward3_Value;
+            }
         }
     }
              break;
 
     case BattleResult::BR_Lose: {
-        gold += rewards.Lose_Reward1_Value + BonusRewards.Lose_Reward1_Value;
+        if (rewards.Lose_Reward1_Index != 0) {
+            reward1.index = rewards.Lose_Reward1_Index;
+            reward1.value += rewards.Lose_Reward1_Value + BonusRewards.Lose_Reward1_Value;
+        }
+        if (rewards.Lose_Reward2_Index != 0) {
+            reward2.index = rewards.Lose_Reward2_Index;
+            reward2.value += rewards.Lose_Reward2_Value + BonusRewards.Lose_Reward2_Value;
+        }
+        if (rewards.Lose_Reward3_Index != 0) {
+            reward3.index = rewards.Lose_Reward3_Index;
+            reward3.value += rewards.Lose_Reward3_Value + BonusRewards.Lose_Reward3_Value;
+        }
     }
               break;
     case BattleResult::BR_Draw: {
-        gold += rewards.Draw_Reward1_Value + BonusRewards.Draw_Reward1_Value;
+        if (rewards.Draw_Reward1_Index != 0) {
+            reward1.index = rewards.Draw_Reward1_Index;
+            reward1.value += rewards.Draw_Reward1_Value + BonusRewards.Draw_Reward1_Value;
+        }
+        if (rewards.Draw_Reward2_Index != 0) {
+            reward2.index = rewards.Draw_Reward2_Index;
+            reward2.value += rewards.Draw_Reward2_Value + BonusRewards.Draw_Reward2_Value;
+        }
+        if (rewards.Draw_Reward3_Index != 0) {
+            reward3.index = rewards.Draw_Reward3_Index;
+            reward3.value += rewards.Draw_Reward3_Value + BonusRewards.Draw_Reward3_Value;
+        }
     }
                               break;
     default:
         break;
     }
 
-    return gold;
+    return std::vector<sGameReward>{reward1, reward2, reward3};
 }
 
 void FITH::CalculateGameResult(int roomID, std::set<int>& winningTeams)
@@ -251,7 +302,7 @@ void FITH::CalculateGameResult(int roomID, std::set<int>& winningTeams)
 
         int point = CalculatePoint(pair.second, result);
         userGameRecord.Point = point;
-        pair.second.earn_gold = CalculateGoldReward(point, false, result);
+        pair.second.rewards = CalculateGameReward(point, false, result);
 
         if (point > mvp_point) {
             mvp_id = id;
@@ -262,7 +313,7 @@ void FITH::CalculateGameResult(int roomID, std::set<int>& winningTeams)
 
     if (winFlag == BattleResult::BR_Win) {
         if (mvp_id != INVALIDKEY) {
-            records[mvp_id].earn_gold = CalculateGoldReward(records[mvp_id].gameRecord.Point, true, BattleResult::BR_Win);
+            records[mvp_id].rewards = CalculateGameReward(records[mvp_id].gameRecord.Point, true, BattleResult::BR_Win);
             records[mvp_id].is_mvp = true;
         }
     }
@@ -287,8 +338,15 @@ void FITH::CalculateGameResult(int roomID, std::set<int>& winningTeams)
         }
 
         pDB->UpdateBattleRecords(uid, record.gameRecord);
-        pDB->UpsertUserItemCount(uid, 100001, record.earn_gold);
-        pDB->UpdateUserPoint(uid, record.gameRecord.Point);
+
+        for (int i = 0; i < record.rewards.size(); ++i) {
+            if (record.rewards[i].index == 0) {
+                continue;
+            }
+
+            COUT << record.rewards[i].index << ENDL;
+            pDB->UpsertUserItemCount(uid, record.rewards[i].index, record.rewards[i].value);
+        }
     }
 
     pPacketSender->SendGameResultPacket(roomID, winningTeams);
