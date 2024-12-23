@@ -18,7 +18,7 @@ namespace Network.PacketProcessor
             //int id = Data.Sessionid;
             long currTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
-            long pingTime = currTime - Data.Time;
+            long pingTime = currTime - Managers.Network.GetPacketManager().pingStartTime;
 
             Debug.Log($"Ping: {pingTime}m/s");
         }

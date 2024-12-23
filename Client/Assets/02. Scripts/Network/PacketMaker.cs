@@ -66,11 +66,8 @@ public class PacketMaker
 
     public byte[] MakePingCheckPacket()
     {
-        long currTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-
         var builder = new FlatBufferBuilder(1);
         PingCheck.StartPingCheck(builder);
-        PingCheck.AddTime(builder, currTime);
         var offset = PingCheck.EndPingCheck(builder);
         builder.Finish(offset.Value);
 
