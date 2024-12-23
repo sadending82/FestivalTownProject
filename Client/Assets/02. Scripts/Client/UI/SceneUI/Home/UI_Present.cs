@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class UI_Present : UI_PopUp
+public class UI_Present : UI_Scene
 {
 
     enum GameObjects
@@ -34,7 +34,12 @@ public class UI_Present : UI_PopUp
 
         Get<GameObject>((int)GameObjects.BackButton).BindEvent((PointerEventData) =>
         {
-            Managers.UI.ClosePopUpUI(GetComponent<UI_Present>());
+            Managers.UI.CloseSceneUI();
+            var ui = Managers.UI.ShowSceneUI<UI_HomeStart>();
+            var popUpUi = Managers.UI.ShowPopUpUI<UI_HomeScene>();
+            ui.Init();
+            ui.SetCustomizing();
+            popUpUi.Init();
         }, Define.UIEvent.Click, true, true);
 
         isInitialized = true;

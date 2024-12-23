@@ -54,7 +54,13 @@ public class UI_GachaResult : UI_PopUp
     {
         Get<GameObject>((int)GameObjects.OkButton).BindEvent((PointerEventData) =>
         {
-            Managers.UI.CloseGachaCutSceneUI(GetComponent<UI_GachaResult>());
+            Managers.UI.CloseSceneUI();
+            var ui = Managers.UI.ShowSceneUI<UI_HomeStart>();
+            ui.Init();
+            ui.SetCustomizing();
+            Managers.UI.ClosePopUpUI(this);
+            var popUpUi = Managers.UI.ShowPopUpUI<UI_HomeScene>();
+            popUpUi.Init();
         });
     }
 }
