@@ -193,69 +193,58 @@ std::vector<sGameReward> FITH::CalculateGameReward(int point, bool isMvp, Battle
 
     switch (result) {
     case BattleResult::BR_Win: {
-        if (rewards.Win_Reward1_Index != 0) {
-            reward1.index = rewards.Win_Reward1_Index;
-            reward1.value += rewards.Win_Reward1_Value;
-            if (isMvp) {
-                reward1.value += BonusRewards.MVP_Reward1_Value;
-            }
-            else {
-                reward1.value += BonusRewards.Win_Reward1_Value;
-            }
+        reward1.index = (rewards.Win_Reward1_Index != 0) ? rewards.Win_Reward1_Index : BonusRewards.Win_Reward1_Index;
+        reward1.value += rewards.Win_Reward1_Value;
+        if (isMvp) {
+            reward1.index = (rewards.Win_Reward1_Index != 0) ? rewards.Win_Reward1_Index : BonusRewards.MVP_Reward1_Index;
+            reward1.value += BonusRewards.MVP_Reward1_Value;
+        }
+        else {
+            reward1.value += BonusRewards.Win_Reward1_Value;
         }
 
-        if (rewards.Win_Reward2_Index != 0) {
-            reward2.index = rewards.Win_Reward2_Index;
-            reward2.value += rewards.Win_Reward2_Value;
-            if (isMvp) {
-                reward2.value += BonusRewards.MVP_Reward2_Value;
-            }
-            else {
-                reward2.value += BonusRewards.Win_Reward2_Value;
-            }
+        reward2.index = (rewards.Win_Reward2_Index != 0) ? rewards.Win_Reward2_Index : BonusRewards.Win_Reward2_Index;
+        reward2.value += rewards.Win_Reward2_Value;
+        if (isMvp) {
+            reward2.index = (reward2.index != 0) ? reward2.index : BonusRewards.MVP_Reward2_Index;
+            reward2.value += BonusRewards.MVP_Reward2_Value;
+        }
+        else {
+            reward2.value += BonusRewards.Win_Reward2_Value;
         }
 
-        if (rewards.Win_Reward3_Index != 0) {
-            reward3.index = rewards.Win_Reward3_Index;
-            reward3.value += rewards.Win_Reward3_Value;
-            if (isMvp) {
-                reward3.value += BonusRewards.MVP_Reward3_Value;
-            }
-            else {
-                reward3.value += BonusRewards.Win_Reward3_Value;
-            }
+        reward3.index = (rewards.Win_Reward3_Index != 0) ? rewards.Win_Reward3_Index : BonusRewards.Win_Reward3_Index;
+        reward3.value += rewards.Win_Reward3_Value;
+        if (isMvp) {
+            reward3.index = (reward3.index != 0) ? reward3.index : BonusRewards.MVP_Reward3_Index;
+            reward3.value += BonusRewards.MVP_Reward3_Value;
+        }
+        else {
+            reward3.value += BonusRewards.Win_Reward3_Value;
         }
     }
              break;
 
     case BattleResult::BR_Lose: {
-        if (rewards.Lose_Reward1_Index != 0) {
-            reward1.index = rewards.Lose_Reward1_Index;
-            reward1.value += rewards.Lose_Reward1_Value + BonusRewards.Lose_Reward1_Value;
-        }
-        if (rewards.Lose_Reward2_Index != 0) {
-            reward2.index = rewards.Lose_Reward2_Index;
-            reward2.value += rewards.Lose_Reward2_Value + BonusRewards.Lose_Reward2_Value;
-        }
-        if (rewards.Lose_Reward3_Index != 0) {
-            reward3.index = rewards.Lose_Reward3_Index;
-            reward3.value += rewards.Lose_Reward3_Value + BonusRewards.Lose_Reward3_Value;
-        }
+        reward1.index = (rewards.Lose_Reward1_Index != 0) ? rewards.Lose_Reward1_Index : BonusRewards.Lose_Reward1_Index;
+        reward1.value += rewards.Lose_Reward1_Value + BonusRewards.Lose_Reward1_Value;
+        
+        reward2.index = (rewards.Lose_Reward2_Index != 0) ? rewards.Lose_Reward2_Index : BonusRewards.Lose_Reward2_Index;
+        reward2.value += rewards.Lose_Reward2_Value + BonusRewards.Lose_Reward2_Value;
+
+        reward3.index = (rewards.Lose_Reward3_Index != 0) ? rewards.Lose_Reward3_Index : BonusRewards.Lose_Reward3_Index;
+        reward3.value += rewards.Lose_Reward3_Value + BonusRewards.Lose_Reward3_Value;
     }
               break;
     case BattleResult::BR_Draw: {
-        if (rewards.Draw_Reward1_Index != 0) {
-            reward1.index = rewards.Draw_Reward1_Index;
-            reward1.value += rewards.Draw_Reward1_Value + BonusRewards.Draw_Reward1_Value;
-        }
-        if (rewards.Draw_Reward2_Index != 0) {
-            reward2.index = rewards.Draw_Reward2_Index;
-            reward2.value += rewards.Draw_Reward2_Value + BonusRewards.Draw_Reward2_Value;
-        }
-        if (rewards.Draw_Reward3_Index != 0) {
-            reward3.index = rewards.Draw_Reward3_Index;
-            reward3.value += rewards.Draw_Reward3_Value + BonusRewards.Draw_Reward3_Value;
-        }
+        reward1.index = (rewards.Draw_Reward1_Index != 0) ? rewards.Draw_Reward1_Index : BonusRewards.Draw_Reward1_Index;
+        reward1.value += rewards.Draw_Reward1_Value + BonusRewards.Draw_Reward1_Value;
+
+        reward2.index = (rewards.Draw_Reward2_Index != 0) ? rewards.Draw_Reward2_Index : BonusRewards.Draw_Reward2_Index;
+        reward2.value += rewards.Draw_Reward2_Value + BonusRewards.Draw_Reward2_Value;
+
+        reward3.index = (rewards.Draw_Reward3_Index != 0) ? rewards.Draw_Reward3_Index : BonusRewards.Draw_Reward3_Index;
+        reward3.value += rewards.Draw_Reward3_Value + BonusRewards.Draw_Reward3_Value;
     }
                               break;
     default:
