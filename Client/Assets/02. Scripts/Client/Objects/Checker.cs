@@ -30,9 +30,12 @@ public class Checker : MonoBehaviour
                     packetManager.SendWeaponDeletePacket(other.gameObject.GetComponent<Weapon>().GetId());
                 }
             }
-            if (other.gameObject.tag == "Tombstone")
+            if (groundChecker == false)
             {
-                other.gameObject.SetActive(false);
+                if (other.gameObject.tag == "Tombstone" && other.gameObject.activeSelf == true)
+                {
+                    other.gameObject.SetActive(false);
+                }
             }
             if (other.gameObject.tag == "HitBox")
             {
@@ -78,6 +81,7 @@ public class Checker : MonoBehaviour
             }
         }
     }
+
     public void SetGroundChecker(bool groundChecker)
     {
         this.groundChecker = groundChecker;
