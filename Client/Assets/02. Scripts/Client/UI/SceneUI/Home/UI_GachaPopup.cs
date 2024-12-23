@@ -68,6 +68,5 @@ public class UI_GachaPopup : UI_PopUp
         Define.UIEvent.Click, true, true);
 
         isInitialized = true;
-
     }
 }

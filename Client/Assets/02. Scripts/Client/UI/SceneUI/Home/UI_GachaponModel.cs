@@ -6,13 +6,17 @@ public class UI_GachaponModel : UI_Base
 {
     enum GameObjects
     {
-        Gachapon
+        Gachapon,
+        RaycastCatcher,
     }
 
     bool isInitialized = false;
+    bool isClicked = false;
 
     private Animator animator;
     private const int MAX_GACHAPON_NUM = 5;
+
+    private string nowAnimationState;
 
     void Start()
     {
@@ -37,6 +41,7 @@ public class UI_GachaponModel : UI_Base
     {
         Get<GameObject>((int)GameObjects.Gachapon).transform.localRotation = Quaternion.identity;
         animator.SetTrigger("State");
+        nowAnimationState = "State";
 
         transform.LookAt(Camera.main.transform.GetChild(0).position);
     }
@@ -72,5 +77,36 @@ public class UI_GachaponModel : UI_Base
         string gachaponColor = "Gachapon" + Random.Range((int)1, (int)5);
         gachaponMaterials[0] = Resources.Load<Material>($"Materials/Gachapon/{gachaponColor}");
         Get<GameObject>((int)GameObjects.Gachapon).transform.Find("GachaponA").GetComponent<SkinnedMeshRenderer>().materials = gachaponMaterials;
+    }
+
+    void Update()
+    {
+        GameObject cam = Camera.main.transform.GetChild(0).gameObject;
+
+        Ray ray = cam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
+        {
+            if (nowAnimationState != "Shake")
+            {
+                ChangeAnimation("Shake");
+            }
+            if (Input.GetMouseButtonUp(0))
+            {
+            }
+        }
+        else
+        {
+            if(nowAnimationState != "State")
+            {
+                ChangeAnimation("State");
+            }
+        }
+    }
+
+    private void ChangeAnimation(string state)
+    {
+        nowAnimationState = state;
+        animator.SetTrigger(nowAnimationState);
     }
 }
