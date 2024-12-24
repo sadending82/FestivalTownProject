@@ -937,13 +937,13 @@ public class PlayerController : MonoBehaviour
     }
     public void FirstSpawn(float x, float z)
     {
-        SetDirectionByTeam();    
-
         Vector3 targetPos = new Vector3(x, Managers.Map.GetMapHeight((int)x / 2, (int)z / 2) + createHeightOffSet, z);
 
         pelvisRigidbody.velocity = Vector3.zero;      
         SetPosition(targetPos);
 
+        Managers.Player.FindPlayerById(myId).SetActive(true);
+        SetDirectionByTeam();
 
         //Managers.Sound.Play("Sfx_Ch_Respawn");
     }

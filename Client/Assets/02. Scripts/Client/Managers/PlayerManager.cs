@@ -89,7 +89,6 @@ public class PlayerManager : MonoBehaviour
         else
         {
             var playerObject = players.transform.GetChild(id).gameObject;
-            playerObject.SetActive(true);
             playerObject.GetComponent<CharacterStatus>().SetTeamNumber(teamNumber);
             playerObject.GetComponent<CharacterStatus>().SetNickName(name);
             playerObject.GetComponent<PlayerController>().SetMyId(id);
