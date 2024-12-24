@@ -81,7 +81,7 @@ namespace ActiveRagdoll
 
             driveJoint.positionSpring = 50;
             driveJoint.positionDamper = 0;
-            driveJoint.maximumForce = 10000;
+            driveJoint.maximumForce = 100;
             driveJoint.useAcceleration = false;
             for (int i = 0; i < joints.Length; ++i)
             {
@@ -105,9 +105,9 @@ namespace ActiveRagdoll
 
             JointDrive driveJoint = new JointDrive();
 
-            driveJoint.positionSpring = 4000;
+            driveJoint.positionSpring = 1000;
             driveJoint.positionDamper = 0;
-            driveJoint.maximumForce = 10000;
+            driveJoint.maximumForce = 500;
             driveJoint.useAcceleration = false;
             for (int i = 0; i < joints.Length; ++i)
             {
@@ -120,7 +120,7 @@ namespace ActiveRagdoll
                     driveJoint.positionSpring = 100;
                 }
                 joints[i].angularXDrive = joints[i].angularYZDrive = driveJoint;
-                driveJoint.positionSpring = 4000;
+                driveJoint.positionSpring = 1000;
             }
 
             driveJoint.positionDamper = 0;
