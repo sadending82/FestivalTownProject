@@ -43,7 +43,7 @@ public class PlayerCameraController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (IsMainCamera == true && isGameEnd == false)
+        if (IsMainCamera == true)
         {
             Move();
             LookAround();
