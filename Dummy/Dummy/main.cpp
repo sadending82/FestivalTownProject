@@ -9,9 +9,10 @@
 #pragma comment (lib,"MSWSock.lib")
 HANDLE g_hiocp;
 
-#define PORTNUM 45872
-#define IPADDRESS "127.0.0.1"
-//#define IPADDRESS "203.239.231.148"
+//#define PORTNUM 45872
+#define PORTNUM 30412
+//#define IPADDRESS "127.0.0.1"
+#define IPADDRESS "203.239.231.148"
 
 inline constexpr int MAX_TEST = 2000;
 inline constexpr int MAX_CLIENTS = 2000;

@@ -101,7 +101,7 @@ public class PacketManager : MonoBehaviour
         };
     }
 
-    public void SendPacket(Byte[] buffer)
+    public void SendPacket(Byte[] buffer, bool checkPing = false)
     {
         if (_connection == null)
         {
@@ -112,6 +112,10 @@ public class PacketManager : MonoBehaviour
             NetworkStream stream = _connection.GetStream();
             if (stream.CanWrite)
             {
+                if (checkPing)
+                {
+                    pingStartTime = pingStartTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                }
                 stream.Write(buffer, 0, buffer.Length);
             }
         }
@@ -160,8 +164,7 @@ public class PacketManager : MonoBehaviour
     {
         byte[] packet = _packetMaker.MakePingCheckPacket();
         if (packet == null) { return; }
-        SendPacket(packet);
-        pingStartTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        SendPacket(packet, true);
     }
 
     // ------------------ Game ------------------
