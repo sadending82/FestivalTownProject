@@ -23,11 +23,6 @@ public class UI_TimerPanel : UI_Base
     public override void Init()
     {
         Bind<GameObject>(typeof(GameObjects));
-
-        Get<GameObject>((int)GameObjects.QuitButton).BindEvent((PointerEventData) =>
-        {
-            Managers.Network.GetPacketManager().SendGameMatchingCancel();
-        }, Define.UIEvent.Click, true, true);
     }
 
     public void SetTimer()

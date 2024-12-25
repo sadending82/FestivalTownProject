@@ -1,20 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class UI_MatchingProgress : UI_PopUp
 {
     enum GameObjects
     {
         Panel,
-        BG,
+        WhiteBoard,
+        QuitButton,
         TimerPanel,
     }
+
+    bool isInitialized = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        Init();
+        if(!isInitialized) Init();
     }
 
     public override void Init()
@@ -22,5 +26,12 @@ public class UI_MatchingProgress : UI_PopUp
         base.Init();
 
         Bind<GameObject>(typeof(GameObjects));
+
+        Get<GameObject>((int)GameObjects.QuitButton).BindEvent((PointerEventData) =>
+        {
+                Managers.Network.GetPacketManager().SendGameMatchingCancel();          
+        }, Define.UIEvent.Click, true, true);
+
+        isInitialized = true;
     }
 }
