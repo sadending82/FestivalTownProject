@@ -68,6 +68,7 @@ public class NetworkSelect : EditorWindow
                 IPAddressObj.IPAddress = "203.239.231.148";
                 //PortNumberObj.PortNumber = "30412";
                 PortNumberObj.PortNumber = "45872";
+
                 break;
             case 3:
                 IPAddressObj.IPAddress = _ipAddressText;
