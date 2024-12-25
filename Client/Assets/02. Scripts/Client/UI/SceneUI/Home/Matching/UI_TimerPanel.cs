@@ -10,9 +10,7 @@ public class UI_TimerPanel : UI_Base
 
     enum GameObjects
     {
-        LabelText,
         TimerText,
-        QuitButton,
     }
 
     void Start()

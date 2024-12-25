@@ -19,6 +19,7 @@ namespace Network.PacketProcessor
             var Data = GameMatchingCancel.GetRootAsGameMatchingCancel(bb);
 
             Managers.UI.ClosePopUpUI();
+            Managers.Sound.Play("Sfx_Button_Cancel");
         }
 
         

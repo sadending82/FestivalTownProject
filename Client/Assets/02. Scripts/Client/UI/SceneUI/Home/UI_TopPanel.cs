@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,13 +7,22 @@ public class UI_TopPanel : UI_Base
 {
     enum GameObjects
     {
-        HomeButton,
-        CustomizeButton,
-        ShopButton,
-        SettingButton,
+        HomeButtonTab,
+        CustomizeButtonTab,
+        ShopButtonTab,
+        SettingButtonTab,
+    }
+
+    enum Selected
+    {
+        Home,
+        Customize,
+        Shop,   
+        Setting,
     }
 
     bool isInitialized = false;
+    Selected selected = Selected.Home;
 
     private void Start()
     {
@@ -23,7 +33,16 @@ public class UI_TopPanel : UI_Base
     {
         Bind<GameObject>(typeof(GameObjects));
 
-        Get<GameObject>((int)GameObjects.HomeButton).BindEvent((PointerEventData) =>
+        selected = Selected.Home;
+
+        UI_TopPanelButtonTab ui = Get<GameObject>((int)GameObjects.HomeButtonTab).GetComponent<UI_TopPanelButtonTab>();
+
+        ui.Init();
+        ui.SetEnable(true);
+        ui.SetParentUI(this);
+        ui.SetSelected(true);
+
+        ui.BindEventToButton((PointerEventData) =>
         {
             if (Managers.UI.GetCurrentSceneUI().GetComponent<UI_HomeStart>() == null)
             {
@@ -40,13 +59,24 @@ public class UI_TopPanel : UI_Base
 
                 Managers.UI.CloseSceneUI();
 
-                var ui = Managers.UI.ShowSceneUI<UI_HomeStart>();
-                ui.Init();
-                ui.SetCustomizing();
+                var hui = Managers.UI.ShowSceneUI<UI_HomeStart>();
+                hui.Init();
+                hui.SetCustomizing();
+
+                selected = Selected.Home;
+                SelectStuff();
+
             }
         });
 
-        Get<GameObject>((int)GameObjects.CustomizeButton).BindEvent((PointerEventData) =>
+        ui = Get<GameObject>((int)GameObjects.CustomizeButtonTab).GetComponent<UI_TopPanelButtonTab>();
+
+        ui.Init();
+        ui.SetEnable(true);
+        ui.SetParentUI(this);
+        ui.SetSelected(false);
+
+        ui.BindEventToButton((PointerEventData) =>
         {
             if (Managers.UI.GetCurrentSceneUI().GetComponent<UI_Customize>() == null)
             {
@@ -56,7 +86,14 @@ public class UI_TopPanel : UI_Base
             }    
         });
 
-        Get<GameObject>((int)GameObjects.ShopButton).BindEvent((PointerEventData) =>
+        ui = Get<GameObject>((int)GameObjects.ShopButtonTab).GetComponent<UI_TopPanelButtonTab>();
+
+        ui.Init();
+        ui.SetEnable(false);
+        ui.SetParentUI(this);
+        ui.SetSelected(false);
+
+        Get<GameObject>((int)GameObjects.ShopButtonTab).BindEvent((PointerEventData) =>
         {
             if (Managers.UI.GetCurrentSceneUI().GetComponent<UI_Shop>() == null)
             {
@@ -64,7 +101,14 @@ public class UI_TopPanel : UI_Base
             }
         });
 
-        Get<GameObject>((int)GameObjects.SettingButton).BindEvent((PointerEventData) =>
+        ui = Get<GameObject>((int)GameObjects.SettingButtonTab).GetComponent<UI_TopPanelButtonTab>();
+
+        ui.Init();
+        ui.SetEnable(true);
+        ui.SetParentUI(this);
+        ui.SetSelected(false);
+
+        ui.BindEventToButton((PointerEventData) =>
         {
             if (Managers.UI.GetCurrentSceneUI().GetComponent<UI_Setting>() == null)
             {
@@ -102,6 +146,10 @@ public class UI_TopPanel : UI_Base
             Managers.UI.CloseSceneUI();
             var ui = Managers.UI.ShowSceneUI<UI_Customize>();
             ui.Init();
+
+            selected = Selected.Customize;
+            SelectStuff();
+
         }
 
         if (timeOut < 0f)
@@ -111,5 +159,15 @@ public class UI_TopPanel : UI_Base
             ui.NoticeTextChange("인벤토리에 접속할 수 없습니다.");
             ui.BindPopupCloseEvent();
         }
+    }
+
+    public void SelectStuff()
+    {
+        foreach(GameObjects obj in Enum.GetValues(typeof(GameObjects)))
+        {
+            Get<GameObject>((int)obj).GetComponent<UI_TopPanelButtonTab>().SetSelected(false);
+        }
+
+        Get<GameObject>((int)selected).GetComponent<UI_TopPanelButtonTab>().SetSelected(true);
     }
 }
