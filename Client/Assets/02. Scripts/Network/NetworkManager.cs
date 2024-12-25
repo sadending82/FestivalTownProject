@@ -77,7 +77,7 @@ public class NetworkManager : MonoBehaviour
     {
         try
         {
-            Connection = new TcpClient("203.239.231.148", int.Parse("30412"));
+            Connection = new TcpClient("203.239.231.148", int.Parse("45872"));
         }
         catch (Exception e)
         {

@@ -14,13 +14,17 @@ public class UI_HomeStart : UI_Scene
         GameStartButton,
         PresentButton,
         UI_CharacterModel,
-        ExitButton,
         AccountInitializeButton,
         GetMoneyButton,
         GetDiamondButton,
         EventButton,
         EventAquireableMark,
+        AchivementButton,
+        LockedButton,
+        LockedButton2,
         PassButton,
+        CommingSoonButton,
+        RollingBanner,
     }
 
     bool isInitialized = false;
@@ -55,13 +59,13 @@ public class UI_HomeStart : UI_Scene
             ui.Init();
         });
 
-        Get<GameObject>((int)GameObjects.ExitButton).BindEvent((PointerEventData) => {
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
-#endif
-        });
+//        Get<GameObject>((int)GameObjects.ExitButton).BindEvent((PointerEventData) => {
+//#if UNITY_EDITOR
+//            UnityEditor.EditorApplication.isPlaying = false;
+//#else
+//        Application.Quit();
+//#endif
+//        });
 
         Get<GameObject>((int)GameObjects.AccountInitializeButton).BindEvent((PointerEventData) =>
         {

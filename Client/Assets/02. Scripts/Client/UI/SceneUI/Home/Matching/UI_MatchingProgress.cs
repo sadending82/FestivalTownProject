@@ -29,9 +29,17 @@ public class UI_MatchingProgress : UI_PopUp
 
         Get<GameObject>((int)GameObjects.QuitButton).BindEvent((PointerEventData) =>
         {
-                Managers.Network.GetPacketManager().SendGameMatchingCancel();          
-        }, Define.UIEvent.Click, true, true);
+            Managers.Network.GetPacketManager().SendGameMatchingCancel();
+        });
 
         isInitialized = true;
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyUp(KeyCode.Escape))
+        {
+            Managers.Network.GetPacketManager().SendGameMatchingCancel();
+        }
     }
 }
