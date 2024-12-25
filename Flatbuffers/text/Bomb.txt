@@ -1,0 +1,19 @@
+include "Utilities.fbs";
+
+namespace PacketTable.ObjectTable;
+
+table BombPosition{
+pos:PacketTable.UtilitiesTable.Vec3f;
+id:int;
+}
+
+table BombSpawn{
+pos:[PacketTable.UtilitiesTable.Vec3f];
+id:[int];
+explosion_delay_time:[int];
+}
+
+table BombExplosion{
+pos:PacketTable.UtilitiesTable.Vec3f;
+id:int;
+}

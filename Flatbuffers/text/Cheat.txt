@@ -1,0 +1,12 @@
+include "Utilities.fbs";
+
+namespace PacketTable.CheatTable;
+
+table AccountReset{
+uid:int;
+}
+
+table GetCurrency{
+item_code:int;
+count:int;
+}

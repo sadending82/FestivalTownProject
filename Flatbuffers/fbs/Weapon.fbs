@@ -1,0 +1,18 @@
+include "Utilities.fbs";
+
+namespace PacketTable.ObjectTable;
+
+table WeaponPosition{
+pos:PacketTable.UtilitiesTable.Vec3f;
+id:int;
+}
+
+table WeaponSpawn{
+pos:[PacketTable.UtilitiesTable.Vec3f];
+id:[int];
+type:[int];
+}
+
+table WeaponDelete{
+id:int;
+}

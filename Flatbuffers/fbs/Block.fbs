@@ -1,0 +1,13 @@
+include "Utilities.fbs";
+
+namespace PacketTable.ObjectTable;
+
+table BlockPosition{
+pos:PacketTable.UtilitiesTable.Vec3f;
+id:int;
+}
+
+table BlockDrop{
+pos:[PacketTable.UtilitiesTable.Vec2i];
+type:[int];
+}

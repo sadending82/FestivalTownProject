@@ -1,0 +1,158 @@
+include "Utilities.fbs";
+
+namespace PacketTable.PlayerTable;
+
+table PlayerPos{
+id:int;
+pos:PacketTable.UtilitiesTable.Vec3f;
+direction:PacketTable.UtilitiesTable.Vec3f;
+}
+
+table PlayerInfo{
+id:int;
+pos:PacketTable.UtilitiesTable.Vec3f;
+direction:PacketTable.UtilitiesTable.Vec3f;
+team:int;
+character_type:int;
+character_customizing:PacketTable.UtilitiesTable.CharacterCustomizing;
+nickname:string;
+}
+
+table PlayerSync{
+id:int;
+pos:PacketTable.UtilitiesTable.Vec3f;
+direction:PacketTable.UtilitiesTable.Vec3f;
+stamina:int;
+}
+
+table PlayerAdd{
+players:[PlayerInfo];
+}
+
+table PlayerDelete{
+id:int;
+}
+
+table PlayerMove {
+id:int;
+pos:PacketTable.UtilitiesTable.Vec3f;
+direction:PacketTable.UtilitiesTable.Vec3f;
+state:int;
+}
+
+table PlayerStop {
+id:int;
+pos:PacketTable.UtilitiesTable.Vec3f;
+direction:PacketTable.UtilitiesTable.Vec3f;
+state:int;
+}
+
+table PlayerGrabBomb {
+id:int;
+pos:PacketTable.UtilitiesTable.Vec3f;
+direction:PacketTable.UtilitiesTable.Vec3f;
+bomb_id:int;
+}
+
+table PlayerDropBomb {
+id:int;
+pos:PacketTable.UtilitiesTable.Vec3f;
+bomb_id:int;
+}
+
+table PlayerThrowBomb {
+id:int;
+pos:PacketTable.UtilitiesTable.Vec3f;
+direction:PacketTable.UtilitiesTable.Vec3f;
+bomb_id:int;
+}
+
+table PlayerGrabWeapon {
+id:int;
+pos:PacketTable.UtilitiesTable.Vec3f;
+direction:PacketTable.UtilitiesTable.Vec3f;
+weapon_id:int;
+}
+
+table PlayerAnimation {
+id:int;
+pos:PacketTable.UtilitiesTable.Vec3f;
+direction:PacketTable.UtilitiesTable.Vec3f;
+animation:int;
+remain_stamina:int;
+}
+
+table PlayerDead{
+id:int;
+pos:PacketTable.UtilitiesTable.Vec3f;
+direction:PacketTable.UtilitiesTable.Vec3f;
+respawn_time:int;
+}
+
+table PlayerDamageReceive{
+target_id:int;
+attacker_id:int;
+weapon:int;
+attack_type:int;
+knockback_direction:PacketTable.UtilitiesTable.Vec3f;
+}
+
+table PlayerCalculatedDamage{
+target_id:int;
+attack_type:int;
+hp:int;
+damage_amount:int;
+target_stamina_loss:int;
+knockback_direction:PacketTable.UtilitiesTable.Vec3f;
+}
+
+table PlayerRespawn{
+id:int;
+hp:int;
+pos:PacketTable.UtilitiesTable.Vec3f;
+direction:PacketTable.UtilitiesTable.Vec3f;
+}
+
+table PlayerCollisionToBlock{
+id:int;
+}
+
+table PlayerGroggy{
+id:int;
+}
+
+table PlayerGroggyRecovery{
+id:int;
+recovery_value:int;
+}
+
+table PlayerGrabOtherPlayer{
+id:int;
+pos:PacketTable.UtilitiesTable.Vec3f;
+direction:PacketTable.UtilitiesTable.Vec3f;
+hand_pos:PacketTable.UtilitiesTable.Vec3f;
+is_left_hand:bool;
+
+target_id:int;
+target_head_pos:PacketTable.UtilitiesTable.Vec3f;
+}
+
+table PlayerThrowOtherPlayer{
+id:int;
+pos:PacketTable.UtilitiesTable.Vec3f;
+direction:PacketTable.UtilitiesTable.Vec3f;
+
+target_id:int;
+target_pos:PacketTable.UtilitiesTable.Vec3f;
+target_direction:PacketTable.UtilitiesTable.Vec3f;
+}
+
+table PlayerFlyingKick{
+player_info:PlayerPos;
+}
+
+table PlayerDash{
+player_info:PlayerPos;
+}
+
+root_type PlayerPos;
