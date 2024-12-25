@@ -43,5 +43,5 @@ enum ePlayerMoveState
     PS_JUMPSTOP
 };
 
-inline constexpr int BUFSIZE = 1000;
+inline constexpr int BUFSIZE = 4000;
 inline constexpr int INVALID_ID = -1;

@@ -12,10 +12,6 @@ namespace Network.PacketProcessor
     {
         public override void Process(PacketManager packetmanager, byte[] data)
         {
-            var bb = new ByteBuffer(data);
-            var Data = PingCheck.GetRootAsPingCheck(bb);
-
-            //int id = Data.Sessionid;
             long currTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
             long pingTime = currTime - Managers.Network.GetPacketManager().pingStartTime;

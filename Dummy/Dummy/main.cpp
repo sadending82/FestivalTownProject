@@ -14,8 +14,8 @@ HANDLE g_hiocp;
 //#define IPADDRESS "127.0.0.1"
 #define IPADDRESS "203.239.231.148"
 
-inline constexpr int MAX_TEST = 2000;
-inline constexpr int MAX_CLIENTS = 2000;
+inline constexpr int MAX_TEST = 1000;
+inline constexpr int MAX_CLIENTS = 1000;
 
 std::array<int, MAX_CLIENTS> client_map;
 std::array<DummyClient, MAX_CLIENTS> g_clients;
@@ -303,7 +303,7 @@ void TestThread()
 				auto pack = pm.MakePlayerPosSyncPacket(g_clients[i].ingameId, g_clients[i].position, g_clients[i].direction, 100);
 				g_clients[i].DoSend(pack.data(), pack.size());
 			}
-			if (g_clients[i].lastMovePacketSend + 0.5s <= high_resolution_clock::now())
+			if (g_clients[i].lastMovePacketSend + 1s <= high_resolution_clock::now())
 			{
 				g_clients[i].lastMovePacketSend = high_resolution_clock::now();
 				g_clients[i].direction.y += 0.005;
