@@ -17,7 +17,11 @@ namespace Network.PacketProcessor
             //int id = Data.Sessionid;
 
             packetmanager.SendHeartBeatPacket();
-            packetmanager.SendPingCheckPacket();
+
+            if (Managers.Cheat.IsEnable() == true)
+            {
+                packetmanager.SendPingCheckPacket();
+            }
         }
 
         
