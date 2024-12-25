@@ -3,112 +3,87 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using NetworkProtocol;
+using JetBrains.Annotations;
 
 public class NonRagdollPlayerController : MonoBehaviour
 {
-    // TODO: 추가 - 착용아이템 - 착용 아이템 세팅 할 수 있도록 수정
-
     private int maxPlayerNum = 6;
+
+    public GameObject podiums;
+
     public void SetPlayer()
     {
         int winningTeam = Managers.Game.GetWinningTeam();
 
-        // TODO: 추가 - 모드 - 모드별 플레이어 위치 수정
-        if (Managers.Game.gameMode == eGameMode.FITH_Team_Battle_6)
+        int playerCount = 0;
+        int winnerCount = 0;
+        int loserCount = 0;
+
+        GameObject winnerPositions = null;
+        GameObject loserPositions = null;
+
+        switch (Managers.Game.gameMode)
         {
-            Vector3 winnerOffset = new Vector3(-2, 75.3f, 13);
-            float winnerXInterval = 2f;
-            Vector3 loserOffset = new Vector3(-2, 73.3f, 11);
-            float loserXInterval = 2f;
-
-            int playerCount = 0;
-
-            for (int i = 0; i < maxPlayerNum; ++i)
-            {
-                GameObject tPlayer = Managers.Player.FindPlayerById(i);
-                if (tPlayer.activeSelf == true)
+            case eGameMode.FITH_Team_Battle_6:
                 {
-                    int teamNumber = tPlayer.GetComponent<CharacterStatus>().GetTeamNumber();
-                    GameObject rPlayer = this.transform.GetChild(playerCount).gameObject;
-                    rPlayer.SetActive(true);
-
-                    // 이긴 팀 플레이어면
-                    if (winningTeam == teamNumber)
-                    {
-                        // 스킨 적용
-                        List<int> itemList = Managers.Game.GetCharacterCustomizingById(i);
-                        foreach (int itemCode in itemList)
-                        {
-                            rPlayer.GetComponent<NonRagdollPlayerState>().ChangeCustomizing(itemCode);
-                        }
-
-                        rPlayer.transform.position = winnerOffset;
-                        winnerOffset.x += winnerXInterval;
-                        rPlayer.GetComponent<NonRagdollPlayerAnimationController>().SetWinAnimation();
-                    }
-                    // 진 팀 플레이어면
-                    else
-                    {
-                        // 스킨 적용
-                        List<int> itemList = Managers.Game.GetCharacterCustomizingById(i);
-                        foreach (int itemCode in itemList)
-                        {
-                            rPlayer.GetComponent<NonRagdollPlayerState>().ChangeCustomizing(itemCode);
-                        }
-
-                        rPlayer.transform.position = loserOffset;
-                        loserOffset.x += loserXInterval;
-                        rPlayer.GetComponent<NonRagdollPlayerAnimationController>().SetLoseAnimation();
-                    }
-                    playerCount++;
+                    podiums.transform.GetChild(2).gameObject.SetActive(true);
+                    winnerPositions = podiums.transform.GetChild(2).transform.GetChild(0).gameObject;
+                    loserPositions = podiums.transform.GetChild(2).transform.GetChild(1).gameObject;
                 }
-            }
+                break;
+            case eGameMode.FITH_Team_Battle_4:
+                {
+                    podiums.transform.GetChild(1).gameObject.SetActive(true);
+                    winnerPositions = podiums.transform.GetChild(1).transform.GetChild(0).gameObject;
+                    loserPositions = podiums.transform.GetChild(1).transform.GetChild(1).gameObject;
+                }
+                break;
+            case eGameMode.FITH_Indiv_Battle_3:
+            case eGameMode.FITH_Indiv_Battle_2:
+                {
+                    podiums.transform.GetChild(0).gameObject.SetActive(true);
+                    winnerPositions = podiums.transform.GetChild(0).transform.GetChild(0).gameObject;
+                    loserPositions = podiums.transform.GetChild(0).transform.GetChild(1).gameObject;
+                }
+                break;
+            default:
+                {
+                    Debug.Log("ERROR!!! SetPlayer(): Wrong GameMode !!!");
+                }
+                break;
         }
-        else if(Managers.Game.gameMode == eGameMode.FITH_Indiv_Battle_3)
+
+        for (int i = 0; i < maxPlayerNum; ++i)
         {
-            Vector3 winnerOffset = new Vector3(0, 75.3f, 13);
-            Vector3 loserOffset = new Vector3(-1, 73.3f, 11);
-            float loserXInterval = 2f;
-
-            int playerCount = 0;
-            for (int i = 0; i < maxPlayerNum; ++i)
+            GameObject tPlayer = Managers.Player.FindPlayerById(i);
+            if (tPlayer.activeSelf == true)
             {
-                GameObject tPlayer = Managers.Player.FindPlayerById(i);
-                if (tPlayer.activeSelf == true)
+                int teamNumber = tPlayer.GetComponent<CharacterStatus>().GetTeamNumber();
+                GameObject rPlayer = this.transform.GetChild(playerCount).gameObject;
+                rPlayer.SetActive(true);
+
+                // 스킨 적용
+                List<int> itemList = Managers.Game.GetCharacterCustomizingById(i);
+                foreach (int itemCode in itemList)
                 {
-                    int teamNumber = tPlayer.GetComponent<CharacterStatus>().GetTeamNumber();
-                    GameObject rPlayer = this.transform.GetChild(playerCount).gameObject;
-                    rPlayer.SetActive(true);
-
-                    // 이긴 팀 플레이어면
-                    if (winningTeam == teamNumber)
-                    {
-                        // 스킨 적용
-                        List<int> itemList = Managers.Game.GetCharacterCustomizingById(i);
-                        foreach (int itemCode in itemList)
-                        {
-                            rPlayer.GetComponent<NonRagdollPlayerState>().ChangeCustomizing(itemCode);
-                        }
-
-                        rPlayer.transform.position = winnerOffset;
-                        rPlayer.GetComponent<NonRagdollPlayerAnimationController>().SetWinAnimation();
-                    }
-                    // 진 팀 플레이어면
-                    else
-                    {
-                        // 스킨 적용
-                        List<int> itemList = Managers.Game.GetCharacterCustomizingById(i);
-                        foreach (int itemCode in itemList)
-                        {
-                            rPlayer.GetComponent<NonRagdollPlayerState>().ChangeCustomizing(itemCode);
-                        }
-
-                        rPlayer.transform.position = loserOffset;
-                        loserOffset.x += loserXInterval;
-                        rPlayer.GetComponent<NonRagdollPlayerAnimationController>().SetLoseAnimation();
-                    }
-                    playerCount++;
+                    rPlayer.GetComponent<NonRagdollPlayerState>().ChangeCustomizing(itemCode);
                 }
+
+                // 이긴 팀 플레이어면
+                if (winningTeam == teamNumber)
+                {
+                    rPlayer.transform.position = winnerPositions.transform.GetChild(winnerCount).transform.position;
+                    rPlayer.GetComponent<NonRagdollPlayerAnimationController>().SetWinAnimation();
+                    winnerCount++;
+                }
+                // 진 팀 플레이어면
+                else
+                {
+                    rPlayer.transform.position = loserPositions.transform.GetChild(loserCount).transform.position;
+                    rPlayer.GetComponent<NonRagdollPlayerAnimationController>().SetLoseAnimation();
+                    loserCount++;
+                }
+                playerCount++;
             }
         }
     }
