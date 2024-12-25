@@ -29,10 +29,6 @@ public class UI_TopPanel : UI_Base
             {
                 if (Managers.UI.GetCurrentSceneUI().GetComponent<UI_Customize>() != null)
                 {
-                    foreach (var itemPair in Managers.Data.ClientLocalCustomizingDataDict)
-                    {
-                        Managers.Data.PlayerCustomizingData[itemPair.Key] = itemPair.Value;
-                    }
 
                     Managers.UI.CloseSceneUI();
 
