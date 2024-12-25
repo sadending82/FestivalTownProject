@@ -29,6 +29,8 @@ public class UI_TopPanel : UI_Base
             {
                 if (Managers.UI.GetCurrentSceneUI().GetComponent<UI_Customize>() != null)
                 {
+                    // 이 부분에 기존에는 강제로 클라 로컬 데이터로 변경하는 코드가 들어있었습니다.
+                    // 그래서 문제가 생겼던것 같습니다.
 
                     Managers.UI.CloseSceneUI();
 
