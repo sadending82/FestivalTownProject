@@ -287,7 +287,7 @@ void Server::Run()
     mMatchingThread = std::thread(&MatchMakingManager::RunMatchingThreadWorker, mMatchMakingManager);
     SYSTEM_INFO si;
     GetSystemInfo(&si);
-    for (int i = 0; i <i < (int)si.dwNumberOfProcessors; ++i) {
+    for (int i = 0; i < (int)si.dwNumberOfProcessors; ++i) {
         WorkerThread* pWorkerThreadRef = new WorkerThread(this, mPacketManager);
         mWorkerThreadRefs.push_back(pWorkerThreadRef);
         mWorkerThreads.emplace_back(std::thread(&WorkerThread::RunWorker, pWorkerThreadRef));
