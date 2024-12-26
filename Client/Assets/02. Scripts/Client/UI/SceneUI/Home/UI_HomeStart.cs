@@ -59,14 +59,6 @@ public class UI_HomeStart : UI_Scene
             ui.Init();
         });
 
-//        Get<GameObject>((int)GameObjects.ExitButton).BindEvent((PointerEventData) => {
-//#if UNITY_EDITOR
-//            UnityEditor.EditorApplication.isPlaying = false;
-//#else
-//        Application.Quit();
-//#endif
-//        });
-
         Get<GameObject>((int)GameObjects.AccountInitializeButton).BindEvent((PointerEventData) =>
         {
             // 계정 초기화 버튼에서 해야할 일

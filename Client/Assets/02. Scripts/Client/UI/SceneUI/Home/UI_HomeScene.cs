@@ -13,6 +13,7 @@ public class UI_HomeScene : UI_PopUp
         DiamondText,
         TopPanel,
         PlayerDataPanel,
+        SubMenuButton,
     }
 
     bool isInitialized = false;
@@ -34,6 +35,11 @@ public class UI_HomeScene : UI_PopUp
         SetNickName(Managers.Data.GetNickName());
         SetGold(Managers.Data.GetGold());
         SetDiamond(Managers.Data.GetDiamond());
+
+        Get<GameObject>((int)GameObjects.SubMenuButton).BindEvent((PointerEventData) =>
+        {
+            Managers.UI.ShowPopUpUI<UI_SubMenu>();
+        });
 
         isInitialized = true;
     }
