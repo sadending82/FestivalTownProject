@@ -2,19 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_Customize_Item : UI_Base
 {
     enum GameObjects
     {
-        SelectedImage,
         EquipedImage,
         ItemIcon,
         ItemNameText,
     }
 
     bool isInitialized = false;
-    bool isSelected = false;
     bool isEquiped = false;
 
     int ItemIndex = -1;
@@ -33,12 +32,30 @@ public class UI_Customize_Item : UI_Base
         parentUI = parentUi;
     }
 
+    public void SetItemTexture(Define.ItemGrade Grade)
+    {
+        Sprite sprite = null;
+        switch (Grade)
+        {
+            case Define.ItemGrade.Normal:
+                sprite = Managers.Resource.LoadSprite("NormalBG");
+                break;
+            case Define.ItemGrade.Rare:
+                sprite = Managers.Resource.LoadSprite("RareBG");
+                break;
+            case Define.ItemGrade.Unique:
+                sprite = Managers.Resource.LoadSprite("UniqueBG");
+                break;
+        }
+
+        Get<GameObject>((int)GameObjects.ItemIcon).GetComponent<Image>().sprite = sprite;
+    }
+
     public override void Init()
     {
         Bind<GameObject>(typeof(GameObjects));
 
         SetEquip(false);
-        SetSelect(false);
 
         isInitialized = true;
     }
@@ -52,7 +69,7 @@ public class UI_Customize_Item : UI_Base
 
         Get<GameObject>((int)GameObjects.ItemNameText).GetComponent<TMP_Text>().text = itemData.Name;
 
-        Get<GameObject>((int)GameObjects.ItemIcon).BindEvent((PointerEventData) => {
+        gameObject.BindEvent((PointerEventData) => {
             parentUI.SetAccessory(ItemIndex);
         }, Define.UIEvent.PointerDown);
     }
@@ -68,19 +85,9 @@ public class UI_Customize_Item : UI_Base
         Get<GameObject>((int)GameObjects.EquipedImage).SetActive(isEquiped);
     }
 
-    public void SetSelect(bool select)
-    {
-        isSelected = select;
-        Get<GameObject>((int)GameObjects.SelectedImage).SetActive(isSelected);
-    }
-
     public bool IsEquiped()
     {
         return isEquiped;
     }
 
-    public bool IsSelected()
-    {
-        return isSelected; 
-    }
 }
