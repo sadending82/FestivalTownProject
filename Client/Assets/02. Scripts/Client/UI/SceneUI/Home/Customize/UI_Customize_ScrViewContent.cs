@@ -65,7 +65,7 @@ public class UI_Customize_ScrViewContent : UI_Base
     {
         if (!isInitialized) Init();
 
-        int myHeight = 500; 
+        int myHeight = 600; 
 
         myHeight += Get<GameObject>((int)GameObjects.SkinItems).GetComponent<UI_Customize_ItemGrid>().GetHeight();
         myHeight += Get<GameObject>((int)GameObjects.HeadItems).GetComponent<UI_Customize_ItemGrid>().GetHeight();

@@ -10,7 +10,6 @@ public class UI_Customize_Item : UI_Base
     {
         EquipedImage,
         ItemIcon,
-        ItemNameText,
     }
 
     bool isInitialized = false;
@@ -48,7 +47,7 @@ public class UI_Customize_Item : UI_Base
                 break;
         }
 
-        Get<GameObject>((int)GameObjects.ItemIcon).GetComponent<Image>().sprite = sprite;
+        gameObject.GetComponent<Image>().sprite = sprite;
     }
 
     public override void Init()
@@ -66,8 +65,9 @@ public class UI_Customize_Item : UI_Base
         ItemIndex = index;
 
         var itemData = Managers.Data.GetItemData(index);
+        Get<GameObject>((int)GameObjects.ItemIcon).GetComponent<Image>().sprite = Managers.Resource.LoadSprite(itemData.File_Name);
 
-        Get<GameObject>((int)GameObjects.ItemNameText).GetComponent<TMP_Text>().text = itemData.Name;
+        Get<GameObject>((int)GameObjects.ItemIcon).GetComponent<Image>().preserveAspect = true;
 
         gameObject.BindEvent((PointerEventData) => {
             parentUI.SetAccessory(ItemIndex);
