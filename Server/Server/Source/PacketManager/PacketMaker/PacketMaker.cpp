@@ -41,7 +41,7 @@ std::vector<uint8_t> PacketMaker::MakeLoginResponsePacket(int result, UserInfo u
 	}
 
 	auto db_userInfo = PacketTable::UtilitiesTable::CreateDB_UserInfo(Builder, userInfo.UID, Builder.CreateString(wstringToString(userInfo.NickName)), userInfo.UserLevel, userInfo.PassLevel
-		, userInfo.UserTitle, userInfo.ProfileSkin, userInfo.Point, userInfo.AttendanceDay, characterCustomizing);
+		,  userInfo.Point, userInfo.AttendanceDay, characterCustomizing);
 
 	Builder.Finish(PacketTable::LoginTable::CreateLoginResponse(Builder, result, db_userInfo
 		, userInfo.Gold, userInfo.Dia, userInfo.Mileage, isNewEvent, Builder.CreateVector(attendanceStatusVector)));

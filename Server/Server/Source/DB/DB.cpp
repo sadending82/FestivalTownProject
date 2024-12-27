@@ -347,7 +347,7 @@ std::pair<ERROR_CODE, UserInfo> DB::SelectUserInfoForLogin(const char* id)
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) 
 	{
 
-		SQLLEN col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11;
+		SQLLEN col1, col2, col3, col4, col5, col6, col7, col8, col9;
 		char date[11] = { 0 };
 		std::tm tDate = {};
 		SQLINTEGER t = 0;
@@ -360,12 +360,10 @@ std::pair<ERROR_CODE, UserInfo> DB::SelectUserInfoForLogin(const char* id)
 			SQLGetData(hStmt, (int)UserInfo_Field::NickName, SQL_C_WCHAR, &userInfo.NickName[0], userInfo.NickName.capacity(), &col3);
 			SQLGetData(hStmt, (int)UserInfo_Field::UserLevel, SQL_C_LONG, &userInfo.UserLevel, sizeof(userInfo.UserLevel), &col4);
 			SQLGetData(hStmt, (int)UserInfo_Field::PassLevel, SQL_C_LONG, &userInfo.PassLevel, sizeof(userInfo.PassLevel), &col5);
-			SQLGetData(hStmt, (int)UserInfo_Field::UserTitle, SQL_C_LONG, &userInfo.UserTitle, sizeof(userInfo.UserTitle), &col6);
-			SQLGetData(hStmt, (int)UserInfo_Field::ProfileSkin, SQL_C_LONG, &userInfo.ProfileSkin, sizeof(userInfo.ProfileSkin), &col7);
-			SQLGetData(hStmt, (int)UserInfo_Field::Point, SQL_C_LONG, &userInfo.Point, sizeof(userInfo.Point), &col8);
-			SQLGetData(hStmt, (int)UserInfo_Field::LastLoginTime, SQL_C_CHAR, date, sizeof(date), &col9);
-			SQLGetData(hStmt, (int)UserInfo_Field::AttendanceDay, SQL_C_LONG, &userInfo.AttendanceDay, sizeof(userInfo.AttendanceDay), &col10);
-			SQLGetData(hStmt, (int)UserInfo_Field::State, SQL_C_LONG, &t, sizeof(t), &col11);
+			SQLGetData(hStmt, (int)UserInfo_Field::Point, SQL_C_LONG, &userInfo.Point, sizeof(userInfo.Point), &col6);
+			SQLGetData(hStmt, (int)UserInfo_Field::LastLoginTime, SQL_C_CHAR, date, sizeof(date), &col7);
+			SQLGetData(hStmt, (int)UserInfo_Field::AttendanceDay, SQL_C_LONG, &userInfo.AttendanceDay, sizeof(userInfo.AttendanceDay), &col8);
+			SQLGetData(hStmt, (int)UserInfo_Field::State, SQL_C_LONG, &t, sizeof(t), &col9);
 
 			std::istringstream ssDate(date);
 			ssDate >> std::get_time(&tDate, "%Y-%m-%d");
@@ -419,7 +417,7 @@ std::pair<ERROR_CODE, UserInfo> DB::SelectUserInfo(const int uid)
 
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
 
-		SQLLEN col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11;
+		SQLLEN col1, col2, col3, col4, col5, col6, col7, col8, col9;
 		TIMESTAMP_STRUCT date{};
 		SQLINTEGER t = 0;
 
@@ -429,12 +427,10 @@ std::pair<ERROR_CODE, UserInfo> DB::SelectUserInfo(const int uid)
 			SQLGetData(hStmt, (int)UserInfo_Field::NickName, SQL_C_CHAR, &userInfo.NickName[0], userInfo.NickName.size(), &col3);
 			SQLGetData(hStmt, (int)UserInfo_Field::UserLevel, SQL_C_LONG, &userInfo.UserLevel, sizeof(userInfo.UserLevel), &col4);
 			SQLGetData(hStmt, (int)UserInfo_Field::PassLevel, SQL_C_LONG, &userInfo.PassLevel, sizeof(userInfo.PassLevel), &col5);
-			SQLGetData(hStmt, (int)UserInfo_Field::UserTitle, SQL_C_LONG, &userInfo.UserTitle, sizeof(userInfo.UserTitle), &col6);
-			SQLGetData(hStmt, (int)UserInfo_Field::ProfileSkin, SQL_C_LONG, &userInfo.ProfileSkin, sizeof(userInfo.ProfileSkin), &col7);
-			SQLGetData(hStmt, (int)UserInfo_Field::Point, SQL_C_LONG, &userInfo.Point, sizeof(userInfo.Point), &col8);
-			SQLGetData(hStmt, (int)UserInfo_Field::LastLoginTime, SQL_C_TYPE_TIMESTAMP, &date, sizeof(date), &col9);
-			SQLGetData(hStmt, (int)UserInfo_Field::AttendanceDay, SQL_C_LONG, &userInfo.AttendanceDay, sizeof(userInfo.AttendanceDay), &col10);
-			SQLGetData(hStmt, (int)UserInfo_Field::State, SQL_C_LONG, &t, sizeof(t), &col11);
+			SQLGetData(hStmt, (int)UserInfo_Field::Point, SQL_C_LONG, &userInfo.Point, sizeof(userInfo.Point), &col6);
+			SQLGetData(hStmt, (int)UserInfo_Field::LastLoginTime, SQL_C_TYPE_TIMESTAMP, &date, sizeof(date), &col7);
+			SQLGetData(hStmt, (int)UserInfo_Field::AttendanceDay, SQL_C_LONG, &userInfo.AttendanceDay, sizeof(userInfo.AttendanceDay), &col8);
+			SQLGetData(hStmt, (int)UserInfo_Field::State, SQL_C_LONG, &t, sizeof(t), &col9);
 		}
 
 		userInfo.date.tm_year = date.year;

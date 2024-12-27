@@ -29,28 +29,22 @@ public struct DB_UserInfo : IFlatbufferObject
   public byte[] GetNicknameArray() { return __p.__vector_as_array<byte>(6); }
   public int UserLevel { get { int o = __p.__offset(8); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
   public int PassLevel { get { int o = __p.__offset(10); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public int UserTitle { get { int o = __p.__offset(12); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public int ProfileSkin { get { int o = __p.__offset(14); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public int Point { get { int o = __p.__offset(16); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public int AttendanceDay { get { int o = __p.__offset(18); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public PacketTable.UtilitiesTable.CharacterCustomizing? CharacterCustomizing { get { int o = __p.__offset(20); return o != 0 ? (PacketTable.UtilitiesTable.CharacterCustomizing?)(new PacketTable.UtilitiesTable.CharacterCustomizing()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
+  public int Point { get { int o = __p.__offset(12); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int AttendanceDay { get { int o = __p.__offset(14); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public PacketTable.UtilitiesTable.CharacterCustomizing? CharacterCustomizing { get { int o = __p.__offset(16); return o != 0 ? (PacketTable.UtilitiesTable.CharacterCustomizing?)(new PacketTable.UtilitiesTable.CharacterCustomizing()).__assign(__p.__indirect(o + __p.bb_pos), __p.bb) : null; } }
 
   public static Offset<PacketTable.UtilitiesTable.DB_UserInfo> CreateDB_UserInfo(FlatBufferBuilder builder,
       int uid = 0,
       StringOffset nicknameOffset = default(StringOffset),
       int user_level = 0,
       int pass_level = 0,
-      int user_title = 0,
-      int profile_skin = 0,
       int point = 0,
       int attendance_day = 0,
       Offset<PacketTable.UtilitiesTable.CharacterCustomizing> character_customizingOffset = default(Offset<PacketTable.UtilitiesTable.CharacterCustomizing>)) {
-    builder.StartTable(9);
+    builder.StartTable(7);
     DB_UserInfo.AddCharacterCustomizing(builder, character_customizingOffset);
     DB_UserInfo.AddAttendanceDay(builder, attendance_day);
     DB_UserInfo.AddPoint(builder, point);
-    DB_UserInfo.AddProfileSkin(builder, profile_skin);
-    DB_UserInfo.AddUserTitle(builder, user_title);
     DB_UserInfo.AddPassLevel(builder, pass_level);
     DB_UserInfo.AddUserLevel(builder, user_level);
     DB_UserInfo.AddNickname(builder, nicknameOffset);
@@ -58,16 +52,14 @@ public struct DB_UserInfo : IFlatbufferObject
     return DB_UserInfo.EndDB_UserInfo(builder);
   }
 
-  public static void StartDB_UserInfo(FlatBufferBuilder builder) { builder.StartTable(9); }
+  public static void StartDB_UserInfo(FlatBufferBuilder builder) { builder.StartTable(7); }
   public static void AddUid(FlatBufferBuilder builder, int uid) { builder.AddInt(0, uid, 0); }
   public static void AddNickname(FlatBufferBuilder builder, StringOffset nicknameOffset) { builder.AddOffset(1, nicknameOffset.Value, 0); }
   public static void AddUserLevel(FlatBufferBuilder builder, int userLevel) { builder.AddInt(2, userLevel, 0); }
   public static void AddPassLevel(FlatBufferBuilder builder, int passLevel) { builder.AddInt(3, passLevel, 0); }
-  public static void AddUserTitle(FlatBufferBuilder builder, int userTitle) { builder.AddInt(4, userTitle, 0); }
-  public static void AddProfileSkin(FlatBufferBuilder builder, int profileSkin) { builder.AddInt(5, profileSkin, 0); }
-  public static void AddPoint(FlatBufferBuilder builder, int point) { builder.AddInt(6, point, 0); }
-  public static void AddAttendanceDay(FlatBufferBuilder builder, int attendanceDay) { builder.AddInt(7, attendanceDay, 0); }
-  public static void AddCharacterCustomizing(FlatBufferBuilder builder, Offset<PacketTable.UtilitiesTable.CharacterCustomizing> characterCustomizingOffset) { builder.AddOffset(8, characterCustomizingOffset.Value, 0); }
+  public static void AddPoint(FlatBufferBuilder builder, int point) { builder.AddInt(4, point, 0); }
+  public static void AddAttendanceDay(FlatBufferBuilder builder, int attendanceDay) { builder.AddInt(5, attendanceDay, 0); }
+  public static void AddCharacterCustomizing(FlatBufferBuilder builder, Offset<PacketTable.UtilitiesTable.CharacterCustomizing> characterCustomizingOffset) { builder.AddOffset(6, characterCustomizingOffset.Value, 0); }
   public static Offset<PacketTable.UtilitiesTable.DB_UserInfo> EndDB_UserInfo(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<PacketTable.UtilitiesTable.DB_UserInfo>(o);
@@ -84,11 +76,9 @@ static public class DB_UserInfoVerify
       && verifier.VerifyString(tablePos, 6 /*Nickname*/, false)
       && verifier.VerifyField(tablePos, 8 /*UserLevel*/, 4 /*int*/, 4, false)
       && verifier.VerifyField(tablePos, 10 /*PassLevel*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 12 /*UserTitle*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 14 /*ProfileSkin*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 16 /*Point*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 18 /*AttendanceDay*/, 4 /*int*/, 4, false)
-      && verifier.VerifyTable(tablePos, 20 /*CharacterCustomizing*/, PacketTable.UtilitiesTable.CharacterCustomizingVerify.Verify, false)
+      && verifier.VerifyField(tablePos, 12 /*Point*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 14 /*AttendanceDay*/, 4 /*int*/, 4, false)
+      && verifier.VerifyTable(tablePos, 16 /*CharacterCustomizing*/, PacketTable.UtilitiesTable.CharacterCustomizingVerify.Verify, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }

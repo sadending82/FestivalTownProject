@@ -405,11 +405,9 @@ struct DB_UserInfo FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_NICKNAME = 6,
     VT_USER_LEVEL = 8,
     VT_PASS_LEVEL = 10,
-    VT_USER_TITLE = 12,
-    VT_PROFILE_SKIN = 14,
-    VT_POINT = 16,
-    VT_ATTENDANCE_DAY = 18,
-    VT_CHARACTER_CUSTOMIZING = 20
+    VT_POINT = 12,
+    VT_ATTENDANCE_DAY = 14,
+    VT_CHARACTER_CUSTOMIZING = 16
   };
   int32_t uid() const {
     return GetField<int32_t>(VT_UID, 0);
@@ -422,12 +420,6 @@ struct DB_UserInfo FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   }
   int32_t pass_level() const {
     return GetField<int32_t>(VT_PASS_LEVEL, 0);
-  }
-  int32_t user_title() const {
-    return GetField<int32_t>(VT_USER_TITLE, 0);
-  }
-  int32_t profile_skin() const {
-    return GetField<int32_t>(VT_PROFILE_SKIN, 0);
   }
   int32_t point() const {
     return GetField<int32_t>(VT_POINT, 0);
@@ -445,8 +437,6 @@ struct DB_UserInfo FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            verifier.VerifyString(nickname()) &&
            VerifyField<int32_t>(verifier, VT_USER_LEVEL, 4) &&
            VerifyField<int32_t>(verifier, VT_PASS_LEVEL, 4) &&
-           VerifyField<int32_t>(verifier, VT_USER_TITLE, 4) &&
-           VerifyField<int32_t>(verifier, VT_PROFILE_SKIN, 4) &&
            VerifyField<int32_t>(verifier, VT_POINT, 4) &&
            VerifyField<int32_t>(verifier, VT_ATTENDANCE_DAY, 4) &&
            VerifyOffset(verifier, VT_CHARACTER_CUSTOMIZING) &&
@@ -470,12 +460,6 @@ struct DB_UserInfoBuilder {
   }
   void add_pass_level(int32_t pass_level) {
     fbb_.AddElement<int32_t>(DB_UserInfo::VT_PASS_LEVEL, pass_level, 0);
-  }
-  void add_user_title(int32_t user_title) {
-    fbb_.AddElement<int32_t>(DB_UserInfo::VT_USER_TITLE, user_title, 0);
-  }
-  void add_profile_skin(int32_t profile_skin) {
-    fbb_.AddElement<int32_t>(DB_UserInfo::VT_PROFILE_SKIN, profile_skin, 0);
   }
   void add_point(int32_t point) {
     fbb_.AddElement<int32_t>(DB_UserInfo::VT_POINT, point, 0);
@@ -503,8 +487,6 @@ inline ::flatbuffers::Offset<DB_UserInfo> CreateDB_UserInfo(
     ::flatbuffers::Offset<::flatbuffers::String> nickname = 0,
     int32_t user_level = 0,
     int32_t pass_level = 0,
-    int32_t user_title = 0,
-    int32_t profile_skin = 0,
     int32_t point = 0,
     int32_t attendance_day = 0,
     ::flatbuffers::Offset<PacketTable::UtilitiesTable::CharacterCustomizing> character_customizing = 0) {
@@ -512,8 +494,6 @@ inline ::flatbuffers::Offset<DB_UserInfo> CreateDB_UserInfo(
   builder_.add_character_customizing(character_customizing);
   builder_.add_attendance_day(attendance_day);
   builder_.add_point(point);
-  builder_.add_profile_skin(profile_skin);
-  builder_.add_user_title(user_title);
   builder_.add_pass_level(pass_level);
   builder_.add_user_level(user_level);
   builder_.add_nickname(nickname);
@@ -527,8 +507,6 @@ inline ::flatbuffers::Offset<DB_UserInfo> CreateDB_UserInfoDirect(
     const char *nickname = nullptr,
     int32_t user_level = 0,
     int32_t pass_level = 0,
-    int32_t user_title = 0,
-    int32_t profile_skin = 0,
     int32_t point = 0,
     int32_t attendance_day = 0,
     ::flatbuffers::Offset<PacketTable::UtilitiesTable::CharacterCustomizing> character_customizing = 0) {
@@ -539,8 +517,6 @@ inline ::flatbuffers::Offset<DB_UserInfo> CreateDB_UserInfoDirect(
       nickname__,
       user_level,
       pass_level,
-      user_title,
-      profile_skin,
       point,
       attendance_day,
       character_customizing);

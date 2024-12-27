@@ -11,8 +11,6 @@ enum class UserInfo_Field {
 	NickName,
 	UserLevel,
 	PassLevel,
-	UserTitle,
-	ProfileSkin,
 	Point,
 	LastLoginTime,
 	AttendanceDay,
@@ -38,8 +36,6 @@ struct UserInfo {
 	std::wstring NickName = L"Default";
 	int UserLevel = 0;
 	int PassLevel = 0;
-	int UserTitle = 0;
-	int ProfileSkin = 0;
 	int Point = 0;
 	std::tm date;
 	int AttendanceDay = 0;
