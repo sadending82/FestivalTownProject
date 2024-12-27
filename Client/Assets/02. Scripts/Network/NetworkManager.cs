@@ -77,7 +77,20 @@ public class NetworkManager : MonoBehaviour
     {
         try
         {
-            Connection = new TcpClient("203.239.231.148", int.Parse("45872"));
+#if UNITY_EDITOR
+            if (IPAddressObj.IPAddress != "")
+            {
+                Connection = new TcpClient(IPAddressObj.IPAddress, int.Parse(PortObj.PortNumber));
+            }
+            else throw new Exception("ip 설정 안 되었어요...");
+#elif UNITY_STANDALONE_WIN
+
+            if (IPAddressObj.IPAddress != "")
+            {
+                Connection = new TcpClient(IPAddressObj.IPAddress, int.Parse(PortObj.PortNumber));
+            }
+            else throw new Exception("ip 설정 안 되었어요...");
+#endif
         }
         catch (Exception e)
         {
