@@ -16,6 +16,11 @@ public class UI_GachaCutScene : UI_Scene
     int GachaType;
     int ResourceIndexToUse;
 
+    private float camStartFOV;
+    private const float camZoomInFOV = 7.0f;
+    private float zoomInPercent;
+    private bool isZoomin = false;
+
     void Start()
     {
         if (!isInitialized) Init();
@@ -39,6 +44,8 @@ public class UI_GachaCutScene : UI_Scene
         this.GetComponent<Canvas>().planeDistance = Camera.main.nearClipPlane + 0.001f;
 
         isInitialized = true;
+
+        StartCutScene();
     }
     private void SkipCutScene()
     {
@@ -58,4 +65,29 @@ public class UI_GachaCutScene : UI_Scene
     {
         ResourceIndexToUse = index;
     }
+    private void StartCutScene()
+    {
+        ZoomIn();
+    }
+    private void ZoomIn()
+    {
+        camStartFOV = Camera.main.transform.GetChild(0).GetComponent<Camera>().fieldOfView;
+        zoomInPercent = 0;
+        isZoomin = true;
+    }
+    private void FixedUpdate()
+    {
+        if (isZoomin)
+        {
+            zoomInPercent += Time.deltaTime * 1.2f;
+            if (zoomInPercent > 1)
+            {
+                zoomInPercent = 1;
+                isZoomin = false;
+                Get<GameObject>((int)GameObjects.UI_GachaponModel).GetComponent<UI_GachaponModel>().GachaStart();
+            }
+            Camera.main.transform.GetChild(0).GetComponent<Camera>().fieldOfView = Mathf.Lerp(camStartFOV, camZoomInFOV, zoomInPercent);
+        }
+    }
+
 }
