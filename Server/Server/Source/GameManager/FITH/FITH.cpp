@@ -515,6 +515,45 @@ void FITH::WeaponSpawn(Room* room, int roomID, eWeaponType weaponType, int spawn
     pPacketSender->SendWeaponSpawnPacket(poses, weaponIDs, weaponTypes, roomID);
 }
 
+void FITH::PlayerSpawn(Room* room, int roomID, Player* player)
+{
+    int team = player->GetTeam();
+
+    std::vector<std::pair<int, int>>& spawnPoses = pServer->GetRooms()[roomID]->GetMap().GetPlayerSpawnIndexes(team);
+
+    Vector3f pos = Vector3f();
+    bool canSpawn = false;
+
+    while (1) {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> idx_distrib(0, spawnPoses.size() - 1);
+        int idx = idx_distrib(gen);
+        int posX = spawnPoses[idx].first;
+        int posY = spawnPoses[idx].second;
+
+        for (int memberID : room->GetTeams()[team].GetMembers()) {
+            Player* member = dynamic_cast<Player*>(pServer->GetSessions()[room->GetPlayerList()[memberID]]);
+            Vector3f memberPos = ConvertVec3fToVec2i(member->GetPosition());
+
+            if (memberPos.x == posX && memberPos.y == posY) {
+                canSpawn = true;
+                break;
+            }
+            else {
+                canSpawn = true;
+            }
+        }
+
+        if (canSpawn == true) {
+            pos = ConvertVec2iToVec3f(posX, posY);
+            break;
+        }
+    }
+
+    pPacketSender->SendPlayerRespawn(player->GetInGameID(), roomID, pos);
+}
+
 bool FITH::PlayerDamageReceive(int roomID, Room* room, int attackerID, Player* attacker, int targetID, Player* target
     , Vector3f knockback_direction, eDamageType damageType)
 {

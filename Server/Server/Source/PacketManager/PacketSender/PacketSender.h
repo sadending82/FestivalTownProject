@@ -36,7 +36,7 @@ public:
 
 	void SendGameHostChange(int sessionID);
 	void SendPlayerDeadPacket(int inGameID, int roomID, int spawn_delay);
-	void SendPlayerRespawn(int inGameID, int roomID);
+	void SendPlayerRespawn(int inGameID, int roomID, Vector3f spawnPos);
 	void SendBombDropPacket(Vector3f position, int roomID, int bombID);
 	void SendWeaponSpawnPacket(std::vector<Vector3f>& positions, std::vector<int>& weaponIDs, std::vector<int>& weaponTypes, int roomID);
 	void SendWeaponDropPacket(Vector3f position, int roomID, int weaponID);

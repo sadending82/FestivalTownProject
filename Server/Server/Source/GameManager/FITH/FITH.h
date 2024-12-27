@@ -23,6 +23,7 @@ public:
 	virtual std::set<Vector3f> SetObjectSpawnPos(int roomID, int spawnCount) override;
 	virtual void BombSpawn(class Room* room, int roomID) override;
 	virtual void WeaponSpawn(class Room* room, int roomID, eWeaponType weaponType, int spawnCount) override;
+	virtual void PlayerSpawn(class Room* room, int roomID, class Player* player) override;
 
 	virtual bool PlayerDamageReceive(int roomID, class Room* room, int attackerID, class Player* attacker, int targetID, class Player* target
 		, Vector3f knockback_direction, eDamageType damageType) override;

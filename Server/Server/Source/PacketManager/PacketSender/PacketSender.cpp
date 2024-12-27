@@ -296,7 +296,7 @@ void PacketSender::SendPlayerDeadPacket(int inGameID, int roomID, int spawn_dela
     mServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
 
-void PacketSender::SendPlayerRespawn(int inGameID, int roomID)
+void PacketSender::SendPlayerRespawn(int inGameID, int roomID, Vector3f spawnPos)
 {
     int SessionID = mServer->GetRooms()[roomID]->GetPlayerList()[inGameID];
     if (SessionID == INVALIDKEY) return;
@@ -305,17 +305,8 @@ void PacketSender::SendPlayerRespawn(int inGameID, int roomID)
         return;
     }
     int team = player->GetTeam();
-    std::vector<std::pair<int, int>>& spawnPoses = mServer->GetRooms()[roomID]->GetMap().GetPlayerSpawnIndexes(team);
 
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> idx_distrib(0, spawnPoses.size() - 1);
-    int idx = idx_distrib(gen);
-    int posX = spawnPoses[idx].first;
-    int posY = spawnPoses[idx].second;
-    Vector3f pos = ConvertVec2iToVec3f(posX, posY);
-
-    std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerRespawnPacket(inGameID, roomID, pos, player->GetHP());
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerRespawnPacket(inGameID, roomID, spawnPos, player->GetHP());
     mServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
 
