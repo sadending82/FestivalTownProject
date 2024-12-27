@@ -39,6 +39,19 @@ public class ResourceManager
         return texture;
     }
 
+    public Sprite LoadSprite(string path)
+    {
+        Sprite sprite = Load<Sprite>($"Sprite/{path}");
+
+        if (sprite == null)
+        {
+            Debug.LogWarning($"{path}에 스프라이트가 없어");
+            return null;
+        }
+
+        return sprite;
+    }
+
     public GameObject Instantiate(string path, Transform parent = null)
     {
         GameObject prefab = Load<GameObject>($"Prefabs/{path}");

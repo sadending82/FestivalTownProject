@@ -125,6 +125,8 @@ public class NonRagdollPlayerState : MonoBehaviour
 
     public void CustomizingInitialize()
     {
+        skinMaterial = defaultSkin;
+        faceMaterial = defaultFace;
         SetMaterial(defaultSkin, defaultFace);
 
         if (faceItem != null)

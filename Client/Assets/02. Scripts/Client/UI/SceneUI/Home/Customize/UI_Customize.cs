@@ -2,6 +2,7 @@ using NetworkProtocol;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using static Define;
@@ -13,6 +14,7 @@ public class UI_Customize : UI_Scene
         SetCustomizingButton,
         UI_CharacterModel,
         CustomizeItemList,
+        NickName,
     }
 
     bool isInitialized = false;
@@ -43,10 +45,13 @@ public class UI_Customize : UI_Scene
             int itemType = Managers.Data.GetItemData(item.Value.ItemCode).Item_Type;
             if (itemType == (int)Define.ItemType.Resource) continue;
 
+            int itemGrade = Managers.Data.GetItemData(item.Value.ItemCode).Item_Grade;
+
             var ui = Managers.UI.MakeSubItem<UI_Customize_Item>();
             ui.Init();
             ui.SetItem(item.Value.ItemUid, item.Value.ItemCode);
             ui.SetParentUI(this);
+            ui.SetItemTexture((Define.ItemGrade)itemGrade);           
 
             scrV.SetItem(ref ui, (Define.ItemType)itemType);
 
@@ -123,6 +128,8 @@ public class UI_Customize : UI_Scene
         this.GetComponent<Canvas>().worldCamera = Camera.main;
         this.GetComponent<Canvas>().planeDistance = Camera.main.nearClipPlane + 0.001f;
 
+        Get<GameObject>((int)GameObjects.NickName).GetComponent<TMP_Text>().text = Managers.Data.GetNickName();
+
         isInitialized = true;
     }
 
@@ -151,6 +158,7 @@ public class UI_Customize : UI_Scene
             newData.ItemCode = -1;
             newData.ItemUid = -1;
             Managers.Data.ClientLocalCustomizingDataDict[itemType] = newData;
+            Debug.Log($"item Type {itemType}");
         }
 
         // 지금 버튼 누른게 같은 거 한번 더 누른게 아니라면

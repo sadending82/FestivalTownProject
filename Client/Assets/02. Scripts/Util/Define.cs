@@ -106,6 +106,13 @@ public class Define
         Event = 1,
     }
 
+    public enum ItemGrade
+    {
+        Normal = 1,
+        Rare = 2,
+        Unique = 3,
+    }
+
     public struct PlayerData
     {
         public int id;
