@@ -40,6 +40,7 @@ public:
 				return;
 			}
 
+			// 플레이어 초기화
 			player->GetPlayerStateLock().lock();
 			player->SetPlayerState(ePlayerState::PS_ALIVE);
 			player->GetPlayerStateLock().unlock();
@@ -54,7 +55,9 @@ public:
 			player->SetBomb(nullptr);
 			player->GetBombLock().unlock();
 
-			pPacketSender->SendPlayerRespawn(playerid, roomID);
+			GameMode gameMode = room->GetGameMode();
+			pServer->GetGameManagers()[gameMode]->PlayerSpawn(room, roomID, player);
+
 			//COUT << player->GetInGameID() << " 부활함\n";
 		}
 		catch (const std::exception& e) {

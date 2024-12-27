@@ -16,6 +16,7 @@ public:
 
 	int GetLife() { return mLife.load(); }
 
+	// ÆÀ ¸â¹öµéÀÇ InGameID
 	std::unordered_set<int>& GetMembers() { return mMembers; }
 
 private:
