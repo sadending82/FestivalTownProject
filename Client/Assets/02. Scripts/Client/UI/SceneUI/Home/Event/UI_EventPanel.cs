@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_EventPanel : UI_Base
 {
@@ -54,6 +55,8 @@ public class UI_EventPanel : UI_Base
 
     public void SetEventData()
     {
+        
+
         var scrV = Get<GameObject>((int)GameObjects.EventDataScrV).GetComponent<UI_EventPanelDataScrV>();
         scrV.Init();
 
@@ -63,6 +66,9 @@ public class UI_EventPanel : UI_Base
             ui.Init();
             ui.SetAquireable(false);
             ui.SetEventCode(eventMain.Key);
+
+            ui.GetComponent<Image>().sprite = Managers.Resource.LoadSprite($"{Managers.Data.EventMainDataDict[eventMain.Key].Name}");
+
             switch (eventMain.Key)
             {
                 case 32001: // 출석 이벤트

@@ -69,6 +69,11 @@ public class UI_DailyCheckItem : UI_Base
         Get<GameObject>((int)GameObjects.VerticalLayout).GetComponent<UI_DailyCheckItemVertLayout>().SetItemRewarded(itemRewarded);
     }
 
+    public void SetItemImage(Sprite sp)
+    {
+        Get<GameObject>((int)GameObjects.VerticalLayout).GetComponent<UI_DailyCheckItemVertLayout>().SetItemImage(sp);
+    }
+
     public bool IsItemRewarded()
     {
         return itemRewarded;
