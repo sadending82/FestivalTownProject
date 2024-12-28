@@ -63,6 +63,12 @@ bool DB::Connect(std::wstring odbc, std::wstring id, std::wstring password)
 		return false;
 	}
 
+	retcode = SQLSetEnvAttr(nullptr, SQL_ATTR_CONNECTION_POOLING, (SQLPOINTER)SQL_CP_ONE_PER_HENV, 0);
+	if (retcode == SQL_ERROR) {
+		DEBUGMSGNOPARAM("DB Connect Fail\n", retcode);
+		return false;
+	}
+
 	DEBUGMSGNOPARAM("DB Connect Success\n", retcode);
 
 	return true;
@@ -369,14 +375,14 @@ std::pair<ERROR_CODE, UserInfo> DB::SelectUserInfoForLogin(const char* id)
 			ssDate >> std::get_time(&tDate, "%Y-%m-%d");
 
 			userInfo.date = tDate;
-			userInfo.characterCustomizing = SelectCharacterCustomizing(userInfo.UID);
 			userInfo.State = t;
-			userInfo.Gold = SelectUserItemCount(userInfo.UID, 100001);
-
 			result = true;
 		}
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+
+		userInfo.characterCustomizing = SelectCharacterCustomizing(userInfo.UID);
+		userInfo.Gold = SelectUserItemCount(userInfo.UID, 100001);
 
 		return { ERROR_CODE::ER_NONE, userInfo };
 	}
