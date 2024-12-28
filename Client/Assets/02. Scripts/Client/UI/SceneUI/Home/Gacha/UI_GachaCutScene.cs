@@ -7,20 +7,20 @@ public class UI_GachaCutScene : UI_Scene
 {
     enum GameObjects
     {
-        Panel,
         SkipButton,
         UI_GachaponModel,
-        UI_CharacterModel,
     }
 
     bool isInitialized = false;
     int GachaType;
-    int ResourceIndexToUse;
 
     private float camStartFOV;
     private const float camZoomInFOV = 7.0f;
     private float zoomInPercent;
     private bool isZoomin = false;
+
+    private int resultItemCode;
+    private int acquiredItemCode;
 
     void Start()
     {
@@ -50,21 +50,21 @@ public class UI_GachaCutScene : UI_Scene
     }
     private void SkipCutScene()
     {
-        SendGachaRequest();
+        ShowGachaRequest();
     }
 
-    public void SendGachaRequest()
+    public void ShowGachaRequest()
     {
-        Managers.Network.GetPacketManager().SendGachaRequestPacket(GachaType, ResourceIndexToUse);
+        Managers.UI.CloseSceneUI();
+        var ui = Managers.UI.ShowSceneUI<UI_GachaResultScene>();
+        ui.SetResultItemCode(resultItemCode);
+        ui.SetAcquiredItemCode(acquiredItemCode);
+        ui.Init();
     }
 
     public void SetGachaType(int value)
     {
         GachaType = value;
-    }
-    public void SetResourceIndexToUse(int index)
-    {
-        ResourceIndexToUse = index;
     }
     private void StartCutScene()
     {
@@ -92,4 +92,17 @@ public class UI_GachaCutScene : UI_Scene
         }
     }
 
+    public void SetResultItemCode(int resultItemCode)
+    {
+        this.resultItemCode = resultItemCode;
+    }
+    public void SetAcquiredItemCode(int acquiredItemCode)
+    {
+        this.acquiredItemCode = acquiredItemCode;
+    }
+    public int GetResultItemGrade()
+    {
+        var resultItemData = Managers.Data.GetItemData(resultItemCode);
+        return resultItemData.Item_Grade;
+    }
 }

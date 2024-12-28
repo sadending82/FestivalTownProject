@@ -21,7 +21,7 @@ public class UI_GachaponModel : UI_Base
 
     private bool leverOn = false;
     public GameObject lever;
-
+    private bool isGachaDone = false;
     void Start()
     {
         if (!isInitialized) Init();
@@ -104,6 +104,15 @@ public class UI_GachaponModel : UI_Base
             lever.transform.Rotate(new Vector3(0.0f, 0.0f, Time.deltaTime * 150.0f));
         }
     }
+    private void Update()
+    {
+        if (Input.GetMouseButtonUp(0) && isGachaDone == true)
+        {
+            Debug.Log("´­·¶¾î");
+            var gachaCutScene = Managers.UI.GetCurrentSceneUI();
+            gachaCutScene.GetComponent<UI_GachaCutScene>().ShowGachaRequest();
+        }
+    }
     IEnumerator LeverOff()
     {
         yield return new WaitForSeconds(1.5f);
@@ -111,7 +120,10 @@ public class UI_GachaponModel : UI_Base
         ChangeAnimation("Shake");
         yield return new WaitForSeconds(1.5f);
         Get<GameObject>((int)GameObjects.GachaBall).transform.GetChild(Random.Range((int)0, (int)4)).gameObject.SetActive(true);
-        Get<GameObject>((int)GameObjects.GachaEffects).transform.GetChild(Random.Range((int)0, (int)2)).gameObject.SetActive(true);
+        var gachaCutScene = Managers.UI.GetCurrentSceneUI();
+        Get<GameObject>((int)GameObjects.GachaEffects).transform.GetChild(gachaCutScene.GetComponent<UI_GachaCutScene>().GetResultItemGrade() - 1).gameObject.SetActive(true);
         Get<GameObject>((int)GameObjects.Blinder).transform.GetChild(0).gameObject.SetActive(true);
+        isGachaDone = true;
+        yield return null;
     }
 }

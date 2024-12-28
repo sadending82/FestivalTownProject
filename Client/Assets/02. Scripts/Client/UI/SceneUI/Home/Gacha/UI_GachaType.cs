@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class UI_GachaType : UI_Base
 {
@@ -34,7 +35,6 @@ public class UI_GachaType : UI_Base
 
     public void SetGachaType(int value)
     {
-        Debug.Log("G : " + value);
         GachaTypeNum = value;
         SetGachaGroupIndex(Managers.Data.GachaGroupDict[value].Gacha_Group);
     }
@@ -155,6 +155,11 @@ public class UI_GachaType : UI_Base
                     Get<GameObject>((int)GameObjects.Name).transform.GetChild(1).gameObject.SetActive(true);
                     Get<GameObject>((int)GameObjects.Image).transform.GetChild(1).gameObject.SetActive(true);
                     Get<GameObject>((int)GameObjects.GachaButton).transform.GetChild(1).gameObject.SetActive(true);
+                }
+                break;
+            case 100013:
+                {
+
                 }
                 break;
             default:

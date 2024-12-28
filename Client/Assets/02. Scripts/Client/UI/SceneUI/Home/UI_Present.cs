@@ -44,8 +44,6 @@ public class UI_Present : UI_Scene
         }, Define.UIEvent.Click, true, true);
 
         isInitialized = true;
-
-        Camera.main.transform.GetChild(0).GetComponent<Camera>().fieldOfView = 20.0f;
     }
 
     private void Update()

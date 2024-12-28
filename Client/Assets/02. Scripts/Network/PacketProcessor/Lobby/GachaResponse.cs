@@ -19,8 +19,7 @@ namespace Network.PacketProcessor
 
             var Data = GachaResponse.GetRootAsGachaResponse(bb);
 
-            var popup = Managers.UI.ShowPopUpUI<UI_GachaResult>();
-            popup.Init();
+            var gachaCutScene = Managers.UI.GetCurrentSceneUI();
 
             if (Data.Result == (int)ERROR_CODE.ER_NONE)
             {
@@ -29,24 +28,24 @@ namespace Network.PacketProcessor
                 // 실제 지급 아이템
                 var acquiredItemData = Managers.Data.GetItemData(Data.AcquiredItemCode);
 
+                gachaCutScene.GetComponent<UI_GachaCutScene>().SetResultItemCode(Data.ResultItemCode);
+                gachaCutScene.GetComponent<UI_GachaCutScene>().SetAcquiredItemCode(Data.AcquiredItemCode);
+
                 Debug.Log($"Gacha ItemType : {Data.ResultItemAmount}, Amount : {Data.ResultItemAmount}, SpentType : {Data.SpentResourceCode}," +
-                    $"SpentAmount : {Data.SpentResourceAmount}");
+                    $"SpentAmount : {Data.SpentResourceAmount}, GachaGrade : {resultItemData.Item_Grade}");
 
                 if (resultItemData == null) { return; }
 
-                ItemEntity ie = (ItemEntity)resultItemData;
 
-                if (Data.ResultItemCode == Data.AcquiredItemCode)
-                {
-                    popup.NoticeTextChange($"나온 아이템은 {resultItemData.Name}, {Data.AcquiredItemAmount}개 입니다.");
-                }
-                else
-                {
-                    popup.NoticeTextChange($"나온 아이템은 {resultItemData.Name}, {Data.ResultItemAmount}개 입니다.\n"
-                        + $"이미 소유한 아이템이므로 {acquiredItemData.Name}, {Data.AcquiredItemAmount}개로 전환되었습니다.");
-                }
-
-                popup.BindPopupCloseEvent();
+                //if (Data.ResultItemCode == Data.AcquiredItemCode)
+                //{
+                //    popup.NoticeTextChange($"나온 아이템은 {resultItemData.Name}, {Data.AcquiredItemAmount}개 입니다.");
+                //}
+                //else
+                //{
+                //    popup.NoticeTextChange($"나온 아이템은 {resultItemData.Name}, {Data.ResultItemAmount}개 입니다.\n"
+                //        + $"이미 소유한 아이템이므로 {acquiredItemData.Name}, {Data.AcquiredItemAmount}개로 전환되었습니다.");
+                //}
 
                 switch (Managers.Data.GetResourceIndexType(Data.AcquiredItemCode))
                 {
@@ -111,12 +110,6 @@ namespace Network.PacketProcessor
                         break;
                 }
 
-            }
-            else
-            {
-                popup.NoticeTextChange($"재화가 없습니다.");
-
-                popup.BindPopupCloseEvent();
             }
         }
 
