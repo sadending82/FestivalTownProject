@@ -112,7 +112,8 @@ public class UI_TopPanel : UI_Base
         {
             if (Managers.UI.GetCurrentSceneUI().GetComponent<UI_Setting>() == null)
             {
-                Debug.Log("설정 화면 이동");
+                Managers.UI.CloseSceneUI();
+                Managers.UI.ShowSceneUI<UI_Setting>();
             }
         });
 
