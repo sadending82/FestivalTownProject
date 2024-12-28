@@ -380,10 +380,6 @@ std::pair<ERROR_CODE, UserInfo> DB::SelectUserInfoForLogin(const char* id)
 		}
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-
-		userInfo.characterCustomizing = SelectCharacterCustomizing(userInfo.UID);
-		userInfo.Gold = SelectUserItemCount(userInfo.UID, 100001);
-
 		return { ERROR_CODE::ER_NONE, userInfo };
 	}
 

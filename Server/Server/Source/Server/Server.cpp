@@ -400,15 +400,29 @@ std::pair<ERROR_CODE, UserInfo> Server::UserLogin(const char* accountID, const c
 
     std::pair<ERROR_CODE, UserInfo> result = mDB->SelectUserInfoForLogin(accountID);
 
-    UserInfo& userInfo = result.second;
-
-    userInfo.Gold = mDB->SelectUserItemCount(userInfo.UID, 100001);
-    userInfo.Dia = mDB->SelectUserItemCount(userInfo.UID, 100002);
-    userInfo.Mileage = mDB->SelectUserItemCount(userInfo.UID, 100003);
-
     if (result.first == ERROR_CODE::ER_DB_ERROR) {
         return result;
     }
+
+    UserInfo& userInfo = result.second;
+    std::pair<ERROR_CODE, std::vector<UserItem>> selectCurrencyResult = mDB->SelectUserAllCurrency(userInfo.UID);
+
+    if (selectCurrencyResult.first == ERROR_CODE::ER_DB_ERROR) {
+        return result;
+    }
+    for (UserItem& currency : selectCurrencyResult.second) {
+        if (currency.itemCode == 100001) {
+            userInfo.Gold = currency.count;
+        }
+        else if (currency.itemCode == 100002) {
+            userInfo.Dia = currency.count;
+        }
+        else if (currency.itemCode == 100003) {
+            userInfo.Mileage = currency.count;
+        }
+    }
+    userInfo.characterCustomizing = mDB->SelectCharacterCustomizing(userInfo.UID);
+
 
     if (userInfo.State == true) {
         for (Session* session : mSessions) {
