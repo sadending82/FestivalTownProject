@@ -10,6 +10,7 @@ public class UI_GachaCutScene : UI_Scene
         Panel,
         SkipButton,
         UI_GachaponModel,
+        UI_CharacterModel,
     }
 
     bool isInitialized = false;
@@ -67,10 +68,11 @@ public class UI_GachaCutScene : UI_Scene
     }
     private void StartCutScene()
     {
-        ZoomIn();
+        StartCoroutine("ZoomIn");
     }
-    private void ZoomIn()
+    IEnumerator ZoomIn()
     {
+        yield return new WaitForSeconds(0.3f);
         camStartFOV = Camera.main.transform.GetChild(0).GetComponent<Camera>().fieldOfView;
         zoomInPercent = 0;
         isZoomin = true;

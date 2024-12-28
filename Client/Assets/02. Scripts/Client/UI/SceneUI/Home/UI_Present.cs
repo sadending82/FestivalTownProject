@@ -13,10 +13,11 @@ public class UI_Present : UI_Scene
         GoldText,
         DiamondPanel,
         DiamondText,
-        TitleText,
+        Title,
         CharacterImage,
         BackButton,
         GachaSelectPanel,
+        MileageShop,
     }
 
     bool isInitialized = false;
