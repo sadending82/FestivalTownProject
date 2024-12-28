@@ -51,6 +51,12 @@ bool DB::Connect(std::wstring odbc, std::wstring id, std::wstring password)
 
 	SQLRETURN retcode;
 
+	retcode = SQLSetEnvAttr(nullptr, SQL_ATTR_CONNECTION_POOLING, (SQLPOINTER)SQL_CP_ONE_PER_HENV, 0);
+	if (retcode == SQL_ERROR) {
+		DEBUGMSGNOPARAM("Enable ODBC connection pooling Fail\n", retcode);
+		return false;
+	}
+
 	if ((retcode = SQLSetConnectAttr(hDbc, SQL_LOGIN_TIMEOUT, (SQLPOINTER)5, 0)) == SQL_ERROR) {
 
 		return false;
@@ -58,12 +64,6 @@ bool DB::Connect(std::wstring odbc, std::wstring id, std::wstring password)
 
 	retcode = SQLConnect(hDbc, (wchar_t*)odbc.c_str(), SQL_NTS, (wchar_t*)id.c_str(), SQL_NTS, (wchar_t*)password.c_str(), SQL_NTS);
 
-	if (retcode == SQL_ERROR) {
-		DEBUGMSGNOPARAM("DB Connect Fail\n", retcode);
-		return false;
-	}
-
-	retcode = SQLSetEnvAttr(nullptr, SQL_ATTR_CONNECTION_POOLING, (SQLPOINTER)SQL_CP_ONE_PER_HENV, 0);
 	if (retcode == SQL_ERROR) {
 		DEBUGMSGNOPARAM("DB Connect Fail\n", retcode);
 		return false;
