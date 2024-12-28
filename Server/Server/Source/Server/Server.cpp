@@ -405,6 +405,7 @@ std::pair<ERROR_CODE, UserInfo> Server::UserLogin(const char* accountID, const c
     }
 
     UserInfo& userInfo = result.second;
+
     std::pair<ERROR_CODE, std::vector<UserItem>> selectCurrencyResult = mDB->SelectUserAllCurrency(userInfo.UID);
 
     if (selectCurrencyResult.first == ERROR_CODE::ER_DB_ERROR) {
@@ -421,7 +422,6 @@ std::pair<ERROR_CODE, UserInfo> Server::UserLogin(const char* accountID, const c
             userInfo.Mileage = currency.count;
         }
     }
-    userInfo.characterCustomizing = mDB->SelectCharacterCustomizing(userInfo.UID);
 
 
     if (userInfo.State == true) {

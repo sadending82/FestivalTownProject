@@ -15,7 +15,7 @@ enum class UserInfo_Field {
 	LastLoginTime,
 	AttendanceDay,
 	characterCustomizing,
-	State = 12
+	State = 10
 };
 
 struct sCharacterCustomizing {

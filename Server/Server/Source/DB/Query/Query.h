@@ -17,10 +17,10 @@ const wchar_t* InsertUserAttendance_Query = L"INSERT INTO GameDB.dbo.UserAttenda
 
 const wchar_t* SelectAccountCount_Query = L"SELECT COUNT(ID) FROM AccountDB.dbo.Account WHERE ID = ?";
 
-// UPDATE GameDB.dbo.UserInfo SET ConnectionState = ? OUTPUT deleted.* WHERE AccountID = ?
+// UPDATE GameDB.dbo.UserInfo SET ConnectionState = ? OUTPUT deleted.*, DATALENGTH(deleted.CharacterCustomizing) WHERE AccountID = ?
 const wchar_t* SelectUserInfoForLogin_Query = L"UPDATE GameDB.dbo.UserInfo \
 							SET LastLoginTime = CAST(GETDATE() AS DATE), ConnectionState = ? \
-							OUTPUT deleted.* \
+							OUTPUT DATALENGTH(deleted.CharacterCustomizing), deleted.* \
 							WHERE AccountID = ?";
 
 //SELECT * FROM GameDB.dbo.UserInfo WHERE UID = ?

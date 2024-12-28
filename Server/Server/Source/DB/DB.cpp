@@ -353,29 +353,46 @@ std::pair<ERROR_CODE, UserInfo> DB::SelectUserInfoForLogin(const char* id)
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) 
 	{
 
-		SQLLEN col1, col2, col3, col4, col5, col6, col7, col8, col9;
+		SQLLEN col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11;
 		char date[11] = { 0 };
 		std::tm tDate = {};
 		SQLINTEGER t = 0;
 		SQLLEN bufLen = 0;
 		userInfo.NickName = std::wstring(20, '\0');
+		int customizingDataLen = 0;
+
 		while (SQLFetch(hStmt) == SQL_SUCCESS) {
-			
-			SQLGetData(hStmt, (int)UserInfo_Field::UID, SQL_C_LONG, &userInfo.UID, sizeof(userInfo.UID), &col1);
-			SQLGetData(hStmt, (int)UserInfo_Field::AccountID, SQL_C_CHAR, &userInfo.AccountID[0], userInfo.AccountID.size(), &col2);
-			SQLGetData(hStmt, (int)UserInfo_Field::NickName, SQL_C_WCHAR, &userInfo.NickName[0], userInfo.NickName.capacity(), &col3);
-			SQLGetData(hStmt, (int)UserInfo_Field::UserLevel, SQL_C_LONG, &userInfo.UserLevel, sizeof(userInfo.UserLevel), &col4);
-			SQLGetData(hStmt, (int)UserInfo_Field::PassLevel, SQL_C_LONG, &userInfo.PassLevel, sizeof(userInfo.PassLevel), &col5);
-			SQLGetData(hStmt, (int)UserInfo_Field::Point, SQL_C_LONG, &userInfo.Point, sizeof(userInfo.Point), &col6);
-			SQLGetData(hStmt, (int)UserInfo_Field::LastLoginTime, SQL_C_CHAR, date, sizeof(date), &col7);
-			SQLGetData(hStmt, (int)UserInfo_Field::AttendanceDay, SQL_C_LONG, &userInfo.AttendanceDay, sizeof(userInfo.AttendanceDay), &col8);
-			SQLGetData(hStmt, (int)UserInfo_Field::State, SQL_C_LONG, &t, sizeof(t), &col9);
+			SQLRETURN getLenRet = SQLGetData(hStmt, 1, SQL_C_LONG, &customizingDataLen, sizeof(customizingDataLen), &col11);
+			if (getLenRet == SQL_NULL_DATA) {
+				bufLen = 0;
+			}
+			std::vector<uint8_t> customizingData(customizingDataLen);
+			bufLen = customizingDataLen;
+
+			SQLGetData(hStmt, 2, SQL_C_LONG, &userInfo.UID, sizeof(userInfo.UID), &col1);
+			SQLGetData(hStmt, 3, SQL_C_CHAR, &userInfo.AccountID[0], userInfo.AccountID.size(), &col2);
+			SQLGetData(hStmt, 4, SQL_C_WCHAR, &userInfo.NickName[0], userInfo.NickName.capacity(), &col3);
+			SQLGetData(hStmt, 5, SQL_C_LONG, &userInfo.UserLevel, sizeof(userInfo.UserLevel), &col4);
+			SQLGetData(hStmt, 6, SQL_C_LONG, &userInfo.PassLevel, sizeof(userInfo.PassLevel), &col5);
+			SQLGetData(hStmt, 7, SQL_C_LONG, &userInfo.Point, sizeof(userInfo.Point), &col6);
+			SQLGetData(hStmt, 8, SQL_C_CHAR, date, sizeof(date), &col7);
+			SQLGetData(hStmt, 9, SQL_C_LONG, &userInfo.AttendanceDay, sizeof(userInfo.AttendanceDay), &col8);
+			SQLGetData(hStmt, 10, SQL_C_BINARY, customizingData.data(), bufLen, &bufLen);
+			SQLGetData(hStmt, 11, SQL_C_LONG, &t, sizeof(t), &col10);
+
+
+			if (getLenRet != SQL_NULL_DATA) {
+				userInfo.characterCustomizing = DeserializationCharacterCustomizing(customizingData);
+			}
 
 			std::istringstream ssDate(date);
 			ssDate >> std::get_time(&tDate, "%Y-%m-%d");
 
 			userInfo.date = tDate;
 			userInfo.State = t;
+
+			/*if (bufLen > 0)
+				userInfo.characterCustomizing = DeserializationCharacterCustomizing(customizingData);*/
 			result = true;
 		}
 
@@ -476,8 +493,6 @@ std::pair<ERROR_CODE, std::vector<UserItem>> DB::SelectUserAllCurrency(const int
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 		return { ERROR_CODE::ER_DB_ERROR, std::vector<UserItem>() };
 	}
-
-
 
 	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserAllCurrency_Query, SQL_NTS);
 
