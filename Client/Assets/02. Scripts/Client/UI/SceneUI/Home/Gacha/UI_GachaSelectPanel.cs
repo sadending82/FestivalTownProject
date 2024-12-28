@@ -43,7 +43,6 @@ public class UI_GachaSelectPanel : UI_Base
             ui.SetGachaType(group.Value.Index);
             ui.Init();
 
-            ui.SetName(group.Value.Name);
             ui.SetRequireResource(group.Value.Pay_Item1_Index, group.Value.Pay_Item2_Index);
 
             TypeCount++;

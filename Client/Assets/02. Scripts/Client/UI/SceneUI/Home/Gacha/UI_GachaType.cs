@@ -34,6 +34,7 @@ public class UI_GachaType : UI_Base
 
     public void SetGachaType(int value)
     {
+        Debug.Log("G : " + value);
         GachaTypeNum = value;
         SetGachaGroupIndex(Managers.Data.GachaGroupDict[value].Gacha_Group);
     }
@@ -43,19 +44,11 @@ public class UI_GachaType : UI_Base
         GachaGroupIndex = value; 
     }
 
-    public void SetName(string name)
-    {
-        if (Get<GameObject>((int)GameObjects.Name) == null) { return; }
-        Get<GameObject>((int)GameObjects.Name).GetComponent<TMP_Text>().text = name;
-
-    }
-
     public void SetRequireResource(int dataIndex1, int dataIndex2)
     {
         if (Managers.Data.GetItemData(dataIndex1) == null)
         {
             Debug.Log("그런 재화는 업서요");
-            Get<GameObject>((int)GameObjects.GachaButton).GetComponentInChildren<TMP_Text>().text = "1회 뽑기\n\nresourceName";
             return;
         }
 
@@ -65,9 +58,6 @@ public class UI_GachaType : UI_Base
             string resourceName1 = Managers.Data.GetItemData(dataIndex1).Name;
             int requireAmount1 = Managers.Data.GetGachaGroupData(GachaTypeNum).Pay_Item1_Value;
             RequireResource1Amount = requireAmount1;
-
-            Get<GameObject>((int)GameObjects.GachaButton).GetComponentInChildren<TMP_Text>().text = $"1회 뽑기\n" +
-    $"{requireAmount1} {resourceName1}";
         }
         else
         {
@@ -80,8 +70,6 @@ public class UI_GachaType : UI_Base
             string resourceName2 = Managers.Data.GetItemData(dataIndex2).Name;
             int requireAmount2 = Managers.Data.GetGachaGroupData(GachaTypeNum).Pay_Item2_Value;
             RequireResource2Amount = requireAmount2;
-            Get<GameObject>((int)GameObjects.GachaButton).GetComponentInChildren<TMP_Text>().text = $"1회 뽑기\n{requireAmount2} {resourceName2} or\n" +
-                $"{requireAmount1} {resourceName1}";
         }
     }
 
@@ -145,7 +133,35 @@ public class UI_GachaType : UI_Base
             if (cnt >= 12) break;
         }
 
+        SetGachaphoneCustomizing();
         isInitialized = true;
     }
 
+    private void SetGachaphoneCustomizing()
+    {
+        switch (GachaTypeNum)
+        {
+            // 냥냥 가챠
+            case 100011:
+                {
+                    Get<GameObject>((int)GameObjects.Name).transform.GetChild(0).gameObject.SetActive(true);
+                    Get<GameObject>((int)GameObjects.Image).transform.GetChild(0).gameObject.SetActive(true);
+                    Get<GameObject>((int)GameObjects.GachaButton).transform.GetChild(0).gameObject.SetActive(true);
+                }
+                break;
+            // 울트라 냥냥 가챠
+            case 100012:
+                {
+                    Get<GameObject>((int)GameObjects.Name).transform.GetChild(1).gameObject.SetActive(true);
+                    Get<GameObject>((int)GameObjects.Image).transform.GetChild(1).gameObject.SetActive(true);
+                    Get<GameObject>((int)GameObjects.GachaButton).transform.GetChild(1).gameObject.SetActive(true);
+                }
+                break;
+            default:
+                {
+                    Debug.Log("ERROR !!! SetGachaType(): Wrong GachaType !!!");
+                }
+                break;
+        }
+    }
 }

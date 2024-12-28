@@ -13,10 +13,11 @@ public class UI_Present : UI_Scene
         GoldText,
         DiamondPanel,
         DiamondText,
-        TitleText,
+        Title,
         CharacterImage,
         BackButton,
         GachaSelectPanel,
+        MileageShop,
     }
 
     bool isInitialized = false;
@@ -44,6 +45,7 @@ public class UI_Present : UI_Scene
 
         isInitialized = true;
 
+        Camera.main.transform.GetChild(0).GetComponent<Camera>().fieldOfView = 20.0f;
     }
 
     private void Update()

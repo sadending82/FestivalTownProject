@@ -7,23 +7,27 @@ public class UI_GachaponModel : UI_Base
     enum GameObjects
     {
         Gachapon,
-        RaycastCatcher,
+        GachaBall,
+        GachaEffects,
+        Blinder
     }
 
     bool isInitialized = false;
-    bool isClicked = false;
 
     private Animator animator;
     private const int MAX_GACHAPON_NUM = 5;
 
     private string nowAnimationState;
 
+    private bool leverOn = false;
+    public GameObject lever;
+
     void Start()
     {
         if (!isInitialized) Init();
 
         animator = Get<GameObject>((int)GameObjects.Gachapon).GetComponent<Animator>();
-        
+
         SetGachapon();
 
         if (Camera.main.transform.GetChild(0).gameObject.activeInHierarchy)
@@ -47,6 +51,7 @@ public class UI_GachaponModel : UI_Base
     }
     public void GachaponCustomizing(int value)
     {
+        string gachaponColor = "Gachapon";
         Material[] gachaponMaterials = Get<GameObject>((int)GameObjects.Gachapon).transform.Find("GachaponA").GetComponent<SkinnedMeshRenderer>().materials;
         switch (value)
         {
@@ -54,18 +59,21 @@ public class UI_GachaponModel : UI_Base
             case 100011:
                 {
                     gachaponMaterials[2] = Resources.Load<Material>($"Materials/Gachapon/banner1");
+                    gachaponColor += "2";
                 }
                 break;
             //울트라 냥냥가챠
             case 100012:
                 {
                     gachaponMaterials[2] = Resources.Load<Material>($"Materials/Gachapon/banner2");
+                    gachaponColor += "1";
                 }
                 break;
             //울트라충무공레전더리 냥냥가챠
             case 100013:
                 {
                     gachaponMaterials[2] = Resources.Load<Material>($"Materials/Gachapon/banner3");
+                    gachaponColor += Random.Range((int)1, (int)5);
                 }
                 break;
             default:
@@ -74,39 +82,36 @@ public class UI_GachaponModel : UI_Base
                 }
                 break;
         }
-        string gachaponColor = "Gachapon" + Random.Range((int)1, (int)5);
         gachaponMaterials[0] = Resources.Load<Material>($"Materials/Gachapon/{gachaponColor}");
         Get<GameObject>((int)GameObjects.Gachapon).transform.Find("GachaponA").GetComponent<SkinnedMeshRenderer>().materials = gachaponMaterials;
-    }
-
-    void Update()
-    {
-        GameObject cam = Camera.main.transform.GetChild(0).gameObject;
-
-        Ray ray = cam.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit))
-        {
-            if (nowAnimationState != "Shake")
-            {
-                ChangeAnimation("Shake");
-            }
-            if (Input.GetMouseButtonUp(0))
-            {
-            }
-        }
-        else
-        {
-            if(nowAnimationState != "State")
-            {
-                ChangeAnimation("State");
-            }
-        }
     }
 
     private void ChangeAnimation(string state)
     {
         nowAnimationState = state;
         animator.SetTrigger(nowAnimationState);
+    }
+
+    public void GachaStart()
+    {
+        leverOn = true;
+        StartCoroutine("LeverOff");
+    }
+    private void FixedUpdate()
+    {
+        if(leverOn)
+        {
+            lever.transform.Rotate(new Vector3(0.0f, 0.0f, Time.deltaTime * 150.0f));
+        }
+    }
+    IEnumerator LeverOff()
+    {
+        yield return new WaitForSeconds(1.5f);
+        leverOn = false;
+        ChangeAnimation("Shake");
+        yield return new WaitForSeconds(1.5f);
+        Get<GameObject>((int)GameObjects.GachaBall).transform.GetChild(Random.Range((int)0, (int)4)).gameObject.SetActive(true);
+        Get<GameObject>((int)GameObjects.GachaEffects).transform.GetChild(Random.Range((int)0, (int)2)).gameObject.SetActive(true);
+        Get<GameObject>((int)GameObjects.Blinder).transform.GetChild(0).gameObject.SetActive(true);
     }
 }
