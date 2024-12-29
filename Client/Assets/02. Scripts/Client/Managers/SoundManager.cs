@@ -22,9 +22,9 @@ public class SoundManager
 
 
 
-    public float _masterVolume = 1.0f;
-    public float _bgmVolume = 1.0f;
-    public float _effVolume = 1.0f;
+    public float _masterVolume = 0.0f;
+    public float _bgmVolume = 0.0f;
+    public float _effVolume = 0.0f;
     public void Init()
     {
         GameObject root = GameObject.Find("@Sound");
@@ -47,17 +47,29 @@ public class SoundManager
             AudioMixerGroup[] mixerGroups = mAudioMixer.FindMatchingGroups("Master");
             _audioSources[(int)Define.Sound.Bgm].outputAudioMixerGroup = mixerGroups[3];
             _audioSources[(int)Define.Sound.Effect].outputAudioMixerGroup = mixerGroups[2];
+
+            if(PlayerPrefs.HasKey("Sound_Bgm_Volume"))
+            {
+                SetBgmVolume(PlayerPrefs.GetFloat("Sound_Bgm_Volume"));
+            }
+
+            if(PlayerPrefs.HasKey("Sound_Eff_Volume"))
+            {
+                SetEffectVolume(PlayerPrefs.GetFloat("Sound_Eff_Volune"));
+            }
         }
     }
 
     public void SetMasterVolume(float value)
     {
         mAudioMixer.SetFloat("Master", value);
+        PlayerPrefs.SetFloat("Sound_Bgm_Volume", value);
     }
 
     public void SetEffectVolume(float value)
     {
         mAudioMixer.SetFloat("Effect", value);
+        PlayerPrefs.SetFloat("Sound_Bgm_Volume", value);
     }
 
     public void SetBgmVolume(float value)

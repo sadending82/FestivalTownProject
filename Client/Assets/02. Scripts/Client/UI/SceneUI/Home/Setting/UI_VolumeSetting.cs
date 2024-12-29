@@ -24,11 +24,23 @@ public class UI_VolumeSetting : UI_Base
     public void SetSoundType(Define.Sound value)
     {
         soundType = value;
+
+        switch (value)
+        {
+            case Define.Sound.Bgm:
+                Get<GameObject>((int)GameObjects.VolumeSlider).GetComponent<Slider>().value = Managers.Sound._bgmVolume;
+                break;
+            case Define.Sound.Effect:
+                Get<GameObject>((int)GameObjects.VolumeSlider).GetComponent<Slider>().value = Managers.Sound._effVolume;
+                break;
+        }
     }
 
     public override void Init()
     {
         Bind<GameObject>(typeof(GameObjects));
+
+        
 
         isInitialized = true;
     }
@@ -47,8 +59,8 @@ public class UI_VolumeSetting : UI_Base
                     ((int)((1.0f + (1.0f / 80.0f * sliderValue)) * 100.0f)).ToString();
                 break;
             case Define.Sound.Effect:
-                Managers.Sound._effVolume = Get<GameObject>((int)GameObjects.VolumeSlider).GetComponent<Slider>().value;
-                Managers.Sound.SetEffectVolume(Get<GameObject>((int)GameObjects.VolumeSlider).GetComponent<Slider>().value);
+                Managers.Sound._effVolume = sliderValue;
+                Managers.Sound.SetEffectVolume(sliderValue);
                 Get<GameObject>((int)GameObjects.VolumeVisual).GetComponent<TMP_InputField>().text =
                     ((int)((1.0f + (1.0f / 80.0f * sliderValue)) * 100.0f)).ToString();
                 break;
