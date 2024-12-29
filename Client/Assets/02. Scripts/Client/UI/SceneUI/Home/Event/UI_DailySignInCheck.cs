@@ -95,6 +95,7 @@ public class UI_DailySignInCheck : UI_PopUp
                     ui.SetItemIndex(data.Reward_Item_Index);
                     ui.SetName(Managers.Data.ItemDict[data.Reward_Item_Index].Name);
                     ui.SetEventCode(eventData.Key);
+                    ui.SetItemImage(Managers.Resource.LoadSprite($"{Managers.Data.ItemDict[data.Reward_Item_Index].File_Name}"));
 
                     bool result = Managers.Data.AttendanceEventDataDict.TryGetValue(data.Day, out var attendanceEventData);
                     if (result)
