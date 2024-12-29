@@ -31,6 +31,10 @@ public class UI_DailyCheckItemVertLayout : UI_Base
     public void SetDay(int day)
     {
         Get<GameObject>((int)GameObjects.Day).GetComponent<TMP_Text>().text = $"{day} ÀÏÂ÷";
+        if (day == 7)
+        {
+            Get<GameObject>((int)GameObjects.Image).GetComponent<Image>().sprite = Managers.Resource.LoadSprite("DailyCheckFrameRed");
+        }
     }
 
     public void SetName(string name)
