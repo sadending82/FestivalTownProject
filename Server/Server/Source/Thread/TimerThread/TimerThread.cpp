@@ -15,9 +15,9 @@ void Timer::Init(HANDLE h_cp)
 
 void Timer::PushEvent(EVENT_HEADER event)
 {
-	std::lock_guard <std::mutex> lg{ mTimerLock };
-
+	mTimerLock.lock();
 	mTimerQueue.push(event);
+	mTimerLock.unlock();
 }
 
 void Timer::Main()
