@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class UI_TopPanelButtonTab : UI_Base
+public class UI_ButtonTab : UI_Base
 {
     enum GameObjects
     {

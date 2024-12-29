@@ -15,15 +15,34 @@ public class UI_SettingPanel : UI_Base
 
     private void Start()
     {
-        if (!isInitialized) Init();        
+        if (!isInitialized) Init();
     }
 
     public override void Init()
     {
         Bind<GameObject>(typeof(GameObjects));
 
+        var sbUI = Get<GameObject>((int)GameObjects.SettingButtonTabs).GetComponent<UI_SettingTab>();
+        sbUI.Init();
 
+        sbUI.SetParentUI(this);
+
+
+        var sdUI = Get<GameObject>((int)GameObjects.SettingDetails).GetComponent<UI_SettingDetails>();
+        sdUI.Init();
+      
 
         isInitialized = true;
+    }
+
+    public void SelectDetailUI(int idx)
+    {
+        var sbUI = Get<GameObject>((int)GameObjects.SettingButtonTabs).GetComponent<UI_SettingTab>();
+
+        sbUI.SetSelected(idx);
+
+        var sdUI = Get<GameObject>((int)GameObjects.SettingDetails).GetComponent<UI_SettingDetails>();
+
+        sdUI.SetDetailOn(idx);
     }
 }

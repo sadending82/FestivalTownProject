@@ -35,7 +35,7 @@ public class UI_TopPanel : UI_Base
 
         selected = Selected.Home;
 
-        UI_TopPanelButtonTab ui = Get<GameObject>((int)GameObjects.HomeButtonTab).GetComponent<UI_TopPanelButtonTab>();
+        UI_ButtonTab ui = Get<GameObject>((int)GameObjects.HomeButtonTab).GetComponent<UI_ButtonTab>();
 
         ui.Init();
         ui.SetEnable(true);
@@ -69,7 +69,7 @@ public class UI_TopPanel : UI_Base
             }
         });
 
-        ui = Get<GameObject>((int)GameObjects.CustomizeButtonTab).GetComponent<UI_TopPanelButtonTab>();
+        ui = Get<GameObject>((int)GameObjects.CustomizeButtonTab).GetComponent<UI_ButtonTab>();
 
         ui.Init();
         ui.SetEnable(true);
@@ -86,7 +86,7 @@ public class UI_TopPanel : UI_Base
             }    
         });
 
-        ui = Get<GameObject>((int)GameObjects.ShopButtonTab).GetComponent<UI_TopPanelButtonTab>();
+        ui = Get<GameObject>((int)GameObjects.ShopButtonTab).GetComponent<UI_ButtonTab>();
 
         ui.Init();
         ui.SetEnable(false);
@@ -101,7 +101,7 @@ public class UI_TopPanel : UI_Base
             }
         });
 
-        ui = Get<GameObject>((int)GameObjects.SettingButtonTab).GetComponent<UI_TopPanelButtonTab>();
+        ui = Get<GameObject>((int)GameObjects.SettingButtonTab).GetComponent<UI_ButtonTab>();
 
         ui.Init();
         ui.SetEnable(true);
@@ -114,6 +114,9 @@ public class UI_TopPanel : UI_Base
             {
                 Managers.UI.CloseSceneUI();
                 Managers.UI.ShowSceneUI<UI_Setting>();
+
+                selected = Selected.Setting;
+                SelectStuff();
             }
         });
 
@@ -166,9 +169,9 @@ public class UI_TopPanel : UI_Base
     {
         foreach(GameObjects obj in Enum.GetValues(typeof(GameObjects)))
         {
-            Get<GameObject>((int)obj).GetComponent<UI_TopPanelButtonTab>().SetSelected(false);
+            Get<GameObject>((int)obj).GetComponent<UI_ButtonTab>().SetSelected(false);
         }
 
-        Get<GameObject>((int)selected).GetComponent<UI_TopPanelButtonTab>().SetSelected(true);
+        Get<GameObject>((int)selected).GetComponent<UI_ButtonTab>().SetSelected(true);
     }
 }

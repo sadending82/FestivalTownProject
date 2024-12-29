@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using static Unity.VisualScripting.Member;
 
 /// <summary>
@@ -10,6 +11,8 @@ using static Unity.VisualScripting.Member;
 /// </summary>
 public class SoundManager
 {
+    AudioMixer mAudioMixer;
+
     // 2d 사운드 관리를 위한 데이터
     AudioSource[] _audioSources = new AudioSource[2];
     Dictionary<string, AudioClip> _audioClips = new Dictionary<string, AudioClip>();
@@ -17,9 +20,11 @@ public class SoundManager
     // 3d 사운드 관리를 위한 데이터
     Dictionary<GameObject, AudioSource> _3dAudioSource = new();
 
+
+
+    public float _masterVolume = 1.0f;
     public float _bgmVolume = 1.0f;
     public float _effVolume = 1.0f;
-
     public void Init()
     {
         GameObject root = GameObject.Find("@Sound");
@@ -36,8 +41,28 @@ public class SoundManager
                 go.transform.SetParent(root.transform);
             }
 
-            _audioSources[(int)Define.Sound.Bgm].loop = true;
+            _audioSources[(int)Define.Sound.Bgm].loop = true; 
+
+            mAudioMixer = Managers.Resource.Load<AudioMixer>("AudioMixer/SoundMixer");
+            AudioMixerGroup[] mixerGroups = mAudioMixer.FindMatchingGroups("Master");
+            _audioSources[(int)Define.Sound.Bgm].outputAudioMixerGroup = mixerGroups[3];
+            _audioSources[(int)Define.Sound.Effect].outputAudioMixerGroup = mixerGroups[2];
         }
+    }
+
+    public void SetMasterVolume(float value)
+    {
+        mAudioMixer.SetFloat("Master", value);
+    }
+
+    public void SetEffectVolume(float value)
+    {
+        mAudioMixer.SetFloat("Effect", value);
+    }
+
+    public void SetBgmVolume(float value)
+    {
+        mAudioMixer.SetFloat("BGM", value);
     }
 
     public void Clear()
@@ -70,7 +95,7 @@ public class SoundManager
                     if (source.isPlaying) source.Stop();
 
                     source.clip = audioClip;
-                    source.volume = _bgmVolume;
+                    source.volume = 1;
                     source.Play();
                 }
                 break;
@@ -79,7 +104,7 @@ public class SoundManager
                     // 효과음의 경우 중첩되어도 문제 없으므로
                     // 그냥 재생하기
                     AudioSource source = _audioSources[(int)Define.Sound.Effect];
-                    source.volume = _effVolume;
+                    source.volume = 1;
                     source.PlayOneShot(audioClip);
                 }
                 break;
