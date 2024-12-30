@@ -913,14 +913,17 @@ public class PlayerController : MonoBehaviour
 
         CharacterStatus targetPlayerState = Managers.Player.FindPlayerById(targetId).GetComponent<CharacterStatus>();
         targetPlayerState.SetIsGrapped(true, playerStatus.GetId());
+        
 
         if (isLeftHand == true)
         {
             handL.GetComponent<AttackChecker>().GrapPlayer(targetId, handPos, targetHeadPos);
+            Managers.Sound.Play3D("Sfx_Ch_Catch", handL, Define.Sound.Cat);
         }
         else
         {
             handR.GetComponent<AttackChecker>().GrapPlayer(targetId, handPos, targetHeadPos);
+            Managers.Sound.Play3D("Sfx_Ch_Catch", handR, Define.Sound.Cat);
         }
     }
     public void s_ThrowPlayer()

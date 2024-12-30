@@ -15,6 +15,26 @@ public class HomeScene : BaseScene
 
         Managers.Sound.Play("Sfx_BGM_Lobby", Define.Sound.Bgm);
 
+        if (PlayerPrefs.HasKey("Sound_Master_Volume"))
+        {
+            Managers.Sound.SetMasterVolume(PlayerPrefs.GetFloat("Sound_Master_Volume"));
+        }
+
+        if (PlayerPrefs.HasKey("Sound_Bgm_Volume"))
+        {
+            Managers.Sound.SetBgmVolume(PlayerPrefs.GetFloat("Sound_Bgm_Volume"));
+        }
+
+        if (PlayerPrefs.HasKey("Sound_Eff_Volume"))
+        {
+            Managers.Sound.SetEffectVolume(PlayerPrefs.GetFloat("Sound_Eff_Volume"));
+        }
+
+        if (PlayerPrefs.HasKey("Sound_Cat_Volume"))
+        {
+            Managers.Sound.SetCatVolume(PlayerPrefs.GetFloat("Sound_Cat_Volume"));
+        }
+
         homeStartUI = Managers.UI.ShowSceneUI<UI_HomeStart>();
         homeSceneUI = Managers.UI.ShowPopUpUI<UI_HomeScene>();
 
