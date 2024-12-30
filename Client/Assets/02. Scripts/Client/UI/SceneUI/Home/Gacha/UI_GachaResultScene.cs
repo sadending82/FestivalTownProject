@@ -28,6 +28,8 @@ public class UI_GachaResultScene : UI_Scene
         Bind<GameObject>(typeof(GameObjects));
 
         Get<GameObject>((int)GameObjects.UI_MannequinModel).GetComponent<UI_MannequinModel>().Init();
+
+        //획득 아이템 마네킹에 착용
         Get<GameObject>((int)GameObjects.UI_MannequinModel).GetComponent<UI_MannequinModel>().EquipResultItem(resultItemCode);
 
         Get<GameObject>((int)GameObjects.OkButton).BindEvent((PointerEventData) =>
@@ -41,7 +43,9 @@ public class UI_GachaResultScene : UI_Scene
         var resultItemData = Managers.Data.GetItemData(resultItemCode);
         Get<GameObject>((int)GameObjects.Grade).transform.GetChild(resultItemData.Item_Grade).gameObject.SetActive(true);
 
+        //이름 표시
         Get<GameObject>((int)GameObjects.ItemName).GetComponent<TMP_Text>().text = resultItemData.Name;
+        float textLength = Get<GameObject>((int)GameObjects.ItemName).GetComponent<TMP_Text>().preferredWidth;
 
         //중복 아이템X
         if (resultItemCode == acquiredItemCode)

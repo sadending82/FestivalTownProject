@@ -108,7 +108,6 @@ public class UI_GachaponModel : UI_Base
     {
         if (Input.GetMouseButtonUp(0) && isGachaDone == true)
         {
-            Debug.Log("´­·¶¾î");
             var gachaCutScene = Managers.UI.GetCurrentSceneUI();
             gachaCutScene.GetComponent<UI_GachaCutScene>().ShowGachaRequest();
         }
