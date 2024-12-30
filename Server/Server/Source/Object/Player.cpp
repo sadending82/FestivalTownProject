@@ -72,7 +72,7 @@ bool Player::ChangeToGroggyState(Server* pServer)
 	mPlayerState = ePlayerState::PS_GROGGY;
 	mGroggyCount++;
 
-	pServer->GetPacketSender()->SendPlayerGroggyPacket(mInGameID, mRoomID);
+	pServer->GetPacketSender()->SendPlayerGroggyPacket(mInGameID, mRoomID, mHP);
 
 	// 들고있는 무기 해제
 	mWeaponLock.lock();

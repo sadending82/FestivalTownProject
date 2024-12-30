@@ -1316,14 +1316,19 @@ inline ::flatbuffers::Offset<PlayerCollisionToBlock> CreatePlayerCollisionToBloc
 struct PlayerGroggy FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef PlayerGroggyBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_ID = 4
+    VT_ID = 4,
+    VT_HP = 6
   };
   int32_t id() const {
     return GetField<int32_t>(VT_ID, 0);
   }
+  int32_t hp() const {
+    return GetField<int32_t>(VT_HP, 0);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_ID, 4) &&
+           VerifyField<int32_t>(verifier, VT_HP, 4) &&
            verifier.EndTable();
   }
 };
@@ -1334,6 +1339,9 @@ struct PlayerGroggyBuilder {
   ::flatbuffers::uoffset_t start_;
   void add_id(int32_t id) {
     fbb_.AddElement<int32_t>(PlayerGroggy::VT_ID, id, 0);
+  }
+  void add_hp(int32_t hp) {
+    fbb_.AddElement<int32_t>(PlayerGroggy::VT_HP, hp, 0);
   }
   explicit PlayerGroggyBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -1348,8 +1356,10 @@ struct PlayerGroggyBuilder {
 
 inline ::flatbuffers::Offset<PlayerGroggy> CreatePlayerGroggy(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    int32_t id = 0) {
+    int32_t id = 0,
+    int32_t hp = 0) {
   PlayerGroggyBuilder builder_(_fbb);
+  builder_.add_hp(hp);
   builder_.add_id(id);
   return builder_.Finish();
 }

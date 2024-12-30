@@ -191,10 +191,10 @@ std::vector<uint8_t> PacketMaker::MakePlayerCalculatedDamagePacket(int targetID,
 	return MakeBuffer(ePacketType::S2C_PLAYER_CALCULATED_DAMAGE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakePlayerGroggyPacket(int id)
+std::vector<uint8_t> PacketMaker::MakePlayerGroggyPacket(int id, int playerHP)
 {
 	flatbuffers::FlatBufferBuilder Builder;
-	Builder.Finish(PacketTable::PlayerTable::CreatePlayerGroggy(Builder, id));
+	Builder.Finish(PacketTable::PlayerTable::CreatePlayerGroggy(Builder, id, playerHP));
 	return MakeBuffer(ePacketType::S2C_PLAYER_GROGGY, Builder.GetBufferPointer(), Builder.GetSize());
 }
 

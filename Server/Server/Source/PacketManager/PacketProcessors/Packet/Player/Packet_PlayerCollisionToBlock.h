@@ -44,6 +44,7 @@ public:
 
 				if (playerState == ePlayerState::PS_ALIVE) {
 					// 그로기 상태로 만듬
+					target->ReduceHP(10);
 					if (target->ChangeToGroggyState(pServer)) {
 						playerGameRecord.gameRecord.Groggy_Count.fetch_add(1);
 						PushEventGroggyRecovery(pServer->GetTimer(), targetID, roomID, roomCode, room->GetGameModeData().Ch_Groggy);

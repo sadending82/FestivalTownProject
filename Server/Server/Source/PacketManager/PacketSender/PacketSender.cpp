@@ -335,9 +335,9 @@ void PacketSender::SendPlayerCalculatedDamage(int targetID, int roomID, int atta
     mServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
 
-void PacketSender::SendPlayerGroggyPacket(int inGameID, int roomID)
+void PacketSender::SendPlayerGroggyPacket(int inGameID, int roomID, int playerHP)
 {
-    std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerGroggyPacket(inGameID);
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakePlayerGroggyPacket(inGameID, playerHP);
     mServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 }
 

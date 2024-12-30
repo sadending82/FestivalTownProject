@@ -3,6 +3,7 @@ using PacketTable.PlayerTable;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 
 namespace Network.PacketProcessor
@@ -15,8 +16,11 @@ namespace Network.PacketProcessor
             var Data = PlayerGroggy.GetRootAsPlayerGroggy(bb);
 
             int id = Data.Id;
+            int hp = Data.Hp;
 
-            Managers.Player.FindPlayerById(id).GetComponent<CharacterStatus>().GroggyOn();
+            CharacterStatus pState = Managers.Player.FindPlayerById(id).GetComponent<CharacterStatus>();
+            pState.GroggyOn();
+            pState.SetHp(hp);
         }        
     }
 }
