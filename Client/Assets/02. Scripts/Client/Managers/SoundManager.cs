@@ -50,6 +50,11 @@ public class SoundManager
             _audioSources[(int)Define.Sound.Effect].outputAudioMixerGroup = mixerGroups[2];
             _audioSources[(int)Define.Sound.Cat].outputAudioMixerGroup= mixerGroups[1];
 
+            if(PlayerPrefs.HasKey("Sound_Master_Volume"))
+            {
+                SetMasterVolume(PlayerPrefs.GetFloat("Sound_Master_Volume"));
+            }
+
             if(PlayerPrefs.HasKey("Sound_Bgm_Volume"))
             {
                 SetBgmVolume(PlayerPrefs.GetFloat("Sound_Bgm_Volume"));
@@ -88,7 +93,7 @@ public class SoundManager
 
     public void SetCatVolume(float value)
     {
-        mAudioMixer.SetFloat("Cat", value);
+        mAudioMixer.SetFloat("CatVoice", value);
         _catVolume = value;
     }
 
@@ -135,6 +140,13 @@ public class SoundManager
                     source.PlayOneShot(audioClip);
                 }
                 break;
+            case Define.Sound.Cat:
+                {
+                    AudioSource source = _audioSources[(int)Define.Sound.Cat];
+                    source.volume = 1;
+                    source.PlayOneShot(audioClip);
+                }
+                break;
             default:
                 break;
         }
@@ -166,11 +178,15 @@ public class SoundManager
                 if (source.isPlaying) source.Stop();
 
                 source.clip = clip;
-                source.volume = _bgmVolume;
+                source.volume = 1.0f;
                 source.Play();
                 break;
             case Define.Sound.Effect:
-                source.volume = _effVolume;
+                source.volume = 1.0f;
+                source.PlayOneShot(clip);
+                break;
+            case Define.Sound.Cat:
+                source.volume = 1.0f;
                 source.PlayOneShot(clip);
                 break;
             default:
@@ -195,6 +211,12 @@ public class SoundManager
                     // 효과음의 경우 중첩되어도 문제 없으므로
                     // 그냥 재생하기
                     AudioSource source = _audioSources[(int)Define.Sound.Effect];
+                    source.Stop();
+                }
+                break;
+            case Define.Sound.Cat:
+                {
+                    AudioSource source = _audioSources[(int)Define.Sound.Cat];
                     source.Stop();
                 }
                 break;
@@ -229,6 +251,13 @@ public class SoundManager
             case Define.Sound.Effect:
                 // 효과음은 자주 사용되기 때문에 로딩을 계속하면 오버헤드가 되니까, 
                 // 이런 식으로 넣어 놓고 사용하기
+                if (_audioClips.TryGetValue(path, out clip) == false)
+                {
+                    clip = Managers.Resource.Load<AudioClip>(path);
+                    _audioClips.Add(path, clip);
+                }
+                break;
+            case Define.Sound.Cat:
                 if (_audioClips.TryGetValue(path, out clip) == false)
                 {
                     clip = Managers.Resource.Load<AudioClip>(path);

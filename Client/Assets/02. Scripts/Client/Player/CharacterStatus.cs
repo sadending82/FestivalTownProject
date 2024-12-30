@@ -314,7 +314,7 @@ public class CharacterStatus : MonoBehaviour
             playerUIController.gameObject.SetActive(false);
             playerController.SetPosition(new Vector3(-1, -1, -1));
             ResetCharacterState();
-            Managers.Sound.Play("Sfx_Ch_Die");
+            Managers.Sound.Play("Sfx_Ch_Die", Define.Sound.Cat);
             // 관전 관련
             if (amIPlayer == true)
             {
@@ -471,6 +471,7 @@ public class CharacterStatus : MonoBehaviour
             SetLowerBodyAnimationState(LowerBodyAnimationState.IDLE);
             isGroggy = true;
             Managers.Effect.PlayEffect("Ch_Groggy", playerUIController.gameObject.transform.position);
+            Managers.Sound.Play("Sfx_Ch_Groggy");
             playerUIController.gameObject.transform.GetChild(4).gameObject.SetActive(true);
             animationMoudule.GroggyOn();
         }
