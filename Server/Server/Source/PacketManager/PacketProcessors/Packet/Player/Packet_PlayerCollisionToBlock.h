@@ -43,12 +43,22 @@ public:
 				sPlayerGameRecord& playerGameRecord = room->GetPlayerRecordList().at(targetID);
 
 				if (playerState == ePlayerState::PS_ALIVE) {
-					// 그로기 상태로 만듬
+					// 블록 충돌 데미지 계산
 					target->ReduceHP(10);
-					if (target->ChangeToGroggyState(pServer)) {
-						playerGameRecord.gameRecord.Groggy_Count.fetch_add(1);
-						PushEventGroggyRecovery(pServer->GetTimer(), targetID, roomID, roomCode, room->GetGameModeData().Ch_Groggy);
-						//COUT << targetID << " 블록맞고 그로기\n";
+					if (target->GetHP() <= 0) {
+						int spawnTime = room->GetGameModeData().Player_Spawn_Time;
+						if (target->ChangeToDeadState(pServer, spawnTime)) {
+							playerGameRecord.gameRecord.DeathCount.fetch_add(1);
+							PushEventPlayerRespawn(pServer->GetTimer(), targetID, roomID, room->GetRoomCode(), spawnTime);
+						}
+					}
+					else {
+						// 그로기 상태로 만듬
+						if (target->ChangeToGroggyState(pServer)) {
+							playerGameRecord.gameRecord.Groggy_Count.fetch_add(1);
+							PushEventGroggyRecovery(pServer->GetTimer(), targetID, roomID, roomCode, room->GetGameModeData().Ch_Groggy);
+							//COUT << targetID << " 블록맞고 그로기\n";
+						}
 					}
 				}
 				else if (playerState == ePlayerState::PS_GROGGY) {

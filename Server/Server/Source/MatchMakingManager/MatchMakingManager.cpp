@@ -75,15 +75,11 @@ bool MatchMakingManager::CheckMatchMaking(eMatchingType matchingType)
 
         GameMode gameMode = (GameMode)(mode);
 
-        // test
-        GameMode testMode = GameMode::FITH_Team_Battle_6;
         int matchedPlayerCount = tableManager->GetGameModeOutData()[gameMode].Player_Count;
 
-        //MapProperties mapProperties = SelectRandomMap(gameMode);
+        MapProperties mapProperties = SelectRandomMap(gameMode);
 
-        MapProperties mapProperties = SelectRandomMap(testMode);
-
-        int roomID = pServer->CreateNewRoom(testMode, mapProperties.Map_Index, mapProperties.Map_Theme);
+        int roomID = pServer->CreateNewRoom(gameMode, mapProperties.Map_Index, mapProperties.Map_Theme);
         if (roomID == INVALIDKEY) {
             std::cout << "Fali Create New Room\n";
             break;

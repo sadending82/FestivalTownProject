@@ -266,10 +266,11 @@ void TableManager::ReadMapData()
 
             if (!row.empty()) {
                 int Map_Index = row[(int)(MapData_Field::Map_Index)].value<int>();
-                int Mode_Index = row[(int)(MapData_Field::Mode_Index)].value<int>();
-                ReadMapStructure(Map_Index);
-                MapListByMode[(GameMode)Mode_Index].push_back(Map_Index);
-
+                if (Map_Index != 0) {
+                    int Mode_Index = row[(int)(MapData_Field::Mode_Index)].value<int>();
+                    ReadMapStructure(Map_Index);
+                    MapListByMode[(GameMode)Mode_Index].push_back(Map_Index);
+                }
             }
             idx++;
         }
@@ -407,7 +408,7 @@ void TableManager::ReadMapStructure(int mapIndex)
     std::ifstream map1_inputFile(filePath);
 
     if (!map1_inputFile.is_open()) {
-        std::cerr << "File Not Exist" << std::endl;
+        std::cerr << "File Not Exist " << mapIndex << std::endl;
         return;
     }
 
