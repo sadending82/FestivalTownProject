@@ -14,7 +14,7 @@ public class SoundManager
     AudioMixer mAudioMixer;
 
     // 2d 사운드 관리를 위한 데이터
-    AudioSource[] _audioSources = new AudioSource[2];
+    AudioSource[] _audioSources = new AudioSource[3];
     Dictionary<string, AudioClip> _audioClips = new Dictionary<string, AudioClip>();
 
     // 3d 사운드 관리를 위한 데이터
@@ -25,6 +25,7 @@ public class SoundManager
     public float _masterVolume = 0.0f;
     public float _bgmVolume = 0.0f;
     public float _effVolume = 0.0f;
+    public float _catVolume = 0.0f;
     public void Init()
     {
         GameObject root = GameObject.Find("@Sound");
@@ -47,6 +48,7 @@ public class SoundManager
             AudioMixerGroup[] mixerGroups = mAudioMixer.FindMatchingGroups("Master");
             _audioSources[(int)Define.Sound.Bgm].outputAudioMixerGroup = mixerGroups[3];
             _audioSources[(int)Define.Sound.Effect].outputAudioMixerGroup = mixerGroups[2];
+            _audioSources[(int)Define.Sound.Cat].outputAudioMixerGroup= mixerGroups[1];
 
             if(PlayerPrefs.HasKey("Sound_Bgm_Volume"))
             {
@@ -55,7 +57,12 @@ public class SoundManager
 
             if(PlayerPrefs.HasKey("Sound_Eff_Volume"))
             {
-                SetEffectVolume(PlayerPrefs.GetFloat("Sound_Eff_Volune"));
+                SetEffectVolume(PlayerPrefs.GetFloat("Sound_Eff_Volume"));
+            }
+
+            if(PlayerPrefs.HasKey("Sound_Cat_Volume"))
+            {
+                SetCatVolume(PlayerPrefs.GetFloat("Sound_Cat_Volume"));
             }
         }
     }
@@ -63,18 +70,26 @@ public class SoundManager
     public void SetMasterVolume(float value)
     {
         mAudioMixer.SetFloat("Master", value);
-        PlayerPrefs.SetFloat("Sound_Bgm_Volume", value);
+        _masterVolume = value;
+        
     }
 
     public void SetEffectVolume(float value)
     {
         mAudioMixer.SetFloat("Effect", value);
-        PlayerPrefs.SetFloat("Sound_Bgm_Volume", value);
+        _effVolume = value;
     }
 
     public void SetBgmVolume(float value)
     {
         mAudioMixer.SetFloat("BGM", value);
+        _bgmVolume = value;
+    }
+
+    public void SetCatVolume(float value)
+    {
+        mAudioMixer.SetFloat("Cat", value);
+        _catVolume = value;
     }
 
     public void Clear()

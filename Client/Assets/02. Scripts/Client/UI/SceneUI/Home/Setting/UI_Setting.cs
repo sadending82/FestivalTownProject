@@ -32,7 +32,7 @@ public class UI_Setting : UI_Scene
 
         Get<GameObject>((int)GameObjects.SaveButton).BindEvent((pointerEventData) =>
         {
-
+            Managers.UI.ShowPopUpUI<UI_SettingSavePopUp>();
         });
 
         isInitialized = true;

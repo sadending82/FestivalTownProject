@@ -9,6 +9,7 @@ public class Define
     {
         Bgm,
         Effect,
+        Cat,
     }
     public enum Scene
     {
