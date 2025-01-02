@@ -1088,8 +1088,7 @@ ERROR_CODE DB::UpsertUserCurrency(const int uid, std::vector<UserItem> CurrencyL
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
-	std::wstring query = L"MERGE INTO GameDB.dbo.UserItem AS Target "
-							L"USING (VALUES ";
+	std::wstring query = UpsertUserCurrency_Query_Front;
 
 	for (int i = 0; i < CurrencyList.size(); ++i) {
 		query += L"(?, ?, ?)";
@@ -1099,13 +1098,7 @@ ERROR_CODE DB::UpsertUserCurrency(const int uid, std::vector<UserItem> CurrencyL
 		}
 	}
 
-	query += L") AS Source(owner_UID, itemCode, count) "
-		L"ON Target.owner_UID = Source.owner_UID AND (Target.itemCode = Source.itemCode OR Target.itemCode IS NULL)"
-		L"WHEN MATCHED THEN "
-		L"UPDATE SET Target.count = Target.count + Source.count "
-		L"WHEN NOT MATCHED BY TARGET THEN "
-		L"INSERT(owner_UID, itemCode, count, itemType) "
-		L"VALUES(Source.owner_UID, Source.itemCode, Source.count, 1);";
+	query += UpsertUserCurrency_Query_Back;
 
 	SQLPrepare(hStmt, (SQLWCHAR*)query.c_str(), SQL_NTS);
 

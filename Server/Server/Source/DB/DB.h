@@ -57,7 +57,6 @@ public:
     ERROR_CODE UpdateUserPoint(const int uid, const int valueOfChange);
     ERROR_CODE UpdateBattleRecords(const int uid, const UserGameRecords& gameRecords);
     ERROR_CODE UpdateUserItemCount(const int uid, const int item_index, const int valueOfChange);
-    ERROR_CODE UpsertUserCurrency(const int uid, std::vector<UserItem> CurrencyList);
     ERROR_CODE UpdateCharacterCustomizing(const int uid, const struct sCharacterCustomizing& characterCustomizing);
     ERROR_CODE UpdateCharacterCustomizing(const int uid, const std::vector<uint8_t> characterCustomizing);
 
@@ -67,6 +66,7 @@ public:
 
     // UPSERT
     ERROR_CODE UpsertUserItemCount(const int uid, const int item_index, const int valueOfChange);
+    ERROR_CODE UpsertUserCurrency(const int uid, std::vector<UserItem> CurrencyList);
 
     // DELETE
     ERROR_CODE DeleteAcccount(const char* id);

@@ -88,6 +88,17 @@ const wchar_t* UpsertUserItemCount_Query = L"MERGE INTO GameDB.dbo.UserItem AS a
 											L"WHEN NOT MATCHED THEN "
 											L"INSERT (owner_UID, itemCode, count, itemType) VALUES (?, ?, ?, ?);";
 
+const wchar_t* UpsertUserCurrency_Query_Front = L"MERGE INTO GameDB.dbo.UserItem AS Target "
+												L"USING (VALUES ";
+
+const wchar_t* UpsertUserCurrency_Query_Back = L") AS Source(owner_UID, itemCode, count) "
+												L"ON Target.owner_UID = Source.owner_UID AND (Target.itemCode = Source.itemCode OR Target.itemCode IS NULL)"
+												L"WHEN MATCHED THEN "
+												L"UPDATE SET Target.count = Target.count + Source.count "
+												L"WHEN NOT MATCHED BY TARGET THEN "
+												L"INSERT(owner_UID, itemCode, count, itemType) "
+												L"VALUES(Source.owner_UID, Source.itemCode, Source.count, 1);";
+
 //UPDATE GameDB.dbo.UserAttendance SET is_rewarded = ? OUTPUT deleted.is_rewarded WHERE user_UID = ? AND event_code = ? AND day_count = ? 
 const wchar_t* UpdateUserAttendanceIsRewarded_Query = L"UPDATE GameDB.dbo.UserAttendance SET is_rewarded = ? OUTPUT deleted.is_rewarded WHERE user_UID = ? AND event_code = ? AND day_count = ? ";
 
