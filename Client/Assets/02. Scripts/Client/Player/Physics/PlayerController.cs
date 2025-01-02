@@ -30,7 +30,6 @@ public class PlayerController : MonoBehaviour
     public FlyingKickChecker jumpAttackChecker;
 
     [Header("--- State ---")]
-    public float JumpForce;
     public float FloorDetectionDistance;
     public float RotateSpeed;
 
@@ -61,6 +60,7 @@ public class PlayerController : MonoBehaviour
     private int dashStaminaConsume;
     private float dashCooltime = 1.0f;
     private bool dashCooltimeChecker;
+    private float JumpForce;
     private int jumpStaminaConsume;
     private float jumpSpeedOffset = 0.5f;
     private bool doubleJumpChecker;
@@ -153,6 +153,7 @@ public class PlayerController : MonoBehaviour
 
         data = Managers.Data.GetData(20004);
         cme = (CharacterMoveEntity)data;
+        JumpForce = cme.Value;
         jumpStaminaConsume = cme.Ch_StaminaConsume;
 
         // 공격 관련
