@@ -27,7 +27,7 @@ public:
     ~DB();
 	int Init();
     bool Connect(std::wstring odbc, std::wstring id, std::wstring password);
-    void ErrorDisplay(SQLHSTMT& hStmt, RETCODE retCode);
+    void ErrorDisplay(SQLHSTMT& hStmt);
     Security* GetSecurity() { return mSecurity; }
 
     // INSERT
@@ -57,6 +57,7 @@ public:
     ERROR_CODE UpdateUserPoint(const int uid, const int valueOfChange);
     ERROR_CODE UpdateBattleRecords(const int uid, const UserGameRecords& gameRecords);
     ERROR_CODE UpdateUserItemCount(const int uid, const int item_index, const int valueOfChange);
+    ERROR_CODE UpsertUserCurrency(const int uid, std::vector<UserItem> CurrencyList);
     ERROR_CODE UpdateCharacterCustomizing(const int uid, const struct sCharacterCustomizing& characterCustomizing);
     ERROR_CODE UpdateCharacterCustomizing(const int uid, const std::vector<uint8_t> characterCustomizing);
 

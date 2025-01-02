@@ -328,12 +328,14 @@ void FITH::CalculateGameResult(int roomID, std::set<int>& winningTeams)
 
         pDB->UpdateBattleRecords(uid, record.gameRecord);
 
+        std::vector<UserItem> rewardList;
         for (int i = 0; i < record.rewards.size(); ++i) {
             if (record.rewards[i].index == 0) {
                 continue;
             }
-            pDB->UpsertUserItemCount(uid, record.rewards[i].index, record.rewards[i].value);
+            rewardList.push_back(UserItem(uid, record.rewards[i].index, record.rewards[i].value));
         }
+        pDB->UpsertUserCurrency(uid, rewardList);
     }
 
     pPacketSender->SendGameResultPacket(roomID, winningTeams);

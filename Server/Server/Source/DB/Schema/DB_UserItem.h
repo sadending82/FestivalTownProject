@@ -16,6 +16,14 @@ struct UserItem {
 	int	itemCode = 0;
 	int	count = 0;
 	int	itemType = 0;
+
+	UserItem() {};
+	UserItem(int itemUID, int ownerUID, int itemcode, int itemCount, int itemtype)
+		: item_UID(itemUID), owner_UID(ownerUID), itemCode(itemcode), count(itemCount), itemType(itemtype) {};
+
+	// 재화 업데이트 용
+	UserItem(int ownerUID, int itemcode, int itemCount)
+		: owner_UID(ownerUID), itemCode(itemcode), count(itemCount) {};
 };
 
 struct EquippedItem {
