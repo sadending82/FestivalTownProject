@@ -50,5 +50,6 @@ public class UI_DisplayModeSetting : UI_Base
         }
 
         PlayerPrefs.SetInt("DisplayMode", value);
+        Debug.Log($"DisplayMode Changed to {value}");
     }
 }

@@ -79,5 +79,6 @@ public class UI_ResolutionSetting : UI_Base
         }
 
         PlayerPrefs.SetInt("Resolution", value);
+        Debug.Log($"Resolution Changed to {value}");
     }
 }
