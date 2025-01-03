@@ -74,6 +74,7 @@ public class Managers : MonoBehaviour
         _game.Init();
 
         _network = gameObject.AddComponent<NetworkManager>();
+
     }
 
     static void Init()

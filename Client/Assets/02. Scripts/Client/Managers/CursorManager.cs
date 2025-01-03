@@ -14,7 +14,7 @@ public class CursorManager : MonoBehaviour
     {
         cursorTexture = Managers.Resource.LoadTexture("Cursor");
         cursorClickedTexture = Managers.Resource.LoadTexture("CursorClicked");
-        cursorHotspot = new Vector2(cursorTexture.width / 2, cursorTexture.height / 2);
+        cursorHotspot = new Vector2(18, 11);
         Cursor.SetCursor(cursorTexture, cursorHotspot, CursorMode.Auto);
     }
 
