@@ -12,14 +12,25 @@ ObjectPool::~ObjectPool()
 	}
 }
 
+int ObjectPool::GetNewObjectID()
+{
+	int newObjectID = nextID.load();
+	while (!nextID.compare_exchange_weak(newObjectID, newObjectID + 1)) {
+
+	}
+	return newObjectID;
+}
+
 void ObjectPool::AddWeapon()
 {
-	mPool[nextID.load()] = new Weapon(nextID.load(), eObjectType::WEAPON);
+	int newWeaponID = nextID.load();
+	mPool[newWeaponID] = new Weapon(newWeaponID, eObjectType::WEAPON);
 }
 
 void ObjectPool::AddBomb()
 {
-	mPool[nextID.load()] = new Bomb(nextID.load(), eObjectType::BOMB);
+	int newBombID = nextID.load();
+	mPool[newBombID] = new Bomb(newBombID, eObjectType::BOMB);
 }
 
 void ObjectPool::ObjectDeactive(int id)
@@ -59,21 +70,22 @@ Object* ObjectPool::GetFreeObject(eObjectType type)
 
 	Object* newObject{};
 
+	int newObjID = GetNewObjectID();
+
 	switch (type) {
 	case eObjectType::WEAPON: {
-		newObject = new Weapon(nextID.load(), eObjectType::WEAPON);
+		newObject = new Weapon(newObjID, eObjectType::WEAPON);
 	}
 							break;
 	case eObjectType::BOMB: {
-		newObject = new Bomb(nextID.load(), eObjectType::BOMB);
+		newObject = new Bomb(newObjID, eObjectType::BOMB);
 	}
 							break;
 	}
 	newObject->SetIsActive(true);
 
 	mPoolLock.lock();
-	mPool[nextID.load()] = newObject;
-	nextID.fetch_add(1);
+	mPool[newObjID] = newObject;
 	mPoolLock.unlock();
 
 	return newObject;

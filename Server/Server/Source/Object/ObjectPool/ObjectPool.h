@@ -13,6 +13,8 @@ public:
 
 	std::unordered_map<int, Object*>& GetPool() { return mPool; }
 
+	int GetNewObjectID();
+
 	void AddWeapon();
 	void AddBomb();
 
