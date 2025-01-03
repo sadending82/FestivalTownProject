@@ -86,6 +86,7 @@ bool MatchMakingManager::CheckMatchMaking(eMatchingType matchingType)
         }
 
         std::vector<int> sessionList;
+
         for (int i = 0; i < matchedPlayerCount; ++i) {
             if (matchingQueue.empty()) {
                 break;
@@ -97,7 +98,7 @@ bool MatchMakingManager::CheckMatchMaking(eMatchingType matchingType)
         }
 
         MatchingComplete(roomID, sessionList);
-        std::cout << "Start Game room - " << roomID << "| GameMode - " << gameMode << std::endl;
+        //std::cout << "Start Game room - " << roomID << "| GameMode - " << gameMode << std::endl;
     }
 
     return true;
@@ -112,6 +113,8 @@ void MatchMakingManager::MatchingComplete(int roomID, std::vector<int>& sessionI
     room->SetPlayerCnt(9999);
 
     int addCompletePlayerCnt = 0;
+
+    int matchedPlayerCount = pServer->GetTableManager()->GetGameModeOutData()[room->GetGameMode()].Player_Count;
 
     // Player Add Into New Room
     for (int sessionID : sessionIDs) {
@@ -156,6 +159,9 @@ void MatchMakingManager::MatchingComplete(int roomID, std::vector<int>& sessionI
                 }
                 addCompletePlayerCnt++;
             }
+        }
+        else{
+
         }
         player->GetSessionStateLock().unlock();
     }

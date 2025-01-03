@@ -14,8 +14,6 @@ void Player::Init()
 
 void Player::IngameInfoInit()
 {
-	mPlayerState = ePlayerState::PS_NONE;
-
 	mRoomID = INVALIDKEY;
 	mInGameID = INVALIDKEY;
 	mTeam = INVALIDKEY;
