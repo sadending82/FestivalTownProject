@@ -91,7 +91,9 @@ bool FITH::CheckGameEnd(int roomID)
                 }
                 else {
                     player->IngameInfoInit();
-                    player->SetSessionState(eSessionState::ST_ACCEPTED);
+                    if (player->GetSessionState() == eSessionState::ST_INGAME) {
+                        player->SetSessionState(eSessionState::ST_ACCEPTED);
+                    }
                 }
                 player->GetSessionStateLock().unlock();
             }
@@ -139,7 +141,9 @@ bool FITH::TimeoverGameEnd(int roomID)
             }
             else {
                 player->IngameInfoInit();
-                player->SetSessionState(eSessionState::ST_ACCEPTED);
+                if (player->GetSessionState() == eSessionState::ST_INGAME) {
+                    player->SetSessionState(eSessionState::ST_ACCEPTED);
+                }
             }
             player->GetSessionStateLock().unlock();
         }

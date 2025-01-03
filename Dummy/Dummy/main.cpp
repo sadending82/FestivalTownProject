@@ -9,13 +9,13 @@
 #pragma comment (lib,"MSWSock.lib")
 HANDLE g_hiocp;
 
-//#define PORTNUM 45872
-#define PORTNUM 30412
-//#define IPADDRESS "127.0.0.1"
-#define IPADDRESS "203.239.231.148"
+#define PORTNUM 45872
+//#define PORTNUM 30412
+#define IPADDRESS "127.0.0.1"
+//#define IPADDRESS "203.239.231.148"
 
-inline constexpr int MAX_TEST = 1000;
-inline constexpr int MAX_CLIENTS = 1000;
+inline constexpr int MAX_TEST = 500;
+inline constexpr int MAX_CLIENTS = 500;
 
 std::array<int, MAX_CLIENTS> client_map;
 std::array<DummyClient, MAX_CLIENTS> g_clients;
