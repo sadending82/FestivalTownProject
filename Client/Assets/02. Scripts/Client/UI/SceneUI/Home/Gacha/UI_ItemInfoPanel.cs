@@ -34,8 +34,8 @@ public class UI_ItemInfoPanel : UI_Base
         ui.Init();
         if(Managers.Data.ItemDict.TryGetValue(index, out var itemEntity))
         {
-            ui.SetName(itemEntity.Name);
-            ui.SetImage(itemEntity.File_Name);
+            ui.SetItem(itemEntity.Index);
+            ui.SetItemTexture((Define.ItemGrade)itemEntity.Item_Grade);
         }
 
     }
