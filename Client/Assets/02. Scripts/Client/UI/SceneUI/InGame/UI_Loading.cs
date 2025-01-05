@@ -56,6 +56,21 @@ public class UI_Loading : UI_PopUp
         Get<GameObject>((int)GameObjects.ModeDescriptionText).GetComponent<TMP_Text>().text = text;
     }
 
+    public void SetThemeImage(int mapTheme)
+    {
+        switch (mapTheme)
+        {
+            case 1:
+                Get<GameObject>((int)GameObjects.Panel).GetComponent<Image>().sprite = Managers.Resource.LoadSprite("CatTemple_Day");
+                Get<GameObject>((int)GameObjects.Panel).GetComponent<Image>().preserveAspect = true;
+                break;
+            case 2:
+                Get<GameObject>((int)GameObjects.Panel).GetComponent<Image>().sprite = Managers.Resource.LoadSprite("CatTemple_Night");
+                Get<GameObject>((int)GameObjects.Panel).GetComponent<Image>().preserveAspect = true;
+                break;
+        }
+    }
+
     public override void Init()
     {
         base.Init();
@@ -64,6 +79,7 @@ public class UI_Loading : UI_PopUp
 
         SetModeTitle(Managers.Game.ModeTitle);
         SetModeDescriptionText(Managers.Game.ModeDescription);
+        SetThemeImage(Managers.Game.mapTheme);
 
         int randomNum = UnityEngine.Random.Range(0, Managers.Game.TipIndices.Count);
 
@@ -83,5 +99,7 @@ public class UI_Loading : UI_PopUp
                 SetNewTipDescription();
             });
         }
+
+        
     }
 }
