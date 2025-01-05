@@ -262,8 +262,7 @@ public class MapManager : MonoBehaviour
 
     private void LoadMapTheme()
     {
-        int n = 2;
-        switch(n)
+        switch(Managers.Game.mapTheme)
         {
             case 1:
                 {
