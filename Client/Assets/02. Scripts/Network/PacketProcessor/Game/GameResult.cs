@@ -19,11 +19,18 @@ namespace Network.PacketProcessor
             var Data = GameResult.GetRootAsGameResult(bb);
 
             int winningTeam = 0;
-            for (int i = 0; i < Data.WiningTeamLength; ++i)
+            //무승부
+            if (Data.WiningTeamLength > 1)
             {
-                winningTeam = Data.WiningTeam(i);
+                winningTeam = -1;
             }
-            Managers.Game.SetWinningTeam(winningTeam);
+            //무승부X
+            else
+            {
+                winningTeam = Data.WiningTeam(3);
+                Managers.Game.SetWinningTeam(winningTeam);
+            }
+
 
             List<Define.PlayerResult> team1List = new();
             List<Define.PlayerResult> team2List = new();

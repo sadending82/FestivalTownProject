@@ -16,75 +16,85 @@ public class NonRagdollPlayerController : MonoBehaviour
         int winningTeam = Managers.Game.GetWinningTeam();
 
         int playerCount = 0;
-        int winnerCount = 0;
-        int loserCount = 0;
 
-        GameObject winnerPositions = null;
-        GameObject loserPositions = null;
-
-        switch (Managers.Game.gameMode)
+        //이긴 팀이 있는 경우
+        if (winningTeam != 3)
         {
-            case eGameMode.FITH_Team_Battle_6:
-                {
-                    podiums.transform.GetChild(2).gameObject.SetActive(true);
-                    winnerPositions = podiums.transform.GetChild(2).transform.GetChild(0).gameObject;
-                    loserPositions = podiums.transform.GetChild(2).transform.GetChild(1).gameObject;
-                }
-                break;
-            case eGameMode.FITH_Team_Battle_4:
-                {
-                    podiums.transform.GetChild(1).gameObject.SetActive(true);
-                    winnerPositions = podiums.transform.GetChild(1).transform.GetChild(0).gameObject;
-                    loserPositions = podiums.transform.GetChild(1).transform.GetChild(1).gameObject;
-                }
-                break;
-            case eGameMode.FITH_Indiv_Battle_3:
-            case eGameMode.FITH_Indiv_Battle_2:
-                {
-                    podiums.transform.GetChild(0).gameObject.SetActive(true);
-                    winnerPositions = podiums.transform.GetChild(0).transform.GetChild(0).gameObject;
-                    loserPositions = podiums.transform.GetChild(0).transform.GetChild(1).gameObject;
-                }
-                break;
-            default:
-                {
-                    Debug.Log("ERROR!!! SetPlayer(): Wrong GameMode !!!");
-                }
-                break;
-        }
+            int winnerCount = 0;
+            int loserCount = 0;
 
-        for (int i = 0; i < maxPlayerNum; ++i)
-        {
-            GameObject tPlayer = Managers.Player.FindPlayerById(i);
-            if (tPlayer.activeSelf == true)
+            GameObject winnerPositions = null;
+            GameObject loserPositions = null;
+
+            switch (Managers.Game.gameMode)
             {
-                int teamNumber = tPlayer.GetComponent<CharacterStatus>().GetTeamNumber();
-                GameObject rPlayer = this.transform.GetChild(playerCount).gameObject;
-                rPlayer.SetActive(true);
-
-                // 스킨 적용
-                List<int> itemList = Managers.Game.GetCharacterCustomizingById(i);
-                foreach (int itemCode in itemList)
-                {
-                    rPlayer.GetComponent<NonRagdollPlayerState>().ChangeCustomizing(itemCode);
-                }
-
-                // 이긴 팀 플레이어면
-                if (winningTeam == teamNumber)
-                {
-                    rPlayer.transform.position = winnerPositions.transform.GetChild(winnerCount).transform.position;
-                    rPlayer.GetComponent<NonRagdollPlayerAnimationController>().SetWinAnimation();
-                    winnerCount++;
-                }
-                // 진 팀 플레이어면
-                else
-                {
-                    rPlayer.transform.position = loserPositions.transform.GetChild(loserCount).transform.position;
-                    rPlayer.GetComponent<NonRagdollPlayerAnimationController>().SetLoseAnimation();
-                    loserCount++;
-                }
-                playerCount++;
+                case eGameMode.FITH_Team_Battle_6:
+                    {
+                        podiums.transform.GetChild(2).gameObject.SetActive(true);
+                        winnerPositions = podiums.transform.GetChild(2).transform.GetChild(0).gameObject;
+                        loserPositions = podiums.transform.GetChild(2).transform.GetChild(1).gameObject;
+                    }
+                    break;
+                case eGameMode.FITH_Team_Battle_4:
+                    {
+                        podiums.transform.GetChild(1).gameObject.SetActive(true);
+                        winnerPositions = podiums.transform.GetChild(1).transform.GetChild(0).gameObject;
+                        loserPositions = podiums.transform.GetChild(1).transform.GetChild(1).gameObject;
+                    }
+                    break;
+                case eGameMode.FITH_Indiv_Battle_3:
+                case eGameMode.FITH_Indiv_Battle_2:
+                    {
+                        podiums.transform.GetChild(0).gameObject.SetActive(true);
+                        winnerPositions = podiums.transform.GetChild(0).transform.GetChild(0).gameObject;
+                        loserPositions = podiums.transform.GetChild(0).transform.GetChild(1).gameObject;
+                    }
+                    break;
+                default:
+                    {
+                        Debug.Log("ERROR!!! SetPlayer(): Wrong GameMode !!!");
+                    }
+                    break;
             }
+
+            for (int i = 0; i < maxPlayerNum; ++i)
+            {
+                GameObject tPlayer = Managers.Player.FindPlayerById(i);
+                if (tPlayer.activeSelf == true)
+                {
+                    int teamNumber = tPlayer.GetComponent<CharacterStatus>().GetTeamNumber();
+                    GameObject rPlayer = this.transform.GetChild(playerCount).gameObject;
+                    rPlayer.SetActive(true);
+
+                    // 스킨 적용
+                    List<int> itemList = Managers.Game.GetCharacterCustomizingById(i);
+                    foreach (int itemCode in itemList)
+                    {
+                        rPlayer.GetComponent<NonRagdollPlayerState>().ChangeCustomizing(itemCode);
+                    }
+
+                    // 이긴 팀 플레이어면
+                    if (winningTeam == teamNumber)
+                    {
+                        rPlayer.transform.position = winnerPositions.transform.GetChild(winnerCount).transform.position;
+                        rPlayer.GetComponent<NonRagdollPlayerAnimationController>().SetWinAnimation();
+                        winnerCount++;
+                    }
+                    // 진 팀 플레이어면
+                    else
+                    {
+                        rPlayer.transform.position = loserPositions.transform.GetChild(loserCount).transform.position;
+                        rPlayer.GetComponent<NonRagdollPlayerAnimationController>().SetLoseAnimation();
+                        loserCount++;
+                    }
+                    playerCount++;
+                }
+            }
+        }
+        //비긴 경우
+        else
+        {
+
         }
     }
     public void ResetPlayer()
