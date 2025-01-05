@@ -105,7 +105,7 @@ namespace ActiveRagdoll
 
             JointDrive driveJoint = new JointDrive();
 
-            driveJoint.positionSpring = 1000;
+            driveJoint.positionSpring = 10000;
             driveJoint.positionDamper = 0;
             driveJoint.maximumForce = 500;
             driveJoint.useAcceleration = false;
@@ -120,7 +120,7 @@ namespace ActiveRagdoll
                     driveJoint.positionSpring = 100;
                 }
                 joints[i].angularXDrive = joints[i].angularYZDrive = driveJoint;
-                driveJoint.positionSpring = 1000;
+                driveJoint.positionSpring = 10000;
             }
 
             driveJoint.positionDamper = 0;
