@@ -11,6 +11,7 @@ public class Define
         Effect,
         Cat,
     }
+
     public enum Scene
     {
         None,

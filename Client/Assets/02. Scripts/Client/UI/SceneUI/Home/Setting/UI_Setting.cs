@@ -27,7 +27,9 @@ public class UI_Setting : UI_Scene
 
         Get<GameObject>((int)GameObjects.ResetButton).BindEvent((PointerEventData) =>
         {
+            Managers.Sound.SetDefaults();
 
+            Get<GameObject>((int)GameObjects.UI_SettingPanel).GetComponent<UI_SettingPanel>().SetDefaults();
         });
 
         Get<GameObject>((int)GameObjects.SaveButton).BindEvent((pointerEventData) =>

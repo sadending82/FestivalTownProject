@@ -13,8 +13,18 @@ public class HomeScene : BaseScene
 
         SceneType = Define.Scene.Home;
 
-        Managers.Sound.Play("Sfx_BGM_Lobby", Define.Sound.Bgm);
+        homeStartUI = Managers.UI.ShowSceneUI<UI_HomeStart>();
+        homeSceneUI = Managers.UI.ShowPopUpUI<UI_HomeScene>();
 
+        homeStartUI.Init();
+        homeSceneUI.Init();
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    public void Start()
+    {
         if (PlayerPrefs.HasKey("Sound_Master_Volume"))
         {
             Managers.Sound.SetMasterVolume(PlayerPrefs.GetFloat("Sound_Master_Volume"));
@@ -35,14 +45,15 @@ public class HomeScene : BaseScene
             Managers.Sound.SetCatVolume(PlayerPrefs.GetFloat("Sound_Cat_Volume"));
         }
 
-        homeStartUI = Managers.UI.ShowSceneUI<UI_HomeStart>();
-        homeSceneUI = Managers.UI.ShowPopUpUI<UI_HomeScene>();
+        // home에서 시작했을 때 1프레임 동안 개 크게 들리는 경우가 있어 코루틴으로 밀어두기
+        StartCoroutine(StartBGM());
+    }
 
-        homeStartUI.Init();
-        homeSceneUI.Init();
-
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+    IEnumerator StartBGM()
+    {
+        yield return null;
+        Managers.Sound.Play("Sfx_BGM_Lobby", Define.Sound.Bgm);
+        yield break;
     }
 
     public override void Clear()

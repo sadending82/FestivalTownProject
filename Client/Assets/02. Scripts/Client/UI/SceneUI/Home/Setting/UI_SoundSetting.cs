@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,10 +27,27 @@ public class UI_SoundSetting : UI_Base
         bgm.Init();
         bgm.SetSoundType(Define.Sound.Bgm);
 
-        var Eff = Get<GameObject>((int)GameObjects.EffectVolumeSetting).GetComponent<UI_VolumeSetting>();
-        Eff.Init();
-        Eff.SetSoundType(Define.Sound.Effect);
+        var eff = Get<GameObject>((int)GameObjects.EffectVolumeSetting).GetComponent<UI_VolumeSetting>();
+        eff.Init();
+        eff.SetSoundType(Define.Sound.Effect);
+
+        var cat = Get<GameObject>((int)GameObjects.CatVoiceVolumeSetting).GetComponent<UI_VolumeSetting>();
+        cat.Init();
+        cat.SetSoundType(Define.Sound.Cat);
+
+        var master = Get<GameObject>((int)GameObjects.MasterVolumeSetting).GetComponent<UI_VolumeSetting>();
+        master.Init();
+        master.SetMasterSound();
 
         isInitialized = true;
+    }
+
+    public void SetDefaults()
+    {
+        foreach (GameObjects gobj in Enum.GetValues(typeof(GameObjects)))
+        {
+            Get<GameObject>((int)gobj).GetComponent<UI_VolumeSetting>().SetDefault();
+        }
+
     }
 }

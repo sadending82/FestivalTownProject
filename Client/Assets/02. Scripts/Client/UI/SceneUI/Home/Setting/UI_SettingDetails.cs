@@ -37,4 +37,9 @@ public class UI_SettingDetails : UI_Base
 
         Get<GameObject>(index).SetActive(true);
     }
+
+    public void SetDefaults()
+    {
+        Get<GameObject>((int)GameObjects.SoundSetting).GetComponent<UI_SoundSetting>().SetDefaults();
+    }
 }

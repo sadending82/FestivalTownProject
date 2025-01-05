@@ -30,7 +30,7 @@ public class UI_SettingPanel : UI_Base
 
         var sdUI = Get<GameObject>((int)GameObjects.SettingDetails).GetComponent<UI_SettingDetails>();
         sdUI.Init();
-      
+
 
         isInitialized = true;
     }
@@ -44,5 +44,10 @@ public class UI_SettingPanel : UI_Base
         var sdUI = Get<GameObject>((int)GameObjects.SettingDetails).GetComponent<UI_SettingDetails>();
 
         sdUI.SetDetailOn(idx);
+    }
+
+    public void SetDefaults()
+    {
+        Get<GameObject>((int)GameObjects.SettingDetails).GetComponent<UI_SettingDetails>().SetDefaults();
     }
 }

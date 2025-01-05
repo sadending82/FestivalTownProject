@@ -69,6 +69,7 @@ public class SoundManager
             {
                 SetCatVolume(PlayerPrefs.GetFloat("Sound_Cat_Volume"));
             }
+
         }
     }
 
@@ -95,6 +96,24 @@ public class SoundManager
     {
         mAudioMixer.SetFloat("CatVoice", value);
         _catVolume = value;
+    }
+
+    public void SetDefaults()
+    {
+        _masterVolume = Defaults.MASTER_VOLUME_DEFAULT;
+        _effVolume = Defaults.EFFECT_VOLUME_DEFAULT;
+        _catVolume = Defaults.CAT_VOLUME_DEFAULT;
+        _bgmVolume = Defaults.BGM_VOLUME_DEFAULT;
+
+        SetMasterVolume(_masterVolume);
+        SetEffectVolume(_effVolume);
+        SetBgmVolume(_bgmVolume);
+        SetCatVolume(_catVolume);
+
+        PlayerPrefs.SetFloat("Sound_Master_Volume", Managers.Sound._masterVolume);
+        PlayerPrefs.SetFloat("Sound_Eff_Volume", Managers.Sound._effVolume);
+        PlayerPrefs.SetFloat("Sound_Bgm_Volume", Managers.Sound._bgmVolume);
+        PlayerPrefs.SetFloat("Sound_Cat_Volume", Managers.Sound._catVolume);
     }
 
     public void Clear()
