@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class UI_CreateAccountPanel : UI_Base
 {
@@ -23,7 +24,7 @@ public class UI_CreateAccountPanel : UI_Base
         NickNameCheckCircle,
         PWCheckCircle,
         PWDoubleCheckCircle,
-        
+        ToolTipImage,
     }
 
     bool isInitialized = false;
@@ -52,6 +53,16 @@ public class UI_CreateAccountPanel : UI_Base
                 ui.BindPopupCloseEvent();
             }
         });
+
+        Get<GameObject>((int)GameObjects.ToolTipImage).BindEvent((PointerEventData) =>
+        {
+            Get<GameObject>((int)GameObjects.ToolTipImage).transform.GetChild(0).gameObject.SetActive(true);
+        }, Define.UIEvent.PointerEnter);
+
+        Get<GameObject>((int)GameObjects.ToolTipImage).BindEvent((PointerEventData) =>
+        {
+            Get<GameObject>((int)GameObjects.ToolTipImage).transform.GetChild(0).gameObject.SetActive(false);
+        }, Define.UIEvent.PointerExit);
 
         isInitialized = true;
     }
