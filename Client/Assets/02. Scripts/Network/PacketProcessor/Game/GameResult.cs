@@ -27,7 +27,7 @@ namespace Network.PacketProcessor
             //무승부X
             else
             {
-                winningTeam = Data.WiningTeam(3);
+                winningTeam = Data.WiningTeam(0);
                 Managers.Game.SetWinningTeam(winningTeam);
             }
 

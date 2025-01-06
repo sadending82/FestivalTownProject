@@ -77,6 +77,7 @@ public class NonRagdollPlayerController : MonoBehaviour
                     if (winningTeam == teamNumber)
                     {
                         rPlayer.transform.position = winnerPositions.transform.GetChild(winnerCount).transform.position;
+                        rPlayer.transform.rotation = winnerPositions.transform.GetChild(winnerCount).transform.rotation;
                         rPlayer.GetComponent<NonRagdollPlayerAnimationController>().SetWinAnimation();
                         winnerCount++;
                     }
@@ -84,6 +85,7 @@ public class NonRagdollPlayerController : MonoBehaviour
                     else
                     {
                         rPlayer.transform.position = loserPositions.transform.GetChild(loserCount).transform.position;
+                        rPlayer.transform.rotation = loserPositions.transform.GetChild(loserCount).transform.rotation;
                         rPlayer.GetComponent<NonRagdollPlayerAnimationController>().SetLoseAnimation();
                         loserCount++;
                     }

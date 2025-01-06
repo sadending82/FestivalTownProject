@@ -41,7 +41,6 @@ public class UI_PlayerResult : UI_Base
         if (Get<GameObject>((int)GameObjects.KillText) == null) Debug.Log("text null");
         if (Get<GameObject>((int)GameObjects.KillText).GetComponent<TMP_Text>() == null) Debug.Log("tmp null");
         Debug.Log(Get<GameObject>((int)GameObjects.KillText).GetComponent<TMP_Text>().text);
-        Debug.Log($"kill = {kill}");
         Get<GameObject>((int)GameObjects.KillText).GetComponent<TMP_Text>().text = kill.ToString();
 
         Get<GameObject>((int)GameObjects.DeathText).GetComponent<TMP_Text>().text = death.ToString();
