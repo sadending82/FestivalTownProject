@@ -25,7 +25,10 @@ public class NonRagdollPlayerAnimationController : MonoBehaviour
         int randomValue = (Random.Range(0, 3) + 1);
         ChangeAnimation("Lose" + randomValue);
     }
-
+    public void SetDrawAnimation()
+    {
+        ChangeAnimation("Win2");
+    }
     public void SetLobbyAnimation()
     {
         ChangeAnimation("Win2");

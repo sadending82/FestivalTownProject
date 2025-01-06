@@ -22,14 +22,14 @@ namespace Network.PacketProcessor
             //무승부
             if (Data.WiningTeamLength > 1)
             {
-                winningTeam = -1;
+                winningTeam = 3;
             }
             //무승부X
             else
             {
                 winningTeam = Data.WiningTeam(0);
-                Managers.Game.SetWinningTeam(winningTeam);
             }
+            Managers.Game.SetWinningTeam(winningTeam);
 
 
             List<Define.PlayerResult> team1List = new();
@@ -38,8 +38,8 @@ namespace Network.PacketProcessor
             for (int i = 0; i < Data.PlayerRecordsLength; ++i){
                 var playerRecord = Data.PlayerRecords(i).Value;
 
-                Debug.Log($"Player {playerRecord.Id}:  Kill = {playerRecord.KillCount}, Death = {playerRecord.DeathCount}" +
-                    $",  Gold = {playerRecord.EarnGold}, Point = {playerRecord.Point} Is MVP = {playerRecord.IsMvp}");
+                //Debug.Log($"Player {playerRecord.Id}:  Kill = {playerRecord.KillCount}, Death = {playerRecord.DeathCount}" +
+                //    $",  Gold = {playerRecord.EarnGold}, Point = {playerRecord.Point} Is MVP = {playerRecord.IsMvp}");
 
                 Define.PlayerResult result;
                 result.Id = playerRecord.Id;
