@@ -184,7 +184,26 @@ public class SoundManager
         if (_3dAudioSource.TryGetValue(sourceObj, out source) == false)
         {
             source = Util.GetOrAddComponent<AudioSource>(sourceObj);
+            switch (type)
+            {
+                case Define.Sound.Effect:
+                    {
+                        source.outputAudioMixerGroup = mAudioMixer.FindMatchingGroups("Master")[2];
+                    }
+                    break;
+                case Define.Sound.Cat:
+                    {
+                        source.outputAudioMixerGroup = mAudioMixer.FindMatchingGroups("Master")[1];
+                    }
+                    break;
+                case Define.Sound.Bgm:
+                    {
+                        source.outputAudioMixerGroup = mAudioMixer.FindMatchingGroups("Master")[3];
+                    }
+                    break;
+            }
             _3dAudioSource.Add(sourceObj, source);
+            
         }
 
         AudioClip clip = GetOrAddAudioClip(path, type);
