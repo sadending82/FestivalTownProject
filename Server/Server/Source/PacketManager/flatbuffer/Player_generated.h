@@ -1114,7 +1114,7 @@ struct PlayerCalculatedDamage FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::T
     VT_ATTACK_TYPE = 6,
     VT_HP = 8,
     VT_DAMAGE_AMOUNT = 10,
-    VT_TARGET_STAMINA_LOSS = 12,
+    VT_STAMINA = 12,
     VT_KNOCKBACK_DIRECTION = 14
   };
   int32_t target_id() const {
@@ -1129,8 +1129,8 @@ struct PlayerCalculatedDamage FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::T
   int32_t damage_amount() const {
     return GetField<int32_t>(VT_DAMAGE_AMOUNT, 0);
   }
-  int32_t target_stamina_loss() const {
-    return GetField<int32_t>(VT_TARGET_STAMINA_LOSS, 0);
+  int32_t stamina() const {
+    return GetField<int32_t>(VT_STAMINA, 0);
   }
   const PacketTable::UtilitiesTable::Vec3f *knockback_direction() const {
     return GetPointer<const PacketTable::UtilitiesTable::Vec3f *>(VT_KNOCKBACK_DIRECTION);
@@ -1141,7 +1141,7 @@ struct PlayerCalculatedDamage FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::T
            VerifyField<int32_t>(verifier, VT_ATTACK_TYPE, 4) &&
            VerifyField<int32_t>(verifier, VT_HP, 4) &&
            VerifyField<int32_t>(verifier, VT_DAMAGE_AMOUNT, 4) &&
-           VerifyField<int32_t>(verifier, VT_TARGET_STAMINA_LOSS, 4) &&
+           VerifyField<int32_t>(verifier, VT_STAMINA, 4) &&
            VerifyOffset(verifier, VT_KNOCKBACK_DIRECTION) &&
            verifier.VerifyTable(knockback_direction()) &&
            verifier.EndTable();
@@ -1164,8 +1164,8 @@ struct PlayerCalculatedDamageBuilder {
   void add_damage_amount(int32_t damage_amount) {
     fbb_.AddElement<int32_t>(PlayerCalculatedDamage::VT_DAMAGE_AMOUNT, damage_amount, 0);
   }
-  void add_target_stamina_loss(int32_t target_stamina_loss) {
-    fbb_.AddElement<int32_t>(PlayerCalculatedDamage::VT_TARGET_STAMINA_LOSS, target_stamina_loss, 0);
+  void add_stamina(int32_t stamina) {
+    fbb_.AddElement<int32_t>(PlayerCalculatedDamage::VT_STAMINA, stamina, 0);
   }
   void add_knockback_direction(::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> knockback_direction) {
     fbb_.AddOffset(PlayerCalculatedDamage::VT_KNOCKBACK_DIRECTION, knockback_direction);
@@ -1187,11 +1187,11 @@ inline ::flatbuffers::Offset<PlayerCalculatedDamage> CreatePlayerCalculatedDamag
     int32_t attack_type = 0,
     int32_t hp = 0,
     int32_t damage_amount = 0,
-    int32_t target_stamina_loss = 0,
+    int32_t stamina = 0,
     ::flatbuffers::Offset<PacketTable::UtilitiesTable::Vec3f> knockback_direction = 0) {
   PlayerCalculatedDamageBuilder builder_(_fbb);
   builder_.add_knockback_direction(knockback_direction);
-  builder_.add_target_stamina_loss(target_stamina_loss);
+  builder_.add_stamina(stamina);
   builder_.add_damage_amount(damage_amount);
   builder_.add_hp(hp);
   builder_.add_attack_type(attack_type);

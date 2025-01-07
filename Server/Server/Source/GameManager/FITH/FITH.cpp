@@ -607,6 +607,8 @@ bool FITH::PlayerDamagedFromOther(int roomID, Room* room, int attackerID, Player
     int damageAmount = 0;
     int TargetStaminaLoss = 0;
 
+    int currStamina = target->GetStamina();
+
     if (targetID == attackerID) {
         return false;
     }
@@ -623,15 +625,6 @@ bool FITH::PlayerDamagedFromOther(int roomID, Room* room, int attackerID, Player
     }
     target->GetPlayerStateLock().unlock();
 
-
-    // 타겟의 기력이 없으면 그로기 상태로
-    if (target->GetStamina() == 0) {
-        if (target->ChangeToGroggyState(pServer)) {
-            targetGameRecord.gameRecord.Groggy_Count.fetch_add(1);
-            PushEventGroggyRecovery(pServer->GetTimer(), targetID, roomID, room->GetRoomCode(), room->GetGameModeData().Ch_Groggy);
-        }
-    }
-
     // 데미지 계산
     damageAmount += attackerStat.strength * attackerStat.attackStats.at(damageType).Value;
     attacker->GetWeaponLock().lock_shared();
@@ -642,7 +635,7 @@ bool FITH::PlayerDamagedFromOther(int roomID, Room* room, int attackerID, Player
 
     // 데미지 적용
     target->ReduceHP(damageAmount);
-    target->ReduceStamina(TargetStaminaLoss);
+    currStamina -= TargetStaminaLoss;
 
 
     if (target->GetHP() <= 0) {
@@ -664,10 +657,11 @@ bool FITH::PlayerDamagedFromOther(int roomID, Room* room, int attackerID, Player
         PushEventPlayerRespawn(pServer->GetTimer(), targetID, roomID, room->GetRoomCode(), spawnTime);
     }
     else {
-        pPacketSender->SendPlayerCalculatedDamage(targetID, roomID, eDamageType::AT_ATTACK, target->GetHP(), damageAmount, TargetStaminaLoss, knockback_direction);
+        target->SetStamina(currStamina);
+        pPacketSender->SendPlayerCalculatedDamage(targetID, roomID, eDamageType::AT_ATTACK, target->GetHP(), damageAmount, currStamina, knockback_direction);
 
         // 타격 후 스테미너가 0미만이면 그로기로
-        if (target->GetStamina() < 0) {
+        if (currStamina < 0) {
             if (target->ChangeToGroggyState(pServer)) {
                 targetGameRecord.gameRecord.Groggy_Count.fetch_add(1);
                 PushEventGroggyRecovery(pServer->GetTimer(), targetID, roomID, room->GetRoomCode(), room->GetGameModeData().Ch_Groggy);
