@@ -66,7 +66,7 @@ public:
 
 			pPacketSender->SendPlayerGroggyRecoveryPacket(playerid, roomID, staminaRecoveryValue);
 
-			COUT << playerid << " 그로기 회복\n";
+			//COUT << playerid << " 그로기 회복\n";
 		}
 		catch (const std::exception& e) {
 			std::cerr << "[Event_GroggyRecovery ERROR] : " << e.what() << std::endl;
