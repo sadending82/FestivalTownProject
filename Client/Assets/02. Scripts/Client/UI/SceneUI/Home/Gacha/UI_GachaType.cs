@@ -1,7 +1,9 @@
 using ExcelDataStructure;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 
@@ -120,13 +122,29 @@ public class UI_GachaType : UI_Base
         if (itemInfoPanel == null) return;
 
         itemInfoPanel.Init();
+        List<KeyValuePair<int, GachaGroupItemEntity>> tempData = new();
 
-        int cnt = 0;
 
         foreach (var data in Managers.Data.GachaGroupItemDict)
         {
             if (data.Value.Gacha_Group != GachaGroupIndex) continue;
 
+            if (data.Value.Is_Promote == false) continue;
+
+            tempData.Add(data);
+
+        }
+
+        tempData.Sort((KeyValuePair<int, GachaGroupItemEntity> a, KeyValuePair<int, GachaGroupItemEntity> b) => {
+            return (Managers.Data.ItemDict[a.Value.Reward_Item_Index].Index).CompareTo(Managers.Data.ItemDict[b.Value.Reward_Item_Index].Index);
+            });
+
+        var newData = tempData.OrderByDescending(n1 => Managers.Data.ItemDict[n1.Value.Reward_Item_Index].Item_Grade);
+
+        int cnt = 0;
+
+        foreach (var data in newData)
+        {
             itemInfoPanel.AddItemInfoList(data.Value.Reward_Item_Index);
             cnt++;
 
