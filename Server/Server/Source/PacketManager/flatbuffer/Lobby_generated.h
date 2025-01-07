@@ -61,6 +61,12 @@ struct AttendanceRewardRequestBuilder;
 struct AttendanceRewardResponse;
 struct AttendanceRewardResponseBuilder;
 
+struct EventRewardRequest;
+struct EventRewardRequestBuilder;
+
+struct EventRewardResponse;
+struct EventRewardResponseBuilder;
+
 struct GameMatchingRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef GameMatchingRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -988,6 +994,118 @@ inline ::flatbuffers::Offset<AttendanceRewardResponse> CreateAttendanceRewardRes
   builder_.add_reward_item(reward_item);
   builder_.add_result(result);
   builder_.add_day_count(day_count);
+  builder_.add_event_code(event_code);
+  return builder_.Finish();
+}
+
+struct EventRewardRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef EventRewardRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_EVENT_CODE = 4
+  };
+  int32_t event_code() const {
+    return GetField<int32_t>(VT_EVENT_CODE, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_EVENT_CODE, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct EventRewardRequestBuilder {
+  typedef EventRewardRequest Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_event_code(int32_t event_code) {
+    fbb_.AddElement<int32_t>(EventRewardRequest::VT_EVENT_CODE, event_code, 0);
+  }
+  explicit EventRewardRequestBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<EventRewardRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<EventRewardRequest>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<EventRewardRequest> CreateEventRewardRequest(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t event_code = 0) {
+  EventRewardRequestBuilder builder_(_fbb);
+  builder_.add_event_code(event_code);
+  return builder_.Finish();
+}
+
+struct EventRewardResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef EventRewardResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_EVENT_CODE = 4,
+    VT_RESULT = 6,
+    VT_REWARD_ITEM = 8,
+    VT_REWARD_ITEM_COUNT = 10
+  };
+  int32_t event_code() const {
+    return GetField<int32_t>(VT_EVENT_CODE, 0);
+  }
+  int32_t result() const {
+    return GetField<int32_t>(VT_RESULT, 0);
+  }
+  int32_t reward_item() const {
+    return GetField<int32_t>(VT_REWARD_ITEM, 0);
+  }
+  int32_t reward_item_count() const {
+    return GetField<int32_t>(VT_REWARD_ITEM_COUNT, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_EVENT_CODE, 4) &&
+           VerifyField<int32_t>(verifier, VT_RESULT, 4) &&
+           VerifyField<int32_t>(verifier, VT_REWARD_ITEM, 4) &&
+           VerifyField<int32_t>(verifier, VT_REWARD_ITEM_COUNT, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct EventRewardResponseBuilder {
+  typedef EventRewardResponse Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_event_code(int32_t event_code) {
+    fbb_.AddElement<int32_t>(EventRewardResponse::VT_EVENT_CODE, event_code, 0);
+  }
+  void add_result(int32_t result) {
+    fbb_.AddElement<int32_t>(EventRewardResponse::VT_RESULT, result, 0);
+  }
+  void add_reward_item(int32_t reward_item) {
+    fbb_.AddElement<int32_t>(EventRewardResponse::VT_REWARD_ITEM, reward_item, 0);
+  }
+  void add_reward_item_count(int32_t reward_item_count) {
+    fbb_.AddElement<int32_t>(EventRewardResponse::VT_REWARD_ITEM_COUNT, reward_item_count, 0);
+  }
+  explicit EventRewardResponseBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<EventRewardResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<EventRewardResponse>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<EventRewardResponse> CreateEventRewardResponse(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t event_code = 0,
+    int32_t result = 0,
+    int32_t reward_item = 0,
+    int32_t reward_item_count = 0) {
+  EventRewardResponseBuilder builder_(_fbb);
+  builder_.add_reward_item_count(reward_item_count);
+  builder_.add_reward_item(reward_item);
+  builder_.add_result(result);
   builder_.add_event_code(event_code);
   return builder_.Finish();
 }

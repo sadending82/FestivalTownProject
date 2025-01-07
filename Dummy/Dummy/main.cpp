@@ -9,13 +9,13 @@
 #pragma comment (lib,"MSWSock.lib")
 HANDLE g_hiocp;
 
-#define PORTNUM 45872
-//#define PORTNUM 30412
-#define IPADDRESS "127.0.0.1"
-//#define IPADDRESS "203.239.231.148"
+//#define PORTNUM 45872
+#define PORTNUM 30432
+//#define IPADDRESS "127.0.0.1"
+#define IPADDRESS "203.239.231.148"
 
-inline constexpr int MAX_TEST = 500;
-inline constexpr int MAX_CLIENTS = 500;
+inline constexpr int MAX_TEST = 1000;
+inline constexpr int MAX_CLIENTS = 1000;
 
 std::array<int, MAX_CLIENTS> client_map;
 std::array<DummyClient, MAX_CLIENTS> g_clients;
@@ -258,8 +258,8 @@ void Adjust_Number_Of_Client()
 	std::uniform_int_distribution<> matchingType_distrib(0, 10);
 
 	g_clients[num_connections].connected = true;
-	/*std::cout << num_connections << " 접속 완료" << std::endl;
-	std::cout << num_connections << " 매칭 요청" << std::endl;*/
+	std::cout << num_connections << " 접속 완료" << std::endl;
+	std::cout << num_connections << " 매칭 요청" << std::endl;
 	eMatchingType mtype;
 	if (matchingType_distrib(gen) % 2 == 0) {
 		mtype = eMatchingType::FITH_SOLO;

@@ -36,6 +36,7 @@ public:
     ERROR_CODE InsertUserGameRecords(const int uid);
     ERROR_CODE InsertUserItem(const int owner_uid, const int itemCode, const int itemCount, const int itemType);
     ERROR_CODE InsertUserAttendance(const int uid, const int EventIndex, const int day_count);
+    ERROR_CODE InsertUserEventReward(const int uid, const int Eventcode);
 
     // SELECT
     int SelectAccountCount(const char* id);
@@ -62,7 +63,7 @@ public:
 
     bool       UpdateUserAttendanceIsRewarded(const int uid, const int eventCode, const int dayCount, const int updateValue);
 
-    std::pair<ERROR_CODE, std::vector<UserItem>> UpdateGoldAndSelectUserAllCurrency(const int uid, const int updateValue);
+    ERROR_CODE UpdateUserEventReward_IsRewarded(const int uid, const int eventCode);
 
     // UPSERT
     ERROR_CODE UpsertUserItemCount(const int uid, const int item_index, const int valueOfChange);

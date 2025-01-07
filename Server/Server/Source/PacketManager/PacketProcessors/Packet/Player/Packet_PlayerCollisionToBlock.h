@@ -44,7 +44,8 @@ public:
 
 				if (playerState == ePlayerState::PS_ALIVE) {
 					// 블록 충돌 데미지 계산
-					target->ReduceHP(10);
+					int blockHitDamage = room->GetGameModeData().Block_Hit;
+					target->ReduceHP(blockHitDamage);
 					if (target->GetHP() <= 0) {
 						int spawnTime = room->GetGameModeData().Player_Spawn_Time;
 						if (target->ChangeToDeadState(pServer, spawnTime)) {

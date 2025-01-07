@@ -39,7 +39,8 @@ enum class GameModeData_Field {
 	Block2_Spawn_Index,
 	Block2_Spawn_Count,
 	Block2_Spawn_Time,
-	Ch_Groggy
+	Ch_Groggy,
+	Block_Hit
 };
 
 #pragma pack (push, 1)
@@ -74,6 +75,7 @@ struct GameModeData {
 	int Block2_Spawn_Count;	
 	int Block2_Spawn_Time;
 	int Ch_Groggy;
+	int Block_Hit;
 };
 
 #pragma pack(pop) 

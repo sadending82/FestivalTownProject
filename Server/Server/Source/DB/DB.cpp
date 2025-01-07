@@ -270,6 +270,41 @@ ERROR_CODE DB::InsertUserAttendance(const int uid, const int EventIndex, const i
 	return ERROR_CODE::ER_DB_ERROR;
 }
 
+ERROR_CODE DB::InsertUserEventReward(const int uid, const int Eventcode)
+{
+	if (uid == 0) {
+		return ERROR_CODE::ER_DB_ERROR;
+	}
+
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGONEPARAM("hStmt Error %d : (InsertUserEventReward) \n", retcode); ErrorDisplay(hStmt);
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return ERROR_CODE::ER_DB_ERROR;
+	}
+
+
+
+	SQLPrepare(hStmt, (SQLWCHAR*)InsertUserEventReward_Query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&Eventcode), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return ERROR_CODE::ER_NONE;
+	}
+
+	DEBUGMSGONEPARAM("Execute Query Error %d : (InsertUserEventReward)\n", retcode); ErrorDisplay(hStmt);
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	return ERROR_CODE::ER_DB_ERROR;
+}
+
 int DB::SelectAccountCount(const char* id)
 {
 	SQLHSTMT hStmt = NULL;
@@ -1245,63 +1280,43 @@ bool DB::UpdateUserAttendanceIsRewarded(const int uid, const int eventCode, cons
 	return true;
 }
 
-std::pair<ERROR_CODE, std::vector<UserItem>> DB::UpdateGoldAndSelectUserAllCurrency(const int uid, const int updateValue)
+ERROR_CODE DB::UpdateUserEventReward_IsRewarded(const int uid, const int eventCode)
 {
-	/*if (uid == 0) {
-		return { ERROR_CODE::ER_DB_ERROR, std::vector<UserItem>() };
+	if (uid == 0) {
+		return ERROR_CODE::ER_DB_NO_DATA;
 	}
 
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
-	std::vector<UserItem> itemList;
-
-	int itemType = 1;
-
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
-		DEBUGMSGONEPARAM("hStmt Error %d : (UpdateGoldAndSelectUserAllCurrency) \n", retcode); ErrorDisplay(hStmt);
+		DEBUGMSGONEPARAM("hStmt Error %d : (UpdateUserEventReward_IsRewarded) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-		return { ERROR_CODE::ER_DB_ERROR, std::vector<UserItem>() };
+		return ERROR_CODE::ER_DB_ERROR;
 	}
 
-	SQLPrepare(hStmt, (SQLWCHAR*)UpdateGoldAndSelectUserAllCurrency_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)UpdateUserEventReward_IsRewarded_Query, SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&eventCode), 0, NULL);
 
 	retcode = SQLExecute(hStmt);
 
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
 
-		SQLLEN col1, col2;
-		int itemCode = 0;
-		int amount = 0;
-		while (SQLFetch(hStmt) == SQL_SUCCESS) {
-			UserItem item;
-
-			SQLGetData(hStmt, 1, SQL_C_LONG, &amount, sizeof(amount), &col1);
-			SQLGetData(hStmt, 2, SQL_C_LONG, &itemCode, sizeof(itemCode), &col2);
-			item.itemCode = itemCode;
-			item.count = amount;
-			item.itemType = itemType;
-
-			itemList.push_back(item);
-		}
-
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-		return { ERROR_CODE::ER_NONE, itemList };
+		return ERROR_CODE::ER_NONE;
+	}
+	else if (retcode == SQL_NO_DATA) {
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		return ERROR_CODE::ER_DB_NO_DATA;
 	}
 
-	ErrorDisplay(hStmt, retcode);
+	DEBUGMSGONEPARAM("Execute Query Error %d : (UpdateUserEventReward_IsRewarded)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-	if (retcode == SQL_NO_DATA) {
-		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-		return { ERROR_CODE::ER_DB_NO_DATA, std::vector<UserItem>() };
-	}
-	DEBUGMSGONEPARAM("Execute Query Error %d : (SelectUserAllCurrency)\n", retcode); ErrorDisplay(hStmt);
-	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-	return { ERROR_CODE::ER_DB_ERROR, std::vector<UserItem>() };*/
-	return { ERROR_CODE::ER_DB_ERROR, std::vector<UserItem>() };
+	return ERROR_CODE::ER_DB_ERROR;
 }
+
 
 ERROR_CODE DB::DeleteAcccount(const char* id)
 {

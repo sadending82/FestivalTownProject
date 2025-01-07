@@ -56,6 +56,7 @@ namespace NetworkProtocol
         S2C_CHANGE_CHARACTER_CUSTOMIZING,
         S2C_ATTENDANCE_EVENT_RESPONSE,
         S2C_ATTENDANCE_REWARD_RESPONSE,
+        S2C_EVENT_REWARD_RESPONSE,
 
         S2C_HEART_BEAT,
         S2C_PLAYER_ADD,
@@ -113,6 +114,7 @@ namespace NetworkProtocol
         C2S_CHANGE_CHARACTER_CUSTOMIZING,
         C2S_ATTENDANCE_EVENT_REQUEST,
         C2S_ATTENDANCE_REWARD_REQUEST,
+        C2S_EVENT_REWARD_REQUEST,
 
         C2S_HEART_BEAT,
         C2S_PLAYER_MOVE,
@@ -143,7 +145,6 @@ namespace NetworkProtocol
         C2S_ACCOUNT_RESET,
         C2S_GET_CURRENCY
     };
-
     public enum ERROR_CODE
     {
         ER_NONE = 1,

@@ -165,6 +165,7 @@ if exist "$(ProjectDir)\Config" xcopy /Y /d /e /i "$(ProjectDir)\Config" "$(OutD
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\DB\Schema\DB_UserEventReward.h" />
     <ClCompile Include="Source\LobbyManager\LobbyManager.cpp" />
     <ClCompile Include="Source\MatchMakingManager\MatchMakingManager.cpp" />
     <ClCompile Include="Source\GameManager\FITH\FITH.cpp" />
@@ -253,6 +254,7 @@ if exist "$(ProjectDir)\Config" xcopy /Y /d /e /i "$(ProjectDir)\Config" "$(OutD
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_AttendanceRewardRequest.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_ChangeCharacterCustomizing.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_CurrencyAmountRequest.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_EventRewardRequest.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_GachaRequest.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_GameMatchingCancel.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_UserItemsRequest.h" />

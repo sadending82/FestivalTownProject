@@ -11,6 +11,7 @@
 #include "Packet/Lobby/Packet_ChangeCharacterCustomizing.h"
 #include "Packet/Lobby/Packet_AttendanceEventRequest.h"
 #include "Packet/Lobby/Packet_AttendanceRewardRequest.h"
+#include "Packet/Lobby/Packet_EventRewardRequest.h"
 
 #include "Packet/Utilities/Packet_HeartBeat.h"
 #include "Packet/Utilities/Packet_PingCheck.h"

@@ -29,6 +29,7 @@
     <ClCompile Include="Source\Object\ObjectPool\ObjectPool.cpp" />
     <ClCompile Include="Source\MatchMakingManager\MatchMakingManager.cpp" />
     <ClCompile Include="Source\LobbyManager\LobbyManager.cpp" />
+    <ClCompile Include="Source\DB\Schema\DB_UserEventReward.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DB\DB.h" />
@@ -146,6 +147,7 @@
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_AttendanceRewardRequest.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Utilities\Packet_PingCheck.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Login\Packet_CheckID_Duplication.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_EventRewardRequest.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

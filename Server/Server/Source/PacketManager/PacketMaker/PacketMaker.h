@@ -23,6 +23,7 @@ public:
 	std::vector<uint8_t> MakeUserItemsResponsePacket(int result, std::unordered_map<int, UserItem>& user_items);
 	std::vector<uint8_t> MakeAttendanceEventResponsePacket(int eventCode, int dayCount, int result);
 	std::vector<uint8_t> MakeAttendanceRewardResponsePacket(int eventCode, int day_count, int result, int reward_item, int reward_item_count);
+	std::vector<uint8_t> MakeEventRewardResponsePacket(int eventCode, int result, int reward_item, int reward_item_count);
 
 	std::vector<uint8_t> MakePlayerAddPacket(std::vector<class Player*>& players);
 	std::vector<uint8_t> MakePlayerDeletePacket (int inGameID);

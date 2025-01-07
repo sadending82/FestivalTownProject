@@ -59,6 +59,12 @@ void PacketSender::SendAttendanceRewardResponsePacket(int sessionID, int eventCo
     mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
 }
 
+void PacketSender::SendEventRewardResponsePacket(int sessionID, int eventCode, int result, int reward_item, int reward_item_count)
+{
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakeEventRewardResponsePacket(eventCode, result, reward_item, reward_item_count);
+    mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
+}
+
 void PacketSender::SendPlayerAdd(int roomID)
 {
     Room* room = mServer->GetRooms()[roomID];

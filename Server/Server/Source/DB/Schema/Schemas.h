@@ -4,3 +4,4 @@
 #include "DB_UserItem.h"
 #include "DB_UserGameRecords.h"
 #include "DB_UserAttendance.h"
+#include "DB_UserEventReward.h"

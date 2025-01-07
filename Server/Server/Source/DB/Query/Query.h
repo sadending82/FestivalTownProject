@@ -15,6 +15,9 @@ const wchar_t* InsertUserItem_Query = L"INSERT INTO GameDB.dbo.UserItem (owner_u
 //INSERT INTO GameDB.dbo.UserAttendance (user_UID, event_code, attendance_date, day_count) VALUES(?, ?, CAST(GETDATE() AS DATE), ?)
 const wchar_t* InsertUserAttendance_Query = L"INSERT INTO GameDB.dbo.UserAttendance (user_UID, event_code, attendance_date, day_count) VALUES(?, ?, CAST(GETDATE() AS DATE), ?)";
 
+//INSERT INTO GameDB.dbo.UserEventReward (user_UID, event_code, attendance_date, day_count) VALUES(?, ?, CAST(GETDATE() AS DATE), ?)
+const wchar_t* InsertUserEventReward_Query = L"INSERT INTO GameDB.dbo.UserEventReward (userUID, eventCode) VALUES(?, ?)";
+
 const wchar_t* SelectAccountCount_Query = L"SELECT COUNT(ID) FROM AccountDB.dbo.Account WHERE ID = ?";
 
 // UPDATE GameDB.dbo.UserInfo SET ConnectionState = ? OUTPUT deleted.*, DATALENGTH(deleted.CharacterCustomizing) WHERE AccountID = ?
@@ -80,9 +83,9 @@ const wchar_t* UpdateUserItemCount_Query = L"UPDATE GameDB.dbo.UserItem SET coun
 //UPDATE GameDB.dbo.UserInfo SET CharacterCustomizing = ? WHERE UID = ?
 const wchar_t* UpdateCharacterCustomizing_Query = L"UPDATE GameDB.dbo.UserInfo SET CharacterCustomizing = ? WHERE UID = ?";
 
-const wchar_t* UpsertUserItemCount_Query = L"MERGE INTO GameDB.dbo.UserItem AS a "
-											L"USING (SELECT 1 AS match) AS b "
-											L"ON a.itemCode = ? AND a.owner_UID = ? "
+const wchar_t* UpsertUserItemCount_Query = L"MERGE INTO GameDB.dbo.UserItem AS Target "
+											L"USING (SELECT 1 AS match) AS Source "
+											L"ON Target.itemCode = ? AND Target.owner_UID = ? "
 											L"WHEN MATCHED THEN "
 											L"UPDATE SET count = count + ? "
 											L"WHEN NOT MATCHED THEN "
@@ -106,6 +109,14 @@ const wchar_t* UpdateGoldAndSelectUserAllCurrency_Query = L"UPDATE GameDB.dbo.Us
 														L"SET count = count + ? "
 														L"WHERE itemCode = ? AND onwer_UID = ? "
 														L"SELECT count, itemCode FROM GameDB.dbo.UserItem WHERE owner_UID = ? AND itemType = 1";
+
+const wchar_t* UpdateUserEventReward_IsRewarded_Query
+= L"MERGE INTO GameDB.dbo.UserEventReward AS Target "
+	L"USING (Select ? AS userUID, ? AS eventCode) AS Source "
+	L"ON Target.userUID = Source.userUID AND Target.eventCode = Source.eventCode "
+	L"WHEN MATCHED AND Target.isRewarded = 0 THEN"
+	L"UPDATE SET isRewarded = 1, rewardedDate = CAST(GETDATE() AS DATE)";
+														
 
 //DELETE FROM AccountDB.dbo.Account WHERE ID = ?
 const wchar_t* DeleteAcccount_Query = L"DELETE FROM AccountDB.dbo.Account WHERE ID = ?";

@@ -115,6 +115,14 @@ std::vector<uint8_t> PacketMaker::MakeAttendanceRewardResponsePacket(int eventCo
 	return MakeBuffer(ePacketType::S2C_ATTENDANCE_REWARD_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
+std::vector<uint8_t> PacketMaker::MakeEventRewardResponsePacket(int eventCode, int result, int reward_item, int reward_item_count)
+{
+	flatbuffers::FlatBufferBuilder Builder;
+
+	Builder.Finish(PacketTable::LobbyTable::CreateEventRewardResponse(Builder, eventCode, result, reward_item, reward_item_count));
+	return MakeBuffer(ePacketType::S2C_EVENT_REWARD_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
+}
+
 std::vector<uint8_t> PacketMaker::MakePlayerAddPacket(std::vector<class Player*>& players)
 {
 	flatbuffers::FlatBufferBuilder Builder;
