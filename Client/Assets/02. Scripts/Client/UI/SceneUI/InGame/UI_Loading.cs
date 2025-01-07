@@ -1,3 +1,4 @@
+using NetworkProtocol;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,6 +15,8 @@ public class UI_Loading : UI_PopUp
         ModeTitleText,
         ModeDescriptionText,
         ProgressBar,
+        IndivOrTeamImage,
+        PlayerCntImage,
     }
 
 
@@ -62,11 +65,36 @@ public class UI_Loading : UI_PopUp
         {
             case 1:
                 Get<GameObject>((int)GameObjects.Panel).GetComponent<Image>().sprite = Managers.Resource.LoadSprite("CatTemple_Day");
-                Get<GameObject>((int)GameObjects.Panel).GetComponent<Image>().preserveAspect = true;
                 break;
             case 2:
                 Get<GameObject>((int)GameObjects.Panel).GetComponent<Image>().sprite = Managers.Resource.LoadSprite("CatTemple_Night");
-                Get<GameObject>((int)GameObjects.Panel).GetComponent<Image>().preserveAspect = true;
+                break;
+        }
+    }
+
+    private void SetGameMode(eGameMode gameMode)
+    {
+        switch(gameMode)
+        {
+            case eGameMode.FITH_Indiv_Battle_2:
+                Get<GameObject>((int)GameObjects.IndivOrTeamImage).GetComponent<Image>().sprite = Managers.Resource.LoadSprite("IndivGame");
+                Get<GameObject>((int)GameObjects.PlayerCntImage).GetComponent<Image>().sprite = Managers.Resource.LoadSprite("1vs1");
+                Get<GameObject>((int)GameObjects.PlayerCntImage).GetComponent<Image>().SetNativeSize();
+                break;
+            case eGameMode.FITH_Indiv_Battle_3:
+                Get<GameObject>((int)GameObjects.IndivOrTeamImage).GetComponent<Image>().sprite = Managers.Resource.LoadSprite("IndivGame");
+                Get<GameObject>((int)GameObjects.PlayerCntImage).GetComponent<Image>().sprite = Managers.Resource.LoadSprite("1vs1vs1");
+                Get<GameObject>((int)GameObjects.PlayerCntImage).GetComponent<Image>().SetNativeSize();
+                break;
+            case eGameMode.FITH_Team_Battle_4:
+                Get<GameObject>((int)GameObjects.IndivOrTeamImage).GetComponent<Image>().sprite = Managers.Resource.LoadSprite("TeamGame");
+                Get<GameObject>((int)GameObjects.PlayerCntImage).GetComponent<Image>().sprite = Managers.Resource.LoadSprite("2vs2");
+                Get<GameObject>((int)GameObjects.PlayerCntImage).GetComponent<Image>().SetNativeSize();
+                break;
+            case eGameMode.FITH_Team_Battle_6:
+                Get<GameObject>((int)GameObjects.IndivOrTeamImage).GetComponent<Image>().sprite = Managers.Resource.LoadSprite("TeamGame");
+                Get<GameObject>((int)GameObjects.PlayerCntImage).GetComponent<Image>().sprite = Managers.Resource.LoadSprite("3vs3");
+                Get<GameObject>((int)GameObjects.PlayerCntImage).GetComponent<Image>().SetNativeSize();
                 break;
         }
     }
@@ -80,6 +108,7 @@ public class UI_Loading : UI_PopUp
         SetModeTitle(Managers.Game.ModeTitle);
         SetModeDescriptionText(Managers.Game.ModeDescription);
         SetThemeImage(Managers.Game.mapTheme);
+        SetGameMode(Managers.Game.gameMode);
 
         int randomNum = UnityEngine.Random.Range(0, Managers.Game.TipIndices.Count);
 
