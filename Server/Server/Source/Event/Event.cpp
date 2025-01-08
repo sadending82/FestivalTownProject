@@ -179,13 +179,14 @@ bool PushEventPlayerRespawn(Timer* pTimer, int playerID, int roomID, long long r
 	return true;
 }
 
-bool PushEventGroggyRecovery(Timer* pTimer, int playerID, int roomID, long long roomCode, int intervalSecond)
+bool PushEventGroggyRecovery(Timer* pTimer, int playerID, int roomID, long long lastGroggyTime, long long roomCode, int intervalSecond)
 {
 	EV_GROGGY_RECOVERY e;
 	e.size = sizeof(EV_GROGGY_RECOVERY);
 	e.type = eEventType::GROGGYRECOVERY;
 	e.playerID = playerID;
 	e.roomID = roomID;
+	e.groggyTime = lastGroggyTime;
 	e.roomCode = roomCode;
 
 	EVENT_HEADER header;

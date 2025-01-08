@@ -57,7 +57,9 @@ public:
 						// 그로기 상태로 만듬
 						if (target->ChangeToGroggyState(pServer)) {
 							playerGameRecord.gameRecord.Groggy_Count.fetch_add(1);
-							PushEventGroggyRecovery(pServer->GetTimer(), targetID, roomID, roomCode, room->GetGameModeData().Ch_Groggy);
+							long long groggyTime = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+							target->SetLastGroggyTime(groggyTime);
+							PushEventGroggyRecovery(pServer->GetTimer(), targetID, roomID, groggyTime, roomCode, room->GetGameModeData().Ch_Groggy);
 							//COUT << targetID << " 블록맞고 그로기\n";
 						}
 					}

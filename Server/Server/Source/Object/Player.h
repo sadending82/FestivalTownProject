@@ -45,6 +45,7 @@ public:
 	bool				GetIsGrabbed() { return mIsGrabbed.load(); }
 	int					GetAttachedPlayerID() { return mAttachedPlayerID; }
 	CharacterStat&		GetCharacterStat() { return mCharacterStat; }
+	long long			GetLastGroggyTime() { return mLastGroggyTime.load(); }
 
 	void				SetUID(int uid) { mUserInfo.UID = uid; }
 	void				SetAccountID(std::string accountID) { mUserInfo.AccountID = accountID; }
@@ -68,6 +69,7 @@ public:
 	void				SetWeapon(class Weapon* weapon) { mWeapon = weapon; }
 	void				SetAttachedPlayerID(int playerID) { mAttachedPlayerID = playerID; }
 	void				SetCharacterStat(CharacterStat& stat) { mCharacterStat = stat; }
+	void				SetLastGroggyTime(long long lastGroggyTime) { mLastGroggyTime.store(lastGroggyTime); }
 
 	void				SetUserInfoFromDB(UserInfo& userInfo) { mUserInfo = userInfo; }
 	// cas
@@ -121,6 +123,8 @@ protected:
 	class Weapon*		mWeapon = nullptr;
 	std::atomic<bool>	mIsGrabbed = false;
 	int					mAttachedPlayerID = INVALIDKEY;
+
+	std::atomic<long long>	mLastGroggyTime = 0;
 
 	CharacterStat		mCharacterStat;
 };

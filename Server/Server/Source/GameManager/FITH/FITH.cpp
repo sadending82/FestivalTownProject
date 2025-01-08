@@ -5,6 +5,7 @@
 #include "../../Room/Room.h"
 #include "../../PacketManager/PacketSender/PacketSender.h"
 #include "../../Event/Event.h"
+#include <chrono>
 #include <random>
 
 FITH::FITH(class Server* server, GameMode gameMode)
@@ -664,7 +665,9 @@ bool FITH::PlayerDamagedFromOther(int roomID, Room* room, int attackerID, Player
         if (currStamina < 0) {
             if (target->ChangeToGroggyState(pServer)) {
                 targetGameRecord.gameRecord.Groggy_Count.fetch_add(1);
-                PushEventGroggyRecovery(pServer->GetTimer(), targetID, roomID, room->GetRoomCode(), room->GetGameModeData().Ch_Groggy);
+                long long groggyTime = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+                target->SetLastGroggyTime(groggyTime);
+                PushEventGroggyRecovery(pServer->GetTimer(), targetID, roomID, groggyTime, room->GetRoomCode(), room->GetGameModeData().Ch_Groggy);
             }
         }
     }
@@ -691,7 +694,10 @@ bool FITH::PlayerDamagedFromBomb(int roomID, Room* room, int targetID, Player* t
     // 타겟의 기력이 없으면 그로기 상태로
     if (target->GetStamina() <= 0) {
         if (target->ChangeToGroggyState(pServer)) {
-            PushEventGroggyRecovery(pServer->GetTimer(), targetID, roomID, room->GetRoomCode(), room->GetGameModeData().Ch_Groggy);
+            targetGameRecord.gameRecord.Groggy_Count.fetch_add(1);
+            long long groggyTime = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+            target->SetLastGroggyTime(groggyTime);
+            PushEventGroggyRecovery(pServer->GetTimer(), targetID, roomID, groggyTime, room->GetRoomCode(), room->GetGameModeData().Ch_Groggy);
         }
     }
 

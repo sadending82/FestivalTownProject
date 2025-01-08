@@ -107,6 +107,7 @@ struct EV_WEAPON_SPAWN : EVENT {
 struct EV_GROGGY_RECOVERY : EVENT {
 	int roomID;
 	int playerID;
+	long long groggyTime;
 	long long roomCode;
 };
 
@@ -124,4 +125,4 @@ bool PushEventRemainTimeSync(Timer* pTimer, int roomID, long long roomCode);
 bool PushEventBombExplosion(Timer* pTimer, int roomID, int bombID, long long bombUniqueCode, long long roomCode, int intervalSecond);
 bool PushEventTimeOverCheck(Timer* pTimer, int roomID, long long roomCode);
 bool PushEventPlayerRespawn(Timer* pTimer, int playerID, int roomID, long long roomCode, int intervalSecond);
-bool PushEventGroggyRecovery(Timer* pTimer, int playerID, int roomID, long long roomCode, int intervalSecond);
+bool PushEventGroggyRecovery(Timer* pTimer, int playerID, int roomID, long long lastGroggyTime, long long roomCode, int intervalSecond);

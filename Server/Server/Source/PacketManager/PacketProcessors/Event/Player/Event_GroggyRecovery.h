@@ -13,6 +13,7 @@ public:
 
 			int roomID = event->roomID;
 			int playerid = event->playerID;
+
 			Room* room = pServer->GetRooms().at(roomID);
 			if (room == nullptr) {
 				return;
@@ -32,6 +33,10 @@ public:
 
 			Player* player = dynamic_cast<Player*>(pServer->GetSessions()[sessionID]);
 			if (player == nullptr) {
+				return;
+			}
+
+			if (event->groggyTime != player->GetLastGroggyTime()) {
 				return;
 			}
 
@@ -63,10 +68,9 @@ public:
 			player->GetPlayerStateLock().lock();
 			player->SetPlayerState(ePlayerState::PS_ALIVE);
 			player->GetPlayerStateLock().unlock();
-
+			
 			pPacketSender->SendPlayerGroggyRecoveryPacket(playerid, roomID, staminaRecoveryValue);
 
-			//COUT << playerid << " 그로기 회복\n";
 		}
 		catch (const std::exception& e) {
 			std::cerr << "[Event_GroggyRecovery ERROR] : " << e.what() << std::endl;
