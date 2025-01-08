@@ -38,6 +38,11 @@ public:
 
 				Player* target = dynamic_cast<Player*>(pServer->GetSessions()[target_sessionID]);
 
+				// 같은 팀은 안잡히게
+				if (player->GetTeam() == target->GetTeam()) {
+					return;
+				}
+
 				if (target->SetIsGrabbed(false) == true) {
 					player->SetAttachedPlayerID(INVALIDKEY);
 					target->SetAttachedPlayerID(INVALIDKEY);

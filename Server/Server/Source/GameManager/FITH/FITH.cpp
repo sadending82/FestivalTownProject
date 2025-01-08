@@ -689,7 +689,7 @@ bool FITH::PlayerDamagedFromBomb(int roomID, Room* room, int targetID, Player* t
     int damageAmount = room->GetGameModeData().Bomb_Damage;
 
     // 타겟의 기력이 없으면 그로기 상태로
-    if (target->GetStamina() == 0) {
+    if (target->GetStamina() <= 0) {
         if (target->ChangeToGroggyState(pServer)) {
             PushEventGroggyRecovery(pServer->GetTimer(), targetID, roomID, room->GetRoomCode(), room->GetGameModeData().Ch_Groggy);
         }
@@ -708,6 +708,21 @@ bool FITH::PlayerDamagedFromBomb(int roomID, Room* room, int targetID, Player* t
         PushEventPlayerRespawn(pServer->GetTimer(), targetID, roomID, room->GetRoomCode(), spawnTime);
     }
     else {
+        // 다른 플레이어 잡고있으면 풀기
+        int attachedPlayerID = target->GetAttachedPlayerID();
+        if (attachedPlayerID != INVALIDKEY && target->GetIsGrabbed() == false) {
+            if (room->GetState() == eRoomState::RS_INGAME) {
+                Player* attachedPlayer = dynamic_cast<Player*>(pServer->GetSessions()[room->GetPlayerList()[attachedPlayerID]]);
+
+                if (attachedPlayer->SetIsGrabbed(false) == true) {
+                    target->SetAttachedPlayerID(INVALIDKEY);
+                    attachedPlayer->SetAttachedPlayerID(INVALIDKEY);
+                    pServer->GetPacketSender()->SendPlayerThrowOtherPlayerPacket(roomID, targetID, target->GetPosition(), target->GetDirection()
+                        , attachedPlayerID, attachedPlayer->GetPosition(), attachedPlayer->GetDirection());
+                }
+            }
+        }
+
         pPacketSender->SendPlayerCalculatedDamage(targetID, roomID, eDamageType::AT_BOMB_ATTACK, target->GetHP(), damageAmount, 0, knockback_direction);
     }
 
