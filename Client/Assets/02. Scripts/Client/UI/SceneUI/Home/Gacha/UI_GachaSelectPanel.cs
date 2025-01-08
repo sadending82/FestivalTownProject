@@ -38,6 +38,8 @@ public class UI_GachaSelectPanel : UI_Base
 
         foreach (var group in Managers.Data.GachaGroupDict)
         {
+            if (!group.Value.Is_Visible && !Managers.Cheat.IsEnable()) continue;
+
             var ui = Managers.UI.MakeSubItem<UI_GachaType>(Get<GameObject>((int)GameObjects.GachaTypes).transform);
 
             ui.SetGachaType(group.Value.Index);

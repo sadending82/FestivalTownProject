@@ -79,7 +79,9 @@ namespace Network.PacketProcessor
                         aed.DayCount = dayCount;
                         aed.isRewarded = is_rewarded;
 
-                        Managers.Data.AttendanceEventDataDict.TryAdd(dayCount, aed);
+                        int eventItemListIdx = 100000 + eventCode + aed.DayCount - 1;
+
+                        Managers.Data.AttendanceEventDataDict.TryAdd(eventItemListIdx, aed);
                         Debug.Log($"Event : {eventCode}, day_count : {dayCount}, date: {date_year}-{date_month}-{date_day}, {is_rewarded}");
                     }
 

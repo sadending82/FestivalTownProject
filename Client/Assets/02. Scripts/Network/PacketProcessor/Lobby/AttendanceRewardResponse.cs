@@ -25,21 +25,36 @@ namespace Network.PacketProcessor
             int reward_item = Data.RewardItem;
             int reward_item_count = Data.RewardItemCount;
 
-            if (Managers.Data.AttendanceEventDataDict.TryGetValue(daycount, out var attendanceData))
+            int eventItemListIdx = 100000 + eventCode + daycount - 1;
+
+            if (Managers.Data.AttendanceEventDataDict.TryGetValue(eventItemListIdx, out var attendanceData))
             {
                 Debug.Log($"{daycount}일차 아이템 받앗숴요.");
                 attendanceData.isRewarded = true;
-                Managers.Data.AttendanceEventDataDict[daycount] = attendanceData;
-                var ui = Managers.UI.GetTopOfPopUPUI().GetComponent<UI_DailySignInCheck>();
+                Managers.Data.AttendanceEventDataDict[eventItemListIdx] = attendanceData;
+
                 Managers.Network.GetPacketManager().SendCurrencyAmountRequestPacket();
                 Managers.Network.GetPacketManager().SendUserItemsRequestPacket();
-                ui.UpdateItemCheck();
 
+                switch (eventCode)
+                {
+                    case 32001:
+                        {
+                            var ui = Managers.UI.GetTopOfPopUPUI().GetComponent<UI_DailySignInCheck>();
+                            ui.UpdateItemCheck();
+                        }
+                        break;
+                    case 31001:
+                        {
+                            var ui = Managers.UI.GetTopOfPopUPUI().GetComponent<UI_DevelopersThanks>();
+                            ui.UpdateItemCheck();
+                        }
+                        break;
+                }   
                 if(Managers.Scene.CurrentScene.GetComponent<HomeScene>() != null)
                 {
                     Managers.UI.GetCurrentSceneUI().GetComponent<UI_HomeStart>().CheckAttendanceEventData();
                 }
-                
             }
         }
 

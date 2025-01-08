@@ -33,7 +33,7 @@ public class UI_RollingBanner : UI_Base
 
         banners.transform.GetChild(1).gameObject.BindEvent((PointerEventData) =>
         {
-            // 개발자의 편지가 없어...
+            Managers.UI.ShowPopUpUI<UI_DevelopersThanks>();
         });
 
         var ui = Get<GameObject>((int)GameObjects.BannerTabs).GetComponent<UI_BannerTabs>();
