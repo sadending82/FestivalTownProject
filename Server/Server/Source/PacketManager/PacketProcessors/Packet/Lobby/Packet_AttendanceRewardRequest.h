@@ -55,7 +55,7 @@ public:
 				}
 
 				if (ERROR_CODE::ER_NONE != result) {
-					COUT << "AttendanceRewardRequest ERROR " << uid << ENDL;
+					std::cout << "AttendanceRewardRequest ERROR " << uid << std::endl;;
 				}
 
 				pPacketSender->SendAttendanceRewardResponsePacket(key, eventCode, dayCount, (int)result, reward_code, reward_amount);

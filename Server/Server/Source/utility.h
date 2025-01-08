@@ -9,9 +9,6 @@
 
 #define TIMEPOINT std::chrono::system_clock::time_point
 
-#define COUT std::cout
-#define ENDL std::endl;
-
 inline constexpr int SERVERKEY = 0;
 inline constexpr int STARTKEY = 1;
 inline constexpr int STARTBOTKEY = 4001;

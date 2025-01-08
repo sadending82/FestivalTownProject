@@ -60,7 +60,7 @@ public:
 							long long groggyTime = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 							target->SetLastGroggyTime(groggyTime);
 							PushEventGroggyRecovery(pServer->GetTimer(), targetID, roomID, groggyTime, roomCode, room->GetGameModeData().Ch_Groggy);
-							//COUT << targetID << " 블록맞고 그로기\n";
+							//std::cout << targetID << " 블록맞고 그로기\n";
 						}
 					}
 				}
@@ -70,7 +70,7 @@ public:
 					if (target->ChangeToDeadState(pServer, spawnTime)) {
 						playerGameRecord.gameRecord.DeathCount.fetch_add(1);
 						PushEventPlayerRespawn(pServer->GetTimer(), targetID, roomID, roomCode, spawnTime);
-						//COUT << targetID << " 블록맞고 사망\n";
+						//std::cout << targetID << " 블록맞고 사망\n";
 					}
 				}
 			}

@@ -31,7 +31,7 @@ public:
 				player->GetWeaponLock().lock();
 				Weapon* weapon = player->GetWeapon();
 				if (weapon == nullptr) {
-					COUT << "무기 없어서 못버림\n";
+					std::cout << "무기 없어서 못버림\n";
 					player->GetWeaponLock().unlock();
 					return;
 				}

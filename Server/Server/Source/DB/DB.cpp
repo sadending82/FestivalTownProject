@@ -697,7 +697,7 @@ int DB::SelectUserItemCount(const int uid, const int item_index)
 		return count;
 	}
 
-	COUT << "Execute Query Error " << retcode  << ": (SelectUserItemCount) - " << uid  << " " << item_index << ENDL;
+	std::cout << "Execute Query Error " << retcode  << ": (SelectUserItemCount) - " << uid  << " " << item_index << std::endl;;
 	ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	return 0;

@@ -32,7 +32,7 @@ public:
 				std::pair<ERROR_CODE, std::vector<UserItem>> result = db->SelectUserAllCurrency(uid);
 				
 				if (ERROR_CODE::ER_NONE != result.first) {
-					COUT << "SelectUserAllCurrency ERROR " << uid << ENDL;
+					std::cout << "SelectUserAllCurrency ERROR " << uid << std::endl;;
 				}
 
 				pPacketSender->SendCurrencyAmountResponsePacket(key, result.first, result.second);

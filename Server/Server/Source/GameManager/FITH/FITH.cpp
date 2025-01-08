@@ -482,7 +482,7 @@ void FITH::BombSpawn(Room* room, int roomID)
     for (const int id : bombIDs) {
         Bomb* bomb = room->GetBomb(id);
         if (bomb == nullptr) {
-            COUT << "ERROR!: " << "GetBomb FAIL. Bomb ID: " << id << ENDL;
+            std::cout << "ERROR!: " << "GetBomb FAIL. Bomb ID: " << id << std::endl;;
             continue;
         }
         long long uniqueCode = bomb->GetUniqueCode();

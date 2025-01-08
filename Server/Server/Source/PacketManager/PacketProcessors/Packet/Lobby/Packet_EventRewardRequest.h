@@ -33,7 +33,7 @@ public:
 				ERROR_CODE result = db->UpdateUserEventReward_IsRewarded(uid, eventCode);
 
 				if (result != ERROR_CODE::ER_NONE) {
-					COUT << "EventRewardRequest ERROR " << uid << ENDL;
+					std::cout << "EventRewardRequest ERROR " << uid << std::endl;;
 					return;
 				}
 

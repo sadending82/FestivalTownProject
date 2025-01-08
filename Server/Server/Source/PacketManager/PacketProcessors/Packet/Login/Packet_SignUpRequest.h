@@ -44,6 +44,9 @@ public:
 						result = ERROR_CODE::ER_DB_ERROR;
 					}
 				}
+				else {
+
+				}
 
 				pPacketSender->SendSignUpResponse(key, result);
 			}

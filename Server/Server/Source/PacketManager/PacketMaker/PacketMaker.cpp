@@ -391,7 +391,6 @@ std::vector<uint8_t> PacketMaker::MakeGameResultPacket(std::set<int>& winningTea
 	std::vector<flatbuffers::Offset<PacketTable::UtilitiesTable::PlayerGameRecord>> record_vec;
 	std::vector<int> winningTeams_vector(winningTeams.begin(), winningTeams.end());
 
-
 	for (auto& pair : records) {
 		int id = pair.first;
 		std::string playerName = "Unknown";
@@ -411,8 +410,12 @@ std::vector<uint8_t> PacketMaker::MakeGameResultPacket(std::set<int>& winningTea
 			, record.gameRecord.Point
 			, record.is_mvp);
 
+		std::cout << playerName << " - " << record.team << std::endl;;
+
 		record_vec.push_back(fRecord);
 	}
+
+
 
 	Builder.Finish(PacketTable::GameTable::CreateGameResult(Builder
 		, Builder.CreateVector(winningTeams_vector)

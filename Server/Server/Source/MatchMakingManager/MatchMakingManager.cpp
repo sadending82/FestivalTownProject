@@ -155,7 +155,7 @@ void MatchMakingManager::MatchingComplete(int roomID, std::vector<int>& sessionI
                 }
                 else {
                     player->SetMatchingRequestTime(0);
-                    //COUT << "Matched - " << sessionID << ENDL;
+                    //std::cout << "Matched - " << sessionID << std::endl;;
                 }
                 addCompletePlayerCnt++;
             }

@@ -36,7 +36,7 @@ public:
 			}
 
 			if (room->GetTeams().at(player->GetTeam()).GetLife() <= 0) {
-				//COUT << player->GetTeam() << "팀 끝나서 부활 안됨\n";
+				//std::cout << player->GetTeam() << "팀 끝나서 부활 안됨\n";
 				return;
 			}
 
@@ -58,7 +58,7 @@ public:
 			GameMode gameMode = room->GetGameMode();
 			pServer->GetGameManagers()[gameMode]->PlayerSpawn(room, roomID, player);
 
-			//COUT << player->GetInGameID() << " 부활함\n";
+			//std::cout << player->GetInGameID() << " 부활함\n";
 		}
 		catch (const std::exception& e) {
 			std::cerr << "[Event_PlayerRespawn ERROR] : " << e.what() << std::endl;

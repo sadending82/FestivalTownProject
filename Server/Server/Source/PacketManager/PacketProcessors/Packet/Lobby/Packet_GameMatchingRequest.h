@@ -106,10 +106,12 @@ public:
 					std::vector<int> sessions = { key, Bot->GetSessionID() };
 					pServer->GetMatchMakingManager()->MatchingComplete(roomID, sessions);
 
-					//COUT << "MAP: " << testMapProperties.Map_Index << " THEME: "<< testMapProperties.Map_Theme << ENDL;
+					//std::cout << "MAP: " << testMapProperties.Map_Index << " THEME: "<< testMapProperties.Map_Theme << std::endl;;
 				}break;
 				default:{
 					MatchMakingManager->GetMatchingQueue(matchingType).insert({key, requestTime});
+
+					std::cout << "UID: " << player->GetUID() << " Matching Request / Match: " << matchingType << "/ wating Player - " << MatchMakingManager->GetMatchingQueue(matchingType).size() << std::endl;;
 
 				}break;
 				}

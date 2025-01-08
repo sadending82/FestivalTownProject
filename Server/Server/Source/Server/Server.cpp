@@ -302,10 +302,10 @@ void Server::Run()
 
     switch (mMode) {
     case SERVER_MODE::LIVE: {
-        COUT << "START LIVE MODE \n";
+        std::cout << "START LIVE MODE \n";
     }break;
     case SERVER_MODE::TEST: {
-        COUT << "START TEST MODE \n";
+        std::cout << "START TEST MODE \n";
         //MakeTestRoom();
     }break;
     }
