@@ -61,7 +61,7 @@ public class PacketManager : MonoBehaviour
             { ePacketType.S2C_CHANGE_CHARACTER_CUSTOMIZING, new ChangeCharacterCustomizingProcessor() },
             { ePacketType.S2C_ATTENDANCE_EVENT_RESPONSE, new AttendanceEventResponseProcessor() },
             { ePacketType.S2C_ATTENDANCE_REWARD_RESPONSE, new AttendanceRewardResponseProcessor() },
-            { ePacketType.S2C_EVENT_REWARD_RESPONSE, new EventRewardResponseProcessor() },
+            //{ ePacketType.S2C_EVENT_REWARD_RESPONSE, new EventRewardResponseProcessor() },
 
             { ePacketType.S2C_PLAYER_ADD, new PlayerAddProcessor() },
             { ePacketType.S2C_PLAYER_DELETE, new PlayerDeleteProcessor() },
