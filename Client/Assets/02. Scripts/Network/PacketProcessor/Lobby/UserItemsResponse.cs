@@ -34,7 +34,8 @@ namespace Network.PacketProcessor
                     item.Count = item_info.Count;
                     item.Type = item_info.ItemType;
 
-                    Managers.Data.InventoryDataList.Add(item.ItemCode, item);
+                    bool result = Managers.Data.InventoryDataList.TryAdd(item.ItemCode, item);
+                    if(!result) { Debug.Log("이미 인벤토리에 있는 아이템입니다."); }
                 }
 
                 Managers.Data.SetInventoryDataRecved(true);

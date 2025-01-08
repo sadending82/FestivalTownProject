@@ -14,6 +14,7 @@ public class UI_DailySignInCheck : UI_PopUp
 
     bool isInitialized = false;
 
+
     private void Start()
     {
         if (!isInitialized) Init();
@@ -38,9 +39,10 @@ public class UI_DailySignInCheck : UI_PopUp
 
         foreach (var eventData in Managers.Data.EventMainDataDict)
         {
-            if (eventData.Value.Type == 2)
+            if (eventData.Value.Type == 2 && eventData.Value.Event_Id == 32001)
             {
                 int dataIndex = eventData.Key + 100000;
+
                 while (Managers.Data.EventListDataDict.ContainsKey(dataIndex))
                 {
                     Managers.Data.EventListDataDict.TryGetValue(dataIndex, out var data);
@@ -53,7 +55,7 @@ public class UI_DailySignInCheck : UI_PopUp
                     ui.SetEventCode(eventData.Key);
                     ui.SetItemImage(Managers.Resource.LoadSprite($"{Managers.Data.ItemDict[data.Reward_Item_Index].File_Name}"));
 
-                    bool result = Managers.Data.AttendanceEventDataDict.TryGetValue(data.Day, out var attendanceEventData);
+                    bool result = Managers.Data.AttendanceEventDataDict.TryGetValue(dataIndex, out var attendanceEventData);
                     if (result)
                     {
                         ui.SetItemRewarded(attendanceEventData.isRewarded);
@@ -82,7 +84,7 @@ public class UI_DailySignInCheck : UI_PopUp
 
         foreach (var eventData in Managers.Data.EventMainDataDict)
         {
-            if (eventData.Value.Type == 2)
+            if (eventData.Value.Type == 2 && eventData.Value.Event_Id == 32001)
             {
                 int dataIndex = eventData.Key + 100000;
                 while (Managers.Data.EventListDataDict.ContainsKey(dataIndex))
@@ -97,7 +99,7 @@ public class UI_DailySignInCheck : UI_PopUp
                     ui.SetEventCode(eventData.Key);
                     ui.SetItemImage(Managers.Resource.LoadSprite($"{Managers.Data.ItemDict[data.Reward_Item_Index].File_Name}"));
 
-                    bool result = Managers.Data.AttendanceEventDataDict.TryGetValue(data.Day, out var attendanceEventData);
+                    bool result = Managers.Data.AttendanceEventDataDict.TryGetValue(dataIndex, out var attendanceEventData);
                     if (result)
                     {
                         ui.SetItemRewarded(attendanceEventData.isRewarded);

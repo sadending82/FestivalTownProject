@@ -62,6 +62,8 @@ public class UI_EventPanel : UI_Base
 
         foreach (var eventMain in Managers.Data.EventMainDataDict)
         {
+            if (eventMain.Value.Type != 2) continue;
+
             var ui = Managers.UI.MakeSubItem<UI_EventPanelData>(scrV.GetContent().transform);
             ui.Init();
             ui.SetAquireable(false);
@@ -80,6 +82,8 @@ public class UI_EventPanel : UI_Base
 
                     foreach (var aed in Managers.Data.AttendanceEventDataDict)
                     {
+                        if (aed.Value.EventCode != eventMain.Key) continue;
+
                         if (!aed.Value.isRewarded)
                         {
                             Debug.Log($"{aed.Value.DayCount}일차, 보상 받았나요? {aed.Value.isRewarded}");
@@ -92,8 +96,20 @@ public class UI_EventPanel : UI_Base
                 case 31001:
                     ui.BindEventofData(eventMain.Value.Name, (PointerEventData) =>
                     {
-                        Debug.Log("디렉터의 감사 편지 인거 같아요");
+                        Managers.UI.ShowPopUpUI<UI_DevelopersThanks>();
                     });
+
+                    foreach (var aed in Managers.Data.AttendanceEventDataDict)
+                    {
+                        if (aed.Value.EventCode != eventMain.Key) continue;
+
+                        if (!aed.Value.isRewarded)
+                        {
+                            Debug.Log($"{aed.Value.DayCount}일차, 보상 받았나요? {aed.Value.isRewarded}");
+                            ui.SetAquireable(true);
+                            break;
+                        }
+                    }
                     break;
                 default:
                     Debug.Log($"eventKey : {eventMain.Key}");
@@ -111,10 +127,12 @@ public class UI_EventPanel : UI_Base
             var ui = child.GetComponent<UI_EventPanelData>();
             ui.SetAquireable(false);
 
-            if (ui.GetEventCode() == 32001)
+            if (Managers.Data.EventMainDataDict.TryGetValue(ui.GetEventCode(), out var eventMain))
             {
                 foreach (var aed in Managers.Data.AttendanceEventDataDict)
                 {
+                    if (aed.Value.EventCode != eventMain.Event_Id) continue;
+
                     if (!aed.Value.isRewarded)
                     {
                         Debug.Log($"{aed.Value.DayCount}일차, 보상 받았나요? {aed.Value.isRewarded}");

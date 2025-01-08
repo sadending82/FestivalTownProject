@@ -57,6 +57,7 @@ namespace ExcelDataStructure
         public int Pay_Item2_Value;
         public int Open_Date;
         public int Close_Date;
+        public bool Is_Visible;
     }
 
     [System.Serializable]
