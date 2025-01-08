@@ -28,6 +28,9 @@ public class UI_CreateAccountPanel : UI_Base
     }
 
     bool isInitialized = false;
+    bool idDuplicationChecked = false;
+    string idDuplicationCheckString = ""; 
+
 
     void Start()
     {
@@ -87,6 +90,8 @@ public class UI_CreateAccountPanel : UI_Base
         }
         else
         {
+            
+
             char firstSpecial = '_';
             char secondSpecial = '-';
 

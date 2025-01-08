@@ -66,6 +66,7 @@ namespace ExcelDataStructure
         public float Gacha_Weight;
         public int Reward_Item_Index;
         public float Reward_Item_Value;
+        public bool Is_Promote;
     }
 
     [System.Serializable]
