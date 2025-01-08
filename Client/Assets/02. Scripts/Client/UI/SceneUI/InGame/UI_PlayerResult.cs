@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_PlayerResult : UI_Base
 {
@@ -57,5 +58,15 @@ public class UI_PlayerResult : UI_Base
         
 
         Get<GameObject>((int)GameObjects.TeamFlag).GetComponent<UI_TeamFlag>().SetFlag(playerTeam, playerTeam == Managers.Game.GetWinningTeam());
+
+        List<int> custom = Managers.Game.GetCharacterCustomizingById(id);
+
+        foreach(var c in custom)
+        {
+            Get<GameObject>((int)GameObjects.PlayerImage).transform.GetChild(0).GetComponent<Image>().sprite = Managers.Resource.LoadSprite(Managers.Data.ItemDict[c].File_Name);
+            Get<GameObject>((int)GameObjects.PlayerImage).transform.GetChild(0).GetComponent<Image>().preserveAspect = true;
+            break;
+        }
+        
     }
 }
