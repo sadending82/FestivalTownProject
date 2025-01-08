@@ -50,7 +50,7 @@ public:
 
 				player->SetMatchingRequestTime(0);
 
-				std::cout << "UID: " << player->GetUID() << " Matching Cancel / Match: " << matchingType << "/ wating Player - " << MatchMakingManager->GetMatchingQueue(matchingType).size() << std::endl;
+				std::cout << "UID: " << player->GetUID() << " Matching Cancel / Match: " << matchingType << " / wating Player - " << MatchMakingManager->GetMatchingQueue(matchingType).size() << std::endl;
 
 				MatchMakingManager->GetMatchingLock().unlock();
 

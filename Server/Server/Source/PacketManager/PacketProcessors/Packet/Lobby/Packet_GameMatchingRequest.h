@@ -111,7 +111,7 @@ public:
 				default:{
 					MatchMakingManager->GetMatchingQueue(matchingType).insert({key, requestTime});
 
-					std::cout << "UID: " << player->GetUID() << " Matching Request / Match: " << matchingType << "/ wating Player - " << MatchMakingManager->GetMatchingQueue(matchingType).size() << std::endl;;
+					std::cout << "UID: " << player->GetUID() << " Matching Request / Match: " << matchingType << " / wating Player - " << MatchMakingManager->GetMatchingQueue(matchingType).size() << std::endl;;
 
 				}break;
 				}
