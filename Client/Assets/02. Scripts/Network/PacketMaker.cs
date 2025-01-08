@@ -618,23 +618,24 @@ public class PacketMaker
     }
     public byte[] MakeEventRewardRequestPacket(int eventCode)
     {
-        var builder = new FlatBufferBuilder(1);
+        //var builder = new FlatBufferBuilder(1);
 
-        EventRewardRequest.StartEventRewardRequest(builder);
-        EventRewardRequest.AddEventCode(builder, eventCode);
-        var offset = EventRewardRequest.EndEventRewardRequest(builder);
+        //EventRewardRequest.StartEventRewardRequest(builder);
+        //EventRewardRequest.AddEventCode(builder, eventCode);
+        //var offset = EventRewardRequest.EndEventRewardRequest(builder);
 
-        builder.Finish(offset.Value);
+        //builder.Finish(offset.Value);
 
-        byte[] data = builder.SizedByteArray();
-        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_EVENT_REWARD_REQUEST, flatBufferSize = (ushort)data.Length };
-        byte[] headerdata = Serialize<HEADER>(header);
-        byte[] result = new byte[data.Length + headerdata.Length];
+        //byte[] data = builder.SizedByteArray();
+        //HEADER header = new HEADER { type = (ushort)ePacketType.C2S_EVENT_REWARD_REQUEST, flatBufferSize = (ushort)data.Length };
+        //byte[] headerdata = Serialize<HEADER>(header);
+        //byte[] result = new byte[data.Length + headerdata.Length];
 
-        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
-        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
+        //Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        //Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
 
-        return result;
+        //return result;
+        return null;
     }
 
 
