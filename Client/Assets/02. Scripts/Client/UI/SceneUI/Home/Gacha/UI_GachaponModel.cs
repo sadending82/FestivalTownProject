@@ -76,6 +76,13 @@ public class UI_GachaponModel : UI_Base
                     gachaponColor += Random.Range((int)1, (int)5);
                 }
                 break;
+            //ÀÌ¸ðÆ® °¡Ã­
+            case 100014:
+                {
+                    gachaponMaterials[2] = Resources.Load<Material>($"Materials/Gachapon/banner3");
+                    gachaponColor += "5";
+                }
+                break;
             default:
                 {
                     Debug.Log("ERROR!!! GachaponCustomizing(): Wrong GhachaType !!!");
