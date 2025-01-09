@@ -410,8 +410,6 @@ std::vector<uint8_t> PacketMaker::MakeGameResultPacket(std::set<int>& winningTea
 			, record.gameRecord.Point
 			, record.is_mvp);
 
-		std::cout << playerName << " - " << record.team << std::endl;;
-
 		record_vec.push_back(fRecord);
 	}
 
