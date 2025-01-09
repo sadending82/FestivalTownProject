@@ -44,7 +44,7 @@ public class NetworkSelect : EditorWindow
 
         _networkSelected = GUILayout.Toolbar(_networkSelected, new string[] { "로컬 네트워크", "리모트 네트워크", "테스트 서버","(구)테스트 서버", "IP 직접 입력" });
 
-        if (_networkSelected == 3)
+        if (_networkSelected == 4)
         {
             GUILayout.Space(10);
             GUILayout.Label("IP 주소");
