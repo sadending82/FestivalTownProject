@@ -257,7 +257,11 @@ public class MapManager : MonoBehaviour
             }
         }
 
+        //고사양
         LoadMapTheme();
+
+        //저사양
+        //LoadLowMapTheme();
     }
 
     private void LoadMapTheme()
@@ -275,6 +279,33 @@ public class MapManager : MonoBehaviour
             case 2:
                 {
                     GameObject mapTheme = Managers.Resource.Instantiate("MapTheme/MapTheme2");
+                    mapTheme.transform.position = new Vector3(MAP_THEME2_OFFSET_X + (float)mapSizeX, MAP_THEME2_OFFSET_Y, MAP_THEME2_OFFSET_Z + (float)mapSizeZ);
+                    mapTheme.transform.parent = map.transform;
+                    RenderSettings.skybox = Resources.Load<Material>($"Prefabs/MapObject/Theme2/SkyBox");
+                }
+                break;
+            default:
+                {
+                    Debug.Log("ERROR!! LoadMapTheme() : Wrong Map Theme!!!");
+                }
+                break;
+        }
+    }
+    private void LoadLowMapTheme()
+    {
+        switch (Managers.Game.mapTheme)
+        {
+            case 1:
+                {
+                    GameObject mapTheme = Managers.Resource.Instantiate("MapTheme/MapTheme3");
+                    mapTheme.transform.position = new Vector3(MAP_THEME1_OFFSET_X + (float)mapSizeX, MAP_THEME1_OFFSET_Y, MAP_THEME1_OFFSET_Z + (float)mapSizeZ);
+                    mapTheme.transform.parent = map.transform;
+                    RenderSettings.skybox = Resources.Load<Material>($"Prefabs/MapObject/Theme1/SkyBox");
+                }
+                break;
+            case 2:
+                {
+                    GameObject mapTheme = Managers.Resource.Instantiate("MapTheme/MapTheme4");
                     mapTheme.transform.position = new Vector3(MAP_THEME2_OFFSET_X + (float)mapSizeX, MAP_THEME2_OFFSET_Y, MAP_THEME2_OFFSET_Z + (float)mapSizeZ);
                     mapTheme.transform.parent = map.transform;
                     RenderSettings.skybox = Resources.Load<Material>($"Prefabs/MapObject/Theme2/SkyBox");
