@@ -180,6 +180,13 @@ public class UI_GachaType : UI_Base
 
                 }
                 break;
+            case 100014:
+                {
+                    Get<GameObject>((int)GameObjects.Name).transform.GetChild(2).gameObject.SetActive(true);
+                    Get<GameObject>((int)GameObjects.Image).transform.GetChild(2).gameObject.SetActive(true);
+                    Get<GameObject>((int)GameObjects.GachaButton).transform.GetChild(0).gameObject.SetActive(true);
+                }
+                break;
             default:
                 {
                     Debug.Log("ERROR !!! SetGachaType(): Wrong GachaType !!!");
