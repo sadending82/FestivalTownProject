@@ -30,22 +30,12 @@ namespace Network.PacketProcessor
 
                 gachaCutScene.GetComponent<UI_GachaCutScene>().SetResultItemCode(Data.ResultItemCode);
                 gachaCutScene.GetComponent<UI_GachaCutScene>().SetAcquiredItemCode(Data.AcquiredItemCode);
+                gachaCutScene.GetComponent<UI_GachaCutScene>().SetAcquiredItemAmount(Data.AcquiredItemAmount);
 
                 Debug.Log($"Gacha ItemType : {Data.ResultItemAmount}, Amount : {Data.ResultItemAmount}, SpentType : {Data.SpentResourceCode}," +
                     $"SpentAmount : {Data.SpentResourceAmount}, GachaGrade : {resultItemData.Item_Grade}");
 
                 if (resultItemData == null) { return; }
-
-
-                //if (Data.ResultItemCode == Data.AcquiredItemCode)
-                //{
-                //    popup.NoticeTextChange($"나온 아이템은 {resultItemData.Name}, {Data.AcquiredItemAmount}개 입니다.");
-                //}
-                //else
-                //{
-                //    popup.NoticeTextChange($"나온 아이템은 {resultItemData.Name}, {Data.ResultItemAmount}개 입니다.\n"
-                //        + $"이미 소유한 아이템이므로 {acquiredItemData.Name}, {Data.AcquiredItemAmount}개로 전환되었습니다.");
-                //}
 
                 switch (Managers.Data.GetResourceIndexType(Data.AcquiredItemCode))
                 {

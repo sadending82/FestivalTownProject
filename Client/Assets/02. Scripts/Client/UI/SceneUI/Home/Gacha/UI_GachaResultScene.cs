@@ -17,6 +17,8 @@ public class UI_GachaResultScene : UI_Scene
 
     private int resultItemCode;
     private int acquiredItemCode;
+    private int acquiredItemAmount;
+
     void Start()
     {
         if (!isInitialized) Init();
@@ -39,23 +41,36 @@ public class UI_GachaResultScene : UI_Scene
             ui.Init();
         }, Define.UIEvent.Click, true, true);
 
-        //등급 표시
         var resultItemData = Managers.Data.GetItemData(resultItemCode);
-        Get<GameObject>((int)GameObjects.Grade).transform.GetChild(resultItemData.Item_Grade).gameObject.SetActive(true);
-
         //이름 표시
-        Get<GameObject>((int)GameObjects.ItemName).GetComponent<TMP_Text>().text = resultItemData.Name;
-        float textLength = Get<GameObject>((int)GameObjects.ItemName).GetComponent<TMP_Text>().preferredWidth;
 
         //중복 아이템X
         if (resultItemCode == acquiredItemCode)
         {
-            //New 표시
-            Get<GameObject>((int)GameObjects.Grade).transform.GetChild(0).gameObject.SetActive(true);
+            //등급 표시
+            Get<GameObject>((int)GameObjects.Grade).transform.GetChild(resultItemData.Item_Grade).gameObject.SetActive(true);
+
+            if (resultItemData.Name == "골드")
+            {
+                string result = $"{resultItemData.Name} {acquiredItemAmount}개";
+                Get<GameObject>((int)GameObjects.ItemName).GetComponent<TMP_Text>().text = result;
+                float textLength = Get<GameObject>((int)GameObjects.ItemName).GetComponent<TMP_Text>().preferredWidth;
+            }
+            else
+            {
+                //New 표시
+                Get<GameObject>((int)GameObjects.Grade).transform.GetChild(0).gameObject.SetActive(true);
+                
+                Get<GameObject>((int)GameObjects.ItemName).GetComponent<TMP_Text>().text = resultItemData.Name;
+                float textLength = Get<GameObject>((int)GameObjects.ItemName).GetComponent<TMP_Text>().preferredWidth;
+            }
         }
         //중복 아이템O
+        else
         {
-
+            string result = $"중복 아이템 마일리지 {acquiredItemAmount}개";
+            Get<GameObject>((int)GameObjects.ItemName).GetComponent<TMP_Text>().text = result;
+            float textLength = Get<GameObject>((int)GameObjects.ItemName).GetComponent<TMP_Text>().preferredWidth;
         }
 
         this.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
@@ -73,5 +88,9 @@ public class UI_GachaResultScene : UI_Scene
     public void SetAcquiredItemCode(int acquiredItemCode)
     {
         this.acquiredItemCode = acquiredItemCode;
+    }
+    public void SetAcquiredItemAmount(int acquiredItemAmount)
+    {
+        this.acquiredItemAmount = acquiredItemAmount;
     }
 }

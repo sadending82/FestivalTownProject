@@ -21,6 +21,7 @@ public class UI_GachaCutScene : UI_Scene
 
     private int resultItemCode;
     private int acquiredItemCode;
+    private int acquiredItemAmount;
 
     void Start()
     {
@@ -59,6 +60,7 @@ public class UI_GachaCutScene : UI_Scene
         var ui = Managers.UI.ShowSceneUI<UI_GachaResultScene>();
         ui.SetResultItemCode(resultItemCode);
         ui.SetAcquiredItemCode(acquiredItemCode);
+        ui.SetAcquiredItemAmount(acquiredItemAmount);
         ui.Init();
     }
 
@@ -99,6 +101,10 @@ public class UI_GachaCutScene : UI_Scene
     public void SetAcquiredItemCode(int acquiredItemCode)
     {
         this.acquiredItemCode = acquiredItemCode;
+    }
+    public void SetAcquiredItemAmount(int acquiredItemAmount)
+    {
+        this.acquiredItemAmount = acquiredItemAmount;
     }
     public int GetResultItemGrade()
     {
