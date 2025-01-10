@@ -34,17 +34,17 @@ public:
 				player->SetDirection(read->direction()->x(), read->direction()->y(), read->direction()->z());
 				player->SetStamina(read->stamina());
 
-				if (pServer->GetGameManagers()[room->GetGameMode()]->CheckValidPlayerPosition(player->GetPosition()) == false) {
-					int spawnTime = room->GetGameModeData().Player_Spawn_Time;
-					if (player->ChangeToDeadState(pServer, spawnTime)) {
-						// record update
-						int roomID = player->GetRoomID();
-						Room* room = pServer->GetRooms().at(roomID);
-						room->GetPlayerRecordList().at(playerid).gameRecord.DeathCount.fetch_add(1);
-						PushEventPlayerRespawn(pServer->GetTimer(), playerid, roomID, room->GetRoomCode(), spawnTime);
-					}
-					return;
-				}
+				//if (pServer->GetGameManagers()[room->GetGameMode()]->CheckValidPlayerPosition(player->GetPosition()) == false) {
+				//	int spawnTime = room->GetGameModeData().Player_Spawn_Time;
+				//	if (player->ChangeToDeadState(pServer, spawnTime)) {
+				//		// record update
+				//		int roomID = player->GetRoomID();
+				//		Room* room = pServer->GetRooms().at(roomID);
+				//		room->GetPlayerRecordList().at(playerid).gameRecord.DeathCount.fetch_add(1);
+				//		PushEventPlayerRespawn(pServer->GetTimer(), playerid, roomID, room->GetRoomCode(), spawnTime);
+				//	}
+				//	return;
+				//}
 
 				if (player->GetIsGrabbed() == true) {
 					return;

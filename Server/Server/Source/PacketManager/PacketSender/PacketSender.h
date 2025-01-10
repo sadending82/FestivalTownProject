@@ -41,7 +41,7 @@ public:
 	void SendBombDropPacket(Vector3f position, int roomID, int bombID);
 	void SendWeaponSpawnPacket(std::vector<Vector3f>& positions, std::vector<int>& weaponIDs, std::vector<int>& weaponTypes, int roomID);
 	void SendWeaponDropPacket(Vector3f position, int roomID, int weaponID);
-	void SendPlayerCalculatedDamage(int targetID, int roomID, int attackType, int hp, int damageAmount, int targetStaminaLoss, Vector3f knockback_direction);
+	void SendPlayerCalculatedDamage(int targetID, int roomID, int attackType, int hp, int damageAmount, int stamina, Vector3f knockback_direction);
 	void SendPlayerGroggyPacket(int inGameID, int roomID, int playerHP);
 	void SendPlayerGroggyRecoveryPacket(int inGameID, int roomID, int recoveredStamina);
 	void SendPlayerThrowOtherPlayerPacket(int roomID, int inGameID, Vector3f myPosition, Vector3f myDirection, int targetID, Vector3f targetPosition, Vector3f targetDirection);

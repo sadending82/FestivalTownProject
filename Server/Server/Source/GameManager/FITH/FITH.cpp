@@ -729,7 +729,7 @@ bool FITH::PlayerDamagedFromBomb(int roomID, Room* room, int targetID, Player* t
             }
         }
 
-        pPacketSender->SendPlayerCalculatedDamage(targetID, roomID, eDamageType::AT_BOMB_ATTACK, target->GetHP(), damageAmount, 0, knockback_direction);
+        pPacketSender->SendPlayerCalculatedDamage(targetID, roomID, eDamageType::AT_BOMB_ATTACK, target->GetHP(), damageAmount, target->GetStamina(), knockback_direction);
     }
 
     return true;
