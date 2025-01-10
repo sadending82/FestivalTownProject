@@ -201,11 +201,17 @@ bool Server::Disconnect(int key)
 
             mGameManagers[gameMode]->DeletePlayer(inGameID, roomID);
 
-            mPacketSender->SendPlayerDelete(roomID, inGameID);
+            // 게임 인원이 없으면 종료
+            if (room->GetPlayerCnt() <= 1){
+                mGameManagers[gameMode]->TimeoverGameEnd(roomID);
+            }
+            else {
+                mPacketSender->SendPlayerDelete(roomID, inGameID);
 
-            if (inGameID == room->GetHostID()) {
-                int newHostSessionID = room->ChangeHost();
-                mPacketSender->SendGameHostChange(newHostSessionID);
+                if (inGameID == room->GetHostID()) {
+                    int newHostSessionID = room->ChangeHost();
+                    mPacketSender->SendGameHostChange(newHostSessionID);
+                }
             }
 
         }
