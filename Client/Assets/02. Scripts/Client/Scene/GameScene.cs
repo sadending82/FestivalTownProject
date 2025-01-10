@@ -294,7 +294,9 @@ public class GameScene : BaseScene
                 {
                     var ui = Managers.UI.ShowPopUpUI<UI_IngameEscapeButton>();
                     ui.Init();
-                    ui.NoticeTextChange("아직 뭐가 없지만 Esc 누르면 나오는거\n확인 눌러도 안 꺼짐");
+                    ui.NoticeTextChange("게임을 종료하시겠습니까?");
+
+                    ui.BindGameEndEvent();
 
                     Cursor.lockState = CursorLockMode.None;
                     Cursor.visible = true;
