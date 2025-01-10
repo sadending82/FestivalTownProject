@@ -74,11 +74,10 @@ bool Room::AddPlayer(Player* player)
 		if (mPlayerList[i].compare_exchange_strong(expected, sessionID)) {
 			player->SetInGameID(i);
 			player->SetroomID(mRoomID);
-
-			// 외부에서 Session Lock 걸고 있음
-			//player->GetSessionStateLock().lock();
+			
+			player->GetSessionStateLock().lock();
 			player->SetSessionState(eSessionState::ST_GAMELOADING);
-			//player->GetSessionStateLock().unlock();
+			player->GetSessionStateLock().unlock();
 
 			player->GetPlayerStateLock().lock();
 			player->SetPlayerState(ePlayerState::PS_ALIVE);

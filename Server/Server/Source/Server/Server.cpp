@@ -132,10 +132,11 @@ bool Server::Disconnect(int key)
     Player* player = dynamic_cast<Player*>(GetSessions()[key]);
 
     player->GetSessionStateLock().lock();
+    eSessionState sessionState = player->GetSessionState();
+    player->GetSessionStateLock().unlock();
 
-    switch (player->GetSessionState()) {
+    switch (sessionState) {
     case eSessionState::ST_FREE: {
-        player->GetSessionStateLock().unlock();
         return false;
     }
     break;
@@ -213,7 +214,6 @@ bool Server::Disconnect(int key)
     break;
     }
     player->Disconnect();
-    player->GetSessionStateLock().unlock();
 
     return true;
 }
