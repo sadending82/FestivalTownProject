@@ -5,7 +5,7 @@ using UnityEngine;
 public class UI_Customize_ItemGrid : UI_Base
 {
     int currentWidth = 1160;
-    int itemWidth = 200;
+    int itemWidth = 225;
     List<UI_Customize_Item> _items = new();
 
     public override void Init()
