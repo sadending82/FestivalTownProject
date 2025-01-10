@@ -304,5 +304,21 @@ public class UI_CreateAccountPanel : UI_Base
                 PasswordDoubleCheckCircle.SetColor(Define.CompatibilityColor.Green);
                 break;
         }
+
+        if (Managers.UI.GetTopOfPopUPUI().GetComponent<UI_CreateAccount>() != null)
+        {
+            if (Get<GameObject>((int)GameObjects.PWInputField).GetComponent<TMP_InputField>().isFocused ||
+                Get<GameObject>((int)GameObjects.PWDoubleCheckInputField).GetComponent<TMP_InputField>().isFocused)
+            {
+                Input.imeCompositionMode = IMECompositionMode.Off;
+            }
+            else
+            {
+                Input.imeCompositionMode = IMECompositionMode.On;
+            }
+        }
     }
+
+    
+
 }
