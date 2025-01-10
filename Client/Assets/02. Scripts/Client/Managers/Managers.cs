@@ -58,8 +58,15 @@ public class Managers : MonoBehaviour
 
     public static CheatManager Cheat { get { return Instance._cheat; } }
 
+    private void Awake()
+    {
+        Debug.unityLogger.logEnabled = Debug.isDebugBuild;
+    }
+
     private void Start()
     {
+        
+
         _cursor = gameObject.AddComponent<CursorManager>();
         _game = gameObject.AddComponent<GameManager>();
         _weaponObject = gameObject.AddComponent<WeaponObjectManager>();

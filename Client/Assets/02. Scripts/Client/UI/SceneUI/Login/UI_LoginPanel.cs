@@ -59,6 +59,18 @@ public class UI_LoginPanel: UI_Base
                 }
             }
         }
+
+        if(Managers.UI.GetTopOfPopUPUI() == null)
+        {
+            if (Get<GameObject>((int)GameObjects.PWInputField).GetComponent<TMP_InputField>().isFocused)
+            {
+                Input.imeCompositionMode = IMECompositionMode.Off;
+            }
+            else
+            {
+                Input.imeCompositionMode = IMECompositionMode.On;
+            }
+        }
     }
 
     public void Login()
