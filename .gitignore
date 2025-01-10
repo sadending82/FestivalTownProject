@@ -104,3 +104,5 @@ Client/Assets/02. Scripts/FlatBuffers/Google.FlatBuffers.csproj.meta
 
 #MeshBaker
 **/MeshBaker*
+Client/Assets/Fonts/Font/OTF/Maplestory OTF Bold SDF.asset
+Client/Assets/Fonts/Font/OTF/Maplestory OTF Bold Outline SDF.asset
