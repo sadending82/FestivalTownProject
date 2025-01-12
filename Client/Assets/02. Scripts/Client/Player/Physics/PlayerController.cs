@@ -320,10 +320,10 @@ public class PlayerController : MonoBehaviour
             // Å×½ºÆ®
             if (amIPlayer == true)
             {
-                if (Input.GetKeyUp(KeyCode.T))
-                {
-                    packetManager.SendPlayerCollisionToBlockPacket(playerStatus.GetId());
-                }
+                //if (Input.GetKeyUp(KeyCode.T))
+                //{
+                //    packetManager.SendPlayerCollisionToBlockPacket(playerStatus.GetId());
+                //}
                 //if (Input.GetKeyUp(KeyCode.Y))
                 //{
                 //    Vector3 tPos = GetPosition();
@@ -361,7 +361,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void SendForSync()
+    private void SendForSync()
     {
         if (pelvis != null && gameStart == true)
         {

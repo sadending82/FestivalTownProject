@@ -105,9 +105,9 @@ namespace ActiveRagdoll
 
             JointDrive driveJoint = new JointDrive();
 
-            driveJoint.positionSpring = 1000;
+            driveJoint.positionSpring = 10000;
             driveJoint.positionDamper = 0;
-            driveJoint.maximumForce = 100;
+            driveJoint.maximumForce = 1000;
             driveJoint.useAcceleration = false;
             for (int i = 0; i < joints.Length; ++i)
             {
