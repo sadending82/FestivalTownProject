@@ -90,7 +90,7 @@ namespace ActiveRagdoll
 
             driveJoint.positionSpring = 0;
             driveJoint.positionDamper = 0;
-            driveJoint.maximumForce = 1000;
+            driveJoint.maximumForce = 100;
             stabillizer.angularXDrive = stabillizer.angularYZDrive = driveJoint;
 
             // 그로기 상태에서 잘 끌려다니도록 mass 가볍게 설정
@@ -105,9 +105,9 @@ namespace ActiveRagdoll
 
             JointDrive driveJoint = new JointDrive();
 
-            driveJoint.positionSpring = 10000;
+            driveJoint.positionSpring = 1000;
             driveJoint.positionDamper = 0;
-            driveJoint.maximumForce = 500;
+            driveJoint.maximumForce = 100;
             driveJoint.useAcceleration = false;
             for (int i = 0; i < joints.Length; ++i)
             {
@@ -120,7 +120,7 @@ namespace ActiveRagdoll
                     driveJoint.positionSpring = 100;
                 }
                 joints[i].angularXDrive = joints[i].angularYZDrive = driveJoint;
-                driveJoint.positionSpring = 10000;
+                driveJoint.positionSpring = 1000;
             }
 
             driveJoint.positionDamper = 0;

@@ -320,10 +320,10 @@ public class PlayerController : MonoBehaviour
             // Å×½ºÆ®
             if (amIPlayer == true)
             {
-                //if (Input.GetKeyUp(KeyCode.T))
-                //{
-                //    packetManager.SendPlayerCollisionToBlockPacket(playerStatus.GetId());
-                //}
+                if (Input.GetKeyUp(KeyCode.T))
+                {
+                    packetManager.SendPlayerCollisionToBlockPacket(playerStatus.GetId());
+                }
                 //if (Input.GetKeyUp(KeyCode.Y))
                 //{
                 //    Vector3 tPos = GetPosition();
@@ -361,7 +361,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void SendForSync()
+    public void SendForSync()
     {
         if (pelvis != null && gameStart == true)
         {
@@ -404,7 +404,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                if (pelvis != null)
+                if (pelvis != null && CheckHitWall() == false)
                 {
                     if (playerStatus.GetIsGrapPlayer() == true)
                     {
@@ -969,6 +969,10 @@ public class PlayerController : MonoBehaviour
     public void SetAmIPlayer(bool amIPlayer)
     {
         this.amIPlayer = amIPlayer;
+    }
+    public bool GetAmIPlayer()
+    {
+        return amIPlayer;
     }
     public void SetPosition(Vector3 position)
     {
