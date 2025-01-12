@@ -20,6 +20,13 @@ public:
 				return;
 			}
 
+			player->GetSessionStateLock().lock();
+			if (player->GetSessionState() == eSessionState::ST_FREE) {
+				player->GetSessionStateLock().unlock();
+				return;
+			}
+			player->GetSessionStateLock().unlock();
+
 			if (player->GetAuthenticationKey() != event->authenticationKey) {
 
 				return;

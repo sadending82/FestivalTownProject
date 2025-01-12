@@ -400,6 +400,14 @@ void Server::StartHeartBeat(int sessionID, long long authenticationKey)
 
 std::pair<ERROR_CODE, UserInfo> Server::UserLogin(const char* accountID, const char* accountPassword, const int sessionID)
 {
+    Player* player = dynamic_cast<Player*>(GetSessions()[sessionID]);
+    player->GetSessionStateLock().lock();
+    if (player->GetSessionState() == eSessionState::ST_FREE) {
+        player->GetSessionStateLock().unlock();
+        return { ERROR_CODE::ER_INVALID_SESSION, UserInfo() };
+    }
+    player->GetSessionStateLock().unlock();
+
     if (mDB->CheckValidateLogin(accountID, accountPassword) == ERROR_CODE::ER_DB_ERROR) {
         return { ERROR_CODE::ER_DB_ERROR, UserInfo() };
     }
@@ -444,7 +452,6 @@ std::pair<ERROR_CODE, UserInfo> Server::UserLogin(const char* accountID, const c
             }
         }
     }
-    Player* player = dynamic_cast<Player*>(GetSessions()[sessionID]);
     player->SetUserInfoFromDB(userInfo);
 
     return { ERROR_CODE::ER_NONE, userInfo };
