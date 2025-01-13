@@ -38,7 +38,7 @@ public:
 				bool result = pServer->Disconnect(target);
 
 				if (result == true && uid != 0) {
-					std::cout << event->sessionID << " - disconnect by HeartBeatEvent\n";
+					//std::cout << event->sessionID << " - disconnect by HeartBeatEvent\n";
 					pServer->GetDB()->UpdateUserConnectionState(uid, false);
 				}
 			}
