@@ -52,7 +52,7 @@ public:
 
 	void						SendAllPlayerInRoomBySessionID(void* packet, int size, int sessionID);
 	void						SendAllPlayerInRoom(void* packet, int size, int roomID);
-	void						SendAllPlayerInRoomExceptSender(void* packet, int size, int sessionID);
+	void						SendAllPlayerInRoomExceptSender(void* packet, int size, int sessionID, int roomID);
 
 	void						StartHeartBeat(int sessionID, long long authenticationKey);
 

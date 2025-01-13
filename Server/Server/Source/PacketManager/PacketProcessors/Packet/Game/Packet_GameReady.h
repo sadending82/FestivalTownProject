@@ -34,10 +34,6 @@ public:
 				}
 				player->GetSessionStateLock().unlock();
 
-
-				SERVER_MODE serverMode = pServer->GetMode();
-				
-
 				room->SetIsPlayerReady(player->GetInGameID(), true);
 				pServer->GetLobbyManager()->CheckReadyToGamePlay(room, roomID);
 			}

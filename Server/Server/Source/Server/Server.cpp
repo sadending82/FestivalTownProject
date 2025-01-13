@@ -365,28 +365,18 @@ void Server::SendAllPlayerInRoom(void* packet, int size, int roomID)
         if (session_id == INVALIDKEY) continue;
         Player* player = dynamic_cast<Player*>(mSessions[session_id]);
         if (player->GetIsBot()) continue;
-        if (player->GetRoomID() != roomID) continue;
         player->DoSend(packet, size);
     }
 }
 
-void Server::SendAllPlayerInRoomExceptSender(void* packet, int size, int sessionID)
+void Server::SendAllPlayerInRoomExceptSender(void* packet, int size, int sessionID, int roomID)
 {
-    Player* player = dynamic_cast<Player*>(GetSessions()[sessionID]);
-    if (player == nullptr) {
-        return;
-    }
-    int roomID = player->GetRoomID();
-    if (roomID == INVALIDKEY) {
-        return;
-    }
     for (const auto& id : GetRooms()[roomID]->GetPlayerList()) {
         int session_id = id.load();
         if (session_id == INVALIDKEY) continue;
         if (session_id == sessionID) continue;
         Player* player = dynamic_cast<Player*>(mSessions[session_id]);
         if (player->GetIsBot()) continue;
-        if (player->GetRoomID() != roomID) continue;
         player->DoSend(packet, size);
     }
 }

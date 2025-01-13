@@ -2,6 +2,7 @@
 #include "PacketManager.h"
 #include "PacketProcessors/Processors.h"
 #include "../Event/Event.h"
+#include "../Server/Server.h"
 
 #include <sstream>
 #include <exception>
