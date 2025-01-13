@@ -14,8 +14,8 @@ HANDLE g_hiocp;
 //#define IPADDRESS "127.0.0.1"
 #define IPADDRESS "203.239.231.148"
 
-inline constexpr int MAX_TEST = 100;
-inline constexpr int MAX_CLIENTS = 100;
+inline constexpr int MAX_TEST = 2000;
+inline constexpr int MAX_CLIENTS = 2000;
 
 std::array<int, MAX_CLIENTS> client_map;
 std::array<DummyClient, MAX_CLIENTS> g_clients;

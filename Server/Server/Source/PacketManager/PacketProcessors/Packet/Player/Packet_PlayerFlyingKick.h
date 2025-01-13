@@ -39,7 +39,7 @@ public:
 
 				std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYER_FLYING_KICK, data, size);
 
-				pServer->SendAllPlayerInRoomExceptSender(send_buffer.data(), send_buffer.size(), key);
+				pServer->SendAllPlayerInRoomExceptSender(send_buffer.data(), send_buffer.size(), key, roomID);
 			}
 		}
 		catch (const std::exception& e) {
