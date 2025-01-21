@@ -65,14 +65,14 @@ public class NetworkSelect : EditorWindow
                 PortNumberObj.PortNumber = "45872";
                 break;
             case 2:
-                IPAddressObj.IPAddress = "192.168.75.163";
+                IPAddressObj.IPAddress = "1.236.10.254";
                 PortNumberObj.PortNumber = "30432";
                 //PortNumberObj.PortNumber = "30412";
                 //PortNumberObj.PortNumber = "45872";
 
                 break;
             case 3:
-                IPAddressObj.IPAddress = "192.168.75.163";
+                IPAddressObj.IPAddress = "1.236.10.254";
                 PortNumberObj.PortNumber = "45872";
                 break;
             case 4:
