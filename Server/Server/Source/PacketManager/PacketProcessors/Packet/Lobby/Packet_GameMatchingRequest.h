@@ -42,10 +42,10 @@ public:
 				switch (matchingType) {
 				case eMatchingType::FITH_TEST: {
 
-					if (serverMode != SERVER_MODE::TEST) {
+					/*if (serverMode != SERVER_MODE::TEST) {
 						MatchMakingManager->GetMatchingLock().unlock();
 						break;
-					}
+					}*/
 
 					int map_code = read->map_code();
 
