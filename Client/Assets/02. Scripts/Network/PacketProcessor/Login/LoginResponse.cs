@@ -36,14 +36,18 @@ namespace Network.PacketProcessor
                     int item_Code = item.ItemCode;
                     int item_Type = item.Type;
 
-                    Define.ItemData itemData = new Define.ItemData();
-                    itemData.ItemUid = item_UID;
-                    itemData.ItemCode = item_Code;
-                    itemData.Type = item_Type;
+                    if (item_Code != 0)
+                    {
+                        Define.ItemData itemData = new Define.ItemData();
+                        itemData.ItemUid = item_UID;
+                        itemData.ItemCode = item_Code;
+                        itemData.Type = item_Type;
 
-                    Debug.Log($"Item Type : {itemData.Type}, ItemCode : {item_Code}");
+                        Debug.Log($"Item Type : {itemData.Type}, ItemCode : {item_Code}");
 
-                    Managers.Data.PlayerCustomizingData[item_Type] = itemData;
+                        Managers.Data.PlayerCustomizingData[item_Type] = itemData;
+                    }
+
                 }
 
                 Debug.Log($"gold : {Data.Gold}, dia : {Data.Dia}, Mileage : {Data.Mileage}, NickName : {userInfo.Nickname}");

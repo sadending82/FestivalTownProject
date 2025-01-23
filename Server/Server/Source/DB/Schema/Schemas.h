@@ -5,3 +5,4 @@
 #include "DB_UserGameRecords.h"
 #include "DB_UserAttendance.h"
 #include "DB_UserEventReward.h"
+#include "DB_UserCustomizing.h"

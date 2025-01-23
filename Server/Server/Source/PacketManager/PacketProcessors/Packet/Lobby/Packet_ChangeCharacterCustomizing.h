@@ -21,7 +21,7 @@ public:
 						return;
 					}
 				}
-
+				 
 				const ChangeCharacterCustomizing* read = flatbuffers::GetRoot<ChangeCharacterCustomizing>(data);
 
 				int uid = player->GetUID();
@@ -53,7 +53,7 @@ public:
 					characterCustomizing.SetItem((CustomizingItemType)item->type(), itemInfo);
 				}
 
-				if (db->UpdateCharacterCustomizing(uid, characterCustomizing) == ERROR_CODE::ER_NONE) {
+				if (db->UpsertCharacterCustomizing(uid, characterCustomizing) == ERROR_CODE::ER_NONE) {
 					player->SetCharacterCustomizing(characterCustomizing);
 				}
 				else {

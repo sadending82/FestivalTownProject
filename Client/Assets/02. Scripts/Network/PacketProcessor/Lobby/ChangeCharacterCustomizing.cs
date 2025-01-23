@@ -27,10 +27,13 @@ namespace Network.PacketProcessor
                 int item_Code = item.ItemCode;
                 int item_Type = item.Type;
 
-                if (Managers.Scene.CurrentScene.GetComponent<GameScene>() != null)
+                if (item_Code != 0)
                 {
-                    GameObject tPlayer = Managers.Player.GetMyPlayer();
-                    tPlayer.GetComponent<CharacterStatus>().ChangeCustomizing(item_Code);
+                    if (Managers.Scene.CurrentScene.GetComponent<GameScene>() != null)
+                    {
+                        GameObject tPlayer = Managers.Player.GetMyPlayer();
+                        tPlayer.GetComponent<CharacterStatus>().ChangeCustomizing(item_Code);
+                    }
                 }
             }
 

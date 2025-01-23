@@ -148,6 +148,7 @@
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Utilities\Packet_PingCheck.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Login\Packet_CheckID_Duplication.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_EventRewardRequest.h" />
+    <ClInclude Include="Source\DB\Schema\DB_UserCustomizing.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

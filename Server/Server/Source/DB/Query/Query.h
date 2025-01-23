@@ -23,7 +23,7 @@ const wchar_t* SelectAccountCount_Query = L"SELECT COUNT(ID) FROM AccountDB.dbo.
 // UPDATE GameDB.dbo.UserInfo SET ConnectionState = ? OUTPUT deleted.*, DATALENGTH(deleted.CharacterCustomizing) WHERE AccountID = ?
 const wchar_t* SelectUserInfoForLogin_Query = L"UPDATE GameDB.dbo.UserInfo \
 							SET LastLoginTime = CAST(GETDATE() AS DATE), ConnectionState = ? \
-							OUTPUT DATALENGTH(deleted.CharacterCustomizing), deleted.* \
+							OUTPUT deleted.* \
 							WHERE AccountID = ?";
 
 //SELECT * FROM GameDB.dbo.UserInfo WHERE UID = ?
@@ -35,8 +35,8 @@ const wchar_t* SelectUserAllCurrency_Query = L"SELECT count, itemCode FROM GameD
 //SELECT * FROM GameDB.dbo.UserItem WHERE owner_UID = ? AND NOT count = ?
 const wchar_t* SelectUserAllItems_Query = L"SELECT * FROM GameDB.dbo.UserItem WHERE owner_UID = ? AND NOT count = ?";
 
-//SELECT DATALENGTH(CharacterCustomizing), CharacterCustomizing FROM GameDB.dbo.UserInfo WHERE UID = ?
-const wchar_t* SelectCharacterCustomizing_Query = L"SELECT DATALENGTH(CharacterCustomizing), CharacterCustomizing FROM GameDB.dbo.UserInfo WHERE UID = ?";
+//SELECT DATALENGTH(CharacterCustomizing), CharacterCustomizing FROM GameDB.dbo.UserInfo WHERE user_UID = ?
+const wchar_t* SelectCharacterCustomizing_Query = L"SELECT * FROM GameDB.dbo.UserCustomizing WHERE user_UID = ?";
 
 //SELECT count FROM GameDB.dbo.UserItem WHERE owner_UID = ? AND ItemCode = ?
 const wchar_t* SelectUserItemCount_Query = L"SELECT count FROM GameDB.dbo.UserItem WHERE owner_UID = ? AND ItemCode = ?";
@@ -80,8 +80,13 @@ const wchar_t* UpdateBattleRecords_Query = L"UPDATE GameDB.dbo.UserGameRecords S
 //UPDATE GameDB.dbo.UserItem SET count = count + ? WHERE owner_UID = ? AND itemCode = ?
 const wchar_t* UpdateUserItemCount_Query = L"UPDATE GameDB.dbo.UserItem SET count = count + ? WHERE owner_UID = ? AND itemCode = ?";
 
-//UPDATE GameDB.dbo.UserInfo SET CharacterCustomizing = ? WHERE UID = ?
-const wchar_t* UpdateCharacterCustomizing_Query = L"UPDATE GameDB.dbo.UserInfo SET CharacterCustomizing = ? WHERE UID = ?";
+const wchar_t* UpsertCharacterCustomizing_Query = L"MERGE INTO GameDB.dbo.UserCustomizing AS Target "
+													L"USING (VALUES (?, ?, ?, ?, ?, ?)) AS Source(uid, skin, head, face, back, emotion) "
+													L"ON Target.user_uid = Source.uid "
+													L"WHEN MATCHED THEN "
+													L"UPDATE SET Target.skin = Source.skin, Target.head = Source.head, Target.face = Source.face, Target.back = Source.back, Target.emotion = Source.emotion "
+													L"WHEN NOT MATCHED THEN "
+													L"INSERT (user_UID, skin, head, face, back, emotion) VALUES (Source.uid, Source.skin, Source.head, Source.face, Source.back, Source.emotion);";
 
 const wchar_t* UpsertUserItemCount_Query = L"MERGE INTO GameDB.dbo.UserItem AS Target "
 											L"USING (SELECT 1 AS match) AS Source "

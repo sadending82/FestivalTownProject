@@ -198,6 +198,7 @@ if exist "$(ProjectDir)\Config" xcopy /Y /d /e /i "$(ProjectDir)\Config" "$(OutD
   <ItemGroup>
     <ClInclude Include="Source\DB\Query\Query.h" />
     <ClInclude Include="Source\DB\Schema\DB_UserAttendance.h" />
+    <ClInclude Include="Source\DB\Schema\DB_UserCustomizing.h" />
     <ClInclude Include="Source\DB\Schema\DB_UserGameRecords.h" />
     <ClInclude Include="Source\LobbyManager\LobbyManager.h" />
     <ClInclude Include="Source\DB\Schema\DB_UserItem.h" />

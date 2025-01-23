@@ -1,5 +1,5 @@
 #pragma once
-#include "DB_UserItem.h"
+#include "DB_UserCustomizing.h"
 #include "../../utility.h"
 #include <string>
 #include <unordered_map>
@@ -15,19 +15,7 @@ enum class UserInfo_Field {
 	LastLoginTime,
 	AttendanceDay,
 	characterCustomizing,
-	State = 10
-};
-
-struct sCharacterCustomizing {
-	std::unordered_map<CustomizingItemType, EquippedItem> customizingItems;
-
-	void SetItem(CustomizingItemType type, EquippedItem item) {
-		customizingItems[type] = item;
-	}
-
-	EquippedItem GetItemCode(CustomizingItemType type) {
-		return customizingItems[type];
-	}
+	State = 9
 };
 
 struct UserInfo {
@@ -39,8 +27,9 @@ struct UserInfo {
 	int Point = 0;
 	std::tm date;
 	int AttendanceDay = 0;
-	sCharacterCustomizing characterCustomizing;
 	int State;
+
+	sCharacterCustomizing characterCustomizing;
 
 	int Gold = 0;
 	int Dia = 0;

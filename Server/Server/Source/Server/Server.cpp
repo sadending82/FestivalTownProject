@@ -410,6 +410,8 @@ std::pair<ERROR_CODE, UserInfo> Server::UserLogin(const char* accountID, const c
 
     UserInfo& userInfo = result.second;
 
+    userInfo.characterCustomizing = mDB->SelectCharacterCustomizing(result.second.UID);
+
     std::pair<ERROR_CODE, std::vector<UserItem>> selectCurrencyResult = mDB->SelectUserAllCurrency(userInfo.UID);
 
     if (selectCurrencyResult.first == ERROR_CODE::ER_DB_ERROR) {

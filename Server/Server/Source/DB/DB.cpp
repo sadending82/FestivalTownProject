@@ -383,31 +383,17 @@ std::pair<ERROR_CODE, UserInfo> DB::SelectUserInfoForLogin(const char* id)
 		SQLINTEGER t = 0;
 		SQLLEN bufLen = 0;
 		userInfo.NickName = std::wstring(20, '\0');
-		int customizingDataLen = 0;
 
 		while (SQLFetch(hStmt) == SQL_SUCCESS) {
-			SQLRETURN getLenRet = SQLGetData(hStmt, 1, SQL_C_LONG, &customizingDataLen, sizeof(customizingDataLen), &col11);
-			if (getLenRet == SQL_NULL_DATA) {
-				bufLen = 0;
-			}
-			std::vector<uint8_t> customizingData(customizingDataLen);
-			bufLen = customizingDataLen;
-
-			SQLGetData(hStmt, 2, SQL_C_LONG, &userInfo.UID, sizeof(userInfo.UID), &col1);
-			SQLGetData(hStmt, 3, SQL_C_CHAR, &userInfo.AccountID[0], userInfo.AccountID.size(), &col2);
-			SQLGetData(hStmt, 4, SQL_C_WCHAR, &userInfo.NickName[0], userInfo.NickName.capacity(), &col3);
-			SQLGetData(hStmt, 5, SQL_C_LONG, &userInfo.UserLevel, sizeof(userInfo.UserLevel), &col4);
-			SQLGetData(hStmt, 6, SQL_C_LONG, &userInfo.PassLevel, sizeof(userInfo.PassLevel), &col5);
-			SQLGetData(hStmt, 7, SQL_C_LONG, &userInfo.Point, sizeof(userInfo.Point), &col6);
-			SQLGetData(hStmt, 8, SQL_C_CHAR, date, sizeof(date), &col7);
-			SQLGetData(hStmt, 9, SQL_C_LONG, &userInfo.AttendanceDay, sizeof(userInfo.AttendanceDay), &col8);
-			SQLGetData(hStmt, 10, SQL_C_BINARY, customizingData.data(), bufLen, &bufLen);
-			SQLGetData(hStmt, 11, SQL_C_LONG, &t, sizeof(t), &col10);
-
-
-			if (getLenRet != SQL_NULL_DATA) {
-				userInfo.characterCustomizing = DeserializationCharacterCustomizing(customizingData);
-			}
+			SQLGetData(hStmt, 1, SQL_C_LONG, &userInfo.UID, sizeof(userInfo.UID), &col1);
+			SQLGetData(hStmt, 2, SQL_C_CHAR, &userInfo.AccountID[0], userInfo.AccountID.size(), &col2);
+			SQLGetData(hStmt, 3, SQL_C_WCHAR, &userInfo.NickName[0], userInfo.NickName.capacity(), &col3);
+			SQLGetData(hStmt, 4, SQL_C_LONG, &userInfo.UserLevel, sizeof(userInfo.UserLevel), &col4);
+			SQLGetData(hStmt, 5, SQL_C_LONG, &userInfo.PassLevel, sizeof(userInfo.PassLevel), &col5);
+			SQLGetData(hStmt, 6, SQL_C_LONG, &userInfo.Point, sizeof(userInfo.Point), &col6);
+			SQLGetData(hStmt, 7, SQL_C_CHAR, date, sizeof(date), &col7);
+			SQLGetData(hStmt, 8, SQL_C_LONG, &userInfo.AttendanceDay, sizeof(userInfo.AttendanceDay), &col8);
+			SQLGetData(hStmt, 9, SQL_C_LONG, &t, sizeof(t), &col10);
 
 			std::istringstream ssDate(date);
 			ssDate >> std::get_time(&tDate, "%Y-%m-%d");
@@ -415,8 +401,6 @@ std::pair<ERROR_CODE, UserInfo> DB::SelectUserInfoForLogin(const char* id)
 			userInfo.date = tDate;
 			userInfo.State = t;
 
-			/*if (bufLen > 0)
-				userInfo.characterCustomizing = DeserializationCharacterCustomizing(customizingData);*/
 			result = true;
 		}
 
@@ -478,7 +462,6 @@ std::pair<ERROR_CODE, UserInfo> DB::SelectUserInfo(const int uid)
 		userInfo.date.tm_year = date.year;
 		userInfo.date.tm_mon = date.month;
 		userInfo.date.tm_mday = date.day;
-		userInfo.characterCustomizing = SelectCharacterCustomizing(userInfo.UID);
 		userInfo.State = t;
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
@@ -617,8 +600,6 @@ sCharacterCustomizing DB::SelectCharacterCustomizing(const int uid)
 		return sCharacterCustomizing();
 	}
 
-	
-
 	SQLPrepare(hStmt, (SQLWCHAR*)SelectCharacterCustomizing_Query, SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
@@ -627,21 +608,25 @@ sCharacterCustomizing DB::SelectCharacterCustomizing(const int uid)
 
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
 
-		SQLLEN bufLen = 0;
+		SQLLEN Len = 0;
 		sCharacterCustomizing sCustomizingData;
-		int len = 0;
 		while (SQLFetch(hStmt) == SQL_SUCCESS) {
-			SQLLEN col1;
-			SQLRETURN getLenRet = SQLGetData(hStmt, 1, SQL_C_LONG, &len, sizeof(len), &col1);
-			if (getLenRet == SQL_NULL_DATA) {
-				bufLen = 0;
-			}
-			std::vector<uint8_t> customizingData(len);
-			bufLen = len;
+			
+			SQLGetData(hStmt, (int)UserCustomizing_Field::skin, SQL_C_LONG, &sCustomizingData.customizingItems[CustomizingItemType::CI_SKIN].itemCode, sizeof(int), NULL);
+			sCustomizingData.customizingItems[CustomizingItemType::CI_SKIN].itemType = CustomizingItemType::CI_SKIN;
 
-			SQLGetData(hStmt, 2, SQL_C_BINARY, customizingData.data(), bufLen, &bufLen);
+			SQLGetData(hStmt, (int)UserCustomizing_Field::head, SQL_C_LONG, &sCustomizingData.customizingItems[CustomizingItemType::CI_HEAD].itemCode, sizeof(int), NULL);
+			sCustomizingData.customizingItems[CustomizingItemType::CI_HEAD].itemType = CustomizingItemType::CI_HEAD;
 
-			sCustomizingData = DeserializationCharacterCustomizing(customizingData);
+			SQLGetData(hStmt, (int)UserCustomizing_Field::face, SQL_C_LONG, &sCustomizingData.customizingItems[CustomizingItemType::CI_FACE].itemCode, sizeof(int), NULL);
+			sCustomizingData.customizingItems[CustomizingItemType::CI_FACE].itemType = CustomizingItemType::CI_FACE;
+
+			SQLGetData(hStmt, (int)UserCustomizing_Field::back, SQL_C_LONG, &sCustomizingData.customizingItems[CustomizingItemType::CI_BACK].itemCode, sizeof(int), NULL);
+			sCustomizingData.customizingItems[CustomizingItemType::CI_BACK].itemType = CustomizingItemType::CI_BACK;
+
+			SQLGetData(hStmt, (int)UserCustomizing_Field::emotion, SQL_C_LONG, &sCustomizingData.customizingItems[CustomizingItemType::CI_EMO].itemCode, sizeof(int), NULL);
+			sCustomizingData.customizingItems[CustomizingItemType::CI_EMO].itemType = CustomizingItemType::CI_EMO;
+
 		}
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
@@ -1156,7 +1141,7 @@ ERROR_CODE DB::UpsertUserCurrency(const int uid, std::vector<UserItem> CurrencyL
 	return ERROR_CODE::ER_DB_ERROR;
 }
 
-ERROR_CODE DB::UpdateCharacterCustomizing(const int uid, const sCharacterCustomizing& characterCustomizing)
+ERROR_CODE DB::UpsertCharacterCustomizing(const int uid, sCharacterCustomizing& characterCustomizing)
 {
 	if (uid == 0) {
 		return ERROR_CODE::ER_DB_ERROR;
@@ -1165,22 +1150,26 @@ ERROR_CODE DB::UpdateCharacterCustomizing(const int uid, const sCharacterCustomi
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
-	int itemType = 1;
-
-	std::vector<uint8_t> serializationData = SerializationCharacterCustomizing(characterCustomizing);
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
-		DEBUGMSGONEPARAM("hStmt Error %d : (UpdateCharacterCustomizing) \n", retcode); ErrorDisplay(hStmt);
+		DEBUGMSGONEPARAM("hStmt Error %d : (UpsertCharacterCustomizing) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
-	
+	int skin_code = characterCustomizing.GetItemCode(CustomizingItemType::CI_SKIN);
+	int head_code = characterCustomizing.GetItemCode(CustomizingItemType::CI_HEAD);
+	int face_code = characterCustomizing.GetItemCode(CustomizingItemType::CI_FACE);
+	int back_code = characterCustomizing.GetItemCode(CustomizingItemType::CI_BACK);
+	int emotion_code = characterCustomizing.GetItemCode(CustomizingItemType::CI_EMO);
 
-	SQLPrepare(hStmt, (SQLWCHAR*)UpdateCharacterCustomizing_Query, SQL_NTS);
-	SQLLEN dataLen = serializationData.size();
-	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_BINARY, SQL_VARBINARY, serializationData.size(), 0, (SQLPOINTER)serializationData.data(), serializationData.size(), &dataLen);
-	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+	SQLPrepare(hStmt, (SQLWCHAR*)UpsertCharacterCustomizing_Query, SQL_NTS);
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (SQLPOINTER)(&uid), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (SQLPOINTER)(&skin_code), 0, NULL);
+	SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (SQLPOINTER)(&head_code), 0, NULL);
+	SQLBindParameter(hStmt, 4, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (SQLPOINTER)(&face_code), 0, NULL);
+	SQLBindParameter(hStmt, 5, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (SQLPOINTER)(&back_code), 0, NULL);
+	SQLBindParameter(hStmt, 6, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (SQLPOINTER)(&emotion_code), 0, NULL);
 
 	retcode = SQLExecute(hStmt);
 
@@ -1190,49 +1179,11 @@ ERROR_CODE DB::UpdateCharacterCustomizing(const int uid, const sCharacterCustomi
 		return ERROR_CODE::ER_NONE;
 	}
 
-	DEBUGMSGONEPARAM("Execute Query Error %d : (UpdateCharacterCustomizing)\n", retcode); ErrorDisplay(hStmt);
+	DEBUGMSGONEPARAM("Execute Query Error %d : (UpsertCharacterCustomizing)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	return ERROR_CODE::ER_DB_ERROR;
 }
 
-ERROR_CODE DB::UpdateCharacterCustomizing(const int uid, const std::vector<uint8_t> characterCustomizing)
-{
-	if (uid == 0) {
-		return ERROR_CODE::ER_DB_ERROR;
-	}
-
-	SQLHSTMT hStmt = NULL;
-	SQLRETURN retcode;
-
-	int itemType = 1;
-
-	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
-		DEBUGMSGONEPARAM("hStmt Error %d : (UpdateCharacterCustomizing) \n", retcode); ErrorDisplay(hStmt);
-		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-		return ERROR_CODE::ER_DB_ERROR;
-	}
-
-	
-
-	const WCHAR* query = L"UPDATE UserInfo SET CharacterCustomizing = ? WHERE UID = ?";
-
-	SQLPrepare(hStmt, (SQLWCHAR*)query, SQL_NTS);
-
-	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_BINARY, SQL_VARBINARY, characterCustomizing.size(), 0, (SQLPOINTER)characterCustomizing.data(), 0, NULL);
-	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
-
-	retcode = SQLExecute(hStmt);
-
-	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
-
-		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-		return ERROR_CODE::ER_NONE;
-	}
-
-	DEBUGMSGONEPARAM("Execute Query Error %d : (UpdateCharacterCustomizing)\n", retcode); ErrorDisplay(hStmt);
-	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-	return ERROR_CODE::ER_DB_ERROR;
-}
 
 bool DB::UpdateUserAttendanceIsRewarded(const int uid, const int eventCode, const int dayCount, const int updateValue)
 {

@@ -218,7 +218,7 @@ namespace NetworkProtocol
         CI_HEAD = 21,
         CI_FACE = 22,
         CI_BACK = 23,
-        CI_EMO = 24,
+        CI_EMO = 24
     };
 
     public enum eGameMode
