@@ -14,7 +14,6 @@ enum class UserInfo_Field {
 	Point,
 	LastLoginTime,
 	AttendanceDay,
-	characterCustomizing,
 	State = 9
 };
 
