@@ -4,6 +4,7 @@ using UnityEngine;
 using NetworkProtocol;
 using System.IO;
 using TMPro;
+using UnityEngine.ProBuilder.Shapes;
 
 public class MapManager : MonoBehaviour
 {
@@ -17,6 +18,9 @@ public class MapManager : MonoBehaviour
     private const float GOALPOST_OFFSET_Y = OFFSET_Y - 1.0f;
     private Vector3[] spawnDirection = new Vector3[3];
     public int mapSizeX, mapSizeZ;
+    private GameObject mapColliders;
+    private int[,] mapColliderChildNums;
+    private int mapColliderChildCount;
 
     // OFFSETS
     private const float MAP_THEME1_OFFSET_X = -81.3f;
@@ -33,6 +37,11 @@ public class MapManager : MonoBehaviour
         {
             map = new GameObject { name = "@Map" };
         }
+        mapColliders = GameObject.Find("@MapColliders");
+        if( mapColliders == null )
+        {
+            mapColliders = new GameObject { name = "@MapColliders" };
+        }
     }
 
     public void LoadGameMap(int mapIndex, int mapTheme = 1)
@@ -46,6 +55,8 @@ public class MapManager : MonoBehaviour
         int.TryParse(sMapSize[0], out mapSizeX);
         int.TryParse(sMapSize[1], out mapSizeZ);
         mapHeight = new float[mapSizeX, mapSizeZ];
+        mapColliderChildNums = new int[mapSizeX, mapSizeZ];
+        mapColliderChildCount = 0;
 
         //동상 정보
         for (int i = 0; i < 3; ++i)
@@ -117,6 +128,10 @@ public class MapManager : MonoBehaviour
                 float height = mapHeight[j, i];
                 float tPosX = j * 2 + OFFSET_X;
                 float tPosZ = i * 2 + OFFSET_Z;
+
+                mapColliderChildNums[j, i] = mapColliderChildCount;
+                mapColliderChildCount++;
+
                 switch (sCubeData[j])
                 {
                     //골대
@@ -126,6 +141,7 @@ public class MapManager : MonoBehaviour
                             goalPost.GetComponent<GoalPost>().SetTeamNumber(0);
                             goalPost.transform.position = new Vector3(tPosX, height + GOALPOST_OFFSET_Y, tPosZ);
                             goalPost.transform.parent = map.transform;
+                            SetMapColliders(j, i, -1.0f);
                         }
                         break;
                     case "b":
@@ -134,6 +150,7 @@ public class MapManager : MonoBehaviour
                             goalPost.GetComponent<GoalPost>().SetTeamNumber(1);
                             goalPost.transform.position = new Vector3(tPosX, height + GOALPOST_OFFSET_Y, tPosZ);
                             goalPost.transform.parent = map.transform;
+                            SetMapColliders(j, i, -1.0f);
                         }
                         break;
                     case "c":
@@ -142,6 +159,7 @@ public class MapManager : MonoBehaviour
                             goalPost.GetComponent<GoalPost>().SetTeamNumber(2);
                             goalPost.transform.position = new Vector3(tPosX, height + GOALPOST_OFFSET_Y, tPosZ);
                             goalPost.transform.parent = map.transform;
+                            SetMapColliders(j, i, -1.0f);
                         }
                         break;
 
@@ -149,6 +167,7 @@ public class MapManager : MonoBehaviour
                     case "0":
                         {
                             if (height > 0) FillCubeByHeight(j, i, height);
+                            SetMapColliders(j, i, height);
                             GameObject cube;
                             if ((int)height % 2 == 0)
                             {
@@ -168,6 +187,7 @@ public class MapManager : MonoBehaviour
                     case "1":
                         {
                             if (height > 0) FillCubeByHeight(j, i, height);
+                            SetMapColliders(j, i, height);
                             GameObject cube;
                             if ((int)height % 2 == 0)
                             {
@@ -187,6 +207,7 @@ public class MapManager : MonoBehaviour
                     case "2":
                         {
                             if (height > 0) FillCubeByHeight(j, i, height);
+                            SetMapColliders(j, i, height);
                             GameObject cube;
                             if ((int)height % 2 == 0)
                             {
@@ -208,6 +229,7 @@ public class MapManager : MonoBehaviour
                     case "n":
                         {
                             if (height > 0) FillCubeByHeight(j, i, height);
+                            SetMapColliders(j, i, height);
                             GameObject cube;
                             if ((int)height % 2 == 0)
                             {
@@ -227,6 +249,7 @@ public class MapManager : MonoBehaviour
                     case "o":
                         {
                             if (height > 0) FillCubeByHeight(j, i, height);
+                            SetMapColliders(j, i, height);
                             GameObject cube;
                             if ((int)height % 2 == 0)
                             {
@@ -245,6 +268,7 @@ public class MapManager : MonoBehaviour
                         break;
                     case "x":
                         {
+                            SetMapColliders(j, i, -1.0f);
                         }
                         break;
 
@@ -382,5 +406,39 @@ public class MapManager : MonoBehaviour
     public Vector3 GetSpawnDirectionByTeam(int teamNumber)
     {
         return spawnDirection[teamNumber];
+    }
+
+    private void SetMapColliders(int x, int z, float height)
+    {
+        float colliderPosX = x * 2 + OFFSET_X;
+        float colliderPosZ = z * 2 + OFFSET_Z;
+        GameObject mapCollider = null;
+
+        mapCollider = Managers.Resource.Instantiate("MapCollider").gameObject;
+        mapCollider.transform.parent = mapColliders.transform;
+        if (height == -1.0f)
+        {
+            mapCollider.SetActive(false);
+            mapColliderChildNums[x, z] = -1;
+        }
+        else
+        {
+            mapCollider.gameObject.transform.localScale = new Vector3(2, height + 2, 2);
+            mapCollider.gameObject.transform.position = new Vector3(colliderPosX, (OFFSET_Y + height) / 2, colliderPosZ);
+        }
+    }
+    public void UpdateMapColliders(int x, int z)
+    {
+        int i = (x - (int)OFFSET_X) / 2;
+        int j = (z - (int)OFFSET_Z) / 2;
+        if (mapColliderChildNums[i, j] != -1)
+        {
+            GameObject tCollider = mapColliders.transform.GetChild(mapColliderChildNums[i, j]).gameObject;
+            float height = GetMapHeight(i, j);
+            float colliderPosX = i * 2 + OFFSET_X;
+            float colliderPosZ = j * 2 + OFFSET_Z;
+            tCollider.gameObject.transform.localScale = new Vector3(2, height + 2, 2);
+            tCollider.gameObject.transform.position = new Vector3(colliderPosX, (OFFSET_Y + height) / 2, colliderPosZ);
+        }
     }
 }
