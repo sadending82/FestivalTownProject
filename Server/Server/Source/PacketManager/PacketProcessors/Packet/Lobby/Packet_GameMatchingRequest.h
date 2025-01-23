@@ -43,6 +43,7 @@ public:
 				case eMatchingType::FITH_TEST: {
 
 					if (serverMode != SERVER_MODE::TEST) {
+						MatchMakingManager->GetMatchingLock().unlock();
 						break;
 					}
 
