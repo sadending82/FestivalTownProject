@@ -38,14 +38,8 @@ public:
 				player->GetSessionStateLock().unlock();
 
 
-				MatchMakingManager->GetMatchingLock().lock();
 				switch (matchingType) {
 				case eMatchingType::FITH_TEST: {
-
-					/*if (serverMode != SERVER_MODE::TEST) {
-						MatchMakingManager->GetMatchingLock().unlock();
-						break;
-					}*/
 
 					int map_code = read->map_code();
 
@@ -95,7 +89,6 @@ public:
 					int botID = pServer->SetSessionID();
 
 					if (botID == INVALIDKEY) {
-						MatchMakingManager->GetMatchingLock().unlock();
 						return;
 					}
 
@@ -110,13 +103,14 @@ public:
 					//std::cout << "MAP: " << testMapProperties.Map_Index << " THEME: "<< testMapProperties.Map_Theme << std::endl;;
 				}break;
 				default:{
+					MatchMakingManager->GetMatchingLock().lock();
 					MatchMakingManager->GetMatchingQueue(matchingType).insert({key, requestTime});
+					MatchMakingManager->GetMatchingLock().unlock();
 
 					std::wcout << L"Nickname: " << player->GetNickName() << L" Matching Request / Match: " << matchingType << L" / wating Player - " << MatchMakingManager->GetMatchingQueue(matchingType).size() << std::endl;;
 
 				}break;
 				}
-				MatchMakingManager->GetMatchingLock().unlock();
 			}
 		}
 		catch (const std::exception& e) {
