@@ -68,7 +68,11 @@ namespace Network.PacketProcessor
                     int item_UID = item.ItemUid;
                     int item_Code = item.ItemCode;
                     int item_Type = item.Type;
-                    Managers.Game.SetCharacterCustomizingById(id, item_Code);
+
+                    if (item_Code != 0)
+                    {
+                        Managers.Game.SetCharacterCustomizingById(id, item_Code);
+                    }
                 }
 
                 Vector3 pos = new Vector3(position.X, position.Y, position.Z);
