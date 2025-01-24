@@ -16,8 +16,12 @@ DB::DB(TableManager* tableManager)
 
 DB::~DB()
 {
-	SQLDisconnect(hDbc);
-	SQLFreeHandle(SQL_HANDLE_DBC, hDbc);
+	while (!mConnectionPool.empty()) {
+		SQLHDBC hDbc = mConnectionPool.front().hDbc;
+		mConnectionPool.pop();
+		SQLDisconnect(hDbc);
+		SQLFreeHandle(SQL_HANDLE_DBC, hDbc);
+	}
 	SQLFreeHandle(SQL_HANDLE_ENV, hEnv);
 	delete mSecurity;
 }
@@ -37,11 +41,6 @@ int DB::Init()
 		return -1;
 	}
 
-	if ((retcode = SQLAllocHandle(SQL_HANDLE_DBC, hEnv, &hDbc)) == SQL_ERROR) {
-
-		return -1;
-	}
-
 	return 1;
 }
 
@@ -51,22 +50,33 @@ bool DB::Connect(std::wstring odbc, std::wstring id, std::wstring password)
 
 	SQLRETURN retcode;
 
-	retcode = SQLSetEnvAttr(nullptr, SQL_ATTR_CONNECTION_POOLING, (SQLPOINTER)SQL_CP_ONE_PER_HENV, 0);
-	if (retcode == SQL_ERROR) {
-		DEBUGMSGNOPARAM("Enable ODBC connection pooling Fail\n", retcode);
-		return false;
-	}
+	for (int i = 0; i < ConnectionPoolSize; ++i) {
 
-	if ((retcode = SQLSetConnectAttr(hDbc, SQL_LOGIN_TIMEOUT, (SQLPOINTER)5, 0)) == SQL_ERROR) {
+		DB_Connection connection;
 
-		return false;
-	}
+		retcode = SQLSetEnvAttr(nullptr, SQL_ATTR_CONNECTION_POOLING, (SQLPOINTER)SQL_CP_ONE_PER_HENV, 0);
+		if (retcode == SQL_ERROR) {
+			DEBUGMSGNOPARAM("Enable ODBC connection pooling Fail\n", retcode);
+			return false;
+		}
 
-	retcode = SQLConnect(hDbc, (wchar_t*)odbc.c_str(), SQL_NTS, (wchar_t*)id.c_str(), SQL_NTS, (wchar_t*)password.c_str(), SQL_NTS);
+		if ((retcode = SQLAllocHandle(SQL_HANDLE_DBC, hEnv, &connection.hDbc)) == SQL_ERROR) {
+			return false;
+		}
 
-	if (retcode == SQL_ERROR) {
-		DEBUGMSGNOPARAM("DB Connect Fail\n", retcode);
-		return false;
+		if ((retcode = SQLSetConnectAttr(connection.hDbc, SQL_LOGIN_TIMEOUT, (SQLPOINTER)5, 0)) == SQL_ERROR) {
+
+			return false;
+		}
+
+		retcode = SQLConnect(connection.hDbc, (wchar_t*)odbc.c_str(), SQL_NTS, (wchar_t*)id.c_str(), SQL_NTS, (wchar_t*)password.c_str(), SQL_NTS);
+
+		if (retcode == SQL_ERROR) {
+			DEBUGMSGNOPARAM("DB Connect Fail\n", retcode);
+			return false;
+		}
+
+		mConnectionPool.push(connection);
 	}
 
 	DEBUGMSGNOPARAM("DB Connect Success\n", retcode);
@@ -87,8 +97,31 @@ void DB::ErrorDisplay(SQLHSTMT& hStmt)
 		<< L", Message: " << messageText << std::endl;
 }
 
+
+DB_Connection DB::GetConnection()
+{
+	std::unique_lock<std::mutex> lock(mConnectionPoolLock);
+	mConnectionPoolCondition.wait(lock, [this] {return !mConnectionPool.empty(); });
+	DB_Connection connection = mConnectionPool.front();
+	//std::cout << mConnectionPool.size() << " GetConnection\n";
+	mConnectionPool.pop();
+
+	return connection;
+}
+
+void DB::ReturnConnection(DB_Connection connection)
+{
+	std::unique_lock<std::mutex> lock(mConnectionPoolLock);
+	mConnectionPool.push(connection);
+	mConnectionPoolCondition.notify_one();
+	//std::cout << mConnectionPool.size() << " poool return\n";
+}
+
+
 ERROR_CODE DB::InsertNewAcccount(const char* id, const char* password)
 {
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
@@ -98,6 +131,7 @@ ERROR_CODE DB::InsertNewAcccount(const char* id, const char* password)
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR){
 		DEBUGMSGONEPARAM("hStmt Error %d : (InsertNewAcccount) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 	
@@ -113,16 +147,20 @@ ERROR_CODE DB::InsertNewAcccount(const char* id, const char* password)
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_NONE;
 	}
 
 	DEBUGMSGONEPARAM("Execute Query Error %d : (InsertNewAcccount)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
 	return ERROR_CODE::ER_DB_ERROR;
 }
 
 int DB::InsertNewUser(const char* id, const wchar_t* nickname)
 {
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
@@ -131,6 +169,7 @@ int DB::InsertNewUser(const char* id, const wchar_t* nickname)
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (InsertNewUser) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return INVALIDKEY;
 	}
 
@@ -150,7 +189,7 @@ int DB::InsertNewUser(const char* id, const wchar_t* nickname)
 		}
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-
+		ReturnConnection(connection);
 		//// Gold / Dia
 		//InsertUserItem(uid, 100001, 0, 0);
 		//InsertUserItem(uid, 100002, 0, 0);
@@ -160,6 +199,7 @@ int DB::InsertNewUser(const char* id, const wchar_t* nickname)
 
 	DEBUGMSGONEPARAM("Execute Query Error %d : (InsertNewUser)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
 	return INVALIDKEY;
 }
 
@@ -169,12 +209,16 @@ ERROR_CODE DB::InsertUserGameRecords(const int uid)
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
+
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (InsertUserGameRecords) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_DB_ERROR;;
 	}
 
@@ -189,11 +233,13 @@ ERROR_CODE DB::InsertUserGameRecords(const int uid)
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_NONE;
 	}
 
 	DEBUGMSGONEPARAM("Execute Query Error %d : (InsertUserGameRecords)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
 	return ERROR_CODE::ER_DB_ERROR;
 }
 
@@ -203,12 +249,16 @@ ERROR_CODE DB::InsertUserItem(const int owner_uid, const int itemCode, const int
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
+
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (InsertUserItem) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
@@ -226,11 +276,13 @@ ERROR_CODE DB::InsertUserItem(const int owner_uid, const int itemCode, const int
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_NONE;
 	}
 
 	DEBUGMSGONEPARAM("Execute Query Error %d : (InsertUserItem)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
 	return ERROR_CODE::ER_DB_ERROR;
 }
 
@@ -240,12 +292,15 @@ ERROR_CODE DB::InsertUserAttendance(const int uid, const int EventIndex, const i
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (InsertUserAttendance) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
@@ -262,11 +317,13 @@ ERROR_CODE DB::InsertUserAttendance(const int uid, const int EventIndex, const i
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_NONE;
 	}
 
 	DEBUGMSGONEPARAM("Execute Query Error %d : (InsertUserAttendance)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
 	return ERROR_CODE::ER_DB_ERROR;
 }
 
@@ -276,12 +333,15 @@ ERROR_CODE DB::InsertUserEventReward(const int uid, const int Eventcode)
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (InsertUserEventReward) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
@@ -297,16 +357,20 @@ ERROR_CODE DB::InsertUserEventReward(const int uid, const int Eventcode)
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_NONE;
 	}
 
 	DEBUGMSGONEPARAM("Execute Query Error %d : (InsertUserEventReward)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
 	return ERROR_CODE::ER_DB_ERROR;
 }
 
 int DB::SelectAccountCount(const char* id)
 {
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
@@ -315,6 +379,7 @@ int DB::SelectAccountCount(const char* id)
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (SelectAccountCount) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return 999;
 	}
 
@@ -336,16 +401,18 @@ int DB::SelectAccountCount(const char* id)
 		}
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-
+		ReturnConnection(connection);
 		return count;
 	}
 
 	if (retcode == SQL_NO_DATA) {
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return 999;
 	}
 	DEBUGMSGONEPARAM("Execute Query Error %d : (SelectAccountCount)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
 	return 999;
 }
 
@@ -353,12 +420,15 @@ std::pair<ERROR_CODE, UserInfo> DB::SelectUserInfoForLogin(const char* id)
 {
 	UserInfo userInfo;
 
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (SelectUserInfoForLogin) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return { ERROR_CODE::ER_DB_ERROR, UserInfo() };
 	}
 
@@ -405,15 +475,18 @@ std::pair<ERROR_CODE, UserInfo> DB::SelectUserInfoForLogin(const char* id)
 		}
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return { ERROR_CODE::ER_NONE, userInfo };
 	}
 
 	if (retcode == SQL_NO_DATA) {
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return { ERROR_CODE::ER_NONE, UserInfo() };
 	}
 	DEBUGMSGONEPARAM("Execute Query Error %d : (SelectUserInfoForLogin)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
 	return { ERROR_CODE::ER_DB_ERROR ,UserInfo() };
 }
 
@@ -423,13 +496,15 @@ std::pair<ERROR_CODE, UserInfo> DB::SelectUserInfo(const int uid)
 		return { ERROR_CODE::ER_DB_ERROR, UserInfo()};
 	}
 	UserInfo userInfo;
-
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
-		DEBUGMSGONEPARAM("hStmt Error %d : (InsertRanking) \n", retcode); ErrorDisplay(hStmt);
+		DEBUGMSGONEPARAM("hStmt Error %d : (SelectUserInfo) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return { ERROR_CODE::ER_DB_ERROR,UserInfo() };
 	}
 
@@ -465,6 +540,7 @@ std::pair<ERROR_CODE, UserInfo> DB::SelectUserInfo(const int uid)
 		userInfo.State = t;
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 
 		userInfo.Gold = SelectUserItemCount(userInfo.UID, 100001);
 
@@ -473,10 +549,12 @@ std::pair<ERROR_CODE, UserInfo> DB::SelectUserInfo(const int uid)
 
 	if (retcode == SQL_NO_DATA) {
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return { ERROR_CODE::ER_NONE, UserInfo() };
 	}
 	DEBUGMSGONEPARAM("Execute Query Error %d : (SelectUserInfo)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
 	return { ERROR_CODE::ER_DB_ERROR,UserInfo() };
 }
 
@@ -485,7 +563,8 @@ std::pair<ERROR_CODE, std::vector<UserItem>> DB::SelectUserAllCurrency(const int
 	if (uid == 0) {
 		return { ERROR_CODE::ER_DB_ERROR, std::vector<UserItem>() };
 	}
-
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
@@ -496,6 +575,7 @@ std::pair<ERROR_CODE, std::vector<UserItem>> DB::SelectUserAllCurrency(const int
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (SelectUserAllCurrency) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return { ERROR_CODE::ER_DB_ERROR, std::vector<UserItem>() };
 	}
 
@@ -523,15 +603,18 @@ std::pair<ERROR_CODE, std::vector<UserItem>> DB::SelectUserAllCurrency(const int
 		}
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return { ERROR_CODE::ER_NONE, itemList };
 	}
 
 	if (retcode == SQL_NO_DATA) {
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return { ERROR_CODE::ER_DB_NO_DATA, std::vector<UserItem>() };
 	}
 	DEBUGMSGONEPARAM("Execute Query Error %d : (SelectUserAllCurrency)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
 	return { ERROR_CODE::ER_DB_ERROR, std::vector<UserItem>() };
 }
 
@@ -540,6 +623,8 @@ std::pair<ERROR_CODE, std::unordered_map<int, UserItem>> DB::SelectUserAllItems(
 	if (uid == 0) {
 		return { ERROR_CODE::ER_DB_ERROR, std::unordered_map<int, UserItem>() };
 	}
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 	int zero = 0;
@@ -548,6 +633,7 @@ std::pair<ERROR_CODE, std::unordered_map<int, UserItem>> DB::SelectUserAllItems(
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (SelectUserAllItems) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return{ ERROR_CODE::ER_DB_ERROR, std::unordered_map<int, UserItem>() };
 	}
 
@@ -574,14 +660,19 @@ std::pair<ERROR_CODE, std::unordered_map<int, UserItem>> DB::SelectUserAllItems(
 		}
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return{ ERROR_CODE::ER_NONE, itemList };
 	}
 
 	if (retcode == SQL_NO_DATA) {
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return { ERROR_CODE::ER_DB_NO_DATA, std::unordered_map<int, UserItem>() };
 	}
+
 	DEBUGMSGONEPARAM("Execute Query Error %d : (SelectUserAllItems)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
 	return { ERROR_CODE::ER_DB_ERROR, std::unordered_map<int, UserItem>() };
 }
 
@@ -590,13 +681,15 @@ sCharacterCustomizing DB::SelectCharacterCustomizing(const int uid)
 	if (uid == 0) {
 		return sCharacterCustomizing();
 	}
-
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (SelectCharacterCustomizing) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return sCharacterCustomizing();
 	}
 
@@ -630,17 +723,19 @@ sCharacterCustomizing DB::SelectCharacterCustomizing(const int uid)
 		}
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 
 		return sCustomizingData;
 	}
 
 	if (retcode == SQL_NO_DATA) {
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return sCharacterCustomizing();
 	}
 	DEBUGMSGONEPARAM("Execute Query Error %d : (SelectCharacterCustomizing)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
-
+	ReturnConnection(connection);
 	return sCharacterCustomizing();
 }
 
@@ -649,7 +744,8 @@ int DB::SelectUserItemCount(const int uid, const int item_index)
 	if (uid == 0) {
 		return 0;
 	}
-
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
@@ -658,6 +754,7 @@ int DB::SelectUserItemCount(const int uid, const int item_index)
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (SelectUserItemCount) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return 0;
 	}
 
@@ -679,12 +776,14 @@ int DB::SelectUserItemCount(const int uid, const int item_index)
 		}
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return count;
 	}
 
 	std::cout << "Execute Query Error " << retcode  << ": (SelectUserItemCount) - " << uid  << " " << item_index << std::endl;;
 	ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
 	return 0;
 }
 
@@ -693,7 +792,8 @@ std::set<sDayAttendanceInfo> DB::SelectUserAttendanceEvent(const int uid, const 
 	if (uid == 0) {
 		return std::set<sDayAttendanceInfo>();
 	}
-
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
@@ -704,6 +804,7 @@ std::set<sDayAttendanceInfo> DB::SelectUserAttendanceEvent(const int uid, const 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (SelectUserAttendanceEvent) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return std::set<sDayAttendanceInfo>();
 	}
 
@@ -738,11 +839,13 @@ std::set<sDayAttendanceInfo> DB::SelectUserAttendanceEvent(const int uid, const 
 		}
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return dayAttendanceInfoList;
 	}
 
 	DEBUGMSGONEPARAM("Execute Query Error %d : (SelectUserAttendanceEvent)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
 	return std::set<sDayAttendanceInfo>();
 }
 
@@ -751,7 +854,8 @@ sDayAttendanceInfo DB::SelectUserAttendanceEventLatest(const int uid, const int 
 	if (uid == 0) {
 		return sDayAttendanceInfo();
 	}
-
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
@@ -760,6 +864,7 @@ sDayAttendanceInfo DB::SelectUserAttendanceEventLatest(const int uid, const int 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (SelectUserAttendanceEventLatest) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return sDayAttendanceInfo();
 	}
 
@@ -791,6 +896,7 @@ sDayAttendanceInfo DB::SelectUserAttendanceEventLatest(const int uid, const int 
 		}
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return dayAttendanceInfo;
 	}
 
@@ -798,6 +904,7 @@ sDayAttendanceInfo DB::SelectUserAttendanceEventLatest(const int uid, const int 
 		DEBUGMSGONEPARAM("Execute Query Error %d : (SelectUserAttendanceEventLatest)\n", retcode); ErrorDisplay(hStmt);
 	}
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
 	return sDayAttendanceInfo();
 }
 
@@ -807,7 +914,8 @@ int DB::SelectUserAttendanceToday(const int uid)
 	if (uid == 0) {
 		return 0;
 	}
-
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
@@ -816,6 +924,7 @@ int DB::SelectUserAttendanceToday(const int uid)
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (SelectUserAttendanceToday) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return 0;
 	}
 
@@ -836,11 +945,13 @@ int DB::SelectUserAttendanceToday(const int uid)
 		}
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return count;
 	}
 
 	DEBUGMSGONEPARAM("Execute Query Error %d : (SelectUserAttendanceToday)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
 	return 0;
 }
 
@@ -849,7 +960,8 @@ bool DB::SelectUserAttendanceIsRewarded(const int uid, const int eventCode, cons
 	if (uid == 0) {
 		return true;
 	}
-
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
@@ -858,6 +970,7 @@ bool DB::SelectUserAttendanceIsRewarded(const int uid, const int eventCode, cons
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (SelectUserAttendanceIsRewarded) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return true;
 	}
 
@@ -880,11 +993,13 @@ bool DB::SelectUserAttendanceIsRewarded(const int uid, const int eventCode, cons
 		}
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return isRewarded;
 	}
 
 	DEBUGMSGONEPARAM("Execute Query Error %d : (SelectUserAttendanceIsRewarded)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
 	return true;
 }
 
@@ -893,13 +1008,15 @@ ERROR_CODE DB::UpdateUserConnectionState(const int uid, const int state)
 	if (uid == 0) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
-
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (UpdateUserConnectionState) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
@@ -915,11 +1032,13 @@ ERROR_CODE DB::UpdateUserConnectionState(const int uid, const int state)
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_NONE;
 	}
 
 	DEBUGMSGONEPARAM("Execute Query Error %d : (UpdateUserConnectionState)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
 	return ERROR_CODE::ER_DB_ERROR;
 }
 
@@ -928,7 +1047,8 @@ ERROR_CODE DB::UpsertUserItemCount(const int uid, const int item_Code, const int
 	if (uid == 0) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
-
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
@@ -937,6 +1057,7 @@ ERROR_CODE DB::UpsertUserItemCount(const int uid, const int item_Code, const int
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (UpdateUserGold) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
@@ -957,11 +1078,13 @@ ERROR_CODE DB::UpsertUserItemCount(const int uid, const int item_Code, const int
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_NONE;
 	}
 
 	DEBUGMSGONEPARAM("Execute Query Error %d : (UpsertUserItemCount)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
 	return ERROR_CODE::ER_DB_ERROR;
 }
 
@@ -971,13 +1094,15 @@ ERROR_CODE DB::UpdateUserPoint(const int uid, const int valueOfChange)
 	if (uid == 0) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
-
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (UpdateUserPoint) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
@@ -993,12 +1118,14 @@ ERROR_CODE DB::UpdateUserPoint(const int uid, const int valueOfChange)
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_NONE;
 
 	}
 
 	DEBUGMSGONEPARAM("Execute Query Error %d : (UpdateUserPoint)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
 	return ERROR_CODE::ER_DB_ERROR;
 }
 
@@ -1007,13 +1134,15 @@ ERROR_CODE DB::UpdateBattleRecords(const int uid, const UserGameRecords& gameRec
 	if (uid == 0) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
-
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (UpdateBattleRecords) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
@@ -1043,12 +1172,14 @@ ERROR_CODE DB::UpdateBattleRecords(const int uid, const UserGameRecords& gameRec
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_NONE;
 
 	}
 
 	DEBUGMSGONEPARAM("Execute Query Error %d : (UpdateBattleRecords)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
 	return ERROR_CODE::ER_DB_ERROR;
 }
 
@@ -1058,7 +1189,8 @@ ERROR_CODE DB::UpdateUserItemCount(const int uid, const int item_index, const in
 	if (uid == 0) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
-
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
@@ -1067,6 +1199,7 @@ ERROR_CODE DB::UpdateUserItemCount(const int uid, const int item_index, const in
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (UpdateUserItemCount) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
@@ -1081,11 +1214,13 @@ ERROR_CODE DB::UpdateUserItemCount(const int uid, const int item_index, const in
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_NONE;
 	}
 
 	DEBUGMSGONEPARAM("Execute Query Error %d : (UpdateUserItemCount)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
 	return ERROR_CODE::ER_DB_ERROR;
 }
 
@@ -1098,13 +1233,15 @@ ERROR_CODE DB::UpsertUserCurrency(const int uid, std::vector<UserItem> CurrencyL
 	if (CurrencyList.empty()) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
-
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (UpsertUserCurrency) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
@@ -1133,11 +1270,13 @@ ERROR_CODE DB::UpsertUserCurrency(const int uid, std::vector<UserItem> CurrencyL
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
 
 		SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_NONE;
 	}
 
 	DEBUGMSGONEPARAM("Execute Query Error %d : (UpsertUserCurrency)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
+	ReturnConnection(connection);
 	return ERROR_CODE::ER_DB_ERROR;
 }
 
@@ -1146,7 +1285,8 @@ ERROR_CODE DB::UpsertCharacterCustomizing(const int uid, sCharacterCustomizing& 
 	if (uid == 0) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
-
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
@@ -1154,6 +1294,7 @@ ERROR_CODE DB::UpsertCharacterCustomizing(const int uid, sCharacterCustomizing& 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (UpsertCharacterCustomizing) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
@@ -1176,11 +1317,13 @@ ERROR_CODE DB::UpsertCharacterCustomizing(const int uid, sCharacterCustomizing& 
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_NONE;
 	}
 
 	DEBUGMSGONEPARAM("Execute Query Error %d : (UpsertCharacterCustomizing)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
 	return ERROR_CODE::ER_DB_ERROR;
 }
 
@@ -1190,7 +1333,8 @@ bool DB::UpdateUserAttendanceIsRewarded(const int uid, const int eventCode, cons
 	if (uid == 0) {
 		return true;
 	}
-
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
@@ -1200,6 +1344,7 @@ bool DB::UpdateUserAttendanceIsRewarded(const int uid, const int eventCode, cons
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (UpdateUserAttendanceIsRewarded) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return true;
 	}
 
@@ -1220,6 +1365,7 @@ bool DB::UpdateUserAttendanceIsRewarded(const int uid, const int eventCode, cons
 			SQLGetData(hStmt, 1, SQL_C_UTINYINT, &before_isRewarded, sizeof(before_isRewarded), &col1);
 
 			SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+			ReturnConnection(connection);
 
 			return static_cast<bool>(before_isRewarded);
 		}
@@ -1228,6 +1374,7 @@ bool DB::UpdateUserAttendanceIsRewarded(const int uid, const int eventCode, cons
 	DEBUGMSGONEPARAM("Execute Query Error %d : (UpdateUserAttendanceIsRewarded)\n", retcode); ErrorDisplay(hStmt);
 
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
 	return true;
 }
 
@@ -1236,13 +1383,15 @@ ERROR_CODE DB::UpdateUserEventReward_IsRewarded(const int uid, const int eventCo
 	if (uid == 0) {
 		return ERROR_CODE::ER_DB_NO_DATA;
 	}
-
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (UpdateUserEventReward_IsRewarded) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
@@ -1256,27 +1405,33 @@ ERROR_CODE DB::UpdateUserEventReward_IsRewarded(const int uid, const int eventCo
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_NONE;
 	}
 	else if (retcode == SQL_NO_DATA) {
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_DB_NO_DATA;
 	}
 
 	DEBUGMSGONEPARAM("Execute Query Error %d : (UpdateUserEventReward_IsRewarded)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
 	return ERROR_CODE::ER_DB_ERROR;
 }
 
 
 ERROR_CODE DB::DeleteAcccount(const char* id)
 {
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (DeleteAcccount) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 	
@@ -1290,11 +1445,13 @@ ERROR_CODE DB::DeleteAcccount(const char* id)
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_NONE;
 	}
 
 	DEBUGMSGONEPARAM("Execute Query Error %d : (DeleteAcccount)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
 	return ERROR_CODE::ER_DB_ERROR;
 }
 
@@ -1303,13 +1460,15 @@ ERROR_CODE DB::DeleteUserInfo(const int uid)
 	if (uid == 0) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
-
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (DeleteUserInfo) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
@@ -1324,11 +1483,13 @@ ERROR_CODE DB::DeleteUserInfo(const int uid)
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_NONE;
 	}
 
 	DEBUGMSGONEPARAM("Execute Query Error %d : (DeleteUserInfo)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
 	return ERROR_CODE::ER_DB_ERROR;
 }
 
@@ -1337,13 +1498,15 @@ ERROR_CODE DB::DeleteUserGameRecords(const int uid)
 	if (uid == 0) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
-
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (DeleteUserGameRecords) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
@@ -1356,11 +1519,13 @@ ERROR_CODE DB::DeleteUserGameRecords(const int uid)
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_NONE;
 	}
 
 	DEBUGMSGONEPARAM("Execute Query Error %d : (DeleteUserGameRecords)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
 	return ERROR_CODE::ER_DB_ERROR;
 }
 
@@ -1369,13 +1534,15 @@ ERROR_CODE DB::DeleteUserItem(const int owner_uid, const int itemCode)
 	if (owner_uid == 0) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
-
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (DeleteUserInfo) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
@@ -1391,11 +1558,13 @@ ERROR_CODE DB::DeleteUserItem(const int owner_uid, const int itemCode)
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_NONE;
 	}
 
 	DEBUGMSGONEPARAM("Execute Query Error %d : (DeleteUserInfo)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
 	return ERROR_CODE::ER_DB_ERROR;
 }
 
@@ -1404,13 +1573,15 @@ ERROR_CODE DB::DeleteUserItemAll(const int owner_uid)
 	if (owner_uid == 0) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
-
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (DeleteUserItemAll) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
@@ -1423,11 +1594,13 @@ ERROR_CODE DB::DeleteUserItemAll(const int owner_uid)
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_NONE;
 	}
 
 	DEBUGMSGONEPARAM("Execute Query Error %d : (DeleteUserItemAll()\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
 	return ERROR_CODE::ER_DB_ERROR;
 }
 
@@ -1436,13 +1609,15 @@ ERROR_CODE DB::DeleteUserAttendanceAll(const int user_uid)
 	if (user_uid == 0) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
-
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (DeleteUserAttendanceAll) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
@@ -1455,22 +1630,27 @@ ERROR_CODE DB::DeleteUserAttendanceAll(const int user_uid)
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_NONE;
 	}
 
 	DEBUGMSGONEPARAM("Execute Query Error %d : (DeleteUserAttendanceAll)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
 	return ERROR_CODE::ER_DB_ERROR;
 }
 
 ERROR_CODE DB::DeleteUserAttendanceOutdated(const int day)
 {
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (DeleteUserAttendanceOutdated) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
@@ -1483,16 +1663,20 @@ ERROR_CODE DB::DeleteUserAttendanceOutdated(const int day)
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO || retcode == SQL_NO_DATA) {
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_NONE;
 	}
 
 	DEBUGMSGONEPARAM("Execute Query Error %d : (DeleteUserAttendanceOutdated)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
 	return ERROR_CODE::ER_DB_ERROR;
 }
 
 ERROR_CODE DB::CheckValidateLogin(const char* id, const char* password)
 {
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
 	SQLHSTMT hStmt = NULL;
 	SQLRETURN retcode;
 
@@ -1502,6 +1686,7 @@ ERROR_CODE DB::CheckValidateLogin(const char* id, const char* password)
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
 		DEBUGMSGONEPARAM("hStmt Error %d : (CheckValidateLogin) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 	
@@ -1524,12 +1709,13 @@ ERROR_CODE DB::CheckValidateLogin(const char* id, const char* password)
 			SQLGetData(hStmt, 2, SQL_C_CHAR, value2, sizeof(value2), &len2);
 			salt.assign(reinterpret_cast<char*>(value2), len2);
 		}
-
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 	}
 	else {
 		DEBUGMSGONEPARAM("Execute Query Error %d : (CheckValidateLogin)\n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 

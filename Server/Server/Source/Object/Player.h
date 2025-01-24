@@ -96,11 +96,6 @@ protected:
 
 	ePlayerState		mPlayerState;
 
-
-	//int					mUID = INVALIDKEY;	// GameDB에서 PK로 사용하는 Unique ID
-	//std::string			mAccountID = ""; // 계정 ID
-	//std::wstring		mName = L"test"; // 임시 닉네임
-
 	UserInfo			mUserInfo = UserInfo();
 
 	bool				mIsBot = false;

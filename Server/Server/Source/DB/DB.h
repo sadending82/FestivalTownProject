@@ -15,10 +15,18 @@
 #include <fstream>
 #include <unordered_set>
 #include <set>
+#include <queue>
+#include <mutex>
 
 #define SQLBindAtomic_int(stmt, index, value) int bindValue##index = value.load(); SQLBindParameter(hStmt, index, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (&bindValue##index), 0, NULL);
 
 inline constexpr int AttendanceData_DaysToKeep = -60;
+inline constexpr int ConnectionPoolSize = 5;
+
+struct DB_Connection {
+    SQLHDBC hDbc;
+    bool isUse = false;
+};
 
 class DB {
 public:
@@ -26,9 +34,13 @@ public:
     DB(class TableManager* tableManager);
     ~DB();
 	int Init();
+
     bool Connect(std::wstring odbc, std::wstring id, std::wstring password);
     void ErrorDisplay(SQLHSTMT& hStmt);
     Security* GetSecurity() { return mSecurity; }
+
+    DB_Connection GetConnection();
+    void ReturnConnection(DB_Connection connection);
 
     // INSERT
     ERROR_CODE InsertNewAcccount(const char* id, const char* password);
@@ -82,7 +94,9 @@ public:
 
 private:
     SQLHENV hEnv = NULL;
-    SQLHDBC hDbc = NULL;
+    std::queue<DB_Connection> mConnectionPool;
+    std::mutex mConnectionPoolLock;
+    std::condition_variable mConnectionPoolCondition;
 
     Security* mSecurity = nullptr;
 
