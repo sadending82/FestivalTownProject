@@ -81,7 +81,7 @@ public class Managers : MonoBehaviour
         _game.Init();
 
         _network = gameObject.AddComponent<NetworkManager>();
-
+        StartCoroutine(InitSoundSetting());
     }
 
     static void Init()
@@ -104,6 +104,13 @@ public class Managers : MonoBehaviour
             s_instance._cheat.Init();
             //s_instance._game.Init();
         }
+    }
+
+    IEnumerator InitSoundSetting()
+    {
+        yield return null;
+        s_instance._sound.InitSoundSetting();
+        yield break;
     }
 
     static public void Clear()

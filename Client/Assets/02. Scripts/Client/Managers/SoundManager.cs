@@ -20,12 +20,12 @@ public class SoundManager
     // 3d 사운드 관리를 위한 데이터
     Dictionary<GameObject, AudioSource> _3dAudioSource = new();
 
+    LogarithmicRangeConverter converter = new LogarithmicRangeConverter(-80.0f, -15.0f, 0.0f);
 
-
-    public float _masterVolume = 0.0f;
-    public float _bgmVolume = 0.0f;
-    public float _effVolume = 0.0f;
-    public float _catVolume = 0.0f;
+    public float _masterVolume = 1.0f;
+    public float _bgmVolume = 1.0f;
+    public float _effVolume = 1.0f;
+    public float _catVolume = 1.0f;
     public void Init()
     {
         GameObject root = GameObject.Find("@Sound");
@@ -42,59 +42,98 @@ public class SoundManager
                 go.transform.SetParent(root.transform);
             }
 
-            _audioSources[(int)Define.Sound.Bgm].loop = true; 
+            _audioSources[(int)Define.Sound.Bgm].loop = true;
 
             mAudioMixer = Managers.Resource.Load<AudioMixer>("AudioMixer/SoundMixer");
             AudioMixerGroup[] mixerGroups = mAudioMixer.FindMatchingGroups("Master");
             _audioSources[(int)Define.Sound.Bgm].outputAudioMixerGroup = mixerGroups[3];
             _audioSources[(int)Define.Sound.Effect].outputAudioMixerGroup = mixerGroups[2];
-            _audioSources[(int)Define.Sound.Cat].outputAudioMixerGroup= mixerGroups[1];
+            _audioSources[(int)Define.Sound.Cat].outputAudioMixerGroup = mixerGroups[1];
+        }
 
-            if(PlayerPrefs.HasKey("Sound_Master_Volume"))
+        InitSoundSetting();
+
+    }
+
+    //--------------------------------------------------------------------------
+    //
+    // 볼륨 조절할 때 신경써야 할 부분으로
+    //
+    // 기본적으로 주는 값은 0에서 1사이의 값으로 주고 싶음.
+    // PlayerPrefs의 값 => 0~1
+    // 믹서 내부의 값 = > m~M
+    // 
+    //--------------------------------------------------------------------------
+
+    public LogarithmicRangeConverter GetConverter()
+    {
+        return converter;
+    }
+
+    public void InitSoundSetting()
+    {
+        SetPlayerPrefsVolumeByKey("Sound_Master_Volume");
+        SetPlayerPrefsVolumeByKey("Sound_Bgm_Volume");
+        SetPlayerPrefsVolumeByKey("Sound_Eff_Volume");
+        SetPlayerPrefsVolumeByKey("Sound_Cat_Volume");
+    }
+
+    public void SetPlayerPrefsVolumeByKey(string key)
+    {
+        if (PlayerPrefs.HasKey(key))
+        {
+            if (PlayerPrefs.GetFloat(key) > 1.0f || PlayerPrefs.GetFloat(key) < 0.0f)
             {
-                SetMasterVolume(PlayerPrefs.GetFloat("Sound_Master_Volume"));
+                PlayerPrefs.DeleteKey(key);
             }
-
-            if(PlayerPrefs.HasKey("Sound_Bgm_Volume"))
+            else
             {
-                SetBgmVolume(PlayerPrefs.GetFloat("Sound_Bgm_Volume"));
+                switch(key)
+                {
+                    case "Sound_Master_Volume":
+                        SetMasterVolume(PlayerPrefs.GetFloat(key));
+                        break;
+                    case "Sound_Bgm_Volume":
+                        SetEffectVolume(PlayerPrefs.GetFloat(key));
+                        break;
+                    case "Sound_Eff_Volume":
+                        SetBgmVolume(PlayerPrefs.GetFloat(key));
+                        break;
+                    case "Sound_Cat_Volume":
+                        SetCatVolume(PlayerPrefs.GetFloat(key));
+                        break;
+                    default:
+                        break;
+                }
             }
-
-            if(PlayerPrefs.HasKey("Sound_Eff_Volume"))
-            {
-                SetEffectVolume(PlayerPrefs.GetFloat("Sound_Eff_Volume"));
-            }
-
-            if(PlayerPrefs.HasKey("Sound_Cat_Volume"))
-            {
-                SetCatVolume(PlayerPrefs.GetFloat("Sound_Cat_Volume"));
-            }
-
         }
     }
 
     public void SetMasterVolume(float value)
     {
-        mAudioMixer.SetFloat("Master", value);
+        float actualValue = converter.ToRealRange(value);
+        mAudioMixer.SetFloat("Master", actualValue);
         _masterVolume = value;
-        
     }
 
     public void SetEffectVolume(float value)
     {
-        mAudioMixer.SetFloat("Effect", value);
+        float actualValue = converter.ToRealRange(value);
+        mAudioMixer.SetFloat("Effect", actualValue);
         _effVolume = value;
     }
 
     public void SetBgmVolume(float value)
     {
-        mAudioMixer.SetFloat("BGM", value);
+        float actualValue = converter.ToRealRange(value);
+        mAudioMixer.SetFloat("BGM", actualValue);
         _bgmVolume = value;
     }
 
     public void SetCatVolume(float value)
     {
-        mAudioMixer.SetFloat("CatVoice", value);
+        float actualValue = converter.ToRealRange(value);
+        mAudioMixer.SetFloat("CatVoice", actualValue);
         _catVolume = value;
     }
 

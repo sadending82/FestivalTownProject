@@ -87,7 +87,7 @@ public class UI_VolumeSetting : UI_Base
             Managers.Sound._masterVolume = sliderValue;
             Managers.Sound.SetMasterVolume(sliderValue);
             Get<GameObject>((int)GameObjects.VolumeVisual).GetComponent<TMP_InputField>().text =
-                ((int)((1.0f + (1.0f / 80.0f * sliderValue)) * 100.0f)).ToString();
+                ((int)(sliderValue * 100.0f)).ToString();
         }
         else
         {
@@ -98,19 +98,19 @@ public class UI_VolumeSetting : UI_Base
                     Managers.Sound._bgmVolume = sliderValue;
                     Managers.Sound.SetBgmVolume(sliderValue);
                     Get<GameObject>((int)GameObjects.VolumeVisual).GetComponent<TMP_InputField>().text =
-                        ((int)((1.0f + (1.0f / 80.0f * sliderValue)) * 100.0f)).ToString();
+                        ((int)(sliderValue * 100.0f)).ToString();
                     break;
                 case Define.Sound.Effect:
                     Managers.Sound._effVolume = sliderValue;
                     Managers.Sound.SetEffectVolume(sliderValue);
                     Get<GameObject>((int)GameObjects.VolumeVisual).GetComponent<TMP_InputField>().text =
-                        ((int)((1.0f + (1.0f / 80.0f * sliderValue)) * 100.0f)).ToString();
+                        ((int)(sliderValue * 100.0f)).ToString();
                     break;
                 case Define.Sound.Cat:
                     Managers.Sound._catVolume = sliderValue;
                     Managers.Sound.SetCatVolume(sliderValue);
                     Get<GameObject>((int)GameObjects.VolumeVisual).GetComponent<TMP_InputField>().text =
-                        ((int)((1.0f + (1.0f / 80.0f * sliderValue)) * 100.0f)).ToString();
+                        ((int)(sliderValue * 100.0f)).ToString();
                     break;
                 default:
                     break;
