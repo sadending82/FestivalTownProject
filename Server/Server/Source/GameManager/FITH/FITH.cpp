@@ -341,9 +341,125 @@ void FITH::CalculateGameResult(int roomID, std::set<int>& winningTeams)
             rewardList.push_back(UserItem(uid, record.rewards[i].index, record.rewards[i].value));
         }
         pDB->UpsertUserCurrency(uid, rewardList);
+
+        UpdateMissionbyGameRecord(player, true, record);
     }
 
     pPacketSender->SendGameResultPacket(roomID, winningTeams);
+}
+
+void FITH::UpdateMissionbyGameRecord(Player* player, bool isWin, sPlayerGameRecord& gameRecord)
+{
+    std::vector<UserMission> updatedMissionList;
+
+    int killCount = gameRecord.gameRecord.KillCount;
+    int groggyCount = gameRecord.gameRecord.Groggy_Count;
+    int inputBombCount = gameRecord.gameRecord.Bomb_Count;
+
+    // 킬 미션
+    if (killCount != 0) {
+        // 일일 미션
+        for (auto& missionGroupList : player->GetMissionList().missionList[eMissionType::MT_DAILY][eMissionCategory::MC_KILL]) {
+
+            std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
+
+            for (auto& missionInfo : missionInfos) {
+                missionInfo.second.progress += killCount;
+
+                updatedMissionList.push_back(missionInfo.second);
+            }
+        }
+
+        // 패스 미션
+        for (auto& missionGroupList : player->GetMissionList().missionList[eMissionType::MT_PASS][eMissionCategory::MC_KILL]) {
+
+            std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
+
+            for (auto& missionInfo : missionInfos) {
+                missionInfo.second.progress += killCount;
+
+                updatedMissionList.push_back(missionInfo.second);
+            }
+        }
+    }
+
+    // 폭탄 투입 미션
+    if (inputBombCount != 0) {
+        // 일일 미션
+        for (auto& missionGroupList : player->GetMissionList().missionList[eMissionType::MT_DAILY][eMissionCategory::MC_INPUT_BOMB]) {
+
+            std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
+
+            for (auto& missionInfo : missionInfos) {
+                missionInfo.second.progress += inputBombCount;
+                updatedMissionList.push_back(missionInfo.second);
+            }
+        }
+
+        // 패스 미션
+        for (auto& missionGroupList : player->GetMissionList().missionList[eMissionType::MT_PASS][eMissionCategory::MC_INPUT_BOMB]) {
+
+            std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
+
+            for (auto& missionInfo : missionInfos) {
+                missionInfo.second.progress += inputBombCount;
+                updatedMissionList.push_back(missionInfo.second);
+            }
+        }
+    }
+
+    // 승리 미션
+    if (isWin == true) {
+        // 일일 미션
+        for (auto& missionGroupList : player->GetMissionList().missionList[eMissionType::MT_DAILY][eMissionCategory::MC_GAME_WINNING]) {
+
+            std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
+
+            for (auto& missionInfo : missionInfos) {
+                missionInfo.second.progress++;
+                updatedMissionList.push_back(missionInfo.second);
+            }
+        }
+
+        // 패스 미션
+        for (auto& missionGroupList : player->GetMissionList().missionList[eMissionType::MT_PASS][eMissionCategory::MC_GAME_WINNING]) {
+
+            std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
+
+            for (auto& missionInfo : missionInfos) {
+                missionInfo.second.progress++;
+                updatedMissionList.push_back(missionInfo.second);
+            }
+        }
+    }
+
+    // 플레이 미션
+    {
+        for (auto& missionGroupList : player->GetMissionList().missionList[eMissionType::MT_DAILY][eMissionCategory::MC_GAME_PLAY]) {
+
+            std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
+
+            for (auto& missionInfo : missionInfos) {
+                missionInfo.second.progress++;
+                updatedMissionList.push_back(missionInfo.second);
+            }
+        }
+
+        // 패스 미션
+        for (auto& missionGroupList : player->GetMissionList().missionList[eMissionType::MT_PASS][eMissionCategory::MC_GAME_PLAY]) {
+
+            std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
+
+            for (auto& missionInfo : missionInfos) {
+                missionInfo.second.progress++;
+                updatedMissionList.push_back(missionInfo.second);
+            }
+        }
+    }
+
+    if (!updatedMissionList.empty()) {
+        pDB->UpsertUserMission(player->GetUID(), updatedMissionList);
+    }
 }
 
 bool FITH::DeletePlayer(int playerID, int roomID)

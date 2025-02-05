@@ -64,6 +64,7 @@ public:
     sDayAttendanceInfo SelectUserAttendanceEventLatest(const int uid, const int eventCode);
     int SelectUserAttendanceToday(const int uid);
     bool SelectUserAttendanceIsRewarded(const int uid, const int eventCode, const int dayCount);
+    std::vector<struct UserMission> SelectUserMission(const int uid);
 
     // UPDATE
     ERROR_CODE UpdateUserConnectionState(const int uid, const int state);
@@ -80,6 +81,7 @@ public:
     ERROR_CODE UpsertUserItemCount(const int uid, const int item_index, const int valueOfChange);
     ERROR_CODE UpsertUserCurrency(const int uid, std::vector<UserItem> CurrencyList);
     ERROR_CODE UpsertCharacterCustomizing(const int uid, struct sCharacterCustomizing& characterCustomizing);
+    ERROR_CODE UpsertUserMission(const int uid, std::vector<struct UserMission>& missionList);
 
     // DELETE
     ERROR_CODE DeleteAcccount(const char* id);

@@ -68,6 +68,15 @@ void TableManager::ClearAllTable()
         outer_pair.second.clear();
     }
     GachaItemList.clear();
+
+    // PassList
+    for (auto& passList : PassList) {
+        for (auto& passLevelList : passList.second.passLevelList) {
+            passLevelList.second.clear();
+        }
+        passList.second.passLevelList.clear();
+    }
+    PassList.clear();
 }
 
 void TableManager::ReadAllDataTable()
@@ -89,6 +98,8 @@ void TableManager::ReadAllDataTable()
     ReadEventTable();
 
     ReadSlangList();
+
+    ReadPassList();
 
     mIsLoading.store(false);
 }
@@ -934,6 +945,90 @@ void TableManager::ReadSlangList()
     }
 }
 
+void TableManager::ReadPassList()
+{
+    try {
+
+        mWorkbook.load("GameData/Pass.xlsx");
+        int idx = 0;
+        mWorksheet = mWorkbook.sheet_by_index(PassList_Sheet);
+
+        for (auto row : mWorksheet.rows(false)) {
+            if (idx == variableNameIdx) {
+                idx++;
+                continue;
+            }
+
+            if (!row.empty()) {
+
+                // юс╫ц
+                int PassIndex = 0;
+                //
+
+                int level = row[(int)(PassLevel_Field::level)].value<int>();
+                int passType = row[(int)(PassLevel_Field::Pass_Type)].value<int>();
+
+                std::time_t openTime = static_cast<std::time_t>((row[(int)(PassLevel_Field::Open_Date)].value<double>() - 25569) * 86400);
+                std::time_t closeTime = static_cast<std::time_t>((row[(int)(PassLevel_Field::Close_Date)].value<double>() - 25569) * 86400);
+
+                std::tm openDate = {}, closeDate = {};
+
+                localtime_s(&openDate, &openTime);
+                localtime_s(&closeDate, &closeTime);
+
+                PassLevel levelInfo;
+
+                levelInfo.level = level;
+                levelInfo.Exp_Required = row[(int)(PassLevel_Field::Exp_Required)].value<int>();
+                levelInfo.Pass_Type = passType;
+                levelInfo.Reward_Item_Index = row[(int)(PassLevel_Field::Reward_Item_Index)].value<int>();
+                levelInfo.Reward_Item_Amount = row[(int)(PassLevel_Field::Reward_Item_Amount)].value<int>();
+                levelInfo.Open_Date = openDate;
+                levelInfo.Close_Date = closeDate;
+
+                PassList[PassIndex].passLevelList[level][passType] = levelInfo;
+            }
+
+            idx++;
+        }
+
+
+        idx = 0;
+        mWorksheet = mWorkbook.sheet_by_index(PassMission_Sheet);
+
+        for (auto row : mWorksheet.rows(false)) {
+            if (idx == variableNameIdx) {
+                idx++;
+                continue;
+            }
+
+            if (!row.empty()) {
+                int index = row[(int)(PassMission_Field::index)].value<int>();
+                int type = row[(int)(PassMission_Field::type)].value<int>();
+                int missionCategory = row[(int)(PassMission_Field::mission_category)].value<int>();
+                int missionGroup = row[(int)(PassMission_Field::mission_group)].value<int>();
+                int missionStep = row[(int)(PassMission_Field::mission_step)].value<int>();
+                int required_count = row[(int)(PassMission_Field::required_count)].value<int>();
+                int reward_exp = row[(int)(PassMission_Field::reward_exp)].value<int>();
+                int reward_item = row[(int)(PassMission_Field::reward_item)].value<int>();
+                int reward_item_amount = row[(int)(PassMission_Field::reward_item_amount)].value<int>();
+
+                PassMissionInfo missionInfo = {
+                index, type, missionCategory, missionGroup, missionStep, required_count, reward_exp, reward_item, reward_item_amount
+                };
+
+                PassMissionIndexList[type][missionCategory][missionGroup][missionStep] = index;
+                PassMissionDataListByIndex[index] = missionInfo;
+            }
+
+            idx++;
+        }
+    }
+    catch (const xlnt::exception& e) {
+        std::cerr << "ReadPassList Excel File Load Fail: " << e.what() << std::endl;
+    }
+}
+
 void TableManager::Lock()
 {
     while (mLockFlag.test_and_set(std::memory_order_acquire)) {
@@ -1083,6 +1178,33 @@ std::unordered_map<INDEX, std::unordered_map<int, Event_List>>& TableManager::Ge
     }
 
     return EventRewardList;
+}
+
+std::unordered_map<int, PassList>& TableManager::GetPassList()
+{
+    while (mIsLoading.load() == true) {
+
+    }
+
+    return PassList;
+}
+
+std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, int>>>>& TableManager::GetPassMissionIndexList()
+{
+    while (mIsLoading.load() == true) {
+
+    }
+
+    return PassMissionIndexList;
+}
+
+std::unordered_map<int, PassMissionInfo>& TableManager::GetPassMissionDataListByIndex()
+{
+    while (mIsLoading.load() == true) {
+
+    }
+
+    return PassMissionDataListByIndex;
 }
 
 Trie& TableManager::GetSlangList()

@@ -197,6 +197,8 @@ if exist "$(ProjectDir)\Config" xcopy /Y /d /e /i "$(ProjectDir)\Config" "$(OutD
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DB\Query\Query.h" />
+    <ClInclude Include="Source\DB\Schema\DB_Achievement.h" />
+    <ClInclude Include="Source\DB\Schema\DB_UserMission.h" />
     <ClInclude Include="Source\DB\Schema\DB_UserAttendance.h" />
     <ClInclude Include="Source\DB\Schema\DB_UserCustomizing.h" />
     <ClInclude Include="Source\DB\Schema\DB_UserGameRecords.h" />
@@ -297,11 +299,14 @@ if exist "$(ProjectDir)\Config" xcopy /Y /d /e /i "$(ProjectDir)\Config" "$(OutD
     <ClInclude Include="Source\Object\Player.h" />
     <ClInclude Include="Source\DB\DB.h" />
     <ClInclude Include="Source\TableManager\TableManager.h" />
+    <ClInclude Include="Source\TableManager\Tables\Achievement.h" />
     <ClInclude Include="Source\TableManager\Tables\CharacterStat.h" />
     <ClInclude Include="Source\TableManager\Tables\Event.h" />
     <ClInclude Include="Source\TableManager\Tables\GameReward.h" />
     <ClInclude Include="Source\TableManager\Tables\Map.h" />
     <ClInclude Include="Source\TableManager\Tables\MatchMaking.h" />
+    <ClInclude Include="Source\TableManager\Tables\Mission.h" />
+    <ClInclude Include="Source\TableManager\Tables\Pass.h" />
     <ClInclude Include="Source\TableManager\Tables\RandomBox.h" />
     <ClInclude Include="Source\TableManager\Tables\GachaItem.h" />
     <ClInclude Include="Source\TableManager\Tables\ItemTable.h" />

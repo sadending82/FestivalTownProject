@@ -17,6 +17,8 @@ public:
 	virtual std::vector<sGameReward> CalculateGameReward(int point, bool isMvp, BattleResult result) override;
 	virtual void CalculateGameResult(int roomID, std::set<int>& winningTeams) override;
 
+	virtual void UpdateMissionbyGameRecord(class Player* player, bool isWin, struct sPlayerGameRecord& gameRecord) override;
+
 	virtual bool DeletePlayer(int playerID, int roomID) override;
 
 	// Bomb, Weapon Spawn Position

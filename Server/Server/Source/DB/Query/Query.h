@@ -55,6 +55,11 @@ const wchar_t* SelectUserAttendanceToday_Query = L"SELECT COUNT(*) FROM GameDB.d
 //SELECT is_rewarded FROM GameDB.dbo.UserAttendance WHERE user_UID = ? AND event_code = ? AND day_count = ?
 const wchar_t* SelectUserAttendanceIsRewarded_Query = L"SELECT is_rewarded FROM GameDB.dbo.UserAttendance WHERE user_UID = ? AND event_code = ? AND day_count = ?";
 
+const wchar_t* SelectUserMission_Query = L"DECLARE @DAILY_MISSION INT = 1 "
+										L"SELECT * FROM GameDB.dbo.UserMission WHERE user_UID = ? "
+										L"AND (mission_type <> @DAILY_MISSION "
+										L"OR (mission_type = @DAILY_MISSION AND assigned_date = CAST(GETDATE() AS DATE)));";
+
 //UPDATE GameDB.dbo.UserInfo SET ConnectionState = ? WHERE UID = ?
 const wchar_t* UpdateUserConnectionState_Query = L"UPDATE GameDB.dbo.UserInfo SET ConnectionState = ? WHERE UID = ?";
 
@@ -100,12 +105,24 @@ const wchar_t* UpsertUserCurrency_Query_Front = L"MERGE INTO GameDB.dbo.UserItem
 												L"USING (VALUES ";
 
 const wchar_t* UpsertUserCurrency_Query_Back = L") AS Source(owner_UID, itemCode, count) "
-												L"ON Target.owner_UID = Source.owner_UID AND (Target.itemCode = Source.itemCode OR Target.itemCode IS NULL)"
+												L"ON Target.owner_UID = Source.owner_UID AND (Target.itemCode = Source.itemCode OR Target.itemCode IS NULL) "
 												L"WHEN MATCHED THEN "
 												L"UPDATE SET Target.count = Target.count + Source.count "
 												L"WHEN NOT MATCHED BY TARGET THEN "
 												L"INSERT(owner_UID, itemCode, count, itemType) "
 												L"VALUES(Source.owner_UID, Source.itemCode, Source.count, 1);";
+
+const wchar_t* UpsertUserMission_Query_Front = L"MERGE INTO GameDB.dbo.UserMission AS Target "
+													L"USING (VALUES ";
+
+const wchar_t* UpsertUserMission_Query_Back = L") AS Source(user_UID, mission_code, mission_type, mission_group, mission_step, progress, required_count, assigned_date, is_rewarded) "
+												L"ON Target.user_UID = Source.user_UID AND Target.mission_code = Source.mission_code AND Target.assigned_date = Source.assigned_date "
+												L"WHEN MATCHED THEN "
+												L"UPDATE SET Target.progress = Source.progress "
+												L"WHEN NOT MATCHED BY TARGET THEN "
+												L"INSERT "
+												L"VALUES(Source.user_UID, Source.mission_code, Source.mission_type, Source.mission_group, Source.mission_step, Source.progress, Source.required_count, Source.assigned_date, Source.is_rewarded);";
+
 
 //UPDATE GameDB.dbo.UserAttendance SET is_rewarded = ? OUTPUT deleted.is_rewarded WHERE user_UID = ? AND event_code = ? AND day_count = ? 
 const wchar_t* UpdateUserAttendanceIsRewarded_Query = L"UPDATE GameDB.dbo.UserAttendance SET is_rewarded = ? OUTPUT deleted.is_rewarded WHERE user_UID = ? AND event_code = ? AND day_count = ? ";

@@ -15,6 +15,11 @@ public:
 
 				const LoginRequest* read = flatbuffers::GetRoot<LoginRequest>(data);
 
+				Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
+				if (player == nullptr) {
+					return;
+				}
+
 				DB* pDB = pServer->GetDB();
 				const char* id = read->account_id()->c_str();
 				const char* pw = read->account_password()->c_str();
@@ -30,6 +35,8 @@ public:
 				std::unordered_map<int, std::set<sDayAttendanceInfo>> attendanceInfoList;
 
 				pServer->GetLobbyManager()->CheckAndLoadUserAttendanceEvent(userInfo.UID, attendanceInfoList);
+
+				pServer->GetLobbyManager()->LoadMissionProgress(player);
 
 				bool isNewEvent = pServer->GetLobbyManager()->CheckIsNewEvent(userInfo.date);
 				pPacketSender->SendLoginResponse(key, result.first, userInfo, attendanceInfoList, isNewEvent);

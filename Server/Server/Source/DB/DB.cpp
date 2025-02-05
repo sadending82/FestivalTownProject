@@ -1003,6 +1003,66 @@ bool DB::SelectUserAttendanceIsRewarded(const int uid, const int eventCode, cons
 	return true;
 }
 
+std::vector<UserMission> DB::SelectUserMission(const int uid)
+{
+	if (uid == 0) {
+		return std::vector<UserMission>();
+	}
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	int isRewarded = 1;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGONEPARAM("hStmt Error %d : (SelectUserMission) \n", retcode); ErrorDisplay(hStmt);
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
+		return std::vector<UserMission>();
+	}
+
+	std::vector<UserMission> missionList;
+
+	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserMission_Query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		while (SQLFetch(hStmt) == SQL_SUCCESS) {
+			UserMission missionInfo;
+			char date[11] = { 0 };
+
+			SQLGetData(hStmt, 1, SQL_C_LONG, &missionInfo.user_UID, sizeof(int), NULL);
+			SQLGetData(hStmt, 2, SQL_C_LONG, &missionInfo.mission_code, sizeof(int), NULL);
+			SQLGetData(hStmt, 3, SQL_C_LONG, &missionInfo.mission_type, sizeof(int), NULL);
+			SQLGetData(hStmt, 4, SQL_C_LONG, &missionInfo.mission_group, sizeof(int), NULL);
+			SQLGetData(hStmt, 5, SQL_C_LONG, &missionInfo.mission_step, sizeof(int), NULL);
+			SQLGetData(hStmt, 6, SQL_C_LONG, &missionInfo.progress, sizeof(int), NULL);
+			SQLGetData(hStmt, 7, SQL_C_LONG, &missionInfo.required_count, sizeof(int), NULL);
+			SQLGetData(hStmt, 8, SQL_C_CHAR, date, sizeof(date), NULL);
+			SQLGetData(hStmt, 9, SQL_C_LONG, &missionInfo.is_rewarded, sizeof(int), NULL);
+
+			std::istringstream ssDate(date);
+			ssDate >> std::get_time(&missionInfo.assigned_date, "%Y-%m-%d");
+
+			missionList.push_back(missionInfo);
+		}
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
+		return missionList;
+	}
+
+	DEBUGMSGONEPARAM("Execute Query Error %d : (SelectUserMission)\n", retcode); ErrorDisplay(hStmt);
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
+	return std::vector<UserMission>();
+}
+
 ERROR_CODE DB::UpdateUserConnectionState(const int uid, const int state)
 {
 	if (uid == 0) {
@@ -1323,6 +1383,69 @@ ERROR_CODE DB::UpsertCharacterCustomizing(const int uid, sCharacterCustomizing& 
 
 	DEBUGMSGONEPARAM("Execute Query Error %d : (UpsertCharacterCustomizing)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
+	return ERROR_CODE::ER_DB_ERROR;
+}
+
+ERROR_CODE DB::UpsertUserMission(const int uid, std::vector<UserMission>& missionList)
+{
+	if (uid == 0) {
+		return ERROR_CODE::ER_DB_ERROR;
+	}
+
+	if (missionList.empty()) {
+		return ERROR_CODE::ER_DB_ERROR;
+	}
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGONEPARAM("hStmt Error %d : (UpsertUserMission) \n", retcode); ErrorDisplay(hStmt);
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
+		return ERROR_CODE::ER_DB_ERROR;
+	}
+
+	std::wstring query = UpsertUserMission_Query_Front;
+
+	for (int i = 0; i < missionList.size(); ++i) {
+		query += L"(?, ?, ?, ?, ?, ?, ?, CONVERT(date,GETDATE()), ?)";
+
+		if (i < missionList.size() - 1) {
+			query += L", ";
+		}
+	}
+
+	query += UpsertUserMission_Query_Back;
+
+	SQLPrepare(hStmt, (SQLWCHAR*)query.c_str(), SQL_NTS);
+
+	int col_count = 8;
+
+	for (int i = 0; i < missionList.size(); ++i) {
+		SQLBindParameter(hStmt, (i * col_count) + 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&missionList[i].user_UID), 0, NULL);
+		SQLBindParameter(hStmt, (i * col_count) + 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&missionList[i].mission_code), 0, NULL);
+		SQLBindParameter(hStmt, (i * col_count) + 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&missionList[i].mission_type), 0, NULL);
+		SQLBindParameter(hStmt, (i * col_count) + 4, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&missionList[i].mission_group), 0, NULL);
+		SQLBindParameter(hStmt, (i * col_count) + 5, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&missionList[i].mission_step), 0, NULL);
+		SQLBindParameter(hStmt, (i * col_count) + 6, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&missionList[i].progress), 0, NULL);
+		SQLBindParameter(hStmt, (i * col_count) + 7, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&missionList[i].required_count), 0, NULL);
+		SQLBindParameter(hStmt, (i * col_count) + 8, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&missionList[i].is_rewarded), 0, NULL);
+	}
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
+		ReturnConnection(connection);
+		return ERROR_CODE::ER_NONE;
+	}
+
+	DEBUGMSGONEPARAM("Execute Query Error %d : (UpsertUserMission)\n", retcode); ErrorDisplay(hStmt);
+	SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
 	ReturnConnection(connection);
 	return ERROR_CODE::ER_DB_ERROR;
 }

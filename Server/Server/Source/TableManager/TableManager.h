@@ -39,6 +39,8 @@ public:
 
 	void ReadSlangList();
 
+	void ReadPassList();
+
 	void Lock();
 	void UnLock();
 
@@ -70,6 +72,13 @@ public:
 	std::unordered_map<INDEX, Event_Main>& GetEventList();
 	// <Event_Index, <Day, AttendanceEventData>>
 	std::unordered_map<INDEX, std::unordered_map<int, Event_List>>& GetEventRewardList();
+
+	std::unordered_map<int, PassList>& GetPassList();
+
+	// <type, <category, <group, <step, mission_index>>>>
+	std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, int>>>>& GetPassMissionIndexList();
+
+	std::unordered_map<int, PassMissionInfo>& GetPassMissionDataListByIndex();
 
 	Trie& GetSlangList();
 
@@ -110,6 +119,13 @@ private:
 	std::unordered_map<INDEX, std::unordered_map<int, Event_List>> EventRewardList;
 
 	Trie SlangList;
+
+	std::unordered_map<int, PassList> PassList;
+
+	// <type, <category, <group, <step, missionInfo>>>>
+	std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, int>>>> PassMissionIndexList;
+	std::unordered_map<int, PassMissionInfo> PassMissionDataListByIndex;
+
 
 	std::atomic_flag mLockFlag = ATOMIC_FLAG_INIT;
 	std::atomic<bool> mIsLoading;

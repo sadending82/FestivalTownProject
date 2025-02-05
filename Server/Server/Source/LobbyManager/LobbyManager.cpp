@@ -176,3 +176,54 @@ bool LobbyManager::GiveGachaItemToUser(int uid, int payItem, int price, GachaIte
 	return true;
 }
 
+void LobbyManager::LoadMissionProgress(Player* player)
+{
+	int uid = player->GetUID();
+
+	UserMissionList& playerMissionList = player->GetMissionList();
+
+	// DB에서 미션 진행상황 불러옴
+	std::vector<UserMission> missionListFromDB = pDB->SelectUserMission(uid);
+
+	if (!missionListFromDB.empty()) {
+		for (UserMission& mission : missionListFromDB) {
+
+			PassMissionInfo missionInfo = pTableManager->GetPassMissionDataListByIndex()[mission.mission_code];
+
+			int type = missionInfo.type;
+			int category = missionInfo.mission_category;
+			int group = missionInfo.mission_group;
+			int step = missionInfo.mission_step;
+
+			playerMissionList.missionList[type][category][group][step] = mission;
+		}
+	}
+
+	// 진행이 되지 않은 1단계 미션 추가
+	int firstStep = 1;
+
+	std::unordered_map<int, PassMissionInfo>& passMissionDataList = pTableManager->GetPassMissionDataListByIndex();
+
+	for (auto& missionCategoryList : pTableManager->GetPassMissionIndexList()) {
+		int type = missionCategoryList.first;
+
+		for (auto& missionGroupList : missionCategoryList.second) {
+			int category = missionGroupList.first;
+
+			for (auto& missionStepList : missionGroupList.second) {
+				int group = missionStepList.first;
+
+				int firstMissionIndex = missionStepList.second[firstStep];
+
+				// <Group, <Step, missionInfo>>
+				std::unordered_map<int, std::unordered_map<int, UserMission>>& playerMissionGroupList = playerMissionList.missionList[type][category];
+
+				if (playerMissionGroupList.find(group) == playerMissionGroupList.end()) {
+					UserMission& playerMission = playerMissionGroupList[group][firstStep];
+					PassMissionInfo& newMission = passMissionDataList[firstMissionIndex];
+					playerMission.Init(uid, newMission.index, newMission.type, newMission.mission_group, newMission.mission_step, newMission.required_count);
+				}
+			}
+		}
+	}
+}

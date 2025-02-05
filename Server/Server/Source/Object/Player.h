@@ -9,14 +9,15 @@ class Player : public Session
 public:
 	Player() : mRoomID(INVALIDKEY)
 		, mInGameID(INVALIDKEY)
-	{}
+	{
+	}
 	~Player() {}
 
 	void				Init();
 	void				IngameInfoInit();
 
 	virtual void		Disconnect() override;
-	
+
 	virtual void		DoRecv() override;
 
 	virtual void		DoSend(void* packet, const int size) override;
@@ -27,25 +28,27 @@ public:
 	int					GetRoomID() { return mRoomID; }
 	int					GetInGameID() { return mInGameID; }
 	int					GetTeam() { return mTeam; }
-	bool				GetIsBot(){ return mIsBot; }
+	bool				GetIsBot() { return mIsBot; }
 	std::wstring		GetNickName() { return mUserInfo.NickName; }
-	Vector3f&			GetPosition() { return mPosition; }
-	Vector3f&			GetDirection() { return mDirection; }
+	Vector3f& GetPosition() { return mPosition; }
+	Vector3f& GetDirection() { return mDirection; }
 	ePlayerState		GetPlayerState() { return mPlayerState; }
-	std::shared_mutex&	GetPlayerStateLock() { return mPlayerStateLock; }
+	std::shared_mutex& GetPlayerStateLock() { return mPlayerStateLock; }
 	eCharacterType		GetCharacterType() { return mCharacterType; }
 	sCharacterCustomizing& GetCharacterCustomizing() { return mUserInfo.characterCustomizing; }
 	int					GetHP() { return mHP; }
 	int					GetStamina() { return mStamina; }
 	int					GetGroggyCount() { return mGroggyCount; }
-	class Bomb*			GetBomb() { return mBomb; }
-	class Weapon*		GetWeapon() { return mWeapon; }
-	std::mutex&			GetBombLock() { return mBombLock; }
-	std::shared_mutex&	GetWeaponLock() { return mWeaponLock; }
+	class Bomb* GetBomb() { return mBomb; }
+	class Weapon* GetWeapon() { return mWeapon; }
+	std::mutex& GetBombLock() { return mBombLock; }
+	std::shared_mutex& GetWeaponLock() { return mWeaponLock; }
 	bool				GetIsGrabbed() { return mIsGrabbed.load(); }
 	int					GetAttachedPlayerID() { return mAttachedPlayerID; }
-	CharacterStat&		GetCharacterStat() { return mCharacterStat; }
+	CharacterStat& GetCharacterStat() { return mCharacterStat; }
 	long long			GetLastGroggyTime() { return mLastGroggyTime.load(); }
+
+	UserMissionList&	GetMissionList() { return mMissionList; }
 
 	void				SetUID(int uid) { mUserInfo.UID = uid; }
 	void				SetAccountID(std::string accountID) { mUserInfo.AccountID = accountID; }
@@ -122,4 +125,8 @@ protected:
 	std::atomic<long long>	mLastGroggyTime = 0;
 
 	CharacterStat		mCharacterStat;
+
+	std::unordered_map<int, Achievement> mInProgressAchievements;
+
+	UserMissionList mMissionList;
 };

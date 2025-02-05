@@ -10,3 +10,6 @@
 #include "MatchMaking.h"
 #include "Event.h"
 #include "Map.h"
+#include "Achievement.h"
+#include "Pass.h"
+#include "Mission.h"

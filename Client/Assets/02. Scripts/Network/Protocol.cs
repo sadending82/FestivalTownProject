@@ -228,6 +228,18 @@ namespace NetworkProtocol
         FITH_Team_Battle_4 = 121,
         FITH_Team_Battle_6 = 122,
     };
+
+    public enum eMissionCategory
+    {
+        MC_ATTENDANCE = 1,
+        MC_GAME_PLAY = 2,
+        MC_GACHA = 3,
+        MC_GAME_WINNING = 4,
+        MC_INPUT_BOMB = 5,
+        MC_KILL = 6,
+        MC_GROGGY = 7,
+        MC_GET_ITEM = 8
+    };
 }
 
 namespace ClientProtocol
