@@ -33,7 +33,7 @@ x n x n x n x o x o x n x n x n
 n x n x n x o x o x o x n x n x
 x n x n x n x n x n x n x n x n
 n x n x n x n x n x n x n x n x
-x n x n x n x n x n x n x n x n 
+x n x n x n x n x n x n x n x n
 n x n x n x n x n x n n n x n x
 x n x n x n x n x n x n 1 1 n n 
 n x n x n x n x n x n x 1 b b n
