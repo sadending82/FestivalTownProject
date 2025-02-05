@@ -97,6 +97,14 @@ public class UI_HomeStart : UI_Scene
             CheckAttendanceEventData();
         }
 
+        Get<GameObject>((int)GameObjects.PassButton).BindEvent((ButtonEventData) =>
+        {
+            Managers.UI.CloseAllPopUpUI();
+            Managers.UI.CloseSceneUI();
+            var ui = Managers.UI.ShowSceneUI<UI_Pass>();
+            ui.Init();
+        });
+
         if (false == Managers.Cheat.IsEnable())
         {
             Get<GameObject>((int)GameObjects.AccountInitializeButton).SetActive(false);

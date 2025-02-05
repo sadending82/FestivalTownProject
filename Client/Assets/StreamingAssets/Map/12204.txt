@@ -1,0 +1,23 @@
+23 9
+0 -2.2 0 8 1
+1 44 0 8 3
+-1 0 0 0 0
+0 0 0 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 0 0 0
+0 0 0 0 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 0 0 0 0
+0 0 0 1 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 1 0 0 0
+0 0 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 0 0
+0 0 0 1 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 1 0 0 0
+0 0 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 0 0
+0 0 0 1 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 1 0 0 0
+0 0 0 0 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 0 0 0 0
+0 0 0 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 0 0 0
+MapStructure
+x x x x n n n n n n n n n n n n n n n x x x x 
+x x x x n n n n n n n n n n n n n n n x x x x
+n n n 0 n n n n n n n n n n n n n n n 1 n n n
+n a a 0 n n n n n n o o o n n n n n n 1 b b n
+n a a 0 n n n n n n o o o n n n n n n 1 b b n
+n a a 0 n n n n n n o o o n n n n n n 1 b b n
+n n n 0 n n n n n n n n n n n n n n n 1 b b n
+x x x x n n n n n n n n n n n n n n n x x x x
+x x x x n n n n n n n n n n n n n n n x x x x
