@@ -26,6 +26,8 @@ public class GameScene : BaseScene
         // 기존에 Init 단계에서 레디 패킷 보내주던 걸, 코루틴으로 해결하고 있습니다.
         // 이는 페이크 로딩을 넣기 위해서 입니다.
 
+        Input.imeCompositionMode = IMECompositionMode.Off;
+
     }
 
     private void Start()

@@ -21,6 +21,8 @@ public class HomeScene : BaseScene
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+
+        Input.imeCompositionMode = IMECompositionMode.Off;
     }
 
     public void Start()
