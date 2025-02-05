@@ -53,6 +53,9 @@ public class DataManager
     public Dictionary<int, MissionListEntity> MissionListDataDict = new();
     public Dictionary<int, MapThemeEntity> MapThemeDataDict = new();
     public Dictionary<int, MapDataEntity> MapDataDict = new();
+    public Dictionary<int, PassListEntity> PassListDataDict = new();
+    public Dictionary<int, PassMissionEntity> PassMissionDataDict = new();
+
 
     /// <summary>
     /// 플레이어 관련 데이터
@@ -313,6 +316,22 @@ public class DataManager
             {
                 MapDataDict.TryAdd(entity.Index, entity);
                 MapDataDict[entity.Index].ClassType = Define.ExcelDataClassType.MapData;
+            }
+        }
+
+        Pass passData = Managers.Resource.Load<Pass>($"Data/Pass");
+        if ( passData != null )
+        {
+            foreach(PassListEntity entity in passData.Pass_List)
+            {
+                PassListDataDict.TryAdd(entity.Index, entity);
+                PassListDataDict[entity.Index].ClassType = Define.ExcelDataClassType.PassList;
+            }
+
+            foreach(PassMissionEntity entity in passData.Pass_Mission)
+            {
+                PassMissionDataDict.TryAdd(entity.Index, entity);
+                PassMissionDataDict[entity.Index].ClassType = Define.ExcelDataClassType.PassMission;
             }
         }
     }

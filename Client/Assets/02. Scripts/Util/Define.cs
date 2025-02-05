@@ -82,6 +82,8 @@ public class Define
         MissionList,
         MapTheme,
         MapData,
+        PassList,
+        PassMission,
     }
 
     public enum CompatibilityColor
