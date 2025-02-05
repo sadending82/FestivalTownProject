@@ -32,7 +32,7 @@ namespace Network.PacketProcessor
                 gachaCutScene.GetComponent<UI_GachaCutScene>().SetAcquiredItemCode(Data.AcquiredItemCode);
                 gachaCutScene.GetComponent<UI_GachaCutScene>().SetAcquiredItemAmount(Data.AcquiredItemAmount);
 
-                Debug.Log($"Gacha ItemType : {Data.ResultItemAmount}, Amount : {Data.ResultItemAmount}, SpentType : {Data.SpentResourceCode}," +
+                Debug.Log($"Gacha ItemCode : {Data.ResultItemCode}, Amount : {Data.ResultItemAmount}, SpentType : {Data.SpentResourceCode}," +
                     $"SpentAmount : {Data.SpentResourceAmount}, GachaGrade : {resultItemData.Item_Grade}");
 
                 if (resultItemData == null) { return; }

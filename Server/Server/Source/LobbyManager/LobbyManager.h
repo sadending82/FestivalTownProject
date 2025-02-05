@@ -22,6 +22,8 @@ public:
 	bool GiveGachaItemToUser(int uid, int payItem, int price, struct GachaItem& gachaItem);
 
 	void LoadMissionProgress(class Player* player);
+
+	bool UpdateGachaMission(class Player* player, int itemCode);
 	
 private:
 

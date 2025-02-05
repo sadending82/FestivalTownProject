@@ -1008,13 +1008,14 @@ void TableManager::ReadPassList()
                 int missionCategory = row[(int)(PassMission_Field::mission_category)].value<int>();
                 int missionGroup = row[(int)(PassMission_Field::mission_group)].value<int>();
                 int missionStep = row[(int)(PassMission_Field::mission_step)].value<int>();
+                int required_item_grade = row[(int)(PassMission_Field::required_item_grade)].value<int>();
                 int required_count = row[(int)(PassMission_Field::required_count)].value<int>();
                 int reward_exp = row[(int)(PassMission_Field::reward_exp)].value<int>();
                 int reward_item = row[(int)(PassMission_Field::reward_item)].value<int>();
                 int reward_item_amount = row[(int)(PassMission_Field::reward_item_amount)].value<int>();
 
                 PassMissionInfo missionInfo = {
-                index, type, missionCategory, missionGroup, missionStep, required_count, reward_exp, reward_item, reward_item_amount
+                index, type, missionCategory, missionGroup, missionStep, required_item_grade, required_count, reward_exp, reward_item, reward_item_amount
                 };
 
                 PassMissionIndexList[type][missionCategory][missionGroup][missionStep] = index;

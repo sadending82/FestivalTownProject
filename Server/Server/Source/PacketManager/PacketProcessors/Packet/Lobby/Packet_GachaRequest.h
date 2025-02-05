@@ -73,6 +73,8 @@ public:
 					}
 				}
 
+				lobbyManager->UpdateGachaMission(player, resultItem.Reward_Item_Index);
+
 				pPacketSender->SendGachaResponsePacket(key, gacha_result, resultItem, acquiredItem, usedItemCode, usedItemAmount, usedItemRemaining);
 			}
 		}

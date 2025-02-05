@@ -24,6 +24,7 @@ enum class PassMission_Field {
 	mission_step,
 	mission_name,
 	mission_description,
+	required_item_grade,
 	required_count,
 	reward_exp,
 	reward_item,
@@ -55,6 +56,7 @@ struct PassMissionInfo {
 
     int mission_step;
 
+	int required_item_grade;
     int required_count;
 
     int reward_exp;

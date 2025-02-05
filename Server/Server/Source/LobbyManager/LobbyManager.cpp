@@ -227,3 +227,81 @@ void LobbyManager::LoadMissionProgress(Player* player)
 		}
 	}
 }
+
+bool LobbyManager::UpdateGachaMission(Player* player, int itemCode)
+{
+	std::vector<UserMission> updatedMissionList;
+
+	// 가챠 횟수 미션
+	{
+		// 일일 미션
+		for (auto& missionGroupList : player->GetMissionList().missionList[eMissionType::MT_DAILY][eMissionCategory::MC_GACHA]) {
+
+			std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
+
+			for (auto& missionInfo : missionInfos) {
+				missionInfo.second.progress++;
+
+				updatedMissionList.push_back(missionInfo.second);
+			}
+		}
+
+		// 패스 미션
+		for (auto& missionGroupList : player->GetMissionList().missionList[eMissionType::MT_PASS][eMissionCategory::MC_GACHA]) {
+
+			std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
+
+			for (auto& missionInfo : missionInfos) {
+				missionInfo.second.progress++;
+
+				updatedMissionList.push_back(missionInfo.second);
+			}
+		}
+	}
+
+
+	std::unordered_map<int, PassMissionInfo>& passMissionInfoList = pTableManager->GetPassMissionDataListByIndex();
+	// 아이템 획득 미션
+	int itemGrade = (int)pTableManager->GetItemInfos()[itemCode].Item_Grade;
+
+	{
+		// 일일 미션
+		for (auto& missionGroupList : player->GetMissionList().missionList[eMissionType::MT_DAILY][eMissionCategory::MC_GET_ITEM]) {
+
+			std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
+
+			for (auto& missionInfo : missionInfos) {
+
+				int required_item_grade = passMissionInfoList[missionInfo.second.mission_code].required_item_grade;
+
+				if (itemGrade == required_item_grade) {
+					missionInfo.second.progress++;
+
+					updatedMissionList.push_back(missionInfo.second);
+				}
+			}
+		}
+
+		// 패스 미션
+		for (auto& missionGroupList : player->GetMissionList().missionList[eMissionType::MT_PASS][eMissionCategory::MC_GET_ITEM]) {
+
+			std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
+
+			for (auto& missionInfo : missionInfos) {
+
+				int required_item_grade = passMissionInfoList[missionInfo.second.mission_code].required_item_grade;
+
+				if (itemGrade == required_item_grade) {
+					missionInfo.second.progress++;
+
+					updatedMissionList.push_back(missionInfo.second);
+				}
+			}
+		}
+	}
+
+
+	pDB->UpsertUserMission(player->GetUID(), updatedMissionList);
+
+	return true;
+}
