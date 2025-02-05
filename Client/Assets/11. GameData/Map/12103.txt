@@ -8,7 +8,7 @@
 5 5 5 5 4 3 2 1 0 0 0 0 0
 5 0 0 5 4 3 2 1 0 0 0 0 0
 5 0 0 5 4 3 2 1 0 0 0 0 0
-5 0 0 5 4 3 2 1 0 0 0 0 0
+5 5 5 5 4 3 2 1 0 0 0 0 0
 MapStructure
 n n n n n n n n n n n n n
 n a a 0 n n n n n n n n n
