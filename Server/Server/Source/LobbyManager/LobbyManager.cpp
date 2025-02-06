@@ -15,8 +15,10 @@ LobbyManager::~LobbyManager()
 
 }
 
-void LobbyManager::CheckAndLoadUserAttendanceEvent(int uid, std::unordered_map<int, std::set<sDayAttendanceInfo>>& attendanceInfoList)
+void LobbyManager::CheckAndLoadUserAttendanceEvent(Player* player, std::unordered_map<int, std::set<sDayAttendanceInfo>>& attendanceInfoList)
 {
+	int uid = player->GetUID();
+
 	std::time_t nowTime = std::time(nullptr);
 	std::tm tNowTime = {};
 
@@ -304,4 +306,57 @@ bool LobbyManager::UpdateGachaMission(Player* player, int itemCode)
 	pDB->UpsertUserMission(player->GetUID(), updatedMissionList);
 
 	return true;
+}
+
+bool LobbyManager::UpdateLoginMission(Player* player)
+{
+	time_t now = std::time(nullptr);
+	
+	std::tm today{};
+	localtime_s(&today, &now);
+
+	std::tm lastLoginDate = player->GetLastLoginTime();
+
+	if (today.tm_year != lastLoginDate.tm_year
+		|| today.tm_mon != lastLoginDate.tm_mon
+		|| today.tm_mday != lastLoginDate.tm_mday) {
+
+		std::vector<UserMission> updatedMissionList;
+
+		// 출석 미션
+		{
+			// 일일 미션
+			for (auto& missionGroupList : player->GetMissionList().missionList[eMissionType::MT_DAILY][eMissionCategory::MC_ATTENDANCE]) {
+
+				std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
+
+				for (auto& missionInfo : missionInfos) {
+					missionInfo.second.progress++;
+
+					updatedMissionList.push_back(missionInfo.second);
+				}
+			}
+
+			// 패스 미션
+			for (auto& missionGroupList : player->GetMissionList().missionList[eMissionType::MT_PASS][eMissionCategory::MC_ATTENDANCE]) {
+
+				std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
+
+				for (auto& missionInfo : missionInfos) {
+					missionInfo.second.progress++;
+
+					updatedMissionList.push_back(missionInfo.second);
+				}
+			}
+		}
+
+		if (!updatedMissionList.empty()) {
+			pDB->UpsertUserMission(player->GetUID(), updatedMissionList);
+			player->SetLastLoginTime(today);
+		}
+
+		return true;
+	}
+
+	return false;
 }

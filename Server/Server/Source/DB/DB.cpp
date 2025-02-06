@@ -468,7 +468,7 @@ std::pair<ERROR_CODE, UserInfo> DB::SelectUserInfoForLogin(const char* id)
 			std::istringstream ssDate(date);
 			ssDate >> std::get_time(&tDate, "%Y-%m-%d");
 
-			userInfo.date = tDate;
+			userInfo.LastLogin = tDate;
 			userInfo.State = t;
 
 			result = true;
@@ -534,9 +534,9 @@ std::pair<ERROR_CODE, UserInfo> DB::SelectUserInfo(const int uid)
 			SQLGetData(hStmt, (int)UserInfo_Field::State, SQL_C_LONG, &t, sizeof(t), &col9);
 		}
 
-		userInfo.date.tm_year = date.year;
-		userInfo.date.tm_mon = date.month;
-		userInfo.date.tm_mday = date.day;
+		userInfo.LastLogin.tm_year = date.year;
+		userInfo.LastLogin.tm_mon = date.month;
+		userInfo.LastLogin.tm_mday = date.day;
 		userInfo.State = t;
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);

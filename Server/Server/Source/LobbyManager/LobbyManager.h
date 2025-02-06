@@ -12,7 +12,7 @@ public:
 	LobbyManager(class Server* server);
 	~LobbyManager();
 
-	void CheckAndLoadUserAttendanceEvent(int uid, std::unordered_map<int, std::set<sDayAttendanceInfo>>& attendanceInfoList);
+	void CheckAndLoadUserAttendanceEvent(class Player* player, std::unordered_map<int, std::set<sDayAttendanceInfo>>& attendanceInfoList);
 
 	void CheckReadyToGamePlay(class Room* room, int roomID);
 
@@ -24,6 +24,8 @@ public:
 	void LoadMissionProgress(class Player* player);
 
 	bool UpdateGachaMission(class Player* player, int itemCode);
+
+	bool UpdateLoginMission(class Player* player);
 	
 private:
 

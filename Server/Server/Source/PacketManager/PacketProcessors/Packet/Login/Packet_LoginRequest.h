@@ -34,11 +34,14 @@ public:
 
 				std::unordered_map<int, std::set<sDayAttendanceInfo>> attendanceInfoList;
 
-				pServer->GetLobbyManager()->CheckAndLoadUserAttendanceEvent(userInfo.UID, attendanceInfoList);
+				pServer->GetLobbyManager()->CheckAndLoadUserAttendanceEvent(player, attendanceInfoList);
 
 				pServer->GetLobbyManager()->LoadMissionProgress(player);
 
-				bool isNewEvent = pServer->GetLobbyManager()->CheckIsNewEvent(userInfo.date);
+				bool isNewEvent = pServer->GetLobbyManager()->CheckIsNewEvent(userInfo.LastLogin);
+
+				pServer->GetLobbyManager()->UpdateLoginMission(player);
+
 				pPacketSender->SendLoginResponse(key, result.first, userInfo, attendanceInfoList, isNewEvent);
 
 				if (result.first == ERROR_CODE::ER_NONE) {

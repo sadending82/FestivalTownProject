@@ -24,7 +24,7 @@ struct UserInfo {
 	int UserLevel = 0;
 	int PassLevel = 0;
 	int Point = 0;
-	std::tm date;
+	std::tm LastLogin;
 	int AttendanceDay = 0;
 	int State;
 

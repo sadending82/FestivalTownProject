@@ -47,6 +47,7 @@ public:
 	int					GetAttachedPlayerID() { return mAttachedPlayerID; }
 	CharacterStat& GetCharacterStat() { return mCharacterStat; }
 	long long			GetLastGroggyTime() { return mLastGroggyTime.load(); }
+	std::tm				GetLastLoginTime() { return mUserInfo.LastLogin; }
 
 	UserMissionList&	GetMissionList() { return mMissionList; }
 
@@ -73,6 +74,7 @@ public:
 	void				SetAttachedPlayerID(int playerID) { mAttachedPlayerID = playerID; }
 	void				SetCharacterStat(CharacterStat& stat) { mCharacterStat = stat; }
 	void				SetLastGroggyTime(long long lastGroggyTime) { mLastGroggyTime.store(lastGroggyTime); }
+	void				SetLastLoginTime(std::tm time) { mUserInfo.LastLogin = time; }
 
 	void				SetUserInfoFromDB(UserInfo& userInfo) { mUserInfo = userInfo; }
 	// cas

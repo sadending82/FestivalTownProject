@@ -1,31 +1,41 @@
-13 13
-0 2 0 26 2
-1 26 0 2 0
+16 18
+0 2 0 28 2
+1 28 0 2 0
 -1 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 MapStructure
-a a n x x x x x x x x x x
-a a 0 x x x x x x x x x x
-n 0 0 n n x n x n x n x x
-x x n n x n x n x n x x x
-x x n x n x n x n x n x x
-x x x n x o x o x n x x x
-x x n x n x o x n x n x x
-x x x n x o x o x n x x x
-x x n x n x n x n x n x x
-x x x n x n x n x n n x x
-x x n x n x n x n n 1 1 n
-x x x x x x x x x x 1 b b
-x x x x x x x x x x n b b 
+n n n n x n x n x n x n x n x n
+n a a n n x n x n x n x n x n x
+n a a 0 x n x n x n x n x n x n 
+n n 0 0 n x n x n x n x n x n x
+x n x n n n x n x n x n x n x n
+n x n x n x n x n x n x n x n x
+x n x n x n x n x n x n x n x n
+n x n x n x o x o x o x n x n x
+x n x n x n x o x o x n x n x n
+n x n x n x o x o x o x n x n x
+x n x n x n x n x n x n x n x n
+n x n x n x n x n x n x n x n x
+x n x n x n x n x n x n x n x n
+n x n x n x n x n x n n n x n x
+x n x n x n x n x n x n 1 1 n n 
+n x n x n x n x n x n x 1 b b n
+x n x n x n x n x n x n n b b n
+n x n x n x n x n x n x n n n n 
