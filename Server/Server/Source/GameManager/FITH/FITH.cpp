@@ -283,6 +283,8 @@ void FITH::CalculateGameResult(int roomID, std::set<int>& winningTeams)
         int team = pair.second.team;
         BattleResult result = (winningTeams.find(team) != winningTeams.end()) ? winFlag : BattleResult::BR_Lose;
 
+        pair.second.battleResult = result;
+
         if (result == BattleResult::BR_Win) {
             userGameRecord.Victory_Count.store(1);
         }
@@ -342,13 +344,13 @@ void FITH::CalculateGameResult(int roomID, std::set<int>& winningTeams)
         }
         pDB->UpsertUserCurrency(uid, rewardList);
 
-        UpdateMissionbyGameRecord(player, true, record);
+        UpdateMissionbyGameRecord(player, record);
     }
 
     pPacketSender->SendGameResultPacket(roomID, winningTeams);
 }
 
-void FITH::UpdateMissionbyGameRecord(Player* player, bool isWin, sPlayerGameRecord& gameRecord)
+void FITH::UpdateMissionbyGameRecord(Player* player, sPlayerGameRecord& gameRecord)
 {
     std::vector<UserMission> updatedMissionList;
 
@@ -408,8 +410,33 @@ void FITH::UpdateMissionbyGameRecord(Player* player, bool isWin, sPlayerGameReco
         }
     }
 
+    // 그로기 미션
+    if (groggyCount != 0) {
+        // 일일 미션
+        for (auto& missionGroupList : player->GetMissionList().missionList[eMissionType::MT_DAILY][eMissionCategory::MC_GROGGY]) {
+
+            std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
+
+            for (auto& missionInfo : missionInfos) {
+                missionInfo.second.progress += groggyCount;
+                updatedMissionList.push_back(missionInfo.second);
+            }
+        }
+
+        // 패스 미션
+        for (auto& missionGroupList : player->GetMissionList().missionList[eMissionType::MT_PASS][eMissionCategory::MC_GROGGY]) {
+
+            std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
+
+            for (auto& missionInfo : missionInfos) {
+                missionInfo.second.progress += groggyCount;
+                updatedMissionList.push_back(missionInfo.second);
+            }
+        }
+    }
+
     // 승리 미션
-    if (isWin == true) {
+    if (gameRecord.battleResult == BattleResult::BR_Win) {
         // 일일 미션
         for (auto& missionGroupList : player->GetMissionList().missionList[eMissionType::MT_DAILY][eMissionCategory::MC_GAME_WINNING]) {
 
@@ -780,7 +807,7 @@ bool FITH::PlayerDamagedFromOther(int roomID, Room* room, int attackerID, Player
         // 타격 후 스테미너가 0미만이면 그로기로
         if (currStamina < 0) {
             if (target->ChangeToGroggyState(pServer)) {
-                targetGameRecord.gameRecord.Groggy_Count.fetch_add(1);
+                attackerGameRecord.gameRecord.Groggy_Count.fetch_add(1);
                 long long groggyTime = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
                 target->SetLastGroggyTime(groggyTime);
                 PushEventGroggyRecovery(pServer->GetTimer(), targetID, roomID, groggyTime, room->GetRoomCode(), room->GetGameModeData().Ch_Groggy);
@@ -810,7 +837,6 @@ bool FITH::PlayerDamagedFromBomb(int roomID, Room* room, int targetID, Player* t
     // 타겟의 기력이 없으면 그로기 상태로
     if (target->GetStamina() <= 0) {
         if (target->ChangeToGroggyState(pServer)) {
-            targetGameRecord.gameRecord.Groggy_Count.fetch_add(1);
             long long groggyTime = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
             target->SetLastGroggyTime(groggyTime);
             PushEventGroggyRecovery(pServer->GetTimer(), targetID, roomID, groggyTime, room->GetRoomCode(), room->GetGameModeData().Ch_Groggy);

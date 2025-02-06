@@ -19,7 +19,7 @@ public:
 	virtual int CalculatePoint(sPlayerGameRecord& record, BattleResult result) { return 0; }
 	virtual std::vector<sGameReward> CalculateGameReward(int point, bool isMvp, BattleResult result) { return std::vector<sGameReward>(); }
 	virtual void CalculateGameResult(int roomID, std::set<int>& winningTeams) {}
-	virtual void UpdateMissionbyGameRecord(class Player* player, bool isWin, struct sPlayerGameRecord& gameRecord) {}
+	virtual void UpdateMissionbyGameRecord(class Player* player, struct sPlayerGameRecord& gameRecord) {}
 
 	virtual bool DeletePlayer(int playerID, int roomID) { return false; }
 

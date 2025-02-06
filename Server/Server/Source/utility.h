@@ -104,17 +104,19 @@ struct sGameReward {
 struct sPlayerGameRecord {
 	int team;
 	int is_mvp;
+	BattleResult battleResult;
 
 	std::vector<sGameReward> rewards;
 
 	UserGameRecords gameRecord;
 
-	sPlayerGameRecord() : team(0), is_mvp(false) {};
+	sPlayerGameRecord() : team(0), is_mvp(false), battleResult(BattleResult::BR_Draw){};
 
 	void Init() {
 		team = 0;
 		rewards.clear();
 		is_mvp = false;
+		battleResult = BattleResult::BR_Draw;
 		gameRecord.Init();
 	}
 };
