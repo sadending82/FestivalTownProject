@@ -102,7 +102,6 @@ public class UI_HomeStart : UI_Scene
             Managers.UI.CloseAllPopUpUI();
             Managers.UI.CloseSceneUI();
             var ui = Managers.UI.ShowSceneUI<UI_Pass>();
-            ui.Init();
         });
 
         if (false == Managers.Cheat.IsEnable())

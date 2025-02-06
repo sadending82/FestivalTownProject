@@ -117,6 +117,12 @@ public class Define
         Unique = 3,
     }
 
+    public enum StartIdx
+    {
+        PassBasicListStartIdx = 60101,
+        PassPlusListStartIdx = 60201,
+    }
+
     public struct PlayerData
     {
         public int id;
