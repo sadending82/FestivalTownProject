@@ -39,13 +39,17 @@ public class UI_Pass : UI_Scene
 
         Get<GameObject>((int)GameObjects.PassPanel).GetComponent<UI_PassPanel>().Init();
 
-
-        for (int i = 0; Managers.Data.PassListDataDict.ContainsKey((int)Define.StartIdx.PassPlusListStartIdx + i); ++i)
+        foreach (var passListData in Managers.Data.PassListDataDict)
         {
-            var basicData = Managers.Data.PassListDataDict[(int)Define.StartIdx.PassBasicListStartIdx + i];
-            var plusData = Managers.Data.PassListDataDict[(int)Define.StartIdx.PassPlusListStartIdx + i];
+            for (int i = 1; Managers.Data.PassLevelDataDict.ContainsKey(passListData.Value.Index * 100 + i); ++i)
+            {
+                int basicStartIdx = passListData.Value.Index * 100 + i;
+                int plusStartIdx = passListData.Value.Index * 100 + i + 100;
+                var basicData = Managers.Data.PassLevelDataDict[basicStartIdx];
+                var plusData = Managers.Data.PassLevelDataDict[plusStartIdx];
 
-            AddItem(basicData.Reward_Item_Index, plusData.Reward_Item_Index, basicData.Index, plusData.Index, basicData.Level);
+                AddItem(basicData.Reward_Item_Index, plusData.Reward_Item_Index, basicData.Index, plusData.Index, basicData.Level);
+            }
         }
 
         isInitialized = true;

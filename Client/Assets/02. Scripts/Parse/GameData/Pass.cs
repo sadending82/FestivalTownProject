@@ -9,6 +9,7 @@ public class Pass : ScriptableObject
 {
 	//public List<EntityType> Pass_Info; // Replace 'EntityType' to an actual type that is serializable.
 	public List<PassListEntity> Pass_List; // Replace 'EntityType' to an actual type that is serializable.
-	public List<PassMissionEntity> Pass_Mission; // Replace 'EntityType' to an actual type that is serializable.
+    public List<PassLevelEntity> Pass_Level;
+    public List<PassMissionEntity> Pass_Mission; // Replace 'EntityType' to an actual type that is serializable.
 
 }

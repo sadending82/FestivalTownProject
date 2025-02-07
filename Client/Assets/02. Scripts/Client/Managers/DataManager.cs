@@ -55,6 +55,7 @@ public class DataManager
     public Dictionary<int, MapDataEntity> MapDataDict = new();
     public Dictionary<int, PassListEntity> PassListDataDict = new();
     public Dictionary<int, PassMissionEntity> PassMissionDataDict = new();
+    public Dictionary<int, PassLevelEntity> PassLevelDataDict = new();
 
 
     /// <summary>
@@ -326,6 +327,12 @@ public class DataManager
             {
                 PassListDataDict.TryAdd(entity.Index, entity);
                 PassListDataDict[entity.Index].ClassType = Define.ExcelDataClassType.PassList;
+            }
+
+            foreach(PassLevelEntity entity in passData.Pass_Level)
+            {
+                PassLevelDataDict.TryAdd(entity.Index, entity);
+                PassLevelDataDict[entity.Index].ClassType = Define.ExcelDataClassType.PassLevel;
             }
 
             foreach(PassMissionEntity entity in passData.Pass_Mission)

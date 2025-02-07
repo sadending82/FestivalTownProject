@@ -268,13 +268,20 @@ namespace ExcelDataStructure
 
     public class PassListEntity : GameDataEntity
     {
+        public int Open_Date;
+        public int Close_Date;
+    }
+
+    [System.Serializable]
+
+    public class PassLevelEntity : GameDataEntity
+    {
+        public int Pass;
         public int Level;
         public int Exp_Required;
         public int Pass_Type;
         public int Reward_Item_Index;
         public int Reward_Item_Amount;
-        public int Open_Date;
-        public int Close_Date;
     }
 
     [System.Serializable]
