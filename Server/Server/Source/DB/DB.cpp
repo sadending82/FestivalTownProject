@@ -367,6 +367,11 @@ ERROR_CODE DB::InsertUserEventReward(const int uid, const int Eventcode)
 	return ERROR_CODE::ER_DB_ERROR;
 }
 
+ERROR_CODE DB::InsertUserPassReward(const int uid, const PassLevel& passLevelInfo)
+{
+	return ERROR_CODE();
+}
+
 int DB::SelectAccountCount(const char* id)
 {
 	DB_Connection connection = GetConnection();

@@ -18,6 +18,8 @@ const wchar_t* InsertUserAttendance_Query = L"INSERT INTO GameDB.dbo.UserAttenda
 //INSERT INTO GameDB.dbo.UserEventReward (user_UID, event_code, attendance_date, day_count) VALUES(?, ?, CAST(GETDATE() AS DATE), ?)
 const wchar_t* InsertUserEventReward_Query = L"INSERT INTO GameDB.dbo.UserEventReward (userUID, eventCode) VALUES(?, ?)";
 
+const wchar_t* InsertUserPassReward_Query = L"INSERT INTO GameDB.dbo.UserPassReward (user_UID, pass_code, pass_type, level) VALUES (?, ?, ?, ?) ";
+
 const wchar_t* SelectAccountCount_Query = L"SELECT COUNT(ID) FROM AccountDB.dbo.Account WHERE ID = ?";
 
 // UPDATE GameDB.dbo.UserInfo SET ConnectionState = ? OUTPUT deleted.*, DATALENGTH(deleted.CharacterCustomizing) WHERE AccountID = ?
@@ -59,6 +61,11 @@ const wchar_t* SelectUserMission_Query = L"DECLARE @DAILY_MISSION INT = 1 "
 										L"SELECT * FROM GameDB.dbo.UserMission WHERE user_UID = ? "
 										L"AND (mission_type <> @DAILY_MISSION "
 										L"OR (mission_type = @DAILY_MISSION AND assigned_date = CAST(GETDATE() AS DATE)));";
+
+//SELECT * FROM GameDB.dbo.UserPass WHERE user_UID = ? AND pass_code = ?
+const wchar_t* SelectUserPass_Query = L"SELECT * FROM GameDB.dbo.UserPass WHERE user_UID = ? AND pass_code = ?";
+
+const wchar_t* SelectUserPassReward_Query = L"SELECT * FROM GameDB.dbo.UserPassReward WHERE user_UID = ? AND pass_code = ?";
 
 //UPDATE GameDB.dbo.UserInfo SET ConnectionState = ? WHERE UID = ?
 const wchar_t* UpdateUserConnectionState_Query = L"UPDATE GameDB.dbo.UserInfo SET ConnectionState = ? WHERE UID = ?";
@@ -138,6 +145,18 @@ const wchar_t* UpdateUserEventReward_IsRewarded_Query
 	L"ON Target.userUID = Source.userUID AND Target.eventCode = Source.eventCode "
 	L"WHEN MATCHED AND Target.isRewarded = 0 THEN"
 	L"UPDATE SET isRewarded = 1, rewardedDate = CAST(GETDATE() AS DATE)";
+
+const wchar_t* UpsertUserPass_Query
+= L"MERGE INTO GameDB.dbo.UserPass AS Target "
+L"USING (VALUES (?, ?, ?, ?, ?)) AS Source(user_UID, pass_code, pass_type, pass_level, pass_exp) "
+L"ON Target.user_UID = Source.user_UID AND Target.pass_code = Source.pass_code "
+L"WHEN MATCHED THEN "
+L"UPDATE SET Target.pass_exp = Source.pass_exp AND Target.pass_level = Source.pass_level "
+L"WHEN NOT MATCHED THEN "
+L"INSERT VALUES(Source.user_UID, Source.pass_code, Source.pass_type, Source.pass_level, Source.pass_exp)";
+
+const wchar_t* UpdateUserPassReward_isRewarded_Query
+= L"UPDATE GameDB.dbo.UserItem SET is_rewarded = ? ";
 														
 
 //DELETE FROM AccountDB.dbo.Account WHERE ID = ?

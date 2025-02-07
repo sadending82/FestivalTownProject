@@ -49,6 +49,7 @@ public:
     ERROR_CODE InsertUserItem(const int owner_uid, const int itemCode, const int itemCount, const int itemType);
     ERROR_CODE InsertUserAttendance(const int uid, const int EventIndex, const int day_count);
     ERROR_CODE InsertUserEventReward(const int uid, const int Eventcode);
+    ERROR_CODE InsertUserPassReward(const int uid, const PassLevel& passLevelInfo);
 
     // SELECT
     int SelectAccountCount(const char* id);
@@ -66,22 +67,24 @@ public:
     bool SelectUserAttendanceIsRewarded(const int uid, const int eventCode, const int dayCount);
     std::vector<struct UserMission> SelectUserMission(const int uid);
 
+    UserPass SelectUserPass(const int uid, const int passCode);
+    UserPassReward SelectUserPassReward(const int uid, const int passCode);
+
     // UPDATE
     ERROR_CODE UpdateUserConnectionState(const int uid, const int state);
     ERROR_CODE UpdateUserPoint(const int uid, const int valueOfChange);
     ERROR_CODE UpdateBattleRecords(const int uid, const UserGameRecords& gameRecords);
     ERROR_CODE UpdateUserItemCount(const int uid, const int item_index, const int valueOfChange);
-  
-
     bool       UpdateUserAttendanceIsRewarded(const int uid, const int eventCode, const int dayCount, const int updateValue);
-
     ERROR_CODE UpdateUserEventReward_IsRewarded(const int uid, const int eventCode);
+    ERROR_CODE UpdateUserPassReward_isRewarded(const int uid, const int passCode, const int level);
 
     // UPSERT
     ERROR_CODE UpsertUserItemCount(const int uid, const int item_index, const int valueOfChange);
     ERROR_CODE UpsertUserCurrency(const int uid, std::vector<UserItem> CurrencyList);
     ERROR_CODE UpsertCharacterCustomizing(const int uid, struct sCharacterCustomizing& characterCustomizing);
     ERROR_CODE UpsertUserMission(const int uid, std::vector<struct UserMission>& missionList);
+    ERROR_CODE UpsertUserPass(const int uid, const int passCode);
 
     // DELETE
     ERROR_CODE DeleteAcccount(const char* id);

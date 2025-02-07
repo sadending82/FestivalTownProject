@@ -950,6 +950,7 @@ void TableManager::ReadPassList()
     try {
 
         mWorkbook.load("GameData/Pass.xlsx");
+
         int idx = 0;
         mWorksheet = mWorkbook.sheet_by_index(PassList_Sheet);
 
@@ -960,33 +961,54 @@ void TableManager::ReadPassList()
             }
 
             if (!row.empty()) {
-
-                // юс╫ц
-                int PassIndex = 0;
-                //
-
-                int level = row[(int)(PassLevel_Field::level)].value<int>();
-                int passType = row[(int)(PassLevel_Field::Pass_Type)].value<int>();
-
-                std::time_t openTime = static_cast<std::time_t>((row[(int)(PassLevel_Field::Open_Date)].value<double>() - 25569) * 86400);
-                std::time_t closeTime = static_cast<std::time_t>((row[(int)(PassLevel_Field::Close_Date)].value<double>() - 25569) * 86400);
+                int index = row[(int)(PassList_Field::index)].value<int>();
+                std::time_t openTime = static_cast<std::time_t>((row[(int)(PassList_Field::open_date)].value<double>() - 25569) * 86400);
+                std::time_t closeTime = static_cast<std::time_t>((row[(int)(PassList_Field::close_date)].value<double>() - 25569) * 86400);
 
                 std::tm openDate = {}, closeDate = {};
 
                 localtime_s(&openDate, &openTime);
                 localtime_s(&closeDate, &closeTime);
 
+                PassInfo passInfo;
+
+                passInfo.index = index;
+                passInfo.open_date = openDate;
+                passInfo.close_date = closeDate;
+
+                PassList[index] = passInfo;
+            }
+
+            idx++;
+        }
+
+        idx = 0;
+        mWorksheet = mWorkbook.sheet_by_index(PassLevel_Sheet);
+
+        for (auto row : mWorksheet.rows(false)) {
+            if (idx == variableNameIdx) {
+                idx++;
+                continue;
+            }
+
+            if (!row.empty()) {
+
+                int index = row[(int)(PassLevel_Field::index)].value<int>();
+                int pass = row[(int)(PassLevel_Field::pass)].value<int>();
+                int level = row[(int)(PassLevel_Field::level)].value<int>();
+                int passType = row[(int)(PassLevel_Field::Pass_Type)].value<int>();
+
                 PassLevel levelInfo;
 
+                levelInfo.index = index;
+                levelInfo.pass = pass;
                 levelInfo.level = level;
                 levelInfo.Exp_Required = row[(int)(PassLevel_Field::Exp_Required)].value<int>();
                 levelInfo.Pass_Type = passType;
                 levelInfo.Reward_Item_Index = row[(int)(PassLevel_Field::Reward_Item_Index)].value<int>();
                 levelInfo.Reward_Item_Amount = row[(int)(PassLevel_Field::Reward_Item_Amount)].value<int>();
-                levelInfo.Open_Date = openDate;
-                levelInfo.Close_Date = closeDate;
 
-                PassList[PassIndex].passLevelList[level][passType] = levelInfo;
+                PassList[pass].passLevelList[level][passType] = levelInfo;
             }
 
             idx++;
@@ -1181,7 +1203,7 @@ std::unordered_map<INDEX, std::unordered_map<int, Event_List>>& TableManager::Ge
     return EventRewardList;
 }
 
-std::unordered_map<int, PassList>& TableManager::GetPassList()
+std::unordered_map<int, PassInfo>& TableManager::GetPassList()
 {
     while (mIsLoading.load() == true) {
 

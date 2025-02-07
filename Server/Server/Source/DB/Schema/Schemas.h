@@ -8,3 +8,5 @@
 #include "DB_UserCustomizing.h"
 #include "DB_Achievement.h"
 #include "DB_UserMission.h"
+#include "DB_UserPass.h"
+#include "DB_UserPassReward.h"

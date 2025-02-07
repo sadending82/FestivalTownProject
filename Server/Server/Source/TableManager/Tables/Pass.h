@@ -4,16 +4,24 @@
 #pragma pack (push, 1)
 
 #define PassList_Sheet 1
-#define PassMission_Sheet 2
+#define PassLevel_Sheet 2
+#define PassMission_Sheet 3
+
+enum class PassList_Field {
+	index = 0,
+	name,
+	open_date,
+	close_date,
+};
 
 enum class PassLevel_Field {
-	level = 2,
-	Exp_Required = 3,
-	Pass_Type = 4,
-	Reward_Item_Index = 5,
-	Reward_Item_Amount = 6,
-	Open_Date = 7,
-	Close_Date = 8
+	index = 0,
+	pass,
+	level,
+	Exp_Required,
+	Pass_Type,
+	Reward_Item_Index,
+	Reward_Item_Amount
 };
 
 enum class PassMission_Field {
@@ -33,16 +41,20 @@ enum class PassMission_Field {
 };
 
 struct PassLevel {
+	int index = 0;
+	int pass = 0;
 	int level = 0;
 	int Exp_Required = 0;
 	int Pass_Type = 0;
 	int Reward_Item_Index = 0;
 	int Reward_Item_Amount = 0;
-	std::tm Open_Date;
-	std::tm Close_Date;
 };
 
-struct PassList {
+struct PassInfo {
+	int index;
+	std::tm open_date;
+	std::tm close_date;
+
 	// <level, <type, info>>
 	std::unordered_map<int, std::unordered_map<int, PassLevel>> passLevelList;
 };

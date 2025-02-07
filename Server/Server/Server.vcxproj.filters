@@ -154,6 +154,8 @@
     <ClInclude Include="Source\DB\Schema\DB_Achievement.h" />
     <ClInclude Include="Source\TableManager\Tables\Pass.h" />
     <ClInclude Include="Source\TableManager\Tables\Mission.h" />
+    <ClInclude Include="Source\DB\Schema\DB_UserPass.h" />
+    <ClInclude Include="Source\DB\Schema\DB_UserPassReward.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

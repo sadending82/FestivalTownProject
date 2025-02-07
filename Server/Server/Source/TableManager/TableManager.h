@@ -73,7 +73,7 @@ public:
 	// <Event_Index, <Day, AttendanceEventData>>
 	std::unordered_map<INDEX, std::unordered_map<int, Event_List>>& GetEventRewardList();
 
-	std::unordered_map<int, PassList>& GetPassList();
+	std::unordered_map<int, PassInfo>& GetPassList();
 
 	// <type, <category, <group, <step, mission_index>>>>
 	std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, int>>>>& GetPassMissionIndexList();
@@ -120,7 +120,7 @@ private:
 
 	Trie SlangList;
 
-	std::unordered_map<int, PassList> PassList;
+	std::unordered_map<int, PassInfo> PassList;
 
 	// <type, <category, <group, <step, missionInfo>>>>
 	std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, int>>>> PassMissionIndexList;
