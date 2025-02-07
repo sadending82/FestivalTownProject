@@ -12,6 +12,7 @@ public class UI_Pass : UI_Scene
         TitleText,
         BuyPassButton,
         PassPanel,
+        MissionButton,
     }
 
     bool isInitialized = false;
@@ -36,6 +37,11 @@ public class UI_Pass : UI_Scene
             ui.SetCustomizing();
             popUpUi.Init();
         }, Define.UIEvent.Click, true, true);
+
+        Get<GameObject>((int)GameObjects.MissionButton).BindEvent((PointerEventData) =>
+        {
+            Managers.UI.ShowPopUpUI<UI_Mission>();
+        });
 
         Get<GameObject>((int)GameObjects.PassPanel).GetComponent<UI_PassPanel>().Init();
 
