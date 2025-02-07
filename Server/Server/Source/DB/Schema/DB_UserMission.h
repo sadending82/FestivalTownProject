@@ -1,5 +1,6 @@
 #pragma once
 #include <ctime>
+#include "../../TableManager/Tables/Pass.h"
 #pragma pack (push, 1)
 
 constexpr int UserMission_Col_Count = 8;
@@ -23,6 +24,17 @@ struct UserMission{
 		mission_step = step;
 		progress = 0;
 		required_count = requiredCount;
+		is_rewarded = 0;
+	}
+
+	void Init(const int uid, const PassMissionInfo& missionInfo) {
+		user_UID = uid;
+		mission_code = missionInfo.index;
+		mission_type = missionInfo.type;
+		mission_group = missionInfo.mission_group;
+		mission_step = missionInfo.mission_step;
+		progress = 0;
+		required_count = missionInfo.required_count;
 		is_rewarded = 0;
 	}
 };

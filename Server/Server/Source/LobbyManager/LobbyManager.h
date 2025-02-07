@@ -26,6 +26,8 @@ public:
 	bool UpdateGachaMission(class Player* player, int itemCode);
 
 	bool UpdateLoginMission(class Player* player);
+
+	bool CompleteMission(class Player* player, int missionCode);
 	
 private:
 

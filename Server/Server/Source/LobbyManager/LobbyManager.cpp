@@ -360,3 +360,41 @@ bool LobbyManager::UpdateLoginMission(Player* player)
 
 	return false;
 }
+
+bool LobbyManager::CompleteMission(Player* player, int missionCode)
+{
+	PassMissionInfo& missionInfo = pTableManager->GetPassMissionDataListByIndex()[missionCode];
+	std::vector<UserMission> updateMissionList;
+
+	int uid = player->GetUID();
+	int nextStep = missionInfo.mission_step + 1;
+
+	auto& missionIndexList = pTableManager->GetPassMissionIndexList()[missionInfo.type][missionInfo.mission_category][missionInfo.mission_group];
+	auto& playerMissionList = player->GetMissionList().missionList[missionInfo.type][missionInfo.mission_category][missionInfo.mission_group];
+
+	UserMission& currMission = playerMissionList[missionInfo.mission_step];
+
+	currMission.is_rewarded = true;
+
+	updateMissionList.push_back(currMission);
+
+	// 패스 보상 지급 기능 추가 필요
+
+	// 다음 단계 미션 갱신
+	auto nextMissioniter = missionIndexList.find(nextStep);
+
+	if (nextMissioniter != missionIndexList.end()) {
+		int nextMissionCode = nextMissioniter->second;
+
+		UserMission newMission;
+		newMission.Init(player->GetUID(), pTableManager->GetPassMissionDataListByIndex()[nextMissionCode]);
+
+		playerMissionList.insert({nextStep, newMission });
+
+		updateMissionList.push_back(playerMissionList[nextStep]);
+	}
+
+	pDB->UpsertUserMission(uid, updateMissionList);
+
+	return true;
+}
