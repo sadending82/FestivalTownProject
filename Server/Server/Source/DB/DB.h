@@ -68,7 +68,7 @@ public:
     std::vector<struct UserMission> SelectUserMission(const int uid);
 
     UserPass SelectUserPass(const int uid, const int passCode);
-    UserPassReward SelectUserPassReward(const int uid, const int passCode);
+    std::unordered_map<int, UserPassReward> SelectUserPassReward(const int uid, const int passCode);
 
     // UPDATE
     ERROR_CODE UpdateUserConnectionState(const int uid, const int state);
@@ -84,7 +84,7 @@ public:
     ERROR_CODE UpsertUserCurrency(const int uid, std::vector<UserItem> CurrencyList);
     ERROR_CODE UpsertCharacterCustomizing(const int uid, struct sCharacterCustomizing& characterCustomizing);
     ERROR_CODE UpsertUserMission(const int uid, std::vector<struct UserMission>& missionList);
-    ERROR_CODE UpsertUserPass(const int uid, const int passCode);
+    ERROR_CODE UpsertUserPass(const int uid, UserPass& passInfo);
 
     // DELETE
     ERROR_CODE DeleteAcccount(const char* id);

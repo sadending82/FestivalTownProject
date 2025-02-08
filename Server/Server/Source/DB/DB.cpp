@@ -369,7 +369,44 @@ ERROR_CODE DB::InsertUserEventReward(const int uid, const int Eventcode)
 
 ERROR_CODE DB::InsertUserPassReward(const int uid, const PassLevel& passLevelInfo)
 {
-	return ERROR_CODE();
+	if (uid == 0) {
+		return ERROR_CODE::ER_DB_ERROR;
+	}
+
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGONEPARAM("hStmt Error %d : (InsertUserPassReward) \n", retcode); ErrorDisplay(hStmt);
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
+		return ERROR_CODE::ER_DB_ERROR;
+	}
+
+
+
+	SQLPrepare(hStmt, (SQLWCHAR*)InsertUserPassReward_Query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&passLevelInfo.pass), 0, NULL);
+	SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&passLevelInfo.Pass_Type), 0, NULL);
+	SQLBindParameter(hStmt, 4, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&passLevelInfo.level), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
+		return ERROR_CODE::ER_NONE;
+	}
+
+	DEBUGMSGONEPARAM("Execute Query Error %d : (InsertUserEventReward)\n", retcode); ErrorDisplay(hStmt);
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
+	return ERROR_CODE::ER_DB_ERROR;
 }
 
 int DB::SelectAccountCount(const char* id)
@@ -1068,6 +1105,112 @@ std::vector<UserMission> DB::SelectUserMission(const int uid)
 	return std::vector<UserMission>();
 }
 
+UserPass DB::SelectUserPass(const int uid, const int passCode)
+{
+	if (uid == 0) {
+		return UserPass();
+	}
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	int isRewarded = 1;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGONEPARAM("hStmt Error %d : (SelectUserMission) \n", retcode); ErrorDisplay(hStmt);
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
+		return UserPass();
+	}
+
+	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserPass_Query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&passCode), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+		UserPass passInfo;
+
+		while (SQLFetch(hStmt) == SQL_SUCCESS) {
+
+			SQLGetData(hStmt, 1, SQL_C_LONG, &passInfo.user_UID, sizeof(int), NULL);
+			SQLGetData(hStmt, 2, SQL_C_LONG, &passInfo.passCode, sizeof(int), NULL);
+			SQLGetData(hStmt, 3, SQL_C_LONG, &passInfo.passType, sizeof(int), NULL);
+			SQLGetData(hStmt, 4, SQL_C_LONG, &passInfo.passLevel, sizeof(int), NULL);
+			SQLGetData(hStmt, 5, SQL_C_LONG, &passInfo.passExp, sizeof(int), NULL);
+		}
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
+		return passInfo;
+	}
+
+	DEBUGMSGONEPARAM("Execute Query Error %d : (SelectUserMission)\n", retcode); ErrorDisplay(hStmt);
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
+	return UserPass();
+}
+
+std::unordered_map<int, UserPassReward> DB::SelectUserPassReward(const int uid, const int passCode)
+{
+
+	if (uid == 0) {
+		return  std::unordered_map<int, UserPassReward>();
+	}
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	int isRewarded = 1;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGONEPARAM("hStmt Error %d : (SelectUserPassReward) \n", retcode); ErrorDisplay(hStmt);
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
+		return  std::unordered_map<int, UserPassReward>();
+	}
+
+
+	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserPassReward_Query, SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&passCode), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	std::unordered_map<int, UserPassReward> passRewardList;
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		while (SQLFetch(hStmt) == SQL_SUCCESS) {
+			UserPassReward passReward;
+			char date[11] = { 0 };
+
+			SQLGetData(hStmt, 1, SQL_C_LONG, &passReward.userUID, sizeof(int), NULL);
+			SQLGetData(hStmt, 2, SQL_C_LONG, &passReward.passCode, sizeof(int), NULL);
+			SQLGetData(hStmt, 3, SQL_C_LONG, &passReward.passType, sizeof(int), NULL);
+			SQLGetData(hStmt, 4, SQL_C_LONG, &passReward.level, sizeof(int), NULL);
+			SQLGetData(hStmt, 5, SQL_C_LONG, &passReward.isRewarded, sizeof(int), NULL);
+
+
+			passRewardList.insert({ passReward.level, passReward });
+		}
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
+		return passRewardList;
+	}
+
+	DEBUGMSGONEPARAM("Execute Query Error %d : (SelectUserPassReward)\n", retcode); ErrorDisplay(hStmt);
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
+	return std::unordered_map<int, UserPassReward>();
+}
+
 ERROR_CODE DB::UpdateUserConnectionState(const int uid, const int state)
 {
 	if (uid == 0) {
@@ -1455,6 +1598,46 @@ ERROR_CODE DB::UpsertUserMission(const int uid, std::vector<UserMission>& missio
 	return ERROR_CODE::ER_DB_ERROR;
 }
 
+ERROR_CODE DB::UpsertUserPass(const int uid, UserPass& passInfo)
+{
+	if (uid == 0) {
+		return ERROR_CODE::ER_DB_ERROR;
+	}
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGONEPARAM("hStmt Error %d : (UpsertUserPass) \n", retcode); ErrorDisplay(hStmt);
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
+		return ERROR_CODE::ER_DB_ERROR;
+	}
+
+	SQLPrepare(hStmt, (SQLWCHAR*)UpsertUserPass_Query, SQL_NTS);
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (SQLPOINTER)(&uid), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (SQLPOINTER)(&passInfo.passCode), 0, NULL);
+	SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (SQLPOINTER)(&passInfo.passType), 0, NULL);
+	SQLBindParameter(hStmt, 4, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (SQLPOINTER)(&passInfo.passLevel), 0, NULL);
+	SQLBindParameter(hStmt, 5, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (SQLPOINTER)(&passInfo.passExp), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
+		return ERROR_CODE::ER_NONE;
+	}
+
+	DEBUGMSGONEPARAM("Execute Query Error %d : (UpsertUserPass)\n", retcode); ErrorDisplay(hStmt);
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
+	return ERROR_CODE::ER_DB_ERROR;
+}
+
 
 bool DB::UpdateUserAttendanceIsRewarded(const int uid, const int eventCode, const int dayCount, const int updateValue)
 {
@@ -1546,6 +1729,11 @@ ERROR_CODE DB::UpdateUserEventReward_IsRewarded(const int uid, const int eventCo
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	ReturnConnection(connection);
 	return ERROR_CODE::ER_DB_ERROR;
+}
+
+ERROR_CODE DB::UpdateUserPassReward_isRewarded(const int uid, const int passCode, const int level)
+{
+	return ERROR_CODE();
 }
 
 

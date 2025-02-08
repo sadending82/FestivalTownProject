@@ -196,6 +196,21 @@ struct Trie {
 	}
 };
 
+struct PlayerPassInfo {
+	UserPass passState;
+
+	// <level, isRewarded>
+	std::unordered_map<int, bool> isRewardedList;
+
+	void Init(UserPass& userPass) { passState = userPass; }
+
+	void SetExp(int value) { passState.passExp += value; }
+
+	void SetLevel(int value) { passState.passLevel += value; }
+
+	void SetIsRewarded(int level) { isRewardedList[level] = true; }
+};
+
 #pragma pack(pop)
 
 std::vector<uint8_t> MakeBuffer(const int type, const uint8_t* data, const int size);

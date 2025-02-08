@@ -18,7 +18,7 @@ const wchar_t* InsertUserAttendance_Query = L"INSERT INTO GameDB.dbo.UserAttenda
 //INSERT INTO GameDB.dbo.UserEventReward (user_UID, event_code, attendance_date, day_count) VALUES(?, ?, CAST(GETDATE() AS DATE), ?)
 const wchar_t* InsertUserEventReward_Query = L"INSERT INTO GameDB.dbo.UserEventReward (userUID, eventCode) VALUES(?, ?)";
 
-const wchar_t* InsertUserPassReward_Query = L"INSERT INTO GameDB.dbo.UserPassReward (user_UID, pass_code, pass_type, level) VALUES (?, ?, ?, ?) ";
+const wchar_t* InsertUserPassReward_Query = L"INSERT INTO GameDB.dbo.UserPassReward (user_UID, pass_code, pass_type, level, is_rewarded) VALUES (?, ?, ?, ?, 1) ";
 
 const wchar_t* SelectAccountCount_Query = L"SELECT COUNT(ID) FROM AccountDB.dbo.Account WHERE ID = ?";
 
@@ -145,6 +145,7 @@ const wchar_t* UpdateUserEventReward_IsRewarded_Query
 	L"ON Target.userUID = Source.userUID AND Target.eventCode = Source.eventCode "
 	L"WHEN MATCHED AND Target.isRewarded = 0 THEN"
 	L"UPDATE SET isRewarded = 1, rewardedDate = CAST(GETDATE() AS DATE)";
+
 
 const wchar_t* UpsertUserPass_Query
 = L"MERGE INTO GameDB.dbo.UserPass AS Target "

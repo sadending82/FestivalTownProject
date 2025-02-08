@@ -51,6 +51,8 @@ public:
 
 	UserMissionList&	GetMissionList() { return mMissionList; }
 
+	std::unordered_map<int, PlayerPassInfo>&	GetPassInfo() { return mPassInfoList; }
+
 	void				SetUID(int uid) { mUserInfo.UID = uid; }
 	void				SetAccountID(std::string accountID) { mUserInfo.AccountID = accountID; }
 	void				SetIsAuthenticated(bool value) { mIsAuthenticated = value; }
@@ -131,4 +133,7 @@ protected:
 	std::unordered_map<int, Achievement> mInProgressAchievements;
 
 	UserMissionList mMissionList;
+
+	// <pass_index, PlayerPassInfo>
+	std::unordered_map<int, PlayerPassInfo>	mPassInfoList;
 };

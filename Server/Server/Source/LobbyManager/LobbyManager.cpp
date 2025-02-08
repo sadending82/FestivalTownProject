@@ -361,7 +361,7 @@ bool LobbyManager::UpdateLoginMission(Player* player)
 	return false;
 }
 
-bool LobbyManager::CompleteMission(Player* player, int missionCode)
+bool LobbyManager::CheckCompleteMission(Player* player, int missionCode)
 {
 	PassMissionInfo& missionInfo = pTableManager->GetPassMissionDataListByIndex()[missionCode];
 	std::vector<UserMission> updateMissionList;
@@ -374,11 +374,18 @@ bool LobbyManager::CompleteMission(Player* player, int missionCode)
 
 	UserMission& currMission = playerMissionList[missionInfo.mission_step];
 
+	// 완료 조건 확인
+	if (currMission.progress < missionInfo.required_count) {
+		return false;
+	}
+
 	currMission.is_rewarded = true;
 
 	updateMissionList.push_back(currMission);
 
 	// 패스 보상 지급 기능 추가 필요
+
+
 
 	// 다음 단계 미션 갱신
 	auto nextMissioniter = missionIndexList.find(nextStep);
@@ -397,4 +404,53 @@ bool LobbyManager::CompleteMission(Player* player, int missionCode)
 	pDB->UpsertUserMission(uid, updateMissionList);
 
 	return true;
+}
+
+bool LobbyManager::GiveMissionReward(Player* player, PassMissionInfo& missionInfo)
+{
+	int uid = player->GetUID();
+	// 임시
+	int passCode = 601;
+
+	PlayerPassInfo& playerPassInfo = player->GetPassInfo()[passCode];
+
+	// 패스 경험치
+	playerPassInfo.SetExp(missionInfo.reward_exp);
+	pDB->UpsertUserPass(uid, playerPassInfo.passState);
+	CheckPassLevelUp(player, playerPassInfo);
+
+	// 아이템 지급
+	int itemCode = missionInfo.reward_item;
+	if (itemCode != 0) {
+		ItemTable& rewardInfo = pTableManager->GetItemInfos()[itemCode];
+		if (rewardInfo.Item_Type == ItemType::Money) {
+			UserItem reward(uid, missionInfo.reward_item, missionInfo.reward_item_amount);
+			pDB->UpsertUserCurrency(uid, std::vector<UserItem>{reward});
+		}
+		else {
+			// 나중에 추가
+		}
+	}
+
+	return true;
+}
+
+bool LobbyManager::CheckPassLevelUp(Player* player, PlayerPassInfo& playerPassInfo)
+{
+	int currExp = playerPassInfo.passState.passExp;
+	int currLevel = playerPassInfo.passState.passLevel;
+
+	int expLimit = 100;
+
+	// 임시
+	if (currExp >= expLimit) {
+		playerPassInfo.SetExp(currExp - expLimit);
+		playerPassInfo.SetLevel(currLevel + 1);
+
+		pDB->UpsertUserPass(player->GetUID(), playerPassInfo.passState);
+
+		return true;
+	}
+
+	return false;
 }

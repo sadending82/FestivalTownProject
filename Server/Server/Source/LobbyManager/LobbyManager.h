@@ -27,7 +27,11 @@ public:
 
 	bool UpdateLoginMission(class Player* player);
 
-	bool CompleteMission(class Player* player, int missionCode);
+	bool CheckCompleteMission(class Player* player, int missionCode);
+
+	bool GiveMissionReward(class Player* player, PassMissionInfo& missionInfo);
+
+	bool CheckPassLevelUp(class Player* player, PlayerPassInfo& playerPassInfo);
 	
 private:
 
