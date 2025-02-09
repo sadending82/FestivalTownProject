@@ -5,7 +5,7 @@
 
 enum class UserPassReward_Field {
 	userUID = 1,
-	passCode,
+	passIndex,
 	passType,
 	level,
 	isRewarded,
@@ -14,7 +14,7 @@ enum class UserPassReward_Field {
 
 struct UserPassReward {
 	int userUID = 0;
-	int passCode;
+	int passIndex;
 	int passType = 0;
 	int level = 0;
 	bool isRewarded = 0;

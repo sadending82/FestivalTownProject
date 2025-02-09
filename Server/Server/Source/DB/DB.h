@@ -67,8 +67,8 @@ public:
     bool SelectUserAttendanceIsRewarded(const int uid, const int eventCode, const int dayCount);
     std::vector<struct UserMission> SelectUserMission(const int uid);
 
-    UserPass SelectUserPass(const int uid, const int passCode);
-    std::unordered_map<int, UserPassReward> SelectUserPassReward(const int uid, const int passCode);
+    UserPass SelectUserPass(const int uid, const int passIndex);
+    std::unordered_map<int, UserPassReward> SelectUserPassReward(const int uid, const int passIndex);
 
     // UPDATE
     ERROR_CODE UpdateUserConnectionState(const int uid, const int state);
@@ -77,7 +77,7 @@ public:
     ERROR_CODE UpdateUserItemCount(const int uid, const int item_index, const int valueOfChange);
     bool       UpdateUserAttendanceIsRewarded(const int uid, const int eventCode, const int dayCount, const int updateValue);
     ERROR_CODE UpdateUserEventReward_IsRewarded(const int uid, const int eventCode);
-    ERROR_CODE UpdateUserPassReward_isRewarded(const int uid, const int passCode, const int level);
+    ERROR_CODE UpdateUserPassReward_isRewarded(const int uid, const int passIndex, const int level);
 
     // UPSERT
     ERROR_CODE UpsertUserItemCount(const int uid, const int item_index, const int valueOfChange);
