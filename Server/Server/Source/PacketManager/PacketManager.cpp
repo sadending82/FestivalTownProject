@@ -28,6 +28,8 @@ PacketManager::PacketManager(Server* server, PacketSender* packetSender)
         PacketProcessorMap[ePacketType::C2S_ATTENDANCE_EVENT_REQUEST] = std::make_unique<Packet_AttendanceEventRequest>(pServer, pPacketSender);
         PacketProcessorMap[ePacketType::C2S_ATTENDANCE_REWARD_REQUEST] = std::make_unique<Packet_AttendanceRewardRequest>(pServer, pPacketSender);
         //PacketProcessorMap[ePacketType::C2S_EVENT_REWARD_REQUEST] = std::make_unique<Packet_EventRewardRequest>(pServer, pPacketSender);
+        PacketProcessorMap[ePacketType::C2S_PASS_MISSION_STATE_REQUEST] = std::make_unique<Packet_UserMissionStateRequest>(pServer, pPacketSender);
+        PacketProcessorMap[ePacketType::C2S_PASS_STATE_REQUEST] = std::make_unique<Packet_UserPassStateRequest>(pServer, pPacketSender);
 
         PacketProcessorMap[ePacketType::C2S_HEART_BEAT] = std::make_unique<Packet_HeartBeat>(pServer, pPacketSender);
 
