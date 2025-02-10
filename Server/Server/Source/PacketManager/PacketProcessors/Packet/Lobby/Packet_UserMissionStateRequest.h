@@ -21,12 +21,9 @@ public:
 					}
 				}
 
-				//юс╫ц
-				int pass_index = 601;
+				UserMissionList& playerMissionStateList = player->GetMissionList();
 
-				std::unordered_map<int, PlayerPassInfo>& playerPassStateList = player->GetPassInfo();
-
-				pServer->GetPacketSender()->SendUserPassStatePacket(player->GetSessionID(), playerPassStateList[pass_index]);
+				pServer->GetPacketSender()->SendUserMissionStatePacket(player->GetSessionID(), playerMissionStateList);
 
 			}
 		}
