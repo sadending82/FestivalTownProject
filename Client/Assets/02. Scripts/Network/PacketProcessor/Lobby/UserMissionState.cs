@@ -8,28 +8,21 @@ using UnityEngine;
 
 namespace Network.PacketProcessor
 {
-    public class UserPassStateProcessor : PacketProcessor
+    public class UserMissionStateProcessor : PacketProcessor
     {
         public override void Process(PacketManager packetmanager, byte[] data)
         {
             var bb = new ByteBuffer(data);
 
-            var Data = UserPassState.GetRootAsUserPassState(bb);
+            var Data = UserMissionStateList.GetRootAsUserMissionStateList(bb);
 
-
-            int pass_index = Data.PassIndex;
-            int pass_type = Data.PassType;
-            int pass_level = Data.PassLevel;
-            int pass_exp = Data.PassExp;
-
-
-            for (int i = 0; i < Data.PassRewardStateLength; ++i)
+            for (int i = 0; i < Data.MissionStateListLength; ++i)
             {
-                var passRewardState = Data.PassRewardState(i).Value;
+                var missionState = Data.MissionStateList(i).Value;
 
-                int rewardType = passRewardState.PassType;
-                int rewardLevel = passRewardState.Level;
-                bool isRewarded = passRewardState.IsRewarded;
+                int mission_index = missionState.MissionIndex;
+                int progress = missionState.Progress;
+                bool is_completed = missionState.IsRewarded;
             }
 
         }
