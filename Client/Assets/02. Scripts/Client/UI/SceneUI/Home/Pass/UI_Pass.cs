@@ -16,6 +16,7 @@ public class UI_Pass : UI_Scene
     }
 
     bool isInitialized = false;
+    Dictionary<int, UI_PassLevelItem> passItemDatas = new();
 
     void Start()
     {
@@ -54,9 +55,16 @@ public class UI_Pass : UI_Scene
                 var basicData = Managers.Data.PassLevelDataDict[basicStartIdx];
                 var plusData = Managers.Data.PassLevelDataDict[plusStartIdx];
 
-                AddItem(basicData.Reward_Item_Index, plusData.Reward_Item_Index, basicData.Index, plusData.Index, basicData.Level);
+                var itemUi = AddItem(basicData.Reward_Item_Index, plusData.Reward_Item_Index, basicData.Index, plusData.Index, basicData.Level);
+
+                passItemDatas.TryAdd(basicStartIdx, itemUi);
+                passItemDatas.TryAdd(plusStartIdx, itemUi);
             }
         }
+
+        Managers.Network.GetPacketManager().SendUserPassStateRequestPacket();
+
+        Debug.Log("Send Pass Request Packet");
 
         isInitialized = true;
     }
@@ -71,8 +79,13 @@ public class UI_Pass : UI_Scene
         Get<GameObject>((int)GameObjects.PassPanel).GetComponent<UI_PassPanel>().SetProgress(exp, maxExp);
     }
 
-    public void AddItem(int basicItemIdx, int plusItemIdx, int basicPassListIdx, int plusPassListIdx, int level)
+    public UI_PassLevelItem AddItem(int basicItemIdx, int plusItemIdx, int basicPassListIdx, int plusPassListIdx, int level)
     {
-        Get<GameObject>((int)GameObjects.PassPanel).GetComponent<UI_PassPanel>().AddItem(basicItemIdx, plusItemIdx, basicPassListIdx, plusPassListIdx, level);
+        return Get<GameObject>((int)GameObjects.PassPanel).GetComponent<UI_PassPanel>().AddItem(basicItemIdx, plusItemIdx, basicPassListIdx, plusPassListIdx, level);
+    }
+
+    public void SetPassDataByIdx(int idx, bool isRewarded)
+    {
+        passItemDatas[idx].SetDataByIndex(idx, isRewarded);
     }
 }

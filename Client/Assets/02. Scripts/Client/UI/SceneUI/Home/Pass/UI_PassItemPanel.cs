@@ -28,9 +28,9 @@ public class UI_PassItemPanel : UI_Base
         isInitialized = true;
     }
 
-    public void AddItem(int basicItemIdx, int plusItemIdx, int basicPassListIdx, int plusPassListIdx, int level)
+    public UI_PassLevelItem AddItem(int basicItemIdx, int plusItemIdx, int basicPassListIdx, int plusPassListIdx, int level)
     {
-        Get<GameObject>((int)GameObjects.ItemScrView).GetComponent<UI_PassItemScrView>().AddItem(basicItemIdx, plusItemIdx, basicPassListIdx, plusPassListIdx, level);
+        return Get<GameObject>((int)GameObjects.ItemScrView).GetComponent<UI_PassItemScrView>().AddItem(basicItemIdx, plusItemIdx, basicPassListIdx, plusPassListIdx, level);
     }
 
 }

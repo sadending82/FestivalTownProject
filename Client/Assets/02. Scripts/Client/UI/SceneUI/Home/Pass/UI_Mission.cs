@@ -13,6 +13,8 @@ public class UI_Mission : UI_PopUp
     }
 
     bool isInitialized = false;
+    Dictionary<int, UI_MissionData> missionDatas = new();
+
     void Start()
     {
         if (!isInitialized)
@@ -41,19 +43,23 @@ public class UI_Mission : UI_PopUp
                 case (int)Define.PassType.DailyMission:
                     {
                         var ui = Managers.UI.MakeSubItem<UI_MissionData>(missionPanel.GetCategoryContent((int)Define.PassType.DailyMission - 1));
+                        missionDatas.TryAdd(passMissionData.Value.Index, ui);
                         ui.Init();
                         ui.SetTitle(passMissionData.Value.Mission_Name);
                         ui.SetDescription(passMissionData.Value.Mission_Description);
                         ui.SetExp(passMissionData.Value.Reward_Exp);
+                        ui.SetRequired(passMissionData.Value.Required_Count);
                         ui.SetReward(passMissionData.Value.Reward_Item, passMissionData.Value.Reward_Item_Amount);
                     }
                     break;
                 case (int)Define.PassType.PassMission:
                     {
                         var ui = Managers.UI.MakeSubItem<UI_MissionData>(missionPanel.GetCategoryContent((int)Define.PassType.PassMission - 1));
+                        missionDatas.TryAdd(passMissionData.Value.Index, ui);
                         ui.Init();
                         ui.SetTitle(passMissionData.Value.Mission_Name);
                         ui.SetDescription(passMissionData.Value.Mission_Description);
+                        ui.SetRequired(passMissionData.Value.Required_Count);
                         ui.SetExp(passMissionData.Value.Reward_Exp);
                     }
                     break;
@@ -65,6 +71,15 @@ public class UI_Mission : UI_PopUp
             Managers.UI.ClosePopUpUI(this);
         });
 
+        Managers.Network.GetPacketManager().SendUserMissionStateRequestPacket();
+
+        Debug.Log("Send Mission Request Packet.");
+
         isInitialized = true;
+    }
+
+    public void ChangeMissionData(int idx, int count, bool isRewarded)
+    {
+        missionDatas[idx].SetMissionCounted(count);
     }
 }

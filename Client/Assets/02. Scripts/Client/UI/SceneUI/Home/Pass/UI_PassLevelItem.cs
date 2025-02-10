@@ -43,6 +43,20 @@ public class UI_PassLevelItem : UI_Base
         _plusPassListIdx = plusItemIdx;
     }
 
+    public void SetDataByIndex(int idx, bool isRewarded)
+    {
+        if(_basicPassListIdx == idx)
+        {
+
+        }
+
+        if (_plusPassListIdx == idx)
+        {
+
+        }
+
+    }
+
     void SetLevelToGetItem(int level)
     {
         Get<GameObject>((int)GameObjects.PassLevel).transform.GetChild(0).GetComponent<TMP_Text>().text = level.ToString();

@@ -16,6 +16,11 @@ namespace Network.PacketProcessor
 
             var Data = UserMissionStateList.GetRootAsUserMissionStateList(bb);
 
+            Debug.Log($"recv mission");
+
+            var MissionUI = Managers.UI.GetTopOfPopUPUI().GetComponent<UI_Mission>();
+            if (MissionUI == null) return;
+
             for (int i = 0; i < Data.MissionStateListLength; ++i)
             {
                 var missionState = Data.MissionStateList(i).Value;
@@ -23,6 +28,10 @@ namespace Network.PacketProcessor
                 int mission_index = missionState.MissionIndex;
                 int progress = missionState.Progress;
                 bool is_completed = missionState.IsRewarded;
+
+                Debug.Log($"recv {mission_index} mission");
+
+                MissionUI.ChangeMissionData(mission_index, progress, is_completed);
             }
 
         }

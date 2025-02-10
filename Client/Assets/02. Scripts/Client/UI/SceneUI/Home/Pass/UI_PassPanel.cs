@@ -38,9 +38,9 @@ public class UI_PassPanel : UI_Base
         Get<GameObject>((int)GameObjects.PassLevelPanel).GetComponent<UI_PassLevelPanel>().SetProgress(exp, maxExp);
     }
 
-    public void AddItem(int basicItemIdx, int plusItemIdx, int basicPassListIdx, int plusPassListIdx, int level)
+    public UI_PassLevelItem AddItem(int basicItemIdx, int plusItemIdx, int basicPassListIdx, int plusPassListIdx, int level)
     {
-        Get<GameObject>((int)GameObjects.PassItemPanel).GetComponent<UI_PassItemPanel>().AddItem(basicItemIdx, plusItemIdx, basicPassListIdx, plusPassListIdx, level);
+        return Get<GameObject>((int)GameObjects.PassItemPanel).GetComponent<UI_PassItemPanel>().AddItem(basicItemIdx, plusItemIdx, basicPassListIdx, plusPassListIdx, level);
     }
 
 
