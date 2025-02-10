@@ -434,8 +434,8 @@ bool LobbyManager::CheckCompleteMission(Player* player, int missionCode)
 
 	updateMissionList.push_back(currMission);
 
-	// 패스 보상 지급 기능 추가 필요
-
+	// 패스 보상 지급
+	GiveMissionReward(player, missionInfo);
 
 
 	// 다음 단계 미션 갱신
@@ -467,8 +467,8 @@ bool LobbyManager::GiveMissionReward(Player* player, PassMissionInfo& missionInf
 
 	// 패스 경험치
 	playerPassInfo.SetExp(missionInfo.reward_exp);
-	pDB->UpsertUserPass(uid, playerPassInfo.passState);
 	CheckPassLevelUp(player, playerPassInfo);
+	pDB->UpsertUserPass(uid, playerPassInfo.passState);
 
 	// 아이템 지급
 	int itemCode = missionInfo.reward_item;
@@ -479,7 +479,7 @@ bool LobbyManager::GiveMissionReward(Player* player, PassMissionInfo& missionInf
 			pDB->UpsertUserCurrency(uid, std::vector<UserItem>{reward});
 		}
 		else {
-			// 나중에 추가
+			pDB->InsertUserItem(uid, missionInfo.reward_item, missionInfo.reward_item_amount, (int)rewardInfo.Item_Type);
 		}
 	}
 
@@ -498,7 +498,32 @@ bool LobbyManager::CheckPassLevelUp(Player* player, PlayerPassInfo& playerPassIn
 		playerPassInfo.SetExp(currExp - expLimit);
 		playerPassInfo.SetLevel(currLevel + 1);
 
-		pDB->UpsertUserPass(player->GetUID(), playerPassInfo.passState);
+		return true;
+	}
+
+	return false;
+}
+
+bool LobbyManager::GivePassReward(Player* player, int pass_index, int pass_type, int reward_level)
+{
+	int uid = player->GetUID();
+	PlayerPassInfo& playerPassInfo = player->GetPassInfo()[pass_index];
+
+	PassLevel& passLevelInfo = pTableManager->GetPassList()[pass_index].passLevelList[reward_level][pass_type];
+
+	// 아이템 지급
+	int itemCode = passLevelInfo.Reward_Item_Index;
+	if (itemCode != 0) {
+		ItemTable& rewardInfo = pTableManager->GetItemInfos()[itemCode];
+		if (rewardInfo.Item_Type == ItemType::Money) {
+			UserItem reward(uid, itemCode, passLevelInfo.Reward_Item_Amount);
+			pDB->UpsertUserCurrency(uid, std::vector<UserItem>{reward});
+		}
+		else {
+			pDB->InsertUserItem(uid, itemCode, passLevelInfo.Reward_Item_Amount, (int)rewardInfo.Item_Type);
+		}
+
+		playerPassInfo.SetIsRewarded(reward_level, pass_type);
 
 		return true;
 	}

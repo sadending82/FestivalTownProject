@@ -61,6 +61,7 @@ namespace NetworkProtocol
         S2C_PASS_STATE,
         S2C_PASS_MISSION_STATE,
         S2C_MISSION_COMPLETE_RESPONSE,
+        S2C_PASS_REWARD_RESPONSE,
 
         S2C_HEART_BEAT,
         S2C_PLAYER_ADD,
@@ -123,6 +124,7 @@ namespace NetworkProtocol
         C2S_PASS_STATE_REQUEST,
         C2S_PASS_MISSION_STATE_REQUEST,
         C2S_MISSION_COMPLETE_REQUEST,
+        C2S_PASS_REWARD_REQUEST,
 
         C2S_HEART_BEAT,
         C2S_PLAYER_MOVE,

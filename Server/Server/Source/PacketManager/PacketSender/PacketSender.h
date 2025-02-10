@@ -19,6 +19,8 @@ public:
 	void SendEventRewardResponsePacket(int sessionID, int eventCode, int result, int reward_item, int reward_item_count);
 	void SendUserPassStatePacket(int sessionID, PlayerPassInfo& playerPassState);
 	void SendUserMissionStatePacket(int sessionID, UserMissionList& playerMissionState);
+	void SendMissionCompleteResponsePacket(int sessionID, int result, PlayerPassInfo& playerPassInfo, int mission_index, int reward_item_index, int reward_item_amount);
+	void SendPassRewardResponsePacket(int sessionID, int result, int pass_index, int pass_type, int reward_level, int reward_item_index, int reward_item_amount);
 
 	void SendPlayerAdd(int roomID);
 	void SendPlayerDelete(int roomID, int inGameID);

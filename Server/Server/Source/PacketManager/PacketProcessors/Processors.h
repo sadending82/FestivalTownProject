@@ -14,6 +14,8 @@
 #include "Packet/Lobby/Packet_EventRewardRequest.h"
 #include "Packet/Lobby/Packet_UserMissionStateRequest.h"
 #include "Packet/Lobby/Packet_UserPassStateRequest.h"
+#include "Packet/Lobby/Packet_MissionCompleteRequest.h"
+#include "Packet/Lobby/Packet_PassRewardRequest.h"
 
 #include "Packet/Utilities/Packet_HeartBeat.h"
 #include "Packet/Utilities/Packet_PingCheck.h"

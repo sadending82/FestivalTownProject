@@ -159,6 +159,8 @@
     <ClInclude Include="Source\PacketManager\flatbuffer\Pass_generated.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_UserPassStateRequest.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_UserMissionStateRequest.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_MissionCompleteRequest.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_PassRewardRequest.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

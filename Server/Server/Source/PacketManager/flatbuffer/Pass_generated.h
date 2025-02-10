@@ -37,6 +37,18 @@ struct UserMissionStateListBuilder;
 struct UserMissionState;
 struct UserMissionStateBuilder;
 
+struct PassRewardRequest;
+struct PassRewardRequestBuilder;
+
+struct PassRewardResponse;
+struct PassRewardResponseBuilder;
+
+struct MissionCompleteRequest;
+struct MissionCompleteRequestBuilder;
+
+struct MissionCompleteResponse;
+struct MissionCompleteResponseBuilder;
+
 struct UserPassStateRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef UserPassStateRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -378,6 +390,300 @@ inline ::flatbuffers::Offset<UserMissionState> CreateUserMissionState(
   builder_.add_progress(progress);
   builder_.add_mission_index(mission_index);
   builder_.add_is_rewarded(is_rewarded);
+  return builder_.Finish();
+}
+
+struct PassRewardRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef PassRewardRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_PASS_INDEX = 4,
+    VT_PASS_TYPE = 6,
+    VT_PASS_LEVEL = 8
+  };
+  int32_t pass_index() const {
+    return GetField<int32_t>(VT_PASS_INDEX, 0);
+  }
+  int32_t pass_type() const {
+    return GetField<int32_t>(VT_PASS_TYPE, 0);
+  }
+  int32_t pass_level() const {
+    return GetField<int32_t>(VT_PASS_LEVEL, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_PASS_INDEX, 4) &&
+           VerifyField<int32_t>(verifier, VT_PASS_TYPE, 4) &&
+           VerifyField<int32_t>(verifier, VT_PASS_LEVEL, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct PassRewardRequestBuilder {
+  typedef PassRewardRequest Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_pass_index(int32_t pass_index) {
+    fbb_.AddElement<int32_t>(PassRewardRequest::VT_PASS_INDEX, pass_index, 0);
+  }
+  void add_pass_type(int32_t pass_type) {
+    fbb_.AddElement<int32_t>(PassRewardRequest::VT_PASS_TYPE, pass_type, 0);
+  }
+  void add_pass_level(int32_t pass_level) {
+    fbb_.AddElement<int32_t>(PassRewardRequest::VT_PASS_LEVEL, pass_level, 0);
+  }
+  explicit PassRewardRequestBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<PassRewardRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<PassRewardRequest>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<PassRewardRequest> CreatePassRewardRequest(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t pass_index = 0,
+    int32_t pass_type = 0,
+    int32_t pass_level = 0) {
+  PassRewardRequestBuilder builder_(_fbb);
+  builder_.add_pass_level(pass_level);
+  builder_.add_pass_type(pass_type);
+  builder_.add_pass_index(pass_index);
+  return builder_.Finish();
+}
+
+struct PassRewardResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef PassRewardResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_RESULT = 4,
+    VT_PASS_INDEX = 6,
+    VT_PASS_TYPE = 8,
+    VT_PASS_LEVEL = 10,
+    VT_REWARD_ITEM_INDEX = 12,
+    VT_REWARD_ITEM_AMOUNT = 14
+  };
+  int32_t result() const {
+    return GetField<int32_t>(VT_RESULT, 0);
+  }
+  int32_t pass_index() const {
+    return GetField<int32_t>(VT_PASS_INDEX, 0);
+  }
+  int32_t pass_type() const {
+    return GetField<int32_t>(VT_PASS_TYPE, 0);
+  }
+  int32_t pass_level() const {
+    return GetField<int32_t>(VT_PASS_LEVEL, 0);
+  }
+  int32_t reward_item_index() const {
+    return GetField<int32_t>(VT_REWARD_ITEM_INDEX, 0);
+  }
+  int32_t reward_item_amount() const {
+    return GetField<int32_t>(VT_REWARD_ITEM_AMOUNT, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_RESULT, 4) &&
+           VerifyField<int32_t>(verifier, VT_PASS_INDEX, 4) &&
+           VerifyField<int32_t>(verifier, VT_PASS_TYPE, 4) &&
+           VerifyField<int32_t>(verifier, VT_PASS_LEVEL, 4) &&
+           VerifyField<int32_t>(verifier, VT_REWARD_ITEM_INDEX, 4) &&
+           VerifyField<int32_t>(verifier, VT_REWARD_ITEM_AMOUNT, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct PassRewardResponseBuilder {
+  typedef PassRewardResponse Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_result(int32_t result) {
+    fbb_.AddElement<int32_t>(PassRewardResponse::VT_RESULT, result, 0);
+  }
+  void add_pass_index(int32_t pass_index) {
+    fbb_.AddElement<int32_t>(PassRewardResponse::VT_PASS_INDEX, pass_index, 0);
+  }
+  void add_pass_type(int32_t pass_type) {
+    fbb_.AddElement<int32_t>(PassRewardResponse::VT_PASS_TYPE, pass_type, 0);
+  }
+  void add_pass_level(int32_t pass_level) {
+    fbb_.AddElement<int32_t>(PassRewardResponse::VT_PASS_LEVEL, pass_level, 0);
+  }
+  void add_reward_item_index(int32_t reward_item_index) {
+    fbb_.AddElement<int32_t>(PassRewardResponse::VT_REWARD_ITEM_INDEX, reward_item_index, 0);
+  }
+  void add_reward_item_amount(int32_t reward_item_amount) {
+    fbb_.AddElement<int32_t>(PassRewardResponse::VT_REWARD_ITEM_AMOUNT, reward_item_amount, 0);
+  }
+  explicit PassRewardResponseBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<PassRewardResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<PassRewardResponse>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<PassRewardResponse> CreatePassRewardResponse(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t result = 0,
+    int32_t pass_index = 0,
+    int32_t pass_type = 0,
+    int32_t pass_level = 0,
+    int32_t reward_item_index = 0,
+    int32_t reward_item_amount = 0) {
+  PassRewardResponseBuilder builder_(_fbb);
+  builder_.add_reward_item_amount(reward_item_amount);
+  builder_.add_reward_item_index(reward_item_index);
+  builder_.add_pass_level(pass_level);
+  builder_.add_pass_type(pass_type);
+  builder_.add_pass_index(pass_index);
+  builder_.add_result(result);
+  return builder_.Finish();
+}
+
+struct MissionCompleteRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef MissionCompleteRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_MISSION_INDEX = 4
+  };
+  int32_t mission_index() const {
+    return GetField<int32_t>(VT_MISSION_INDEX, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_MISSION_INDEX, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct MissionCompleteRequestBuilder {
+  typedef MissionCompleteRequest Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_mission_index(int32_t mission_index) {
+    fbb_.AddElement<int32_t>(MissionCompleteRequest::VT_MISSION_INDEX, mission_index, 0);
+  }
+  explicit MissionCompleteRequestBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<MissionCompleteRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<MissionCompleteRequest>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<MissionCompleteRequest> CreateMissionCompleteRequest(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t mission_index = 0) {
+  MissionCompleteRequestBuilder builder_(_fbb);
+  builder_.add_mission_index(mission_index);
+  return builder_.Finish();
+}
+
+struct MissionCompleteResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef MissionCompleteResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_RESULT = 4,
+    VT_PASS_INDEX = 6,
+    VT_MISSION_INDEX = 8,
+    VT_PASS_LEVEL = 10,
+    VT_PASS_EXP = 12,
+    VT_REWARD_ITEM_INDEX = 14,
+    VT_REWARD_ITEM_AMOUNT = 16
+  };
+  int32_t result() const {
+    return GetField<int32_t>(VT_RESULT, 0);
+  }
+  int32_t pass_index() const {
+    return GetField<int32_t>(VT_PASS_INDEX, 0);
+  }
+  int32_t mission_index() const {
+    return GetField<int32_t>(VT_MISSION_INDEX, 0);
+  }
+  int32_t pass_level() const {
+    return GetField<int32_t>(VT_PASS_LEVEL, 0);
+  }
+  int32_t pass_exp() const {
+    return GetField<int32_t>(VT_PASS_EXP, 0);
+  }
+  int32_t reward_item_index() const {
+    return GetField<int32_t>(VT_REWARD_ITEM_INDEX, 0);
+  }
+  int32_t reward_item_amount() const {
+    return GetField<int32_t>(VT_REWARD_ITEM_AMOUNT, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_RESULT, 4) &&
+           VerifyField<int32_t>(verifier, VT_PASS_INDEX, 4) &&
+           VerifyField<int32_t>(verifier, VT_MISSION_INDEX, 4) &&
+           VerifyField<int32_t>(verifier, VT_PASS_LEVEL, 4) &&
+           VerifyField<int32_t>(verifier, VT_PASS_EXP, 4) &&
+           VerifyField<int32_t>(verifier, VT_REWARD_ITEM_INDEX, 4) &&
+           VerifyField<int32_t>(verifier, VT_REWARD_ITEM_AMOUNT, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct MissionCompleteResponseBuilder {
+  typedef MissionCompleteResponse Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_result(int32_t result) {
+    fbb_.AddElement<int32_t>(MissionCompleteResponse::VT_RESULT, result, 0);
+  }
+  void add_pass_index(int32_t pass_index) {
+    fbb_.AddElement<int32_t>(MissionCompleteResponse::VT_PASS_INDEX, pass_index, 0);
+  }
+  void add_mission_index(int32_t mission_index) {
+    fbb_.AddElement<int32_t>(MissionCompleteResponse::VT_MISSION_INDEX, mission_index, 0);
+  }
+  void add_pass_level(int32_t pass_level) {
+    fbb_.AddElement<int32_t>(MissionCompleteResponse::VT_PASS_LEVEL, pass_level, 0);
+  }
+  void add_pass_exp(int32_t pass_exp) {
+    fbb_.AddElement<int32_t>(MissionCompleteResponse::VT_PASS_EXP, pass_exp, 0);
+  }
+  void add_reward_item_index(int32_t reward_item_index) {
+    fbb_.AddElement<int32_t>(MissionCompleteResponse::VT_REWARD_ITEM_INDEX, reward_item_index, 0);
+  }
+  void add_reward_item_amount(int32_t reward_item_amount) {
+    fbb_.AddElement<int32_t>(MissionCompleteResponse::VT_REWARD_ITEM_AMOUNT, reward_item_amount, 0);
+  }
+  explicit MissionCompleteResponseBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<MissionCompleteResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<MissionCompleteResponse>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<MissionCompleteResponse> CreateMissionCompleteResponse(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t result = 0,
+    int32_t pass_index = 0,
+    int32_t mission_index = 0,
+    int32_t pass_level = 0,
+    int32_t pass_exp = 0,
+    int32_t reward_item_index = 0,
+    int32_t reward_item_amount = 0) {
+  MissionCompleteResponseBuilder builder_(_fbb);
+  builder_.add_reward_item_amount(reward_item_amount);
+  builder_.add_reward_item_index(reward_item_index);
+  builder_.add_pass_exp(pass_exp);
+  builder_.add_pass_level(pass_level);
+  builder_.add_mission_index(mission_index);
+  builder_.add_pass_index(pass_index);
+  builder_.add_result(result);
   return builder_.Finish();
 }
 

@@ -34,6 +34,8 @@ public:
 	bool GiveMissionReward(class Player* player, PassMissionInfo& missionInfo);
 
 	bool CheckPassLevelUp(class Player* player, PlayerPassInfo& playerPassInfo);
+
+	bool GivePassReward(class Player* player, int pass_index, int pass_type, int reward_level);
 	
 private:
 

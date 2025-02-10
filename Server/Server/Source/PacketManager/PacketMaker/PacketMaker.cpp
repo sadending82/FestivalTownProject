@@ -186,6 +186,28 @@ std::vector<uint8_t> PacketMaker::MakeUserMissionStatePacket(UserMissionList& pl
 	return MakeBuffer(ePacketType::S2C_PASS_MISSION_STATE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
+std::vector<uint8_t> PacketMaker::MakeMissionCompleteResponsePacket(int result, PlayerPassInfo& playerPassInfo, int mission_index, int reward_item_index, int reward_item_amount)
+{
+	flatbuffers::FlatBufferBuilder Builder;
+
+	int passIndex = playerPassInfo.passState.passIndex;
+	int passLevel = playerPassInfo.passState.passLevel;
+	int passExp = playerPassInfo.passState.passExp;
+
+	Builder.Finish(PacketTable::PassTable::CreateMissionCompleteResponse(Builder, result, passIndex, mission_index, passLevel, passExp, reward_item_index, reward_item_amount));
+
+	return MakeBuffer(ePacketType::S2C_MISSION_COMPLETE_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
+}
+
+std::vector<uint8_t> PacketMaker::MakePassRewardResponsePacket(int result, int pass_index, int pass_type, int reward_level, int reward_item_index, int reward_item_amount)
+{
+	flatbuffers::FlatBufferBuilder Builder;
+
+	Builder.Finish(PacketTable::PassTable::CreateMissionCompleteResponse(Builder, result, pass_index, pass_type, reward_level, reward_item_index, reward_item_amount));
+
+	return MakeBuffer(ePacketType::S2C_PASS_REWARD_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
+}
+
 std::vector<uint8_t> PacketMaker::MakePlayerAddPacket(std::vector<class Player*>& players)
 {
 	flatbuffers::FlatBufferBuilder Builder;

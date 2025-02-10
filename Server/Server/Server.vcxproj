@@ -263,6 +263,8 @@ if exist "$(ProjectDir)\Config" xcopy /Y /d /e /i "$(ProjectDir)\Config" "$(OutD
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_EventRewardRequest.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_GachaRequest.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_GameMatchingCancel.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_MissionCompleteRequest.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_PassRewardRequest.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_UserItemsRequest.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_UserMissionStateRequest.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_UserPassStateRequest.h" />
