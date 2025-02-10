@@ -11,6 +11,7 @@ using PacketTable.GameTable;
 using PacketTable.PlayerTable;
 using static UnityEngine.GraphicsBuffer;
 using TMPro;
+using System.Diagnostics.Tracing;
 
 public class PacketManager : MonoBehaviour 
 {
@@ -62,6 +63,8 @@ public class PacketManager : MonoBehaviour
             { ePacketType.S2C_ATTENDANCE_EVENT_RESPONSE, new AttendanceEventResponseProcessor() },
             { ePacketType.S2C_ATTENDANCE_REWARD_RESPONSE, new AttendanceRewardResponseProcessor() },
             //{ ePacketType.S2C_EVENT_REWARD_RESPONSE, new EventRewardResponseProcessor() },
+            { ePacketType.S2C_PASS_STATE, new UserPassStateProcessor() },
+            { ePacketType.S2C_PASS_MISSION_STATE, new UserMissionStateProcessor() },
 
             { ePacketType.S2C_PLAYER_ADD, new PlayerAddProcessor() },
             { ePacketType.S2C_PLAYER_DELETE, new PlayerDeleteProcessor() },
@@ -252,6 +255,18 @@ public class PacketManager : MonoBehaviour
     public void SendEventRewardRequestPacket(int eventCode)
     {
         byte[] packet = _packetMaker.MakeEventRewardRequestPacket(eventCode);
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+    public void SendUserPassStateRequestPacket()
+    {
+        byte[] packet = _packetMaker.MakeUserPassStateRequestPacket();
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+    public void SendUserMissionStateRequestPacket()
+    {
+        byte[] packet = _packetMaker.MakeUserMissionStateRequestPacket();
         if (packet == null) { return; }
         SendPacket(packet);
     }

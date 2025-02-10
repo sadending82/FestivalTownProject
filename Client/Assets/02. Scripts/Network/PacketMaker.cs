@@ -15,6 +15,7 @@ using PacketTable.LobbyTable;
 using System.Diagnostics;
 using PacketTable.LoginTable;
 using PacketTable.CheatTable;
+using PacketTable.PassTable;
 
 public class PacketMaker
 {
@@ -638,6 +639,45 @@ public class PacketMaker
         return null;
     }
 
+    public byte[] MakeUserPassStateRequestPacket()
+    {
+        var builder = new FlatBufferBuilder(1);
+
+        UserPassStateRequest.StartUserPassStateRequest(builder);
+        var offset = UserPassStateRequest.EndUserPassStateRequest(builder);
+
+        builder.Finish(offset.Value);
+
+        byte[] data = builder.SizedByteArray();
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PASS_STATE_REQUEST, flatBufferSize = (ushort)data.Length };
+        byte[] headerdata = Serialize<HEADER>(header);
+        byte[] result = new byte[data.Length + headerdata.Length];
+
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
+
+        return result;
+    }
+
+    public byte[] MakeUserMissionStateRequestPacket()
+    {
+        var builder = new FlatBufferBuilder(1);
+
+        UserMissionStateRequest.StartUserMissionStateRequest(builder);
+        var offset = UserMissionStateRequest.EndUserMissionStateRequest(builder);
+
+        builder.Finish(offset.Value);
+
+        byte[] data = builder.SizedByteArray();
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PASS_MISSION_STATE_REQUEST, flatBufferSize = (ushort)data.Length };
+        byte[] headerdata = Serialize<HEADER>(header);
+        byte[] result = new byte[data.Length + headerdata.Length];
+
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
+
+        return result;
+    }
 
     public byte[] MakePlayerGrabWeaponPacket(Vector3 position, Vector3 direction, int playerID, int weaponID)
     {

@@ -23,7 +23,8 @@ public:
 
 				const UserPassStateRequest* read = flatbuffers::GetRoot<UserPassStateRequest>(data);
 
-				int pass_index = read->pass_index();
+				// юс╫ц
+				int pass_index = 601;
 
 				std::unordered_map<int, PlayerPassInfo>& playerPassStateList = player->GetPassInfo();
 
