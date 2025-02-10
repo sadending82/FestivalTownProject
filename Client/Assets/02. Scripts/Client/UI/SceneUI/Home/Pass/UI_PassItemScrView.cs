@@ -30,12 +30,14 @@ public class UI_PassItemScrView : UI_Base
         isInitialized = true;
     }
 
-    public void AddItem(int basicItemIdx, int plusItemIdx, int basicPassListIdx, int plusPassListIdx, int level)
+    public UI_PassLevelItem AddItem(int basicItemIdx, int plusItemIdx, int basicPassListIdx, int plusPassListIdx, int level)
     {
         var ui = Managers.UI.MakeSubItem<UI_PassLevelItem>(Get<GameObject>((int)GameObjects.Viewport).transform.GetChild(0));
         ui.Init();
 
         ui.SetData(basicItemIdx, plusItemIdx, basicPassListIdx, plusPassListIdx, level);
+
+        return ui;
     }
 
 }

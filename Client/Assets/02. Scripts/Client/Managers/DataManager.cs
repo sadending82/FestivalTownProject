@@ -87,7 +87,6 @@ public class DataManager
 
     string NickName = "DefaultNick";
 
-
     public void Init()
     {
         LoadGameData();

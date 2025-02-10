@@ -158,6 +158,13 @@ public class Define
         public int Type;
     }
 
+    public struct PassData
+    {
+        public int PassType;
+        public int PassLevel;
+        public int IsRewarded;
+    }
+
     public struct AttendanceEventData
     {
         public int EventCode;

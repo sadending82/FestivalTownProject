@@ -8,21 +8,37 @@ using UnityEngine;
 
 namespace Network.PacketProcessor
 {
-    public class UserMissionStateProcessor : PacketProcessor
+    public class UserPassStateProcessor : PacketProcessor
     {
         public override void Process(PacketManager packetmanager, byte[] data)
         {
             var bb = new ByteBuffer(data);
 
-            var Data = UserMissionStateList.GetRootAsUserMissionStateList(bb);
+            var Data = UserPassState.GetRootAsUserPassState(bb);
 
-            for (int i = 0; i < Data.MissionStateListLength; ++i)
+            int pass_index = Data.PassIndex;
+            int pass_type = Data.PassType;
+            int pass_level = Data.PassLevel;
+            int pass_exp = Data.PassExp;
+
+            Debug.Log($"Pass Data Recved. {pass_index}, {pass_type}, {pass_level}, {pass_exp}");
+
+            var ui = Managers.UI.GetCurrentSceneUI().GetComponent<UI_Pass>();
+            if (ui != null) return;
+
+            ui.SetLevel(pass_level);
+            ui.SetProgress(pass_exp, 100);
+
+            for (int i = 0; i < Data.PassRewardStateLength; ++i)
             {
-                var missionState = Data.MissionStateList(i).Value;
+                var passRewardState = Data.PassRewardState(i).Value;
 
-                int mission_index = missionState.MissionIndex;
-                int progress = missionState.Progress;
-                bool is_completed = missionState.IsRewarded;
+                int rewardType = passRewardState.PassType;
+                int rewardLevel = passRewardState.Level;
+                bool isRewarded = passRewardState.IsRewarded;
+
+                ui.SetPassDataByIdx(pass_index, isRewarded);
+
             }
 
         }

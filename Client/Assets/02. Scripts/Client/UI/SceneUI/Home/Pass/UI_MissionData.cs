@@ -37,7 +37,7 @@ public class UI_MissionData : UI_Base
         isInitialized = true;
     }
 
-    public void SetMissionData(string title, string description, int exp, int rewardIdx, int rewardAmount, Action<PointerEventData> action)
+    public void SetMissionData(string title, string description, int exp, int required, int rewardIdx, int rewardAmount, Action<PointerEventData> action)
     {
         SetExp(exp);
         SetTitle(title);
@@ -78,10 +78,14 @@ public class UI_MissionData : UI_Base
         TextTr.GetComponent<TMP_Text>().text = $"+{amount}";
     }
 
-    public void SetMissionCounted(int counted, int require)
+    public void SetRequired(int required)
+    {
+        this.required = required;
+    }
+
+    public void SetMissionCounted(int counted)
     {
         countedTimes = counted;
-        required = require;
 
         SetTitle(baseTitle);
     }
