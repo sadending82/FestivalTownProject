@@ -11,7 +11,6 @@ public class UI_SettingPanel : UI_Base
     }
 
     bool isInitialized = false;
-    int Selected = 0;
 
     private void Start()
     {

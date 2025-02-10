@@ -288,6 +288,7 @@ namespace ExcelDataStructure
 
     public class PassMissionEntity : GameDataEntity
     {
+        public int Pass;
         public int Type;
         public int Mission_Category;
         public int Mission_Group;

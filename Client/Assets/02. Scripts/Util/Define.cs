@@ -124,6 +124,12 @@ public class Define
         PassPlusListStartIdx = 60201,
     }
 
+    public enum PassType
+    {
+        DailyMission = 1,
+        PassMission = 2,
+    }
+
     public struct PlayerData
     {
         public int id;
