@@ -65,6 +65,18 @@ void PacketSender::SendEventRewardResponsePacket(int sessionID, int eventCode, i
     mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
 }
 
+void PacketSender::SendUserPassStatePacket(int sessionID, PlayerPassInfo& playerPassState)
+{
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakeUserPassStatePacket(playerPassState);
+    mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
+}
+
+void PacketSender::SendUserMissionStatePacket(int sessionID, UserMissionList& playerMissionState)
+{
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakeUserMissionStatePacket(playerMissionState);
+    mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
+}
+
 void PacketSender::SendPlayerAdd(int roomID)
 {
     Room* room = mServer->GetRooms()[roomID];

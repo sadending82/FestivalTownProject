@@ -4,7 +4,7 @@
 
 enum class UserPass_Field {
 	userUID = 1,
-	passCode,
+	passIndex,
 	passType,
 	passLevel,
 	passExp
@@ -12,7 +12,7 @@ enum class UserPass_Field {
 
 struct UserPass {
 	int user_UID = 0;
-	int passCode = 0;
+	int passIndex = 0;
 	int passType = 0;
 	int passLevel = 0;
 	int passExp = 0;

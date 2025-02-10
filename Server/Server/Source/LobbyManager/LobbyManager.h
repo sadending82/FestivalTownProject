@@ -21,6 +21,8 @@ public:
 	struct GachaItem RollGacha(std::unordered_map<int, struct GachaItem>& gachaItemList);
 	bool GiveGachaItemToUser(int uid, int payItem, int price, struct GachaItem& gachaItem);
 
+	void LoadPassState(class Player* player);
+
 	void LoadMissionProgress(class Player* player);
 
 	bool UpdateGachaMission(class Player* player, int itemCode);

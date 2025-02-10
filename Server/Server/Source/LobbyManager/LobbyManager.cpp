@@ -178,9 +178,51 @@ bool LobbyManager::GiveGachaItemToUser(int uid, int payItem, int price, GachaIte
 	return true;
 }
 
+void LobbyManager::LoadPassState(Player* player)
+{
+	int uid = player->GetUID();
+
+	std::unordered_map<int, PlayerPassInfo>& playerPassStateList = player->GetPassInfo();
+
+	std::unordered_map<int, PassInfo>& passList = pTableManager->GetPassList();
+
+	std::time_t nowTime = std::time(nullptr);
+
+	for (auto& passInfo : passList) {
+
+		int passIndex = passInfo.second.index;
+
+		std::time_t openTime = std::mktime(const_cast<std::tm*>(&passInfo.second.open_date));
+		std::time_t closeTime = std::mktime(const_cast<std::tm*>(&passInfo.second.close_date));
+
+		if (nowTime < openTime || closeTime < nowTime) {
+			continue;
+		}
+
+		UserPass passState = pDB->SelectUserPass(uid, passInfo.second.index);
+
+		playerPassStateList[passIndex].Init(passState);
+
+		std::unordered_map<int, UserPassReward> passRewardStates = pDB->SelectUserPassReward(uid, passInfo.second.index);
+
+		for (auto& passRewardState : passRewardStates) {
+			int level = passRewardState.second.level;
+			int type = passRewardState.second.passType;
+
+			playerPassStateList[passIndex].isRewardedList[level][type] = (bool)passRewardState.second.isRewarded;
+		}
+
+		//pServer->GetPacketSender()->SendUserPassStatePacket(player->GetSessionID(), playerPassStateList[passIndex]);
+	}
+
+}
+
 void LobbyManager::LoadMissionProgress(Player* player)
 {
 	int uid = player->GetUID();
+
+	//임시
+	int pass_index = 601;
 
 	UserMissionList& playerMissionList = player->GetMissionList();
 
@@ -197,7 +239,7 @@ void LobbyManager::LoadMissionProgress(Player* player)
 			int group = missionInfo.mission_group;
 			int step = missionInfo.mission_step;
 
-			playerMissionList.missionList[type][category][group][step] = mission;
+			playerMissionList.missionList[pass_index][type][category][group][step] = mission;
 		}
 	}
 
@@ -206,7 +248,7 @@ void LobbyManager::LoadMissionProgress(Player* player)
 
 	std::unordered_map<int, PassMissionInfo>& passMissionDataList = pTableManager->GetPassMissionDataListByIndex();
 
-	for (auto& missionCategoryList : pTableManager->GetPassMissionIndexList()) {
+	for (auto& missionCategoryList : pTableManager->GetPassMissionIndexList()[pass_index]) {
 		int type = missionCategoryList.first;
 
 		for (auto& missionGroupList : missionCategoryList.second) {
@@ -218,7 +260,7 @@ void LobbyManager::LoadMissionProgress(Player* player)
 				int firstMissionIndex = missionStepList.second[firstStep];
 
 				// <Group, <Step, missionInfo>>
-				std::unordered_map<int, std::unordered_map<int, UserMission>>& playerMissionGroupList = playerMissionList.missionList[type][category];
+				std::unordered_map<int, std::unordered_map<int, UserMission>>& playerMissionGroupList = playerMissionList.missionList[pass_index][type][category];
 
 				if (playerMissionGroupList.find(group) == playerMissionGroupList.end()) {
 					UserMission& playerMission = playerMissionGroupList[group][firstStep];
@@ -228,16 +270,21 @@ void LobbyManager::LoadMissionProgress(Player* player)
 			}
 		}
 	}
+
+	//pServer->GetPacketSender()->SendUserMissionStatePacket(player->GetSessionID(), playerMissionList);
 }
 
 bool LobbyManager::UpdateGachaMission(Player* player, int itemCode)
 {
 	std::vector<UserMission> updatedMissionList;
 
+	// 임시
+	int pass_index = 601;
+
 	// 가챠 횟수 미션
 	{
 		// 일일 미션
-		for (auto& missionGroupList : player->GetMissionList().missionList[eMissionType::MT_DAILY][eMissionCategory::MC_GACHA]) {
+		for (auto& missionGroupList : player->GetMissionList().missionList[pass_index][eMissionType::MT_DAILY][eMissionCategory::MC_GACHA]) {
 
 			std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
 
@@ -249,7 +296,7 @@ bool LobbyManager::UpdateGachaMission(Player* player, int itemCode)
 		}
 
 		// 패스 미션
-		for (auto& missionGroupList : player->GetMissionList().missionList[eMissionType::MT_PASS][eMissionCategory::MC_GACHA]) {
+		for (auto& missionGroupList : player->GetMissionList().missionList[pass_index][eMissionType::MT_PASS][eMissionCategory::MC_GACHA]) {
 
 			std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
 
@@ -268,7 +315,7 @@ bool LobbyManager::UpdateGachaMission(Player* player, int itemCode)
 
 	{
 		// 일일 미션
-		for (auto& missionGroupList : player->GetMissionList().missionList[eMissionType::MT_DAILY][eMissionCategory::MC_GET_ITEM]) {
+		for (auto& missionGroupList : player->GetMissionList().missionList[pass_index][eMissionType::MT_DAILY][eMissionCategory::MC_GET_ITEM]) {
 
 			std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
 
@@ -285,7 +332,7 @@ bool LobbyManager::UpdateGachaMission(Player* player, int itemCode)
 		}
 
 		// 패스 미션
-		for (auto& missionGroupList : player->GetMissionList().missionList[eMissionType::MT_PASS][eMissionCategory::MC_GET_ITEM]) {
+		for (auto& missionGroupList : player->GetMissionList().missionList[pass_index][eMissionType::MT_PASS][eMissionCategory::MC_GET_ITEM]) {
 
 			std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
 
@@ -310,6 +357,9 @@ bool LobbyManager::UpdateGachaMission(Player* player, int itemCode)
 
 bool LobbyManager::UpdateLoginMission(Player* player)
 {
+	//임시
+	int pass_index = 601;
+
 	time_t now = std::time(nullptr);
 	
 	std::tm today{};
@@ -326,7 +376,7 @@ bool LobbyManager::UpdateLoginMission(Player* player)
 		// 출석 미션
 		{
 			// 일일 미션
-			for (auto& missionGroupList : player->GetMissionList().missionList[eMissionType::MT_DAILY][eMissionCategory::MC_ATTENDANCE]) {
+			for (auto& missionGroupList : player->GetMissionList().missionList[pass_index][eMissionType::MT_DAILY][eMissionCategory::MC_ATTENDANCE]) {
 
 				std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
 
@@ -338,7 +388,7 @@ bool LobbyManager::UpdateLoginMission(Player* player)
 			}
 
 			// 패스 미션
-			for (auto& missionGroupList : player->GetMissionList().missionList[eMissionType::MT_PASS][eMissionCategory::MC_ATTENDANCE]) {
+			for (auto& missionGroupList : player->GetMissionList().missionList[pass_index][eMissionType::MT_PASS][eMissionCategory::MC_ATTENDANCE]) {
 
 				std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
 
@@ -368,9 +418,10 @@ bool LobbyManager::CheckCompleteMission(Player* player, int missionCode)
 
 	int uid = player->GetUID();
 	int nextStep = missionInfo.mission_step + 1;
+	int passIndex = missionInfo.pass_index;
 
-	auto& missionIndexList = pTableManager->GetPassMissionIndexList()[missionInfo.type][missionInfo.mission_category][missionInfo.mission_group];
-	auto& playerMissionList = player->GetMissionList().missionList[missionInfo.type][missionInfo.mission_category][missionInfo.mission_group];
+	auto& missionIndexList = pTableManager->GetPassMissionIndexList()[passIndex][missionInfo.type][missionInfo.mission_category][missionInfo.mission_group];
+	auto& playerMissionList = player->GetMissionList().missionList[passIndex][missionInfo.type][missionInfo.mission_category][missionInfo.mission_group];
 
 	UserMission& currMission = playerMissionList[missionInfo.mission_step];
 
@@ -410,9 +461,9 @@ bool LobbyManager::GiveMissionReward(Player* player, PassMissionInfo& missionInf
 {
 	int uid = player->GetUID();
 	// 임시
-	int passCode = 601;
+	int passIndex = 601;
 
-	PlayerPassInfo& playerPassInfo = player->GetPassInfo()[passCode];
+	PlayerPassInfo& playerPassInfo = player->GetPassInfo()[passIndex];
 
 	// 패스 경험치
 	playerPassInfo.SetExp(missionInfo.reward_exp);

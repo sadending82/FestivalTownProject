@@ -1105,7 +1105,7 @@ std::vector<UserMission> DB::SelectUserMission(const int uid)
 	return std::vector<UserMission>();
 }
 
-UserPass DB::SelectUserPass(const int uid, const int passCode)
+UserPass DB::SelectUserPass(const int uid, const int passIndex)
 {
 	if (uid == 0) {
 		return UserPass();
@@ -1127,7 +1127,7 @@ UserPass DB::SelectUserPass(const int uid, const int passCode)
 	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserPass_Query, SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
-	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&passCode), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&passIndex), 0, NULL);
 
 	retcode = SQLExecute(hStmt);
 
@@ -1137,7 +1137,7 @@ UserPass DB::SelectUserPass(const int uid, const int passCode)
 		while (SQLFetch(hStmt) == SQL_SUCCESS) {
 
 			SQLGetData(hStmt, 1, SQL_C_LONG, &passInfo.user_UID, sizeof(int), NULL);
-			SQLGetData(hStmt, 2, SQL_C_LONG, &passInfo.passCode, sizeof(int), NULL);
+			SQLGetData(hStmt, 2, SQL_C_LONG, &passInfo.passIndex, sizeof(int), NULL);
 			SQLGetData(hStmt, 3, SQL_C_LONG, &passInfo.passType, sizeof(int), NULL);
 			SQLGetData(hStmt, 4, SQL_C_LONG, &passInfo.passLevel, sizeof(int), NULL);
 			SQLGetData(hStmt, 5, SQL_C_LONG, &passInfo.passExp, sizeof(int), NULL);
@@ -1154,7 +1154,7 @@ UserPass DB::SelectUserPass(const int uid, const int passCode)
 	return UserPass();
 }
 
-std::unordered_map<int, UserPassReward> DB::SelectUserPassReward(const int uid, const int passCode)
+std::unordered_map<int, UserPassReward> DB::SelectUserPassReward(const int uid, const int passIndex)
 {
 
 	if (uid == 0) {
@@ -1178,7 +1178,7 @@ std::unordered_map<int, UserPassReward> DB::SelectUserPassReward(const int uid, 
 	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserPassReward_Query, SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
-	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&passCode), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&passIndex), 0, NULL);
 
 	retcode = SQLExecute(hStmt);
 
@@ -1191,7 +1191,7 @@ std::unordered_map<int, UserPassReward> DB::SelectUserPassReward(const int uid, 
 			char date[11] = { 0 };
 
 			SQLGetData(hStmt, 1, SQL_C_LONG, &passReward.userUID, sizeof(int), NULL);
-			SQLGetData(hStmt, 2, SQL_C_LONG, &passReward.passCode, sizeof(int), NULL);
+			SQLGetData(hStmt, 2, SQL_C_LONG, &passReward.passIndex, sizeof(int), NULL);
 			SQLGetData(hStmt, 3, SQL_C_LONG, &passReward.passType, sizeof(int), NULL);
 			SQLGetData(hStmt, 4, SQL_C_LONG, &passReward.level, sizeof(int), NULL);
 			SQLGetData(hStmt, 5, SQL_C_LONG, &passReward.isRewarded, sizeof(int), NULL);
@@ -1618,7 +1618,7 @@ ERROR_CODE DB::UpsertUserPass(const int uid, UserPass& passInfo)
 
 	SQLPrepare(hStmt, (SQLWCHAR*)UpsertUserPass_Query, SQL_NTS);
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (SQLPOINTER)(&uid), 0, NULL);
-	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (SQLPOINTER)(&passInfo.passCode), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (SQLPOINTER)(&passInfo.passIndex), 0, NULL);
 	SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (SQLPOINTER)(&passInfo.passType), 0, NULL);
 	SQLBindParameter(hStmt, 4, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (SQLPOINTER)(&passInfo.passLevel), 0, NULL);
 	SQLBindParameter(hStmt, 5, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (SQLPOINTER)(&passInfo.passExp), 0, NULL);
@@ -1731,7 +1731,7 @@ ERROR_CODE DB::UpdateUserEventReward_IsRewarded(const int uid, const int eventCo
 	return ERROR_CODE::ER_DB_ERROR;
 }
 
-ERROR_CODE DB::UpdateUserPassReward_isRewarded(const int uid, const int passCode, const int level)
+ERROR_CODE DB::UpdateUserPassReward_isRewarded(const int uid, const int passIndex, const int level)
 {
 	return ERROR_CODE();
 }

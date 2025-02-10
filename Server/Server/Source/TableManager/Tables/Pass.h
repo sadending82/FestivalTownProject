@@ -26,6 +26,7 @@ enum class PassLevel_Field {
 
 enum class PassMission_Field {
 	index = 0,
+	pass_index,
 	type,
 	mission_category,
 	mission_group,
@@ -61,7 +62,7 @@ struct PassInfo {
 
 struct PassMissionInfo {
     int index;
-
+	int pass_index;
     int type;
     int mission_category;
     int mission_group;

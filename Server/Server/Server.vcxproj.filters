@@ -156,6 +156,7 @@
     <ClInclude Include="Source\TableManager\Tables\Mission.h" />
     <ClInclude Include="Source\DB\Schema\DB_UserPass.h" />
     <ClInclude Include="Source\DB\Schema\DB_UserPassReward.h" />
+    <ClInclude Include="Source\PacketManager\flatbuffer\Pass_generated.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

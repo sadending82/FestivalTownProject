@@ -5,6 +5,9 @@
 
 constexpr int UserMission_Col_Count = 8;
 
+// <pass, <type, <category, <group, <step, UserMission>>>>
+#define USER_PASS_MISSION_LIST std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, UserMission>>>>>
+
 struct UserMission{
 	int user_UID = 0;
 	int mission_code = 0;
@@ -40,7 +43,7 @@ struct UserMission{
 };
 
 struct UserMissionList {
-	// <type, <category, <group, <step, missionInfo>>>>
-	std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, UserMission>>>> missionList;
+	// <pass, <type, <category, <group, <step, UserMission>>>>
+	USER_PASS_MISSION_LIST missionList;
 };
 #pragma pack(pop) 

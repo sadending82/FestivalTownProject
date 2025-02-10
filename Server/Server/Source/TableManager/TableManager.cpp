@@ -1026,6 +1026,7 @@ void TableManager::ReadPassList()
 
             if (!row.empty()) {
                 int index = row[(int)(PassMission_Field::index)].value<int>();
+                int passIndex = row[(int)(PassMission_Field::pass_index)].value<int>();
                 int type = row[(int)(PassMission_Field::type)].value<int>();
                 int missionCategory = row[(int)(PassMission_Field::mission_category)].value<int>();
                 int missionGroup = row[(int)(PassMission_Field::mission_group)].value<int>();
@@ -1037,10 +1038,10 @@ void TableManager::ReadPassList()
                 int reward_item_amount = row[(int)(PassMission_Field::reward_item_amount)].value<int>();
 
                 PassMissionInfo missionInfo = {
-                index, type, missionCategory, missionGroup, missionStep, required_item_grade, required_count, reward_exp, reward_item, reward_item_amount
+                index, passIndex, type, missionCategory, missionGroup, missionStep, required_item_grade, required_count, reward_exp, reward_item, reward_item_amount
                 };
 
-                PassMissionIndexList[type][missionCategory][missionGroup][missionStep] = index;
+                PassMissionIndexList[passIndex][type][missionCategory][missionGroup][missionStep] = index;
                 PassMissionDataListByIndex[index] = missionInfo;
             }
 
@@ -1212,7 +1213,7 @@ std::unordered_map<int, PassInfo>& TableManager::GetPassList()
     return PassList;
 }
 
-std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, int>>>>& TableManager::GetPassMissionIndexList()
+PASS_MISSION_LIST& TableManager::GetPassMissionIndexList()
 {
     while (mIsLoading.load() == true) {
 

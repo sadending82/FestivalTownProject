@@ -10,6 +10,9 @@
 #define INDEX int
 #define GACHA_GROUP int
 
+// <pass, <type, <category, <group, <step, missionInfo>>>>
+#define PASS_MISSION_LIST std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, int>>>>>
+
 inline constexpr int variableNameIdx = 0;
 
 class TableManager {
@@ -75,8 +78,8 @@ public:
 
 	std::unordered_map<int, PassInfo>& GetPassList();
 
-	// <type, <category, <group, <step, mission_index>>>>
-	std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, int>>>>& GetPassMissionIndexList();
+	// <pass, <type, <category, <group, <step, missionInfo>>>>
+	PASS_MISSION_LIST& GetPassMissionIndexList();
 
 	std::unordered_map<int, PassMissionInfo>& GetPassMissionDataListByIndex();
 
@@ -122,8 +125,8 @@ private:
 
 	std::unordered_map<int, PassInfo> PassList;
 
-	// <type, <category, <group, <step, missionInfo>>>>
-	std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, std::unordered_map<int, int>>>> PassMissionIndexList;
+	// <pass, <type, <category, <group, <step, missionInfo>>>>
+	PASS_MISSION_LIST PassMissionIndexList;
 	std::unordered_map<int, PassMissionInfo> PassMissionDataListByIndex;
 
 

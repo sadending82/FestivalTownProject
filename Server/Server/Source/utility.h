@@ -199,8 +199,8 @@ struct Trie {
 struct PlayerPassInfo {
 	UserPass passState;
 
-	// <level, isRewarded>
-	std::unordered_map<int, bool> isRewardedList;
+	// <level, <type, isRewarded>>
+	std::unordered_map<int, std::unordered_map<int, bool>> isRewardedList;
 
 	void Init(UserPass& userPass) { passState = userPass; }
 
@@ -208,7 +208,7 @@ struct PlayerPassInfo {
 
 	void SetLevel(int value) { passState.passLevel += value; }
 
-	void SetIsRewarded(int level) { isRewardedList[level] = true; }
+	void SetIsRewarded(int level, int type) { isRewardedList[level][type] = true; }
 };
 
 #pragma pack(pop)

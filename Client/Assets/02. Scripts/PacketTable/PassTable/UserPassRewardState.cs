@@ -19,29 +19,25 @@ public struct UserPassRewardState : IFlatbufferObject
   public void __init(int _i, ByteBuffer _bb) { __p = new Table(_i, _bb); }
   public UserPassRewardState __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
-  public bool IsRewarded(int j) { int o = __p.__offset(4); return o != 0 ? 0!=__p.bb.Get(__p.__vector(o) + j * 1) : false; }
-  public int IsRewardedLength { get { int o = __p.__offset(4); return o != 0 ? __p.__vector_len(o) : 0; } }
-#if ENABLE_SPAN_T
-  public Span<bool> GetIsRewardedBytes() { return __p.__vector_as_span<bool>(4, 1); }
-#else
-  public ArraySegment<byte>? GetIsRewardedBytes() { return __p.__vector_as_arraysegment(4); }
-#endif
-  public bool[] GetIsRewardedArray() { return __p.__vector_as_array<bool>(4); }
+  public int PassType { get { int o = __p.__offset(4); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int Level { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public bool IsRewarded { get { int o = __p.__offset(8); return o != 0 ? 0!=__p.bb.Get(o + __p.bb_pos) : (bool)false; } }
 
   public static Offset<PacketTable.PassTable.UserPassRewardState> CreateUserPassRewardState(FlatBufferBuilder builder,
-      VectorOffset is_rewardedOffset = default(VectorOffset)) {
-    builder.StartTable(1);
-    UserPassRewardState.AddIsRewarded(builder, is_rewardedOffset);
+      int pass_type = 0,
+      int level = 0,
+      bool is_rewarded = false) {
+    builder.StartTable(3);
+    UserPassRewardState.AddLevel(builder, level);
+    UserPassRewardState.AddPassType(builder, pass_type);
+    UserPassRewardState.AddIsRewarded(builder, is_rewarded);
     return UserPassRewardState.EndUserPassRewardState(builder);
   }
 
-  public static void StartUserPassRewardState(FlatBufferBuilder builder) { builder.StartTable(1); }
-  public static void AddIsRewarded(FlatBufferBuilder builder, VectorOffset isRewardedOffset) { builder.AddOffset(0, isRewardedOffset.Value, 0); }
-  public static VectorOffset CreateIsRewardedVector(FlatBufferBuilder builder, bool[] data) { builder.StartVector(1, data.Length, 1); for (int i = data.Length - 1; i >= 0; i--) builder.AddBool(data[i]); return builder.EndVector(); }
-  public static VectorOffset CreateIsRewardedVectorBlock(FlatBufferBuilder builder, bool[] data) { builder.StartVector(1, data.Length, 1); builder.Add(data); return builder.EndVector(); }
-  public static VectorOffset CreateIsRewardedVectorBlock(FlatBufferBuilder builder, ArraySegment<bool> data) { builder.StartVector(1, data.Count, 1); builder.Add(data); return builder.EndVector(); }
-  public static VectorOffset CreateIsRewardedVectorBlock(FlatBufferBuilder builder, IntPtr dataPtr, int sizeInBytes) { builder.StartVector(1, sizeInBytes, 1); builder.Add<bool>(dataPtr, sizeInBytes); return builder.EndVector(); }
-  public static void StartIsRewardedVector(FlatBufferBuilder builder, int numElems) { builder.StartVector(1, numElems, 1); }
+  public static void StartUserPassRewardState(FlatBufferBuilder builder) { builder.StartTable(3); }
+  public static void AddPassType(FlatBufferBuilder builder, int passType) { builder.AddInt(0, passType, 0); }
+  public static void AddLevel(FlatBufferBuilder builder, int level) { builder.AddInt(1, level, 0); }
+  public static void AddIsRewarded(FlatBufferBuilder builder, bool isRewarded) { builder.AddBool(2, isRewarded, false); }
   public static Offset<PacketTable.PassTable.UserPassRewardState> EndUserPassRewardState(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<PacketTable.PassTable.UserPassRewardState>(o);
@@ -54,7 +50,9 @@ static public class UserPassRewardStateVerify
   static public bool Verify(Google.FlatBuffers.Verifier verifier, uint tablePos)
   {
     return verifier.VerifyTableStart(tablePos)
-      && verifier.VerifyVectorOfData(tablePos, 4 /*IsRewarded*/, 1 /*bool*/, false)
+      && verifier.VerifyField(tablePos, 4 /*PassType*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 6 /*Level*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 8 /*IsRewarded*/, 1 /*bool*/, 1, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }

@@ -124,6 +124,68 @@ std::vector<uint8_t> PacketMaker::MakeEventRewardResponsePacket(int eventCode, i
 	return std::vector<uint8_t>();
 }
 
+std::vector<uint8_t> PacketMaker::MakeUserPassStatePacket(PlayerPassInfo& playerPassState)
+{
+	flatbuffers::FlatBufferBuilder Builder;
+
+	std::vector<flatbuffers::Offset<PacketTable::PassTable::UserPassRewardState>> passRewardStateVector;
+
+	for (auto& playerPassRewardState : playerPassState.isRewardedList) {
+		int level = playerPassRewardState.first;
+
+		for (auto& innerMap : playerPassRewardState.second) {
+			int type = innerMap.first;
+
+			bool isRewarded = innerMap.second;
+
+			passRewardStateVector.push_back(PacketTable::PassTable::CreateUserPassRewardState(Builder, type, level, isRewarded));
+		}
+	}
+
+	int passIndex = playerPassState.passState.passIndex;
+	int passType = playerPassState.passState.passType;
+	int passLevel = playerPassState.passState.passLevel;
+	int passExp = playerPassState.passState.passExp;
+
+	Builder.Finish(PacketTable::PassTable::CreateUserPassState(Builder, passIndex, passType, passLevel, passExp, Builder.CreateVector(passRewardStateVector)));
+	return MakeBuffer(ePacketType::S2C_PASS_STATE, Builder.GetBufferPointer(), Builder.GetSize());
+}
+
+std::vector<uint8_t> PacketMaker::MakeUserMissionStatePacket(UserMissionList& playerMissionState)
+{
+	flatbuffers::FlatBufferBuilder Builder;
+
+	std::vector<flatbuffers::Offset<PacketTable::PassTable::UserMissionState>> missionStateVector;
+
+	for (auto& missionByPass : playerMissionState.missionList) {
+		int pass_index = missionByPass.first;
+
+		for (auto& missionTypes : missionByPass.second) {
+			int type = missionTypes.first;
+
+			for (auto& missionCategories : missionTypes.second) {
+				int category = missionCategories.first;
+
+				for (auto& missionGroups : missionCategories.second) {
+					int group = missionGroups.first;
+
+					for (auto& missionSteps : missionGroups.second) {
+						int step = missionSteps.first;
+						UserMission& playerMissionState = missionSteps.second;
+						missionStateVector.push_back(PacketTable::PassTable::CreateUserMissionState(Builder, playerMissionState.mission_code
+							, playerMissionState.progress, playerMissionState.is_rewarded));
+					}
+
+				}
+			}
+		}
+	}
+
+	Builder.Finish(PacketTable::PassTable::CreateUserMissionStateList(Builder, Builder.CreateVector(missionStateVector)));
+
+	return MakeBuffer(ePacketType::S2C_PASS_MISSION_STATE, Builder.GetBufferPointer(), Builder.GetSize());
+}
+
 std::vector<uint8_t> PacketMaker::MakePlayerAddPacket(std::vector<class Player*>& players)
 {
 	flatbuffers::FlatBufferBuilder Builder;

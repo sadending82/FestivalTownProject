@@ -19,17 +19,64 @@ static_assert(FLATBUFFERS_VERSION_MAJOR == 24 &&
 namespace PacketTable {
 namespace PassTable {
 
+struct UserPassStateRequest;
+struct UserPassStateRequestBuilder;
+
 struct UserPassState;
 struct UserPassStateBuilder;
 
 struct UserPassRewardState;
 struct UserPassRewardStateBuilder;
 
+struct UserMissionStateRequest;
+struct UserMissionStateRequestBuilder;
+
 struct UserMissionStateList;
 struct UserMissionStateListBuilder;
 
 struct UserMissionState;
 struct UserMissionStateBuilder;
+
+struct UserPassStateRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef UserPassStateRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_PASS_INDEX = 4
+  };
+  int32_t pass_index() const {
+    return GetField<int32_t>(VT_PASS_INDEX, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_PASS_INDEX, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct UserPassStateRequestBuilder {
+  typedef UserPassStateRequest Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_pass_index(int32_t pass_index) {
+    fbb_.AddElement<int32_t>(UserPassStateRequest::VT_PASS_INDEX, pass_index, 0);
+  }
+  explicit UserPassStateRequestBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<UserPassStateRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<UserPassStateRequest>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<UserPassStateRequest> CreateUserPassStateRequest(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t pass_index = 0) {
+  UserPassStateRequestBuilder builder_(_fbb);
+  builder_.add_pass_index(pass_index);
+  return builder_.Finish();
+}
 
 struct UserPassState FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef UserPassStateBuilder Builder;
@@ -134,15 +181,24 @@ inline ::flatbuffers::Offset<UserPassState> CreateUserPassStateDirect(
 struct UserPassRewardState FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef UserPassRewardStateBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_IS_REWARDED = 4
+    VT_PASS_TYPE = 4,
+    VT_LEVEL = 6,
+    VT_IS_REWARDED = 8
   };
-  const ::flatbuffers::Vector<uint8_t> *is_rewarded() const {
-    return GetPointer<const ::flatbuffers::Vector<uint8_t> *>(VT_IS_REWARDED);
+  int32_t pass_type() const {
+    return GetField<int32_t>(VT_PASS_TYPE, 0);
+  }
+  int32_t level() const {
+    return GetField<int32_t>(VT_LEVEL, 0);
+  }
+  bool is_rewarded() const {
+    return GetField<uint8_t>(VT_IS_REWARDED, 0) != 0;
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_IS_REWARDED) &&
-           verifier.VerifyVector(is_rewarded()) &&
+           VerifyField<int32_t>(verifier, VT_PASS_TYPE, 4) &&
+           VerifyField<int32_t>(verifier, VT_LEVEL, 4) &&
+           VerifyField<uint8_t>(verifier, VT_IS_REWARDED, 1) &&
            verifier.EndTable();
   }
 };
@@ -151,8 +207,14 @@ struct UserPassRewardStateBuilder {
   typedef UserPassRewardState Table;
   ::flatbuffers::FlatBufferBuilder &fbb_;
   ::flatbuffers::uoffset_t start_;
-  void add_is_rewarded(::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> is_rewarded) {
-    fbb_.AddOffset(UserPassRewardState::VT_IS_REWARDED, is_rewarded);
+  void add_pass_type(int32_t pass_type) {
+    fbb_.AddElement<int32_t>(UserPassRewardState::VT_PASS_TYPE, pass_type, 0);
+  }
+  void add_level(int32_t level) {
+    fbb_.AddElement<int32_t>(UserPassRewardState::VT_LEVEL, level, 0);
+  }
+  void add_is_rewarded(bool is_rewarded) {
+    fbb_.AddElement<uint8_t>(UserPassRewardState::VT_IS_REWARDED, static_cast<uint8_t>(is_rewarded), 0);
   }
   explicit UserPassRewardStateBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -167,19 +229,43 @@ struct UserPassRewardStateBuilder {
 
 inline ::flatbuffers::Offset<UserPassRewardState> CreateUserPassRewardState(
     ::flatbuffers::FlatBufferBuilder &_fbb,
-    ::flatbuffers::Offset<::flatbuffers::Vector<uint8_t>> is_rewarded = 0) {
+    int32_t pass_type = 0,
+    int32_t level = 0,
+    bool is_rewarded = false) {
   UserPassRewardStateBuilder builder_(_fbb);
+  builder_.add_level(level);
+  builder_.add_pass_type(pass_type);
   builder_.add_is_rewarded(is_rewarded);
   return builder_.Finish();
 }
 
-inline ::flatbuffers::Offset<UserPassRewardState> CreateUserPassRewardStateDirect(
-    ::flatbuffers::FlatBufferBuilder &_fbb,
-    const std::vector<uint8_t> *is_rewarded = nullptr) {
-  auto is_rewarded__ = is_rewarded ? _fbb.CreateVector<uint8_t>(*is_rewarded) : 0;
-  return PacketTable::PassTable::CreateUserPassRewardState(
-      _fbb,
-      is_rewarded__);
+struct UserMissionStateRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef UserMissionStateRequestBuilder Builder;
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           verifier.EndTable();
+  }
+};
+
+struct UserMissionStateRequestBuilder {
+  typedef UserMissionStateRequest Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  explicit UserMissionStateRequestBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<UserMissionStateRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<UserMissionStateRequest>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<UserMissionStateRequest> CreateUserMissionStateRequest(
+    ::flatbuffers::FlatBufferBuilder &_fbb) {
+  UserMissionStateRequestBuilder builder_(_fbb);
+  return builder_.Finish();
 }
 
 struct UserMissionStateList FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {

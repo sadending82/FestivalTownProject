@@ -17,7 +17,7 @@ struct UserPassReward {
 	int passIndex;
 	int passType = 0;
 	int level = 0;
-	bool isRewarded = 0;
+	int isRewarded = 0;
 };
 
 #pragma pack(pop) 

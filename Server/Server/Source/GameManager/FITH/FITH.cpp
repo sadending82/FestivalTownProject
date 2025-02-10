@@ -352,6 +352,9 @@ void FITH::CalculateGameResult(int roomID, std::set<int>& winningTeams)
 
 void FITH::UpdateMissionbyGameRecord(Player* player, sPlayerGameRecord& gameRecord)
 {
+    // 임시
+    int pass_index = 601;
+
     std::vector<UserMission> updatedMissionList;
 
     int killCount = gameRecord.gameRecord.KillCount;
@@ -361,7 +364,7 @@ void FITH::UpdateMissionbyGameRecord(Player* player, sPlayerGameRecord& gameReco
     // 킬 미션
     if (killCount != 0) {
         // 일일 미션
-        for (auto& missionGroupList : player->GetMissionList().missionList[eMissionType::MT_DAILY][eMissionCategory::MC_KILL]) {
+        for (auto& missionGroupList : player->GetMissionList().missionList[pass_index][eMissionType::MT_DAILY][eMissionCategory::MC_KILL]) {
 
             std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
 
@@ -373,7 +376,7 @@ void FITH::UpdateMissionbyGameRecord(Player* player, sPlayerGameRecord& gameReco
         }
 
         // 패스 미션
-        for (auto& missionGroupList : player->GetMissionList().missionList[eMissionType::MT_PASS][eMissionCategory::MC_KILL]) {
+        for (auto& missionGroupList : player->GetMissionList().missionList[pass_index][eMissionType::MT_PASS][eMissionCategory::MC_KILL]) {
 
             std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
 
@@ -388,7 +391,7 @@ void FITH::UpdateMissionbyGameRecord(Player* player, sPlayerGameRecord& gameReco
     // 폭탄 투입 미션
     if (inputBombCount != 0) {
         // 일일 미션
-        for (auto& missionGroupList : player->GetMissionList().missionList[eMissionType::MT_DAILY][eMissionCategory::MC_INPUT_BOMB]) {
+        for (auto& missionGroupList : player->GetMissionList().missionList[pass_index][eMissionType::MT_DAILY][eMissionCategory::MC_INPUT_BOMB]) {
 
             std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
 
@@ -399,7 +402,7 @@ void FITH::UpdateMissionbyGameRecord(Player* player, sPlayerGameRecord& gameReco
         }
 
         // 패스 미션
-        for (auto& missionGroupList : player->GetMissionList().missionList[eMissionType::MT_PASS][eMissionCategory::MC_INPUT_BOMB]) {
+        for (auto& missionGroupList : player->GetMissionList().missionList[pass_index][eMissionType::MT_PASS][eMissionCategory::MC_INPUT_BOMB]) {
 
             std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
 
@@ -413,7 +416,7 @@ void FITH::UpdateMissionbyGameRecord(Player* player, sPlayerGameRecord& gameReco
     // 그로기 미션
     if (groggyCount != 0) {
         // 일일 미션
-        for (auto& missionGroupList : player->GetMissionList().missionList[eMissionType::MT_DAILY][eMissionCategory::MC_GROGGY]) {
+        for (auto& missionGroupList : player->GetMissionList().missionList[pass_index][eMissionType::MT_DAILY][eMissionCategory::MC_GROGGY]) {
 
             std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
 
@@ -424,7 +427,7 @@ void FITH::UpdateMissionbyGameRecord(Player* player, sPlayerGameRecord& gameReco
         }
 
         // 패스 미션
-        for (auto& missionGroupList : player->GetMissionList().missionList[eMissionType::MT_PASS][eMissionCategory::MC_GROGGY]) {
+        for (auto& missionGroupList : player->GetMissionList().missionList[pass_index][eMissionType::MT_PASS][eMissionCategory::MC_GROGGY]) {
 
             std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
 
@@ -438,7 +441,7 @@ void FITH::UpdateMissionbyGameRecord(Player* player, sPlayerGameRecord& gameReco
     // 승리 미션
     if (gameRecord.battleResult == BattleResult::BR_Win) {
         // 일일 미션
-        for (auto& missionGroupList : player->GetMissionList().missionList[eMissionType::MT_DAILY][eMissionCategory::MC_GAME_WINNING]) {
+        for (auto& missionGroupList : player->GetMissionList().missionList[pass_index][eMissionType::MT_DAILY][eMissionCategory::MC_GAME_WINNING]) {
 
             std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
 
@@ -449,7 +452,7 @@ void FITH::UpdateMissionbyGameRecord(Player* player, sPlayerGameRecord& gameReco
         }
 
         // 패스 미션
-        for (auto& missionGroupList : player->GetMissionList().missionList[eMissionType::MT_PASS][eMissionCategory::MC_GAME_WINNING]) {
+        for (auto& missionGroupList : player->GetMissionList().missionList[pass_index][eMissionType::MT_PASS][eMissionCategory::MC_GAME_WINNING]) {
 
             std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
 
@@ -462,7 +465,7 @@ void FITH::UpdateMissionbyGameRecord(Player* player, sPlayerGameRecord& gameReco
 
     // 플레이 미션
     {
-        for (auto& missionGroupList : player->GetMissionList().missionList[eMissionType::MT_DAILY][eMissionCategory::MC_GAME_PLAY]) {
+        for (auto& missionGroupList : player->GetMissionList().missionList[pass_index][eMissionType::MT_DAILY][eMissionCategory::MC_GAME_PLAY]) {
 
             std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
 
@@ -473,7 +476,7 @@ void FITH::UpdateMissionbyGameRecord(Player* player, sPlayerGameRecord& gameReco
         }
 
         // 패스 미션
-        for (auto& missionGroupList : player->GetMissionList().missionList[eMissionType::MT_PASS][eMissionCategory::MC_GAME_PLAY]) {
+        for (auto& missionGroupList : player->GetMissionList().missionList[pass_index][eMissionType::MT_PASS][eMissionCategory::MC_GAME_PLAY]) {
 
             std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
 
