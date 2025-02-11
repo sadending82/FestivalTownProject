@@ -15,6 +15,7 @@ public class UI_Pass : UI_Scene
         DiamondText,
         ExitButton,
         TitleText,
+        PeriodText,
         BuyPassButton,
         PassPanel,
         MissionButton,
@@ -53,6 +54,8 @@ public class UI_Pass : UI_Scene
 
         foreach (var passListData in Managers.Data.PassListDataDict)
         {
+            SetPeriod(passListData.Value.Open_Date, passListData.Value.Close_Date);
+
             for (int i = 1; Managers.Data.PassLevelDataDict.ContainsKey(passListData.Value.Index * 100 + i); ++i)
             {
                 int basicStartIdx = passListData.Value.Index * 100 + i;
@@ -73,6 +76,16 @@ public class UI_Pass : UI_Scene
         Managers.Network.GetPacketManager().SendUserPassStateRequestPacket();
 
         isInitialized = true;
+    }
+
+    public void SetPeriod(int StartDay, int EndDay)
+    {
+        DateTime date = new DateTime(1900, 1, 1);
+        DateTime startDate = date.AddDays(StartDay - 2);
+        DateTime endDate = date.AddDays(EndDay - 2);
+
+        Get<GameObject>((int)GameObjects.PeriodText).GetComponent<TMP_Text>().text =
+            $"진행 기간 : {startDate.ToString("yyyy-MM-dd")} ~ {endDate.ToString("yyyy-MM-dd")}";
     }
 
     public void SetLevel(int level)
