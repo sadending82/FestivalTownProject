@@ -35,13 +35,12 @@ public:
 				std::unordered_map<int, std::set<sDayAttendanceInfo>> attendanceInfoList;
 
 				pServer->GetLobbyManager()->CheckAndLoadUserAttendanceEvent(player, attendanceInfoList);
+				pServer->GetLobbyManager()->UpdateLoginMission(player);
 
 				pServer->GetLobbyManager()->LoadMissionProgress(player);
 				pServer->GetLobbyManager()->LoadPassState(player);
 
 				bool isNewEvent = pServer->GetLobbyManager()->CheckIsNewEvent(userInfo.LastLogin);
-
-				pServer->GetLobbyManager()->UpdateLoginMission(player);
 
 				pPacketSender->SendLoginResponse(key, result.first, userInfo, attendanceInfoList, isNewEvent);
 
