@@ -366,7 +366,7 @@ void FITH::UpdateMissionbyGameRecord(Player* player, sPlayerGameRecord& gameReco
         // 老老 固记
         for (auto& missionGroupList : player->GetMissionList().missionList[pass_index][eMissionType::MT_DAILY][eMissionCategory::MC_KILL]) {
 
-            std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
+            std::unordered_map<int, UserMission>& missionInfos = missionGroupList.second;
 
             for (auto& missionInfo : missionInfos) {
                 missionInfo.second.progress += killCount;
@@ -378,7 +378,7 @@ void FITH::UpdateMissionbyGameRecord(Player* player, sPlayerGameRecord& gameReco
         // 菩胶 固记
         for (auto& missionGroupList : player->GetMissionList().missionList[pass_index][eMissionType::MT_PASS][eMissionCategory::MC_KILL]) {
 
-            std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
+            std::unordered_map<int, UserMission>& missionInfos = missionGroupList.second;
 
             for (auto& missionInfo : missionInfos) {
                 missionInfo.second.progress += killCount;
@@ -393,7 +393,7 @@ void FITH::UpdateMissionbyGameRecord(Player* player, sPlayerGameRecord& gameReco
         // 老老 固记
         for (auto& missionGroupList : player->GetMissionList().missionList[pass_index][eMissionType::MT_DAILY][eMissionCategory::MC_INPUT_BOMB]) {
 
-            std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
+            std::unordered_map<int, UserMission>& missionInfos = missionGroupList.second;
 
             for (auto& missionInfo : missionInfos) {
                 missionInfo.second.progress += inputBombCount;
@@ -404,7 +404,7 @@ void FITH::UpdateMissionbyGameRecord(Player* player, sPlayerGameRecord& gameReco
         // 菩胶 固记
         for (auto& missionGroupList : player->GetMissionList().missionList[pass_index][eMissionType::MT_PASS][eMissionCategory::MC_INPUT_BOMB]) {
 
-            std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
+            std::unordered_map<int, UserMission>& missionInfos = missionGroupList.second;
 
             for (auto& missionInfo : missionInfos) {
                 missionInfo.second.progress += inputBombCount;
@@ -418,7 +418,7 @@ void FITH::UpdateMissionbyGameRecord(Player* player, sPlayerGameRecord& gameReco
         // 老老 固记
         for (auto& missionGroupList : player->GetMissionList().missionList[pass_index][eMissionType::MT_DAILY][eMissionCategory::MC_GROGGY]) {
 
-            std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
+            std::unordered_map<int, UserMission>& missionInfos = missionGroupList.second;
 
             for (auto& missionInfo : missionInfos) {
                 missionInfo.second.progress += groggyCount;
@@ -429,7 +429,7 @@ void FITH::UpdateMissionbyGameRecord(Player* player, sPlayerGameRecord& gameReco
         // 菩胶 固记
         for (auto& missionGroupList : player->GetMissionList().missionList[pass_index][eMissionType::MT_PASS][eMissionCategory::MC_GROGGY]) {
 
-            std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
+            std::unordered_map<int, UserMission>& missionInfos = missionGroupList.second;
 
             for (auto& missionInfo : missionInfos) {
                 missionInfo.second.progress += groggyCount;
@@ -443,7 +443,7 @@ void FITH::UpdateMissionbyGameRecord(Player* player, sPlayerGameRecord& gameReco
         // 老老 固记
         for (auto& missionGroupList : player->GetMissionList().missionList[pass_index][eMissionType::MT_DAILY][eMissionCategory::MC_GAME_WINNING]) {
 
-            std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
+            std::unordered_map<int, UserMission>& missionInfos = missionGroupList.second;
 
             for (auto& missionInfo : missionInfos) {
                 missionInfo.second.progress++;
@@ -454,7 +454,7 @@ void FITH::UpdateMissionbyGameRecord(Player* player, sPlayerGameRecord& gameReco
         // 菩胶 固记
         for (auto& missionGroupList : player->GetMissionList().missionList[pass_index][eMissionType::MT_PASS][eMissionCategory::MC_GAME_WINNING]) {
 
-            std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
+            std::unordered_map<int, UserMission>& missionInfos = missionGroupList.second;
 
             for (auto& missionInfo : missionInfos) {
                 missionInfo.second.progress++;
@@ -467,7 +467,7 @@ void FITH::UpdateMissionbyGameRecord(Player* player, sPlayerGameRecord& gameReco
     {
         for (auto& missionGroupList : player->GetMissionList().missionList[pass_index][eMissionType::MT_DAILY][eMissionCategory::MC_GAME_PLAY]) {
 
-            std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
+            std::unordered_map<int, UserMission>& missionInfos = missionGroupList.second;
 
             for (auto& missionInfo : missionInfos) {
                 missionInfo.second.progress++;
@@ -478,7 +478,7 @@ void FITH::UpdateMissionbyGameRecord(Player* player, sPlayerGameRecord& gameReco
         // 菩胶 固记
         for (auto& missionGroupList : player->GetMissionList().missionList[pass_index][eMissionType::MT_PASS][eMissionCategory::MC_GAME_PLAY]) {
 
-            std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
+            std::unordered_map<int, UserMission>& missionInfos = missionGroupList.second;
 
             for (auto& missionInfo : missionInfos) {
                 missionInfo.second.progress++;

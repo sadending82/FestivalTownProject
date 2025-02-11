@@ -302,7 +302,7 @@ bool LobbyManager::UpdateGachaMission(Player* player, int itemCode)
 		// 老老 固记
 		for (auto& missionGroupList : player->GetMissionList().missionList[pass_index][eMissionType::MT_DAILY][eMissionCategory::MC_GACHA]) {
 
-			std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
+			std::unordered_map<int, UserMission>& missionInfos = missionGroupList.second;
 
 			for (auto& missionInfo : missionInfos) {
 				missionInfo.second.progress++;
@@ -314,7 +314,7 @@ bool LobbyManager::UpdateGachaMission(Player* player, int itemCode)
 		// 菩胶 固记
 		for (auto& missionGroupList : player->GetMissionList().missionList[pass_index][eMissionType::MT_PASS][eMissionCategory::MC_GACHA]) {
 
-			std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
+			std::unordered_map<int, UserMission>& missionInfos = missionGroupList.second;
 
 			for (auto& missionInfo : missionInfos) {
 				missionInfo.second.progress++;
@@ -333,7 +333,7 @@ bool LobbyManager::UpdateGachaMission(Player* player, int itemCode)
 		// 老老 固记
 		for (auto& missionGroupList : player->GetMissionList().missionList[pass_index][eMissionType::MT_DAILY][eMissionCategory::MC_GET_ITEM]) {
 
-			std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
+			std::unordered_map<int, UserMission>& missionInfos = missionGroupList.second;
 
 			for (auto& missionInfo : missionInfos) {
 
@@ -350,7 +350,7 @@ bool LobbyManager::UpdateGachaMission(Player* player, int itemCode)
 		// 菩胶 固记
 		for (auto& missionGroupList : player->GetMissionList().missionList[pass_index][eMissionType::MT_PASS][eMissionCategory::MC_GET_ITEM]) {
 
-			std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
+			std::unordered_map<int, UserMission>& missionInfos = missionGroupList.second;
 
 			for (auto& missionInfo : missionInfos) {
 
@@ -394,7 +394,7 @@ bool LobbyManager::UpdateLoginMission(Player* player)
 			// 老老 固记
 			for (auto& missionGroupList : player->GetMissionList().missionList[pass_index][eMissionType::MT_DAILY][eMissionCategory::MC_ATTENDANCE]) {
 
-				std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
+				std::unordered_map<int, UserMission>& missionInfos = missionGroupList.second;
 
 				for (auto& missionInfo : missionInfos) {
 					missionInfo.second.progress++;
@@ -406,7 +406,7 @@ bool LobbyManager::UpdateLoginMission(Player* player)
 			// 菩胶 固记
 			for (auto& missionGroupList : player->GetMissionList().missionList[pass_index][eMissionType::MT_PASS][eMissionCategory::MC_ATTENDANCE]) {
 
-				std::unordered_map<int, UserMission> missionInfos = missionGroupList.second;
+				std::unordered_map<int, UserMission>& missionInfos = missionGroupList.second;
 
 				for (auto& missionInfo : missionInfos) {
 					missionInfo.second.progress++;
