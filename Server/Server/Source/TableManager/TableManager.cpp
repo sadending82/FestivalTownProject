@@ -962,9 +962,10 @@ void TableManager::ReadPassList()
 
             if (!row.empty()) {
                 int index = row[(int)(PassList_Field::index)].value<int>();
+                int limit_exp_daily_mission = row[(int)(PassList_Field::limit_exp_daily_mission)].value<int>();
+                int level_repeated_reward = row[(int)(PassList_Field::level_repeated_reward)].value<int>();
                 std::time_t openTime = static_cast<std::time_t>((row[(int)(PassList_Field::open_date)].value<double>() - 25569) * 86400);
                 std::time_t closeTime = static_cast<std::time_t>((row[(int)(PassList_Field::close_date)].value<double>() - 25569) * 86400);
-
                 std::tm openDate = {}, closeDate = {};
 
                 localtime_s(&openDate, &openTime);
@@ -973,6 +974,8 @@ void TableManager::ReadPassList()
                 PassInfo passInfo;
 
                 passInfo.index = index;
+                passInfo.limit_exp_daily_mission = limit_exp_daily_mission;
+                passInfo.level_repeated_reward = level_repeated_reward;
                 passInfo.open_date = openDate;
                 passInfo.close_date = closeDate;
 

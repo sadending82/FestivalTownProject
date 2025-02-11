@@ -10,6 +10,8 @@
 enum class PassList_Field {
 	index = 0,
 	name,
+	limit_exp_daily_mission,
+	level_repeated_reward,
 	open_date,
 	close_date,
 };
@@ -53,6 +55,8 @@ struct PassLevel {
 
 struct PassInfo {
 	int index;
+	int limit_exp_daily_mission;
+	int level_repeated_reward;
 	std::tm open_date;
 	std::tm close_date;
 
