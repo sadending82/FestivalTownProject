@@ -461,7 +461,7 @@ bool LobbyManager::CheckCompleteMission(Player* player, int missionCode)
 		int nextMissionCode = nextMissioniter->second;
 
 		UserMission newMission;
-		newMission.Init(player->GetUID(), pTableManager->GetPassMissionDataListByIndex()[nextMissionCode]);
+		newMission.Init(player->GetUID(), pTableManager->GetPassMissionDataListByIndex()[nextMissionCode], currMission.progress);
 
 		playerMissionList.insert({nextStep, newMission });
 

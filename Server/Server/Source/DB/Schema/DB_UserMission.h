@@ -30,13 +30,13 @@ struct UserMission{
 		is_rewarded = 0;
 	}
 
-	void Init(const int uid, const PassMissionInfo& missionInfo) {
+	void Init(const int uid, const PassMissionInfo& missionInfo, int beforeStepProgress) {
 		user_UID = uid;
 		mission_code = missionInfo.index;
 		mission_type = missionInfo.type;
 		mission_group = missionInfo.mission_group;
 		mission_step = missionInfo.mission_step;
-		progress = 0;
+		progress = beforeStepProgress;
 		required_count = missionInfo.required_count;
 		is_rewarded = 0;
 	}
