@@ -36,8 +36,6 @@ public class UI_PassLevelItem : UI_Base
 
         Get<GameObject>((int)GameObjects.ItemBasic).BindEvent((PointerEventData) =>
         {
-
-
             if (_basicPassRewarded == false)
             {
                 if (_basicPassListIdx != -1 )
@@ -79,7 +77,7 @@ public class UI_PassLevelItem : UI_Base
         SetBasicItemImage(basicItemIdx);
         SetPlusItemImage(plusItemIdx);
         _basicPassListIdx = basicPassListIdx;
-        _plusPassListIdx = plusItemIdx;
+        _plusPassListIdx = plusPassListIdx;
     }
 
     public void SetItemRewarded(int idx, bool isRewarded)
