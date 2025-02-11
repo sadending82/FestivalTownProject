@@ -125,7 +125,7 @@ const wchar_t* UpsertUserMission_Query_Front = L"MERGE INTO GameDB.dbo.UserMissi
 const wchar_t* UpsertUserMission_Query_Back = L") AS Source(user_UID, mission_code, mission_type, mission_group, mission_step, progress, required_count, assigned_date, is_rewarded) "
 												L"ON Target.user_UID = Source.user_UID AND Target.mission_code = Source.mission_code AND Target.assigned_date = Source.assigned_date "
 												L"WHEN MATCHED THEN "
-												L"UPDATE SET Target.progress = Source.progress "
+												L"UPDATE SET Target.progress = Source.progress, Target.is_rewarded = Source.is_rewarded "
 												L"WHEN NOT MATCHED BY TARGET THEN "
 												L"INSERT "
 												L"VALUES(Source.user_UID, Source.mission_code, Source.mission_type, Source.mission_group, Source.mission_step, Source.progress, Source.required_count, Source.assigned_date, Source.is_rewarded);";

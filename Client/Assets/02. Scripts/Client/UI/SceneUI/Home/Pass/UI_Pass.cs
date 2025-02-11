@@ -72,8 +72,6 @@ public class UI_Pass : UI_Scene
 
         Managers.Network.GetPacketManager().SendUserPassStateRequestPacket();
 
-        Debug.Log("Send Pass Request Packet");
-
         isInitialized = true;
     }
 

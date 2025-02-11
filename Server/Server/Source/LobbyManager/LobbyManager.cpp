@@ -482,7 +482,8 @@ bool LobbyManager::GiveMissionReward(Player* player, PassMissionInfo& missionInf
 	PlayerPassInfo& playerPassInfo = player->GetPassInfo()[passIndex];
 
 	// 패스 경험치
-	playerPassInfo.SetExp(missionInfo.reward_exp);
+	const int currExp = playerPassInfo.passState.passExp;
+	playerPassInfo.SetExp(currExp + missionInfo.reward_exp);
 	CheckPassLevelUp(player, playerPassInfo);
 	pDB->UpsertUserPass(uid, playerPassInfo.passState);
 
@@ -511,8 +512,12 @@ bool LobbyManager::CheckPassLevelUp(Player* player, PlayerPassInfo& playerPassIn
 
 	// 임시
 	if (currExp >= expLimit) {
-		playerPassInfo.SetExp(currExp - expLimit);
-		playerPassInfo.SetLevel(currLevel + 1);
+
+		const int nextExp = currExp % expLimit;
+		const int nextLevel = currLevel + (currExp / expLimit);
+
+		playerPassInfo.SetExp(nextExp);
+		playerPassInfo.SetLevel(nextLevel);
 
 		return true;
 	}
