@@ -30,6 +30,7 @@ public:
 				int passType = read->pass_type();
 				int passLevel = read->pass_level();
 				
+
 				bool result = lobbyManager->GivePassReward(player, passIndex, passType, passLevel);
 
 				PassLevel& passLevelInfo = tableManager->GetPassList()[passIndex].passLevelList[passLevel][passType];

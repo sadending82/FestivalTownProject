@@ -152,9 +152,9 @@ const wchar_t* UpsertUserPass_Query
 L"USING (VALUES (?, ?, ?, ?, ?)) AS Source(user_UID, pass_code, pass_type, pass_level, pass_exp) "
 L"ON Target.user_UID = Source.user_UID AND Target.pass_code = Source.pass_code "
 L"WHEN MATCHED THEN "
-L"UPDATE SET Target.pass_exp = Source.pass_exp AND Target.pass_level = Source.pass_level "
+L"UPDATE SET Target.pass_exp = Source.pass_exp, Target.pass_level = Source.pass_level "
 L"WHEN NOT MATCHED THEN "
-L"INSERT VALUES(Source.user_UID, Source.pass_code, Source.pass_type, Source.pass_level, Source.pass_exp)";
+L"INSERT VALUES(Source.user_UID, Source.pass_code, Source.pass_type, Source.pass_level, Source.pass_exp);";
 
 const wchar_t* UpdateUserPassReward_isRewarded_Query
 = L"UPDATE GameDB.dbo.UserItem SET is_rewarded = ? ";

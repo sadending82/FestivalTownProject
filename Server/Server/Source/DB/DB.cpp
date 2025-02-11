@@ -1616,6 +1616,7 @@ ERROR_CODE DB::UpsertUserPass(const int uid, UserPass& passInfo)
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
+
 	SQLPrepare(hStmt, (SQLWCHAR*)UpsertUserPass_Query, SQL_NTS);
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (SQLPOINTER)(&uid), 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (SQLPOINTER)(&passInfo.passIndex), 0, NULL);
