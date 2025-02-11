@@ -35,7 +35,7 @@ public class UI_Mission : UI_PopUp
         // 일일 미션에는 프로그래스가 있음.
         var progressUI = Managers.UI.MakeSubItem<UI_DailyProgress>(missionPanel.GetCategoryContent(0));
         progressUI.Init();
-
+        /*
         foreach (var passMissionData in Managers.Data.PassMissionDataDict)
         {
             switch(passMissionData.Value.Type)
@@ -71,7 +71,7 @@ public class UI_Mission : UI_PopUp
                     break;
             }
         }
-
+        */
         Get<GameObject>((int)GameObjects.ExitButton).BindEvent((PointerEventData) =>
         {
             Managers.UI.ClosePopUpUI(this);
@@ -88,5 +88,47 @@ public class UI_Mission : UI_PopUp
     {
         missionDatas[idx].SetMissionCounted(count);
         missionDatas[idx].SetRewarded(isRewarded);
+    }
+
+    public void AddMission(int missionIdx, int count, bool isRewarded)
+    {
+        Managers.Data.PassMissionDataDict.TryGetValue(missionIdx , out var passMissionData);
+
+        var missionPanel = Get<GameObject>((int)GameObjects.MissionPanel).GetComponent<UI_MissionPanel>();
+
+        switch (passMissionData.Type)
+        {
+            case (int)Define.MissionType.DailyMission:
+                {
+                    var ui = Managers.UI.MakeSubItem<UI_MissionData>(missionPanel.GetCategoryContent((int)Define.MissionType.DailyMission - 1));
+                    missionDatas.TryAdd(passMissionData.Index, ui);
+                    ui.Init();
+                    ui.SetMissionIndex(passMissionData.Index);
+                    ui.SetTitle(passMissionData.Mission_Name);
+                    ui.SetDescription(passMissionData.Mission_Description);
+                    ui.SetExp(passMissionData.Reward_Exp);
+                    ui.SetRequired(passMissionData.Required_Count);
+                    ui.SetType(Define.MissionType.DailyMission);
+                    ui.SetReward(passMissionData.Reward_Item, passMissionData.Reward_Item_Amount);
+                    ui.SetMissionCounted(count);
+                    ui.SetRewarded(isRewarded);
+                }
+                break;
+            case (int)Define.MissionType.PassMission:
+                {
+                    var ui = Managers.UI.MakeSubItem<UI_MissionData>(missionPanel.GetCategoryContent((int)Define.MissionType.PassMission - 1));
+                    missionDatas.TryAdd(passMissionData.Index, ui);
+                    ui.Init();
+                    ui.SetMissionIndex(passMissionData.Index);
+                    ui.SetTitle(passMissionData.Mission_Name);
+                    ui.SetDescription(passMissionData.Mission_Description);
+                    ui.SetRequired(passMissionData.Required_Count);
+                    ui.SetExp(passMissionData.Reward_Exp);
+                    ui.SetType(Define.MissionType.PassMission);
+                    ui.SetMissionCounted(count);
+                    ui.SetRewarded(isRewarded);
+                }
+                break;
+        }
     }
 }

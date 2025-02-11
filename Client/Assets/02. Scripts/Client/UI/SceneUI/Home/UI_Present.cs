@@ -8,7 +8,7 @@ public class UI_Present : UI_Scene
 
     enum GameObjects
     {
-        Panel,
+        BG,
         GoldPanel,
         GoldText,
         DiamondPanel,

@@ -31,7 +31,7 @@ namespace Network.PacketProcessor
 
                 Debug.Log($"recv {mission_index} mission Data. index : {mission_index}, progress : {progress}, is_completed : {is_completed}");
 
-                MissionUI.ChangeMissionData(mission_index, progress, is_completed);
+                MissionUI.AddMission(mission_index, progress, is_completed);
             }
 
         }
