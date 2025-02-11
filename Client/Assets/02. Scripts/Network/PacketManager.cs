@@ -12,6 +12,7 @@ using PacketTable.PlayerTable;
 using static UnityEngine.GraphicsBuffer;
 using TMPro;
 using System.Diagnostics.Tracing;
+using PacketTable.PassTable;
 
 public class PacketManager : MonoBehaviour 
 {
@@ -65,6 +66,8 @@ public class PacketManager : MonoBehaviour
             //{ ePacketType.S2C_EVENT_REWARD_RESPONSE, new EventRewardResponseProcessor() },
             { ePacketType.S2C_PASS_STATE, new UserPassStateProcessor() },
             { ePacketType.S2C_PASS_MISSION_STATE, new UserMissionStateProcessor() },
+            { ePacketType.S2C_MISSION_COMPLETE_RESPONSE, new MissionCompleteResponseProcessor() },
+            { ePacketType.S2C_PASS_REWARD_RESPONSE, new PassRewardResponseProcessor() },
 
             { ePacketType.S2C_PLAYER_ADD, new PlayerAddProcessor() },
             { ePacketType.S2C_PLAYER_DELETE, new PlayerDeleteProcessor() },
