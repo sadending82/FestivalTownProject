@@ -86,6 +86,8 @@ public class DataManager
     bool hasAttendanceUIPopUp = false;
 
     string NickName = "DefaultNick";
+    int PassLevel = 0;
+    int PassExp = 0;
 
     public void Init()
     {
@@ -93,14 +95,14 @@ public class DataManager
         LoadModeData();
 
         Define.ItemData item = new Define.ItemData();
-        foreach(Define.ItemType type in Enum.GetValues(typeof(Define.ItemType)))
+        foreach (Define.ItemType type in Enum.GetValues(typeof(Define.ItemType)))
         {
             item.Type = (int)type;
             item.ItemUid = -1;
             item.ItemCode = -1;
 
             PlayerCustomizingData.Add((int)type, item);
-        }  
+        }
     }
 
     public GameDataEntity GetData(int dataIndex)
@@ -135,11 +137,11 @@ public class DataManager
 
         return data;
     }
-    
+
     public FITHModeEntity GetModeData(int dataIndex)
     {
         FITHModeDataDict.TryGetValue(dataIndex, out FITHModeEntity data);
-        if(data == null)
+        if (data == null)
         {
             return null;
         }
@@ -234,13 +236,13 @@ public class DataManager
         Gacha gachaData = Managers.Resource.Load<Gacha>($"Data/Gacha");
         if (gachaData != null)
         {
-            foreach(GachaGroupEntity entity in gachaData.GachaGroup)
+            foreach (GachaGroupEntity entity in gachaData.GachaGroup)
             {
                 GachaGroupDict.TryAdd(entity.Index, entity);
                 GachaGroupDict[entity.Index].ClassType = Define.ExcelDataClassType.GachaGroup;
             }
 
-            foreach(GachaGroupItemEntity entity in gachaData.GachaGroup_Item)
+            foreach (GachaGroupItemEntity entity in gachaData.GachaGroup_Item)
             {
                 GachaGroupItemDict.TryAdd(entity.Index, entity);
                 GachaGroupItemDict[entity.Index].ClassType = Define.ExcelDataClassType.GachaGroupItem;
@@ -250,10 +252,10 @@ public class DataManager
         Item itemData = Managers.Resource.Load<Item>($"Data/item");
         if (itemData != null)
         {
-            foreach(ItemEntity entity in itemData.Item_List)
+            foreach (ItemEntity entity in itemData.Item_List)
             {
                 ItemDict.TryAdd(entity.Index, entity);
-                if(entity.Index >= 100000 && entity.Index <= 100999)
+                if (entity.Index >= 100000 && entity.Index <= 100999)
                 {
                     PlayerDataDict.TryAdd(entity.Index, -1);
                 }
@@ -264,7 +266,7 @@ public class DataManager
         Weapon_Stat weaponData = Managers.Resource.Load<Weapon_Stat>($"Data/Weapon_Stat");
         if (weaponData != null)
         {
-            foreach(WeaponStatEntity entity in weaponData.Stat)
+            foreach (WeaponStatEntity entity in weaponData.Stat)
             {
                 GameDataDict.TryAdd(entity.Index, entity);
                 GameDataDict[entity.Index].ClassType = Define.ExcelDataClassType.WeaponStat;
@@ -274,13 +276,13 @@ public class DataManager
         Event eventData = Managers.Resource.Load<Event>($"Data/Event");
         if (eventData != null)
         {
-            foreach(EventMainEntity entity in eventData.Event_Main)
+            foreach (EventMainEntity entity in eventData.Event_Main)
             {
                 EventMainDataDict.TryAdd(entity.Event_Id, entity);
                 EventMainDataDict[entity.Event_Id].ClassType = Define.ExcelDataClassType.EventMain;
             }
 
-            foreach(EventListEntity entity in eventData.Event_List)
+            foreach (EventListEntity entity in eventData.Event_List)
             {
                 EventListDataDict.TryAdd(entity.Index, entity);
                 EventListDataDict[entity.Index].ClassType = Define.ExcelDataClassType.EventList;
@@ -290,13 +292,13 @@ public class DataManager
         Mission missionData = Managers.Resource.Load<Mission>($"Data/Mission");
         if (missionData != null)
         {
-            foreach(MissionTypeEntity entity in missionData.Type_Mission)
+            foreach (MissionTypeEntity entity in missionData.Type_Mission)
             {
                 MissionTypeDataDict.TryAdd(entity.Index, entity);
                 MissionTypeDataDict[entity.Index].ClassType = Define.ExcelDataClassType.MissionType;
             }
 
-            foreach(MissionListEntity entity in  missionData.List_Mission)
+            foreach (MissionListEntity entity in missionData.List_Mission)
             {
                 MissionListDataDict.TryAdd(entity.Index, entity);
                 MissionListDataDict[entity.Index].ClassType = Define.ExcelDataClassType.MissionList;
@@ -304,15 +306,15 @@ public class DataManager
         }
 
         Map mapData = Managers.Resource.Load<Map>($"Data/Map");
-        if ( mapData != null )
+        if (mapData != null)
         {
-            foreach(MapThemeEntity entity in mapData.Theme)
+            foreach (MapThemeEntity entity in mapData.Theme)
             {
                 MapThemeDataDict.TryAdd(entity.Index, entity);
                 MapThemeDataDict[entity.Index].ClassType = Define.ExcelDataClassType.MapTheme;
             }
 
-            foreach(MapDataEntity entity in mapData.Data)
+            foreach (MapDataEntity entity in mapData.Data)
             {
                 MapDataDict.TryAdd(entity.Index, entity);
                 MapDataDict[entity.Index].ClassType = Define.ExcelDataClassType.MapData;
@@ -320,21 +322,21 @@ public class DataManager
         }
 
         Pass passData = Managers.Resource.Load<Pass>($"Data/Pass");
-        if ( passData != null )
+        if (passData != null)
         {
-            foreach(PassListEntity entity in passData.Pass_List)
+            foreach (PassListEntity entity in passData.Pass_List)
             {
                 PassListDataDict.TryAdd(entity.Index, entity);
                 PassListDataDict[entity.Index].ClassType = Define.ExcelDataClassType.PassList;
             }
 
-            foreach(PassLevelEntity entity in passData.Pass_Level)
+            foreach (PassLevelEntity entity in passData.Pass_Level)
             {
                 PassLevelDataDict.TryAdd(entity.Index, entity);
                 PassLevelDataDict[entity.Index].ClassType = Define.ExcelDataClassType.PassLevel;
             }
 
-            foreach(PassMissionEntity entity in passData.Pass_Mission)
+            foreach (PassMissionEntity entity in passData.Pass_Mission)
             {
                 PassMissionDataDict.TryAdd(entity.Index, entity);
                 PassMissionDataDict[entity.Index].ClassType = Define.ExcelDataClassType.PassMission;
@@ -366,7 +368,7 @@ public class DataManager
                 break;
         }
 
-        switch(modeNumStr[1])
+        switch (modeNumStr[1])
         {
             case '1':
                 indices.Add(3);
@@ -387,7 +389,7 @@ public class DataManager
 
         Debug.Log($"indices : {debugStr}");
 
-        return indices;  
+        return indices;
     }
 
     /// <summary>
@@ -399,9 +401,9 @@ public class DataManager
     {
         List<int> TipIndices = new();
 
-        foreach(var tipData in ModeTipDataDict)
+        foreach (var tipData in ModeTipDataDict)
         {
-            if(TypeIndices.Contains(tipData.Value.Tip_Type))
+            if (TypeIndices.Contains(tipData.Value.Tip_Type))
             {
                 TipIndices.Add(tipData.Key);
             }
@@ -531,5 +533,25 @@ public class DataManager
     public void SetAttendanceUIPopUp(bool value)
     {
         hasAttendanceUIPopUp = value;
+    }
+
+    public void SetPassLevel(int level)
+    {
+        PassLevel = level;
+    }
+
+    public int GetPassLevel()
+    {
+        return PassLevel;
+    }
+
+    public void SetPassExp(int exp)
+    {
+        PassExp = exp;
+    }
+
+    public int GetPassExp()
+    {
+        return PassExp;
     }
 }

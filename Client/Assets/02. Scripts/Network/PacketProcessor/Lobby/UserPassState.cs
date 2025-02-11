@@ -21,10 +21,10 @@ namespace Network.PacketProcessor
             int pass_level = Data.PassLevel;
             int pass_exp = Data.PassExp;
 
-
+            Debug.Log($"Set PassLevel and Exp level : {pass_level}, Exp : {pass_exp}");
 
             var ui = Managers.UI.GetCurrentSceneUI().GetComponent<UI_Pass>();
-            if (ui != null) return;
+            if (ui == null) return;
 
             Debug.Log($"Pass Data Recved. {pass_index}, {pass_type}, {pass_level}, {pass_exp}");
 

@@ -36,12 +36,18 @@ public class UI_PassLevelItem : UI_Base
 
         Get<GameObject>((int)GameObjects.ItemBasic).BindEvent((PointerEventData) =>
         {
-            if(_basicPassRewarded == false)
+
+
+            if (_basicPassRewarded == false)
             {
-                if (_basicPassListIdx != -1)
+                if (_basicPassListIdx != -1 )
                 {
-                    Managers.Network.GetPacketManager().SendPassRewardResponsePacket(_basicPassListIdx / 100, (int)PassType.PassBasic, _basicPassListIdx % 100);
-                    Debug.Log($"{_basicPassListIdx} Recv Request Send. type : {(int)PassType.PassBasic}");
+                    int passLevel = Managers.Data.GetPassLevel();
+                    if (Managers.Data.PassLevelDataDict[_basicPassListIdx].Level <= passLevel)
+                    {
+                        Managers.Network.GetPacketManager().SendPassRewardResponsePacket(_basicPassListIdx / 100, (int)PassType.PassBasic, _basicPassListIdx % 100);
+                        Debug.Log($"{_basicPassListIdx} Recv Request Send. type : {(int)PassType.PassBasic}");
+                    }
                 }
             }
         });
@@ -52,8 +58,12 @@ public class UI_PassLevelItem : UI_Base
             {
                 if (_plusPassListIdx != -1)
                 {
-                    Managers.Network.GetPacketManager().SendPassRewardResponsePacket((_plusPassListIdx / 100) - 1, (int)PassType.PassPlus, _plusPassListIdx % 100);
-                    Debug.Log($"{_plusPassListIdx} Recv Request Send. type : {(int)PassType.PassPlus}");
+                    int passLevel = Managers.Data.GetPassLevel();
+                    if (Managers.Data.PassLevelDataDict[_plusPassListIdx].Level <= passLevel)
+                    {
+                        Managers.Network.GetPacketManager().SendPassRewardResponsePacket((_plusPassListIdx / 100) - 1, (int)PassType.PassPlus, _plusPassListIdx % 100);
+                        Debug.Log($"{_plusPassListIdx} Recv Request Send. type : {(int)PassType.PassPlus}");
+                    }
                 }
             }
         });

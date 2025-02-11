@@ -32,6 +32,14 @@ namespace Network.PacketProcessor
                 int pass_level = Data.PassLevel;
                 int pass_exp = Data.PassExp;
 
+                var PassUI = Managers.UI.GetCurrentSceneUI().GetComponent<UI_Pass>();
+                if (PassUI != null)
+                {
+                    Managers.Data.SetPassLevel(pass_level);
+                    Managers.Data.SetPassExp(pass_exp);
+                    PassUI.SetLevel(pass_level);
+                    PassUI.SetProgress(pass_exp, 100);
+                }
 
                 int reward_item_index = Data.RewardItemIndex;
                 int reward_item_amount = Data.RewardItemAmount;
