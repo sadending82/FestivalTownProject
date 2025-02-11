@@ -209,6 +209,14 @@ void LobbyManager::LoadPassState(Player* player)
 
 		UserPass passState = pDB->SelectUserPass(uid, passInfo.second.index);
 
+		// db에 패스 데이터가 없으면 초기값으로 초기화
+		if (passState.passIndex == 0) {
+			passState.passIndex = passIndex;
+			passState.passType = ePassType::PT_NORMAL;
+			passState.passLevel = 0;
+			passState.passExp = 0;
+		}
+
 		playerPassStateList[passIndex].Init(passState);
 
 		std::unordered_map<int, UserPassReward> passRewardStates = pDB->SelectUserPassReward(uid, passInfo.second.index);
@@ -514,10 +522,22 @@ bool LobbyManager::CheckPassLevelUp(Player* player, PlayerPassInfo& playerPassIn
 
 bool LobbyManager::GivePassReward(Player* player, int pass_index, int pass_type, int reward_level)
 {
-	int uid = player->GetUID();
+	const int uid = player->GetUID();
 	PlayerPassInfo& playerPassInfo = player->GetPassInfo()[pass_index];
 
-	PassLevel& passLevelInfo = pTableManager->GetPassList()[pass_index].passLevelList[reward_level][pass_type];
+	const PassLevel& passLevelInfo = pTableManager->GetPassList()[pass_index].passLevelList[reward_level][pass_type];
+
+	// 수령 가능 여부 체크
+	if (pass_type == ePassType::PT_PREMIUM && playerPassInfo.passState.passType != ePassType::PT_PREMIUM) {
+		return false;
+	}
+	if (playerPassInfo.isRewardedList[reward_level][pass_type] == true) {
+		return false;
+	}
+	if (playerPassInfo.passState.passLevel < reward_level) {
+		return false;
+	}
+
 
 	// 아이템 지급
 	int itemCode = passLevelInfo.Reward_Item_Index;
@@ -530,6 +550,8 @@ bool LobbyManager::GivePassReward(Player* player, int pass_index, int pass_type,
 		else {
 			pDB->InsertUserItem(uid, itemCode, passLevelInfo.Reward_Item_Amount, (int)rewardInfo.Item_Type);
 		}
+
+		pDB->InsertUserPassReward(uid, passLevelInfo);
 
 		playerPassInfo.SetIsRewarded(reward_level, pass_type);
 

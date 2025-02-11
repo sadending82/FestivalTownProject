@@ -197,6 +197,11 @@ enum CustomizingItemType {
     CI_EMO = 24
 };
 
+enum ePassType {
+    PT_NORMAL = 1,
+    PT_PREMIUM = 2
+};
+
 enum eMissionType {
     MT_DAILY = 1,
     MT_PASS = 2
