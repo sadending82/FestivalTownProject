@@ -270,6 +270,18 @@ public class PacketManager : MonoBehaviour
         if (packet == null) { return; }
         SendPacket(packet);
     }
+    public void SendMissionCompleteResponsePacket(int mission_index)
+    {
+        byte[] packet = _packetMaker.MakeMissionCompleteRequestPacket(mission_index);
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+    public void SendPassRewardResponsePacket(int pass_index, int pass_type, int pass_level)
+    {
+        byte[] packet = _packetMaker.MakePassRewardRequestPacket(pass_index, pass_type, pass_level);
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
 
     // ------------------ Player ------------------
     public void SendPlayerSyncPacket(Vector3 position, Vector3 direction, int stamina, int id)

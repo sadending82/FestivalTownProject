@@ -1,0 +1,40 @@
+﻿using Google.FlatBuffers;
+using NetworkProtocol;
+using PacketTable.PassTable;
+
+using System.Collections.Generic;
+
+using UnityEngine;
+
+namespace Network.PacketProcessor
+{
+    public class MissionCompleteResponseProcessor : PacketProcessor
+    {
+        public override void Process(PacketManager packetmanager, byte[] data)
+        {
+            var bb = new ByteBuffer(data);
+
+            var Data = MissionCompleteResponse.GetRootAsMissionCompleteResponse(bb);
+
+            int result = Data.Result;
+
+            if (result == 0)
+            {
+
+            }
+            else if (result == 1)
+            {
+                int mission_index = Data.MissionIndex;
+
+                int pass_index = Data.PassIndex;
+                int pass_level = Data.PassLevel;
+                int pass_exp = Data.PassExp;
+
+
+                int reward_item_index = Data.RewardItemIndex;
+                int reward_item_amount = Data.RewardItemAmount;
+
+            }
+        }
+    }
+}
