@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using Unity.VisualScripting;
 
 public class UI_MissionData : UI_Base
 {
@@ -17,8 +18,11 @@ public class UI_MissionData : UI_Base
 
     bool isInitialized = false;
     string baseTitle = "";
+    int missionIdx = -1;
     int countedTimes = 0;
     int required = 0;
+    Define.MissionType _type;
+    bool isRewarded = false;
 
     void Start()
     {
@@ -34,21 +38,21 @@ public class UI_MissionData : UI_Base
     {
         Bind<GameObject>(typeof(GameObjects));
 
+        Get<GameObject>((int)GameObjects.RecvButton).BindEvent((PointerEventData) =>
+        {
+            if(isRewarded == false && missionIdx != -1)
+            {
+                Managers.Network.GetPacketManager().SendMissionCompleteResponsePacket(missionIdx);
+                Debug.Log($"{missionIdx} Mission Complete Response Packet Send.");
+            }
+        });
+
         isInitialized = true;
     }
 
-    public void SetMissionData(string title, string description, int exp, int required, int rewardIdx, int rewardAmount, Action<PointerEventData> action)
+    public void SetMissionIndex(int idx)
     {
-        SetExp(exp);
-        SetTitle(title);
-        SetDescription(description);
-        SetReward(rewardIdx, rewardAmount);
-        BindRecvButton(action);
-    }
-
-    public void BindRecvButton(Action<PointerEventData> action)
-    {
-        Get<GameObject>((int)GameObjects.RecvButton).BindEvent(action);
+        missionIdx = idx;
     }
 
     public void SetExp(int exp)
@@ -78,6 +82,20 @@ public class UI_MissionData : UI_Base
         TextTr.GetComponent<TMP_Text>().text = $"+{amount}";
     }
 
+    public void SetType(Define.MissionType type)
+    {
+        _type = type;
+
+        if(_type == Define.MissionType.PassMission)
+        {
+            Get<GameObject>((int)GameObjects.RewardPanel).SetActive(false);
+        }
+        else
+        {
+            Get<GameObject>((int)GameObjects.RewardPanel).SetActive(true);
+        }
+    }
+
     public void SetRequired(int required)
     {
         this.required = required;
@@ -88,5 +106,21 @@ public class UI_MissionData : UI_Base
         countedTimes = counted;
 
         SetTitle(baseTitle);
+    }
+
+    public void SetRewarded(bool isRewarded)
+    {
+        this.isRewarded = isRewarded;
+
+        if(this.isRewarded)
+        {
+            Get<GameObject>((int)GameObjects.RecvButton).transform.GetChild(0).GetComponent<TMP_Text>().text = "완료";
+            gameObject.GetComponent<Image>().color = Color.gray;
+        }
+        else
+        {
+            Get<GameObject>((int)GameObjects.RecvButton).transform.GetChild(0).GetComponent<TMP_Text>().text = "완료 하기";
+            gameObject.GetComponent<Image>().color = Color.white;
+        }
     }
 }

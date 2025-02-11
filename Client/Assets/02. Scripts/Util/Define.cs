@@ -126,6 +126,12 @@ public class Define
 
     public enum PassType
     {
+        PassBasic = 1,
+        PassPlus = 2,
+    }
+
+    public enum MissionType
+    {
         DailyMission = 1,
         PassMission = 2,
     }

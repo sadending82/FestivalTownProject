@@ -18,6 +18,8 @@ namespace Network.PacketProcessor
 
             int result = Data.Result;
 
+
+
             if (result == 0)
             {
 
@@ -34,6 +36,12 @@ namespace Network.PacketProcessor
                 int reward_item_index = Data.RewardItemIndex;
                 int reward_item_amount = Data.RewardItemAmount;
 
+                Debug.Log($"recv {mission_index} mission Complete Response");
+
+                var MissionUI = Managers.UI.GetTopOfPopUPUI().GetComponent<UI_Mission>();
+                if (MissionUI == null) return;
+
+                MissionUI.ChangeMissionData(mission_index, Managers.Data.PassMissionDataDict[mission_index].Required_Count, true);
             }
         }
     }

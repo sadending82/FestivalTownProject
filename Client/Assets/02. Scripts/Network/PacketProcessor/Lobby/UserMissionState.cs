@@ -29,7 +29,7 @@ namespace Network.PacketProcessor
                 int progress = missionState.Progress;
                 bool is_completed = missionState.IsRewarded;
 
-                Debug.Log($"recv {mission_index} mission");
+                Debug.Log($"recv {mission_index} mission Data. index : {mission_index}, progress : {progress}, is_completed : {is_completed}");
 
                 MissionUI.ChangeMissionData(mission_index, progress, is_completed);
             }

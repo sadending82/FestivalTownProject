@@ -21,10 +21,12 @@ namespace Network.PacketProcessor
             int pass_level = Data.PassLevel;
             int pass_exp = Data.PassExp;
 
-            Debug.Log($"Pass Data Recved. {pass_index}, {pass_type}, {pass_level}, {pass_exp}");
+
 
             var ui = Managers.UI.GetCurrentSceneUI().GetComponent<UI_Pass>();
             if (ui != null) return;
+
+            Debug.Log($"Pass Data Recved. {pass_index}, {pass_type}, {pass_level}, {pass_exp}");
 
             ui.SetLevel(pass_level);
             ui.SetProgress(pass_exp, 100);
@@ -37,7 +39,7 @@ namespace Network.PacketProcessor
                 int rewardLevel = passRewardState.Level;
                 bool isRewarded = passRewardState.IsRewarded;
 
-                ui.SetPassDataByIdx(pass_index, isRewarded);
+                ui.SetPassItemRewarded(pass_index, isRewarded);
 
             }
 

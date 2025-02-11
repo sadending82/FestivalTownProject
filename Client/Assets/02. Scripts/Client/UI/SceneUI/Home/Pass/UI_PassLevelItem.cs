@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -19,6 +20,8 @@ public class UI_PassLevelItem : UI_Base
     bool isInitialized = false;
     int _basicPassListIdx = -1;
     int _plusPassListIdx = -1;
+    bool _basicPassRewarded = false;
+    bool _plusPassRewarded = false;
 
     void Start()
     {
@@ -30,6 +33,32 @@ public class UI_PassLevelItem : UI_Base
         Bind<GameObject>(typeof(GameObjects));
 
         transform.localScale = Vector3.one;
+
+        Get<GameObject>((int)GameObjects.ItemBasic).BindEvent((PointerEventData) =>
+        {
+            if(_basicPassRewarded == false)
+            {
+                if (_basicPassListIdx != -1)
+                {
+                    Managers.Network.GetPacketManager().SendPassRewardResponsePacket(_basicPassListIdx / 100, (int)PassType.PassBasic, _basicPassListIdx % 100);
+                    Debug.Log($"{_basicPassListIdx} Recv Request Send. type : {(int)PassType.PassBasic}");
+                }
+            }
+        });
+
+        Get<GameObject>((int)GameObjects.ItemPlus).BindEvent((PointerEventData) =>
+        {
+            if(_plusPassRewarded == false)
+            {
+                if (_plusPassListIdx != -1)
+                {
+                    Managers.Network.GetPacketManager().SendPassRewardResponsePacket((_plusPassListIdx / 100) - 1, (int)PassType.PassPlus, _plusPassListIdx % 100);
+                    Debug.Log($"{_plusPassListIdx} Recv Request Send. type : {(int)PassType.PassPlus}");
+                }
+            }
+        });
+
+        SetRewardImage();
 
         isInitialized = true;
     }
@@ -43,18 +72,26 @@ public class UI_PassLevelItem : UI_Base
         _plusPassListIdx = plusItemIdx;
     }
 
-    public void SetDataByIndex(int idx, bool isRewarded)
+    public void SetItemRewarded(int idx, bool isRewarded)
     {
         if(_basicPassListIdx == idx)
         {
-
+            _basicPassRewarded = isRewarded;
         }
 
         if (_plusPassListIdx == idx)
         {
-
+            _plusPassRewarded = isRewarded;
         }
 
+        SetRewardImage();
+
+    }
+
+    void SetRewardImage()
+    {
+        Get<GameObject>((int)GameObjects.ItemBasic).transform.GetChild(1).gameObject.SetActive(_basicPassRewarded);
+        Get<GameObject>((int)GameObjects.ItemPlus).transform.GetChild(1).gameObject.SetActive(_plusPassRewarded);
     }
 
     void SetLevelToGetItem(int level)
@@ -105,8 +142,4 @@ public class UI_PassLevelItem : UI_Base
         return sprite;
     }
 
-    public void BindBasicItemEvent(Action<PointerEventData> action)
-    {
-        Get<GameObject>((int)GameObjects.ItemBasic).BindEvent(action);
-    }
 }

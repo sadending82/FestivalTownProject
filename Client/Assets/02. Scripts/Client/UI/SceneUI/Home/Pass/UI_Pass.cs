@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class UI_Pass : UI_Scene
@@ -8,6 +9,10 @@ public class UI_Pass : UI_Scene
     enum GameObjects
     {
         BG,
+        GoldPanel,
+        GoldText,
+        DiamondPanel,
+        DiamondText,
         ExitButton,
         TitleText,
         BuyPassButton,
@@ -62,6 +67,9 @@ public class UI_Pass : UI_Scene
             }
         }
 
+        SetGold(Managers.Data.GetGold());
+        SetDiamond(Managers.Data.GetDiamond());
+
         Managers.Network.GetPacketManager().SendUserPassStateRequestPacket();
 
         Debug.Log("Send Pass Request Packet");
@@ -79,13 +87,32 @@ public class UI_Pass : UI_Scene
         Get<GameObject>((int)GameObjects.PassPanel).GetComponent<UI_PassPanel>().SetProgress(exp, maxExp);
     }
 
+    public void SetDiamond(int value)
+    {
+        Get<GameObject>((int)GameObjects.DiamondText).GetComponent<TMP_Text>().text = value.ToString();
+    }
+
+    public void SetGold(int value)
+    {
+        Get<GameObject>((int)GameObjects.GoldText).GetComponent<TMP_Text>().text = value.ToString();
+    }
+
     public UI_PassLevelItem AddItem(int basicItemIdx, int plusItemIdx, int basicPassListIdx, int plusPassListIdx, int level)
     {
         return Get<GameObject>((int)GameObjects.PassPanel).GetComponent<UI_PassPanel>().AddItem(basicItemIdx, plusItemIdx, basicPassListIdx, plusPassListIdx, level);
     }
 
-    public void SetPassDataByIdx(int idx, bool isRewarded)
+    public void SetPassItemRewarded(int idx, bool isRewarded)
     {
-        passItemDatas[idx].SetDataByIndex(idx, isRewarded);
+        if (passItemDatas.ContainsKey(idx))
+        {
+            passItemDatas[idx].SetItemRewarded(idx, isRewarded);
+        }
+    }
+
+    private void Update()
+    {
+        Get<GameObject>((int)GameObjects.GoldText).GetComponent<TMP_Text>().text = Managers.Data.GetGold().ToString();
+        Get<GameObject>((int)GameObjects.DiamondText).GetComponent<TMP_Text>().text = Managers.Data.GetDiamond().ToString();
     }
 }

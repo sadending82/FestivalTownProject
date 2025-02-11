@@ -28,10 +28,16 @@ namespace Network.PacketProcessor
                 int pass_type = Data.PassType;
                 int pass_level = Data.PassLevel;
 
-
                 int reward_item_index = Data.RewardItemIndex;
                 int reward_item_amount = Data.RewardItemAmount;
 
+                var passUI = Managers.UI.GetCurrentSceneUI().GetComponent<UI_Pass>();
+                if (passUI == null) return;
+
+                passUI.SetPassItemRewarded(pass_index * 100 + ((pass_type - 1) * 100) + pass_level, true);
+                Debug.Log($"Pass Reward Recv. index : {pass_index}, type : {pass_type}, level : {pass_level}");
+
+                Managers.Network.GetPacketManager().SendCurrencyAmountRequestPacket();
             }
         }
     }

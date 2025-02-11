@@ -40,27 +40,33 @@ public class UI_Mission : UI_PopUp
         {
             switch(passMissionData.Value.Type)
             {
-                case (int)Define.PassType.DailyMission:
+                case (int)Define.MissionType.DailyMission:
                     {
-                        var ui = Managers.UI.MakeSubItem<UI_MissionData>(missionPanel.GetCategoryContent((int)Define.PassType.DailyMission - 1));
+                        var ui = Managers.UI.MakeSubItem<UI_MissionData>(missionPanel.GetCategoryContent((int)Define.MissionType.DailyMission - 1));
                         missionDatas.TryAdd(passMissionData.Value.Index, ui);
                         ui.Init();
+                        ui.SetMissionIndex(passMissionData.Value.Index);
                         ui.SetTitle(passMissionData.Value.Mission_Name);
                         ui.SetDescription(passMissionData.Value.Mission_Description);
                         ui.SetExp(passMissionData.Value.Reward_Exp);
                         ui.SetRequired(passMissionData.Value.Required_Count);
+                        ui.SetType(Define.MissionType.DailyMission);
                         ui.SetReward(passMissionData.Value.Reward_Item, passMissionData.Value.Reward_Item_Amount);
+                        ui.SetRewarded(false);
                     }
                     break;
-                case (int)Define.PassType.PassMission:
+                case (int)Define.MissionType.PassMission:
                     {
-                        var ui = Managers.UI.MakeSubItem<UI_MissionData>(missionPanel.GetCategoryContent((int)Define.PassType.PassMission - 1));
+                        var ui = Managers.UI.MakeSubItem<UI_MissionData>(missionPanel.GetCategoryContent((int)Define.MissionType.PassMission - 1));
                         missionDatas.TryAdd(passMissionData.Value.Index, ui);
                         ui.Init();
+                        ui.SetMissionIndex(passMissionData.Value.Index);
                         ui.SetTitle(passMissionData.Value.Mission_Name);
                         ui.SetDescription(passMissionData.Value.Mission_Description);
                         ui.SetRequired(passMissionData.Value.Required_Count);
                         ui.SetExp(passMissionData.Value.Reward_Exp);
+                        ui.SetType(Define.MissionType.PassMission);
+                        ui.SetRewarded(false);
                     }
                     break;
             }
@@ -81,5 +87,6 @@ public class UI_Mission : UI_PopUp
     public void ChangeMissionData(int idx, int count, bool isRewarded)
     {
         missionDatas[idx].SetMissionCounted(count);
+        missionDatas[idx].SetRewarded(isRewarded);
     }
 }

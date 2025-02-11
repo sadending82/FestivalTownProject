@@ -45,7 +45,7 @@ public class ResourceManager
 
         if (sprite == null)
         {
-            Debug.LogWarning($"{path}에 스프라이트가 없어");
+            Debug.LogWarning($"{path}에 스프라이트가 없어요...");
             return null;
         }
 
