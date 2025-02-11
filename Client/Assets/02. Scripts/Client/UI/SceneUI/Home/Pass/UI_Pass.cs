@@ -102,8 +102,11 @@ public class UI_Pass : UI_Scene
 
     public void SetPassItemRewarded(int idx, bool isRewarded)
     {
+        Debug.Log($"SetReward {idx} to {isRewarded}");
+
         if (passItemDatas.ContainsKey(idx))
         {
+            Debug.Log($"{idx} Contains.");
             passItemDatas[idx].SetItemRewarded(idx, isRewarded);
         }
     }
