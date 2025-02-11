@@ -265,6 +265,7 @@ public class PacketManager : MonoBehaviour
     {
         byte[] packet = _packetMaker.MakeUserPassStateRequestPacket();
         if (packet == null) { return; }
+        Debug.Log("Send Pass Request Packet");
         SendPacket(packet);
     }
     public void SendUserMissionStateRequestPacket()

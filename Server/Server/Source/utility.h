@@ -204,9 +204,9 @@ struct PlayerPassInfo {
 
 	void Init(UserPass& userPass) { passState = userPass; }
 
-	void SetExp(int value) { passState.passExp += value; }
+	void SetExp(int value) { passState.passExp == value; }
 
-	void SetLevel(int value) { passState.passLevel += value; }
+	void SetLevel(int value) { passState.passLevel == value; }
 
 	void SetIsRewarded(int level, int type) { isRewardedList[level][type] = true; }
 };
