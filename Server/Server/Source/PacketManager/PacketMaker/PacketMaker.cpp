@@ -174,7 +174,7 @@ std::vector<uint8_t> PacketMaker::MakeUserMissionStatePacket(UserMissionList& pl
 						int step = missionSteps.first;
 						UserMission& playerMissionState = missionSteps.second;
 						missionStateVector.push_back(PacketTable::PassTable::CreateUserMissionState(Builder, playerMissionState.mission_code
-							, playerMissionState.progress, playerMissionState.is_rewarded));
+							, playerMissionState.progress, playerMissionState.is_completed));
 					}
 
 				}

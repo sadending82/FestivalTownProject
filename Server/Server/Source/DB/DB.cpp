@@ -1087,7 +1087,7 @@ std::vector<UserMission> DB::SelectUserMission(const int uid)
 			SQLGetData(hStmt, 6, SQL_C_LONG, &missionInfo.progress, sizeof(int), NULL);
 			SQLGetData(hStmt, 7, SQL_C_LONG, &missionInfo.required_count, sizeof(int), NULL);
 			SQLGetData(hStmt, 8, SQL_C_TYPE_DATE, &assigned_date, sizeof(assigned_date), NULL);
-			SQLGetData(hStmt, 9, SQL_C_LONG, &missionInfo.is_rewarded, sizeof(int), NULL);
+			SQLGetData(hStmt, 9, SQL_C_LONG, &missionInfo.is_completed, sizeof(int), NULL);
 			SQLGetData(hStmt, 10, SQL_C_TYPE_TIMESTAMP, &complete_time, sizeof(complete_time), NULL);
 
 			SqlDateStruct_To_Tm(assigned_date, missionInfo.assigned_date);
@@ -1585,7 +1585,7 @@ ERROR_CODE DB::UpsertUserMission(const int uid, std::vector<UserMission>& missio
 		Tm_To_SqlDateStruct(assigned_date, missionList[i].assigned_date);
 		Tm_To_SqlTimestampStruct(complete_time, missionList[i].complete_time);
 
-		if (missionList[i].is_rewarded == false) {
+		if (missionList[i].is_completed == false) {
 			completeTimeNullFlag = SQL_NULL_DATA;
 		}
 		else {
@@ -1600,7 +1600,7 @@ ERROR_CODE DB::UpsertUserMission(const int uid, std::vector<UserMission>& missio
 		SQLBindParameter(hStmt, (i * col_count) + 6, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&missionList[i].progress), 0, NULL);
 		SQLBindParameter(hStmt, (i * col_count) + 7, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&missionList[i].required_count), 0, NULL);
 		SQLBindParameter(hStmt, (i * col_count) + 8, SQL_PARAM_INPUT, SQL_C_TYPE_DATE, SQL_TYPE_DATE, sizeof(assigned_date), 0, &assigned_date, 0, NULL);
-		SQLBindParameter(hStmt, (i * col_count) + 9, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&missionList[i].is_rewarded), 0, NULL);
+		SQLBindParameter(hStmt, (i * col_count) + 9, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&missionList[i].is_completed), 0, NULL);
 		SQLBindParameter(hStmt, (i * col_count) + 10, SQL_PARAM_INPUT, SQL_C_TYPE_TIMESTAMP, SQL_TYPE_TIMESTAMP, sizeof(complete_time), 0, &complete_time, 0, &completeTimeNullFlag);
 	}
 

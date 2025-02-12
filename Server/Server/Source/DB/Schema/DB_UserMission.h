@@ -17,7 +17,7 @@ struct UserMission {
 	int progress = 0;
 	int required_count = 0;
 	std::tm	assigned_date = {};
-	int	is_rewarded = 0;
+	int	is_completed = 0;
 	std::tm	complete_time = {};
 
 	void Init(int uid, int code, int type, int group, int step, int requiredCount, std::tm assignedDate) {
@@ -29,7 +29,7 @@ struct UserMission {
 		progress = 0;
 		required_count = requiredCount;
 		assigned_date = assignedDate;
-		is_rewarded = 0;
+		is_completed = 0;
 	}
 
 	void Init(const int uid, const PassMissionInfo& missionInfo, int beforeStepProgress, std::tm assignedDate) {
@@ -41,7 +41,7 @@ struct UserMission {
 		progress = beforeStepProgress;
 		required_count = missionInfo.required_count;
 		assigned_date = assignedDate;
-		is_rewarded = 0;
+		is_completed = 0;
 	}
 };
 
