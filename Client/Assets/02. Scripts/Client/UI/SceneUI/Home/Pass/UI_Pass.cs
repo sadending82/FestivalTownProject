@@ -50,6 +50,11 @@ public class UI_Pass : UI_Scene
             Managers.UI.ShowPopUpUI<UI_Mission>();
         });
 
+        Get<GameObject>((int)GameObjects.BuyPassButton).BindEvent((PointerEventData) =>
+        {
+            // 패스 구매 버튼
+        });
+
         Get<GameObject>((int)GameObjects.PassPanel).GetComponent<UI_PassPanel>().Init();
 
         foreach (var passListData in Managers.Data.PassListDataDict)

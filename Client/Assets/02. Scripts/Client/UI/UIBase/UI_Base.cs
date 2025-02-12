@@ -76,38 +76,62 @@ public abstract class UI_Base : MonoBehaviour
 
 
 
-    public static void BindEvent(GameObject go, Action<PointerEventData> action, Define.UIEvent type = Define.UIEvent.Click, bool isButton = true, bool isCancle = false)
+    public static void BindEvent(
+        GameObject go, Action<PointerEventData> action,
+        Define.UIEvent type = Define.UIEvent.Click,
+        bool isButton = true,
+        bool isCancle = false
+        )
     {
-        UI_EventHandler eventHandler = Util.GetOrAddComponent<UI_EventHandler>(go);
-
-        eventHandler.SetIsButton(isButton);
-        eventHandler.SetIsCancle(isCancle);
 
         switch(type)
         {
             case Define.UIEvent.Click:
-                eventHandler.OnClickHandler -= action;
-                eventHandler.OnClickHandler += action;
+                {
+                    UI_PointerEventHandler pointerEventHandler = Util.GetOrAddComponent<UI_PointerEventHandler>(go);
+
+                    pointerEventHandler.SetIsButton(isButton);
+                    pointerEventHandler.SetIsCancle(isCancle);
+
+                    pointerEventHandler.OnClickHandler -= action;
+                    pointerEventHandler.OnClickHandler += action;
+                }
                 break;
             case Define.UIEvent.Drag:
-                eventHandler.OnDragHandler -= action;
-                eventHandler.OnDragHandler += action;
+                {
+                    UI_DragEventHandler dragEventHandler = Util.GetOrAddComponent<UI_DragEventHandler>(go);
+
+                    dragEventHandler.OnDragHandler -= action;
+                    dragEventHandler.OnDragHandler += action;
+                }
                 break;
             case Define.UIEvent.PointerDown:
-               eventHandler.OnPointerDownHandler -= action;
-               eventHandler.OnPointerDownHandler += action;
+                {
+                    UI_PointerEventHandler pointerEventHandler = Util.GetOrAddComponent<UI_PointerEventHandler>(go);
+                    pointerEventHandler.OnPointerDownHandler -= action;
+                    pointerEventHandler.OnPointerDownHandler += action;
+                }
                 break;
             case Define.UIEvent.PointerUp:
-                eventHandler.OnPointerUpHandler -= action;
-                eventHandler.OnPointerUpHandler += action;
+                {
+                    UI_PointerEventHandler pointerEventHandler = Util.GetOrAddComponent<UI_PointerEventHandler>(go);
+                    pointerEventHandler.OnPointerUpHandler -= action;
+                    pointerEventHandler.OnPointerUpHandler += action;
+                }
                 break;
             case Define.UIEvent.PointerEnter:
-                eventHandler.OnPointerEnterHandler -= action;
-                eventHandler.OnPointerEnterHandler += action;
+                {
+                    UI_PointerEventHandler pointerEventHandler = Util.GetOrAddComponent<UI_PointerEventHandler>(go);
+                    pointerEventHandler.OnPointerEnterHandler -= action;
+                    pointerEventHandler.OnPointerEnterHandler += action;
+                }
                 break;
             case Define.UIEvent.PointerExit:
-                eventHandler.OnPointerExitHandler -= action;
-                eventHandler.OnPointerExitHandler += action;
+                {
+                    UI_PointerEventHandler pointerEventHandler = Util.GetOrAddComponent<UI_PointerEventHandler>(go);
+                    pointerEventHandler.OnPointerExitHandler -= action;
+                    pointerEventHandler.OnPointerExitHandler += action;
+                }
                 break;
 
         }
