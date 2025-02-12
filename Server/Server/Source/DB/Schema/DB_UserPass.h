@@ -7,7 +7,8 @@ enum class UserPass_Field {
 	passIndex,
 	passType,
 	passLevel,
-	passExp
+	passExp,
+	daily_mission_exp
 };
 
 struct UserPass {
@@ -16,6 +17,7 @@ struct UserPass {
 	int passType = 0;
 	int passLevel = 0;
 	int passExp = 0;
+	int daily_mission_exp = 0;
 };
 
 #pragma pack(pop) 

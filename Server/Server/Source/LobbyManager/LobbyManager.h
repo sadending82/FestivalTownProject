@@ -33,7 +33,7 @@ public:
 
 	bool GiveMissionReward(class Player* player, PassMissionInfo& missionInfo);
 
-	bool CheckPassLevelUp(class Player* player, PlayerPassInfo& playerPassInfo);
+	bool CheckPassLevelUp(PlayerPassInfo& playerPassInfo, int passIndex);
 
 	bool GivePassReward(class Player* player, int pass_index, int pass_type, int reward_level);
 	

@@ -215,6 +215,7 @@ void LobbyManager::LoadPassState(Player* player)
 			passState.passType = ePassType::PT_NORMAL;
 			passState.passLevel = 0;
 			passState.passExp = 0;
+			passState.daily_mission_exp = 0;
 		}
 
 		playerPassStateList[passIndex].Init(passState);
@@ -241,6 +242,8 @@ void LobbyManager::LoadMissionProgress(Player* player)
 	int pass_index = 601;
 
 	UserMissionList& playerMissionList = player->GetMissionList();
+
+	playerMissionList.missionList.clear();
 
 	// DB에서 미션 진행상황 불러옴
 	std::vector<UserMission> missionListFromDB = pDB->SelectUserMission(uid);
@@ -279,9 +282,8 @@ void LobbyManager::LoadMissionProgress(Player* player)
 				std::unordered_map<int, std::unordered_map<int, UserMission>>& playerMissionGroupList = playerMissionList.missionList[pass_index][type][category];
 
 				if (playerMissionGroupList.find(group) == playerMissionGroupList.end()) {
-					UserMission& playerMission = playerMissionGroupList[group][firstStep];
 					PassMissionInfo& newMission = passMissionDataList[firstMissionIndex];
-					playerMission.Init(uid, newMission.index, newMission.type, newMission.mission_group, newMission.mission_step, newMission.required_count);
+					playerMissionGroupList[group][firstStep].Init(uid, newMission.index, newMission.type, newMission.mission_group, newMission.mission_step, newMission.required_count);
 				}
 			}
 		}
@@ -475,20 +477,49 @@ bool LobbyManager::CheckCompleteMission(Player* player, int missionCode)
 
 bool LobbyManager::GiveMissionReward(Player* player, PassMissionInfo& missionInfo)
 {
-	int uid = player->GetUID();
-	// 임시
-	int passIndex = 601;
+	const int uid = player->GetUID();
+	const int passIndex = missionInfo.pass_index;
 
 	PlayerPassInfo& playerPassInfo = player->GetPassInfo()[passIndex];
+	
+	const int currExp = playerPassInfo.passState.passExp;
+	int rewardExp = 0;
+	int nextExp = 0;
 
 	// 패스 경험치
-	const int currExp = playerPassInfo.passState.passExp;
-	playerPassInfo.SetExp(currExp + missionInfo.reward_exp);
-	CheckPassLevelUp(player, playerPassInfo);
+	switch (missionInfo.type) {
+	case eMissionType::MT_DAILY:
+	{
+		const int todayDailyMissionExp = playerPassInfo.passState.daily_mission_exp;
+		const int limitExpDailyMission = pTableManager->GetPassList()[passIndex].limit_exp_daily_mission;
+
+		// 일일 경험치 한도 체크
+		if (todayDailyMissionExp + missionInfo.reward_exp > limitExpDailyMission) {
+			rewardExp = limitExpDailyMission - todayDailyMissionExp;
+		}
+		else {
+			rewardExp = missionInfo.reward_exp;
+		}
+
+		playerPassInfo.passState.daily_mission_exp += rewardExp;
+
+	}
+	break;
+	case eMissionType::MT_PASS:
+	default:
+	{
+		rewardExp = missionInfo.reward_exp;
+	}
+	break;
+	}
+
+	nextExp = currExp + rewardExp;
+	playerPassInfo.SetExp(nextExp);
+	CheckPassLevelUp(playerPassInfo, passIndex);
 	pDB->UpsertUserPass(uid, playerPassInfo.passState);
 
 	// 아이템 지급
-	int itemCode = missionInfo.reward_item;
+	const int itemCode = missionInfo.reward_item;
 	if (itemCode != 0) {
 		ItemTable& rewardInfo = pTableManager->GetItemInfos()[itemCode];
 		if (rewardInfo.Item_Type == ItemType::Money) {
@@ -503,12 +534,12 @@ bool LobbyManager::GiveMissionReward(Player* player, PassMissionInfo& missionInf
 	return true;
 }
 
-bool LobbyManager::CheckPassLevelUp(Player* player, PlayerPassInfo& playerPassInfo)
+bool LobbyManager::CheckPassLevelUp(PlayerPassInfo& playerPassInfo, int passIndex)
 {
-	int currExp = playerPassInfo.passState.passExp;
-	int currLevel = playerPassInfo.passState.passLevel;
+	const int currExp = playerPassInfo.passState.passExp;
+	const int currLevel = playerPassInfo.passState.passLevel;
 
-	int expLimit = 100;
+	const int expLimit = pTableManager->GetPassList()[passIndex].passLevelList[1][ePassType::PT_NORMAL].Exp_Required;
 
 	// 임시
 	if (currExp >= expLimit) {

@@ -149,12 +149,12 @@ const wchar_t* UpdateUserEventReward_IsRewarded_Query
 
 const wchar_t* UpsertUserPass_Query
 = L"MERGE INTO GameDB.dbo.UserPass AS Target "
-L"USING (VALUES (?, ?, ?, ?, ?)) AS Source(user_UID, pass_code, pass_type, pass_level, pass_exp) "
+L"USING (VALUES (?, ?, ?, ?, ?, ?)) AS Source(user_UID, pass_code, pass_type, pass_level, pass_exp, daily_mission_exp) "
 L"ON Target.user_UID = Source.user_UID AND Target.pass_code = Source.pass_code "
 L"WHEN MATCHED THEN "
-L"UPDATE SET Target.pass_exp = Source.pass_exp, Target.pass_level = Source.pass_level "
+L"UPDATE SET Target.pass_exp = Source.pass_exp, Target.pass_level = Source.pass_level, Target.daily_mission_exp = Source.daily_mission_exp "
 L"WHEN NOT MATCHED THEN "
-L"INSERT VALUES(Source.user_UID, Source.pass_code, Source.pass_type, Source.pass_level, Source.pass_exp);";
+L"INSERT VALUES(Source.user_UID, Source.pass_code, Source.pass_type, Source.pass_level, Source.pass_exp, Source.daily_mission_exp);";
 
 const wchar_t* UpdateUserPassReward_isRewarded_Query
 = L"UPDATE GameDB.dbo.UserItem SET is_rewarded = ? ";
