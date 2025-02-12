@@ -556,12 +556,15 @@ bool LobbyManager::CheckPassLevelUp(PlayerPassInfo& playerPassInfo, int passInde
 	return false;
 }
 
-bool LobbyManager::GivePassReward(Player* player, int pass_index, int pass_type, int reward_level)
+bool LobbyManager::GivePassReward(Player* player, int pass_index, int pass_type, int level)
 {
+	PassInfo& passInfo = pTableManager->GetPassList()[pass_index];
 	const int uid = player->GetUID();
+	const int reward_level = (level > passInfo.level_repeated_reward) ? passInfo.level_repeated_reward : level;
+
 	PlayerPassInfo& playerPassInfo = player->GetPassInfo()[pass_index];
 
-	const PassLevel& passLevelInfo = pTableManager->GetPassList()[pass_index].passLevelList[reward_level][pass_type];
+	PassLevel& passLevelInfo = pTableManager->GetPassList()[pass_index].passLevelList[reward_level][pass_type];
 
 	// 수령 가능 여부 체크
 	if (pass_type == ePassType::PT_PREMIUM && playerPassInfo.passState.passType != ePassType::PT_PREMIUM) {
@@ -587,9 +590,9 @@ bool LobbyManager::GivePassReward(Player* player, int pass_index, int pass_type,
 			pDB->InsertUserItem(uid, itemCode, passLevelInfo.Reward_Item_Amount, (int)rewardInfo.Item_Type);
 		}
 
-		pDB->InsertUserPassReward(uid, passLevelInfo);
+		pDB->InsertUserPassReward(uid, passLevelInfo, level);
 
-		playerPassInfo.SetIsRewarded(reward_level, pass_type);
+		playerPassInfo.SetIsRewarded(level, pass_type);
 
 		return true;
 	}

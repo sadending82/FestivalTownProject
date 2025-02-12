@@ -49,7 +49,7 @@ public:
     ERROR_CODE InsertUserItem(const int owner_uid, const int itemCode, const int itemCount, const int itemType);
     ERROR_CODE InsertUserAttendance(const int uid, const int EventIndex, const int day_count);
     ERROR_CODE InsertUserEventReward(const int uid, const int Eventcode);
-    ERROR_CODE InsertUserPassReward(const int uid, const PassLevel& passLevelInfo);
+    ERROR_CODE InsertUserPassReward(const int uid, const PassLevel& passLevelInfo, const int level);
 
     // SELECT
     int SelectAccountCount(const char* id);

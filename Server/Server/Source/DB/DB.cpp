@@ -367,7 +367,7 @@ ERROR_CODE DB::InsertUserEventReward(const int uid, const int Eventcode)
 	return ERROR_CODE::ER_DB_ERROR;
 }
 
-ERROR_CODE DB::InsertUserPassReward(const int uid, const PassLevel& passLevelInfo)
+ERROR_CODE DB::InsertUserPassReward(const int uid, const PassLevel& passLevelInfo, const int level)
 {
 	if (uid == 0) {
 		return ERROR_CODE::ER_DB_ERROR;
@@ -392,7 +392,7 @@ ERROR_CODE DB::InsertUserPassReward(const int uid, const PassLevel& passLevelInf
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&passLevelInfo.pass), 0, NULL);
 	SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&passLevelInfo.Pass_Type), 0, NULL);
-	SQLBindParameter(hStmt, 4, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&passLevelInfo.level), 0, NULL);
+	SQLBindParameter(hStmt, 4, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&level), 0, NULL);
 
 	retcode = SQLExecute(hStmt);
 
