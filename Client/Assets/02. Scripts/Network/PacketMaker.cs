@@ -699,8 +699,6 @@ public class PacketMaker
 
         return result;
     }
-
-
     public byte[] MakePassRewardRequestPacket(int pass_index, int pass_type, int pass_level)
     {
         var builder = new FlatBufferBuilder(1);
@@ -723,8 +721,28 @@ public class PacketMaker
 
         return result;
     }
+    public byte[] MakeBatchReceivePassRewardsRequestPacket(int pass_index)
+    {
+        var builder = new FlatBufferBuilder(1);
 
+        BatchReceivePassRewardsRequest.StartBatchReceivePassRewardsRequest(builder);
+        BatchReceivePassRewardsRequest.AddPassIndex(builder, pass_index);
+        var offset = BatchReceivePassRewardsRequest.EndBatchReceivePassRewardsRequest(builder);
 
+        builder.Finish(offset.Value);
+
+        byte[] data = builder.SizedByteArray();
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_BATCH_RECEIVE_PASS_REWARDS_REQUEST, flatBufferSize = (ushort)data.Length };
+        byte[] headerdata = Serialize<HEADER>(header);
+        byte[] result = new byte[data.Length + headerdata.Length];
+
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
+
+        return result;
+    }
+
+    // player
     public byte[] MakePlayerGrabWeaponPacket(Vector3 position, Vector3 direction, int playerID, int weaponID)
     {
         var builder = new FlatBufferBuilder(1);

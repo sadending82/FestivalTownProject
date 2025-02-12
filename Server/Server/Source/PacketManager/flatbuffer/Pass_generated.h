@@ -49,6 +49,12 @@ struct MissionCompleteRequestBuilder;
 struct MissionCompleteResponse;
 struct MissionCompleteResponseBuilder;
 
+struct BatchReceivePassRewardsRequest;
+struct BatchReceivePassRewardsRequestBuilder;
+
+struct BatchReceivePassRewardsResponse;
+struct BatchReceivePassRewardsResponseBuilder;
+
 struct UserPassStateRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef UserPassStateRequestBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -727,6 +733,111 @@ inline ::flatbuffers::Offset<MissionCompleteResponse> CreateMissionCompleteRespo
   builder_.add_pass_index(pass_index);
   builder_.add_result(result);
   return builder_.Finish();
+}
+
+struct BatchReceivePassRewardsRequest FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef BatchReceivePassRewardsRequestBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_PASS_INDEX = 4
+  };
+  int32_t pass_index() const {
+    return GetField<int32_t>(VT_PASS_INDEX, 0);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_PASS_INDEX, 4) &&
+           verifier.EndTable();
+  }
+};
+
+struct BatchReceivePassRewardsRequestBuilder {
+  typedef BatchReceivePassRewardsRequest Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_pass_index(int32_t pass_index) {
+    fbb_.AddElement<int32_t>(BatchReceivePassRewardsRequest::VT_PASS_INDEX, pass_index, 0);
+  }
+  explicit BatchReceivePassRewardsRequestBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<BatchReceivePassRewardsRequest> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<BatchReceivePassRewardsRequest>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<BatchReceivePassRewardsRequest> CreateBatchReceivePassRewardsRequest(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t pass_index = 0) {
+  BatchReceivePassRewardsRequestBuilder builder_(_fbb);
+  builder_.add_pass_index(pass_index);
+  return builder_.Finish();
+}
+
+struct BatchReceivePassRewardsResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
+  typedef BatchReceivePassRewardsResponseBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_PASS_INDEX = 4,
+    VT_REWARDS = 6
+  };
+  int32_t pass_index() const {
+    return GetField<int32_t>(VT_PASS_INDEX, 0);
+  }
+  const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::PassTable::PassRewardResponse>> *rewards() const {
+    return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::PassTable::PassRewardResponse>> *>(VT_REWARDS);
+  }
+  bool Verify(::flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int32_t>(verifier, VT_PASS_INDEX, 4) &&
+           VerifyOffset(verifier, VT_REWARDS) &&
+           verifier.VerifyVector(rewards()) &&
+           verifier.VerifyVectorOfTables(rewards()) &&
+           verifier.EndTable();
+  }
+};
+
+struct BatchReceivePassRewardsResponseBuilder {
+  typedef BatchReceivePassRewardsResponse Table;
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_pass_index(int32_t pass_index) {
+    fbb_.AddElement<int32_t>(BatchReceivePassRewardsResponse::VT_PASS_INDEX, pass_index, 0);
+  }
+  void add_rewards(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::PassTable::PassRewardResponse>>> rewards) {
+    fbb_.AddOffset(BatchReceivePassRewardsResponse::VT_REWARDS, rewards);
+  }
+  explicit BatchReceivePassRewardsResponseBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  ::flatbuffers::Offset<BatchReceivePassRewardsResponse> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = ::flatbuffers::Offset<BatchReceivePassRewardsResponse>(end);
+    return o;
+  }
+};
+
+inline ::flatbuffers::Offset<BatchReceivePassRewardsResponse> CreateBatchReceivePassRewardsResponse(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t pass_index = 0,
+    ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::PassTable::PassRewardResponse>>> rewards = 0) {
+  BatchReceivePassRewardsResponseBuilder builder_(_fbb);
+  builder_.add_rewards(rewards);
+  builder_.add_pass_index(pass_index);
+  return builder_.Finish();
+}
+
+inline ::flatbuffers::Offset<BatchReceivePassRewardsResponse> CreateBatchReceivePassRewardsResponseDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    int32_t pass_index = 0,
+    const std::vector<::flatbuffers::Offset<PacketTable::PassTable::PassRewardResponse>> *rewards = nullptr) {
+  auto rewards__ = rewards ? _fbb.CreateVector<::flatbuffers::Offset<PacketTable::PassTable::PassRewardResponse>>(*rewards) : 0;
+  return PacketTable::PassTable::CreateBatchReceivePassRewardsResponse(
+      _fbb,
+      pass_index,
+      rewards__);
 }
 
 }  // namespace PassTable

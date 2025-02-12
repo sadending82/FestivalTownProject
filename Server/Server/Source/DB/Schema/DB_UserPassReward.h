@@ -20,4 +20,15 @@ struct UserPassReward {
 	int isRewarded = 0;
 };
 
+struct ReceivedPassReward {
+	int result;
+
+	int pass_index;
+	int pass_type;
+	int pass_level;
+
+	int reward_item_index;
+	int reward_item_amount;
+};
+
 #pragma pack(pop) 
