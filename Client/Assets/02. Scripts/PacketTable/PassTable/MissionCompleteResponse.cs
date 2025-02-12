@@ -24,8 +24,10 @@ public struct MissionCompleteResponse : IFlatbufferObject
   public int MissionIndex { get { int o = __p.__offset(8); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
   public int PassLevel { get { int o = __p.__offset(10); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
   public int PassExp { get { int o = __p.__offset(12); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public int RewardItemIndex { get { int o = __p.__offset(14); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public int RewardItemAmount { get { int o = __p.__offset(16); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int DailyMissionExp { get { int o = __p.__offset(14); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int RewardItemIndex { get { int o = __p.__offset(16); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public int RewardItemAmount { get { int o = __p.__offset(18); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public long CompleteTime { get { int o = __p.__offset(20); return o != 0 ? __p.bb.GetLong(o + __p.bb_pos) : (long)0; } }
 
   public static Offset<PacketTable.PassTable.MissionCompleteResponse> CreateMissionCompleteResponse(FlatBufferBuilder builder,
       int result = 0,
@@ -33,11 +35,15 @@ public struct MissionCompleteResponse : IFlatbufferObject
       int mission_index = 0,
       int pass_level = 0,
       int pass_exp = 0,
+      int daily_mission_exp = 0,
       int reward_item_index = 0,
-      int reward_item_amount = 0) {
-    builder.StartTable(7);
+      int reward_item_amount = 0,
+      long complete_time = 0) {
+    builder.StartTable(9);
+    MissionCompleteResponse.AddCompleteTime(builder, complete_time);
     MissionCompleteResponse.AddRewardItemAmount(builder, reward_item_amount);
     MissionCompleteResponse.AddRewardItemIndex(builder, reward_item_index);
+    MissionCompleteResponse.AddDailyMissionExp(builder, daily_mission_exp);
     MissionCompleteResponse.AddPassExp(builder, pass_exp);
     MissionCompleteResponse.AddPassLevel(builder, pass_level);
     MissionCompleteResponse.AddMissionIndex(builder, mission_index);
@@ -46,14 +52,16 @@ public struct MissionCompleteResponse : IFlatbufferObject
     return MissionCompleteResponse.EndMissionCompleteResponse(builder);
   }
 
-  public static void StartMissionCompleteResponse(FlatBufferBuilder builder) { builder.StartTable(7); }
+  public static void StartMissionCompleteResponse(FlatBufferBuilder builder) { builder.StartTable(9); }
   public static void AddResult(FlatBufferBuilder builder, int result) { builder.AddInt(0, result, 0); }
   public static void AddPassIndex(FlatBufferBuilder builder, int passIndex) { builder.AddInt(1, passIndex, 0); }
   public static void AddMissionIndex(FlatBufferBuilder builder, int missionIndex) { builder.AddInt(2, missionIndex, 0); }
   public static void AddPassLevel(FlatBufferBuilder builder, int passLevel) { builder.AddInt(3, passLevel, 0); }
   public static void AddPassExp(FlatBufferBuilder builder, int passExp) { builder.AddInt(4, passExp, 0); }
-  public static void AddRewardItemIndex(FlatBufferBuilder builder, int rewardItemIndex) { builder.AddInt(5, rewardItemIndex, 0); }
-  public static void AddRewardItemAmount(FlatBufferBuilder builder, int rewardItemAmount) { builder.AddInt(6, rewardItemAmount, 0); }
+  public static void AddDailyMissionExp(FlatBufferBuilder builder, int dailyMissionExp) { builder.AddInt(5, dailyMissionExp, 0); }
+  public static void AddRewardItemIndex(FlatBufferBuilder builder, int rewardItemIndex) { builder.AddInt(6, rewardItemIndex, 0); }
+  public static void AddRewardItemAmount(FlatBufferBuilder builder, int rewardItemAmount) { builder.AddInt(7, rewardItemAmount, 0); }
+  public static void AddCompleteTime(FlatBufferBuilder builder, long completeTime) { builder.AddLong(8, completeTime, 0); }
   public static Offset<PacketTable.PassTable.MissionCompleteResponse> EndMissionCompleteResponse(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<PacketTable.PassTable.MissionCompleteResponse>(o);
@@ -71,8 +79,10 @@ static public class MissionCompleteResponseVerify
       && verifier.VerifyField(tablePos, 8 /*MissionIndex*/, 4 /*int*/, 4, false)
       && verifier.VerifyField(tablePos, 10 /*PassLevel*/, 4 /*int*/, 4, false)
       && verifier.VerifyField(tablePos, 12 /*PassExp*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 14 /*RewardItemIndex*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 16 /*RewardItemAmount*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 14 /*DailyMissionExp*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 16 /*RewardItemIndex*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 18 /*RewardItemAmount*/, 4 /*int*/, 4, false)
+      && verifier.VerifyField(tablePos, 20 /*CompleteTime*/, 8 /*long*/, 8, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }

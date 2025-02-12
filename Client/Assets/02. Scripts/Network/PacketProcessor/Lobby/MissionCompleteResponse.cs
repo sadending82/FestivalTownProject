@@ -1,7 +1,7 @@
 ﻿using Google.FlatBuffers;
 using NetworkProtocol;
 using PacketTable.PassTable;
-
+using System;
 using System.Collections.Generic;
 
 using UnityEngine;
@@ -31,6 +31,7 @@ namespace Network.PacketProcessor
                 int pass_index = Data.PassIndex;
                 int pass_level = Data.PassLevel;
                 int pass_exp = Data.PassExp;
+                int daily_mission_exp = Data.DailyMissionExp;
 
                 var PassUI = Managers.UI.GetCurrentSceneUI().GetComponent<UI_Pass>();
                 if (PassUI != null)
@@ -43,6 +44,8 @@ namespace Network.PacketProcessor
 
                 int reward_item_index = Data.RewardItemIndex;
                 int reward_item_amount = Data.RewardItemAmount;
+
+                Int64 complete_time = Data.CompleteTime;
 
                 Debug.Log($"recv {mission_index} mission Complete Response");
 

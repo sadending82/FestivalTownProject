@@ -97,6 +97,11 @@ public:
 
     ERROR_CODE CheckValidateLogin(const char* id, const char* password);
 
+    void SqlDateStruct_To_Tm(const SQL_DATE_STRUCT& date, std::tm& tm_date);
+    void SqlTimestampStruct_To_Tm(const SQL_TIMESTAMP_STRUCT& time, std::tm& tm_time);
+    void Tm_To_SqlDateStruct(SQL_DATE_STRUCT& date, const std::tm& tm_date);
+    void Tm_To_SqlTimestampStruct(SQL_TIMESTAMP_STRUCT& time, const std::tm& tm_time);
+
 private:
     SQLHENV hEnv = NULL;
     std::queue<DB_Connection> mConnectionPool;

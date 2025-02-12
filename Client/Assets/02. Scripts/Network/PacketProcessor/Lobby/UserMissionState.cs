@@ -1,7 +1,7 @@
 ﻿using Google.FlatBuffers;
 using NetworkProtocol;
 using PacketTable.PassTable;
-
+using System;
 using System.Collections.Generic;
 
 using UnityEngine;
@@ -28,6 +28,8 @@ namespace Network.PacketProcessor
                 int mission_index = missionState.MissionIndex;
                 int progress = missionState.Progress;
                 bool is_completed = missionState.IsRewarded;
+
+                Int64 complete_time = missionState.CompleteTime;
 
                 Debug.Log($"recv {mission_index} mission Data. index : {mission_index}, progress : {progress}, is_completed : {is_completed}");
 

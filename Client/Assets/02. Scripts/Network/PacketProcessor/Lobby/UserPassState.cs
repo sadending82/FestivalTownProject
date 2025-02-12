@@ -20,6 +20,7 @@ namespace Network.PacketProcessor
             int pass_type = Data.PassType;
             int pass_level = Data.PassLevel;
             int pass_exp = Data.PassExp;
+            int daily_mission_exp = Data.DailyMissionExp;
 
             Debug.Log($"Set PassLevel and Exp level : {pass_level}, Exp : {pass_exp}");
             Managers.Data.SetPassLevel(pass_level);

@@ -23,17 +23,20 @@ public struct UserPassState : IFlatbufferObject
   public int PassType { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
   public int PassLevel { get { int o = __p.__offset(8); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
   public int PassExp { get { int o = __p.__offset(10); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public PacketTable.PassTable.UserPassRewardState? PassRewardState(int j) { int o = __p.__offset(12); return o != 0 ? (PacketTable.PassTable.UserPassRewardState?)(new PacketTable.PassTable.UserPassRewardState()).__assign(__p.__indirect(__p.__vector(o) + j * 4), __p.bb) : null; }
-  public int PassRewardStateLength { get { int o = __p.__offset(12); return o != 0 ? __p.__vector_len(o) : 0; } }
+  public int DailyMissionExp { get { int o = __p.__offset(12); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
+  public PacketTable.PassTable.UserPassRewardState? PassRewardState(int j) { int o = __p.__offset(14); return o != 0 ? (PacketTable.PassTable.UserPassRewardState?)(new PacketTable.PassTable.UserPassRewardState()).__assign(__p.__indirect(__p.__vector(o) + j * 4), __p.bb) : null; }
+  public int PassRewardStateLength { get { int o = __p.__offset(14); return o != 0 ? __p.__vector_len(o) : 0; } }
 
   public static Offset<PacketTable.PassTable.UserPassState> CreateUserPassState(FlatBufferBuilder builder,
       int pass_index = 0,
       int pass_type = 0,
       int pass_level = 0,
       int pass_exp = 0,
+      int daily_mission_exp = 0,
       VectorOffset pass_reward_stateOffset = default(VectorOffset)) {
-    builder.StartTable(5);
+    builder.StartTable(6);
     UserPassState.AddPassRewardState(builder, pass_reward_stateOffset);
+    UserPassState.AddDailyMissionExp(builder, daily_mission_exp);
     UserPassState.AddPassExp(builder, pass_exp);
     UserPassState.AddPassLevel(builder, pass_level);
     UserPassState.AddPassType(builder, pass_type);
@@ -41,12 +44,13 @@ public struct UserPassState : IFlatbufferObject
     return UserPassState.EndUserPassState(builder);
   }
 
-  public static void StartUserPassState(FlatBufferBuilder builder) { builder.StartTable(5); }
+  public static void StartUserPassState(FlatBufferBuilder builder) { builder.StartTable(6); }
   public static void AddPassIndex(FlatBufferBuilder builder, int passIndex) { builder.AddInt(0, passIndex, 0); }
   public static void AddPassType(FlatBufferBuilder builder, int passType) { builder.AddInt(1, passType, 0); }
   public static void AddPassLevel(FlatBufferBuilder builder, int passLevel) { builder.AddInt(2, passLevel, 0); }
   public static void AddPassExp(FlatBufferBuilder builder, int passExp) { builder.AddInt(3, passExp, 0); }
-  public static void AddPassRewardState(FlatBufferBuilder builder, VectorOffset passRewardStateOffset) { builder.AddOffset(4, passRewardStateOffset.Value, 0); }
+  public static void AddDailyMissionExp(FlatBufferBuilder builder, int dailyMissionExp) { builder.AddInt(4, dailyMissionExp, 0); }
+  public static void AddPassRewardState(FlatBufferBuilder builder, VectorOffset passRewardStateOffset) { builder.AddOffset(5, passRewardStateOffset.Value, 0); }
   public static VectorOffset CreatePassRewardStateVector(FlatBufferBuilder builder, Offset<PacketTable.PassTable.UserPassRewardState>[] data) { builder.StartVector(4, data.Length, 4); for (int i = data.Length - 1; i >= 0; i--) builder.AddOffset(data[i].Value); return builder.EndVector(); }
   public static VectorOffset CreatePassRewardStateVectorBlock(FlatBufferBuilder builder, Offset<PacketTable.PassTable.UserPassRewardState>[] data) { builder.StartVector(4, data.Length, 4); builder.Add(data); return builder.EndVector(); }
   public static VectorOffset CreatePassRewardStateVectorBlock(FlatBufferBuilder builder, ArraySegment<Offset<PacketTable.PassTable.UserPassRewardState>> data) { builder.StartVector(4, data.Count, 4); builder.Add(data); return builder.EndVector(); }
@@ -68,7 +72,8 @@ static public class UserPassStateVerify
       && verifier.VerifyField(tablePos, 6 /*PassType*/, 4 /*int*/, 4, false)
       && verifier.VerifyField(tablePos, 8 /*PassLevel*/, 4 /*int*/, 4, false)
       && verifier.VerifyField(tablePos, 10 /*PassExp*/, 4 /*int*/, 4, false)
-      && verifier.VerifyVectorOfTables(tablePos, 12 /*PassRewardState*/, PacketTable.PassTable.UserPassRewardStateVerify.Verify, false)
+      && verifier.VerifyField(tablePos, 12 /*DailyMissionExp*/, 4 /*int*/, 4, false)
+      && verifier.VerifyVectorOfTables(tablePos, 14 /*PassRewardState*/, PacketTable.PassTable.UserPassRewardStateVerify.Verify, false)
       && verifier.VerifyTableEnd(tablePos);
   }
 }

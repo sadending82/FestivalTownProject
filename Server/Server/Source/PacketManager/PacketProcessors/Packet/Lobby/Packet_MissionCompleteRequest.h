@@ -38,8 +38,10 @@ public:
 				}
 
 				PlayerPassInfo& playerPassInfo = player->GetPassInfo()[pass_index];
+				auto& playerMissionList = player->GetMissionList().missionList[pass_index][missionInfo.type][missionInfo.mission_category][missionInfo.mission_group];
+				UserMission& completeMission = playerMissionList[missionInfo.mission_step];
 
-				pPacketSender->SendMissionCompleteResponsePacket(key, result, playerPassInfo, mission_index, missionInfo.reward_item, missionInfo.reward_item_amount);
+				pPacketSender->SendMissionCompleteResponsePacket(key, result, playerPassInfo, completeMission, missionInfo.reward_item, missionInfo.reward_item_amount);
 			}
 		}
 		catch (const std::exception& e) {

@@ -146,8 +146,9 @@ std::vector<uint8_t> PacketMaker::MakeUserPassStatePacket(PlayerPassInfo& player
 	int passType = playerPassState.passState.passType;
 	int passLevel = playerPassState.passState.passLevel;
 	int passExp = playerPassState.passState.passExp;
+	int daily_mission_exp = playerPassState.passState.daily_mission_exp;
 
-	Builder.Finish(PacketTable::PassTable::CreateUserPassState(Builder, passIndex, passType, passLevel, passExp, Builder.CreateVector(passRewardStateVector)));
+	Builder.Finish(PacketTable::PassTable::CreateUserPassState(Builder, passIndex, passType, passLevel, passExp, daily_mission_exp, Builder.CreateVector(passRewardStateVector)));
 	return MakeBuffer(ePacketType::S2C_PASS_STATE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
@@ -186,15 +187,19 @@ std::vector<uint8_t> PacketMaker::MakeUserMissionStatePacket(UserMissionList& pl
 	return MakeBuffer(ePacketType::S2C_PASS_MISSION_STATE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakeMissionCompleteResponsePacket(int result, PlayerPassInfo& playerPassInfo, int mission_index, int reward_item_index, int reward_item_amount)
+std::vector<uint8_t> PacketMaker::MakeMissionCompleteResponsePacket(int result, PlayerPassInfo& playerPassInfo, UserMission& missionState, int reward_item_index, int reward_item_amount)
 {
 	flatbuffers::FlatBufferBuilder Builder;
+
+	time_t completeTime = std::mktime(&missionState.complete_time);
 
 	int passIndex = playerPassInfo.passState.passIndex;
 	int passLevel = playerPassInfo.passState.passLevel;
 	int passExp = playerPassInfo.passState.passExp;
+	int daily_mission_exp = playerPassInfo.passState.daily_mission_exp;
 
-	Builder.Finish(PacketTable::PassTable::CreateMissionCompleteResponse(Builder, result, passIndex, mission_index, passLevel, passExp, reward_item_index, reward_item_amount));
+	Builder.Finish(PacketTable::PassTable::CreateMissionCompleteResponse(Builder, result, passIndex, missionState.mission_code, passLevel
+		, passExp, daily_mission_exp, reward_item_index, reward_item_amount, completeTime));
 
 	return MakeBuffer(ePacketType::S2C_MISSION_COMPLETE_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }

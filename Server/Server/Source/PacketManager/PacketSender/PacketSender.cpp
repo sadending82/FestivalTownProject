@@ -77,9 +77,9 @@ void PacketSender::SendUserMissionStatePacket(int sessionID, UserMissionList& pl
     mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
 }
 
-void PacketSender::SendMissionCompleteResponsePacket(int sessionID, int result, PlayerPassInfo& playerPassInfo, int mission_index, int reward_item_index, int reward_item_amount)
+void PacketSender::SendMissionCompleteResponsePacket(int sessionID, int result, PlayerPassInfo& playerPassInfo, UserMission& missionState, int reward_item_index, int reward_item_amount)
 {
-    std::vector<uint8_t> send_buffer = mPacketMaker->MakeMissionCompleteResponsePacket(result, playerPassInfo, mission_index, reward_item_index, reward_item_amount);
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakeMissionCompleteResponsePacket(result, playerPassInfo, missionState, reward_item_index, reward_item_amount);
     mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
 }
 

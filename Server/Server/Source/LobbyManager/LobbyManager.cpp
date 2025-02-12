@@ -267,6 +267,10 @@ void LobbyManager::LoadMissionProgress(Player* player)
 
 	std::unordered_map<int, PassMissionInfo>& passMissionDataList = pTableManager->GetPassMissionDataListByIndex();
 
+	std::time_t nowTime = std::time(nullptr);
+	std::tm tNowTime = {};
+	localtime_s(&tNowTime, &nowTime);
+
 	for (auto& missionCategoryList : pTableManager->GetPassMissionIndexList()[pass_index]) {
 		int type = missionCategoryList.first;
 
@@ -283,7 +287,8 @@ void LobbyManager::LoadMissionProgress(Player* player)
 
 				if (playerMissionGroupList.find(group) == playerMissionGroupList.end()) {
 					PassMissionInfo& newMission = passMissionDataList[firstMissionIndex];
-					playerMissionGroupList[group][firstStep].Init(uid, newMission.index, newMission.type, newMission.mission_group, newMission.mission_step, newMission.required_count);
+					playerMissionGroupList[group][firstStep].Init(uid, newMission.index, newMission.type
+						, newMission.mission_group, newMission.mission_step, newMission.required_count, tNowTime);
 				}
 			}
 		}
@@ -448,8 +453,14 @@ bool LobbyManager::CheckCompleteMission(Player* player, int missionCode)
 		return false;
 	}
 
-	currMission.is_rewarded = true;
 
+	// 완료 처리
+	std::time_t nowTime = std::time(nullptr);
+	std::tm tNowTime = {};
+	localtime_s(&tNowTime, &nowTime);
+
+	currMission.is_rewarded = true;
+	currMission.complete_time = tNowTime;
 	updateMissionList.push_back(currMission);
 
 	// 패스 보상 지급
@@ -463,7 +474,8 @@ bool LobbyManager::CheckCompleteMission(Player* player, int missionCode)
 		int nextMissionCode = nextMissioniter->second;
 
 		UserMission newMission;
-		newMission.Init(player->GetUID(), pTableManager->GetPassMissionDataListByIndex()[nextMissionCode], currMission.progress);
+
+		newMission.Init(player->GetUID(), pTableManager->GetPassMissionDataListByIndex()[nextMissionCode], currMission.progress, tNowTime);
 
 		playerMissionList.insert({nextStep, newMission });
 

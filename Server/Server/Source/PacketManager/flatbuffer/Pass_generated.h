@@ -97,7 +97,8 @@ struct UserPassState FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     VT_PASS_TYPE = 6,
     VT_PASS_LEVEL = 8,
     VT_PASS_EXP = 10,
-    VT_PASS_REWARD_STATE = 12
+    VT_DAILY_MISSION_EXP = 12,
+    VT_PASS_REWARD_STATE = 14
   };
   int32_t pass_index() const {
     return GetField<int32_t>(VT_PASS_INDEX, 0);
@@ -111,6 +112,9 @@ struct UserPassState FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   int32_t pass_exp() const {
     return GetField<int32_t>(VT_PASS_EXP, 0);
   }
+  int32_t daily_mission_exp() const {
+    return GetField<int32_t>(VT_DAILY_MISSION_EXP, 0);
+  }
   const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::PassTable::UserPassRewardState>> *pass_reward_state() const {
     return GetPointer<const ::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::PassTable::UserPassRewardState>> *>(VT_PASS_REWARD_STATE);
   }
@@ -120,6 +124,7 @@ struct UserPassState FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
            VerifyField<int32_t>(verifier, VT_PASS_TYPE, 4) &&
            VerifyField<int32_t>(verifier, VT_PASS_LEVEL, 4) &&
            VerifyField<int32_t>(verifier, VT_PASS_EXP, 4) &&
+           VerifyField<int32_t>(verifier, VT_DAILY_MISSION_EXP, 4) &&
            VerifyOffset(verifier, VT_PASS_REWARD_STATE) &&
            verifier.VerifyVector(pass_reward_state()) &&
            verifier.VerifyVectorOfTables(pass_reward_state()) &&
@@ -143,6 +148,9 @@ struct UserPassStateBuilder {
   void add_pass_exp(int32_t pass_exp) {
     fbb_.AddElement<int32_t>(UserPassState::VT_PASS_EXP, pass_exp, 0);
   }
+  void add_daily_mission_exp(int32_t daily_mission_exp) {
+    fbb_.AddElement<int32_t>(UserPassState::VT_DAILY_MISSION_EXP, daily_mission_exp, 0);
+  }
   void add_pass_reward_state(::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::PassTable::UserPassRewardState>>> pass_reward_state) {
     fbb_.AddOffset(UserPassState::VT_PASS_REWARD_STATE, pass_reward_state);
   }
@@ -163,9 +171,11 @@ inline ::flatbuffers::Offset<UserPassState> CreateUserPassState(
     int32_t pass_type = 0,
     int32_t pass_level = 0,
     int32_t pass_exp = 0,
+    int32_t daily_mission_exp = 0,
     ::flatbuffers::Offset<::flatbuffers::Vector<::flatbuffers::Offset<PacketTable::PassTable::UserPassRewardState>>> pass_reward_state = 0) {
   UserPassStateBuilder builder_(_fbb);
   builder_.add_pass_reward_state(pass_reward_state);
+  builder_.add_daily_mission_exp(daily_mission_exp);
   builder_.add_pass_exp(pass_exp);
   builder_.add_pass_level(pass_level);
   builder_.add_pass_type(pass_type);
@@ -179,6 +189,7 @@ inline ::flatbuffers::Offset<UserPassState> CreateUserPassStateDirect(
     int32_t pass_type = 0,
     int32_t pass_level = 0,
     int32_t pass_exp = 0,
+    int32_t daily_mission_exp = 0,
     const std::vector<::flatbuffers::Offset<PacketTable::PassTable::UserPassRewardState>> *pass_reward_state = nullptr) {
   auto pass_reward_state__ = pass_reward_state ? _fbb.CreateVector<::flatbuffers::Offset<PacketTable::PassTable::UserPassRewardState>>(*pass_reward_state) : 0;
   return PacketTable::PassTable::CreateUserPassState(
@@ -187,6 +198,7 @@ inline ::flatbuffers::Offset<UserPassState> CreateUserPassStateDirect(
       pass_type,
       pass_level,
       pass_exp,
+      daily_mission_exp,
       pass_reward_state__);
 }
 
@@ -337,7 +349,8 @@ struct UserMissionState FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_MISSION_INDEX = 4,
     VT_PROGRESS = 6,
-    VT_IS_REWARDED = 8
+    VT_IS_REWARDED = 8,
+    VT_COMPLETE_TIME = 10
   };
   int32_t mission_index() const {
     return GetField<int32_t>(VT_MISSION_INDEX, 0);
@@ -348,11 +361,15 @@ struct UserMissionState FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   bool is_rewarded() const {
     return GetField<uint8_t>(VT_IS_REWARDED, 0) != 0;
   }
+  int64_t complete_time() const {
+    return GetField<int64_t>(VT_COMPLETE_TIME, 0);
+  }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_MISSION_INDEX, 4) &&
            VerifyField<int32_t>(verifier, VT_PROGRESS, 4) &&
            VerifyField<uint8_t>(verifier, VT_IS_REWARDED, 1) &&
+           VerifyField<int64_t>(verifier, VT_COMPLETE_TIME, 8) &&
            verifier.EndTable();
   }
 };
@@ -370,6 +387,9 @@ struct UserMissionStateBuilder {
   void add_is_rewarded(bool is_rewarded) {
     fbb_.AddElement<uint8_t>(UserMissionState::VT_IS_REWARDED, static_cast<uint8_t>(is_rewarded), 0);
   }
+  void add_complete_time(int64_t complete_time) {
+    fbb_.AddElement<int64_t>(UserMissionState::VT_COMPLETE_TIME, complete_time, 0);
+  }
   explicit UserMissionStateBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -385,8 +405,10 @@ inline ::flatbuffers::Offset<UserMissionState> CreateUserMissionState(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t mission_index = 0,
     int32_t progress = 0,
-    bool is_rewarded = false) {
+    bool is_rewarded = false,
+    int64_t complete_time = 0) {
   UserMissionStateBuilder builder_(_fbb);
+  builder_.add_complete_time(complete_time);
   builder_.add_progress(progress);
   builder_.add_mission_index(mission_index);
   builder_.add_is_rewarded(is_rewarded);
@@ -594,8 +616,10 @@ struct MissionCompleteResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::
     VT_MISSION_INDEX = 8,
     VT_PASS_LEVEL = 10,
     VT_PASS_EXP = 12,
-    VT_REWARD_ITEM_INDEX = 14,
-    VT_REWARD_ITEM_AMOUNT = 16
+    VT_DAILY_MISSION_EXP = 14,
+    VT_REWARD_ITEM_INDEX = 16,
+    VT_REWARD_ITEM_AMOUNT = 18,
+    VT_COMPLETE_TIME = 20
   };
   int32_t result() const {
     return GetField<int32_t>(VT_RESULT, 0);
@@ -612,11 +636,17 @@ struct MissionCompleteResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::
   int32_t pass_exp() const {
     return GetField<int32_t>(VT_PASS_EXP, 0);
   }
+  int32_t daily_mission_exp() const {
+    return GetField<int32_t>(VT_DAILY_MISSION_EXP, 0);
+  }
   int32_t reward_item_index() const {
     return GetField<int32_t>(VT_REWARD_ITEM_INDEX, 0);
   }
   int32_t reward_item_amount() const {
     return GetField<int32_t>(VT_REWARD_ITEM_AMOUNT, 0);
+  }
+  int64_t complete_time() const {
+    return GetField<int64_t>(VT_COMPLETE_TIME, 0);
   }
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -625,8 +655,10 @@ struct MissionCompleteResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::
            VerifyField<int32_t>(verifier, VT_MISSION_INDEX, 4) &&
            VerifyField<int32_t>(verifier, VT_PASS_LEVEL, 4) &&
            VerifyField<int32_t>(verifier, VT_PASS_EXP, 4) &&
+           VerifyField<int32_t>(verifier, VT_DAILY_MISSION_EXP, 4) &&
            VerifyField<int32_t>(verifier, VT_REWARD_ITEM_INDEX, 4) &&
            VerifyField<int32_t>(verifier, VT_REWARD_ITEM_AMOUNT, 4) &&
+           VerifyField<int64_t>(verifier, VT_COMPLETE_TIME, 8) &&
            verifier.EndTable();
   }
 };
@@ -650,11 +682,17 @@ struct MissionCompleteResponseBuilder {
   void add_pass_exp(int32_t pass_exp) {
     fbb_.AddElement<int32_t>(MissionCompleteResponse::VT_PASS_EXP, pass_exp, 0);
   }
+  void add_daily_mission_exp(int32_t daily_mission_exp) {
+    fbb_.AddElement<int32_t>(MissionCompleteResponse::VT_DAILY_MISSION_EXP, daily_mission_exp, 0);
+  }
   void add_reward_item_index(int32_t reward_item_index) {
     fbb_.AddElement<int32_t>(MissionCompleteResponse::VT_REWARD_ITEM_INDEX, reward_item_index, 0);
   }
   void add_reward_item_amount(int32_t reward_item_amount) {
     fbb_.AddElement<int32_t>(MissionCompleteResponse::VT_REWARD_ITEM_AMOUNT, reward_item_amount, 0);
+  }
+  void add_complete_time(int64_t complete_time) {
+    fbb_.AddElement<int64_t>(MissionCompleteResponse::VT_COMPLETE_TIME, complete_time, 0);
   }
   explicit MissionCompleteResponseBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -674,11 +712,15 @@ inline ::flatbuffers::Offset<MissionCompleteResponse> CreateMissionCompleteRespo
     int32_t mission_index = 0,
     int32_t pass_level = 0,
     int32_t pass_exp = 0,
+    int32_t daily_mission_exp = 0,
     int32_t reward_item_index = 0,
-    int32_t reward_item_amount = 0) {
+    int32_t reward_item_amount = 0,
+    int64_t complete_time = 0) {
   MissionCompleteResponseBuilder builder_(_fbb);
+  builder_.add_complete_time(complete_time);
   builder_.add_reward_item_amount(reward_item_amount);
   builder_.add_reward_item_index(reward_item_index);
+  builder_.add_daily_mission_exp(daily_mission_exp);
   builder_.add_pass_exp(pass_exp);
   builder_.add_pass_level(pass_level);
   builder_.add_mission_index(mission_index);
