@@ -459,7 +459,7 @@ bool LobbyManager::CheckCompleteMission(Player* player, int missionCode)
 	std::tm tNowTime = {};
 	localtime_s(&tNowTime, &nowTime);
 
-	currMission.is_rewarded = true;
+	currMission.is_completed = true;
 	currMission.complete_time = tNowTime;
 	updateMissionList.push_back(currMission);
 
