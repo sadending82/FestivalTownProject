@@ -175,6 +175,11 @@ public class UI_Customize : UI_Scene
         }
 
         Get<GameObject>((int)GameObjects.UI_CharacterModel).GetComponent<UI_CharacterModel>().SetInventoryLocalCustomizing();
+
+        if(itemType == (int)Define.ItemType.Accessory_Back)
+        {
+            Get<GameObject>((int)GameObjects.UI_CharacterModel).transform.Rotate(Vector3.up, 180.0f);
+        }
     }
 
 }
