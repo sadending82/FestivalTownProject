@@ -27,7 +27,7 @@ namespace Network.PacketProcessor
 
                 int mission_index = missionState.MissionIndex;
                 int progress = missionState.Progress;
-                bool is_completed = missionState.IsRewarded;
+                bool is_completed = missionState.IsCompleted;
 
                 Int64 complete_time = missionState.CompleteTime;
 

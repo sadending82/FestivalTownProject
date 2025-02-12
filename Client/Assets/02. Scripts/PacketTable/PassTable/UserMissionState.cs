@@ -21,26 +21,26 @@ public struct UserMissionState : IFlatbufferObject
 
   public int MissionIndex { get { int o = __p.__offset(4); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
   public int Progress { get { int o = __p.__offset(6); return o != 0 ? __p.bb.GetInt(o + __p.bb_pos) : (int)0; } }
-  public bool IsRewarded { get { int o = __p.__offset(8); return o != 0 ? 0!=__p.bb.Get(o + __p.bb_pos) : (bool)false; } }
+  public bool IsCompleted { get { int o = __p.__offset(8); return o != 0 ? 0!=__p.bb.Get(o + __p.bb_pos) : (bool)false; } }
   public long CompleteTime { get { int o = __p.__offset(10); return o != 0 ? __p.bb.GetLong(o + __p.bb_pos) : (long)0; } }
 
   public static Offset<PacketTable.PassTable.UserMissionState> CreateUserMissionState(FlatBufferBuilder builder,
       int mission_index = 0,
       int progress = 0,
-      bool is_rewarded = false,
+      bool is_completed = false,
       long complete_time = 0) {
     builder.StartTable(4);
     UserMissionState.AddCompleteTime(builder, complete_time);
     UserMissionState.AddProgress(builder, progress);
     UserMissionState.AddMissionIndex(builder, mission_index);
-    UserMissionState.AddIsRewarded(builder, is_rewarded);
+    UserMissionState.AddIsCompleted(builder, is_completed);
     return UserMissionState.EndUserMissionState(builder);
   }
 
   public static void StartUserMissionState(FlatBufferBuilder builder) { builder.StartTable(4); }
   public static void AddMissionIndex(FlatBufferBuilder builder, int missionIndex) { builder.AddInt(0, missionIndex, 0); }
   public static void AddProgress(FlatBufferBuilder builder, int progress) { builder.AddInt(1, progress, 0); }
-  public static void AddIsRewarded(FlatBufferBuilder builder, bool isRewarded) { builder.AddBool(2, isRewarded, false); }
+  public static void AddIsCompleted(FlatBufferBuilder builder, bool isCompleted) { builder.AddBool(2, isCompleted, false); }
   public static void AddCompleteTime(FlatBufferBuilder builder, long completeTime) { builder.AddLong(3, completeTime, 0); }
   public static Offset<PacketTable.PassTable.UserMissionState> EndUserMissionState(FlatBufferBuilder builder) {
     int o = builder.EndTable();
@@ -56,7 +56,7 @@ static public class UserMissionStateVerify
     return verifier.VerifyTableStart(tablePos)
       && verifier.VerifyField(tablePos, 4 /*MissionIndex*/, 4 /*int*/, 4, false)
       && verifier.VerifyField(tablePos, 6 /*Progress*/, 4 /*int*/, 4, false)
-      && verifier.VerifyField(tablePos, 8 /*IsRewarded*/, 1 /*bool*/, 1, false)
+      && verifier.VerifyField(tablePos, 8 /*IsCompleted*/, 1 /*bool*/, 1, false)
       && verifier.VerifyField(tablePos, 10 /*CompleteTime*/, 8 /*long*/, 8, false)
       && verifier.VerifyTableEnd(tablePos);
   }

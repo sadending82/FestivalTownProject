@@ -349,7 +349,7 @@ struct UserMissionState FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_MISSION_INDEX = 4,
     VT_PROGRESS = 6,
-    VT_IS_REWARDED = 8,
+    VT_IS_COMPLETED = 8,
     VT_COMPLETE_TIME = 10
   };
   int32_t mission_index() const {
@@ -358,8 +358,8 @@ struct UserMissionState FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   int32_t progress() const {
     return GetField<int32_t>(VT_PROGRESS, 0);
   }
-  bool is_rewarded() const {
-    return GetField<uint8_t>(VT_IS_REWARDED, 0) != 0;
+  bool is_completed() const {
+    return GetField<uint8_t>(VT_IS_COMPLETED, 0) != 0;
   }
   int64_t complete_time() const {
     return GetField<int64_t>(VT_COMPLETE_TIME, 0);
@@ -368,7 +368,7 @@ struct UserMissionState FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_MISSION_INDEX, 4) &&
            VerifyField<int32_t>(verifier, VT_PROGRESS, 4) &&
-           VerifyField<uint8_t>(verifier, VT_IS_REWARDED, 1) &&
+           VerifyField<uint8_t>(verifier, VT_IS_COMPLETED, 1) &&
            VerifyField<int64_t>(verifier, VT_COMPLETE_TIME, 8) &&
            verifier.EndTable();
   }
@@ -384,8 +384,8 @@ struct UserMissionStateBuilder {
   void add_progress(int32_t progress) {
     fbb_.AddElement<int32_t>(UserMissionState::VT_PROGRESS, progress, 0);
   }
-  void add_is_rewarded(bool is_rewarded) {
-    fbb_.AddElement<uint8_t>(UserMissionState::VT_IS_REWARDED, static_cast<uint8_t>(is_rewarded), 0);
+  void add_is_completed(bool is_completed) {
+    fbb_.AddElement<uint8_t>(UserMissionState::VT_IS_COMPLETED, static_cast<uint8_t>(is_completed), 0);
   }
   void add_complete_time(int64_t complete_time) {
     fbb_.AddElement<int64_t>(UserMissionState::VT_COMPLETE_TIME, complete_time, 0);
@@ -405,13 +405,13 @@ inline ::flatbuffers::Offset<UserMissionState> CreateUserMissionState(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t mission_index = 0,
     int32_t progress = 0,
-    bool is_rewarded = false,
+    bool is_completed = false,
     int64_t complete_time = 0) {
   UserMissionStateBuilder builder_(_fbb);
   builder_.add_complete_time(complete_time);
   builder_.add_progress(progress);
   builder_.add_mission_index(mission_index);
-  builder_.add_is_rewarded(is_rewarded);
+  builder_.add_is_completed(is_completed);
   return builder_.Finish();
 }
 
