@@ -68,6 +68,7 @@ public class Weapon : MonoBehaviour
             if (collision.gameObject.transform.parent.GetComponent<CharacterStatus>().GetTeamNumber() != playerState.GetTeamNumber())
             {
                 Managers.Effect.PlayEffect("Attacked", transform.position);
+                Managers.Sound.Play("Sfx_Ch_Weapon_Hit");
 
                 if (amIPlayer == true)
                 {

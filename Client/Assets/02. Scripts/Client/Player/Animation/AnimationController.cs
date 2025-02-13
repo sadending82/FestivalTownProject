@@ -157,6 +157,7 @@ public class AnimationController : MonoBehaviour
                     {
                         if (oneTimeSendChecker == true)
                         {
+                            Managers.Sound.Play("Sfx_Ch_Attack_Motion");
                             Vector3 dir = targetPoint.position - leftAttackChecker.transform.position;
                             dir = dir.normalized;
                             leftHand.GetComponent<Rigidbody>().AddForce(dir * punchMotionPower, ForceMode.Impulse);
@@ -181,6 +182,7 @@ public class AnimationController : MonoBehaviour
                     {
                         if (oneTimeSendChecker == true)
                         {
+                            Managers.Sound.Play("Sfx_Ch_Attack_Motion");
                             Vector3 dir = targetPoint.position - rightAttackChecker.transform.position;
                             dir = dir.normalized;
                             rightHand.GetComponent<Rigidbody>().AddForce(dir * punchMotionPower, ForceMode.Impulse);
@@ -206,6 +208,7 @@ public class AnimationController : MonoBehaviour
                 {
                     if (oneTimeSendChecker == true)
                     {
+                        Managers.Sound.Play("Sfx_Ch_Weapon_Motion");
                         oneTimeSendChecker = false;
                         Vector3 dir = targetPoint.position - rightAttackChecker.transform.position;
                         dir = dir.normalized;

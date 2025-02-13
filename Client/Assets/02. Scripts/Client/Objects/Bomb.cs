@@ -102,7 +102,7 @@ public class Bomb : MonoBehaviour
 
         GameObject sound = Managers.Resource.Instantiate("AudioSourceForDestroyingObj");
 
-        Managers.Sound.Play3D("Sfx_Bomb_Explosion", sound);
+        Managers.Sound.Play("Sfx_Bomb_Explosion");
         Managers.Effect.PlayEffect("BombExplosion", this.transform.position);
 
         if(isPickUp == true)

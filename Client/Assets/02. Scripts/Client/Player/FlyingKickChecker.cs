@@ -31,6 +31,7 @@ public class FlyingKickChecker : MonoBehaviour
             if (other.gameObject.transform.parent.GetComponent<CharacterStatus>().GetTeamNumber() != playerState.GetTeamNumber())
             {
                 Managers.Effect.PlayEffect("Attacked", transform.position);
+                Managers.Sound.Play("Sfx_Ch_Attack_Hit");
 
                 if (playerState.GetAmIPlayer() == true)
                 {

@@ -41,6 +41,7 @@ public class Checker : MonoBehaviour
             {
                 if (Managers.Player.GetIsHost() == true)
                 {
+                    Managers.Sound.Play("Sfx_Ch_Bump");
                     CharacterStatus tPlayerState = other.gameObject.transform.GetComponentInParent<CharacterStatus>();
                     PlayerController tPlayerController = other.gameObject.transform.GetComponentInParent<PlayerController>();
 

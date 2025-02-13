@@ -37,6 +37,7 @@ public class AttackChecker : MonoBehaviour
             if (other.gameObject.transform.parent.GetComponent<CharacterStatus>().GetTeamNumber() != playerState.GetTeamNumber())
             {
                 Managers.Effect.PlayEffect("Attacked", effectPoint.position);
+                Managers.Sound.Play("Sfx_Ch_Attack_Hit");
 
                 if (playerState.GetAmIPlayer() == true)
                 {
@@ -62,6 +63,8 @@ public class AttackChecker : MonoBehaviour
                     if (rb != null)
                     {
                         Debug.Log("Grap!!");
+
+                        Managers.Sound.Play("Sfx_Ch_Catch");
                         isGrapState = false;
 
                         int targetId = targetPlayerState.GetId();

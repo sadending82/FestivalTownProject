@@ -544,6 +544,8 @@ public class PlayerController : MonoBehaviour
         pelvisRigidbody.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
         flyingKickChecker = false;
         jumpAttackChecker.SetIsAttackState(flyingKickChecker);
+
+        Managers.Sound.Play("Sfx_Ch_Jump");
         StartCoroutine(WaitIsGroundCheck());
     }
     /// <summary>
