@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_PassPanel : UI_Base
 {
@@ -12,6 +13,7 @@ public class UI_PassPanel : UI_Base
     }
 
     bool isInitialized = false;
+    int passIndex = -1;
 
     void Start()
     {
@@ -24,8 +26,17 @@ public class UI_PassPanel : UI_Base
 
         Get<GameObject>((int)GameObjects.PassLevelPanel).GetComponent<UI_PassLevelPanel>().Init();
         Get<GameObject>((int)GameObjects.PassItemPanel).GetComponent<UI_PassItemPanel>().Init();
+        Get<GameObject>((int)GameObjects.GetAllItemButton).BindEvent((PointerEventData) =>
+        {
+            Managers.Network.GetPacketManager().SendBatchReceivePassRewardsRequestPacket(passIndex);
+        });
 
         isInitialized = true;
+    }
+
+    public void SetPassIdx(int passIdx)
+    {
+        passIndex = passIdx;
     }
 
     public void SetLevel(int level)

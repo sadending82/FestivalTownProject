@@ -55,11 +55,14 @@ public class UI_Pass : UI_Scene
             // 패스 구매 버튼
         });
 
-        Get<GameObject>((int)GameObjects.PassPanel).GetComponent<UI_PassPanel>().Init();
+        var panelUI = Get<GameObject>((int)GameObjects.PassPanel).GetComponent<UI_PassPanel>();
+        panelUI.Init();
+        
 
         foreach (var passListData in Managers.Data.PassListDataDict)
         {
             SetPeriod(passListData.Value.Open_Date, passListData.Value.Close_Date);
+            panelUI.SetPassIdx(passListData.Key);
 
             for (int i = 1; Managers.Data.PassLevelDataDict.ContainsKey(passListData.Value.Index * 100 + i); ++i)
             {
