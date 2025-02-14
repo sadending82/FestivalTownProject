@@ -42,6 +42,22 @@ public class UI_SignInSuccess : UI_PopUp
         isInitialized = true;
     }
 
+    public override void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (Managers.UI.GetTopOfPopUPUI() == this)
+            {
+                if (Camera.main.gameObject.GetComponent<SuperBlur.SuperBlur>() != null)
+                {
+                    Camera.main.gameObject.GetComponent<SuperBlur.SuperBlur>().enabled = false;
+                }
+                Managers.UI.ClosePopUpUI();
+                Managers.UI.ClosePopUpUI();
+            }
+        }
+    }
+
     public void TextChange(string text)
     {
         Get<GameObject>((int)GameObjects.SignInSuccessText).GetComponent<TMP_Text>().text = text;

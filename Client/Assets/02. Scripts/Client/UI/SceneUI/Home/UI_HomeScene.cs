@@ -59,7 +59,7 @@ public class UI_HomeScene : UI_PopUp
         Get<GameObject>((int)GameObjects.PlayerDataPanel).transform.GetChild(0).GetComponent<TMP_Text>().text = value;
     }
 
-    private void Update()
+    public override void Update()
     {
         SetGold(Managers.Data.GetGold());
         SetDiamond(Managers.Data.GetDiamond());

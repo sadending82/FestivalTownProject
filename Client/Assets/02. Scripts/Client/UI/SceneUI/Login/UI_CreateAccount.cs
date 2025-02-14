@@ -40,11 +40,14 @@ public class UI_CreateAccount : UI_PopUp
         });
     }
 
-    private void Update()
+    public override void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape)) {
-            Camera.main.gameObject.GetComponent<SuperBlur.SuperBlur>().enabled = false;
-            ClosePopUpUI();
+            if (Managers.UI.GetTopOfPopUPUI() == this)
+            {
+                Camera.main.gameObject.GetComponent<SuperBlur.SuperBlur>().enabled = false;
+                ClosePopUpUI();
+            }
         }
 
     }

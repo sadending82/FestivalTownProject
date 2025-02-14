@@ -99,9 +99,7 @@ public class UI_HomeStart : UI_Scene
 
         Get<GameObject>((int)GameObjects.PassButton).BindEvent((ButtonEventData) =>
         {
-            Managers.UI.CloseAllPopUpUI();
-            Managers.UI.CloseSceneUI();
-            var ui = Managers.UI.ShowSceneUI<UI_Pass>();
+            var ui = Managers.UI.ShowPopUpUI<UI_Pass>();
         });
 
         if (false == Managers.Cheat.IsEnable())
