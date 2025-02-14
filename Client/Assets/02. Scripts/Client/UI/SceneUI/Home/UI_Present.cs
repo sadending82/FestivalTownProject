@@ -35,20 +35,33 @@ public class UI_Present : UI_Scene
 
         Get<GameObject>((int)GameObjects.BackButton).BindEvent((PointerEventData) =>
         {
-            Managers.UI.CloseSceneUI();
-            var ui = Managers.UI.ShowSceneUI<UI_HomeStart>();
-            var popUpUi = Managers.UI.ShowPopUpUI<UI_HomeScene>();
-            ui.Init();
-            ui.SetCustomizing();
-            popUpUi.Init();
+            ReturnToHomeScene();
         }, Define.UIEvent.Click, true, true);
 
         isInitialized = true;
+    }
+
+    void ReturnToHomeScene()
+    {
+        Managers.UI.CloseSceneUI();
+        var ui = Managers.UI.ShowSceneUI<UI_HomeStart>();
+        var popUpUi = Managers.UI.ShowPopUpUI<UI_HomeScene>();
+        ui.Init();
+        ui.SetCustomizing();
+        popUpUi.Init();
     }
 
     private void Update()
     {
         Get<GameObject>((int)GameObjects.GoldText).GetComponent<TMP_Text>().text = Managers.Data.GetGold().ToString();
         Get<GameObject>((int)GameObjects.DiamondText).GetComponent<TMP_Text>().text = Managers.Data.GetDiamond().ToString();
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            if(Managers.UI.GetTopOfPopUPUI() == null)
+            {
+                ReturnToHomeScene();
+            }
+        }
     }
 }

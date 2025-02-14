@@ -44,29 +44,7 @@ public class UI_TopPanel : UI_Base
 
         ui.BindEventToButton((PointerEventData) =>
         {
-            if (Managers.UI.GetCurrentSceneUI().GetComponent<UI_HomeStart>() == null)
-            {
-                if (Managers.UI.GetCurrentSceneUI().GetComponent<UI_Customize>() != null)
-                {
-                    // 이 부분에 기존에는 강제로 클라 로컬 데이터로 변경하는 코드가 들어있었습니다.
-                    // 그래서 문제가 생겼던것 같습니다.
-
-                    Managers.UI.CloseSceneUI();
-
-                    Camera.main.transform.GetChild(0).gameObject.SetActive(true); // Home용 카메라
-                    Camera.main.transform.GetChild(1).gameObject.SetActive(false); // Inventory용 카메라
-                }
-
-                Managers.UI.CloseSceneUI();
-
-                var hui = Managers.UI.ShowSceneUI<UI_HomeStart>();
-                hui.Init();
-                hui.SetCustomizing();
-
-                selected = Selected.Home;
-                SelectStuff();
-
-            }
+            ReturnToHomeScene();
         });
 
         ui = Get<GameObject>((int)GameObjects.CustomizeButtonTab).GetComponent<UI_ButtonTab>();
@@ -173,5 +151,43 @@ public class UI_TopPanel : UI_Base
         }
 
         Get<GameObject>((int)selected).GetComponent<UI_ButtonTab>().SetSelected(true);
+    }
+
+    void ReturnToHomeScene()
+    {
+        if (Managers.UI.GetCurrentSceneUI().GetComponent<UI_HomeStart>() == null)
+        {
+            if (Managers.UI.GetCurrentSceneUI().GetComponent<UI_Customize>() != null)
+            {
+                // 이 부분에 기존에는 강제로 클라 로컬 데이터로 변경하는 코드가 들어있었습니다.
+                // 그래서 문제가 생겼던것 같습니다.
+
+                Managers.UI.CloseSceneUI();
+
+                Camera.main.transform.GetChild(0).gameObject.SetActive(true); // Home용 카메라
+                Camera.main.transform.GetChild(1).gameObject.SetActive(false); // Inventory용 카메라
+            }
+
+            Managers.UI.CloseSceneUI();
+
+            var hui = Managers.UI.ShowSceneUI<UI_HomeStart>();
+            hui.Init();
+            hui.SetCustomizing();
+
+            selected = Selected.Home;
+            SelectStuff();
+
+        }
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            if(Managers.UI.GetTopOfPopUPUI().GetComponent<UI_HomeScene>() != null)
+            {
+                ReturnToHomeScene();
+            }
+        }
     }
 }
