@@ -37,7 +37,7 @@ public class UI_Pass : UI_Scene
 
         Get<GameObject>((int)GameObjects.ExitButton).BindEvent((PointerEventData) =>
         {
-
+            ReturnToHome();
         }, Define.UIEvent.Click, true, true);
 
         Get<GameObject>((int)GameObjects.MissionButton).BindEvent((PointerEventData) =>
