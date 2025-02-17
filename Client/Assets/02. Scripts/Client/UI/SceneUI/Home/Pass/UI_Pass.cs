@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class UI_Pass : UI_PopUp
+public class UI_Pass : UI_Scene
 {
     enum GameObjects
     {
@@ -37,7 +37,7 @@ public class UI_Pass : UI_PopUp
 
         Get<GameObject>((int)GameObjects.ExitButton).BindEvent((PointerEventData) =>
         {
-            Managers.UI.ClosePopUpUI();
+
         }, Define.UIEvent.Click, true, true);
 
         Get<GameObject>((int)GameObjects.MissionButton).BindEvent((PointerEventData) =>
@@ -127,12 +127,28 @@ public class UI_Pass : UI_PopUp
         }
     }
 
-    public override void Update()
+    public void ReturnToHome()
+    {
+        if (Managers.UI.GetCurrentSceneUI().GetComponent<UI_Pass>() != null && Managers.UI.GetTopOfPopUPUI() == null)
+        {
+            Managers.UI.CloseSceneUI();
+            var hui = Managers.UI.ShowSceneUI<UI_HomeStart>();
+            hui.Init();
+            hui.SetCustomizing();
+
+            var popup = Managers.UI.ShowPopUpUI<UI_HomeScene>();
+        }
+    }
+
+    public void Update()
     {
 
         Get<GameObject>((int)GameObjects.GoldText).GetComponent<TMP_Text>().text = Managers.Data.GetGold().ToString();
         Get<GameObject>((int)GameObjects.DiamondText).GetComponent<TMP_Text>().text = Managers.Data.GetDiamond().ToString();
 
-        base.Update();
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            ReturnToHome();
+        }
     }
 }
