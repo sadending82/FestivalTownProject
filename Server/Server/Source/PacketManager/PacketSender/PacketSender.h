@@ -21,6 +21,7 @@ public:
 	void SendUserMissionStatePacket(int sessionID, UserMissionList& playerMissionState);
 	void SendMissionCompleteResponsePacket(int sessionID, int result, PlayerPassInfo& playerPassInfo, UserMission& missionState, int reward_item_index, int reward_item_amount);
 	void SendPassRewardResponsePacket(int sessionID, int result, int pass_index, int pass_type, int reward_level, int reward_item_index, int reward_item_amount);
+	void SendBatchReceivePassRewardsResponsePacket(int sessionID, int pass_index, std::vector<ReceivedPassReward>& rewards);
 
 	void SendPlayerAdd(int roomID);
 	void SendPlayerDelete(int roomID, int inGameID);

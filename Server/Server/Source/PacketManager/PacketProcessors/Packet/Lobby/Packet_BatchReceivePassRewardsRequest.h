@@ -26,18 +26,24 @@ public:
 			std::vector<ReceivedPassReward> rewards;
 			int playerPassLevel = player->GetPassInfo()[passIndex].passState.passLevel;
 			ePassType playerPassType = (ePassType)player->GetPassInfo()[passIndex].passState.passType;
-			
+
 			for (int i = 1; i <= playerPassLevel; ++i) {
 				// 일반 보상
 				bool result = lobbyManager->GivePassReward(player, passIndex, ePassType::PT_NORMAL, playerPassLevel);
-				PassLevel& passLevelInfo = tableManager->GetPassList()[passIndex].passLevelList[playerPassLevel][ePassType::PT_NORMAL];
-
-				ReceivedPassReward normalReward = ReceivedPassReward{ result, passIndex, ePassType::PT_NORMAL, i, passLevelInfo.Reward_Item_Index, passLevelInfo.Reward_Item_Amount };
+				if (result == true) {
+					PassLevel& passLevelInfo = tableManager->GetPassList()[passIndex].passLevelList[playerPassLevel][ePassType::PT_NORMAL];
+					rewards.push_back(ReceivedPassReward{ result, passIndex, ePassType::PT_NORMAL, i, passLevelInfo.Reward_Item_Index, passLevelInfo.Reward_Item_Amount });
+				}
 
 				// 프리미엄 보상
 				result = lobbyManager->GivePassReward(player, passIndex, ePassType::PT_NORMAL, playerPassLevel);
-				passLevelInfo = tableManager->GetPassList()[passIndex].passLevelList[playerPassLevel][ePassType::PT_NORMAL];
+				if (result == true) {
+					PassLevel& passLevelInfo = tableManager->GetPassList()[passIndex].passLevelList[playerPassLevel][ePassType::PT_PREMIUM];
+					rewards.push_back(ReceivedPassReward{ result, passIndex, ePassType::PT_PREMIUM, i, passLevelInfo.Reward_Item_Index, passLevelInfo.Reward_Item_Amount });
+				}
 			}
+
+			pPacketSender->SendBatchReceivePassRewardsResponsePacket(key, passIndex, rewards);
 
 		}
 		catch (const std::exception& e) {

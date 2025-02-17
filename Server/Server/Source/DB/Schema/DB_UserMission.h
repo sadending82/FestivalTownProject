@@ -49,4 +49,18 @@ struct UserMissionList {
 	// <pass, <type, <category, <group, <step, UserMission>>>>
 	USER_PASS_MISSION_LIST missionList;
 };
+
+struct UserMission_Type{
+	int user_UID;
+	int mission_code;
+	int mission_type;
+	int mission_group;
+	int mission_step;
+	int progress;
+	int required_count;
+	std::string assigned_date;
+	int is_completed;
+	std::string complete_time;
+};
+
 #pragma pack(pop) 

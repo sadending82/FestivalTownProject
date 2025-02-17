@@ -136,7 +136,6 @@
     <ClInclude Include="Source\LobbyManager\LobbyManager.h" />
     <ClInclude Include="Source\DB\Schema\DB_UserGameRecords.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_ChangeCharacterCustomizing.h" />
-    <ClInclude Include="Source\DB\Query\Query.h" />
     <ClInclude Include="Source\TableManager\Tables\Event.h" />
     <ClInclude Include="Source\PacketManager\flatbuffer\Cheat_generated.h" />
     <ClInclude Include="Source\DB\Schema\DB_UserAttendance.h" />
@@ -161,6 +160,7 @@
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_UserMissionStateRequest.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_MissionCompleteRequest.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_PassRewardRequest.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_BatchReceivePassRewardsRequest.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

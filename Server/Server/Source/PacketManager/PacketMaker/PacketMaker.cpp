@@ -213,6 +213,25 @@ std::vector<uint8_t> PacketMaker::MakePassRewardResponsePacket(int result, int p
 	return MakeBuffer(ePacketType::S2C_PASS_REWARD_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
+std::vector<uint8_t> PacketMaker::MakeBatchReceivePassRewardsResponsePacket(int pass_index, std::vector<ReceivedPassReward>& rewards)
+{
+	flatbuffers::FlatBufferBuilder Builder;
+
+	std::vector<flatbuffers::Offset<PacketTable::PassTable::PassRewardResponse>> rewardVector;
+
+	for (int i = 0; i < rewards.size(); ++i) {
+		ReceivedPassReward& reward = rewards[i];
+
+		auto rewardInfo = PacketTable::PassTable::CreatePassRewardResponse(Builder, reward.result, reward.pass_index, reward.pass_type, reward.pass_level, reward.reward_item_index, reward.reward_item_amount);
+
+		rewardVector.push_back(rewardInfo);
+	}
+
+	Builder.Finish(PacketTable::PassTable::CreateBatchReceivePassRewardsResponse(Builder, pass_index, Builder.CreateVector(rewardVector)));
+
+	return MakeBuffer(ePacketType::S2C_BATCH_RECEIVE_PASS_REWARDS_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
+}
+
 std::vector<uint8_t> PacketMaker::MakePlayerAddPacket(std::vector<class Player*>& players)
 {
 	flatbuffers::FlatBufferBuilder Builder;

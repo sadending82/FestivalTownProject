@@ -194,7 +194,12 @@ void LobbyManager::LoadPassState(Player* player)
 
 	std::unordered_map<int, PassInfo>& passList = pTableManager->GetPassList();
 
-	std::time_t nowTime = std::time(nullptr);
+	time_t now = std::time(nullptr);
+	std::tm today{};
+	localtime_s(&today, &now);
+
+	std::tm lastLoginDate = player->GetLastLoginTime();
+
 
 	for (auto& passInfo : passList) {
 
@@ -203,7 +208,7 @@ void LobbyManager::LoadPassState(Player* player)
 		std::time_t openTime = std::mktime(const_cast<std::tm*>(&passInfo.second.open_date));
 		std::time_t closeTime = std::mktime(const_cast<std::tm*>(&passInfo.second.close_date));
 
-		if (nowTime < openTime || closeTime < nowTime) {
+		if (now < openTime || closeTime < now) {
 			continue;
 		}
 
@@ -216,6 +221,16 @@ void LobbyManager::LoadPassState(Player* player)
 			passState.passLevel = 0;
 			passState.passExp = 0;
 			passState.daily_mission_exp = 0;
+		}
+		else {
+			if (today.tm_year != lastLoginDate.tm_year
+				|| today.tm_mon != lastLoginDate.tm_mon
+				|| today.tm_mday != lastLoginDate.tm_mday) {
+
+				passState.daily_mission_exp = 0;
+
+				pDB->UpsertUserPass(uid, passState);
+			}
 		}
 
 		playerPassStateList[passIndex].Init(passState);

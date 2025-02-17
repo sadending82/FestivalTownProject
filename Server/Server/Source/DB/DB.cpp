@@ -4,7 +4,6 @@
 #include <iomanip>
 #include <chrono>
 #include "DB.h"
-#include "Query/Query.h"
 #include "../TableManager/TableManager.h"
 #include "../utility.h"
 
@@ -136,7 +135,7 @@ ERROR_CODE DB::InsertNewAcccount(const char* id, const char* password)
 	}
 	
 
-	SQLPrepare(hStmt, (SQLWCHAR*)InsertAccount_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL AccountDB.dbo.InsertAcccount(?, ?, ?)}", SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, strlen(id), 0, (SQLCHAR*)id, 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, hashedPassword.length(), 0, (SQLCHAR*)hashedPassword.c_str(), 0, NULL);
@@ -173,7 +172,7 @@ int DB::InsertNewUser(const char* id, const wchar_t* nickname)
 		return INVALIDKEY;
 	}
 
-	SQLPrepare(hStmt, (SQLWCHAR*)InsertNewUser_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.InsertNewUser(?, ?)}", SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, strlen(id), 0, (SQLCHAR*)id, 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_WCHAR, SQL_WVARCHAR, wcslen(nickname), 0, (SQLWCHAR*)nickname, 0, NULL);
@@ -224,7 +223,7 @@ ERROR_CODE DB::InsertUserGameRecords(const int uid)
 
 	
 
-	SQLPrepare(hStmt, (SQLWCHAR*)InsertUserGameRecords_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.InsertUserGameRecords(?)}", SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
 
@@ -264,7 +263,7 @@ ERROR_CODE DB::InsertUserItem(const int owner_uid, const int itemCode, const int
 
 	
 
-	SQLPrepare(hStmt, (SQLWCHAR*)InsertUserItem_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.InsertUserItem(?, ?, ?, ?)}", SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&owner_uid), 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&itemCode), 0, NULL);
@@ -306,7 +305,7 @@ ERROR_CODE DB::InsertUserAttendance(const int uid, const int EventIndex, const i
 
 	
 
-	SQLPrepare(hStmt, (SQLWCHAR*)InsertUserAttendance_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.InsertUserAttendance(?, ?, ?)}", SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&EventIndex), 0, NULL);
@@ -347,7 +346,7 @@ ERROR_CODE DB::InsertUserEventReward(const int uid, const int Eventcode)
 
 
 
-	SQLPrepare(hStmt, (SQLWCHAR*)InsertUserEventReward_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.InsertUserEventReward(?, ?)}", SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&Eventcode), 0, NULL);
@@ -387,7 +386,7 @@ ERROR_CODE DB::InsertUserPassReward(const int uid, const PassLevel& passLevelInf
 
 
 
-	SQLPrepare(hStmt, (SQLWCHAR*)InsertUserPassReward_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.InsertUserPassReward(?, ?, ?, ?)}", SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&passLevelInfo.pass), 0, NULL);
@@ -425,7 +424,7 @@ int DB::SelectAccountCount(const char* id)
 		return 999;
 	}
 
-	SQLPrepare(hStmt, (SQLWCHAR*)SelectAccountCount_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL AccountDB.dbo.SelectAccountCount(?)}", SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, strlen(id), 0, (SQLCHAR*)id, 0, NULL);
 
@@ -474,13 +473,15 @@ std::pair<ERROR_CODE, UserInfo> DB::SelectUserInfoForLogin(const char* id)
 		return { ERROR_CODE::ER_DB_ERROR, UserInfo() };
 	}
 
-	
-	int state = true;
 
-	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserInfoForLogin_Query, SQL_NTS);
 
-	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (&state), 0, NULL);
-	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, strlen(id), 0, (SQLCHAR*)id, 0, NULL);
+	retcode = SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.SelectUserInfoForLogin(?)}", SQL_NTS);
+	if (retcode != SQL_SUCCESS && retcode != SQL_SUCCESS_WITH_INFO) {
+		std::cerr << "Error preparing the SQL statement." << std::endl;
+		return { ERROR_CODE::ER_DB_ERROR ,UserInfo() };
+	}
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, strlen(id), 0, (SQLCHAR*)id, 0, NULL);
 
 	retcode = SQLExecute(hStmt);
 
@@ -552,7 +553,7 @@ std::pair<ERROR_CODE, UserInfo> DB::SelectUserInfo(const int uid)
 
 	
 
-	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserInfo_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.SelectUserInfo(?)}", SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
 
@@ -621,7 +622,7 @@ std::pair<ERROR_CODE, std::vector<UserItem>> DB::SelectUserAllCurrency(const int
 		return { ERROR_CODE::ER_DB_ERROR, std::vector<UserItem>() };
 	}
 
-	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserAllCurrency_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.SelectUserAllCurrency(?)}", SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
 
@@ -681,10 +682,9 @@ std::pair<ERROR_CODE, std::unordered_map<int, UserItem>> DB::SelectUserAllItems(
 
 	
 
-	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserAllItems_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.SelectUserAllItems(?)}", SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
-	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&zero), 0, NULL);
 
 	retcode = SQLExecute(hStmt);
 
@@ -735,7 +735,7 @@ sCharacterCustomizing DB::SelectCharacterCustomizing(const int uid)
 		return sCharacterCustomizing();
 	}
 
-	SQLPrepare(hStmt, (SQLWCHAR*)SelectCharacterCustomizing_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.SelectCharacterCustomizing(?)}", SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
 
@@ -802,7 +802,7 @@ int DB::SelectUserItemCount(const int uid, const int item_index)
 
 	
 
-	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserItemCount_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.SelectUserItemCount(?, ?)}", SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&item_index), 0, NULL);
@@ -852,7 +852,7 @@ std::set<sDayAttendanceInfo> DB::SelectUserAttendanceEvent(const int uid, const 
 
 	
 
-	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserAttendanceEvent_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.SelectUserAttendanceEvent(?, ?)}", SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&eventCode), 0, NULL);
@@ -912,7 +912,7 @@ sDayAttendanceInfo DB::SelectUserAttendanceEventLatest(const int uid, const int 
 
 	
 
-	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserAttendanceEventLatest_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.SelectUserAttendanceEventLatest(?, ?)}", SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&eventCode), 0, NULL);
@@ -972,7 +972,7 @@ int DB::SelectUserAttendanceToday(const int uid)
 
 	
 
-	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserAttendanceToday_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.SelectUserAttendanceToday(?)}", SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
 
@@ -1018,7 +1018,7 @@ bool DB::SelectUserAttendanceIsRewarded(const int uid, const int eventCode, cons
 
 
 
-	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserAttendanceIsRewarded_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.SelectUserAttendanceIsRewarded(?, ?, ?)}", SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&eventCode), 0, NULL);
@@ -1066,7 +1066,7 @@ std::vector<UserMission> DB::SelectUserMission(const int uid)
 
 	std::vector<UserMission> missionList;
 
-	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserMission_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.SelectUserMission(?)}", SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
 
@@ -1091,7 +1091,7 @@ std::vector<UserMission> DB::SelectUserMission(const int uid)
 			SQLGetData(hStmt, 10, SQL_C_TYPE_TIMESTAMP, &complete_time, sizeof(complete_time), NULL);
 
 			SqlDateStruct_To_Tm(assigned_date, missionInfo.assigned_date);
-			SqlTimestampStruct_To_Tm(complete_time, missionInfo.assigned_date);
+			SqlTimestampStruct_To_Tm(complete_time, missionInfo.complete_time);
 
 			missionList.push_back(missionInfo);
 		}
@@ -1126,7 +1126,7 @@ UserPass DB::SelectUserPass(const int uid, const int passIndex)
 		return UserPass();
 	}
 
-	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserPass_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.SelectUserPass(?, ?)}", SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&passIndex), 0, NULL);
@@ -1178,7 +1178,7 @@ std::unordered_map<int, UserPassReward> DB::SelectUserPassReward(const int uid, 
 	}
 
 
-	SQLPrepare(hStmt, (SQLWCHAR*)SelectUserPassReward_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.SelectUserPassReward(?, ?)}", SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&passIndex), 0, NULL);
@@ -1233,10 +1233,10 @@ ERROR_CODE DB::UpdateUserConnectionState(const int uid, const int state)
 
 	
 
-	SQLPrepare(hStmt, (SQLWCHAR*)UpdateUserConnectionState_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.UpdateUserConnectionState(?, ?)}", SQL_NTS);
 
-	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&state), 0, NULL);
-	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&state), 0, NULL);
 
 	retcode = SQLExecute(hStmt);
 
@@ -1266,23 +1266,18 @@ ERROR_CODE DB::UpsertUserItemCount(const int uid, const int item_Code, const int
 	int itemType = 1;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
-		DEBUGMSGONEPARAM("hStmt Error %d : (UpdateUserGold) \n", retcode); ErrorDisplay(hStmt);
+		DEBUGMSGONEPARAM("hStmt Error %d : (UpsertUserItemCount) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 		ReturnConnection(connection);
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
-	
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.UpsertUserItemCount(?, ?, ?, ?)}", SQL_NTS);
 
-	SQLPrepare(hStmt, (SQLWCHAR*)UpsertUserItemCount_Query, SQL_NTS);
-
-	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&item_Code), 0, NULL);
-	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&item_Code), 0, NULL);
 	SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&valueOfChange), 0, NULL);
-	SQLBindParameter(hStmt, 4, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
-	SQLBindParameter(hStmt, 5, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&item_Code), 0, NULL);
-	SQLBindParameter(hStmt, 6, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&valueOfChange), 0, NULL);
-	SQLBindParameter(hStmt, 7, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&itemType), 0, NULL);
+	SQLBindParameter(hStmt, 4, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&itemType), 0, NULL);
 
 	retcode = SQLExecute(hStmt);
 
@@ -1317,9 +1312,8 @@ ERROR_CODE DB::UpdateUserPoint(const int uid, const int valueOfChange)
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
-	
 
-	SQLPrepare(hStmt, (SQLWCHAR*)UpdateUserPoint_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.UpdateUserPoint(?, ?)}", SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&valueOfChange), 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
@@ -1358,8 +1352,7 @@ ERROR_CODE DB::UpdateBattleRecords(const int uid, const UserGameRecords& gameRec
 	}
 
 	
-
-	SQLPrepare(hStmt, (SQLWCHAR*)UpdateBattleRecords_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.UpdateBattleRecords(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}", SQL_NTS);
 
 	int c = gameRecords.KillCount.load();
 
@@ -1414,11 +1407,11 @@ ERROR_CODE DB::UpdateUserItemCount(const int uid, const int item_index, const in
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
-	SQLPrepare(hStmt, (SQLWCHAR*)UpdateUserItemCount_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.UpdateUserItemCount (?, ?, ?)}", SQL_NTS);
 
-	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&valueOfChange), 0, NULL);
-	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
-	SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&item_index), 0, NULL);
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&item_index), 0, NULL);
+	SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&valueOfChange), 0, NULL);
 
 	retcode = SQLExecute(hStmt);
 
@@ -1456,30 +1449,20 @@ ERROR_CODE DB::UpsertUserCurrency(const int uid, std::vector<UserItem> CurrencyL
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
-	std::wstring query = UpsertUserCurrency_Query_Front;
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.UpsertUserCurrency (?, ?, ?)}", SQL_NTS);
 
-	for (int i = 0; i < CurrencyList.size(); ++i) {
-		query += L"(?, ?, ?)";
+	const int currencyListSize = CurrencyList.size();
 
-		if (i < CurrencyList.size() - 1) {
-			query += L", ";
-		}
+	for (int i = 0; i < currencyListSize; ++i) {
+		SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&CurrencyList[i].owner_UID), 0, NULL);
+		SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&CurrencyList[i].itemCode), 0, NULL);
+		SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&CurrencyList[i].count), 0, NULL);
+
+		retcode = SQLExecute(hStmt);
 	}
 
-	query += UpsertUserCurrency_Query_Back;
-
-	SQLPrepare(hStmt, (SQLWCHAR*)query.c_str(), SQL_NTS);
-
-	for (int i = 0; i < CurrencyList.size(); ++i) {
-		SQLBindParameter(hStmt, (i * 3) + 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&CurrencyList[i].owner_UID), 0, NULL);
-		SQLBindParameter(hStmt, (i * 3) + 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&CurrencyList[i].itemCode), 0, NULL);
-		SQLBindParameter(hStmt, (i * 3) + 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&CurrencyList[i].count), 0, NULL);
-	}
-
-	retcode = SQLExecute(hStmt);
 
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
-
 		SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
 		ReturnConnection(connection);
 		return ERROR_CODE::ER_NONE;
@@ -1515,7 +1498,8 @@ ERROR_CODE DB::UpsertCharacterCustomizing(const int uid, sCharacterCustomizing& 
 	int back_code = characterCustomizing.GetItemCode(CustomizingItemType::CI_BACK);
 	int emotion_code = characterCustomizing.GetItemCode(CustomizingItemType::CI_EMO);
 
-	SQLPrepare(hStmt, (SQLWCHAR*)UpsertCharacterCustomizing_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.UpsertCharacterCustomizing(?, ?, ?, ?, ?, ?)}", SQL_NTS);
+
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (SQLPOINTER)(&uid), 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (SQLPOINTER)(&skin_code), 0, NULL);
 	SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (SQLPOINTER)(&head_code), 0, NULL);
@@ -1553,61 +1537,46 @@ ERROR_CODE DB::UpsertUserMission(const int uid, std::vector<UserMission>& missio
 	SQLRETURN retcode;
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
-		DEBUGMSGONEPARAM("hStmt Error %d : (UpsertUserMission) \n", retcode); ErrorDisplay(hStmt);
+		DEBUGMSGONEPARAM("hStmt Error %d : (UpsertUserMission) \n", retcode);
+		ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 		ReturnConnection(connection);
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
-	std::wstring query = UpsertUserMission_Query_Front;
+	const int missionListSize = missionList.size();
 
-	for (int i = 0; i < missionList.size(); ++i) {
-		query += L"(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-		if (i < missionList.size() - 1) {
-			query += L", ";
-		}
-	}
-
-	query += UpsertUserMission_Query_Back;
-
-	SQLPrepare(hStmt, (SQLWCHAR*)query.c_str(), SQL_NTS);
-
-	int col_count = 10;
-
-	for (int i = 0; i < missionList.size(); ++i) {
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.UpsertUserMission (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}", SQL_NTS);
+	for (int i = 0; i < missionListSize; ++i) {
 
 		SQL_DATE_STRUCT assigned_date = {};
 		SQL_TIMESTAMP_STRUCT complete_time = {};
-
-		SQLLEN completeTimeNullFlag;
+		SQLLEN completeTimeNullFlag = SQL_NULL_DATA;
 
 		Tm_To_SqlDateStruct(assigned_date, missionList[i].assigned_date);
 		Tm_To_SqlTimestampStruct(complete_time, missionList[i].complete_time);
 
-		if (missionList[i].is_completed == false) {
-			completeTimeNullFlag = SQL_NULL_DATA;
+		retcode = SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(SQL_INTEGER), 0, (SQLPOINTER)(&missionList[i].user_UID), 0, NULL);
+		retcode = SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(SQL_INTEGER), 0, (SQLPOINTER)(&missionList[i].mission_code), 0, NULL);
+		retcode = SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(SQL_INTEGER), 0, (SQLPOINTER)(&missionList[i].mission_type), 0, NULL);
+		retcode = SQLBindParameter(hStmt, 4, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(SQL_INTEGER), 0, (SQLPOINTER)(&missionList[i].mission_group), 0, NULL);
+		retcode = SQLBindParameter(hStmt, 5, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(SQL_INTEGER), 0, (SQLPOINTER)(&missionList[i].mission_step), 0, NULL);
+		retcode = SQLBindParameter(hStmt, 6, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(SQL_INTEGER), 0, (SQLPOINTER)(&missionList[i].progress), 0, NULL);
+		retcode = SQLBindParameter(hStmt, 7, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(SQL_INTEGER), 0, (SQLPOINTER)(&missionList[i].required_count), 0, NULL);
+		retcode = SQLBindParameter(hStmt, 8, SQL_PARAM_INPUT, SQL_C_TYPE_DATE, SQL_TYPE_DATE, sizeof(SQL_DATE_STRUCT), 0, (SQLPOINTER)&assigned_date, 0, NULL);
+		retcode = SQLBindParameter(hStmt, 9, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(SQL_INTEGER), 0, (SQLPOINTER)(&missionList[i].is_completed), 0, NULL);
+
+		if (missionList[i].is_completed == true) {
+			SQLBindParameter(hStmt, 10, SQL_PARAM_INPUT, SQL_C_TYPE_TIMESTAMP, SQL_TYPE_TIMESTAMP, sizeof(SQL_TIMESTAMP_STRUCT), 0, (SQLPOINTER)&complete_time, 0, &completeTimeNullFlag);
 		}
 		else {
-			completeTimeNullFlag = sizeof(complete_time);
+			SQLBindParameter(hStmt, 10, SQL_PARAM_INPUT, SQL_C_TYPE_TIMESTAMP, SQL_TYPE_TIMESTAMP, sizeof(SQL_TIMESTAMP_STRUCT), 0, NULL, 0, &completeTimeNullFlag);
 		}
 
-		SQLBindParameter(hStmt, (i * col_count) + 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&missionList[i].user_UID), 0, NULL);
-		SQLBindParameter(hStmt, (i * col_count) + 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&missionList[i].mission_code), 0, NULL);
-		SQLBindParameter(hStmt, (i * col_count) + 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&missionList[i].mission_type), 0, NULL);
-		SQLBindParameter(hStmt, (i * col_count) + 4, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&missionList[i].mission_group), 0, NULL);
-		SQLBindParameter(hStmt, (i * col_count) + 5, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&missionList[i].mission_step), 0, NULL);
-		SQLBindParameter(hStmt, (i * col_count) + 6, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&missionList[i].progress), 0, NULL);
-		SQLBindParameter(hStmt, (i * col_count) + 7, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&missionList[i].required_count), 0, NULL);
-		SQLBindParameter(hStmt, (i * col_count) + 8, SQL_PARAM_INPUT, SQL_C_TYPE_DATE, SQL_TYPE_DATE, sizeof(assigned_date), 0, &assigned_date, 0, NULL);
-		SQLBindParameter(hStmt, (i * col_count) + 9, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&missionList[i].is_completed), 0, NULL);
-		SQLBindParameter(hStmt, (i * col_count) + 10, SQL_PARAM_INPUT, SQL_C_TYPE_TIMESTAMP, SQL_TYPE_TIMESTAMP, sizeof(complete_time), 0, &complete_time, 0, &completeTimeNullFlag);
+		retcode = SQLExecute(hStmt);
 	}
 
-	retcode = SQLExecute(hStmt);
-
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
-
 		SQLFreeHandle(SQL_HANDLE_STMT, hStmt);
 		ReturnConnection(connection);
 		return ERROR_CODE::ER_NONE;
@@ -1638,7 +1607,8 @@ ERROR_CODE DB::UpsertUserPass(const int uid, UserPass& passInfo)
 	}
 
 
-	SQLPrepare(hStmt, (SQLWCHAR*)UpsertUserPass_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.UpsertUserPass(?, ?, ?, ?, ?, ?)}", SQL_NTS);
+
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (SQLPOINTER)(&uid), 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (SQLPOINTER)(&passInfo.passIndex), 0, NULL);
 	SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (SQLPOINTER)(&passInfo.passType), 0, NULL);
@@ -1682,7 +1652,7 @@ bool DB::UpdateUserAttendanceIsRewarded(const int uid, const int eventCode, cons
 		return true;
 	}
 
-	SQLPrepare(hStmt, (SQLWCHAR*)UpdateUserAttendanceIsRewarded_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.UpdateUserAttendanceIsRewarded(?, ?, ?, ?)}", SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_UTINYINT, SQL_TINYINT, sizeof(unsigned char), 0, (void*)(&update_value), 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
@@ -1729,7 +1699,7 @@ ERROR_CODE DB::UpdateUserEventReward_IsRewarded(const int uid, const int eventCo
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
-	SQLPrepare(hStmt, (SQLWCHAR*)UpdateUserEventReward_IsRewarded_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.UpdateUserEventReward_IsRewarded(?, ?)}", SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&eventCode), 0, NULL);
@@ -1774,8 +1744,7 @@ ERROR_CODE DB::DeleteAcccount(const char* id)
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 	
-
-	SQLPrepare(hStmt, (SQLWCHAR*)DeleteAcccount_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL AccountDB.dbo.DeleteAcccount(?)}", SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, strlen(id), 0, (SQLCHAR*)id, 0, NULL);
 
@@ -1811,9 +1780,8 @@ ERROR_CODE DB::DeleteUserInfo(const int uid)
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
-	
 
-	SQLPrepare(hStmt, (SQLWCHAR*)DeleteUserInfo_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.DeleteUserInfo(?)}", SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
 
@@ -1848,8 +1816,7 @@ ERROR_CODE DB::DeleteUserGameRecords(const int uid)
 		ReturnConnection(connection);
 		return ERROR_CODE::ER_DB_ERROR;
 	}
-
-	SQLPrepare(hStmt, (SQLWCHAR*)DeleteUserGameRecords_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.DeleteUserGameRecords(?)}", SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
 
@@ -1885,9 +1852,7 @@ ERROR_CODE DB::DeleteUserItem(const int owner_uid, const int itemCode)
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
-	
-
-	SQLPrepare(hStmt, (SQLWCHAR*)DeleteUserItem_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.DeleteUserItem(?, ?)}", SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&owner_uid), 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&itemCode), 0, NULL);
@@ -1924,7 +1889,7 @@ ERROR_CODE DB::DeleteUserItemAll(const int owner_uid)
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
-	SQLPrepare(hStmt, (SQLWCHAR*)DeleteUserItemAll_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.DeleteUserItemAll(?)}", SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&owner_uid), 0, NULL);
 
@@ -1960,7 +1925,7 @@ ERROR_CODE DB::DeleteUserAttendanceAll(const int user_uid)
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
-	SQLPrepare(hStmt, (SQLWCHAR*)DeleteUserAttendanceAll_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.DeleteUserAttendanceAll(?)}", SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&user_uid), 0, NULL);
 
@@ -1993,7 +1958,7 @@ ERROR_CODE DB::DeleteUserAttendanceOutdated(const int day)
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
-	SQLPrepare(hStmt, (SQLWCHAR*)DeleteUserAttendanceOutDated_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.DeleteUserAttendanceOutDated(?)}", SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&day), 0, NULL);
 
@@ -2028,9 +1993,8 @@ ERROR_CODE DB::CheckValidateLogin(const char* id, const char* password)
 		ReturnConnection(connection);
 		return ERROR_CODE::ER_DB_ERROR;
 	}
-	
 
-	SQLPrepare(hStmt, (SQLWCHAR*)CheckValidateLogin_Query, SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL AccountDB.dbo.CheckValidateLogin(?)}", SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, strlen(id), 0, (SQLCHAR*)id, 0, NULL);
 
@@ -2088,7 +2052,6 @@ void DB::Tm_To_SqlDateStruct(SQL_DATE_STRUCT& date, const std::tm& tm_date)
 	date.year = tm_date.tm_year + 1900;
 	date.month = tm_date.tm_mon + 1;
 	date.day = tm_date.tm_mday;
-
 }
 
 void DB::Tm_To_SqlTimestampStruct(SQL_TIMESTAMP_STRUCT& time, const std::tm& tm_time)

@@ -89,6 +89,12 @@ void PacketSender::SendPassRewardResponsePacket(int sessionID, int result, int p
     mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
 }
 
+void PacketSender::SendBatchReceivePassRewardsResponsePacket(int sessionID, int pass_index, std::vector<ReceivedPassReward>& rewards)
+{
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakeBatchReceivePassRewardsResponsePacket(pass_index, rewards);
+    mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
+}
+
 void PacketSender::SendPlayerAdd(int roomID)
 {
     Room* room = mServer->GetRooms()[roomID];

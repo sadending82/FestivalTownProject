@@ -37,7 +37,7 @@ public:
 				pServer->GetLobbyManager()->CheckAndLoadUserAttendanceEvent(player, attendanceInfoList);
 				pServer->GetLobbyManager()->LoadMissionProgress(player);
 				pServer->GetLobbyManager()->LoadPassState(player);
-				pServer->GetLobbyManager()->UpdateLoginMission(player);
+				bool ret = pServer->GetLobbyManager()->UpdateLoginMission(player);
 
 				bool isNewEvent = pServer->GetLobbyManager()->CheckIsNewEvent(userInfo.LastLogin);
 
