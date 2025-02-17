@@ -27,6 +27,7 @@ namespace Network.PacketProcessor
             Managers.Data.SetPassExp(pass_exp);
 
             var ui = Managers.UI.GetCurrentSceneUI().GetComponent<UI_Pass>();
+            
             if (ui == null) return;
 
             Debug.Log($"Pass Data Recved. {pass_index}, {pass_type}, {pass_level}, {pass_exp}");

@@ -109,7 +109,7 @@ public class Managers : MonoBehaviour
     IEnumerator InitSoundSetting()
     {
         yield return null;
-        s_instance._sound.InitSoundSetting();
+        s_instance._sound.SoundSettingFromPrefs();
         yield break;
     }
 

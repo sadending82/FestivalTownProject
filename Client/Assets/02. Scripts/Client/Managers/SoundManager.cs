@@ -51,7 +51,7 @@ public class SoundManager
             _audioSources[(int)Define.Sound.Cat].outputAudioMixerGroup = mixerGroups[1];
         }
 
-        InitSoundSetting();
+        SoundSettingFromPrefs();
 
     }
 
@@ -70,7 +70,7 @@ public class SoundManager
         return converter;
     }
 
-    public void InitSoundSetting()
+    public void SoundSettingFromPrefs()
     {
         SetPlayerPrefsVolumeByKey("Sound_Master_Volume");
         SetPlayerPrefsVolumeByKey("Sound_Bgm_Volume");

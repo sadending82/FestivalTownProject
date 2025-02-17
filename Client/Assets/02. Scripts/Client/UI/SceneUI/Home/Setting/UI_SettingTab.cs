@@ -76,7 +76,6 @@ public class UI_SettingTab : UI_Base
 
         btnUI.BindEventToButton((PointerEventData) =>
         {
-
         });
 
         SelectStuff();
