@@ -50,4 +50,9 @@ public class UI_SoundSetting : UI_Base
         }
 
     }
+
+    public void OnDestroy()
+    {
+        Managers.Sound.SoundSettingFromPrefs();
+    }
 }
