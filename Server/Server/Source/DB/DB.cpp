@@ -1654,10 +1654,10 @@ bool DB::UpdateUserAttendanceIsRewarded(const int uid, const int eventCode, cons
 
 	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.UpdateUserAttendanceIsRewarded(?, ?, ?, ?)}", SQL_NTS);
 
-	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_UTINYINT, SQL_TINYINT, sizeof(unsigned char), 0, (void*)(&update_value), 0, NULL);
-	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
-	SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&eventCode), 0, NULL);
-	SQLBindParameter(hStmt, 4, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&dayCount), 0, NULL);
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&eventCode), 0, NULL);
+	SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&dayCount), 0, NULL);
+	SQLBindParameter(hStmt, 4, SQL_PARAM_INPUT, SQL_C_UTINYINT, SQL_TINYINT, sizeof(unsigned char), 0, (void*)(&update_value), 0, NULL);
 
 	retcode = SQLExecute(hStmt);
 
