@@ -331,6 +331,7 @@ void Server::ThreadJoin()
 
 void Server::SetGameManagers()
 {
+    mGameManagers[GameMode::FITH_Tutorial_1] = new FITH(this, GameMode::FITH_Tutorial_1);
     mGameManagers[GameMode::FITH_Indiv_Battle_2] = new FITH(this, GameMode::FITH_Indiv_Battle_2);
     mGameManagers[GameMode::FITH_Indiv_Battle_3] = new FITH(this, GameMode::FITH_Indiv_Battle_3);
     mGameManagers[GameMode::FITH_Indiv_Battle_5] = new FITH(this, GameMode::FITH_Indiv_Battle_5);

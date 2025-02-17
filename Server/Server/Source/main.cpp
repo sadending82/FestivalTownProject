@@ -20,7 +20,7 @@ Server* gServer = new Server();
 int main()
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	//std::wcout.imbue(std::locale("korean"));
+	std::wcout.imbue(std::locale("korean"));
 
 	gServer->Run();
 	gServer->ThreadJoin();

@@ -66,12 +66,12 @@ public class UI_MatchingSelect: UI_PopUp
             if (File.Exists(fileStr))
             {
                 Debug.Log("Map True");
-                Managers.Network.GetPacketManager().SendGameMatchingRequest(NetworkProtocol.eMatchingType.FITH_TEST, int.Parse(str));
+                Managers.Network.GetPacketManager().SendGameMatchingRequest(NetworkProtocol.eMatchingType.FITH_TUTORIAL, int.Parse(str));
             }
             else
             {
                 Debug.Log("Map False");
-                Managers.Network.GetPacketManager().SendGameMatchingRequest(NetworkProtocol.eMatchingType.FITH_TEST, 11201);
+                Managers.Network.GetPacketManager().SendGameMatchingRequest(NetworkProtocol.eMatchingType.FITH_TUTORIAL, 10000);
             }
             Managers.UI.ShowPopUpUI<UI_MatchingProgress>();
         });

@@ -171,6 +171,7 @@ namespace NetworkProtocol
     public enum GameMode
     {
         INVALUE_MODE = 0,
+        FITH_Tutorial_1 = 100,
         FITH_Indiv_Battle_2 = 111,
         FITH_Indiv_Battle_3 = 112,
         FITH_Indiv_Battle_5 = 113,
@@ -179,6 +180,7 @@ namespace NetworkProtocol
     };
     public enum eMatchingType
     {
+        FITH_TUTORIAL = 100,
         FITH_SOLO = 110,
         FITH_TEAM = 120,
         FITH_TEST = 190

@@ -39,15 +39,15 @@ public:
 
 
 				switch (matchingType) {
-				case eMatchingType::FITH_TEST: {
+				case eMatchingType::FITH_TUTORIAL: {
 
 					int map_code = read->map_code();
 
-					GameMode modeIndex = GameMode::INVALUE_MODE;
+					GameMode modeIndex = GameMode::FITH_Tutorial_1;
 					MapProperties testMapProperties;
 
 					if (map_code == 0) {
-						std::vector<int> modeList = { 111, 112, 121, 122 };
+						std::vector<int> modeList = { 100 };
 
 						std::random_device rd;
 						std::mt19937 gen(rd());
