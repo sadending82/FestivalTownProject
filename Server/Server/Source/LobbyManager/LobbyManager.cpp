@@ -8,6 +8,8 @@ LobbyManager::LobbyManager(Server* server)
 	pServer = server;
 	pTableManager = server->GetTableManager();
 	pDB = server->GetDB();
+
+
 }
 
 LobbyManager::~LobbyManager()
@@ -153,6 +155,7 @@ bool LobbyManager::GiveGachaItemToUser(int uid, int payItem, int price, GachaIte
 	case (int)ItemType::Accessory_Back:
 	case (int)ItemType::Accessory_Face:
 	case (int)ItemType::Accessory_Head:
+	case (int)ItemType::Emotion:
 	{
 		int currItemCount = pDB->SelectUserItemCount(uid, gachaItem.Reward_Item_Index);
 		// 새로 얻은 경우
@@ -625,4 +628,22 @@ bool LobbyManager::GivePassReward(Player* player, int pass_index, int pass_type,
 	}
 
 	return false;
+}
+
+void LobbyManager::ShopGoodsListRefresh(int category_index)
+{
+	Shop_Categoty& shopCategory = pTableManager->GetShopCategoryList()[category_index];
+	int numGoods = shopCategory.Number_Goods;
+
+	std::vector<int> goodsIndex;
+
+	for (const auto& goods : shopCategory.goods) {
+		goodsIndex.push_back(goods.second.index);
+	}
+
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::shuffle(goodsIndex.begin(), goodsIndex.end(), gen);
+
+
 }

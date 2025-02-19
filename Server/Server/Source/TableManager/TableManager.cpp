@@ -1056,6 +1056,97 @@ void TableManager::ReadPassList()
     }
 }
 
+void TableManager::ReadShopTable()
+{
+    try {
+
+        mWorkbook.load("GameData/Event.xlsx");
+        int idx = 0;
+        mWorksheet = mWorkbook.sheet_by_index(Shop_Category_Sheet);
+
+        for (auto row : mWorksheet.rows(false)) {
+            if (idx == variableNameIdx) {
+                ++idx;
+                continue;
+            }
+
+            if (!row.empty()) {
+
+                Shop_Categoty shopCategory;
+
+                int index = row[(int)(Shop_Category_Field::index)].value<int>();
+
+                std::time_t openTime = static_cast<std::time_t>((row[(int)(Shop_Category_Field::open_date)].value<double>() - 25569) * 86400);
+                std::time_t closeTime = static_cast<std::time_t>((row[(int)(Shop_Category_Field::close_date)].value<double>() - 25569) * 86400);
+
+                std::tm openDate = {}, closeDate = {};
+
+                localtime_s(&openDate, &openTime);
+                localtime_s(&closeDate, &closeTime);
+
+                shopCategory.index = index;
+                shopCategory.Number_Goods = row[(int)(Shop_Category_Field::Number_Goods)].value<int>();
+                shopCategory.Number_Discountable = row[(int)(Shop_Category_Field::Number_Discountable)].value<int>();
+                shopCategory.Reroll_Term = row[(int)(Shop_Category_Field::Reroll_Term)].value<int>();
+                shopCategory.open_date = openDate;
+                shopCategory.close_date = closeDate;
+
+                ShopCategoryList[index] = shopCategory;
+            }
+
+            ++idx;
+        }
+
+        idx = 0;
+        mWorksheet = mWorkbook.sheet_by_index(Shop_List_Sheet);
+
+        for (auto row : mWorksheet.rows(false)) {
+            if (idx == variableNameIdx) {
+                ++idx;
+                continue;
+            }
+
+            if (!row.empty()) {
+
+                Shop_Goods shopGoods;
+
+                int index = row[(int)(Shop_List_Field::index)].value<int>();
+
+                std::time_t openTime = static_cast<std::time_t>((row[(int)(Shop_List_Field::open_date)].value<double>() - 25569) * 86400);
+                std::time_t closeTime = static_cast<std::time_t>((row[(int)(Shop_List_Field::close_date)].value<double>() - 25569) * 86400);
+
+                std::tm openDate = {}, closeDate = {};
+
+                localtime_s(&openDate, &openTime);
+                localtime_s(&closeDate, &closeTime);
+
+                shopGoods.index = index;
+                shopGoods.Category_Index = row[(int)(Shop_List_Field::Category_Index)].value<int>();
+                shopGoods.Item = row[(int)(Shop_List_Field::Item)].value<int>();
+                shopGoods.Item_Grade = row[(int)(Shop_List_Field::Item_Grade)].value<int>();
+                shopGoods.Item_Amount = row[(int)(Shop_List_Field::Item_Amount)].value<int>();
+                shopGoods.Currency_ID = row[(int)(Shop_List_Field::Currency_ID)].value<int>();
+                shopGoods.Price = row[(int)(Shop_List_Field::Price)].value<int>();
+                shopGoods.Currency2_ID = row[(int)(Shop_List_Field::Currency2_ID)].value<int>();
+                shopGoods.Price2 = row[(int)(Shop_List_Field::Price2)].value<int>();
+                shopGoods.Purchase_Limit = row[(int)(Shop_List_Field::Purchase_Limit)].value<int>();
+                shopGoods.Discount_Rate_Min = row[(int)(Shop_List_Field::Discount_Rate_Min)].value<int>();
+                shopGoods.Discount_Rate_Max = row[(int)(Shop_List_Field::Discount_Rate_Max)].value<int>();
+                shopGoods.open_date = openDate;
+                shopGoods.close_date = closeDate;
+
+                ShopGoodsList[index] = shopGoods;
+                ShopCategoryList[index].goods[shopGoods.Category_Index] = shopGoods;
+            }
+
+            ++idx;
+        }
+    }
+    catch (const xlnt::exception& e) {
+        std::cerr << "ReadShopTable Excel File Load Fail: " << e.what() << std::endl;
+    }
+}
+
 void TableManager::Lock()
 {
     while (mLockFlag.test_and_set(std::memory_order_acquire)) {
@@ -1232,6 +1323,24 @@ std::unordered_map<int, PassMissionInfo>& TableManager::GetPassMissionDataListBy
     }
 
     return PassMissionDataListByIndex;
+}
+
+std::unordered_map<int, Shop_Categoty>& TableManager::GetShopCategoryList()
+{
+    while (mIsLoading.load() == true) {
+
+    }
+
+    return ShopCategoryList;
+}
+
+std::unordered_map<int, Shop_Goods>& TableManager::GetShopGoodsList()
+{
+    while (mIsLoading.load() == true) {
+
+    }
+
+    return ShopGoodsList;
 }
 
 Trie& TableManager::GetSlangList()

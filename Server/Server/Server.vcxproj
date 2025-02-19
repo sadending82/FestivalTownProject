@@ -229,6 +229,7 @@ if exist "$(ProjectDir)\Config" xcopy /Y /d /e /i "$(ProjectDir)\Config" "$(OutD
     <ClInclude Include="Source\PacketManager\flatbuffer\Login_generated.h" />
     <ClInclude Include="Source\PacketManager\flatbuffer\Pass_generated.h" />
     <ClInclude Include="Source\PacketManager\flatbuffer\Player_generated.h" />
+    <ClInclude Include="Source\PacketManager\flatbuffer\Shop_generated.h" />
     <ClInclude Include="Source\PacketManager\FlatBuffer\test_generated.h" />
     <ClInclude Include="Source\PacketManager\flatbuffer\Utilities_generated.h" />
     <ClInclude Include="Source\PacketManager\flatbuffer\Weapon_generated.h" />
@@ -265,6 +266,7 @@ if exist "$(ProjectDir)\Config" xcopy /Y /d /e /i "$(ProjectDir)\Config" "$(OutD
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_GameMatchingCancel.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_MissionCompleteRequest.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_PassRewardRequest.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_PurchaseGoodsRequest.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_UserItemsRequest.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_UserMissionStateRequest.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_UserPassStateRequest.h" />
@@ -318,6 +320,7 @@ if exist "$(ProjectDir)\Config" xcopy /Y /d /e /i "$(ProjectDir)\Config" "$(OutD
     <ClInclude Include="Source\TableManager\Tables\GachaItem.h" />
     <ClInclude Include="Source\TableManager\Tables\ItemTable.h" />
     <ClInclude Include="Source\TableManager\Tables\PointCalculateConstant.h" />
+    <ClInclude Include="Source\TableManager\Tables\Shop.h" />
     <ClInclude Include="Source\TableManager\Tables\Tables.h" />
     <ClInclude Include="Source\TableManager\Tables\FITH.h" />
     <ClInclude Include="Source\TableManager\Tables\WeaponStat.h" />

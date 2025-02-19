@@ -117,7 +117,7 @@ void DB::ReturnConnection(DB_Connection connection)
 }
 
 
-ERROR_CODE DB::InsertNewAcccount(const char* id, const char* password)
+ERROR_CODE DB::InsertNewAccount(const char* id, const char* password)
 {
 	DB_Connection connection = GetConnection();
 	SQLHDBC hDbc = connection.hDbc;
@@ -128,14 +128,14 @@ ERROR_CODE DB::InsertNewAcccount(const char* id, const char* password)
 	std::string hashedPassword = mSecurity->HashingPassword(password, salt);
 
 	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR){
-		DEBUGMSGONEPARAM("hStmt Error %d : (InsertNewAcccount) \n", retcode); ErrorDisplay(hStmt);
+		DEBUGMSGONEPARAM("hStmt Error %d : (InsertNewAccount) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 		ReturnConnection(connection);
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 	
 
-	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL AccountDB.dbo.InsertAcccount(?, ?, ?)}", SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL AccountDB.dbo.InsertAccount(?, ?, ?)}", SQL_NTS);
 
 	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, strlen(id), 0, (SQLCHAR*)id, 0, NULL);
 	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_CHAR, SQL_CHAR, hashedPassword.length(), 0, (SQLCHAR*)hashedPassword.c_str(), 0, NULL);
@@ -150,7 +150,7 @@ ERROR_CODE DB::InsertNewAcccount(const char* id, const char* password)
 		return ERROR_CODE::ER_NONE;
 	}
 
-	DEBUGMSGONEPARAM("Execute Query Error %d : (InsertNewAcccount)\n", retcode); ErrorDisplay(hStmt);
+	DEBUGMSGONEPARAM("Execute Query Error %d : (InsertNewAccount)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	ReturnConnection(connection);
 	return ERROR_CODE::ER_DB_ERROR;

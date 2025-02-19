@@ -17,6 +17,7 @@
 #include "Packet/Lobby/Packet_MissionCompleteRequest.h"
 #include "Packet/Lobby/Packet_PassRewardRequest.h"
 #include "Packet/Lobby/Packet_BatchReceivePassRewardsRequest.h"
+#include "Packet/Lobby/Packet_PurchaseGoodsRequest.h"
 
 #include "Packet/Utilities/Packet_HeartBeat.h"
 #include "Packet/Utilities/Packet_PingCheck.h"

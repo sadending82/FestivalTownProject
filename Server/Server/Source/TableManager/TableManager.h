@@ -44,6 +44,8 @@ public:
 
 	void ReadPassList();
 
+	void ReadShopTable();
+
 	void Lock();
 	void UnLock();
 
@@ -82,6 +84,9 @@ public:
 	PASS_MISSION_LIST& GetPassMissionIndexList();
 
 	std::unordered_map<int, PassMissionInfo>& GetPassMissionDataListByIndex();
+
+	std::unordered_map<int, Shop_Categoty>& GetShopCategoryList();
+	std::unordered_map<int, Shop_Goods>& GetShopGoodsList();
 
 	Trie& GetSlangList();
 
@@ -128,6 +133,9 @@ private:
 	// <pass, <type, <category, <group, <step, missionInfo>>>>
 	PASS_MISSION_LIST PassMissionIndexList;
 	std::unordered_map<int, PassMissionInfo> PassMissionDataListByIndex;
+
+	std::unordered_map<int, Shop_Categoty> ShopCategoryList;
+	std::unordered_map<int, Shop_Goods> ShopGoodsList;
 
 
 	std::atomic_flag mLockFlag = ATOMIC_FLAG_INIT;

@@ -36,10 +36,14 @@ public:
 	bool CheckPassLevelUp(PlayerPassInfo& playerPassInfo, int passIndex);
 
 	bool GivePassReward(class Player* player, int pass_index, int pass_type, int level);
+
+	void ShopGoodsListRefresh(int category_index);
 	
 private:
 
 	class Server* pServer = nullptr;
 	class TableManager* pTableManager = nullptr;
 	class DB* pDB = nullptr;
+
+	std::unordered_map<int, int> shopGoodsList;
 };

@@ -13,3 +13,4 @@
 #include "Achievement.h"
 #include "Pass.h"
 #include "Mission.h"
+#include "Shop.h"

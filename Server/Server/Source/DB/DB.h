@@ -43,7 +43,7 @@ public:
     void ReturnConnection(DB_Connection connection);
 
     // INSERT
-    ERROR_CODE InsertNewAcccount(const char* id, const char* password);
+    ERROR_CODE InsertNewAccount(const char* id, const char* password);
     int InsertNewUser(const char* id, const wchar_t* nickname);
     ERROR_CODE InsertUserGameRecords(const int uid);
     ERROR_CODE InsertUserItem(const int owner_uid, const int itemCode, const int itemCount, const int itemType);

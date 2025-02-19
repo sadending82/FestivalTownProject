@@ -161,6 +161,9 @@
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_MissionCompleteRequest.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_PassRewardRequest.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_BatchReceivePassRewardsRequest.h" />
+    <ClInclude Include="Source\TableManager\Tables\Shop.h" />
+    <ClInclude Include="Source\PacketManager\flatbuffer\Shop_generated.h" />
+    <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_PurchaseGoodsRequest.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

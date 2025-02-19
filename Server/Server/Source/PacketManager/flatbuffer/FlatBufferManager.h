@@ -10,3 +10,4 @@
 #include "Login_generated.h"
 #include "Cheat_generated.h"
 #include "Pass_generated.h"
+#include "Shop_generated.h"

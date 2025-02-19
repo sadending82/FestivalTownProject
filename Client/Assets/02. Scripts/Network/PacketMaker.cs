@@ -16,6 +16,7 @@ using System.Diagnostics;
 using PacketTable.LoginTable;
 using PacketTable.CheatTable;
 using PacketTable.PassTable;
+using PacketTable.ShopTable;
 
 public class PacketMaker
 {
@@ -733,6 +734,26 @@ public class PacketMaker
 
         byte[] data = builder.SizedByteArray();
         HEADER header = new HEADER { type = (ushort)ePacketType.C2S_BATCH_RECEIVE_PASS_REWARDS_REQUEST, flatBufferSize = (ushort)data.Length };
+        byte[] headerdata = Serialize<HEADER>(header);
+        byte[] result = new byte[data.Length + headerdata.Length];
+
+        Buffer.BlockCopy(headerdata, 0, result, 0, headerdata.Length);
+        Buffer.BlockCopy(data, 0, result, headerdata.Length, data.Length);
+
+        return result;
+    }
+    public byte[] MakePurchaseGoodsRequestPacket(int goods_index)
+    {
+        var builder = new FlatBufferBuilder(1);
+
+        PurchaseGoodsRequest.StartPurchaseGoodsRequest(builder);
+        PurchaseGoodsRequest.AddIndex(builder, goods_index);
+        var offset = PurchaseGoodsRequest.EndPurchaseGoodsRequest(builder);
+
+        builder.Finish(offset.Value);
+
+        byte[] data = builder.SizedByteArray();
+        HEADER header = new HEADER { type = (ushort)ePacketType.C2S_PURCHASE_GOODS_REQUEST, flatBufferSize = (ushort)data.Length };
         byte[] headerdata = Serialize<HEADER>(header);
         byte[] result = new byte[data.Length + headerdata.Length];
 

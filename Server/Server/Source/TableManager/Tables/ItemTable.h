@@ -16,7 +16,8 @@ enum class ItemType {
 	Skin = 10,
 	Accessory_Head = 21,
 	Accessory_Face = 22,
-	Accessory_Back = 23
+	Accessory_Back = 23,
+	Emotion = 24
 };
 
 enum class ItemTable_Field {

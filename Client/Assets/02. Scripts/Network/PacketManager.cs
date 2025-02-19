@@ -69,6 +69,7 @@ public class PacketManager : MonoBehaviour
             { ePacketType.S2C_MISSION_COMPLETE_RESPONSE, new MissionCompleteResponseProcessor() },
             { ePacketType.S2C_PASS_REWARD_RESPONSE, new PassRewardResponseProcessor() },
             { ePacketType.S2C_BATCH_RECEIVE_PASS_REWARDS_RESPONSE, new BatchReceivePassRewardsResponseProcessor() },
+            { ePacketType.S2C_PURCHASE_GOODS_RESPONSE, new PurchaseGoodsResponseProcessor() },
 
             { ePacketType.S2C_PLAYER_ADD, new PlayerAddProcessor() },
             { ePacketType.S2C_PLAYER_DELETE, new PlayerDeleteProcessor() },
@@ -290,6 +291,12 @@ public class PacketManager : MonoBehaviour
     public void SendBatchReceivePassRewardsRequestPacket(int pass_index)
     {
         byte[] packet = _packetMaker.MakeBatchReceivePassRewardsRequestPacket(pass_index);
+        if (packet == null) { return; }
+        SendPacket(packet);
+    }
+    public void SendPurchaseGoodsRequestPacket(int goods_index)
+    {
+        byte[] packet = _packetMaker.MakePurchaseGoodsRequestPacket(goods_index);
         if (packet == null) { return; }
         SendPacket(packet);
     }
