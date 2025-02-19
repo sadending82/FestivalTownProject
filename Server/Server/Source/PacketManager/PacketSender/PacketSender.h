@@ -8,11 +8,11 @@ public:
 	~PacketSender();
 
 	void SendVersionCheckResponsePacket(int sessionID, int result);
-	void SendLoginResponse(int sessionID, int result, UserInfo userInfo, std::unordered_map<int, std::set<sDayAttendanceInfo>>& attendanceInfoList, bool isNewEvent);
+	void SendLoginResponse(int sessionID, int result, UserInfo& userInfo, std::unordered_map<int, UserItem>& items, std::unordered_map<int, std::set<sDayAttendanceInfo>>& attendanceInfoList, bool isNewEvent);
 	void SendSignUpResponse(int sessionID, int result);
 
 	void SendGachaResponsePacket(int sessionID, int result, GachaItem& result_item, GachaItem& acquired_item, int spent_resource_type, int spent_resource_amount, int remaining_resource_amount);
-	void SendCurrencyAmountResponsePacket(int sessionID, int result, std::vector<UserItem>& currency_list);
+	void SendCurrencyAmountResponsePacket(int sessionID, int result, std::unordered_map<int, UserItem>& currency_list);
 	void SendUserItemsResponsePacket(int sessionID, int result, std::unordered_map<int, UserItem>& user_items);
 	void SendAttendanceEventResponsePacket(int sessionID, int eventCode, int dayCount, int result);
 	void SendAttendanceRewardResponsePacket(int sessionID, int eventCode, int day_count, int result, int reward_item, int reward_item_count);

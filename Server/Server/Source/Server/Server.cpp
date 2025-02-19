@@ -413,23 +413,13 @@ std::pair<ERROR_CODE, UserInfo> Server::UserLogin(const char* accountID, const c
 
     userInfo.characterCustomizing = mDB->SelectCharacterCustomizing(result.second.UID);
 
-    std::pair<ERROR_CODE, std::vector<UserItem>> selectCurrencyResult = mDB->SelectUserAllCurrency(userInfo.UID);
+    std::pair<ERROR_CODE, std::unordered_map<int, UserItem>> selectItemResult = mDB->SelectUserAllItems(userInfo.UID);
 
-    if (selectCurrencyResult.first == ERROR_CODE::ER_DB_ERROR) {
+    if (selectItemResult.first == ERROR_CODE::ER_DB_ERROR) {
         return result;
     }
-    for (UserItem& currency : selectCurrencyResult.second) {
-        if (currency.itemCode == 100001) {
-            userInfo.Gold = currency.count;
-        }
-        else if (currency.itemCode == 100002) {
-            userInfo.Dia = currency.count;
-        }
-        else if (currency.itemCode == 100003) {
-            userInfo.Mileage = currency.count;
-        }
-    }
-
+    player->GetItems().clear();
+    player->SetItems(selectItemResult.second);
 
     if (userInfo.State == true) {
         for (Session* session : mSessions) {

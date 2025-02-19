@@ -41,7 +41,7 @@ public:
 
 				bool isNewEvent = pServer->GetLobbyManager()->CheckIsNewEvent(userInfo.LastLogin);
 
-				pPacketSender->SendLoginResponse(key, result.first, userInfo, attendanceInfoList, isNewEvent);
+				pPacketSender->SendLoginResponse(key, result.first, userInfo, player->GetItems(), attendanceInfoList, isNewEvent);
 
 				if (result.first == ERROR_CODE::ER_NONE) {
 					Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);

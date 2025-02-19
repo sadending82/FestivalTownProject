@@ -17,9 +17,9 @@ void PacketSender::SendVersionCheckResponsePacket(int sessionID, int result)
     mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
 }
 
-void PacketSender::SendLoginResponse(int sessionID, int result, UserInfo userInfo, std::unordered_map<int, std::set<sDayAttendanceInfo>>& attendanceInfoList, bool isNewEvent)
+void PacketSender::SendLoginResponse(int sessionID, int result, UserInfo& userInfo, std::unordered_map<int, UserItem>& items, std::unordered_map<int, std::set<sDayAttendanceInfo>>& attendanceInfoList, bool isNewEvent)
 {
-    std::vector<uint8_t> send_buffer = mPacketMaker->MakeLoginResponsePacket(result, userInfo, attendanceInfoList, isNewEvent);
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakeLoginResponsePacket(result, userInfo, items, attendanceInfoList, isNewEvent);
     mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
 }
 
@@ -35,7 +35,7 @@ void PacketSender::SendGachaResponsePacket(int sessionID, int result, GachaItem&
     mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
 }
 
-void PacketSender::SendCurrencyAmountResponsePacket(int sessionID, int result, std::vector<UserItem>& currency_list)
+void PacketSender::SendCurrencyAmountResponsePacket(int sessionID, int result, std::unordered_map<int, UserItem>& currency_list)
 {
     std::vector<uint8_t> send_buffer = mPacketMaker->MakeCurrencyAmountResponsePacket(result, currency_list);
     mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());

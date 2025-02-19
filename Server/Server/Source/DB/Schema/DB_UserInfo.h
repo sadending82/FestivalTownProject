@@ -29,10 +29,6 @@ struct UserInfo {
 	int State;
 
 	sCharacterCustomizing characterCustomizing;
-
-	int Gold = 0;
-	int Dia = 0;
-	int Mileage = 0;
 };
 
 

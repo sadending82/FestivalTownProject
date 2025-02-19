@@ -52,6 +52,8 @@ public:
 	UserMissionList&	GetMissionList() { return mMissionList; }
 
 	std::unordered_map<int, PlayerPassInfo>&	GetPassInfo() { return mPassInfoList; }
+	std::unordered_map<int, UserItem>& GetItems() { return mItems; }
+
 
 	void				SetUID(int uid) { mUserInfo.UID = uid; }
 	void				SetAccountID(std::string accountID) { mUserInfo.AccountID = accountID; }
@@ -81,6 +83,7 @@ public:
 	void				SetUserInfoFromDB(UserInfo& userInfo) { mUserInfo = userInfo; }
 	// cas
 	bool				SetIsGrabbed(bool desired);
+	void				SetItems(std::unordered_map<int, UserItem>& items) { mItems = items; }
 
 	void				RecoveryHP(int value) { mHP.fetch_add(value); }
 	void				ReduceHP(int value) { mHP.fetch_add(-value); }
@@ -136,4 +139,6 @@ protected:
 
 	// <pass_index, PlayerPassInfo>
 	std::unordered_map<int, PlayerPassInfo>	mPassInfoList;
+
+	std::unordered_map<int, UserItem> mItems;
 };

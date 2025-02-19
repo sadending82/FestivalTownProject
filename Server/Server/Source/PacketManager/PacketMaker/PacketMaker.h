@@ -15,11 +15,11 @@ public:
 	~PacketMaker() {};
 
 	std::vector<uint8_t> MakeVersionCheckResponsePacket(int result);
-	std::vector<uint8_t> MakeLoginResponsePacket(int result, UserInfo userInfo, std::unordered_map<int, std::set<sDayAttendanceInfo>>& attendanceInfoList, bool isNewEvent);
+	std::vector<uint8_t> MakeLoginResponsePacket(int result, UserInfo& userInfo, std::unordered_map<int, UserItem>& items, std::unordered_map<int, std::set<sDayAttendanceInfo>>& attendanceInfoList, bool isNewEvent);
 	std::vector<uint8_t> MakeSignUpResponsePacket(int result);
 
 	std::vector<uint8_t> MakeGachaResponsePacket(int result, GachaItem& result_item, GachaItem& acquired_item, int spent_resource_type, int spent_resource_amount, int remaining_resource_amount);
-	std::vector<uint8_t> MakeCurrencyAmountResponsePacket(int result, std::vector<UserItem>& currency_list);
+	std::vector<uint8_t> MakeCurrencyAmountResponsePacket(int result, std::unordered_map<int, UserItem>& currency_list);
 	std::vector<uint8_t> MakeUserItemsResponsePacket(int result, std::unordered_map<int, UserItem>& user_items);
 	std::vector<uint8_t> MakeAttendanceEventResponsePacket(int eventCode, int dayCount, int result);
 	std::vector<uint8_t> MakeAttendanceRewardResponsePacket(int eventCode, int day_count, int result, int reward_item, int reward_item_count);

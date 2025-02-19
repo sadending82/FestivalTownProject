@@ -164,6 +164,7 @@
     <ClInclude Include="Source\TableManager\Tables\Shop.h" />
     <ClInclude Include="Source\PacketManager\flatbuffer\Shop_generated.h" />
     <ClInclude Include="Source\PacketManager\PacketProcessors\Packet\Lobby\Packet_PurchaseGoodsRequest.h" />
+    <ClInclude Include="Source\DB\Schema\DB_Receipt.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\TableManager\ItemTable.xlsx" />

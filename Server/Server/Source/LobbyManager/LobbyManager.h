@@ -19,7 +19,7 @@ public:
 	bool CheckIsNewEvent(std::tm beforeLoginTime);
 
 	struct GachaItem RollGacha(std::unordered_map<int, struct GachaItem>& gachaItemList);
-	bool GiveGachaItemToUser(int uid, int payItem, int price, struct GachaItem& gachaItem);
+	bool GiveGachaItemToUser(Player* player, int payItem, int price, struct GachaItem& gachaItem);
 
 	void LoadPassState(class Player* player);
 

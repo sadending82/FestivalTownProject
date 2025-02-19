@@ -408,6 +408,46 @@ ERROR_CODE DB::InsertUserPassReward(const int uid, const PassLevel& passLevelInf
 	return ERROR_CODE::ER_DB_ERROR;
 }
 
+ERROR_CODE DB::InsertReceipt(const int uid, const int goods_index)
+{
+	if (uid == 0) {
+		return ERROR_CODE::ER_DB_ERROR;
+	}
+
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGONEPARAM("hStmt Error %d : (InsertReceipt) \n", retcode); ErrorDisplay(hStmt);
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
+		return ERROR_CODE::ER_DB_ERROR;
+	}
+
+
+
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.InsertReceipt(?, ?)}", SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&goods_index), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
+		return ERROR_CODE::ER_NONE;
+	}
+
+	DEBUGMSGONEPARAM("Execute Query Error %d : (InsertReceipt)\n", retcode); ErrorDisplay(hStmt);
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
+	return ERROR_CODE::ER_DB_ERROR;
+}
+
 int DB::SelectAccountCount(const char* id)
 {
 	DB_Connection connection = GetConnection();
@@ -585,8 +625,6 @@ std::pair<ERROR_CODE, UserInfo> DB::SelectUserInfo(const int uid)
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 		ReturnConnection(connection);
 
-		userInfo.Gold = SelectUserItemCount(userInfo.UID, 100001);
-
 		return { ERROR_CODE::ER_NONE, userInfo };
 	}
 
@@ -698,7 +736,7 @@ std::pair<ERROR_CODE, std::unordered_map<int, UserItem>> DB::SelectUserAllItems(
 			SQLGetData(hStmt, (int)UserItem_Field::itemCode, SQL_C_LONG, &item.itemCode, sizeof(item.itemCode), &col3);
 			SQLGetData(hStmt, (int)UserItem_Field::count, SQL_C_LONG, &item.count, sizeof(item.count), &col4);
 			SQLGetData(hStmt, (int)UserItem_Field::itemType, SQL_C_LONG, &item.itemType, sizeof(item.itemType), &col5);
-			itemList[item.item_UID] = item;
+			itemList[item.itemCode] = item;
 		}
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);

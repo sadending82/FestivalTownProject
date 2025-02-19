@@ -43,6 +43,8 @@ public:
 					result = false;
 				}
 
+				const ERROR_CODE insertReceiptResult = db->InsertReceipt(uid, goods_index);
+
 				switch (item_type) {
 				case ItemType::Money: {
 					const ERROR_CODE upsertResult = db->UpsertUserItemCount(uid, item_index, item_amount);

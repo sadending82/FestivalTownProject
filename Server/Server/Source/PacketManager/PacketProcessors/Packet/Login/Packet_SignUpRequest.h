@@ -27,11 +27,9 @@ public:
 
 				ERROR_CODE result = pDB->GetSecurity()->CheckVerifyStringsForSignUp(id, pw, wNickname);
 
-				std::cout << "aa\n";
 
 				if (result == ERROR_CODE::ER_NONE) {
 					result = pDB->InsertNewAccount(id, pw);
-					std::cout << "bb\n";
 				}
 
 				if (result == ERROR_CODE::ER_NONE) {
@@ -39,7 +37,6 @@ public:
 					if (uid == INVALIDKEY) {
 						pDB->DeleteAcccount(id);
 						result = ERROR_CODE::ER_DB_ERROR;
-						std::cout << "cc\n";
 					}
 
 
@@ -47,11 +44,9 @@ public:
 						pDB->DeleteAcccount(id);
 						pDB->DeleteUserInfo(uid);
 						result = ERROR_CODE::ER_DB_ERROR;
-						std::cout << "dd\n";
 					}
 				}
 				else {
-					std::cout << "ff\n";
 				}
 
 				pPacketSender->SendSignUpResponse(key, result);

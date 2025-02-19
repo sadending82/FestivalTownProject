@@ -17,20 +17,12 @@ public:
 				//const UserItemsRequest* read = flatbuffers::GetRoot<UserItemsRequest>(data);
 
 				Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
-				if (pServer->GetMode() == SERVER_MODE::LIVE) {
-					if (player->GetIsAuthenticated() == false) {
-						pServer->Disconnect(key);
-						return;
-					}
+				if (pServer->GetMode() == SERVER_MODE::LIVE && player->GetIsAuthenticated() == false) {
+					pServer->Disconnect(key);
+					return;
 				}
-
-				int uid = player->GetUID();
-
-				TableManager* tableManager = pServer->GetTableManager();
-				DB* db = pServer->GetDB();
-				std::pair<ERROR_CODE, std::unordered_map<int, UserItem>> result = db->SelectUserAllItems(uid);
 				
-				pPacketSender->SendUserItemsResponsePacket(key, result.first, result.second);
+				pPacketSender->SendUserItemsResponsePacket(key, true, player->GetItems());
 			}
 		}
 		catch (const std::exception& e) {

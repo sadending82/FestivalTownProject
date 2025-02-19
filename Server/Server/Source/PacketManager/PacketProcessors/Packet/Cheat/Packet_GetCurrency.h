@@ -29,7 +29,7 @@ public:
 
 				std::pair<ERROR_CODE, std::vector<UserItem>> result = db->SelectUserAllCurrency(uid);
 
-				pPacketSender->SendCurrencyAmountResponsePacket(key, result.first, result.second);
+				//pPacketSender->SendCurrencyAmountResponsePacket(key, result.first, result.second);
 			}
 		}
 		catch (const std::exception& e) {

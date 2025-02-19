@@ -50,6 +50,7 @@ public:
     ERROR_CODE InsertUserAttendance(const int uid, const int EventIndex, const int day_count);
     ERROR_CODE InsertUserEventReward(const int uid, const int Eventcode);
     ERROR_CODE InsertUserPassReward(const int uid, const PassLevel& passLevelInfo, const int level);
+    ERROR_CODE InsertReceipt(const int uid, const int goods_index);
 
     // SELECT
     int SelectAccountCount(const char* id);
@@ -94,6 +95,7 @@ public:
     ERROR_CODE DeleteUserItemAll(const int owner_uid);
     ERROR_CODE DeleteUserAttendanceAll(const int user_uid);
     ERROR_CODE DeleteUserAttendanceOutdated(const int day);
+    ERROR_CODE DeleteReceipt(const int uid, const int goods_index);
 
     ERROR_CODE CheckValidateLogin(const char* id, const char* password);
 

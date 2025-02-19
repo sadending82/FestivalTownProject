@@ -10,3 +10,4 @@
 #include "DB_UserMission.h"
 #include "DB_UserPass.h"
 #include "DB_UserPassReward.h"
+#include "DB_Receipt.h"

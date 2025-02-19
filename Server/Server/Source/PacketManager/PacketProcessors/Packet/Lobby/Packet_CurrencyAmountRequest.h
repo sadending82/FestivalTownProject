@@ -26,16 +26,13 @@ public:
 
 				int uid = player->GetUID();
 
-				TableManager* tableManager = pServer->GetTableManager();
-				DB* db = pServer->GetDB();
+				// 임시 / 수정해야함
+				std::unordered_map<int, UserItem> currencyList;
+				currencyList[100001] = player->GetItems()[100001];
+				currencyList[100002] = player->GetItems()[100002];
+				currencyList[100003] = player->GetItems()[100003];
 
-				std::pair<ERROR_CODE, std::vector<UserItem>> result = db->SelectUserAllCurrency(uid);
-				
-				if (ERROR_CODE::ER_NONE != result.first) {
-					std::cout << "SelectUserAllCurrency ERROR " << uid << std::endl;;
-				}
-
-				pPacketSender->SendCurrencyAmountResponsePacket(key, result.first, result.second);
+				pPacketSender->SendCurrencyAmountResponsePacket(key, true, currencyList);
 			}
 		}
 		catch (const std::exception& e) {

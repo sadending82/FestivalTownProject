@@ -9,7 +9,12 @@ void Player::Init()
 
 	mCharacterType = eCharacterType::CT_TEST;
 
+	mInProgressAchievements.clear();
+
 	IngameInfoInit();
+	mMissionList.missionList.clear();
+	mPassInfoList.clear();
+	mItems.clear();
 }
 
 void Player::IngameInfoInit()

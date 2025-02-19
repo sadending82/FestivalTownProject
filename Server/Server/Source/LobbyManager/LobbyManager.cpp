@@ -129,25 +129,38 @@ GachaItem LobbyManager::RollGacha(std::unordered_map<int, GachaItem>& gachaItemL
 	}
 }
 
-bool LobbyManager::GiveGachaItemToUser(int uid, int payItem, int price, GachaItem& gachaItem)
+bool LobbyManager::GiveGachaItemToUser(Player* player, int payItem, int price, GachaItem& gachaItem)
 {
-	const int itemType = (int)pTableManager->GetItemInfos()[gachaItem.Reward_Item_Index].Item_Type;
+	const int uid = player->GetUID();
+	int itemIndex = gachaItem.Reward_Item_Index;
+	const int itemAmount = gachaItem.Reward_Item_Value;
+	const int itemType = (int)pTableManager->GetItemInfos()[itemIndex].Item_Type;
 	const int mileageIndex = 100003;
+	std::unordered_map<int, UserItem>& playerItems = player->GetItems();
 
 	const ERROR_CODE payResult = pDB->UpdateUserItemCount(uid, payItem, -price);
-
 	if (payResult == ERROR_CODE::ER_DB_ERROR || payResult == ERROR_CODE::ER_DB_NO_DATA) {
 		return false;
+	}
+	else {
+		playerItems[payItem].count -= price;
 	}
 
 	switch (itemType) {
 	case(int)ItemType::Money:
 	{
-		const ERROR_CODE result = pDB->UpsertUserItemCount(uid, gachaItem.Reward_Item_Index, gachaItem.Reward_Item_Value);
+		const ERROR_CODE result = pDB->UpsertUserItemCount(uid, itemIndex, itemAmount);
 		if (result == ERROR_CODE::ER_DB_ERROR) {
 			// 실패 시 재화 다시 돌려주고 실패 반환
 			pDB->UpdateUserItemCount(uid, payItem, price);
+			playerItems[payItem].count += price;
 			return false;
+		}
+		else {
+			playerItems[itemIndex].owner_UID = uid;
+			playerItems[itemIndex].itemCode = itemIndex;
+			playerItems[itemIndex].itemType = itemType;
+			playerItems[itemIndex].count += itemAmount;
 		}
 	}
 	break;
@@ -157,20 +170,27 @@ bool LobbyManager::GiveGachaItemToUser(int uid, int payItem, int price, GachaIte
 	case (int)ItemType::Accessory_Head:
 	case (int)ItemType::Emotion:
 	{
-		int currItemCount = pDB->SelectUserItemCount(uid, gachaItem.Reward_Item_Index);
+		int currItemCount = playerItems.count(itemIndex);
 		// 새로 얻은 경우
 		if (currItemCount == 0) {
-			const ERROR_CODE result = pDB->InsertUserItem(uid, gachaItem.Reward_Item_Index, gachaItem.Reward_Item_Value, itemType);
+			const ERROR_CODE result = pDB->InsertUserItem(uid, itemIndex, itemAmount, itemType);
 			if (result == ERROR_CODE::ER_DB_ERROR) {
 				// 실패 시 재화 다시 돌려주고 실패 반환
 				pDB->UpdateUserItemCount(uid, payItem, price);
+				playerItems[payItem].count += price;
 				return false;
+			}
+			else {
+				playerItems[itemIndex].owner_UID = uid;
+				playerItems[itemIndex].itemCode = itemIndex;
+				playerItems[itemIndex].itemType = itemType;
+				playerItems[itemIndex].count = itemAmount;
 			}
 		}
 		// 이미 있는 경우
 		else {
 			// 마일리지 지급
-			const int itemGrade = (int)pTableManager->GetItemInfos()[gachaItem.Reward_Item_Index].Item_Grade;
+			const int itemGrade = (int)pTableManager->GetItemInfos()[itemIndex].Item_Grade;
 			const int mileage = pTableManager->GetGachaAcquiredMileages()[itemGrade];
 			ERROR_CODE result = pDB->UpsertUserItemCount(uid, mileageIndex, mileage);
 			if (result == ERROR_CODE::ER_DB_ERROR) {
@@ -178,6 +198,11 @@ bool LobbyManager::GiveGachaItemToUser(int uid, int payItem, int price, GachaIte
 				pDB->UpdateUserItemCount(uid, payItem, price);
 				return false;
 			}
+			else {
+				playerItems[mileageIndex].itemCode = mileageIndex;
+				playerItems[mileageIndex].count += mileage;
+			}
+
 
 			gachaItem.Reward_Item_Index = mileageIndex;
 			gachaItem.Reward_Item_Value = mileage;
@@ -549,6 +574,8 @@ bool LobbyManager::GiveMissionReward(Player* player, PassMissionInfo& missionInf
 	pDB->UpsertUserPass(uid, playerPassInfo.passState);
 
 	// 아이템 지급
+	std::unordered_map<int, UserItem>& playerItems = player->GetItems();
+
 	const int itemCode = missionInfo.reward_item;
 	if (itemCode != 0) {
 		ItemTable& rewardInfo = pTableManager->GetItemInfos()[itemCode];
@@ -559,6 +586,11 @@ bool LobbyManager::GiveMissionReward(Player* player, PassMissionInfo& missionInf
 		else {
 			pDB->InsertUserItem(uid, missionInfo.reward_item, missionInfo.reward_item_amount, (int)rewardInfo.Item_Type);
 		}
+
+		playerItems[itemCode].owner_UID = uid;
+		playerItems[itemCode].itemCode = itemCode;
+		playerItems[itemCode].itemType = (int)rewardInfo.Item_Type;
+		playerItems[itemCode].count += missionInfo.reward_item_amount;
 	}
 
 	return true;
@@ -591,6 +623,7 @@ bool LobbyManager::GivePassReward(Player* player, int pass_index, int pass_type,
 	PassInfo& passInfo = pTableManager->GetPassList()[pass_index];
 	const int uid = player->GetUID();
 	const int reward_level = (level > passInfo.level_repeated_reward) ? passInfo.level_repeated_reward : level;
+	std::unordered_map<int, UserItem>& playerItems = player->GetItems();
 
 	PlayerPassInfo& playerPassInfo = player->GetPassInfo()[pass_index];
 
@@ -623,6 +656,11 @@ bool LobbyManager::GivePassReward(Player* player, int pass_index, int pass_type,
 		pDB->InsertUserPassReward(uid, passLevelInfo, level);
 
 		playerPassInfo.SetIsRewarded(level, pass_type);
+
+		playerItems[itemCode].owner_UID = uid;
+		playerItems[itemCode].itemCode = itemCode;
+		playerItems[itemCode].itemType = (int)rewardInfo.Item_Type;
+		playerItems[itemCode].count += passLevelInfo.Reward_Item_Amount;
 
 		return true;
 	}

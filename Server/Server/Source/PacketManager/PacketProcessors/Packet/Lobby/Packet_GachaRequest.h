@@ -29,7 +29,6 @@ public:
 				int randomBox = read->random_box_index();
 
 				TableManager* tableManager = pServer->GetTableManager();
-				DB* db = pServer->GetDB();
 				LobbyManager* lobbyManager = pServer->GetLobbyManager();
 
 				int GachaGroup = tableManager->GetRandomBoxList()[randomBox].Gacha_Group;
@@ -59,12 +58,12 @@ public:
 						continue;
 					}
 
-					int currPayItemAmount = db->SelectUserItemCount(uid, pay_item[i]);
+					int currPayItemAmount = player->GetItems()[pay_item[i]].count;
 
 					if (pay_Price[i] <= currPayItemAmount) {
 						resultItem = acquiredItem = lobbyManager->RollGacha(items);
 						
-						gacha_result = lobbyManager->GiveGachaItemToUser(uid, pay_item[i], pay_Price[i], acquiredItem);
+						gacha_result = lobbyManager->GiveGachaItemToUser(player, pay_item[i], pay_Price[i], acquiredItem);
 
 						usedItemCode = pay_item[i];
 						usedItemAmount = pay_Price[i];

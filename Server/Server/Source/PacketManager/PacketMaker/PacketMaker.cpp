@@ -10,7 +10,7 @@ std::vector<uint8_t> PacketMaker::MakeVersionCheckResponsePacket(int result)
 	return MakeBuffer(ePacketType::S2C_VERSION_CHECK_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakeLoginResponsePacket(int result, UserInfo userInfo, std::unordered_map<int, std::set<sDayAttendanceInfo>>& attendanceInfoList, bool isNewEvent)
+std::vector<uint8_t> PacketMaker::MakeLoginResponsePacket(int result, UserInfo& userInfo, std::unordered_map<int, UserItem>& items, std::unordered_map<int, std::set<sDayAttendanceInfo>>& attendanceInfoList, bool isNewEvent)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 
@@ -44,7 +44,7 @@ std::vector<uint8_t> PacketMaker::MakeLoginResponsePacket(int result, UserInfo u
 		,  userInfo.Point, userInfo.AttendanceDay, characterCustomizing);
 
 	Builder.Finish(PacketTable::LoginTable::CreateLoginResponse(Builder, result, db_userInfo
-		, userInfo.Gold, userInfo.Dia, userInfo.Mileage, isNewEvent, Builder.CreateVector(attendanceStatusVector)));
+		, items[100001].count, items[100002].count, items[100003].count, isNewEvent, Builder.CreateVector(attendanceStatusVector)));
 	return MakeBuffer(ePacketType::S2C_LOGIN_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
@@ -65,16 +65,16 @@ std::vector<uint8_t> PacketMaker::MakeGachaResponsePacket(int result, GachaItem&
 	return MakeBuffer(ePacketType::S2C_GACHA_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakeCurrencyAmountResponsePacket(int result, std::vector<UserItem>& currency_list)
+std::vector<uint8_t> PacketMaker::MakeCurrencyAmountResponsePacket(int result, std::unordered_map<int, UserItem>& currency_list)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 
 	std::vector<int> currency_codes;
 	std::vector<int> currency_amounts;
 
-	for (int i = 0; i < currency_list.size(); ++i) {
-		currency_codes.push_back(currency_list[i].itemCode);
-		currency_amounts.push_back(currency_list[i].count);
+	for (const auto& currency : currency_list) {
+		currency_codes.push_back(currency.first);
+		currency_amounts.push_back(currency.second.count);
 	}
 
 	auto codes = Builder.CreateVector(currency_codes);
@@ -90,7 +90,13 @@ std::vector<uint8_t> PacketMaker::MakeUserItemsResponsePacket(int result, std::u
 	std::vector<flatbuffers::Offset<PacketTable::UtilitiesTable::ItemInfo>> item_vector;
 
 	for (auto& pair : user_items) {
+		if (pair.second.itemCode == 0) {
+			continue;
+		}
 		UserItem item = pair.second;
+
+		//std::cout << item.item_UID << " " << item.owner_UID << " " << item.itemCode << " " << item.count << " " << item.itemType << "\n";
+
 		auto item_info = PacketTable::UtilitiesTable::CreateItemInfo(Builder, item.item_UID, item.owner_UID, item.itemCode, item.count, item.itemType);
 		item_vector.push_back(item_info);
 	}

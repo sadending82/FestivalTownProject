@@ -28,6 +28,7 @@ public:
 				int dayCount = read->day_count();
 
 				int uid = player->GetUID();
+				std::unordered_map<int, UserItem>& playerItems = player->GetItems();
 
 				TableManager* tableManager = pServer->GetTableManager();
 				DB* db = pServer->GetDB();
@@ -42,9 +43,9 @@ public:
 
 				int reward_code = tableManager->GetEventRewardList()[eventCode][dayCount].Reward_Item_Index;
 				int reward_amount = tableManager->GetEventRewardList()[eventCode][dayCount].Reward_Item_Value;
+				ItemType itemType = tableManager->GetItemInfos()[reward_code].Item_Type;
 				// 출석 보상있으면 지급
 				if (reward_code != 0) {
-					ItemType itemType = tableManager->GetItemInfos()[reward_code].Item_Type;
 
 					if (itemType == ItemType::Money) {
 						result = db->UpsertUserItemCount(uid, reward_code, reward_amount);
@@ -56,6 +57,12 @@ public:
 
 				if (ERROR_CODE::ER_NONE != result) {
 					std::cout << "AttendanceRewardRequest ERROR " << uid << std::endl;;
+				}
+				else {
+					playerItems[reward_code].owner_UID = uid;
+					playerItems[reward_code].itemCode = reward_code;
+					playerItems[reward_code].itemType = (int)itemType;
+					playerItems[reward_code].count += reward_amount;
 				}
 
 				pPacketSender->SendAttendanceRewardResponsePacket(key, eventCode, dayCount, (int)result, reward_code, reward_amount);
