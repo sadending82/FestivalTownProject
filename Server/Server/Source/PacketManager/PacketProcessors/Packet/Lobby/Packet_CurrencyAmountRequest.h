@@ -24,15 +24,23 @@ public:
 
 				const CurrencyAmountRequest* read = flatbuffers::GetRoot<CurrencyAmountRequest>(data);
 
+
+				TableManager* tableManager = pServer->GetTableManager();
 				int uid = player->GetUID();
 
-				// 임시 / 수정해야함
-				std::unordered_map<int, UserItem> currencyList;
-				currencyList[100001] = player->GetItems()[100001];
-				currencyList[100002] = player->GetItems()[100002];
-				currencyList[100003] = player->GetItems()[100003];
+				std::unordered_map<int, UserItem> playerCurrencyList;
 
-				pPacketSender->SendCurrencyAmountResponsePacket(key, true, currencyList);
+				std::unordered_map<int, ItemTable> currencyList = tableManager->GetCurrencyList();
+
+				for (auto& currency : currencyList) {
+					if (currency.first == 0) {
+						continue;
+					}
+					const int index = currency.first;
+					playerCurrencyList[index] = player->GetItems()[index];
+				}
+
+				pPacketSender->SendCurrencyAmountResponsePacket(key, true, playerCurrencyList);
 			}
 		}
 		catch (const std::exception& e) {

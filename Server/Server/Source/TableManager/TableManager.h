@@ -50,6 +50,7 @@ public:
 	void UnLock();
 
 	std::unordered_map<INDEX, ItemTable>& GetItemInfos();
+	std::unordered_map<INDEX, ItemTable>& GetCurrencyList();
 
 	std::unordered_map<INDEX, CharacterStat>& GetCharacterStats();
 
@@ -95,6 +96,7 @@ private:
 	xlnt::worksheet mWorksheet;
 
 	std::unordered_map<INDEX, ItemTable> ItemInfos;
+	std::unordered_map<INDEX, ItemTable> CurrencyList;
 
 	std::unordered_map<INDEX, CharacterStat> CharacterStats;
 	std::unordered_map<INDEX, AttackStat> AttackStats;

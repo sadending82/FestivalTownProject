@@ -25,6 +25,7 @@ void TableManager::ClearAllTable()
 {
     // item
     ItemInfos.clear();
+    CurrencyList.clear();
 
     // character
     CharacterStats.clear();
@@ -77,6 +78,9 @@ void TableManager::ClearAllTable()
         passList.second.passLevelList.clear();
     }
     PassList.clear();
+
+    ShopCategoryList.clear();
+    ShopGoodsList.clear();
 }
 
 void TableManager::ReadAllDataTable()
@@ -100,6 +104,8 @@ void TableManager::ReadAllDataTable()
     ReadSlangList();
 
     ReadPassList();
+
+    ReadShopTable();
 
     mIsLoading.store(false);
 }
@@ -139,6 +145,10 @@ void TableManager::ReadItemTable()
                     openDate,
                     closeDate
                 };
+
+                if (ItemInfos[index].Item_Type == ItemType::Money) {
+                    CurrencyList[index] = ItemInfos[index];
+                }
             }
 
             idx++;
@@ -1165,6 +1175,14 @@ std::unordered_map<INDEX, ItemTable>& TableManager::GetItemInfos()
 
     }
     return ItemInfos;
+}
+
+std::unordered_map<INDEX, ItemTable>& TableManager::GetCurrencyList()
+{
+    while (mIsLoading.load() == true) {
+
+    }
+    return CurrencyList;
 }
 
 std::unordered_map<INDEX, CharacterStat>& TableManager::GetCharacterStats()
