@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour
     public Rigidbody leftFootRigidbody;
     public Rigidbody rightFootRigidbody;
     public FlyingKickChecker jumpAttackChecker;
+    public PlayerUIController PlayerUIController;
 
     [Header("--- State ---")]
     public float FloorDetectionDistance;
@@ -84,6 +85,7 @@ public class PlayerController : MonoBehaviour
     private float bombPickUpSpeed;
     private float weaponPickUpSpeed;
     private float pickUpRange;
+    private float itemDropSpeed = 1.0f;
 
     //------ Server -------
     private NetworkManager network;
@@ -608,17 +610,34 @@ public class PlayerController : MonoBehaviour
                 fKeyDownTimer = 0;
                 isPickUpMode = true;
                 targetItem = nearObjectChecker.GetNearObject();
+                if (nearObjectChecker.GetNearObject().tag == "Weapon")
+                {
+                    PlayerUIController.UIPickUpOn(weaponPickUpSpeed);
+                }
+                else if(nearObjectChecker.GetNearObject().tag == "Bomb")
+                {
+                    PlayerUIController.UIPickUpOn(bombPickUpSpeed);
+                }
             }
             else if ((playerStatus.GetIsHaveBomb() == true || playerStatus.GetIsHaveWeapon() == true) && isPickUpMode == false)
             {
                 fKeyDownTimer = 0;
                 isDropMode = true;
+                PlayerUIController.UIDropOn(itemDropSpeed);
             }
         }
         if (Input.GetKeyUp(KeyCode.F))
         {
-            isPickUpMode = false;
-            isDropMode = false;
+            if(isPickUpMode == true)
+            {
+                isPickUpMode = false;
+                PlayerUIController.UIPickUpOff();
+            }
+            if(isDropMode == true)
+            {
+                isDropMode = false;
+                PlayerUIController.UIDropOff();
+            }
             fKeyDownTimer = 0;
         }
         if (Input.GetKey(KeyCode.F))
@@ -631,6 +650,7 @@ public class PlayerController : MonoBehaviour
                 {
                     fKeyDownTimer = 0;
                     isPickUpMode = false;
+                    PlayerUIController.UIPickUpOff();
                 }
                 else
                 {
@@ -638,6 +658,7 @@ public class PlayerController : MonoBehaviour
                     {
                         Bomb targetBomb = targetItem.GetComponent<Bomb>();
                         fKeyDownTimer = 0;
+                        PlayerUIController.UIPickUpOff();
                         packetManager.SendPlayerGrabBombPacket(pelvis.transform.position, stabillizerDirection, myId, targetBomb.GetId());
                         isPickUpMode = false;
                     }
@@ -645,6 +666,7 @@ public class PlayerController : MonoBehaviour
                     {
                         Weapon targetWeapon = targetItem.GetComponent<Weapon>();
                         fKeyDownTimer = 0;
+                        PlayerUIController.UIPickUpOff();
                         packetManager.SendPlayerGrabWeaponPacket(pelvis.transform.position, stabillizerDirection, myId, targetWeapon.GetId());
                         isPickUpMode = false;
                     }
@@ -653,17 +675,19 @@ public class PlayerController : MonoBehaviour
             else if (isDropMode == true)
             {
                 fKeyDownTimer += Time.deltaTime;
-                if (fKeyDownTimer >= 1f)
+                if (fKeyDownTimer >= itemDropSpeed)
                 {
                     if (playerStatus.GetIsHaveWeapon() == true)
                     {
                         fKeyDownTimer = 0;
+                        PlayerUIController.UIDropOff();
                         packetManager.SendPlayerDropWeaponPacket(GetPosition(), playerStatus.GetWeaponId());
                         isDropMode = false;
                     }
-                    if (playerStatus.GetIsHaveBomb() == true)
+                    else if (playerStatus.GetIsHaveBomb() == true)
                     {
                         fKeyDownTimer = 0;
+                        PlayerUIController.UIDropOff();
                         packetManager.SendPlayerDropBombPacket(GetPosition(), myId, playerStatus.GetBombId());
                         isDropMode = false;
                     }
