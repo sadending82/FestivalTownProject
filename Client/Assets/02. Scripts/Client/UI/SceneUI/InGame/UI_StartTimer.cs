@@ -54,5 +54,4 @@ public class UI_StartTimer : UI_PopUp
         Get<GameObject>((int)GameObjects.One).SetActive(false);
         Get<GameObject>((int)GameObjects.Go).SetActive(false);
     }
-
 }
