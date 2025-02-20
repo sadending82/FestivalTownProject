@@ -32,6 +32,7 @@ public:
 				MATCHING_QUEUE& matchingQueue = MatchMakingManager->GetMatchingQueue(matchingType);
 
 				if (matchingQueue.empty() == true) {
+					MatchMakingManager->GetMatchingLock().unlock();
 					return;
 				}
 

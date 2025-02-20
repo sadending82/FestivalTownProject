@@ -204,7 +204,7 @@ int DB::InsertNewUser(const char* id, const wchar_t* nickname)
 
 ERROR_CODE DB::InsertUserGameRecords(const int uid)
 {
-	if (uid == 0) {
+	if (uid == 0 || uid == INVALIDKEY) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
@@ -287,7 +287,7 @@ ERROR_CODE DB::InsertUserItem(const int owner_uid, const int itemCode, const int
 
 ERROR_CODE DB::InsertUserAttendance(const int uid, const int EventIndex, const int day_count)
 {
-	if (uid == 0) {
+	if (uid == 0 || uid == INVALIDKEY) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
@@ -328,7 +328,7 @@ ERROR_CODE DB::InsertUserAttendance(const int uid, const int EventIndex, const i
 
 ERROR_CODE DB::InsertUserEventReward(const int uid, const int Eventcode)
 {
-	if (uid == 0) {
+	if (uid == 0 || uid == INVALIDKEY) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
@@ -368,7 +368,7 @@ ERROR_CODE DB::InsertUserEventReward(const int uid, const int Eventcode)
 
 ERROR_CODE DB::InsertUserPassReward(const int uid, const PassLevel& passLevelInfo, const int level)
 {
-	if (uid == 0) {
+	if (uid == 0 || uid == INVALIDKEY) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
@@ -410,7 +410,7 @@ ERROR_CODE DB::InsertUserPassReward(const int uid, const PassLevel& passLevelInf
 
 ERROR_CODE DB::InsertReceipt(const int uid, const int goods_index)
 {
-	if (uid == 0) {
+	if (uid == 0 || uid == INVALIDKEY) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
@@ -575,7 +575,7 @@ std::pair<ERROR_CODE, UserInfo> DB::SelectUserInfoForLogin(const char* id)
 
 std::pair<ERROR_CODE, UserInfo> DB::SelectUserInfo(const int uid)
 {
-	if (uid == 0) {
+	if (uid == 0 || uid == INVALIDKEY) {
 		return { ERROR_CODE::ER_DB_ERROR, UserInfo()};
 	}
 	UserInfo userInfo;
@@ -641,7 +641,7 @@ std::pair<ERROR_CODE, UserInfo> DB::SelectUserInfo(const int uid)
 
 std::pair<ERROR_CODE, std::vector<UserItem>> DB::SelectUserAllCurrency(const int uid)
 {
-	if (uid == 0) {
+	if (uid == 0 || uid == INVALIDKEY) {
 		return { ERROR_CODE::ER_DB_ERROR, std::vector<UserItem>() };
 	}
 	DB_Connection connection = GetConnection();
@@ -701,7 +701,7 @@ std::pair<ERROR_CODE, std::vector<UserItem>> DB::SelectUserAllCurrency(const int
 
 std::pair<ERROR_CODE, std::unordered_map<int, UserItem>> DB::SelectUserAllItems(const int uid)
 {
-	if (uid == 0) {
+	if (uid == 0 || uid == INVALIDKEY) {
 		return { ERROR_CODE::ER_DB_ERROR, std::unordered_map<int, UserItem>() };
 	}
 	DB_Connection connection = GetConnection();
@@ -758,7 +758,7 @@ std::pair<ERROR_CODE, std::unordered_map<int, UserItem>> DB::SelectUserAllItems(
 
 sCharacterCustomizing DB::SelectCharacterCustomizing(const int uid)
 {
-	if (uid == 0) {
+	if (uid == 0 || uid == INVALIDKEY) {
 		return sCharacterCustomizing();
 	}
 	DB_Connection connection = GetConnection();
@@ -821,7 +821,7 @@ sCharacterCustomizing DB::SelectCharacterCustomizing(const int uid)
 
 int DB::SelectUserItemCount(const int uid, const int item_index)
 {
-	if (uid == 0) {
+	if (uid == 0 || uid == INVALIDKEY) {
 		return 0;
 	}
 	DB_Connection connection = GetConnection();
@@ -869,7 +869,7 @@ int DB::SelectUserItemCount(const int uid, const int item_index)
 
 std::set<sDayAttendanceInfo> DB::SelectUserAttendanceEvent(const int uid, const int eventCode)
 {
-	if (uid == 0) {
+	if (uid == 0 || uid == INVALIDKEY) {
 		return std::set<sDayAttendanceInfo>();
 	}
 	DB_Connection connection = GetConnection();
@@ -931,7 +931,7 @@ std::set<sDayAttendanceInfo> DB::SelectUserAttendanceEvent(const int uid, const 
 
 sDayAttendanceInfo DB::SelectUserAttendanceEventLatest(const int uid, const int eventCode)
 {
-	if (uid == 0) {
+	if (uid == 0 || uid == INVALIDKEY) {
 		return sDayAttendanceInfo();
 	}
 	DB_Connection connection = GetConnection();
@@ -991,7 +991,7 @@ sDayAttendanceInfo DB::SelectUserAttendanceEventLatest(const int uid, const int 
 
 int DB::SelectUserAttendanceToday(const int uid)
 {
-	if (uid == 0) {
+	if (uid == 0 || uid == INVALIDKEY) {
 		return 0;
 	}
 	DB_Connection connection = GetConnection();
@@ -1037,7 +1037,7 @@ int DB::SelectUserAttendanceToday(const int uid)
 
 bool DB::SelectUserAttendanceIsRewarded(const int uid, const int eventCode, const int dayCount)
 {
-	if (uid == 0) {
+	if (uid == 0 || uid == INVALIDKEY) {
 		return true;
 	}
 	DB_Connection connection = GetConnection();
@@ -1085,7 +1085,7 @@ bool DB::SelectUserAttendanceIsRewarded(const int uid, const int eventCode, cons
 
 std::vector<UserMission> DB::SelectUserMission(const int uid)
 {
-	if (uid == 0) {
+	if (uid == 0 || uid == INVALIDKEY) {
 		return std::vector<UserMission>();
 	}
 	DB_Connection connection = GetConnection();
@@ -1147,7 +1147,7 @@ std::vector<UserMission> DB::SelectUserMission(const int uid)
 
 UserPass DB::SelectUserPass(const int uid, const int passIndex)
 {
-	if (uid == 0) {
+	if (uid == 0 || uid == INVALIDKEY) {
 		return UserPass();
 	}
 	DB_Connection connection = GetConnection();
@@ -1198,7 +1198,7 @@ UserPass DB::SelectUserPass(const int uid, const int passIndex)
 std::unordered_map<int, UserPassReward> DB::SelectUserPassReward(const int uid, const int passIndex)
 {
 
-	if (uid == 0) {
+	if (uid == 0 || uid == INVALIDKEY) {
 		return  std::unordered_map<int, UserPassReward>();
 	}
 	DB_Connection connection = GetConnection();
@@ -1254,7 +1254,7 @@ std::unordered_map<int, UserPassReward> DB::SelectUserPassReward(const int uid, 
 
 ERROR_CODE DB::UpdateUserConnectionState(const int uid, const int state)
 {
-	if (uid == 0) {
+	if (uid == 0 || uid == INVALIDKEY || uid == INVALIDKEY) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 	DB_Connection connection = GetConnection();
@@ -1293,7 +1293,7 @@ ERROR_CODE DB::UpdateUserConnectionState(const int uid, const int state)
 
 ERROR_CODE DB::UpsertUserItemCount(const int uid, const int item_Code, const int valueOfChange)
 {
-	if (uid == 0) {
+	if (uid == 0 || uid == INVALIDKEY) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 	DB_Connection connection = GetConnection();
@@ -1335,7 +1335,7 @@ ERROR_CODE DB::UpsertUserItemCount(const int uid, const int item_Code, const int
 
 ERROR_CODE DB::UpdateUserPoint(const int uid, const int valueOfChange)
 {
-	if (uid == 0) {
+	if (uid == 0 || uid == INVALIDKEY) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 	DB_Connection connection = GetConnection();
@@ -1374,7 +1374,7 @@ ERROR_CODE DB::UpdateUserPoint(const int uid, const int valueOfChange)
 
 ERROR_CODE DB::UpdateBattleRecords(const int uid, const UserGameRecords& gameRecords)
 {
-	if (uid == 0) {
+	if (uid == 0 || uid == INVALIDKEY) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 	DB_Connection connection = GetConnection();
@@ -1428,7 +1428,7 @@ ERROR_CODE DB::UpdateBattleRecords(const int uid, const UserGameRecords& gameRec
 
 ERROR_CODE DB::UpdateUserItemCount(const int uid, const int item_index, const int valueOfChange)
 {
-	if (uid == 0) {
+	if (uid == 0 || uid == INVALIDKEY) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 	DB_Connection connection = GetConnection();
@@ -1468,7 +1468,7 @@ ERROR_CODE DB::UpdateUserItemCount(const int uid, const int item_index, const in
 
 ERROR_CODE DB::UpsertUserCurrency(const int uid, std::vector<UserItem> CurrencyList)
 {
-	if (uid == 0) {
+	if (uid == 0 || uid == INVALIDKEY) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
@@ -1514,7 +1514,7 @@ ERROR_CODE DB::UpsertUserCurrency(const int uid, std::vector<UserItem> CurrencyL
 
 ERROR_CODE DB::UpsertCharacterCustomizing(const int uid, sCharacterCustomizing& characterCustomizing)
 {
-	if (uid == 0) {
+	if (uid == 0 || uid == INVALIDKEY) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 	DB_Connection connection = GetConnection();
@@ -1562,7 +1562,7 @@ ERROR_CODE DB::UpsertCharacterCustomizing(const int uid, sCharacterCustomizing& 
 
 ERROR_CODE DB::UpsertUserMission(const int uid, std::vector<UserMission>& missionList)
 {
-	if (uid == 0) {
+	if (uid == 0 || uid == INVALIDKEY) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 
@@ -1628,7 +1628,7 @@ ERROR_CODE DB::UpsertUserMission(const int uid, std::vector<UserMission>& missio
 
 ERROR_CODE DB::UpsertUserPass(const int uid, UserPass& passInfo)
 {
-	if (uid == 0) {
+	if (uid == 0 || uid == INVALIDKEY) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 	DB_Connection connection = GetConnection();
@@ -1672,7 +1672,7 @@ ERROR_CODE DB::UpsertUserPass(const int uid, UserPass& passInfo)
 
 bool DB::UpdateUserAttendanceIsRewarded(const int uid, const int eventCode, const int dayCount, const int updateValue)
 {
-	if (uid == 0) {
+	if (uid == 0 || uid == INVALIDKEY) {
 		return true;
 	}
 	DB_Connection connection = GetConnection();
@@ -1722,7 +1722,7 @@ bool DB::UpdateUserAttendanceIsRewarded(const int uid, const int eventCode, cons
 
 ERROR_CODE DB::UpdateUserEventReward_IsRewarded(const int uid, const int eventCode)
 {
-	if (uid == 0) {
+	if (uid == 0 || uid == INVALIDKEY) {
 		return ERROR_CODE::ER_DB_NO_DATA;
 	}
 	DB_Connection connection = GetConnection();
@@ -1803,7 +1803,7 @@ ERROR_CODE DB::DeleteAcccount(const char* id)
 
 ERROR_CODE DB::DeleteUserInfo(const int uid)
 {
-	if (uid == 0) {
+	if (uid == 0 || uid == INVALIDKEY) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 	DB_Connection connection = GetConnection();
@@ -1840,7 +1840,7 @@ ERROR_CODE DB::DeleteUserInfo(const int uid)
 
 ERROR_CODE DB::DeleteUserGameRecords(const int uid)
 {
-	if (uid == 0) {
+	if (uid == 0 || uid == INVALIDKEY) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 	DB_Connection connection = GetConnection();
