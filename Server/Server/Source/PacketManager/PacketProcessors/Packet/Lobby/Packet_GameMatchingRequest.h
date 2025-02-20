@@ -47,13 +47,7 @@ public:
 					MapProperties testMapProperties;
 
 					if (map_code == 0) {
-						std::vector<int> modeList = { 100 };
-
-						std::random_device rd;
-						std::mt19937 gen(rd());
-						std::uniform_int_distribution<>map_distrib(0, modeList.size() - 1);
-
-						modeIndex = (GameMode)modeList[map_distrib(rd)];
+						modeIndex = GameMode::FITH_Tutorial_1;
 						testMapProperties = MatchMakingManager->SelectRandomMap(GameMode(modeIndex));
 					}
 					else {
@@ -65,6 +59,8 @@ public:
 								}
 							}
 							if (modeIndex != GameMode::INVALUE_MODE) {
+								modeIndex = GameMode::FITH_Tutorial_1;
+								testMapProperties = MatchMakingManager->SelectRandomMap(GameMode(modeIndex));
 								break;
 							}
 						}
