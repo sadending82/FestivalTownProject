@@ -14,7 +14,6 @@ public class UI_Pass : UI_Scene
         DiamondPanel,
         DiamondText,
         ExitButton,
-        TitleText,
         PeriodText,
         BuyPassButton,
         PassPanel,

@@ -55,6 +55,11 @@ public class UI_MissionData : UI_Base
         missionIdx = idx;
     }
 
+    public int GetMissionIndex()
+    {
+        return missionIdx;
+    }
+
     public void SetExp(int exp)
     {
         Get<GameObject>((int)GameObjects.ExpData).transform.GetChild(1).GetComponent<TMP_Text>().text = $"+{exp}p";
@@ -114,12 +119,12 @@ public class UI_MissionData : UI_Base
 
         if(this.isRewarded)
         {
-            Get<GameObject>((int)GameObjects.RecvButton).transform.GetChild(0).GetComponent<TMP_Text>().text = "완료";
+            //Get<GameObject>((int)GameObjects.RecvButton).transform.GetChild(0).GetComponent<TMP_Text>().text = "완료";
             gameObject.GetComponent<Image>().color = Color.gray;
         }
         else
         {
-            Get<GameObject>((int)GameObjects.RecvButton).transform.GetChild(0).GetComponent<TMP_Text>().text = "완료 하기";
+            //Get<GameObject>((int)GameObjects.RecvButton).transform.GetChild(0).GetComponent<TMP_Text>().text = "완료 하기";
             gameObject.GetComponent<Image>().color = Color.white;
         }
     }

@@ -52,7 +52,8 @@ namespace Network.PacketProcessor
                 var MissionUI = Managers.UI.GetTopOfPopUPUI().GetComponent<UI_Mission>();
                 if (MissionUI == null) return;
 
-                MissionUI.ChangeMissionData(mission_index, Managers.Data.PassMissionDataDict[mission_index].Required_Count, true);
+                var mdUi = MissionUI.ChangeMissionData(mission_index, Managers.Data.PassMissionDataDict[mission_index].Required_Count, true);
+                MissionUI.SetRecentPosition(mdUi);
             }
         }
     }

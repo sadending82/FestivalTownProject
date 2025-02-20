@@ -14,6 +14,7 @@ public class UI_Mission : UI_PopUp
 
     bool isInitialized = false;
     Dictionary<int, UI_MissionData> missionDatas = new();
+    int uncompletedPassMissionCount = 0;
 
     void Start()
     {
@@ -35,43 +36,7 @@ public class UI_Mission : UI_PopUp
         // 일일 미션에는 프로그래스가 있음.
         var progressUI = Managers.UI.MakeSubItem<UI_DailyProgress>(missionPanel.GetCategoryContent(0));
         progressUI.Init();
-        /*
-        foreach (var passMissionData in Managers.Data.PassMissionDataDict)
-        {
-            switch(passMissionData.Value.Type)
-            {
-                case (int)Define.MissionType.DailyMission:
-                    {
-                        var ui = Managers.UI.MakeSubItem<UI_MissionData>(missionPanel.GetCategoryContent((int)Define.MissionType.DailyMission - 1));
-                        missionDatas.TryAdd(passMissionData.Value.Index, ui);
-                        ui.Init();
-                        ui.SetMissionIndex(passMissionData.Value.Index);
-                        ui.SetTitle(passMissionData.Value.Mission_Name);
-                        ui.SetDescription(passMissionData.Value.Mission_Description);
-                        ui.SetExp(passMissionData.Value.Reward_Exp);
-                        ui.SetRequired(passMissionData.Value.Required_Count);
-                        ui.SetType(Define.MissionType.DailyMission);
-                        ui.SetReward(passMissionData.Value.Reward_Item, passMissionData.Value.Reward_Item_Amount);
-                        ui.SetRewarded(false);
-                    }
-                    break;
-                case (int)Define.MissionType.PassMission:
-                    {
-                        var ui = Managers.UI.MakeSubItem<UI_MissionData>(missionPanel.GetCategoryContent((int)Define.MissionType.PassMission - 1));
-                        missionDatas.TryAdd(passMissionData.Value.Index, ui);
-                        ui.Init();
-                        ui.SetMissionIndex(passMissionData.Value.Index);
-                        ui.SetTitle(passMissionData.Value.Mission_Name);
-                        ui.SetDescription(passMissionData.Value.Mission_Description);
-                        ui.SetRequired(passMissionData.Value.Required_Count);
-                        ui.SetExp(passMissionData.Value.Reward_Exp);
-                        ui.SetType(Define.MissionType.PassMission);
-                        ui.SetRewarded(false);
-                    }
-                    break;
-            }
-        }
-        */
+
         Get<GameObject>((int)GameObjects.ExitButton).BindEvent((PointerEventData) =>
         {
             Managers.UI.ClosePopUpUI(this);
@@ -84,13 +49,15 @@ public class UI_Mission : UI_PopUp
         isInitialized = true;
     }
 
-    public void ChangeMissionData(int idx, int count, bool isRewarded)
+    public UI_MissionData ChangeMissionData(int idx, int count, bool isRewarded)
     {
         missionDatas[idx].SetMissionCounted(count);
         missionDatas[idx].SetRewarded(isRewarded);
+
+        return missionDatas[idx];
     }
 
-    public void AddMission(int missionIdx, int count, bool isRewarded)
+    public UI_MissionData AddMission(int missionIdx, int count, bool isRewarded)
     {
         Managers.Data.PassMissionDataDict.TryGetValue(missionIdx , out var passMissionData);
 
@@ -112,8 +79,8 @@ public class UI_Mission : UI_PopUp
                     ui.SetReward(passMissionData.Reward_Item, passMissionData.Reward_Item_Amount);
                     ui.SetMissionCounted(count);
                     ui.SetRewarded(isRewarded);
+                    return ui;
                 }
-                break;
             case (int)Define.MissionType.PassMission:
                 {
                     var ui = Managers.UI.MakeSubItem<UI_MissionData>(missionPanel.GetCategoryContent((int)Define.MissionType.PassMission - 1));
@@ -127,8 +94,22 @@ public class UI_Mission : UI_PopUp
                     ui.SetType(Define.MissionType.PassMission);
                     ui.SetMissionCounted(count);
                     ui.SetRewarded(isRewarded);
+                    if (!isRewarded)
+                    {
+                        uncompletedPassMissionCount++;
+                    }
+                    return ui;
                 }
-                break;
+            default:
+                return null;
         }
+    }
+
+    public void SetRecentPosition(UI_MissionData msdataUi)
+    {
+        if (msdataUi == null) return;
+
+        uncompletedPassMissionCount--;
+        missionDatas[msdataUi.GetMissionIndex()].transform.SetSiblingIndex(uncompletedPassMissionCount);
     }
 }

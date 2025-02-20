@@ -116,6 +116,7 @@ public class Define
         Normal = 1,
         Rare = 2,
         Unique = 3,
+        Currency = 4,
     }
 
     public enum StartIdx

@@ -29,7 +29,7 @@ public class UI_PassLevelPanel : UI_Base
 
     public void SetLevel(int level)
     {
-        Get<GameObject>((int)GameObjects.Level).GetComponent<TMP_Text>().text = $"패스 레벨 {level}";
+        Get<GameObject>((int)GameObjects.Level).GetComponent<TMP_Text>().text = $"{level}";
     }
 
     public void SetProgress(int exp, int maxExp)

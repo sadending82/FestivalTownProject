@@ -98,13 +98,13 @@ public class UI_PassLevelItem : UI_Base
 
     void SetRewardImage()
     {
-        Get<GameObject>((int)GameObjects.ItemBasic).transform.GetChild(1).gameObject.SetActive(_basicPassRewarded);
-        Get<GameObject>((int)GameObjects.ItemPlus).transform.GetChild(1).gameObject.SetActive(_plusPassRewarded);
+        Get<GameObject>((int)GameObjects.ItemBasic).transform.GetChild(2).gameObject.SetActive(_basicPassRewarded);
+        Get<GameObject>((int)GameObjects.ItemPlus).transform.GetChild(2).gameObject.SetActive(_plusPassRewarded);
     }
 
     void SetLevelToGetItem(int level)
     {
-        Get<GameObject>((int)GameObjects.PassLevel).transform.GetChild(0).GetComponent<TMP_Text>().text = level.ToString();
+        Get<GameObject>((int)GameObjects.PassLevel).transform.GetChild(1).GetComponent<TMP_Text>().text = level.ToString();
     }
 
     void SetBasicItemImage(int itemIdx)
@@ -113,10 +113,10 @@ public class UI_PassLevelItem : UI_Base
 
         if (itemData == null) return;
 
-        Get<GameObject>((int)GameObjects.ItemBasic).GetComponent<Image>().sprite = GetItemBGTexture((Define.ItemGrade)itemData.Item_Grade);
-        Get<GameObject>((int)GameObjects.ItemBasic).GetComponent<Image>().preserveAspect = true;
-        Get<GameObject>((int)GameObjects.ItemBasic).transform.GetChild(0).GetComponent<Image>().sprite = Managers.Resource.LoadSprite(itemData.File_Name);
+        Get<GameObject>((int)GameObjects.ItemBasic).transform.GetChild(0).GetComponent<Image>().sprite = GetItemBGTexture((Define.ItemGrade)itemData.Item_Grade);
         Get<GameObject>((int)GameObjects.ItemBasic).transform.GetChild(0).GetComponent<Image>().preserveAspect = true;
+        Get<GameObject>((int)GameObjects.ItemBasic).transform.GetChild(1).GetComponent<Image>().sprite = Managers.Resource.LoadSprite(itemData.File_Name);
+        Get<GameObject>((int)GameObjects.ItemBasic).transform.GetChild(1).GetComponent<Image>().preserveAspect = true;
     }
 
     void SetPlusItemImage(int itemIdx)
@@ -125,10 +125,10 @@ public class UI_PassLevelItem : UI_Base
 
         if (itemData == null) return;
 
-        Get<GameObject>((int)GameObjects.ItemPlus).GetComponent<Image>().sprite = GetItemBGTexture((Define.ItemGrade)itemData.Item_Grade);
-        Get<GameObject>((int)GameObjects.ItemPlus).GetComponent<Image>().preserveAspect = true;
-        Get<GameObject>((int)GameObjects.ItemPlus).transform.GetChild(0).GetComponent<Image>().sprite = Managers.Resource.LoadSprite(itemData.File_Name);
+        Get<GameObject>((int)GameObjects.ItemPlus).transform.GetChild(0).GetComponent<Image>().sprite = GetItemBGTexture((Define.ItemGrade)itemData.Item_Grade);
         Get<GameObject>((int)GameObjects.ItemPlus).transform.GetChild(0).GetComponent<Image>().preserveAspect = true;
+        Get<GameObject>((int)GameObjects.ItemPlus).transform.GetChild(1).GetComponent<Image>().sprite = Managers.Resource.LoadSprite(itemData.File_Name);
+        Get<GameObject>((int)GameObjects.ItemPlus).transform.GetChild(1).GetComponent<Image>().preserveAspect = true;
     }
 
     Sprite GetItemBGTexture(Define.ItemGrade Grade)
@@ -144,6 +144,9 @@ public class UI_PassLevelItem : UI_Base
                 break;
             case Define.ItemGrade.Unique:
                 sprite = Managers.Resource.LoadSprite("UniqueBG");
+                break;
+            case Define.ItemGrade.Currency:
+                sprite = Managers.Resource.LoadSprite("CurrencyBG");
                 break;
         }
 

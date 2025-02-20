@@ -21,6 +21,8 @@ namespace Network.PacketProcessor
             var MissionUI = Managers.UI.GetTopOfPopUPUI().GetComponent<UI_Mission>();
             if (MissionUI == null) return;
 
+            Dictionary<Int64, Tuple<int, int>> missionSortbyTimeDict = new();
+
             for (int i = 0; i < Data.MissionStateListLength; ++i)
             {
                 var missionState = Data.MissionStateList(i).Value;
@@ -33,8 +35,21 @@ namespace Network.PacketProcessor
 
                 Debug.Log($"recv {mission_index} mission Data. index : {mission_index}, progress : {progress}, is_completed : {is_completed}");
 
-                MissionUI.AddMission(mission_index, progress, is_completed);
+                //if (is_completed)
+                //{
+                //    missionSortbyTimeDict.TryAdd(complete_time, new Tuple<int, int>(mission_index, progress));
+                //}
+                //else
+                //{
+                    MissionUI.AddMission(mission_index, progress, is_completed);
+                //}
             }
+
+            //foreach (var timeDictData in missionSortbyTimeDict)
+            //{
+            //    Debug.Log($"{timeDictData.Value.Item1} mission completed. so stuff after");
+            //    MissionUI.AddMission(timeDictData.Value.Item1, timeDictData.Value.Item2, true);
+            //}
 
         }
     }
