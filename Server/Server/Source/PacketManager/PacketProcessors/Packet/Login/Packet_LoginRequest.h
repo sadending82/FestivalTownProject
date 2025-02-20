@@ -26,10 +26,6 @@ public:
 
 				std::pair<ERROR_CODE, UserInfo> result = pServer->UserLogin(id, pw, key);
 
-				if (result.first == ERROR_CODE::ER_INVALID_SESSION) {
-					return;
-				}
-
 				UserInfo userInfo = result.second;
 
 				std::unordered_map<int, std::set<sDayAttendanceInfo>> attendanceInfoList;
