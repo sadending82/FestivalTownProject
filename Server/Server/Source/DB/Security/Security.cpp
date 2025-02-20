@@ -55,15 +55,15 @@ ERROR_CODE Security::CheckVerifyStringsForSignUp(const std::string ID, std::stri
 	std::transform(wstNickName.begin(), wstNickName.end(), wstNickName.begin(), std::towlower);
 
 	if (FilteringID(ID) == false) {
-		return ERROR_CODE::ER_DB_ERROR;
+		return ERROR_CODE::ER_SIGNUP_INVALID_ID;
 	}
 
 	if (FilteringPassword(password) == false) {
-		return ERROR_CODE::ER_DB_ERROR;
+		return ERROR_CODE::ER_SIGNUP_INVALID_PW;
 	}
 
 	if (FilteringNickname(wstNickName.c_str()) == false) {
-		return ERROR_CODE::ER_DB_ERROR;
+		return ERROR_CODE::ER_SIGNUP_INVALID_NICKNAME;
 	}
 
 	return ERROR_CODE::ER_NONE;

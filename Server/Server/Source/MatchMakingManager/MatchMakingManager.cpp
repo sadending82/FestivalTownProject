@@ -114,8 +114,6 @@ void MatchMakingManager::MatchingComplete(int roomID, std::vector<int>& sessionI
 
     int addCompletePlayerCnt = 0;
 
-    int matchedPlayerCount = pServer->GetTableManager()->GetGameModeOutData()[room->GetGameMode()].Player_Count;
-
     // Player Add Into New Room
     for (int sessionID : sessionIDs) {
         Player* player = dynamic_cast<Player*>(pServer->GetSessions()[sessionID]);

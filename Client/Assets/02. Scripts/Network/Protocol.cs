@@ -169,7 +169,13 @@ namespace NetworkProtocol
 
         ER_DB_NO_DATA = 201,
         ER_DB_ERROR = 202,
-        ER_DB_CONNECTION_ERROR = 203
+        ER_DB_CONNECTION_ERROR = 203,
+
+        ER_SIGNUP_INVALID_ID = 301,
+        ER_SIGNUP_INVALID_PW = 302,
+        ER_SIGNUP_INVALID_NICKNAME = 303,
+
+        ER_INVALID_SESSION = 1001
     };
 
     public enum GameMode

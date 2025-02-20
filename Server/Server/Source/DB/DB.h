@@ -95,7 +95,6 @@ public:
     ERROR_CODE DeleteUserItemAll(const int owner_uid);
     ERROR_CODE DeleteUserAttendanceAll(const int user_uid);
     ERROR_CODE DeleteUserAttendanceOutdated(const int day);
-    ERROR_CODE DeleteReceipt(const int uid, const int goods_index);
 
     ERROR_CODE CheckValidateLogin(const char* id, const char* password);
 

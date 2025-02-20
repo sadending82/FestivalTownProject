@@ -29,19 +29,22 @@ public:
 
 			for (int i = 1; i <= playerPassLevel; ++i) {
 				// 일반 보상
-				bool result = lobbyManager->GivePassReward(player, passIndex, ePassType::PT_NORMAL, playerPassLevel);
+				bool result = lobbyManager->GivePassReward(player, passIndex, ePassType::PT_NORMAL, i);
 				if (result == true) {
-					PassLevel& passLevelInfo = tableManager->GetPassList()[passIndex].passLevelList[playerPassLevel][ePassType::PT_NORMAL];
+					PassLevel& passLevelInfo = tableManager->GetPassList()[passIndex].passLevelList[i][ePassType::PT_NORMAL];
 					rewards.push_back(ReceivedPassReward{ result, passIndex, ePassType::PT_NORMAL, i, passLevelInfo.Reward_Item_Index, passLevelInfo.Reward_Item_Amount });
 				}
 
 				// 프리미엄 보상
-				result = lobbyManager->GivePassReward(player, passIndex, ePassType::PT_NORMAL, playerPassLevel);
+				result = lobbyManager->GivePassReward(player, passIndex, ePassType::PT_PREMIUM, i);
 				if (result == true) {
-					PassLevel& passLevelInfo = tableManager->GetPassList()[passIndex].passLevelList[playerPassLevel][ePassType::PT_PREMIUM];
+					PassLevel& passLevelInfo = tableManager->GetPassList()[passIndex].passLevelList[i][ePassType::PT_PREMIUM];
 					rewards.push_back(ReceivedPassReward{ result, passIndex, ePassType::PT_PREMIUM, i, passLevelInfo.Reward_Item_Index, passLevelInfo.Reward_Item_Amount });
 				}
 			}
+
+
+			std::cout << rewards.size() << std::endl;
 
 			pPacketSender->SendBatchReceivePassRewardsResponsePacket(key, passIndex, rewards);
 

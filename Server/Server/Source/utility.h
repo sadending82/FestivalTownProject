@@ -191,7 +191,6 @@ struct Trie {
 				}
 			}
 		}
-
 		return false;
 	}
 };
@@ -202,7 +201,10 @@ struct PlayerPassInfo {
 	// <level, <type, isRewarded>>
 	std::unordered_map<int, std::unordered_map<int, bool>> isRewardedList;
 
-	void Init(UserPass& userPass) { passState = userPass; }
+	void Init(UserPass& userPass) { 
+		passState = userPass; 
+		isRewardedList.clear();
+	}
 
 	void SetExp(int value) { passState.passExp = value; }
 

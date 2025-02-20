@@ -1254,7 +1254,7 @@ std::unordered_map<int, UserPassReward> DB::SelectUserPassReward(const int uid, 
 
 ERROR_CODE DB::UpdateUserConnectionState(const int uid, const int state)
 {
-	if (uid == 0 || uid == INVALIDKEY || uid == INVALIDKEY) {
+	if (uid == 0 || uid == INVALIDKEY) {
 		return ERROR_CODE::ER_DB_ERROR;
 	}
 	DB_Connection connection = GetConnection();
