@@ -24,8 +24,17 @@ namespace Network.PacketProcessor
             }
             else if (result == 1)
             {
+
                 int item_index = Data.ItemIndex;
                 int item_amount = Data.ItemAmount;
+
+                Debug.Log($"Recv PurchaseGoodsPacket item index : {item_index}");
+
+                var shopUI = Managers.UI.GetCurrentSceneUI().GetComponent<UI_Shop>();
+                if (shopUI != null)
+                {
+                    shopUI.GetShopItem(item_index).PurchaseStuff();
+                }
 
                 int currency_index = Data.CurrencyIndex;
                 int currency_amount = Data.CurrencyAmount;

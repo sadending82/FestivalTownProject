@@ -56,6 +56,8 @@ public class DataManager
     public Dictionary<int, PassListEntity> PassListDataDict = new();
     public Dictionary<int, PassMissionEntity> PassMissionDataDict = new();
     public Dictionary<int, PassLevelEntity> PassLevelDataDict = new();
+    public Dictionary<int, ShopCategoryEntity> ShopCategoryDataDict = new();
+    public Dictionary<int, ShopListEntity> ShopListDataDict = new();
 
 
     /// <summary>
@@ -340,6 +342,22 @@ public class DataManager
             {
                 PassMissionDataDict.TryAdd(entity.Index, entity);
                 PassMissionDataDict[entity.Index].ClassType = Define.ExcelDataClassType.PassMission;
+            }
+        }
+
+        Shop shopData = Managers.Resource.Load<Shop>($"Data/Shop");
+        if (shopData != null)
+        {
+            foreach (ShopCategoryEntity entity in shopData.Shop_Category)
+            {
+                ShopCategoryDataDict.TryAdd(entity.Index, entity);
+                ShopCategoryDataDict[entity.Index].ClassType = Define.ExcelDataClassType.ShopCategory;
+            }
+
+            foreach (ShopListEntity entity in shopData.Shop_List)
+            {
+                ShopListDataDict.TryAdd(entity.Index, entity);
+                ShopListDataDict[entity.Index].ClassType = Define.ExcelDataClassType.ShopList;
             }
         }
     }

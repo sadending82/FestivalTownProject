@@ -301,4 +301,37 @@ namespace ExcelDataStructure
         public int Reward_Item_Amount;
 
     }
+
+    [System.Serializable]
+
+    public class ShopCategoryEntity : GameDataEntity
+    {
+        public string Category_Name;
+        public string Category_Description;
+        public int Number_Goods;
+        public int Number_Discountable;
+        public int Reroll_Term;
+        public int Open_Date;
+        public int Close_Date;
+    }
+
+    [System.Serializable]
+
+    public class ShopListEntity : GameDataEntity
+    {
+        public int Category_Index;
+        public int Item;
+        public int Item_Grade;
+        public int Item_Amount;
+        public int Currency1_Id;
+        public int Currency1_Price;
+        public int Currency2_Id;
+        public int Currency2_Price;
+        public int Purchase_Limit;
+        public int Discount_Rate_Min;
+        public int Discount_Rate_Max;
+        public int Open_Date;
+        public int Close_Date;
+    }
+
 }

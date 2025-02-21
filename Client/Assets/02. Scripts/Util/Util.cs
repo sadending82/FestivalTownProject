@@ -76,4 +76,26 @@ public class Util
 
         return false;
     }
+
+    public static Sprite GetItemBGTexture(Define.ItemGrade Grade)
+    {
+        Sprite sprite = null;
+        switch (Grade)
+        {
+            case Define.ItemGrade.Normal:
+                sprite = Managers.Resource.LoadSprite("NormalBG");
+                break;
+            case Define.ItemGrade.Rare:
+                sprite = Managers.Resource.LoadSprite("RareBG");
+                break;
+            case Define.ItemGrade.Unique:
+                sprite = Managers.Resource.LoadSprite("UniqueBG");
+                break;
+            case Define.ItemGrade.Currency:
+                sprite = Managers.Resource.LoadSprite("CurrencyBG");
+                break;
+        }
+
+        return sprite;
+    }
 }

@@ -60,22 +60,24 @@ public class UI_TopPanel : UI_Base
             {
                 Managers.Data.SetInventoryDataRecved(false);
                 Managers.Network.GetPacketManager().SendUserItemsRequestPacket();
-                StartCoroutine(WaitRecvItemDataAndShowUI());
+                StartCoroutine(WaitRecvItemDataAndShowCustomUI());
             }    
         });
 
         ui = Get<GameObject>((int)GameObjects.ShopButtonTab).GetComponent<UI_ButtonTab>();
 
         ui.Init();
-        ui.SetEnable(false);
+        ui.SetEnable(true);
         ui.SetParentUI(this);
         ui.SetSelected(false);
 
-        Get<GameObject>((int)GameObjects.ShopButtonTab).BindEvent((PointerEventData) =>
+        ui.BindEventToButton((PointerEventData) =>
         {
             if (Managers.UI.GetCurrentSceneUI().GetComponent<UI_Shop>() == null)
             {
-                Debug.Log("상점 이동");
+                Managers.Data.SetInventoryDataRecved(false);
+                Managers.Network.GetPacketManager().SendUserItemsRequestPacket();
+                StartCoroutine(WaitRecvItemDataAndShowShopUI());
             }
         });
 
@@ -101,7 +103,7 @@ public class UI_TopPanel : UI_Base
         isInitialized = true;
     }
 
-    IEnumerator WaitRecvItemDataAndShowUI()
+    IEnumerator WaitRecvItemDataAndShowCustomUI()
     {
         yield return null;
 
@@ -139,6 +141,48 @@ public class UI_TopPanel : UI_Base
             var ui = Managers.UI.ShowPopUpUI<UI_Notice>();
             ui.Init();
             ui.NoticeTextChange("인벤토리에 접속할 수 없습니다.");
+            ui.BindPopupCloseEvent();
+        }
+    }
+
+    IEnumerator WaitRecvItemDataAndShowShopUI()
+    {
+        yield return null;
+
+        float timeOut = 5.0f;
+
+        while (!Managers.Data.IsInventoryDataRecved())
+        {
+            if (timeOut < 0f)
+            {
+                break;
+            }
+
+            if (Managers.Scene.CurrentScene.GetComponent<HomeScene>() == null)
+            {
+                break;
+            }
+
+            timeOut -= Time.deltaTime;
+            yield return null;
+        }
+
+        if (Managers.Data.IsInventoryDataRecved())
+        {
+            Managers.UI.CloseSceneUI();
+            var ui = Managers.UI.ShowSceneUI<UI_Shop>();
+            ui.Init();
+
+            selected = Selected.Shop;
+            SelectStuff();
+
+        }
+
+        if (timeOut < 0f)
+        {
+            var ui = Managers.UI.ShowPopUpUI<UI_Notice>();
+            ui.Init();
+            ui.NoticeTextChange("상점에 접속할 수 없습니다.");
             ui.BindPopupCloseEvent();
         }
     }

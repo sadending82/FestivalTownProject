@@ -85,6 +85,8 @@ public class Define
         PassList,
         PassMission,
         PassLevel,
+        ShopCategory,
+        ShopList,
     }
 
     public enum CompatibilityColor
@@ -123,6 +125,7 @@ public class Define
     {
         PassBasicListStartIdx = 60101,
         PassPlusListStartIdx = 60201,
+        ShopListMileageStartIdx = 406001,
     }
 
     public enum PassType
