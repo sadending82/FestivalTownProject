@@ -1070,7 +1070,7 @@ void TableManager::ReadShopTable()
 {
     try {
 
-        mWorkbook.load("GameData/Event.xlsx");
+        mWorkbook.load("GameData/Shop.xlsx");
         int idx = 0;
         mWorksheet = mWorkbook.sheet_by_index(Shop_Category_Sheet);
 
@@ -1152,7 +1152,7 @@ void TableManager::ReadShopTable()
             ++idx;
         }
     }
-    catch (const xlnt::exception& e) {
+    catch (const std::exception& e) {
         std::cerr << "ReadShopTable Excel File Load Fail: " << e.what() << std::endl;
     }
 }

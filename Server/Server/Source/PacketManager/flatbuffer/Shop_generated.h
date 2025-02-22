@@ -287,19 +287,15 @@ struct PurchaseGoodsResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Ta
   typedef PurchaseGoodsResponseBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_RESULT = 4,
-    VT_ITEM_INDEX = 6,
-    VT_ITEM_AMOUNT = 8,
-    VT_CURRENCY_INDEX = 10,
-    VT_CURRENCY_AMOUNT = 12
+    VT_GOODS_INDEX = 6,
+    VT_CURRENCY_INDEX = 8,
+    VT_CURRENCY_AMOUNT = 10
   };
   int32_t result() const {
     return GetField<int32_t>(VT_RESULT, 0);
   }
-  int32_t item_index() const {
-    return GetField<int32_t>(VT_ITEM_INDEX, 0);
-  }
-  int32_t item_amount() const {
-    return GetField<int32_t>(VT_ITEM_AMOUNT, 0);
+  int32_t goods_index() const {
+    return GetField<int32_t>(VT_GOODS_INDEX, 0);
   }
   int32_t currency_index() const {
     return GetField<int32_t>(VT_CURRENCY_INDEX, 0);
@@ -310,8 +306,7 @@ struct PurchaseGoodsResponse FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Ta
   bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<int32_t>(verifier, VT_RESULT, 4) &&
-           VerifyField<int32_t>(verifier, VT_ITEM_INDEX, 4) &&
-           VerifyField<int32_t>(verifier, VT_ITEM_AMOUNT, 4) &&
+           VerifyField<int32_t>(verifier, VT_GOODS_INDEX, 4) &&
            VerifyField<int32_t>(verifier, VT_CURRENCY_INDEX, 4) &&
            VerifyField<int32_t>(verifier, VT_CURRENCY_AMOUNT, 4) &&
            verifier.EndTable();
@@ -325,11 +320,8 @@ struct PurchaseGoodsResponseBuilder {
   void add_result(int32_t result) {
     fbb_.AddElement<int32_t>(PurchaseGoodsResponse::VT_RESULT, result, 0);
   }
-  void add_item_index(int32_t item_index) {
-    fbb_.AddElement<int32_t>(PurchaseGoodsResponse::VT_ITEM_INDEX, item_index, 0);
-  }
-  void add_item_amount(int32_t item_amount) {
-    fbb_.AddElement<int32_t>(PurchaseGoodsResponse::VT_ITEM_AMOUNT, item_amount, 0);
+  void add_goods_index(int32_t goods_index) {
+    fbb_.AddElement<int32_t>(PurchaseGoodsResponse::VT_GOODS_INDEX, goods_index, 0);
   }
   void add_currency_index(int32_t currency_index) {
     fbb_.AddElement<int32_t>(PurchaseGoodsResponse::VT_CURRENCY_INDEX, currency_index, 0);
@@ -351,15 +343,13 @@ struct PurchaseGoodsResponseBuilder {
 inline ::flatbuffers::Offset<PurchaseGoodsResponse> CreatePurchaseGoodsResponse(
     ::flatbuffers::FlatBufferBuilder &_fbb,
     int32_t result = 0,
-    int32_t item_index = 0,
-    int32_t item_amount = 0,
+    int32_t goods_index = 0,
     int32_t currency_index = 0,
     int32_t currency_amount = 0) {
   PurchaseGoodsResponseBuilder builder_(_fbb);
   builder_.add_currency_amount(currency_amount);
   builder_.add_currency_index(currency_index);
-  builder_.add_item_amount(item_amount);
-  builder_.add_item_index(item_index);
+  builder_.add_goods_index(goods_index);
   builder_.add_result(result);
   return builder_.Finish();
 }

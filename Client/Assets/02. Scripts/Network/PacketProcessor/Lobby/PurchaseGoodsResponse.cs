@@ -25,10 +25,9 @@ namespace Network.PacketProcessor
             else if (result == 1)
             {
 
-                int item_index = Data.ItemIndex;
-                int item_amount = Data.ItemAmount;
+                int goods_index = Data.GoodsIndex;
 
-                Debug.Log($"Recv PurchaseGoodsPacket item index : {item_index}");
+                Debug.Log($"Recv PurchaseGoodsPacket goods index : {goods_index}");
 
                 var shopUI = Managers.UI.GetCurrentSceneUI().GetComponent<UI_Shop>();
                 if (shopUI != null)
@@ -38,7 +37,7 @@ namespace Network.PacketProcessor
 
                     // 현재 ShopList 인덱스로 설정되어 있어 혹시라도 실제 item의 인덱스라면 에러가 발생함.
                     // ShopList의 인덱스라면 문제 없을 것
-                    var shopItemUI = shopUI.GetShopItem(item_index);
+                    var shopItemUI = shopUI.GetShopItem(goods_index);
                     if (shopItemUI != null)
                     {
                         shopItemUI.PurchaseStuff();

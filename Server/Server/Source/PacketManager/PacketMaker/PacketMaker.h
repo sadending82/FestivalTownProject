@@ -29,7 +29,7 @@ public:
 	std::vector<uint8_t> MakeMissionCompleteResponsePacket(int result, PlayerPassInfo& playerPassInfo, UserMission& missionState, int reward_item_index, int reward_item_amount);
 	std::vector<uint8_t> MakePassRewardResponsePacket(int result, int pass_index, int pass_type, int reward_level, int reward_item_index, int reward_item_amount);
 	std::vector<uint8_t> MakeBatchReceivePassRewardsResponsePacket(int pass_index, std::vector<ReceivedPassReward>& rewards);
-	std::vector<uint8_t> MakePurchaseGoodsResponsePacket(int result, int item_index, int item_amount, int currency_index, int currency_amount);
+	std::vector<uint8_t> MakePurchaseGoodsResponsePacket(int result, int goods_index, int currency_index, int currency_amount);
 
 	std::vector<uint8_t> MakePlayerAddPacket(std::vector<class Player*>& players);
 	std::vector<uint8_t> MakePlayerDeletePacket (int inGameID);

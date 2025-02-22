@@ -95,9 +95,9 @@ void PacketSender::SendBatchReceivePassRewardsResponsePacket(int sessionID, int 
     mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
 }
 
-void PacketSender::SendPurchaseGoodsResponsePacket(int sessionID, int result, int item_index, int item_amount, int currency_index, int currency_amount)
+void PacketSender::SendPurchaseGoodsResponsePacket(int sessionID, int result, int goods_index, int currency_index, int currency_amount)
 {
-    std::vector<uint8_t> send_buffer = mPacketMaker->MakePurchaseGoodsResponsePacket(result, item_index, item_amount, currency_index, currency_amount);
+    std::vector<uint8_t> send_buffer = mPacketMaker->MakePurchaseGoodsResponsePacket(result, goods_index, currency_index, currency_amount);
     mServer->GetSessions()[sessionID]->DoSend(send_buffer.data(), send_buffer.size());
 }
 

@@ -39,14 +39,14 @@ public:
 
 				// 재화량 확인
 				if (curr_currency < goodsInfo.Price) {
-					pPacketSender->SendPurchaseGoodsResponsePacket(key, false, 0, 0, 0, curr_currency);
+					pPacketSender->SendPurchaseGoodsResponsePacket(key, false, goods_index, goodsInfo.Currency_ID, curr_currency);
 					return;
 				}
 
 				// 재화 소모
 				const ERROR_CODE payResult = db->UpdateUserItemCount(uid, goodsInfo.Currency_ID, -goodsInfo.Price);
 				if (payResult == ERROR_CODE::ER_DB_ERROR || payResult == ERROR_CODE::ER_DB_NO_DATA) {
-					pPacketSender->SendPurchaseGoodsResponsePacket(key, false, 0, 0, 0, curr_currency);
+					pPacketSender->SendPurchaseGoodsResponsePacket(key, false, goods_index, goodsInfo.Currency_ID, curr_currency);
 					return;
 				}
 				playerItems[goodsInfo.Currency_ID].count -= goodsInfo.Price;
@@ -101,7 +101,7 @@ public:
 					curr_currency = playerItems[goodsInfo.Currency_ID].count;
 				}
 
-				pPacketSender->SendPurchaseGoodsResponsePacket(key, result, item_index, item_amount, goodsInfo.Currency_ID, curr_currency);
+				pPacketSender->SendPurchaseGoodsResponsePacket(key, result, goods_index, goodsInfo.Currency_ID, curr_currency);
 
 			}
 		}

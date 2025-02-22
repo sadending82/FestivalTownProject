@@ -238,11 +238,11 @@ std::vector<uint8_t> PacketMaker::MakeBatchReceivePassRewardsResponsePacket(int 
 	return MakeBuffer(ePacketType::S2C_BATCH_RECEIVE_PASS_REWARDS_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }
 
-std::vector<uint8_t> PacketMaker::MakePurchaseGoodsResponsePacket(int result, int item_index, int item_amount, int currency_index, int currency_amount)
+std::vector<uint8_t> PacketMaker::MakePurchaseGoodsResponsePacket(int result, int goods_index, int currency_index, int currency_amount)
 {
 	flatbuffers::FlatBufferBuilder Builder;
 
-	Builder.Finish(PacketTable::ShopTable::CreatePurchaseGoodsResponse(Builder, result, item_index, item_amount, currency_index, currency_amount));
+	Builder.Finish(PacketTable::ShopTable::CreatePurchaseGoodsResponse(Builder, result, goods_index, currency_index, currency_amount));
 
 	return MakeBuffer(ePacketType::S2C_PURCHASE_GOODS_RESPONSE, Builder.GetBufferPointer(), Builder.GetSize());
 }
