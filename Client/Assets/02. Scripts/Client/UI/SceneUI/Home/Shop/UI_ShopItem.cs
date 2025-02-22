@@ -18,6 +18,7 @@ public class UI_ShopItem : UI_Base
     }
 
     int itemIdx = -1;
+    int shopListIdx = -1;
     bool isAlreadyOwned = false;
     bool isPurchased = false;
     bool isInitialzied = false;
@@ -36,11 +37,12 @@ public class UI_ShopItem : UI_Base
         isInitialzied = true;
     }
 
-    public void SetItemData(int itemIdx, int CurrencyType, int CurrencyAmount, bool isAlreadyOwned, bool isPurchased)
+    public void SetItemData(int itemIdx, int shopListIdx, int CurrencyType, int CurrencyAmount, bool isAlreadyOwned, bool isPurchased)
     {
         Managers.Data.ItemDict.TryGetValue(itemIdx, out var itemData);
         if (itemData != null) {
             this.itemIdx = itemIdx;
+            this.shopListIdx = shopListIdx;
             Get<GameObject>((int)GameObjects.ItemName).GetComponent<TMP_Text>().text = itemData.Name;
             Get<GameObject>((int)GameObjects.ItemFrame).GetComponent<Image>().sprite = Util.GetItemBGTexture((Define.ItemGrade)itemData.Item_Grade);
             Get<GameObject>((int)GameObjects.ItemImage).GetComponent<Image>().sprite = Managers.Resource.LoadSprite(itemData.File_Name);
@@ -57,8 +59,8 @@ public class UI_ShopItem : UI_Base
             {
                 if(!isAlreadyOwned && !isPurchased)
                 {
-                    Debug.Log($"Send PurchaseGoodsPacket item index : {itemIdx}");
-                    Managers.Network.GetPacketManager().SendPurchaseGoodsRequestPacket(itemIdx);
+                    Debug.Log($"Send PurchaseGoodsPacket item index : {shopListIdx}");
+                    Managers.Network.GetPacketManager().SendPurchaseGoodsRequestPacket(this.shopListIdx);
                 }
             });
         }

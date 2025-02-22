@@ -38,8 +38,8 @@ public class UI_Shop : UI_Scene
             var ui = Managers.UI.MakeSubItem<UI_ShopItem>(contentTf.GetChild(1));
             ui.Init();
             bool isAlreadOwned = Managers.Data.InventoryDataList.ContainsKey(shopListData.Item);
-            ui.SetItemData(shopListData.Item, shopListData.Currency1_Id, shopListData.Currency1_Price, isAlreadOwned, false);
-            ShopItemDataDict.Add(shopListData.Item, ui);
+            ui.SetItemData(shopListData.Item, i, shopListData.Currency1_Id, shopListData.Currency1_Price, isAlreadOwned, false);
+            ShopItemDataDict.Add(i, ui);
         }
 
         isInitialzied = true;

@@ -6,6 +6,7 @@ using System.Xml;
 using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.EventSystems.EventTrigger;
+using static UnityEngine.Rendering.DebugUI;
 
 
 /// <summary>
@@ -511,6 +512,26 @@ public class DataManager
         if (index == TicketRareIndex) return ResourceIndexType.TicketRare;
 
         return ResourceIndexType.None;
+    }
+
+    public void SetResourceByType(ResourceIndexType type, int value)
+    {
+        if (ResourceIndexType.Gold == type) SetGold(value);
+        if (ResourceIndexType.Diamond == type) SetDiamond(value);
+        if (ResourceIndexType.Mileage == type) SetMileage(value);
+        if (ResourceIndexType.TicketBase == type) SetTicketBase(value);
+        if (ResourceIndexType.TicketRare == type) SetTicketRare(value);
+    }
+
+    public int GetResourceByType(ResourceIndexType type)
+    {
+        if (ResourceIndexType.Gold == type) return GetGold();
+        if (ResourceIndexType.Diamond == type) return GetDiamond();
+        if (ResourceIndexType.Mileage == type) return GetMileage();
+        if (ResourceIndexType.TicketBase == type) return GetTicketBase();
+        if (ResourceIndexType.TicketRare == type) return GetTicketRare();
+
+        return -1;
     }
 
     public bool IsInventoryDataRecved()
