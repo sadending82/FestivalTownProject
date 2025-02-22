@@ -10,12 +10,9 @@ public:
 
 	virtual void Process(const uint8_t* data, const int size, const int key) {
 		try {
-			flatbuffers::Verifier verifier(data, size);
-			if (verifier.VerifyBuffer<HeartBeat>(nullptr)) {
-				const HeartBeat* read = flatbuffers::GetRoot<HeartBeat>(data);
+			const HeartBeat* read = flatbuffers::GetRoot<HeartBeat>(data);
 
-				pServer->GetSessions()[key]->SetIsHeartbeatAck(true);
-			}
+			pServer->GetSessions()[key]->SetIsHeartbeatAck(true);
 		}
 		catch (const std::exception& e) {
 			std::cerr << "[Packet_HeartBeat ERROR] : " << e.what() << " KEY : " << key << std::endl;

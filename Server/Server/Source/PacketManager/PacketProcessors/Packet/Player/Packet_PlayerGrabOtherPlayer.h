@@ -10,46 +10,42 @@ public:
 
 	virtual void Process(const uint8_t* data, const int size, const int key) {
 		try {
-			flatbuffers::Verifier verifier(data, size);
-			if (verifier.VerifyBuffer<PlayerGrabOtherPlayer>(nullptr)) {
-				const PlayerGrabOtherPlayer* read = flatbuffers::GetRoot<PlayerGrabOtherPlayer>(data);
+			const PlayerGrabOtherPlayer* read = flatbuffers::GetRoot<PlayerGrabOtherPlayer>(data);
 
-				Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
-				if (player == nullptr && player->GetInGameID() != read->id()) {
-					return;
-				}
-				int playerID = read->id();
-				int targetID = read->target_id();
+			Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
+			if (player == nullptr && player->GetInGameID() != read->id()) {
+				return;
+			}
+			int playerID = read->id();
+			int targetID = read->target_id();
 
-				int roomID = player->GetRoomID();
-				if (roomID == INVALIDKEY) {
-					return;
-				}
-				Room* room = pServer->GetRooms().at(roomID);
-				if (room == nullptr && (room->GetState() != eRoomState::RS_INGAME)) {
-					return;
-				}
+			int roomID = player->GetRoomID();
+			if (roomID == INVALIDKEY) {
+				return;
+			}
+			Room* room = pServer->GetRooms().at(roomID);
+			if (room == nullptr && (room->GetState() != eRoomState::RS_INGAME)) {
+				return;
+			}
 
-				int target_sessionID = room->GetPlayerList()[read->target_id()].load();
-				if (target_sessionID == INVALIDKEY) {
-					return;
-				}
+			int target_sessionID = room->GetPlayerList()[read->target_id()].load();
+			if (target_sessionID == INVALIDKEY) {
+				return;
+			}
 
-				Player* target = dynamic_cast<Player*>(pServer->GetSessions()[target_sessionID]);
+			Player* target = dynamic_cast<Player*>(pServer->GetSessions()[target_sessionID]);
 
-				if (target->SetIsGrabbed(true) == true) {
+			if (target->SetIsGrabbed(true) == true) {
 
-					player->SetAttachedPlayerID(targetID);
-					target->SetAttachedPlayerID(playerID);
+				player->SetAttachedPlayerID(targetID);
+				target->SetAttachedPlayerID(playerID);
 
 
-					player->SetPosition(read->pos()->x(), read->pos()->y(), read->pos()->z());
-					player->SetDirection(read->direction()->x(), read->direction()->y(), read->direction()->z());
-					std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYER_GRAB_OTHER_PLAYER, data, size);
+				player->SetPosition(read->pos()->x(), read->pos()->y(), read->pos()->z());
+				player->SetDirection(read->direction()->x(), read->direction()->y(), read->direction()->z());
+				std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_PLAYER_GRAB_OTHER_PLAYER, data, size);
 
-					pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
-				}
-				
+				pServer->SendAllPlayerInRoom(send_buffer.data(), send_buffer.size(), roomID);
 			}
 		}
 		catch (const std::exception& e) {

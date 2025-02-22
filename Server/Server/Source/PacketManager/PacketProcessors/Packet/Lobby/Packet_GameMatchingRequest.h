@@ -10,103 +10,98 @@ public:
 
 	virtual void Process(const uint8_t* data, const int size, const int key) {
 		try {
-			flatbuffers::Verifier verifier(data, size);
-			if (verifier.VerifyBuffer<GameMatchingRequest>(nullptr)) {
-				Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
-				if (pServer->GetMode() == SERVER_MODE::LIVE) {
-					if (player->GetIsAuthenticated() == false) {
-						pServer->Disconnect(key);
-						return;
-					}
+			Player* player = dynamic_cast<Player*>(pServer->GetSessions()[key]);
+			if (pServer->GetMode() == SERVER_MODE::LIVE && player->GetIsAuthenticated() == false) {
+				pServer->Disconnect(key);
+				return;
+			}
+
+			const GameMatchingRequest* read = flatbuffers::GetRoot<GameMatchingRequest>(data);
+
+			SERVER_MODE serverMode = pServer->GetMode();
+
+			eMatchingType matchingType = (eMatchingType)read->matching_type();
+
+			MatchMakingManager* MatchMakingManager = pServer->GetMatchMakingManager();
+
+			long long requestTime = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+
+			player->SetMatchingRequestType(matchingType);
+			player->SetMatchingRequestTime(requestTime);
+
+			player->GetSessionStateLock().lock();
+			player->SetSessionState(eSessionState::ST_MATCHWAITING);
+			player->GetSessionStateLock().unlock();
+
+
+			switch (matchingType) {
+			case eMatchingType::FITH_TUTORIAL: {
+
+				int map_code = read->map_code();
+
+				GameMode modeIndex = GameMode::FITH_Tutorial_1;
+				MapProperties testMapProperties;
+
+				if (map_code == 0) {
+					modeIndex = GameMode::FITH_Tutorial_1;
+					testMapProperties = MatchMakingManager->SelectRandomMap(GameMode(modeIndex));
 				}
-
-				const GameMatchingRequest* read = flatbuffers::GetRoot<GameMatchingRequest>(data);
-
-				SERVER_MODE serverMode = pServer->GetMode();
-
-				eMatchingType matchingType = (eMatchingType)read->matching_type();
-
-				MatchMakingManager* MatchMakingManager = pServer->GetMatchMakingManager();
-
-				long long requestTime = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
-
-				player->SetMatchingRequestType(matchingType);
-				player->SetMatchingRequestTime(requestTime);
-
-				player->GetSessionStateLock().lock();
-				player->SetSessionState(eSessionState::ST_MATCHWAITING);
-				player->GetSessionStateLock().unlock();
-
-
-				switch (matchingType) {
-				case eMatchingType::FITH_TUTORIAL: {
-
-					int map_code = read->map_code();
-
-					GameMode modeIndex = GameMode::FITH_Tutorial_1;
-					MapProperties testMapProperties;
-
-					if (map_code == 0) {
-						modeIndex = GameMode::FITH_Tutorial_1;
-						testMapProperties = MatchMakingManager->SelectRandomMap(GameMode(modeIndex));
-					}
-					else {
-						for (auto pair : pServer->GetTableManager()->getMapListByMode()) {
-							for (auto m : pair.second) {
-								if (m == map_code) {
-									modeIndex = pair.first;
-									break;
-								}
-							}
-							if (modeIndex != GameMode::INVALUE_MODE) {
-								modeIndex = GameMode::FITH_Tutorial_1;
-								testMapProperties = MatchMakingManager->SelectRandomMap(GameMode(modeIndex));
+				else {
+					for (auto pair : pServer->GetTableManager()->getMapListByMode()) {
+						for (auto m : pair.second) {
+							if (m == map_code) {
+								modeIndex = pair.first;
 								break;
 							}
 						}
-
-						testMapProperties.Map_Index = map_code;
-						testMapProperties.Map_Theme = 1;
+						if (modeIndex != GameMode::INVALUE_MODE) {
+							modeIndex = GameMode::FITH_Tutorial_1;
+							testMapProperties = MatchMakingManager->SelectRandomMap(GameMode(modeIndex));
+							break;
+						}
 					}
 
-					int roomID = pServer->CreateNewRoom((GameMode)modeIndex, testMapProperties.Map_Index, testMapProperties.Map_Theme);
-
-					if (roomID == INVALIDKEY) {
-						break;
-					}
-
-					Room* room = pServer->GetRooms()[roomID];
-					room->SetIsTestRoom(true);
-
-
-					// ¸Ê Å×½ºÆ® ¶«¿¡ Ãß°¡
-					room->InitMap(pServer->GetTableManager()->GetMapData()[testMapProperties.Map_Index], testMapProperties.Map_Theme);
-
-					int botID = pServer->SetSessionID();
-
-					if (botID == INVALIDKEY) {
-						return;
-					}
-
-					Player* Bot = dynamic_cast<Player*>(pServer->GetSessions()[botID]);
-					Bot->SetSessionState(eSessionState::ST_MATCHWAITING);
-					Bot->SetIsBot(true);
-					Bot->SetUID(INVALIDKEY);
-
-					std::vector<int> sessions = { key, Bot->GetSessionID() };
-					pServer->GetMatchMakingManager()->MatchingComplete(roomID, sessions);
-
-					//std::cout << "MAP: " << testMapProperties.Map_Index << " THEME: "<< testMapProperties.Map_Theme << std::endl;;
-				}break;
-				default:{
-					MatchMakingManager->GetMatchingLock().lock();
-					MatchMakingManager->GetMatchingQueue(matchingType).insert({key, requestTime});
-					MatchMakingManager->GetMatchingLock().unlock();
-
-					std::wcout << L"Nickname: " << player->GetNickName() << L" Matching Request / Match: " << matchingType << L" / wating Player - " << MatchMakingManager->GetMatchingQueue(matchingType).size() << std::endl;;
-
-				}break;
+					testMapProperties.Map_Index = map_code;
+					testMapProperties.Map_Theme = 1;
 				}
+
+				int roomID = pServer->CreateNewRoom((GameMode)modeIndex, testMapProperties.Map_Index, testMapProperties.Map_Theme);
+
+				if (roomID == INVALIDKEY) {
+					break;
+				}
+
+				Room* room = pServer->GetRooms()[roomID];
+				room->SetIsTestRoom(true);
+
+
+				// ¸Ê Å×½ºÆ® ¶«¿¡ Ãß°¡
+				room->InitMap(pServer->GetTableManager()->GetMapData()[testMapProperties.Map_Index], testMapProperties.Map_Theme);
+
+				int botID = pServer->SetSessionID();
+
+				if (botID == INVALIDKEY) {
+					return;
+				}
+
+				Player* Bot = dynamic_cast<Player*>(pServer->GetSessions()[botID]);
+				Bot->SetSessionState(eSessionState::ST_MATCHWAITING);
+				Bot->SetIsBot(true);
+				Bot->SetUID(INVALIDKEY);
+
+				std::vector<int> sessions = { key, Bot->GetSessionID() };
+				pServer->GetMatchMakingManager()->MatchingComplete(roomID, sessions);
+
+				//std::cout << "MAP: " << testMapProperties.Map_Index << " THEME: "<< testMapProperties.Map_Theme << std::endl;;
+			}break;
+			default: {
+				MatchMakingManager->GetMatchingLock().lock();
+				MatchMakingManager->GetMatchingQueue(matchingType).insert({ key, requestTime });
+				MatchMakingManager->GetMatchingLock().unlock();
+
+				std::wcout << L"Nickname: " << player->GetNickName() << L" Matching Request / Match: " << matchingType << L" / wating Player - " << MatchMakingManager->GetMatchingQueue(matchingType).size() << std::endl;;
+
+			}break;
 			}
 		}
 		catch (const std::exception& e) {
