@@ -44,7 +44,7 @@ public:
 			}
 
 
-			std::cout << rewards.size() << std::endl;
+			//std::cout << rewards.size() << std::endl;
 
 			pPacketSender->SendBatchReceivePassRewardsResponsePacket(key, passIndex, rewards);
 
