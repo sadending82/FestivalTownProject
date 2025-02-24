@@ -12,6 +12,7 @@ void Player::Init()
 	mInProgressAchievements.clear();
 
 	IngameInfoInit();
+	mInProgressAchievements.clear();
 	mMissionList.missionList.clear();
 	mPassInfoList.clear();
 	mItems.clear();
