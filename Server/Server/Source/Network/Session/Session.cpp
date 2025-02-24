@@ -42,3 +42,9 @@ void Session::SetAuthenticationKey()
 	int numDigits = log10(millis) + 1;
 	mAuthenticationKey.store((mSessionID + 1) * pow(10, numDigits) + millis);
 }
+
+bool Session::ChangeSessionState(eSessionState expected, eSessionState newState)
+{
+	int expected_int = static_cast<int>(expected);
+	return mSessionState.compare_exchange_strong(expected_int, static_cast<int>(newState));
+}

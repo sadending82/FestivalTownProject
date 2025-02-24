@@ -41,22 +41,21 @@ public:
 			}
 
 			// 플레이어 초기화
-			player->GetPlayerStateLock().lock();
-			player->SetPlayerState(ePlayerState::PS_ALIVE);
-			player->GetPlayerStateLock().unlock();
-			player->SetHP(player->GetCharacterStat().hp);
-			player->SetStamina(player->GetCharacterStat().stamina);
-			
-			player->GetWeaponLock().lock();
-			player->SetWeapon(nullptr);
-			player->GetWeaponLock().unlock();
+			if (player->ChangePlayerState(ePlayerState::PS_DEAD, ePlayerState::PS_ALIVE)) {
+				player->SetHP(player->GetCharacterStat().hp);
+				player->SetStamina(player->GetCharacterStat().stamina);
 
-			player->GetBombLock().lock();
-			player->SetBomb(nullptr);
-			player->GetBombLock().unlock();
+				player->GetWeaponLock().lock();
+				player->SetWeapon(nullptr);
+				player->GetWeaponLock().unlock();
 
-			GameMode gameMode = room->GetGameMode();
-			pServer->GetGameManagers()[gameMode]->PlayerSpawn(room, roomID, player);
+				player->GetBombLock().lock();
+				player->SetBomb(nullptr);
+				player->GetBombLock().unlock();
+
+				GameMode gameMode = room->GetGameMode();
+				pServer->GetGameManagers()[gameMode]->PlayerSpawn(room, roomID, player);
+			}
 
 			//std::cout << player->GetInGameID() << " 부활함\n";
 		}

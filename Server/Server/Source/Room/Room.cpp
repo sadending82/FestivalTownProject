@@ -75,13 +75,9 @@ bool Room::AddPlayer(Player* player)
 			player->SetInGameID(i);
 			player->SetroomID(mRoomID);
 			
-			player->GetSessionStateLock().lock();
 			player->SetSessionState(eSessionState::ST_GAMELOADING);
-			player->GetSessionStateLock().unlock();
 
-			player->GetPlayerStateLock().lock();
 			player->SetPlayerState(ePlayerState::PS_ALIVE);
-			player->GetPlayerStateLock().unlock();
 			mPlayerRecordList[i].Init();
 			mPlayerRecordList[i].team = player->GetTeam();
 
@@ -135,11 +131,9 @@ bool Room::DeleteBomb(int id)
 		}
 		Player* player = dynamic_cast<Player*>(pServer->GetSessions()[mPlayerList[OwnerID].load()]);
 
-		player->GetSessionStateLock().lock();
 		if (player->GetSessionState() == eSessionState::ST_INGAME) {
 			player->SetBomb(nullptr);
 		}
-		player->GetSessionStateLock().unlock();
 	}
 	bomb->SetIsActive(false);
 	return true;
@@ -161,11 +155,9 @@ bool Room::DeleteWeapon(int id)
 
 		Player* player = dynamic_cast<Player*>(pServer->GetSessions()[mPlayerList[OwnerID].load()]);
 
-		player->GetSessionStateLock().lock();
 		if (player->GetSessionState() == eSessionState::ST_INGAME) {
 			player->SetWeapon(nullptr);
 		}
-		player->GetSessionStateLock().unlock();
 	}
 	weapon->SetIsActive(false);
 	return true;
@@ -206,9 +198,7 @@ void Room::ChangeAllPlayerInGame()
 		int id = sID.load();
 		if (id == INVALIDKEY) continue;
 		Player* p = dynamic_cast<Player*>(pServer->GetSessions()[id]);
-		p->GetSessionStateLock().lock();
-		p->SetSessionState(eSessionState::ST_INGAME);
-		p->GetSessionStateLock().unlock();
+		p->ChangeSessionState(eSessionState::ST_GAMELOADING, eSessionState::ST_INGAME);
 	}
 }
 

@@ -32,8 +32,7 @@ public:
 	std::wstring		GetNickName() { return mUserInfo.NickName; }
 	Vector3f& GetPosition() { return mPosition; }
 	Vector3f& GetDirection() { return mDirection; }
-	ePlayerState		GetPlayerState() { return mPlayerState; }
-	std::shared_mutex& GetPlayerStateLock() { return mPlayerStateLock; }
+	ePlayerState		GetPlayerState() { return (ePlayerState)mPlayerState.load(); }
 	eCharacterType		GetCharacterType() { return mCharacterType; }
 	sCharacterCustomizing& GetCharacterCustomizing() { return mUserInfo.characterCustomizing; }
 	int					GetHP() { return mHP; }
@@ -67,7 +66,7 @@ public:
 	void				SetPosition(Vector3f v3f) { mPosition = v3f; }
 	void				SetDirection(float x, float y, float z) { mDirection = Vector3f(x, y, z); }
 	void				SetDirection(Vector3f v3f) { mDirection = v3f; }
-	void				SetPlayerState(ePlayerState state) { mPlayerState = state; }
+	void				SetPlayerState(ePlayerState state) { mPlayerState.store((int)state); }
 	void				SetChacracterType(eCharacterType type) { mCharacterType = type; }
 	void				SetCharacterCustomizing(sCharacterCustomizing& characterCustomizing) { mUserInfo.characterCustomizing = characterCustomizing; }
 	void				SetHP(int hp) { mHP.store(hp); }
@@ -94,17 +93,18 @@ public:
 
 	int					GroggyRecoverTime();
 
+	bool				ChangePlayerState(ePlayerState expected, ePlayerState newState);
+
 	bool				ChangeToGroggyState(class Server* pServer);
 	bool				ChangeToDeadState(class Server* pServer, int spawn_time);
 
 	void				ChangeCharacterType(class Server* pServer, eCharacterType type);
 
 protected:
-	std::shared_mutex	mPlayerStateLock;
 	std::mutex			mBombLock;
 	std::shared_mutex	mWeaponLock;
 
-	ePlayerState		mPlayerState;
+	std::atomic<int>	mPlayerState;
 
 	UserInfo			mUserInfo = UserInfo();
 

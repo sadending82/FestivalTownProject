@@ -24,12 +24,9 @@ public:
 				return;
 			}
 
-			player->GetSessionStateLock().lock();
 			if (player->GetSessionState() != eSessionState::ST_GAMELOADING) {
-				player->GetSessionStateLock().unlock();
 				return;
 			}
-			player->GetSessionStateLock().unlock();
 
 			room->SetIsPlayerReady(player->GetInGameID(), true);
 			pServer->GetLobbyManager()->CheckReadyToGamePlay(room, roomID);

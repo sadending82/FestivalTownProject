@@ -29,10 +29,13 @@ public:
 			player->SetMatchingRequestType(matchingType);
 			player->SetMatchingRequestTime(requestTime);
 
-			player->GetSessionStateLock().lock();
-			player->SetSessionState(eSessionState::ST_MATCHWAITING);
-			player->GetSessionStateLock().unlock();
+			if (player->ChangeSessionState(eSessionState::ST_ACCEPTED, eSessionState::ST_MATCHWAITING)) {
 
+			}
+			else {
+				DEBUGMSGNOPARAM("Error!: Fail Change Session State ST_ACCEPTED To ST_MATCHWAITING");
+				return;
+			}
 
 			switch (matchingType) {
 			case eMatchingType::FITH_TUTORIAL: {
@@ -95,9 +98,8 @@ public:
 				//std::cout << "MAP: " << testMapProperties.Map_Index << " THEME: "<< testMapProperties.Map_Theme << std::endl;;
 			}break;
 			default: {
-				MatchMakingManager->GetMatchingLock().lock();
+				std::lock_guard<std::mutex> lock(MatchMakingManager->GetMatchingLock(matchingType));
 				MatchMakingManager->GetMatchingQueue(matchingType).insert({ key, requestTime });
-				MatchMakingManager->GetMatchingLock().unlock();
 
 				std::wcout << L"Nickname: " << player->GetNickName() << L" Matching Request / Match: " << matchingType << L" / wating Player - " << MatchMakingManager->GetMatchingQueue(matchingType).size() << std::endl;;
 

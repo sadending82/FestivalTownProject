@@ -78,14 +78,10 @@ int Server::SetSessionID()
     for (int i = STARTKEY; i < MAXUSER; ++i) {
         auto session = GetSessions()[i];
         if (session == nullptr) continue;
-        session->GetSessionStateLock().lock();
-        if (eSessionState::ST_FREE == session->GetSessionState()) {
+        if (session->ChangeSessionState(eSessionState::ST_FREE, eSessionState::ST_ACCEPTED)) {
             session->SetSessionID(i);
-            session->SetSessionState(eSessionState::ST_ACCEPTED);
-            session->GetSessionStateLock().unlock();
             return i;
         }
-        session->GetSessionStateLock().unlock();
     }
     DEBUGMSGNOPARAM("Set Session ID Error\n");
     return INVALIDKEY;
@@ -96,14 +92,10 @@ int Server::SetBotID()
     for (int i = STARTBOTKEY; i < MAXSESSION; ++i) {
         auto session = GetSessions()[i];
         if (session == nullptr) continue;
-        session->GetSessionStateLock().lock();
-        if (eSessionState::ST_FREE == session->GetSessionState()) {
+        if (session->ChangeSessionState(eSessionState::ST_FREE, eSessionState::ST_ACCEPTED)) {
             session->SetSessionID(i);
-            session->SetSessionState(eSessionState::ST_ACCEPTED);
-            session->GetSessionStateLock().unlock();
             return i;
         }
-        session->GetSessionStateLock().unlock();
     }
     DEBUGMSGNOPARAM("Set Bot ID Error\n");
     return INVALIDKEY;
@@ -131,19 +123,15 @@ bool Server::Disconnect(int key)
 {
     Player* player = dynamic_cast<Player*>(GetSessions()[key]);
 
-    player->GetSessionStateLock().lock();
-    eSessionState sessionState = player->GetSessionState();
-    player->GetSessionStateLock().unlock();
-
-    switch (sessionState) {
+    switch (player->GetSessionState()) {
     case eSessionState::ST_FREE: {
         return false;
     }
     break;
     case eSessionState::ST_MATCHWAITING: {
-        mMatchMakingManager->GetMatchingLock().lock();
-
         eMatchingType matchingType = player->GetMatchingRequestType();
+
+        std::lock_guard<std::mutex> lock(mMatchMakingManager->GetMatchingLock(matchingType));
 
         MATCHING_QUEUE& matchingQueue = mMatchMakingManager->GetMatchingQueue(player->GetMatchingRequestType());
 
@@ -160,7 +148,6 @@ bool Server::Disconnect(int key)
 
         player->SetMatchingRequestTime(0);
 
-        mMatchMakingManager->GetMatchingLock().unlock();
     }
     break;
 

@@ -84,7 +84,6 @@ bool FITH::CheckGameEnd(int roomID)
 
                 Player* player = dynamic_cast<Player*>(pServer->GetSessions()[session_id]);
 
-                player->GetSessionStateLock().lock();
                 if (player->GetIsBot() == true) {
                     player->IngameInfoInit();
                     player->SetIsBot(false);
@@ -92,11 +91,10 @@ bool FITH::CheckGameEnd(int roomID)
                 }
                 else {
                     player->IngameInfoInit();
-                    if (player->GetSessionState() == eSessionState::ST_INGAME) {
-                        player->SetSessionState(eSessionState::ST_ACCEPTED);
+                    if (player->ChangeSessionState(eSessionState::ST_INGAME, eSessionState::ST_ACCEPTED)) {
+                        
                     }
                 }
-                player->GetSessionStateLock().unlock();
             }
             room->Reset();
 
@@ -135,18 +133,16 @@ bool FITH::TimeoverGameEnd(int roomID)
             int session_id = sID.load();
             if (session_id == INVALIDKEY) continue;
             Player* player = dynamic_cast<Player*>(pServer->GetSessions()[session_id]);
-            player->GetSessionStateLock().lock();
             if (player->GetIsBot() == true) {
                 player->IngameInfoInit();
                 player->SetSessionState(eSessionState::ST_FREE);
             }
             else {
                 player->IngameInfoInit();
-                if (player->GetSessionState() == eSessionState::ST_INGAME) {
-                    player->SetSessionState(eSessionState::ST_ACCEPTED);
+                if (player->ChangeSessionState(eSessionState::ST_INGAME, eSessionState::ST_ACCEPTED)) {
+
                 }
             }
-            player->GetSessionStateLock().unlock();
         }
         room->Reset();
 
@@ -764,13 +760,10 @@ bool FITH::PlayerDamagedFromOther(int roomID, Room* room, int attackerID, Player
         return false;
     }
 
-    target->GetPlayerStateLock().lock();
     // 살아있는지 확인
     if (target->GetPlayerState() != ePlayerState::PS_ALIVE) {
-        target->GetPlayerStateLock().unlock();
         return false;
     }
-    target->GetPlayerStateLock().unlock();
 
     // 데미지 계산
     damageAmount += attackerStat.strength * attackerStat.attackStats.at(damageType).Value;
@@ -826,13 +819,10 @@ bool FITH::PlayerDamagedFromBomb(int roomID, Room* room, int targetID, Player* t
 {
     sPlayerGameRecord& targetGameRecord = room->GetPlayerRecordList().at(targetID);
 
-    target->GetPlayerStateLock().lock();
     // 살아있는지 확인
     if (target->GetPlayerState() != ePlayerState::PS_ALIVE) {
-        target->GetPlayerStateLock().unlock();
         return false;
     }
-    target->GetPlayerStateLock().unlock();
 
 
     int damageAmount = room->GetGameModeData().Bomb_Damage;

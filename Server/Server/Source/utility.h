@@ -162,17 +162,6 @@ struct Trie {
 		}
 	}
 
-	Trie* Find(const wchar_t* string) {
-		if (*string == L'\0') {
-			return this;
-		}
-		wchar_t curr = *string;
-		if (next.find(curr) == next.end()) {
-			return NULL;
-		}
-		return next[curr]->Find(string + 1);
-	}
-
 	bool Search(const std::wstring& string) {
 		for (int i = 0; i < string.size(); ++i) {
 			Trie* node = this;

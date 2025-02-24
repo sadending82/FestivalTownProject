@@ -18,41 +18,39 @@ public:
 
 			const GameMatchingCancel* read = flatbuffers::GetRoot<GameMatchingCancel>(data);
 
-			MatchMakingManager* MatchMakingManager = pServer->GetMatchMakingManager();
-
-			MatchMakingManager->GetMatchingLock().lock();
-
 			eMatchingType matchingType = player->GetMatchingRequestType();
 
-			MATCHING_QUEUE& matchingQueue = MatchMakingManager->GetMatchingQueue(matchingType);
+			MatchMakingManager* MatchMakingManager = pServer->GetMatchMakingManager();
 
-			if (matchingQueue.empty() == true) {
-				MatchMakingManager->GetMatchingLock().unlock();
-				return;
+			{
+				std::lock_guard<std::mutex> lock(MatchMakingManager->GetMatchingLock(matchingType));
+
+				MATCHING_QUEUE& matchingQueue = MatchMakingManager->GetMatchingQueue(matchingType);
+
+				if (matchingQueue.empty() == true) {
+					return;
+				}
+
+				int top_ID = matchingQueue.begin()->first;
+				long long top_requestTime = matchingQueue.begin()->second;
+
+				matchingQueue.erase({ key, player->GetMatchingRequestTime() });
+
+				// 최장 대기 유저가 매칭 취소 시 그 다음 최장 대기 유저 기준으로 매칭 시퀀스 갱신
+				if (top_ID == key && player->GetMatchingRequestTime() == top_requestTime) {
+					MatchMakingManager->SetMatchingSequence(matchingType, eMatchingSequence::MS_None);
+					MatchMakingManager->UpdateMatchingSequence(matchingType);
+				}
+
+				player->SetMatchingRequestTime(0);
+
+				std::wcout << L"Nickname: " << player->GetNickName() << L" Matching Cancel / Match: " << matchingType << L" / wating Player - " << MatchMakingManager->GetMatchingQueue(matchingType).size() << std::endl;
+
 			}
 
-			int top_ID = matchingQueue.begin()->first;
-			long long top_requestTime = matchingQueue.begin()->second;
-
-			matchingQueue.erase({ key, player->GetMatchingRequestTime() });
-
-			// 최장 대기 유저가 매칭 취소 시 그 다음 최장 대기 유저 기준으로 매칭 시퀀스 갱신
-			if (top_ID == key && player->GetMatchingRequestTime() == top_requestTime) {
-				MatchMakingManager->SetMatchingSequence(matchingType, eMatchingSequence::MS_None);
-				MatchMakingManager->UpdateMatchingSequence(matchingType);
+			if (player->ChangeSessionState(eSessionState::ST_MATCHWAITING, eSessionState::ST_ACCEPTED) == false) {
+				DEBUGMSGNOPARAM("Error!: Fail Change Session State ST_MATCHWAITING To ST_ACCEPTED");
 			}
-
-			player->SetMatchingRequestTime(0);
-
-			std::wcout << L"Nickname: " << player->GetNickName() << L" Matching Cancel / Match: " << matchingType << L" / wating Player - " << MatchMakingManager->GetMatchingQueue(matchingType).size() << std::endl;
-
-			MatchMakingManager->GetMatchingLock().unlock();
-
-			player->GetSessionStateLock().lock();
-			if (player->GetSessionState() == eSessionState::ST_MATCHWAITING) {
-				player->SetSessionState(eSessionState::ST_ACCEPTED);
-			}
-			player->GetSessionStateLock().unlock();
 
 			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_MATCHING_CANCEL, data, size);
 			player->DoSend(send_buffer.data(), send_buffer.size());

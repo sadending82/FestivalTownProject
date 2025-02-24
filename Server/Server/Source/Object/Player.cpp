@@ -64,15 +64,18 @@ int Player::GroggyRecoverTime()
 	//return 20;
 }
 
+bool Player::ChangePlayerState(ePlayerState expected, ePlayerState newState)
+{
+	int expected_int = static_cast<int>(expected);
+	return mPlayerState.compare_exchange_strong(expected_int, static_cast<int>(newState));
+}
+
 bool Player::ChangeToGroggyState(Server* pServer)
 {
-	mPlayerStateLock.lock();
-	if (mPlayerState == ePlayerState::PS_GROGGY) {
-		mPlayerStateLock.unlock();
+	if (ChangePlayerState(ePlayerState::PS_ALIVE, ePlayerState::PS_GROGGY) == false) {
 		return false;
 	}
 
-	mPlayerState = ePlayerState::PS_GROGGY;
 	mGroggyCount++;
 
 	pServer->GetPacketSender()->SendPlayerGroggyPacket(mInGameID, mRoomID, mHP);
@@ -116,22 +119,17 @@ bool Player::ChangeToGroggyState(Server* pServer)
 		}
 	}
 
-	mPlayerStateLock.unlock();
-
 	return true;
 }
 
 bool Player::ChangeToDeadState(Server* pServer, int spawn_time)
 {
-	mPlayerStateLock.lock();
-	if (mPlayerState == ePlayerState::PS_DEAD) {
-		mPlayerStateLock.unlock();
+	if (ChangePlayerState(ePlayerState::PS_ALIVE, ePlayerState::PS_DEAD) == false) {
 		return false;
 	}
 
 	mIsGrabbed.store(false);
 	mAttachedPlayerID = INVALIDKEY;
-	mPlayerState = ePlayerState::PS_DEAD;
 
 	pServer->GetPacketSender()->SendPlayerDeadPacket(mInGameID, mRoomID, spawn_time);
 
@@ -159,7 +157,6 @@ bool Player::ChangeToDeadState(Server* pServer, int spawn_time)
 	}
 	mBombLock.unlock();
 
-	mPlayerStateLock.unlock();
 	return true;
 }
 

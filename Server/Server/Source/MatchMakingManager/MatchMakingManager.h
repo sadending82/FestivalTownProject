@@ -34,7 +34,7 @@ public:
 
 	void RunMatchingThreadWorker();
 
-	std::mutex& GetMatchingLock() { return mMatchingLock; }
+	std::mutex& GetMatchingLock(eMatchingType type);
 	MATCHING_QUEUE& GetMatchingQueue(eMatchingType type) { return mMatchingQueue[type]; }
 
 	int GetMatchingSequence(eMatchingType type) { return mMatchingSequence[type]; }
@@ -55,6 +55,8 @@ private:
 	// 매치메이킹 작업은 무조건 한 스레드에서만 할 것
 	// 멤버 함수 사용, 멤버 변수 읽기/쓰기 작업시 무조건 Lock 사용
 	std::mutex	mMatchingLock;
+	std::mutex	mMatchingLock_FITH_SOLO;
+	std::mutex	mMatchingLock_FITH_TEAM;
 
 
 	MATCHING_QUEUE_MAP mMatchingQueue;

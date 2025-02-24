@@ -34,13 +34,13 @@ public:
 
 			long long roomCode = room->GetRoomCode();
 
-			target->GetPlayerStateLock().lock_shared();
 			ePlayerState playerState = target->GetPlayerState();
-			target->GetPlayerStateLock().unlock_shared();
 
 			sPlayerGameRecord& targetGameRecord = room->GetPlayerRecordList().at(targetID);
 
-			if (playerState == ePlayerState::PS_ALIVE) {
+			switch (target->GetPlayerState()) {
+
+			case ePlayerState::PS_ALIVE: {
 				// 블록 충돌 데미지 계산
 				int blockHitDamage = room->GetGameModeData().Block_Hit;
 				target->ReduceHP(blockHitDamage);
@@ -60,8 +60,8 @@ public:
 						//std::cout << targetID << " 블록맞고 그로기\n";
 					}
 				}
-			}
-			else if (playerState == ePlayerState::PS_GROGGY) {
+			}break;
+			case ePlayerState::PS_GROGGY: {
 				int spawnTime = room->GetGameModeData().Player_Spawn_Time;
 				// 죽임
 				if (target->ChangeToDeadState(pServer, spawnTime)) {
@@ -69,6 +69,7 @@ public:
 					PushEventPlayerRespawn(pServer->GetTimer(), targetID, roomID, roomCode, spawnTime);
 					//std::cout << targetID << " 블록맞고 사망\n";
 				}
+			}break;
 			}
 		}
 		catch (const std::exception& e) {

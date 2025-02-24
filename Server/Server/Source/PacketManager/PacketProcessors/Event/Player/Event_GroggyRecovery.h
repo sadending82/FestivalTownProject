@@ -40,36 +40,37 @@ public:
 				return;
 			}
 
-			// 잡혀있으면 풀어줌
-			if (player->SetIsGrabbed(false) == true) {
-				int grabberID = player->GetAttachedPlayerID();
 
-				int grabber_sessionID = room->GetPlayerList()[grabberID].load();
-				if (grabber_sessionID == INVALIDKEY) {
-					return;
+			if (player->ChangePlayerState(ePlayerState::PS_GROGGY, ePlayerState::PS_ALIVE)) {
+
+				// 잡혀있으면 풀어줌
+				if (player->SetIsGrabbed(false) == true) {
+					int grabberID = player->GetAttachedPlayerID();
+
+					int grabber_sessionID = room->GetPlayerList()[grabberID].load();
+					if (grabber_sessionID == INVALIDKEY) {
+						return;
+					}
+
+					Player* grabber = player = dynamic_cast<Player*>(pServer->GetSessions()[grabber_sessionID]);
+
+					player->SetAttachedPlayerID(INVALIDKEY);
+					grabber->SetAttachedPlayerID(INVALIDKEY);
+
+					pPacketSender->SendPlayerThrowOtherPlayerPacket(roomID, grabberID, grabber->GetPosition(), grabber->GetDirection()
+						, playerid, player->GetPosition(), player->GetDirection());
 				}
 
-				Player* grabber = player = dynamic_cast<Player*>(pServer->GetSessions()[grabber_sessionID]);
 
-				player->SetAttachedPlayerID(INVALIDKEY);
-				grabber->SetAttachedPlayerID(INVALIDKEY);
+				// 스테미나 회복
+				CharacterStat& characterStat = player->GetCharacterStat();
 
-				pPacketSender->SendPlayerThrowOtherPlayerPacket(roomID, grabberID, grabber->GetPosition(), grabber->GetDirection()
-					, playerid, player->GetPosition(), player->GetDirection());
+				int staminaRecoveryValue = characterStat.stamina;
+
+				player->SetStamina(characterStat.stamina);
+
+				pPacketSender->SendPlayerGroggyRecoveryPacket(playerid, roomID, staminaRecoveryValue);
 			}
-
-
-			// 스테미나 회복
-			CharacterStat& characterStat = player->GetCharacterStat();
-
-			int staminaRecoveryValue = characterStat.stamina;
-
-			player->SetStamina(characterStat.stamina);
-			player->GetPlayerStateLock().lock();
-			player->SetPlayerState(ePlayerState::PS_ALIVE);
-			player->GetPlayerStateLock().unlock();
-			
-			pPacketSender->SendPlayerGroggyRecoveryPacket(playerid, roomID, staminaRecoveryValue);
 
 		}
 		catch (const std::exception& e) {
