@@ -785,19 +785,19 @@ sCharacterCustomizing DB::SelectCharacterCustomizing(const int uid)
 		sCharacterCustomizing sCustomizingData;
 		while (SQLFetch(hStmt) == SQL_SUCCESS) {
 			
-			SQLGetData(hStmt, (int)UserCustomizing_Field::skin, SQL_C_LONG, &sCustomizingData.customizingItems[CustomizingItemType::CI_SKIN].itemCode, sizeof(int), NULL);
+			SQLGetData(hStmt, 1, SQL_C_LONG, &sCustomizingData.customizingItems[CustomizingItemType::CI_SKIN].itemCode, sizeof(int), NULL);
 			sCustomizingData.customizingItems[CustomizingItemType::CI_SKIN].itemType = CustomizingItemType::CI_SKIN;
 
-			SQLGetData(hStmt, (int)UserCustomizing_Field::head, SQL_C_LONG, &sCustomizingData.customizingItems[CustomizingItemType::CI_HEAD].itemCode, sizeof(int), NULL);
+			SQLGetData(hStmt, 2, SQL_C_LONG, &sCustomizingData.customizingItems[CustomizingItemType::CI_HEAD].itemCode, sizeof(int), NULL);
 			sCustomizingData.customizingItems[CustomizingItemType::CI_HEAD].itemType = CustomizingItemType::CI_HEAD;
 
-			SQLGetData(hStmt, (int)UserCustomizing_Field::face, SQL_C_LONG, &sCustomizingData.customizingItems[CustomizingItemType::CI_FACE].itemCode, sizeof(int), NULL);
+			SQLGetData(hStmt, 3, SQL_C_LONG, &sCustomizingData.customizingItems[CustomizingItemType::CI_FACE].itemCode, sizeof(int), NULL);
 			sCustomizingData.customizingItems[CustomizingItemType::CI_FACE].itemType = CustomizingItemType::CI_FACE;
 
-			SQLGetData(hStmt, (int)UserCustomizing_Field::back, SQL_C_LONG, &sCustomizingData.customizingItems[CustomizingItemType::CI_BACK].itemCode, sizeof(int), NULL);
+			SQLGetData(hStmt, 4, SQL_C_LONG, &sCustomizingData.customizingItems[CustomizingItemType::CI_BACK].itemCode, sizeof(int), NULL);
 			sCustomizingData.customizingItems[CustomizingItemType::CI_BACK].itemType = CustomizingItemType::CI_BACK;
 
-			SQLGetData(hStmt, (int)UserCustomizing_Field::emotion, SQL_C_LONG, &sCustomizingData.customizingItems[CustomizingItemType::CI_EMO].itemCode, sizeof(int), NULL);
+			SQLGetData(hStmt, 5, SQL_C_LONG, &sCustomizingData.customizingItems[CustomizingItemType::CI_EMO].itemCode, sizeof(int), NULL);
 			sCustomizingData.customizingItems[CustomizingItemType::CI_EMO].itemType = CustomizingItemType::CI_EMO;
 
 		}

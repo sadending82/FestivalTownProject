@@ -43,7 +43,7 @@ namespace Network.PacketProcessor
                         itemData.ItemCode = item_Code;
                         itemData.Type = item_Type;
 
-                        Debug.Log($"Item Type : {itemData.Type}, ItemCode : {item_Code}");
+                        Debug.Log($"characterCustomizing Item Type : {itemData.Type}, ItemCode : {item_Code}");
 
                         Managers.Data.PlayerCustomizingData[item_Type] = itemData;
                     }
