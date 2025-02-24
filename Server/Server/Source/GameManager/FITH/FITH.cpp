@@ -91,9 +91,7 @@ bool FITH::CheckGameEnd(int roomID)
                 }
                 else {
                     player->IngameInfoInit();
-                    if (player->ChangeSessionState(eSessionState::ST_INGAME, eSessionState::ST_ACCEPTED)) {
-                        
-                    }
+                    player->SetSessionState(eSessionState::ST_ACCEPTED);
                 }
             }
             room->Reset();
@@ -139,11 +137,10 @@ bool FITH::TimeoverGameEnd(int roomID)
             }
             else {
                 player->IngameInfoInit();
-                if (player->ChangeSessionState(eSessionState::ST_INGAME, eSessionState::ST_ACCEPTED)) {
-
-                }
+                player->SetSessionState(eSessionState::ST_ACCEPTED);
             }
         }
+
         room->Reset();
 
         //std::cout << "Game End - " << roomID << std::endl;

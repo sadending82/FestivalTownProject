@@ -49,7 +49,7 @@ public:
 			}
 
 			if (player->ChangeSessionState(eSessionState::ST_MATCHWAITING, eSessionState::ST_ACCEPTED) == false) {
-				DEBUGMSGNOPARAM("Error!: Fail Change Session State ST_MATCHWAITING To ST_ACCEPTED");
+				DEBUGMSGNOPARAM("Error!: Fail Change Session State ST_MATCHWAITING To ST_ACCEPTED\n");
 			}
 
 			std::vector<uint8_t> send_buffer = MakeBuffer(ePacketType::S2C_MATCHING_CANCEL, data, size);

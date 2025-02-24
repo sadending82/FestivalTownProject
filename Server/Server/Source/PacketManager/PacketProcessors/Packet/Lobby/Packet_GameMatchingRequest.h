@@ -28,14 +28,7 @@ public:
 
 			player->SetMatchingRequestType(matchingType);
 			player->SetMatchingRequestTime(requestTime);
-
-			if (player->ChangeSessionState(eSessionState::ST_ACCEPTED, eSessionState::ST_MATCHWAITING)) {
-
-			}
-			else {
-				DEBUGMSGNOPARAM("Error!: Fail Change Session State ST_ACCEPTED To ST_MATCHWAITING");
-				return;
-			}
+			player->SetSessionState(eSessionState::ST_MATCHWAITING);
 
 			switch (matchingType) {
 			case eMatchingType::FITH_TUTORIAL: {
