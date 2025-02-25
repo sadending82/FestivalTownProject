@@ -54,6 +54,24 @@ namespace Network.PacketProcessor
 
                 var mdUi = MissionUI.ChangeMissionData(mission_index, Managers.Data.PassMissionDataDict[mission_index].Required_Count, true);
                 MissionUI.SetRecentPosition(mdUi);
+
+                switch (Managers.Data.GetResourceIndexType(reward_item_index))
+                {
+                    case DataManager.ResourceIndexType.Gold:
+                        int currGold = Managers.Data.GetGold();
+                        Managers.Data.SetGold(currGold + reward_item_amount);
+                        break;
+                    case DataManager.ResourceIndexType.Diamond:
+                        int currDiamond = Managers.Data.GetDiamond();
+                        Managers.Data.SetDiamond(currDiamond + reward_item_amount);
+                        break;
+                    case DataManager.ResourceIndexType.Mileage:
+                        int currMileage = Managers.Data.GetMileage();
+                        Managers.Data.SetMileage(currMileage + reward_item_amount);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }
