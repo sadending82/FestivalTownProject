@@ -27,7 +27,6 @@ public:
 
 			Shop_Goods& goodsInfo = tableManager->GetShopGoodsList()[goods_index];
 			bool result = false;
-			int curr_currency = player->GetItems()[goodsInfo.Currency_ID].count;
 
 			switch (goodsInfo.Category_Index) {
 			case 403: {
@@ -39,7 +38,7 @@ public:
 			}break;
 			}
 
-
+			int curr_currency = player->GetItems()[goodsInfo.Currency_ID].count;
 			pPacketSender->SendPurchaseGoodsResponsePacket(key, result, goods_index, goodsInfo.Currency_ID, curr_currency);
 		}
 		catch (const std::exception& e) {
