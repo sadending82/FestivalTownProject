@@ -2,6 +2,7 @@
 #include "../protocol.h"
 #include "../utility.h"
 #include "../DB/Schema/Schemas.h"
+#include "../TableManager/Tables/Tables.h"
 #include <unordered_map>
 #include <set>
 
@@ -37,7 +38,9 @@ public:
 
 	bool GivePassReward(class Player* player, int pass_index, int pass_type, int level);
 
-	void ShopGoodsListRefresh(int category_index);
+	bool PurchaseShopGoods(class Player* player, Shop_Goods& goodsInfo, int goods_index);
+
+	bool PurchasePass(class Player* player, Shop_Goods& goodsInfo, int goods_index);
 	
 private:
 

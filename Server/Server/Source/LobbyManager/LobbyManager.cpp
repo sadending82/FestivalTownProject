@@ -668,20 +668,128 @@ bool LobbyManager::GivePassReward(Player* player, int pass_index, int pass_type,
 	return false;
 }
 
-void LobbyManager::ShopGoodsListRefresh(int category_index)
+bool LobbyManager::PurchaseShopGoods(Player* player, Shop_Goods& goodsInfo, int goods_index)
 {
-	Shop_Categoty& shopCategory = pTableManager->GetShopCategoryList()[category_index];
-	int numGoods = shopCategory.Number_Goods;
+	int uid = player->GetUID();
+	DB* db = pServer->GetDB();
 
-	std::vector<int> goodsIndex;
+	std::unordered_map<int, UserItem>& playerItems = player->GetItems();
+	int item_index = goodsInfo.Item;
+	int item_amount = goodsInfo.Item_Amount;
+	ItemType item_type = pServer->GetTableManager()->GetItemInfos()[item_index].Item_Type;
 
-	for (const auto& goods : shopCategory.goods) {
-		goodsIndex.push_back(goods.second.index);
+	bool result = false;
+	int curr_currency = playerItems[goodsInfo.Currency_ID].count;
+
+	// 재화량 확인
+	if (curr_currency < goodsInfo.Price) {
+		return false;
 	}
 
-	std::random_device rd;
-	std::mt19937 gen(rd());
-	std::shuffle(goodsIndex.begin(), goodsIndex.end(), gen);
+	// 재화 소모
+	const ERROR_CODE payResult = db->UpdateUserItemCount(uid, goodsInfo.Currency_ID, -goodsInfo.Price);
+	if (payResult == ERROR_CODE::ER_DB_ERROR || payResult == ERROR_CODE::ER_DB_NO_DATA) {
+		return false;
+	}
+	playerItems[goodsInfo.Currency_ID].count -= goodsInfo.Price;
+	curr_currency = playerItems[goodsInfo.Currency_ID].count;
 
+	const ERROR_CODE insertReceiptResult = db->InsertReceipt(uid, goods_index);
+
+	// 아이템 지급
+	switch (item_type) {
+	case ItemType::Money: {
+		const ERROR_CODE upsertResult = db->UpsertUserItemCount(uid, item_index, item_amount);
+		if (upsertResult == ERROR_CODE::ER_DB_ERROR) {
+			result = false;
+		}
+		else {
+			result = true;
+		}
+	}break;
+	case ItemType::Skin:
+	case ItemType::Emotion:
+	case ItemType::Accessory_Back:
+	case ItemType::Accessory_Face:
+	case ItemType::Accessory_Head: {
+		int currItemCount = player->GetItems().count(item_index);
+		// 보유한 아이템이 아닌 경우
+		if (currItemCount == 0) {
+			const ERROR_CODE insertResult = db->InsertUserItem(uid, item_index, item_amount, (int)item_type);
+			if (insertResult == ERROR_CODE::ER_DB_ERROR) {
+				result = false;
+			}
+			else {
+				result = true;
+			}
+		}
+	}break;
+	default: {
+
+	}break;
+	}
+
+	// 구매 성공
+	if (result == true) {
+		playerItems[item_index].owner_UID = uid;
+		playerItems[item_index].itemCode = item_index;
+		playerItems[item_index].itemType = (int)item_type;
+		playerItems[item_index].count = item_amount;
+
+		return true;
+	}
+	// 구매 실패
+	else {
+		db->UpdateUserItemCount(uid, goodsInfo.Currency_ID, goodsInfo.Price);
+		playerItems[goodsInfo.Currency_ID].count += goodsInfo.Price;
+		curr_currency = playerItems[goodsInfo.Currency_ID].count;
+
+		return false;
+	}
+}
+
+
+bool LobbyManager::PurchasePass(Player* player, Shop_Goods& goodsInfo, int goods_index)
+{
+	int uid = player->GetUID();
+	DB* db = pServer->GetDB();
+
+	int pass_index = goodsInfo.Item;
+
+	std::unordered_map<int, UserItem>& playerItems = player->GetItems();
+	UserPass& passState = player->GetPassInfo()[pass_index].passState;
+	int curr_currency = playerItems[goodsInfo.Currency_ID].count;
+
+	// 패스 등급 확인
+	if (passState.passType == ePassType::PT_PREMIUM) {
+		return false;
+	}
+
+	// 재화량 확인
+	if (curr_currency < goodsInfo.Price) {
+		return false;
+	}
+
+	// 재화 소모
+	const ERROR_CODE payResult = db->UpdateUserItemCount(uid, goodsInfo.Currency_ID, -goodsInfo.Price);
+	if (payResult == ERROR_CODE::ER_DB_ERROR || payResult == ERROR_CODE::ER_DB_NO_DATA) {
+		return false;
+	}
+	playerItems[goodsInfo.Currency_ID].count -= goodsInfo.Price;
+	curr_currency = playerItems[goodsInfo.Currency_ID].count;
+
+	const ERROR_CODE insertReceiptResult = db->InsertReceipt(uid, goods_index);
+
+	// 패스 업그레이드
+	passState.passType = ePassType::PT_PREMIUM;
+
+	ERROR_CODE updatePassResult = pDB->UpsertUserPass(uid, passState);
+
+	if (updatePassResult != ERROR_CODE::ER_NONE) {
+		return false;
+	} 
+	else {
+		return true;
+	}
 
 }
