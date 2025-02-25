@@ -38,6 +38,18 @@ public class UI_Present : UI_Scene
             ReturnToHomeScene();
         }, Define.UIEvent.Click, true, true);
 
+        Get<GameObject>((int)GameObjects.MileageShop).BindEvent((PointerEventData) =>
+        {
+            if(Managers.UI.GetCurrentSceneUI().GetComponent<UI_Present>() != null)
+            {
+                Managers.UI.CloseAllPopUpUI();
+                Managers.UI.CloseSceneUI();
+                Managers.UI.ShowSceneUI<UI_Shop>();
+                var popUpUi = Managers.UI.ShowPopUpUI<UI_HomeScene>();
+                popUpUi.Init();
+            }
+        });
+
         isInitialized = true;
     }
 
