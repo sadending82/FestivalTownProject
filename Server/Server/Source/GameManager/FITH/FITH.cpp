@@ -333,12 +333,19 @@ void FITH::CalculateGameResult(int roomID, std::set<int>& winningTeams)
             if (record.rewards[i].index == 0) {
                 continue;
             }
-            rewardList.push_back(UserItem(uid, record.rewards[i].index, record.rewards[i].value));
-            pDB->UpsertUserCurrencyRecord(uid, record.rewards[i].index, record.rewards[i].value, 0);
+
+            const int itemIndex = record.rewards[i].index;
+            const int itemAmount = record.rewards[i].value;
+            rewardList.push_back(UserItem(uid, itemIndex, itemAmount));
+            pDB->UpsertUserCurrencyRecord(uid, itemIndex, itemAmount, 0);
+
+            const int itemType = (int)pTableManager->GetItemInfos()[itemIndex].Item_Type;
+
+            player->GetItems()[record.rewards[i].index].itemCode = itemIndex;
+            player->GetItems()[record.rewards[i].index].count += itemAmount;
+            player->GetItems()[record.rewards[i].index].itemType = itemType;
         }
         pDB->UpsertUserCurrency(uid, rewardList);
-
-        
 
         UpdateMissionbyGameRecord(player, record);
     }
