@@ -1669,6 +1669,47 @@ ERROR_CODE DB::UpsertUserPass(const int uid, UserPass& passInfo)
 	return ERROR_CODE::ER_DB_ERROR;
 }
 
+ERROR_CODE DB::UpsertUserCurrencyRecord(const int uid, const int item_index, const int produced_add_value, const int consumed_add_value)
+{
+	if (uid == 0 || uid == INVALIDKEY) {
+		return ERROR_CODE::ER_DB_ERROR;
+	}
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGONEPARAM("hStmt Error %d : (UpsertUserCurrencyRecord) \n", retcode); ErrorDisplay(hStmt);
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
+		return ERROR_CODE::ER_DB_ERROR;
+	}
+
+
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.UpsertUserCurrencyRecord(?, ?, ?, ?)}", SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (SQLPOINTER)(&uid), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (SQLPOINTER)(&item_index), 0, NULL);
+	SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (SQLPOINTER)(&produced_add_value), 0, NULL);
+	SQLBindParameter(hStmt, 4, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (SQLPOINTER)(&consumed_add_value), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
+		return ERROR_CODE::ER_NONE;
+	}
+
+	DEBUGMSGONEPARAM("Execute Query Error %d : (UpsertUserCurrencyRecord)\n", retcode); ErrorDisplay(hStmt);
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
+	return ERROR_CODE::ER_DB_ERROR;
+}
+
 
 bool DB::UpdateUserAttendanceIsRewarded(const int uid, const int eventCode, const int dayCount, const int updateValue)
 {

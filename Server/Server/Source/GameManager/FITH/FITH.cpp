@@ -334,8 +334,11 @@ void FITH::CalculateGameResult(int roomID, std::set<int>& winningTeams)
                 continue;
             }
             rewardList.push_back(UserItem(uid, record.rewards[i].index, record.rewards[i].value));
+            pDB->UpsertUserCurrencyRecord(uid, record.rewards[i].index, record.rewards[i].value, 0);
         }
         pDB->UpsertUserCurrency(uid, rewardList);
+
+        
 
         UpdateMissionbyGameRecord(player, record);
     }
