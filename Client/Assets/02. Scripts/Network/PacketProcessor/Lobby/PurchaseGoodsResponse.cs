@@ -38,6 +38,13 @@ namespace Network.PacketProcessor
                         if (passUI == null) return;
 
                         passUI.PassActivate();
+                        
+
+                        var noticeUI = Managers.UI.ShowPopUpUI<UI_Notice>();
+                        noticeUI.Init();
+                        noticeUI.NoticeTextChange("패스가 정상적으로 적용되었습니다.");
+                        noticeUI.BindPopupCloseEvent();
+
                         break;
 
                     default:
