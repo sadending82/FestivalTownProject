@@ -31,7 +31,7 @@ public:
 			switch (goodsInfo.Category_Index) {
 			case 403: {
 				result = lobbyManager->PurchasePass(player, goodsInfo, goods_index);
-				pPacketSender->SendUserPassStatePacket(key, player->GetPassInfo()[goodsInfo.Item]);
+				//pPacketSender->SendUserPassStatePacket(key, player->GetPassInfo()[goodsInfo.Item]);
 			}break;
 			default: {
 				result = lobbyManager->PurchaseShopGoods(player, goodsInfo, goods_index);
