@@ -128,4 +128,9 @@ public class UI_MissionData : UI_Base
             gameObject.GetComponent<Image>().color = Color.white;
         }
     }
+
+    public bool IsRewarded()
+    {
+        return isRewarded;
+    }
 }
