@@ -46,6 +46,9 @@ public class UI_ItemInfo : UI_Base
             case Define.ItemGrade.Unique:
                 sprite = Managers.Resource.LoadSprite("UniqueBG");
                 break;
+            case Define.ItemGrade.Currency:
+                sprite = Managers.Resource.LoadSprite("CurrencyBG");
+                break;
         }
 
         Get<GameObject>((int)GameObjects.BG).GetComponent<Image>().sprite = sprite;

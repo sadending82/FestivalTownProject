@@ -123,8 +123,6 @@ public class UI_Pass : UI_Scene
                         passItemDatas[plusStartIdx].SetPlusPassOpened(true);
                         Debug.Log($"PassOpen {plusStartIdx}");
                     }
-
-                    
                 }
             }
         }
@@ -180,6 +178,7 @@ public class UI_Pass : UI_Scene
     {
         isPassActivated = true;
         Get<GameObject>((int)GameObjects.BuyPassButton).GetComponent<Image>().sprite = Managers.Resource.LoadSprite("PassActivated");
+        UpdatePassData();
     }
 
     public void Update()
@@ -192,6 +191,28 @@ public class UI_Pass : UI_Scene
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             ReturnToHome();
+        }
+    }
+
+    public void UpdatePassData()
+    {
+        foreach (var passListData in Managers.Data.PassListDataDict)
+        {
+            for (int i = 1; Managers.Data.PassLevelDataDict.ContainsKey(passListData.Value.Index * 100 + i); ++i)
+            {
+                if (lastLevel < i) break;
+
+                int basicStartIdx = passListData.Value.Index * 100 + i;
+                int plusStartIdx = passListData.Value.Index * 100 + i + 100;
+
+                passItemDatas[basicStartIdx].SetBasicPassOpened(true);
+                Debug.Log($"PassOpen {basicStartIdx}");
+                if (isPassActivated)
+                {
+                    passItemDatas[plusStartIdx].SetPlusPassOpened(true);
+                    Debug.Log($"PassOpen {plusStartIdx}");
+                }
+            }
         }
     }
 }
