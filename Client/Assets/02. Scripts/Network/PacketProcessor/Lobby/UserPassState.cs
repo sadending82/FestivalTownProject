@@ -28,7 +28,14 @@ namespace Network.PacketProcessor
 
             var ui = Managers.UI.GetCurrentSceneUI().GetComponent<UI_Pass>();
             
-            if (ui == null) return;
+            if (ui == null)
+            {
+                var homeUI = Managers.UI.GetCurrentSceneUI().GetComponent<UI_HomeStart>();
+                if (homeUI == null) return;
+
+                homeUI.SetPass(pass_level, pass_exp, 100);
+                return;
+            }
 
             Debug.Log($"Pass Data Recved. {pass_index}, {pass_type}, {pass_level}, {pass_exp}");
 
