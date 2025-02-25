@@ -29,6 +29,17 @@ namespace Network.PacketProcessor
 
                 Debug.Log($"Recv PurchaseGoodsPacket goods index : {goods_index}");
 
+                // 403001 == 패스
+                if(goods_index == 403001)
+                {
+                    var passUI = Managers.UI.GetCurrentSceneUI().GetComponent<UI_Pass>();
+                    if (passUI == null) return;
+
+                    passUI.PassActivate();
+
+                    return;
+                }
+
                 var shopUI = Managers.UI.GetCurrentSceneUI().GetComponent<UI_Shop>();
                 if (shopUI != null)
                 {

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_Pass : UI_Scene
 {
@@ -18,10 +19,13 @@ public class UI_Pass : UI_Scene
         BuyPassButton,
         PassPanel,
         MissionButton,
+        PlusLockImage,
     }
 
     bool isInitialized = false;
     Dictionary<int, UI_PassLevelItem> passItemDatas = new();
+    bool isPassActivated = false;
+    int lastLevel = -1;
 
     void Start()
     {
@@ -46,7 +50,11 @@ public class UI_Pass : UI_Scene
 
         Get<GameObject>((int)GameObjects.BuyPassButton).BindEvent((PointerEventData) =>
         {
-            // 패스 구매 버튼
+            if (!isPassActivated)
+            {
+                Managers.Network.GetPacketManager().SendPurchaseGoodsRequestPacket(403001);
+                Debug.Log($"Send Purchase 403001");
+            }
         });
 
         var panelUI = Get<GameObject>((int)GameObjects.PassPanel).GetComponent<UI_PassPanel>();
@@ -92,7 +100,36 @@ public class UI_Pass : UI_Scene
 
     public void SetLevel(int level)
     {
+        
         Get<GameObject>((int)GameObjects.PassPanel).GetComponent<UI_PassPanel>().SetLevel(level);
+
+        if (lastLevel != level)
+        {
+            Debug.Log($"LastLevel not match level");
+            foreach (var passListData in Managers.Data.PassListDataDict)
+            {
+                for (int i = 1; Managers.Data.PassLevelDataDict.ContainsKey(passListData.Value.Index * 100 + i); ++i)
+                {
+                    Debug.Log($"{level} and {i}");
+                    if (level < i) break;
+
+                    int basicStartIdx = passListData.Value.Index * 100 + i;
+                    int plusStartIdx = passListData.Value.Index * 100 + i + 100;
+
+                    passItemDatas[basicStartIdx].SetBasicPassOpened(true);
+                    Debug.Log($"PassOpen {basicStartIdx}");
+                    if (isPassActivated)
+                    {
+                        passItemDatas[plusStartIdx].SetPlusPassOpened(true);
+                        Debug.Log($"PassOpen {plusStartIdx}");
+                    }
+
+                    
+                }
+            }
+        }
+
+        lastLevel = level;
     }
 
     public void SetProgress(int exp, int maxExp)
@@ -139,11 +176,18 @@ public class UI_Pass : UI_Scene
         }
     }
 
+    public void PassActivate()
+    {
+        isPassActivated = true;
+        Get<GameObject>((int)GameObjects.BuyPassButton).GetComponent<Image>().sprite = Managers.Resource.LoadSprite("PassActivated");
+    }
+
     public void Update()
     {
 
         Get<GameObject>((int)GameObjects.GoldText).GetComponent<TMP_Text>().text = Managers.Data.GetGold().ToString();
         Get<GameObject>((int)GameObjects.DiamondText).GetComponent<TMP_Text>().text = Managers.Data.GetDiamond().ToString();
+        Get<GameObject>((int)GameObjects.PlusLockImage).SetActive(!isPassActivated);
 
         if(Input.GetKeyDown(KeyCode.Escape))
         {

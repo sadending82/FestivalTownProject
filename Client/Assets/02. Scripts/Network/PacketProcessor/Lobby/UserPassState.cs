@@ -32,6 +32,8 @@ namespace Network.PacketProcessor
 
             Debug.Log($"Pass Data Recved. {pass_index}, {pass_type}, {pass_level}, {pass_exp}");
 
+            if (pass_type == (int)ePassType.PT_PREMIUM) ui.PassActivate();
+
             ui.SetLevel(pass_level);
             ui.SetProgress(pass_exp, 100);
 
