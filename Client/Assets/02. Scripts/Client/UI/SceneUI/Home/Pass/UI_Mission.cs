@@ -138,4 +138,17 @@ public class UI_Mission : UI_PopUp
         uncompletedPassMissionCount--;
         missionDatas[msdataUi.GetMissionIndex()].transform.SetSiblingIndex(uncompletedPassMissionCount);
     }
+
+    public void UpdateAllDatas()
+    {
+        foreach(var ui in missionDatas.Values)
+        {
+            Destroy(ui.gameObject);
+        }
+        missionDatas.Clear();
+
+        Managers.Network.GetPacketManager().SendUserMissionStateRequestPacket();
+
+        Debug.Log("Send Mission Request Packet.");
+    }
 }

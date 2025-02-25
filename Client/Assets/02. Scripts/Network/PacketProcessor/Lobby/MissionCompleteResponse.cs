@@ -72,6 +72,8 @@ namespace Network.PacketProcessor
                     default:
                         break;
                 }
+
+                MissionUI.UpdateAllDatas();
             }
         }
     }

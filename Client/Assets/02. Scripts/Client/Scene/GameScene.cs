@@ -211,7 +211,14 @@ public class GameScene : BaseScene
         Managers.WeaponObject.Clear();
 
         Managers.Game.isInGame = false;
-        MoveToResult();
+        if (Managers.Game.mapIndex == 10000)
+        {
+            Managers.Scene.LoadScene(Define.Scene.Home);       
+        }
+        else
+        {
+            MoveToResult();
+        }
     }
 
     IEnumerator LoadGameScene()
@@ -305,6 +312,12 @@ public class GameScene : BaseScene
                 }
 
             }
+        }
+
+        if (Managers.UI.GetTopOfPopUPUI() == null)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
 #endif
     }

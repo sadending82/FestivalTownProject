@@ -52,8 +52,27 @@ public class UI_Pass : UI_Scene
         {
             if (!isPassActivated)
             {
-                Managers.Network.GetPacketManager().SendPurchaseGoodsRequestPacket(403001);
-                Debug.Log($"Send Purchase 403001");
+                var notice_ui = Managers.UI.ShowPopUpUI<UI_OknoNotice>();
+                notice_ui.Init();
+                notice_ui.BindEventToOkButton((PointerEventData) =>
+                {
+                    Managers.UI.ClosePopUpUI();
+
+                    if (Managers.Data.GetDiamond() < Managers.Data.ShopListDataDict[403001].Currency1_Price)
+                    {
+                        var new_notice = Managers.UI.ShowPopUpUI<UI_Notice>();
+                        new_notice.Init();
+                        new_notice.NoticeTextChange("구매에 필요한 재화가 부족합니다.");
+                        new_notice.BindPopupCloseEvent();
+                    }
+                    else
+                    {
+                        Managers.Network.GetPacketManager().SendPurchaseGoodsRequestPacket(403001);
+                    }
+                    Debug.Log($"Send Purchase 403001");
+                });
+                notice_ui.BindPopupCloseEventToNoButton();
+                notice_ui.ChangeText($"패스 구입에 필요한 재화는\n 다이아 {Managers.Data.ShopListDataDict[403001].Currency1_Price}개 입니다.\n\n구매하시겠습니까?");
             }
         });
 
