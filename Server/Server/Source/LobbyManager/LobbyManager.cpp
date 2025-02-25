@@ -692,7 +692,6 @@ bool LobbyManager::PurchaseShopGoods(Player* player, Shop_Goods& goodsInfo, int 
 		return false;
 	}
 	playerItems[goodsInfo.Currency_ID].count -= goodsInfo.Price;
-	curr_currency = playerItems[goodsInfo.Currency_ID].count;
 
 	const ERROR_CODE insertReceiptResult = db->InsertReceipt(uid, goods_index);
 
@@ -742,8 +741,6 @@ bool LobbyManager::PurchaseShopGoods(Player* player, Shop_Goods& goodsInfo, int 
 	else {
 		db->UpdateUserItemCount(uid, goodsInfo.Currency_ID, goodsInfo.Price);
 		playerItems[goodsInfo.Currency_ID].count += goodsInfo.Price;
-		curr_currency = playerItems[goodsInfo.Currency_ID].count;
-
 		return false;
 	}
 }
@@ -785,11 +782,11 @@ bool LobbyManager::PurchasePass(Player* player, Shop_Goods& goodsInfo, int goods
 
 	ERROR_CODE updatePassResult = pDB->UpsertUserPass(uid, passState);
 
-	if (updatePassResult != ERROR_CODE::ER_NONE) {
-		return false;
+	if (updatePassResult == ERROR_CODE::ER_NONE) {
+		return true;
 	} 
 	else {
-		return true;
+		return false;
 	}
 
 }
