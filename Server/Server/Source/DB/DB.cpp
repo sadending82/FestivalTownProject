@@ -1390,24 +1390,25 @@ ERROR_CODE DB::UpdateBattleRecords(const int uid, const UserGameRecords& gameRec
 	}
 
 	
-	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.UpdateBattleRecords(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}", SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.UpdateBattleRecords(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}", SQL_NTS);
 
 	int c = gameRecords.KillCount.load();
 
-	SQLBindAtomic_int(hStmt, 1, gameRecords.KillCount);
-	SQLBindAtomic_int(hStmt, 2, gameRecords.DeathCount);
-	SQLBindAtomic_int(hStmt, 3, gameRecords.Point);
-	SQLBindAtomic_int(hStmt, 4, gameRecords.Weapon_Kill_Count);
-	SQLBindAtomic_int(hStmt, 5, gameRecords.Punch_Kill_Count);
-	SQLBindAtomic_int(hStmt, 6, gameRecords.Bomb_Count);
-	SQLBindAtomic_int(hStmt, 7, gameRecords.Groggy_Count);
-	SQLBindAtomic_int(hStmt, 8, gameRecords.Pick_Weapon_Count);
-	SQLBindAtomic_int(hStmt, 9, gameRecords.Pick_Bomb_Count);
-	SQLBindAtomic_int(hStmt, 10, gameRecords.Battle_Count);
-	SQLBindAtomic_int(hStmt, 11, gameRecords.FITH_Team_Count);
-	SQLBindAtomic_int(hStmt, 12, gameRecords.FITH_Indiv_Count);
-	SQLBindAtomic_int(hStmt, 13, gameRecords.Victory_Count);
-	SQLBindParameter(hStmt, 14, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+	SQLBindAtomic_int(hStmt, 2, gameRecords.KillCount);
+	SQLBindAtomic_int(hStmt, 3, gameRecords.DeathCount);
+	SQLBindAtomic_int(hStmt, 4, gameRecords.Point);
+	SQLBindAtomic_int(hStmt, 5, gameRecords.Weapon_Kill_Count);
+	SQLBindAtomic_int(hStmt, 6, gameRecords.Punch_Kill_Count);
+	SQLBindAtomic_int(hStmt, 7, gameRecords.Bomb_Count);
+	SQLBindAtomic_int(hStmt, 8, gameRecords.Groggy_Count);
+	SQLBindAtomic_int(hStmt, 9, gameRecords.Pick_Weapon_Count);
+	SQLBindAtomic_int(hStmt, 10, gameRecords.Pick_Bomb_Count);
+	SQLBindAtomic_int(hStmt, 11, gameRecords.Battle_Count);
+	SQLBindAtomic_int(hStmt, 12, gameRecords.FITH_Team_Count);
+	SQLBindAtomic_int(hStmt, 13, gameRecords.FITH_Indiv_Count);
+	SQLBindAtomic_int(hStmt, 14, gameRecords.Victory_Count);
+	SQLBindAtomic_longlong(hStmt, 15, gameRecords.Play_Time_Count);
 
 	retcode = SQLExecute(hStmt);
 
