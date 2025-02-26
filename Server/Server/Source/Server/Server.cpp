@@ -131,8 +131,6 @@ bool Server::Disconnect(int key)
     case eSessionState::ST_MATCHWAITING: {
         eMatchingType matchingType = player->GetMatchingRequestType();
 
-        std::lock_guard<std::mutex> lock(mMatchMakingManager->GetMatchingLock(matchingType));
-
         MATCHING_QUEUE& matchingQueue = mMatchMakingManager->GetMatchingQueue(player->GetMatchingRequestType());
 
         int top_ID = matchingQueue.begin()->first;

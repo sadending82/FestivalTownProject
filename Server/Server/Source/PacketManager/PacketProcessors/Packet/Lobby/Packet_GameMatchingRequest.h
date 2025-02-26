@@ -91,9 +91,9 @@ public:
 				//std::cout << "MAP: " << testMapProperties.Map_Index << " THEME: "<< testMapProperties.Map_Theme << std::endl;;
 			}break;
 			default: {
-				std::lock_guard<std::mutex> lock(MatchMakingManager->GetMatchingLock(matchingType));
+				MatchMakingManager->GetMatchingLock().lock();
 				MatchMakingManager->GetMatchingQueue(matchingType).insert({ key, requestTime });
-
+				MatchMakingManager->GetMatchingLock().unlock();
 				std::wcout << L"Nickname: " << player->GetNickName() << L" Matching Request / Match: " << matchingType << L" / wating Player - " << MatchMakingManager->GetMatchingQueue(matchingType).size() << std::endl;;
 
 			}break;
