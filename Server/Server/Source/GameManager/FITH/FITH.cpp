@@ -255,6 +255,7 @@ std::vector<sGameReward> FITH::CalculateGameReward(int point, bool isMvp, Battle
 void FITH::CalculateGameResult(int roomID, std::set<int>& winningTeams)
 {
     Room* room = pServer->GetRooms()[roomID];
+
     std::unordered_map<int, sPlayerGameRecord>& records = room->GetPlayerRecordList();
 
     int mvp_id = INVALIDKEY;
@@ -309,45 +310,47 @@ void FITH::CalculateGameResult(int roomID, std::set<int>& winningTeams)
 
 
     // DB에 데이터 업데이트
-    for (auto& pair : records) {
-        sPlayerGameRecord& record = pair.second;
+    if (room->GetGameMode() != GameMode::FITH_Tutorial_1) {
+        for (auto& pair : records) {
+            sPlayerGameRecord& record = pair.second;
 
-        int sessionID = room->GetPlayerList()[pair.first].load();
+            int sessionID = room->GetPlayerList()[pair.first].load();
 
-        if (sessionID == INVALIDKEY) {
-            continue;
-        }
-
-        Player* player = dynamic_cast<Player*>(pServer->GetSessions()[sessionID]);
-
-        int uid = player->GetUID();
-
-        if (uid == INVALIDKEY) {
-            continue;
-        }
-
-        pDB->UpdateBattleRecords(uid, record.gameRecord);
-
-        std::vector<UserItem> rewardList;
-        for (int i = 0; i < record.rewards.size(); ++i) {
-            if (record.rewards[i].index == 0) {
+            if (sessionID == INVALIDKEY) {
                 continue;
             }
 
-            const int itemIndex = record.rewards[i].index;
-            const int itemAmount = record.rewards[i].value;
-            rewardList.push_back(UserItem(uid, itemIndex, itemAmount));
-            pDB->UpsertUserCurrencyRecord(uid, itemIndex, itemAmount, 0);
+            Player* player = dynamic_cast<Player*>(pServer->GetSessions()[sessionID]);
 
-            const int itemType = (int)pTableManager->GetItemInfos()[itemIndex].Item_Type;
+            int uid = player->GetUID();
 
-            player->GetItems()[record.rewards[i].index].itemCode = itemIndex;
-            player->GetItems()[record.rewards[i].index].count += itemAmount;
-            player->GetItems()[record.rewards[i].index].itemType = itemType;
+            if (uid == INVALIDKEY) {
+                continue;
+            }
+
+            pDB->UpdateBattleRecords(uid, record.gameRecord);
+
+            std::vector<UserItem> rewardList;
+            for (int i = 0; i < record.rewards.size(); ++i) {
+                if (record.rewards[i].index == 0) {
+                    continue;
+                }
+
+                const int itemIndex = record.rewards[i].index;
+                const int itemAmount = record.rewards[i].value;
+                rewardList.push_back(UserItem(uid, itemIndex, itemAmount));
+                pDB->UpsertUserCurrencyRecord(uid, itemIndex, itemAmount, 0);
+
+                const int itemType = (int)pTableManager->GetItemInfos()[itemIndex].Item_Type;
+
+                player->GetItems()[record.rewards[i].index].itemCode = itemIndex;
+                player->GetItems()[record.rewards[i].index].count += itemAmount;
+                player->GetItems()[record.rewards[i].index].itemType = itemType;
+            }
+            pDB->UpsertUserCurrency(uid, rewardList);
+
+            UpdateMissionbyGameRecord(player, record);
         }
-        pDB->UpsertUserCurrency(uid, rewardList);
-
-        UpdateMissionbyGameRecord(player, record);
     }
 
     pPacketSender->SendGameResultPacket(roomID, winningTeams);
