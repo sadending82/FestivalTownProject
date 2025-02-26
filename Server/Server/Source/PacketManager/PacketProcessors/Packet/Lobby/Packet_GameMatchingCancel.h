@@ -23,11 +23,12 @@ public:
 			MatchMakingManager* MatchMakingManager = pServer->GetMatchMakingManager();
 
 			{
-				std::lock_guard<std::mutex> lock(MatchMakingManager->GetMatchingLock(matchingType));
+				MatchMakingManager->GetMatchingLock().lock();
 
 				MATCHING_QUEUE& matchingQueue = MatchMakingManager->GetMatchingQueue(matchingType);
 
 				if (matchingQueue.empty() == true) {
+					MatchMakingManager->GetMatchingLock().unlock();
 					return;
 				}
 
@@ -45,7 +46,8 @@ public:
 				player->SetMatchingRequestTime(0);
 
 				std::wcout << L"Nickname: " << player->GetNickName() << L" Matching Cancel / Match: " << matchingType << L" / wating Player - " << MatchMakingManager->GetMatchingQueue(matchingType).size() << std::endl;
-
+				
+				MatchMakingManager->GetMatchingLock().unlock();
 			}
 
 			if (player->ChangeSessionState(eSessionState::ST_MATCHWAITING, eSessionState::ST_ACCEPTED) == false) {

@@ -21,14 +21,11 @@ MatchMakingManager::~MatchMakingManager()
 }
 
 void MatchMakingManager::RunMatchingThreadWorker() {
-
     while (1) {
         for (auto pair : mMatchingSequence) {
-
             eMatchingType type = pair.first;
-            std::lock_guard<std::mutex> lock(GetMatchingLock(type));
             eMatchingSequence matchingSequence = pair.second;
-
+            mMatchingLock.lock();
             if (matchingSequence == eMatchingSequence::MS_None) {
 
             }
@@ -36,26 +33,9 @@ void MatchMakingManager::RunMatchingThreadWorker() {
                 CheckMatchMaking(type);
             }
             UpdateMatchingSequence(type);
+            mMatchingLock.unlock();
         }
         std::this_thread::sleep_for(100ms);
-    }
-}
-
-std::mutex& MatchMakingManager::GetMatchingLock(eMatchingType type)
-{
-    switch (type) {
-    case eMatchingType::FITH_SOLO: {
-        return mMatchingLock_FITH_SOLO;
-    }
-                                 break;
-    case eMatchingType::FITH_TEAM: {
-        return mMatchingLock_FITH_TEAM;
-    }
-                                 break;
-    default: {
-        return mMatchingLock;
-    }
-           break;
     }
 }
 
