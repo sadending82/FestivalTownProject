@@ -29,24 +29,45 @@ namespace Network.PacketProcessor
 
                 Debug.Log($"Recv PurchaseGoodsPacket goods index : {goods_index}");
 
-                var shopUI = Managers.UI.GetCurrentSceneUI().GetComponent<UI_Shop>();
-                if (shopUI != null)
-                {
-                    // 마일리지 샵 리소스에 '보유중'과 '구매 완료'가 나누어져 있어 두개가 서로 다른 상태이므로
-                    // 구매한 경우, 구매 완료로 따로 설정해 주기 위한 부분.
+                // 403001 == 패스
 
-                    // 현재 ShopList 인덱스로 설정되어 있어 혹시라도 실제 item의 인덱스라면 에러가 발생함.
-                    // ShopList의 인덱스라면 문제 없을 것
-                    var shopItemUI = shopUI.GetShopItem(goods_index);
-                    if (shopItemUI != null)
-                    {
-                        shopItemUI.PurchaseStuff();
-                    }
-                    else
-                    {
-                        Debug.Log($"해당 인덱스를 가지는 상품 항목이 없습니다.");
-                        return;
-                    }
+                switch (goods_index)
+                {
+                    case 403001:
+                        var passUI = Managers.UI.GetCurrentSceneUI().GetComponent<UI_Pass>();
+                        if (passUI == null) return;
+
+                        passUI.PassActivate();
+                        
+
+                        var noticeUI = Managers.UI.ShowPopUpUI<UI_Notice>();
+                        noticeUI.Init();
+                        noticeUI.NoticeTextChange("패스가 정상적으로 적용되었습니다.");
+                        noticeUI.BindPopupCloseEvent();
+
+                        break;
+
+                    default:
+                        var shopUI = Managers.UI.GetCurrentSceneUI().GetComponent<UI_Shop>();
+                        if (shopUI != null)
+                        {
+                            // 마일리지 샵 리소스에 '보유중'과 '구매 완료'가 나누어져 있어 두개가 서로 다른 상태이므로
+                            // 구매한 경우, 구매 완료로 따로 설정해 주기 위한 부분.
+
+                            // 현재 ShopList 인덱스로 설정되어 있어 혹시라도 실제 item의 인덱스라면 에러가 발생함.
+                            // ShopList의 인덱스라면 문제 없을 것
+                            var shopItemUI = shopUI.GetShopItem(goods_index);
+                            if (shopItemUI != null)
+                            {
+                                shopItemUI.PurchaseStuff();
+                            }
+                            else
+                            {
+                                Debug.Log($"해당 인덱스를 가지는 상품 항목이 없습니다.");
+                                return;
+                            }
+                        }
+                        break;
                 }
 
                 int currency_index = Data.CurrencyIndex;

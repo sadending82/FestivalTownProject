@@ -86,6 +86,7 @@ public:
     ERROR_CODE UpsertCharacterCustomizing(const int uid, struct sCharacterCustomizing& characterCustomizing);
     ERROR_CODE UpsertUserMission(const int uid, std::vector<struct UserMission>& missionList);
     ERROR_CODE UpsertUserPass(const int uid, UserPass& passInfo);
+    ERROR_CODE UpsertUserCurrencyRecord(const int uid, const int item_index, const int produced_add_value, const int consumed_add_value);
 
     // DELETE
     ERROR_CODE DeleteAcccount(const char* id);

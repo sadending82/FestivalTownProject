@@ -22,6 +22,8 @@ public class UI_PassLevelItem : UI_Base
     int _plusPassListIdx = -1;
     bool _basicPassRewarded = false;
     bool _plusPassRewarded = false;
+    bool _basicPassOpened = false;
+    bool _plusPassOpened = false;
 
     void Start()
     {
@@ -129,6 +131,18 @@ public class UI_PassLevelItem : UI_Base
         Get<GameObject>((int)GameObjects.ItemPlus).transform.GetChild(0).GetComponent<Image>().preserveAspect = true;
         Get<GameObject>((int)GameObjects.ItemPlus).transform.GetChild(1).GetComponent<Image>().sprite = Managers.Resource.LoadSprite(itemData.File_Name);
         Get<GameObject>((int)GameObjects.ItemPlus).transform.GetChild(1).GetComponent<Image>().preserveAspect = true;
+    }
+
+    public void SetBasicPassOpened(bool value)
+    {
+        _basicPassOpened = value;
+        Get<GameObject>((int)GameObjects.ItemBasic).transform.GetChild(3).gameObject.SetActive(!value);
+    }
+
+    public void SetPlusPassOpened(bool value)
+    {
+        _plusPassOpened = value;
+        Get<GameObject>((int)GameObjects.ItemPlus).transform.GetChild(3).gameObject.SetActive(!value);
     }
 
     Sprite GetItemBGTexture(Define.ItemGrade Grade)

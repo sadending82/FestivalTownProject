@@ -264,6 +264,12 @@ namespace NetworkProtocol
         MC_GROGGY = 7,
         MC_GET_ITEM = 8
     };
+
+    public enum ePassType
+    {
+        PT_NORMAL = 1,
+        PT_PREMIUM = 2
+    };
 }
 
 namespace ClientProtocol

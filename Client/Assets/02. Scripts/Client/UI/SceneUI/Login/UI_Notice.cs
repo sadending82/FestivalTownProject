@@ -76,4 +76,6 @@ public class UI_Notice : UI_PopUp
         });
     }
 
+    
+
 }

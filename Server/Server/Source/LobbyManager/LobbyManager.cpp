@@ -144,6 +144,7 @@ bool LobbyManager::GiveGachaItemToUser(Player* player, int payItem, int price, G
 	}
 	else {
 		playerItems[payItem].count -= price;
+		pDB->UpsertUserCurrencyRecord(uid, payItem, 0, price);
 	}
 
 	switch (itemType) {
@@ -161,6 +162,8 @@ bool LobbyManager::GiveGachaItemToUser(Player* player, int payItem, int price, G
 			playerItems[itemIndex].itemCode = itemIndex;
 			playerItems[itemIndex].itemType = itemType;
 			playerItems[itemIndex].count += itemAmount;
+
+			pDB->UpsertUserCurrencyRecord(uid, itemIndex, itemAmount, 0);
 		}
 	}
 	break;
@@ -201,6 +204,8 @@ bool LobbyManager::GiveGachaItemToUser(Player* player, int payItem, int price, G
 			else {
 				playerItems[mileageIndex].itemCode = mileageIndex;
 				playerItems[mileageIndex].count += mileage;
+
+				pDB->UpsertUserCurrencyRecord(uid, mileageIndex, mileage, 0);
 			}
 
 
@@ -648,6 +653,8 @@ bool LobbyManager::GivePassReward(Player* player, int pass_index, int pass_type,
 		if (rewardInfo.Item_Type == ItemType::Money) {
 			UserItem reward(uid, itemCode, passLevelInfo.Reward_Item_Amount);
 			pDB->UpsertUserCurrency(uid, std::vector<UserItem>{reward});
+
+			pDB->UpsertUserCurrencyRecord(uid, itemCode, passLevelInfo.Reward_Item_Amount, 0);
 		}
 		else {
 			pDB->InsertUserItem(uid, itemCode, passLevelInfo.Reward_Item_Amount, (int)rewardInfo.Item_Type);
@@ -692,7 +699,6 @@ bool LobbyManager::PurchaseShopGoods(Player* player, Shop_Goods& goodsInfo, int 
 		return false;
 	}
 	playerItems[goodsInfo.Currency_ID].count -= goodsInfo.Price;
-	curr_currency = playerItems[goodsInfo.Currency_ID].count;
 
 	const ERROR_CODE insertReceiptResult = db->InsertReceipt(uid, goods_index);
 
@@ -704,6 +710,8 @@ bool LobbyManager::PurchaseShopGoods(Player* player, Shop_Goods& goodsInfo, int 
 			result = false;
 		}
 		else {
+
+			pDB->UpsertUserCurrencyRecord(uid, item_index, item_amount, 0);
 			result = true;
 		}
 	}break;
@@ -736,14 +744,14 @@ bool LobbyManager::PurchaseShopGoods(Player* player, Shop_Goods& goodsInfo, int 
 		playerItems[item_index].itemType = (int)item_type;
 		playerItems[item_index].count = item_amount;
 
+		pDB->UpsertUserCurrencyRecord(uid, goodsInfo.Currency_ID, 0, goodsInfo.Price);
+
 		return true;
 	}
 	// 구매 실패
 	else {
 		db->UpdateUserItemCount(uid, goodsInfo.Currency_ID, goodsInfo.Price);
 		playerItems[goodsInfo.Currency_ID].count += goodsInfo.Price;
-		curr_currency = playerItems[goodsInfo.Currency_ID].count;
-
 		return false;
 	}
 }
@@ -775,6 +783,9 @@ bool LobbyManager::PurchasePass(Player* player, Shop_Goods& goodsInfo, int goods
 	if (payResult == ERROR_CODE::ER_DB_ERROR || payResult == ERROR_CODE::ER_DB_NO_DATA) {
 		return false;
 	}
+
+	pDB->UpsertUserCurrencyRecord(uid, goodsInfo.Currency_ID, 0, goodsInfo.Price);
+
 	playerItems[goodsInfo.Currency_ID].count -= goodsInfo.Price;
 	curr_currency = playerItems[goodsInfo.Currency_ID].count;
 
@@ -785,11 +796,11 @@ bool LobbyManager::PurchasePass(Player* player, Shop_Goods& goodsInfo, int goods
 
 	ERROR_CODE updatePassResult = pDB->UpsertUserPass(uid, passState);
 
-	if (updatePassResult != ERROR_CODE::ER_NONE) {
-		return false;
+	if (updatePassResult == ERROR_CODE::ER_NONE) {
+		return true;
 	} 
 	else {
-		return true;
+		return false;
 	}
 
 }

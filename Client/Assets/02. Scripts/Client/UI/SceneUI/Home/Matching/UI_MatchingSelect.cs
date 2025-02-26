@@ -76,6 +76,12 @@ public class UI_MatchingSelect: UI_PopUp
             Managers.UI.ShowPopUpUI<UI_MatchingProgress>();
         });
 
+        Get<GameObject>((int)GameObjects.TutorialButton).BindEvent((PointerEventData) =>
+        {
+            Managers.Network.GetPacketManager().SendGameMatchingRequest(NetworkProtocol.eMatchingType.FITH_TUTORIAL, 10000);        
+            Managers.UI.ShowPopUpUI<UI_MatchingProgress>();
+        });
+
         Get<GameObject>((int)GameObjects.ExitButton).BindEvent((PointerEventData) =>
         {
             ClosePopUpUI();

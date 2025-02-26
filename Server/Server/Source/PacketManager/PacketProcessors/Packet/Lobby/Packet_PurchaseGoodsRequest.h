@@ -27,19 +27,18 @@ public:
 
 			Shop_Goods& goodsInfo = tableManager->GetShopGoodsList()[goods_index];
 			bool result = false;
-			int curr_currency = player->GetItems()[goodsInfo.Currency_ID].count;
 
 			switch (goodsInfo.Category_Index) {
 			case 403: {
 				result = lobbyManager->PurchasePass(player, goodsInfo, goods_index);
-				pPacketSender->SendUserPassStatePacket(key, player->GetPassInfo()[goodsInfo.Item]);
+				//pPacketSender->SendUserPassStatePacket(key, player->GetPassInfo()[goodsInfo.Item]);
 			}break;
 			default: {
 				result = lobbyManager->PurchaseShopGoods(player, goodsInfo, goods_index);
 			}break;
 			}
 
-
+			int curr_currency = player->GetItems()[goodsInfo.Currency_ID].count;
 			pPacketSender->SendPurchaseGoodsResponsePacket(key, result, goods_index, goodsInfo.Currency_ID, curr_currency);
 		}
 		catch (const std::exception& e) {

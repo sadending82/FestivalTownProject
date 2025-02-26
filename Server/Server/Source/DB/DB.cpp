@@ -1390,24 +1390,25 @@ ERROR_CODE DB::UpdateBattleRecords(const int uid, const UserGameRecords& gameRec
 	}
 
 	
-	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.UpdateBattleRecords(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}", SQL_NTS);
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.UpdateBattleRecords(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}", SQL_NTS);
 
 	int c = gameRecords.KillCount.load();
 
-	SQLBindAtomic_int(hStmt, 1, gameRecords.KillCount);
-	SQLBindAtomic_int(hStmt, 2, gameRecords.DeathCount);
-	SQLBindAtomic_int(hStmt, 3, gameRecords.Point);
-	SQLBindAtomic_int(hStmt, 4, gameRecords.Weapon_Kill_Count);
-	SQLBindAtomic_int(hStmt, 5, gameRecords.Punch_Kill_Count);
-	SQLBindAtomic_int(hStmt, 6, gameRecords.Bomb_Count);
-	SQLBindAtomic_int(hStmt, 7, gameRecords.Groggy_Count);
-	SQLBindAtomic_int(hStmt, 8, gameRecords.Pick_Weapon_Count);
-	SQLBindAtomic_int(hStmt, 9, gameRecords.Pick_Bomb_Count);
-	SQLBindAtomic_int(hStmt, 10, gameRecords.Battle_Count);
-	SQLBindAtomic_int(hStmt, 11, gameRecords.FITH_Team_Count);
-	SQLBindAtomic_int(hStmt, 12, gameRecords.FITH_Indiv_Count);
-	SQLBindAtomic_int(hStmt, 13, gameRecords.Victory_Count);
-	SQLBindParameter(hStmt, 14, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (void*)(&uid), 0, NULL);
+	SQLBindAtomic_int(hStmt, 2, gameRecords.KillCount);
+	SQLBindAtomic_int(hStmt, 3, gameRecords.DeathCount);
+	SQLBindAtomic_int(hStmt, 4, gameRecords.Point);
+	SQLBindAtomic_int(hStmt, 5, gameRecords.Weapon_Kill_Count);
+	SQLBindAtomic_int(hStmt, 6, gameRecords.Punch_Kill_Count);
+	SQLBindAtomic_int(hStmt, 7, gameRecords.Bomb_Count);
+	SQLBindAtomic_int(hStmt, 8, gameRecords.Groggy_Count);
+	SQLBindAtomic_int(hStmt, 9, gameRecords.Pick_Weapon_Count);
+	SQLBindAtomic_int(hStmt, 10, gameRecords.Pick_Bomb_Count);
+	SQLBindAtomic_int(hStmt, 11, gameRecords.Battle_Count);
+	SQLBindAtomic_int(hStmt, 12, gameRecords.FITH_Team_Count);
+	SQLBindAtomic_int(hStmt, 13, gameRecords.FITH_Indiv_Count);
+	SQLBindAtomic_int(hStmt, 14, gameRecords.Victory_Count);
+	SQLBindAtomic_int(hStmt, 15, gameRecords.Play_Time_Count);
 
 	retcode = SQLExecute(hStmt);
 
@@ -1664,6 +1665,47 @@ ERROR_CODE DB::UpsertUserPass(const int uid, UserPass& passInfo)
 	}
 
 	DEBUGMSGONEPARAM("Execute Query Error %d : (UpsertUserPass)\n", retcode); ErrorDisplay(hStmt);
+	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+	ReturnConnection(connection);
+	return ERROR_CODE::ER_DB_ERROR;
+}
+
+ERROR_CODE DB::UpsertUserCurrencyRecord(const int uid, const int item_index, const int produced_add_value, const int consumed_add_value)
+{
+	if (uid == 0 || uid == INVALIDKEY) {
+		return ERROR_CODE::ER_DB_ERROR;
+	}
+	DB_Connection connection = GetConnection();
+	SQLHDBC hDbc = connection.hDbc;
+	SQLHSTMT hStmt = NULL;
+	SQLRETURN retcode;
+
+
+	if ((retcode = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt)) == SQL_ERROR) {
+		DEBUGMSGONEPARAM("hStmt Error %d : (UpsertUserCurrencyRecord) \n", retcode); ErrorDisplay(hStmt);
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
+		return ERROR_CODE::ER_DB_ERROR;
+	}
+
+
+	SQLPrepare(hStmt, (SQLWCHAR*)L"{CALL GameDB.dbo.UpsertUserCurrencyRecord(?, ?, ?, ?)}", SQL_NTS);
+
+	SQLBindParameter(hStmt, 1, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (SQLPOINTER)(&uid), 0, NULL);
+	SQLBindParameter(hStmt, 2, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (SQLPOINTER)(&item_index), 0, NULL);
+	SQLBindParameter(hStmt, 3, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (SQLPOINTER)(&produced_add_value), 0, NULL);
+	SQLBindParameter(hStmt, 4, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (SQLPOINTER)(&consumed_add_value), 0, NULL);
+
+	retcode = SQLExecute(hStmt);
+
+	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
+		ReturnConnection(connection);
+		return ERROR_CODE::ER_NONE;
+	}
+
+	DEBUGMSGONEPARAM("Execute Query Error %d : (UpsertUserCurrencyRecord)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	ReturnConnection(connection);
 	return ERROR_CODE::ER_DB_ERROR;

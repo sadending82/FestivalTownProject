@@ -16,6 +16,10 @@ public class UI_Mission : UI_PopUp
     Dictionary<int, UI_MissionData> missionDatas = new();
     int uncompletedPassMissionCount = 0;
 
+    int dailyProgress = 0;
+    int dailyProgressMax = 100;
+    UI_DailyProgress _progressUI = null;
+
     void Start()
     {
         if (!isInitialized)
@@ -37,6 +41,8 @@ public class UI_Mission : UI_PopUp
         var progressUI = Managers.UI.MakeSubItem<UI_DailyProgress>(missionPanel.GetCategoryContent(0));
         progressUI.Init();
 
+        _progressUI = progressUI;
+
         Get<GameObject>((int)GameObjects.ExitButton).BindEvent((PointerEventData) =>
         {
             Managers.UI.ClosePopUpUI(this);
@@ -51,7 +57,21 @@ public class UI_Mission : UI_PopUp
 
     public UI_MissionData ChangeMissionData(int idx, int count, bool isRewarded)
     {
+        Managers.Data.PassMissionDataDict.TryGetValue(idx, out var passMissionData);
+        if (passMissionData == null) return null;
+
         missionDatas[idx].SetMissionCounted(count);
+
+        if (passMissionData.Type == (int)Define.MissionType.DailyMission)
+        {
+            if (missionDatas[idx].IsRewarded() == false && isRewarded == true)
+            {
+                dailyProgress += passMissionData.Reward_Exp;
+                if (dailyProgress > dailyProgressMax) dailyProgress = dailyProgressMax;
+                _progressUI.SetProgress(dailyProgress);
+            }
+        }
+
         missionDatas[idx].SetRewarded(isRewarded);
 
         return missionDatas[idx];
@@ -79,6 +99,12 @@ public class UI_Mission : UI_PopUp
                     ui.SetReward(passMissionData.Reward_Item, passMissionData.Reward_Item_Amount);
                     ui.SetMissionCounted(count);
                     ui.SetRewarded(isRewarded);
+                    if(isRewarded)
+                    {
+                        dailyProgress += passMissionData.Reward_Exp;
+                        if (dailyProgress > dailyProgressMax) dailyProgress = dailyProgressMax;
+                        _progressUI.SetProgress(dailyProgress);
+                    }
                     return ui;
                 }
             case (int)Define.MissionType.PassMission:
@@ -111,5 +137,18 @@ public class UI_Mission : UI_PopUp
 
         uncompletedPassMissionCount--;
         missionDatas[msdataUi.GetMissionIndex()].transform.SetSiblingIndex(uncompletedPassMissionCount);
+    }
+
+    public void UpdateAllDatas()
+    {
+        foreach(var ui in missionDatas.Values)
+        {
+            Destroy(ui.gameObject);
+        }
+        missionDatas.Clear();
+
+        Managers.Network.GetPacketManager().SendUserMissionStateRequestPacket();
+
+        Debug.Log("Send Mission Request Packet.");
     }
 }

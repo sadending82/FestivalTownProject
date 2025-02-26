@@ -119,13 +119,18 @@ public class UI_MissionData : UI_Base
 
         if(this.isRewarded)
         {
-            //Get<GameObject>((int)GameObjects.RecvButton).transform.GetChild(0).GetComponent<TMP_Text>().text = "완료";
+            Get<GameObject>((int)GameObjects.RecvButton).GetComponent<Image>().sprite = Managers.Resource.LoadSprite("Completed");
             gameObject.GetComponent<Image>().color = Color.gray;
         }
         else
         {
-            //Get<GameObject>((int)GameObjects.RecvButton).transform.GetChild(0).GetComponent<TMP_Text>().text = "완료 하기";
+            Get<GameObject>((int)GameObjects.RecvButton).GetComponent<Image>().sprite = Managers.Resource.LoadSprite("DoComplete");
             gameObject.GetComponent<Image>().color = Color.white;
         }
+    }
+
+    public bool IsRewarded()
+    {
+        return isRewarded;
     }
 }
