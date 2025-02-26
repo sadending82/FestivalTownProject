@@ -1408,7 +1408,7 @@ ERROR_CODE DB::UpdateBattleRecords(const int uid, const UserGameRecords& gameRec
 	SQLBindAtomic_int(hStmt, 12, gameRecords.FITH_Team_Count);
 	SQLBindAtomic_int(hStmt, 13, gameRecords.FITH_Indiv_Count);
 	SQLBindAtomic_int(hStmt, 14, gameRecords.Victory_Count);
-	SQLBindAtomic_longlong(hStmt, 15, gameRecords.Play_Time_Count);
+	SQLBindAtomic_int(hStmt, 15, gameRecords.Play_Time_Count);
 
 	retcode = SQLExecute(hStmt);
 

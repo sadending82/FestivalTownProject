@@ -45,7 +45,7 @@ struct UserGameRecords {
 	std::atomic<int> Change_Skin_Count = 0;
 	std::atomic<int> Buy_Box_Count = 0;
 	std::atomic<int> Login_Count = 0;
-	std::atomic<long long> Play_Time_Count = 0;
+	std::atomic<int> Play_Time_Count = 0;
 
 
 	void Init() {

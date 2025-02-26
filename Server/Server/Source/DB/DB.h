@@ -19,7 +19,6 @@
 #include <mutex>
 
 #define SQLBindAtomic_int(stmt, index, value) int bindValue##index = value.load(); SQLBindParameter(hStmt, index, SQL_PARAM_INPUT, SQL_C_LONG, SQL_INTEGER, sizeof(int), 0, (&bindValue##index), 0, NULL);
-#define SQLBindAtomic_longlong(stmt, index, value) int bindValue##index = value.load(); SQLBindParameter(hStmt, index, SQL_PARAM_INPUT, SQL_C_SBIGINT, SQL_BIGINT, sizeof(int), 0, (&bindValue##index), 0, NULL);
 
 inline constexpr int AttendanceData_DaysToKeep = -60;
 inline constexpr int ConnectionPoolSize = 5;

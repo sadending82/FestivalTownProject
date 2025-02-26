@@ -301,8 +301,7 @@ void FITH::CalculateGameResult(int roomID, std::set<int>& winningTeams)
             mvp_point = point;
         }
 
-        userGameRecord.Play_Time_Count = std::chrono::duration_cast<std::chrono::seconds>(endTime - room->GetStartTime()).count();
-
+        userGameRecord.Play_Time_Count = (int)std::chrono::duration_cast<std::chrono::seconds>(endTime - room->GetStartTime()).count();
     }
 
     if (winFlag == BattleResult::BR_Win) {
