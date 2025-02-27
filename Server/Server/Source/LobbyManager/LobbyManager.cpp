@@ -268,13 +268,13 @@ void LobbyManager::LoadPassState(Player* player)
 
 		playerPassStateList[passIndex].Init(passState);
 
-		std::unordered_map<int, UserPassReward> passRewardStates = pDB->SelectUserPassReward(uid, passInfo.second.index);
+		std::vector<UserPassReward> passRewardStates = pDB->SelectUserPassReward(uid, passInfo.second.index);
 
 		for (auto& passRewardState : passRewardStates) {
-			int level = passRewardState.second.level;
-			int type = passRewardState.second.passType;
+			int level = passRewardState.level;
+			int type = passRewardState.passType;
 
-			playerPassStateList[passIndex].isRewardedList[level][type] = (bool)passRewardState.second.isRewarded;
+			playerPassStateList[passIndex].isRewardedList[level][type] = (bool)passRewardState.isRewarded;
 		}
 
 		//pServer->GetPacketSender()->SendUserPassStatePacket(player->GetSessionID(), playerPassStateList[passIndex]);
@@ -638,10 +638,10 @@ bool LobbyManager::GivePassReward(Player* player, int pass_index, int pass_type,
 	if (pass_type == ePassType::PT_PREMIUM && playerPassInfo.passState.passType != ePassType::PT_PREMIUM) {
 		return false;
 	}
-	if (playerPassInfo.isRewardedList[reward_level][pass_type] == true) {
+	if (playerPassInfo.isRewardedList[level][pass_type] == true) {
 		return false;
 	}
-	if (playerPassInfo.passState.passLevel < reward_level) {
+	if (playerPassInfo.passState.passLevel < level) {
 		return false;
 	}
 
