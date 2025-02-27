@@ -1195,11 +1195,11 @@ UserPass DB::SelectUserPass(const int uid, const int passIndex)
 	return UserPass();
 }
 
-std::unordered_map<int, UserPassReward> DB::SelectUserPassReward(const int uid, const int passIndex)
+std::vector<UserPassReward> DB::SelectUserPassReward(const int uid, const int passIndex)
 {
 
 	if (uid == 0 || uid == INVALIDKEY) {
-		return  std::unordered_map<int, UserPassReward>();
+		return  std::vector<UserPassReward>();
 	}
 	DB_Connection connection = GetConnection();
 	SQLHDBC hDbc = connection.hDbc;
@@ -1212,7 +1212,7 @@ std::unordered_map<int, UserPassReward> DB::SelectUserPassReward(const int uid, 
 		DEBUGMSGONEPARAM("hStmt Error %d : (SelectUserPassReward) \n", retcode); ErrorDisplay(hStmt);
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 		ReturnConnection(connection);
-		return  std::unordered_map<int, UserPassReward>();
+		return std::vector<UserPassReward>();
 	}
 
 
@@ -1223,7 +1223,7 @@ std::unordered_map<int, UserPassReward> DB::SelectUserPassReward(const int uid, 
 
 	retcode = SQLExecute(hStmt);
 
-	std::unordered_map<int, UserPassReward> passRewardList;
+	std::vector<UserPassReward> passRewardList;
 
 	if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
 
@@ -1238,7 +1238,7 @@ std::unordered_map<int, UserPassReward> DB::SelectUserPassReward(const int uid, 
 			SQLGetData(hStmt, 5, SQL_C_LONG, &passReward.isRewarded, sizeof(int), NULL);
 
 
-			passRewardList.insert({ passReward.level, passReward });
+			passRewardList.push_back(passReward);
 		}
 
 		SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
@@ -1249,7 +1249,7 @@ std::unordered_map<int, UserPassReward> DB::SelectUserPassReward(const int uid, 
 	DEBUGMSGONEPARAM("Execute Query Error %d : (SelectUserPassReward)\n", retcode); ErrorDisplay(hStmt);
 	SQLFreeHandle(SQL_HANDLE_DBC, hStmt);
 	ReturnConnection(connection);
-	return std::unordered_map<int, UserPassReward>();
+	return std::vector<UserPassReward>();
 }
 
 ERROR_CODE DB::UpdateUserConnectionState(const int uid, const int state)
