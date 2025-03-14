@@ -314,11 +314,11 @@ public class GameScene : BaseScene
             }
         }
 
-        if (Managers.UI.GetTopOfPopUPUI() == null)
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
+        //if (Managers.UI.GetTopOfPopUPUI() == null)
+        //{
+        //    Cursor.lockState = CursorLockMode.Locked;
+        //    Cursor.visible = false;
+        //}
 #endif
     }
 

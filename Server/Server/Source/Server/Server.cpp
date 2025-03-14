@@ -131,6 +131,8 @@ bool Server::Disconnect(int key)
     case eSessionState::ST_MATCHWAITING: {
         eMatchingType matchingType = player->GetMatchingRequestType();
 
+
+        mMatchMakingManager->GetMatchingLock().lock();
         MATCHING_QUEUE& matchingQueue = mMatchMakingManager->GetMatchingQueue(player->GetMatchingRequestType());
 
         int top_ID = matchingQueue.begin()->first;
@@ -146,6 +148,7 @@ bool Server::Disconnect(int key)
 
         player->SetMatchingRequestTime(0);
 
+        mMatchMakingManager->GetMatchingLock().unlock();
     }
     break;
 
